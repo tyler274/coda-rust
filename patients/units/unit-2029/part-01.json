@@ -1,0 +1,678 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002029",
+   "given": "Rodney",
+   "family": "Jacobs",
+   "birth_date": "1964-09-09",
+   "address_line": "18 Cottage Street",
+   "phone": "+1-413-555-0197",
+   "email": "rodney.jacobs@example.test",
+   "marital_status": "married",
+   "summary": "Retired postal worker with hypertension and hyperlipidemia who joined in 2020; chronic tophaceous gout diagnosed by rheumatology in 2023 and treated with allopurinol; stable angina from 2023, CAD, an acute MI in June 2025 and a left MCA ischemic stroke in July 2026, last seen 2026-07-31 after the stroke.",
+   "events": [
+    {
+     "id": "2020-09-10a",
+     "kind": "telephone",
+     "start": "2020-09-10T10:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2020-09-10T10:20",
+       "body": "Caller Rodney Jacobs, 56, Easthampton. Wants to transfer care here; his old doctor's office is closing its panel to retirees on his plan and he would rather be somewhere he can reach someone. Takes blood pressure and cholesterol pills.\nBooked new patient visit 9/22 at 9:00. Records release form emailed; he will sign and send back so we can request old records."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "establish_care",
+     "start": "2020-09-22T09:00",
+     "end": "2020-09-22T09:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2012-06-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2014-03-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       136,
+       84
+      ],
+      "weight_kg": 85.5,
+      "height_cm": 178.0,
+      "labs": {
+       "Low Density Lipoprotein": 115,
+       "High Density Lipoprotein": 43,
+       "Triglycerides": 145,
+       "Total Cholesterol": 187
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoked"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Occasional social use, 1-2 drinks per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired postal worker"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-22T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-22T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-22T09:45",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-22T09:45",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-22T09:45",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-09-22T09:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-22T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-22T09:50",
+       "body": "NEW PATIENT VISIT\n\n56 yo man transferring care. Retired from the postal service a couple of years ago after a long career carrying a route. Feels well. No complaints today.\n\nHx:\n- HTN for about 8 years, on HCTZ 25 mg every morning. Home cuff readings he remembers are mostly in the 130s.\n- High cholesterol, on atorvastatin 20 mg for several years. No muscle aches.\n- Takes a baby aspirin daily; started on his own years ago because of his father's heart history.\nNo surgeries.\n\nMeds: HCTZ 25 mg qAM, atorvastatin 20 mg qHS, aspirin 81 mg daily.\nAllergies: none known.\n\nFHx: father had coronary disease young, around 52. Mother with high blood pressure. Brother on cholesterol medicine. A paternal uncle had gout.\nSHx: married, lives in Easthampton. Never smoked. A beer or a glass of wine once or twice a week. Walks most mornings.\n\nROS: no chest pain, dyspnea, palpitations, edema, headaches or vision change. No joint complaints.\n\nExam: well appearing. Ht 178 cm. BP slightly above goal, see flowsheet. HEENT unremarkable. Neck supple, no bruit. Heart regular, no murmur. Lungs clear. Abd soft. Ext without edema, pulses 2+. Skin no rashes.\nPHQ-2 0.\n\nA/P\n1. Hypertension - near goal on HCTZ. Continue. Recheck with labs.\n2. Hyperlipidemia - continue atorvastatin 20. Fasting lipids today.\n3. Health maintenance - colonoscopy per him about 3 years ago, normal; requesting old records to confirm. HCV and HIV screens today, he agrees. Flu shot given.\nCMP, CBC, lipids drawn. F/u in about 6 months, sooner if needed."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-24a",
+     "kind": "portal_message",
+     "start": "2020-09-24T16:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-09-24T16:10",
+       "body": "Hi Rodney, your labs from Tuesday look fine. Kidney function and potassium are normal on the water pill, blood counts normal, and the hepatitis C and HIV screens were negative. LDL cholesterol is modestly above where I would like it but reasonable on your current dose; we will keep things as they are. Nice to meet you."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-05a",
+     "kind": "outside_records",
+     "start": "2020-10-05T11:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "MA",
+       "date": "2020-10-05T11:30",
+       "body": "Records received from previous PCP office (covering 2014-2020), 41 pages, filed.\nAbstracted for the chart:\n- Problem list: hypertension, hyperlipidemia.\n- Medications: hydrochlorothiazide 25 mg daily, atorvastatin 20 mg daily, aspirin 81 mg.\n- Allergies: NKDA.\n- Colonoscopy 06/2017: normal exam to the cecum, no polyps; next due 2027.\n- Tdap given 03/2019.\nFlagged for PCP review; PCP initialed."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-18a",
+     "kind": "pharmacy",
+     "start": "2021-03-18T13:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-18T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Vaccine administered at community pharmacy",
+       "author": "MA",
+       "date": "2021-03-18T13:00",
+       "body": "State registry update: COVID-19 vaccine dose 1 given at a community pharmacy. Added to immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-08a",
+     "kind": "pharmacy",
+     "start": "2021-04-08T13:30",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-08T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Vaccine administered at community pharmacy",
+       "author": "MA",
+       "date": "2021-04-08T13:30",
+       "body": "Registry feed: COVID-19 dose 2 recorded from community pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-20a",
+     "kind": "office_visit",
+     "start": "2021-04-20T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure and cholesterol follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-04-20T10:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-04-20T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-04-20T11:00",
+       "body": "F/U HTN, lipids.\nDoing well. Had both covid shots at the pharmacy. Walking 2-3 miles most mornings again now that the weather turned. No CP, SOB, lightheadedness. Taking meds daily, no side effects.\nExam: NAD. BP reviewed. Heart RRR, lungs clear, no edema.\nA/P: HTN - office reading above goal, but his home log runs 130s/low 80s. Continue HCTZ, bring the cuff next time to compare. BMP today (on a diuretic). HLD - continue atorvastatin 20. Physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-12a",
+     "kind": "annual_physical",
+     "start": "2021-10-12T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-10-12T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-10-12T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-10-12T08:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-12T09:10"
+      },
+      {
+       "vaccine": "Zoster recombinant",
+       "date": "2021-10-12T09:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-10-12T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical Examination",
+       "author": "PCP",
+       "date": "2021-10-12T09:20",
+       "body": "ANNUAL EXAM - 57 M\n\nInterval: no illnesses, no ED visits. Still walking most mornings. Wife keeps him on a decent diet.\nMeds: HCTZ 25, atorvastatin 20, ASA 81. NKDA.\nROS negative incl. chest pain, exertional symptoms, GI bleeding, urinary symptoms.\nFHx/SHx unchanged; never smoker, light alcohol.\n\nExam: BP/HR/wt per vitals. Eyes, ears normal. Neck no thyroid enlargement, no bruits. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no masses. Ext no edema, DP 2+. Skin no concerning lesions. Normal gait.\nPHQ-2: 0.\n\nAssessment/plan\n- Adult health exam. Colonoscopy 2017 normal, next 2027. Tdap 2019. Flu given today. First shingles vaccine today, second in 2-6 months.\n- HTN: at goal-ish, continue.\n- HLD: lipids today.\nReturn 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-09a",
+     "kind": "pharmacy",
+     "start": "2021-11-09T15:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-09T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Vaccine administered at community pharmacy",
+       "author": "MA",
+       "date": "2021-11-09T15:00",
+       "body": "Pharmacy reported a COVID-19 booster dose. Entered in immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-11a",
+     "kind": "nurse_visit",
+     "start": "2022-01-11T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingles vaccine dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant",
+       "date": "2022-01-11T14:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-01-11T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Immunization",
+       "author": "RN",
+       "date": "2022-01-11T14:15",
+       "body": "In for 2nd shingles dose. First dose in October; he had a sore arm and felt tired the next day, nothing else. Screening questions negative. Given L deltoid IM, tolerated. Series complete. Observed 15 min, left ambulatory."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-26a",
+     "kind": "office_visit",
+     "start": "2022-04-26T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hypertension follow-up",
+     "state": {
+      "bp": [
+       138,
+       86
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-04-26T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-04-26T09:55",
+       "body": "S: HTN/lipid check. No complaints. Home readings 130s/80s. Busy helping his brother clear out a house this spring.\nMeds unchanged, adherent.\nO: BP a little higher today. Heart regular, lungs clear, no edema.\nA/P: HTN - borderline in office, home numbers ok. Keep HCTZ 25 for now, recheck at physical. Limit salt. HLD - stable on atorvastatin.\nRTC fall for physical."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "pharmacy",
+     "start": "2022-06-14T09:05",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2022-06-14T09:05",
+       "body": "Electronic request from pharmacy: hydrochlorothiazide 25 mg #90 and atorvastatin 20 mg #90. Last visit 4/26, labs current. Sent per refill protocol, 1 refill each."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "office_visit",
+     "start": "2022-07-12T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2022-10-04a",
+     "kind": "pharmacy",
+     "start": "2022-10-04T12:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-04T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Vaccine administered at community pharmacy",
+       "author": "MA",
+       "date": "2022-10-04T12:00",
+       "body": "Bivalent COVID-19 booster given at an outside pharmacy, per registry."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "annual_physical",
+     "start": "2022-10-18T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "bp": [
+       136,
+       84
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-10-18T08:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-10-18T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-10-18T08:55",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-18T09:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-10-18T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical Examination",
+       "author": "PCP",
+       "date": "2022-10-18T09:25",
+       "body": "Physical, 58 yo M.\nSince last: canceled July visit (family trip). Feels well. Walking daily. Has bivalent covid booster from pharmacy.\nMeds: HCTZ 25 qd, atorva 20 qhs, ASA 81. NKDA.\nROS: denies CP, SOB, edema, joint swelling, GI or GU complaints.\nExam: vitals noted. HEENT nl. Neck supple. CV RRR, no m/r/g. Lungs CTA. Abd benign. Ext no edema. Skin: no lesions of concern on visible skin.\nPHQ-2 0.\nPlan: HTN controlled; HLD continue; flu today; CMP/CBC/lipids. Colon screening up to date (2017). Recheck spring."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-20a",
+     "kind": "portal_message",
+     "start": "2022-10-20T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-10-20T12:40",
+       "body": "Rodney - all your blood work from the physical is in the usual range for you. Cholesterol is about the same as last year. No changes. See you in the spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+# unit-2589 story (Noah Foley)
+
+- 2024-08-28 telephone: calls to join the practice; new-patient physical booked (P)
+- 2024-09-12 establish_care: new-patient preventive visit; HIV and hepatitis C screens, lipids; PHQ-2 (A1, P)
+- 2024-09-16 portal_message: screening results normal (P)
+- 2024-10-08 nurse_visit: influenza and COVID-19 vaccines (P)
+- 2025-02-11 portal_message: asks for his immunization record for a university form (P)
+- 2025-04-22 portal_message: asks to be seen about a sore on the penis (P)
+- 2025-04-24 office_visit: chancre, RPR sent, primary syphilis treated with penicillin G benzathine in clinic (S, R1)
+- 2025-04-25 portal_message: RPR negative, explained; treatment stands (S, R1)
+- 2025-06-10 ed_visit: regional ED, acute HIV syndrome with cytopenias (S, A2) — record dated as received 2025-07-02
+- 2025-06-11 portal_message: patient reports the ED visit and positive HIV test (P)
+- 2025-06-13 office_visit: post-ED visit; acute HIV on list; ID referral (P, R4)
+- 2025-07-17 telephone: ID office reports missed intake; RN outreach, voicemail (P)
+- 2025-07-21 portal_message: patient will reschedule ID in the fall (P)
+- 2025-10-15 specialist_visit: dermatology, secondary syphilis (S, R2, R3) — letter received 2025-10-16, asks PCP to treat
+- 2025-10-17 office_visit: secondary syphilis treated, RPR 1:64, ID referral re-sent, flu shot (A3, P)
+- 2025-10-20 portal_message: RPR titer result note (A3)
+- 2025-11-07 pharmacy: fill notice for bictegravir/emtricitabine/TAF from ID prescriber; ID intake 11-06 itself never sends a letter (A4)
+- 2025-12-03 telephone: second records request to ID (P)
+- 2026-01-14 specialist_visit: ID follow-up, VL 45 (A4) — letter received 2026-03-20
+- 2026-03-23 telephone: MA files ID note (P)
+- 2026-04-08 portal_message: schedules six-month syphilis recheck (P)
+- 2026-04-10 office_visit: last seen; RPR 1:8, list updated with ART, HIV disease relabeled, PCV20 (A5, A6, A7)
+- 2026-04-13 portal_message: RPR result note (A5)
+- 2026-05-13 specialist_visit: ID follow-up, VL not detected (A4) — letter received 2026-06-04
+- 2026-06-05 telephone: ID May letter (received 06-04) filed, lists unchanged (A4)
+- 2026-07-23 portal_message: asks for an immunization record copy for the fall semester (P)

@@ -1,0 +1,766 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002203",
+      "events": [
+        {
+          "id": "2025-01-13a",
+          "kind": "pharmacy",
+          "start": "2025-01-13T09:02",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: metformin, lisinopril, atorvastatin",
+              "author": "MA",
+              "date": "2025-01-13T09:02",
+              "body": "Mail-order pharmacy requesting 90-day renewals for metformin 1000 mg BID, lisinopril 20 mg daily and atorvastatin 40 mg daily. Seen 11/20, labs current. Pended for PCP, approved and sent with 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "hospital_admission",
+          "start": "2025-02-26T19:20",
+          "end": "2025-03-01T11:40",
+          "service": "Emergency Medicine",
+          "reason": "Left-sided weakness and slurred speech",
+          "vitals": [
+            {
+              "time": "2025-02-26T19:26",
+              "bp": [
+                155,
+                90
+              ],
+              "hr": 78
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "diagnosed",
+              "onset": "2025-02-26"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-26T19:35",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 180
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-26T19:35",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-02-26T19:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-02-26T19:44",
+              "text": "Axial images through the head without IV contrast. No intraparenchymal, subarachnoid or extra-axial blood. No mass or shift of midline structures. Basal cisterns patent. Ventricular size within normal limits for age. Bones intact.",
+              "conclusion": "Negative for intracranial hemorrhage."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-26T19:20"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-02-27T00:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-03-01T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Note",
+              "author": "emergency medicine",
+              "date": "2025-03-04T10:05",
+              "body": "AREA HOSPITAL ED\nDate of service: 02/26/2025\nPt: Arthur Roberge, 67 M\n\nCC: Left-sided weakness, slurred speech x 2 hrs.\n\nHPI: 67M with HTN, DM2, HLD and an ischemic stroke in June 2024 brought in after abrupt left-sided weakness and thick speech starting about 2 hours ago. Last known normal 3 hours before arrival. Wife at bedside says he has been reliable with metformin, lisinopril and atorvastatin.\n\nPSH: cholecystectomy 2005; inguinal hernia repair 2012.\nAllergies: NKDA.\nFHx: father MI age 61; mother DM2; paternal grandfather ischemic stroke age 68.\nSHx: former smoker (25 pack-years, quit 2010); 1-2 drinks/week; retired postal clerk.\n\nVS: BP 155/90, HR 78, afebrile.\nExam: Left-sided facial droop. Weakness of the L arm and L leg. Dysarthria.\n\nLabs: glucose 180, creatinine 1.2, INR 1.0, platelets 250.\nCT head noncontrast: no hemorrhage.\n\nAssessment: recurrent acute ischemic stroke.\nPlan: admit, hospitalist service."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2025-03-04T10:07",
+              "body": "DISCHARGE SUMMARY\nAdmission: 02/26/2025. Discharge: 03/01/2025.\n\nPrincipal diagnosis: Acute ischemic stroke (second event; first 06/2024).\n\nHospital course: Presented with left face, arm and leg weakness and dysarthria; head CT without hemorrhage. Neurologic deficits improved through the admission. At discharge walking without assistance, mild residual slurring that was improving.\n\nDischarge medications, unchanged from home: metformin 1000 mg BID; lisinopril 20 mg daily; atorvastatin 40 mg daily.\nAllergies: NKDA.\n\nDisposition: home with wife. PCP follow-up within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "office_visit",
+          "start": "2025-03-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, second stroke",
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-03-05T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-03-05T11:55",
+              "body": "Here with his wife after a 2/26 to 3/1 admission for a second ischemic stroke, same picture as last June: left face/arm/leg weakness, slurred speech, CT without bleed. ED labs: glucose 180, creatinine 1.2, INR 1.0, platelets 250. ED note and discharge summary reviewed.\n\nHe says the speech cleared up the day after he got home. Wife agrees, says he sounds normal on the phone. No weakness, no trouble with buttons or stairs. Taking his meds; hospital did not change anything.\n\nExam: vitals as charted. Speech clear, no dysarthria. No facial asymmetry. Strength full and symmetric. No pronator drift. Normal heel-to-shin. Gait normal.\n\nAssessment/plan:\n1. Second ischemic stroke 2/26/2025, resolved without deficit on exam today. Problem list: history of stroke.\n2. HTN on lisinopril 20 - continue.\n3. DM2 - ED glucose 180 nonfasting. A1c due at the wellness visit in May.\n4. HLD on atorvastatin 40 - continue.\nRe-reviewed warning signs, 911 for anything new. Wife has the list on the fridge. Wellness visit in May."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "annual_physical",
+          "start": "2025-05-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {
+            "labs": {
+              "Total Cholesterol": 186,
+              "Low Density Lipoprotein": 103,
+              "High Density Lipoprotein": 44,
+              "Triglycerides": 142
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-14T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-14T08:45",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-14T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-14T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-05-14T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-14T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-05-14T09:30",
+              "body": "MEDICARE AWV (initial)\n\nHealth risk assessment completed in the portal and reviewed. Independent in all ADLs and IADLs. Still drives locally. Walks most mornings. No falls in the past year. Hearing and vision adequate, glasses for reading. Lives with wife, who is well.\n\nInterval: no new neuro symptoms since the February stroke. Taking meds as prescribed.\n\nProblem list reviewed: HTN, type 2 DM, hyperlipidemia, history of ischemic stroke x2 (6/2024, 2/2025), s/p cholecystectomy, former smoker.\nMeds: metformin 1000 BID, lisinopril 20 daily, atorvastatin 40 daily.\nAllergies: NKDA.\n\nPHQ-2: 0. Cognition: no formal screen today; conversation and recall normal throughout visit. Advance directive: has a health care proxy (wife), copy to be brought in.\n\nExam: vitals as charted. HEENT normal. Neck no bruits. Heart RRR without murmur. Lungs clear. Abdomen benign. Feet: intact skin, sensation intact to monofilament, pulses palpable. Neuro: fluent, symmetric face, strength 5/5, gait normal.\n\nScreening/prevention:\n- Colonoscopy 2018 normal, next 2028.\n- Tdap 2019, Shingrix complete, PCV20 2023.\n- Flu and COVID given here last October.\n- HCV negative 2024.\n- Diabetic eye exam 8/2024 without retinopathy; reminder for August.\n\nLabs today: lipids, CMP, CBC, A1c, urine microalbumin.\nWritten personalized prevention plan given. Follow up 4-5 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "portal_message",
+          "start": "2025-05-16T13:25",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness visit labs",
+              "author": "PCP",
+              "date": "2025-05-16T13:25",
+              "body": "Mr. Roberge, your labs look steady. A1c improved a bit since November. Kidneys, liver, blood counts and urine protein are all normal. LDL is about where it was last year. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T15:10",
+          "reason": "Diabetic eye exam report received",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2025-08-20T15:10",
+              "body": "Re: Arthur Roberge, DOB 03/07/1957\nExam date: 08/13/2025\n\nAnnual dilated exam for type 2 diabetes. Best-corrected acuity 20/25 both eyes, unchanged. IOP 14 OD, 15 OS. Anterior segments quiet. Fundi: cup-to-disc 0.3 both eyes, vessels normal caliber, maculae flat, no hemorrhage, microaneurysm, exudate or neovascularization.\n\nAssessment: no diabetic retinopathy either eye.\nPlan: return in one year.\nCurrent meds per patient: metformin, lisinopril, atorvastatin. Allergies: NKDA.\n\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "office_visit",
+          "start": "2025-09-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "telephone",
+          "start": "2025-09-18T09:40",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach",
+              "author": "front desk",
+              "date": "2025-09-18T09:40",
+              "body": "Called re: missed 9/17 appt. Pt apologized, says he had it on the calendar for the 24th. Feels fine, no new problems. Rebooked 10/1 at 1:30, and he'd like his flu and COVID shots at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "office_visit",
+          "start": "2025-10-01T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up; vaccines",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-01T14:05",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-01T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-01T14:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-01T13:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-01T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-01T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-10-01T14:15",
+              "body": "Rescheduled from 9/17.\n\nFeeling well. Summer was good, a lot of yard work. No neuro symptoms since February. No lows. Eye exam in August was clear per the optometry letter.\n\nMeds unchanged: metformin 1000 BID, lisinopril 20, atorvastatin 40. NKDA.\n\nExam: vitals as charted. Alert, fluent. Face symmetric, strength equal. RRR. Lungs clear. No edema. Feet normal.\n\nPlan:\n- DM2: A1c and BMP today.\n- HTN: continue lisinopril.\n- HLD: continue atorvastatin.\n- s/p stroke x2: stable, no residual findings.\n- High-dose flu and updated COVID today.\nNext visit around the first of the year."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-31a",
+          "kind": "hospital_admission",
+          "start": "2025-12-31T15:05",
+          "end": "2026-01-03T10:50",
+          "service": "Emergency Medicine",
+          "reason": "Confusion and slurred speech",
+          "vitals": [
+            {
+              "time": "2025-12-31T15:11",
+              "bp": [
+                160,
+                90
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.0
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "diagnosed",
+              "onset": "2025-12-31"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-12-31T15:30",
+              "text": "Noncontrast CT of the brain. No acute hemorrhage. No mass or mass effect; no midline shift. Ventricles and sulci normal for age. No hydrocephalus. Skull and scalp unremarkable.",
+              "conclusion": "No hemorrhage or mass effect."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-12-31T15:05"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-12-31T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-01-03T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Note",
+              "author": "emergency medicine",
+              "date": "2026-01-05T08:50",
+              "body": "AREA HOSPITAL EMERGENCY DEPT\nDOS: 12/31/2025\nArthur Roberge, 68M\n\nCC: Confused, speech slurred.\n\nHPI: 68-year-old man with HTN, type 2 diabetes and hyperlipidemia, here about 10 months after his most recent ischemic stroke (also had one in 6/2024). His wife brought him in; she noticed him confused and slurring words beginning roughly 2 hours ago. According to her he has been taking all of his medicines and has not been sick lately.\n\nHome meds: metformin 1000 mg PO BID; lisinopril 20 mg PO daily; atorvastatin 40 mg PO daily.\nAllergies: NKDA.\nPSH: cholecystectomy (2005), inguinal hernia repair (2012).\nFamily hx: father with MI at 61, mother with DM2, paternal grandfather with ischemic stroke at 68.\nSocial: quit smoking 2010 after 25 pack-years; drinks 1-2 a week socially; retired postal clerk.\n\nVitals: T 37.0 C (98.6 F), BP 160/90, P 88, RR 16.\nExam: Alert, anxious-appearing. Expressive aphasia. Right facial droop.\n\nCT head without contrast: no hemorrhage, no mass effect.\n\nImpression: acute ischemic stroke.\nDisposition: admitted to medicine."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2026-01-05T08:52",
+              "body": "DISCHARGE SUMMARY\nAdmit 12/31/2025 - Discharge 01/03/2026\n\nDx: Acute ischemic stroke (prior events 06/2024 and 02/2025).\n\nCourse: Admitted with expressive aphasia and right facial droop; CT head negative for hemorrhage or mass effect. Language improved steadily; at discharge naming and fluency near baseline per wife, face symmetric at rest.\n\nMedications at discharge (no changes): metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: NKDA.\n\nHome with family. See PCP this week."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "office_visit",
+          "start": "2026-01-07T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, third stroke",
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Secondary stroke prevention"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-07T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-01-07T10:25",
+              "body": "TCM visit, accompanied by wife.\n\nHospitalized 12/31 to 1/3 with his third ischemic stroke, this time with word-finding trouble (expressive aphasia) and a right facial droop. CT without bleed or mass effect. Records reviewed. Discharged on the same three medicines.\n\nToday: he says words come when he wants them again. Wife says he was searching for words for a day or two at home, none since the weekend. No weakness, no headache, no vision change. Eating and sleeping normally.\n\nExam: vitals as charted. Alert and oriented, fluent, names objects and repeats a phrase without error. Face symmetric. Strength 5/5 x4, no drift, gait steady.\n\nA/P:\n1. Ischemic stroke 12/31/2025, third event, recovered on today's exam. Start aspirin 81 mg daily. Discussed bleeding precautions and taking it with food. Continue lisinopril, atorvastatin, metformin.\n2. HTN, DM2, HLD - unchanged regimen.\nWarning signs reviewed again. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "portal_message",
+          "start": "2026-01-09T07:55",
+          "reason": "Medication question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "aspirin",
+              "author": "patient",
+              "date": "2026-01-09T07:55",
+              "body": "Picked up the baby aspirin. Is it OK to take it at the same time as the rest of my morning pills or should I space it out?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: aspirin",
+              "author": "RN",
+              "date": "2026-01-09T10:20",
+              "body": "Good morning Mr. Roberge. Fine to take it with your other morning pills, ideally with breakfast. Let us know if you notice unusual bruising or dark stools."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "office_visit",
+          "start": "2026-04-08T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-08T15:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-08T15:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-08T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-08T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-04-08T15:45",
+              "body": "3 month f/u.\n\nTolerating aspirin, no bruising or GI upset. No neuro events since New Year's. Walking again now that the snow is gone. Diet 'mostly behaving.'\n\nMeds: aspirin 81, metformin 1000 BID, lisinopril 20, atorvastatin 40.\n\nExam: vitals as charted. Fluent speech, face symmetric, strength full. Heart regular, lungs clear, no edema.\n\nPlan: A1c, BMP today. No med changes. Wellness visit in August with fasting labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "portal_message",
+          "start": "2026-04-10T11:05",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2026-04-10T11:05",
+              "body": "Good news, Arthur: A1c is the best it has been since you joined us, and your kidney function and potassium are normal. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "pharmacy",
+          "start": "2026-06-03T08:48",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Renewals from mail-order pharmacy",
+              "author": "MA",
+              "date": "2026-06-03T08:48",
+              "body": "Renewal requests received for atorvastatin 40 mg daily and lisinopril 20 mg daily, 90-day supplies. Last BMP 4/8 normal. Routed, signed by PCP, sent with 1 refill to carry him to the August visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "annual_physical",
+          "start": "2026-08-07T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit and chronic care follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-07T08:30",
+              "resulted": "2026-08-07T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-07T08:30",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-07T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-08-07T08:15"
+            },
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-07T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-07T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit and Follow-up",
+              "author": "PCP",
+              "date": "2026-08-07T09:20",
+              "body": "MEDICARE AWV (subsequent) + chronic disease f/u\n\nHRA reviewed. Independent, walking 30 min most days, no falls. Reading glasses only. Wife in good health; she remains his health care proxy.\n\nInterval: no stroke symptoms since the 12/31 event. On aspirin since January without trouble. No lows.\n\nProblems: HTN; DM2 without complications; hyperlipidemia; history of ischemic stroke (6/2024, 2/2025, 12/2025) without residual deficit; s/p cholecystectomy; former smoker.\nMeds: aspirin 81 daily, metformin 1000 BID, lisinopril 20 daily, atorvastatin 40 daily.\nAllergies: NKDA.\n\nPHQ-2 0. Cognition grossly intact during visit, follows a multi-step conversation without lapses.\n\nExam: vitals as charted. Neck supple without bruit. RRR, no murmur. Lungs clear. Abd soft. Feet: no ulcers or calluses, monofilament intact, pulses 2+. Neuro: fluent, face symmetric, strength 5/5, gait normal.\n\nPrevention: colonoscopy due 2028. Immunizations current through last fall; flu and COVID when available. Eye exam scheduled with optometry this month.\n\nFasting labs today: lipids, CMP, A1c, urine microalbumin. Continue current regimen. Return in about a month to go over labs and BP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Friday",
+              "author": "PCP",
+              "date": "2026-08-10T12:30",
+              "body": "Hi Arthur, labs from Friday are in. A1c is a touch higher than April but still in a reasonable range. Kidneys, liver and urine protein are normal. Cholesterol numbers are similar to last year. We'll talk it over at your September visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Friday",
+              "author": "patient",
+              "date": "2026-08-10T19:02",
+              "body": "Thanks. Blame the corn on the cob. See you in Sept."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "outside_records",
+          "start": "2026-08-19T13:40",
+          "reason": "Diabetic eye exam report received",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2026-08-19T13:40",
+              "body": "Patient: Arthur Roberge\nDate of exam: 08/12/2026\n\nDilated diabetic eye evaluation. Corrected VA 20/25 right, 20/30 left. Pressures 15 and 14 mmHg. Lids, conjunctiva, cornea and lens clear for age. Posterior pole and periphery examined both eyes: discs pink and sharp, maculae normal, no retinal hemorrhages, cotton-wool spots, exudates or new vessels.\n\nImpression: no diabetic retinopathy.\nFollow-up: 12 months.\nMedication list reviewed: aspirin, metformin, lisinopril, atorvastatin. NKDA.\n\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-11a",
+          "kind": "office_visit",
+          "start": "2026-09-11T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

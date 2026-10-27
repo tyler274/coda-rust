@@ -1,0 +1,1645 @@
+{
+  "unit": "unit-1951",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001951",
+      "given": "Beth",
+      "family": "Boucher",
+      "birth_date": "1994-06-11",
+      "address_line": "41 Kellogg Brook Lane",
+      "phone": "+1-413-555-0161",
+      "email": "beth.boucher@example.test",
+      "marital_status": "partnered",
+      "summary": "Healthy marketing coordinator who joined in 2022 on a combined oral contraceptive. Perianal condylomata in early 2025 were biopsied and cleared with dermatology cryotherapy; a single perineal recurrence in early 2026 was treated by gynecology and resolved.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T10:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-08-16T10:40",
+              "author": "front desk",
+              "body": "Caller wants to establish here, moving her care closer to home after her old office stopped taking new appointments in the evening. Healthy, no ongoing issues, on a birth control pill. Booked new patient physical 8/23 at 8:30. Membership packet and intake forms emailed. Asked her to bring pill bottle and the name of her last office so we can request records."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T08:30",
+          "end": "2022-08-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "medications": [
+            {
+              "drug_text": "norgestimate 0.25 MG / ethinyl estradiol 0.035 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Contraception"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              70
+            ],
+            "hr": 80,
+            "spo2": 99,
+            "weight_kg": 62.5,
+            "height_cm": 165.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Marketing coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-08-23T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "placed",
+              "order": "Records request, prior primary care office",
+              "category": "procedure",
+              "reason": "Establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2022-08-23T09:35",
+              "author": "PCP",
+              "body": "28F here to establish. Was seeing a PCP group closer to her old apartment; wants somewhere she can actually reach by text. No complaints today.\n\nPMH: none. Never had a chronic diagnosis.\nPSH: tonsils out as a kid (age 8).\nMeds: combined OCP — norgestimate/EE 0.25/0.035, one daily, on it for years without issues. No supplements.\nAllergies: none to meds.\nFH: mom — breast cancer at 55, treated, doing well. Dad — type 2 diabetes.\nSH: works as a marketing coordinator, mostly desk and some events. Never smoked. 2-3 drinks a week, social. No drug use. Exercises a few times a week (runs, yoga).\nGyn: periods regular and light on the pill. Last Pap last year at old office, told normal — records requested.\nROS: negative across the board. No headaches, no leg swelling, no chest pain.\n\nExam: well-appearing. HEENT unremarkable, tonsils surgically absent. Neck supple, no thyroid enlargement, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rashes or concerning moles. Extremities without edema. Mood and affect normal.\nPHQ-2: 0.\n\nA/P\n1. Health maintenance, healthy adult — BP normal on the pill, fine to continue estrogen-containing OCP (nonsmoker, no migraine with aura, no clot history). Refills through us going forward.\n2. FH breast cancer in mother at 55 — plan screening mammography starting at 40; no earlier imaging indicated by this history alone. Will revisit if more family history surfaces.\n3. FH T2DM — glucose with routine labs next year.\n4. Records request to old office for Pap and vaccine history.\nFlu and COVID shots when available this fall. RTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 166.0,
+            "labs": {
+              "Glucose": 86,
+              "Low Density Lipoprotein": 86
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "outside_records",
+          "start": "2022-09-06T14:10",
+          "reason": "Prior primary care records",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-07-13T09:45",
+              "text": "Specimen: ThinPrep liquid-based cervical cytology. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-04-23T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "done",
+              "date": "2022-09-06T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-06T14:10",
+              "author": "front desk",
+              "body": "Received 14 pages from patient's previous primary care practice covering 2017-2022. Contents: annual visit notes (healthy, no chronic problems), OCP prescriptions, immunization record with Tdap 4/2019, cervical cytology 7/2021 NILM. No other labs or imaging of note. Abstracted Pap and Tdap into chart; full packet in media tab for PCP review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "date": "2022-09-07T17:20",
+              "author": "PCP",
+              "body": "Reviewed old office records. Nothing new — healthy, Pap 2021 normal, Tdap 2019. Next cervical screen due 2024. Signed."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T12:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T12:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-10-11T12:40",
+              "author": "RN",
+              "body": "In on her lunch hour for vaccines. No fever or illness today, no prior reactions. Flu (quadrivalent) L deltoid, Pfizer bivalent booster R deltoid. Lot numbers in MAR. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "pharmacy",
+          "start": "2023-02-21T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill",
+              "date": "2023-02-21T09:05",
+              "author": "MA",
+              "body": "E-refill request from retail pharmacy for norgestimate/ethinyl estradiol 0.25/0.035, 3-month supply. Last physical 8/2022, BP normal. Routed to PCP."
+            },
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill approved",
+              "date": "2023-02-21T12:30",
+              "author": "PCP",
+              "body": "Approved, 3 months x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              130,
+              70
+            ],
+            "hr": 77,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T08:40",
+              "resulted": "2023-08-23T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T08:40",
+              "resulted": "2023-08-23T07:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T08:40",
+              "resulted": "2023-08-23T07:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 85
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:40",
+              "resulted": "2023-08-23T13:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-22T09:10",
+              "author": "PCP",
+              "body": "Yearly check. Feels well. Busy season at work, sleeping OK. Still running a couple times a week.\nMeds: OCP, taking daily, no breakthrough bleeding.\nNo headaches, no calf pain, no chest pain or shortness of breath.\nAlcohol unchanged, 2-3/wk. Nonsmoker.\n\nExam: NAD. Vitals reviewed, BP fine. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen benign. No edema. Skin: no suspicious lesions on visible skin. Breast exam deferred per patient preference, will do next year.\nPHQ-2: 0.\n\nA/P\n- Well adult. Continue OCP.\n- Labs: CBC, CMP (fasting glucose given dad's diabetes), lipids.\n- One-time HIV and hep C screens — discussed, she agrees.\n- Pap due next year.\n- Flu/COVID in October.\nSee in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-08-24T08:15",
+              "author": "PCP",
+              "body": "Hi Beth — everything from Tuesday came back normal: blood counts, kidney and liver tests, fasting sugar, cholesterol. HIV and hepatitis C screens were negative, and those don't need repeating unless something changes. Nothing to do here. Enjoy the rest of the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Your lab results",
+              "date": "2023-08-24T12:02",
+              "author": "patient",
+              "body": "Great, thanks so much!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-17T16:50",
+              "author": "RN",
+              "body": "Seasonal vaccines. Feeling well, afebrile. Last year: sore arm only. Influenza given L deltoid, 2023-24 COVID (Pfizer) R deltoid. Tolerated, waited 15 minutes, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "pharmacy",
+          "start": "2024-02-13T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill",
+              "date": "2024-02-13T08:50",
+              "author": "MA",
+              "body": "Pharmacy request: norgestimate/EE 0.25/0.035 #84 (3 packs). Seen 8/2023, normotensive. Pended for PCP."
+            },
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill approved",
+              "date": "2024-02-13T11:15",
+              "author": "PCP",
+              "body": "Sent, 3 packs with 3 refills. Physical due in August."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "annual_physical",
+          "start": "2024-08-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Need to move my physical",
+              "date": "2024-08-02T19:44",
+              "author": "patient",
+              "body": "Hi, I have a client launch that got moved to next Tuesday morning so I can't make my 8am physical on the 6th. Could I come the following Tuesday or the one after? Also I think I'm due for my Pap this year?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Need to move my physical",
+              "date": "2024-08-05T09:12",
+              "author": "front desk",
+              "body": "No problem — moved you to Tuesday 8/20 at 8:00. Yes, the doctor has the Pap on the list for that visit. Please come fasting for bloodwork."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:00",
+          "end": "2024-08-20T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "vitals": {
+            "bp": [
+              123,
+              66
+            ],
+            "hr": 85,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T08:45",
+              "resulted": "2024-08-21T07:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T08:45",
+              "resulted": "2024-08-21T07:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-08-20T08:30",
+              "text": "Specimen: liquid-based cervical cytology with reflex-independent high-risk HPV co-test. Adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV (including 16 and 18): not detected.",
+              "conclusion": "NILM; high-risk HPV not detected.",
+              "issued": "2024-08-23T15:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-20T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-20T09:20",
+              "author": "PCP",
+              "body": "30F, annual + Pap (rescheduled from 8/6).\nWell. Work has been hectic with a product launch but she's coping fine; PHQ-2 1 (a few tired days). Running less this summer. Same partner, no concerns. Taking the pill every day, cycles regular, no spotting.\nNo headaches, visual changes, leg pain or swelling.\nMeds: OCP only. NKDA. Nonsmoker. Alcohol 2-3/wk.\n\nExam: Comfortable. Vitals OK, BP normal on OCP. Neck: no thyroid enlargement, no adenopathy. CV: RRR, no murmurs. Lungs: clear. Breasts: symmetric, no masses, skin or nipple changes, no axillary nodes. Abd: soft, NT. Pelvic (MA chaperone present): normal external genitalia, vaginal walls normal, cervix without lesions, no discharge; cytology and HPV specimen collected. Bimanual: uterus normal size, no adnexal tenderness or masses. Ext: no edema.\n\nA/P\n- Well woman. Continue OCP.\n- Cervical screening: co-test sent; if both negative, next in 5 years.\n- CBC, CMP.\n- Mammograms at 40 given mom's history — reviewed again.\n- Flu shot in the fall.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "portal_message",
+          "start": "2024-08-26T07:55",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and bloodwork",
+              "date": "2024-08-26T07:55",
+              "author": "PCP",
+              "body": "Beth, your Pap was normal and the HPV test was negative — with both clean we can wait 5 years for the next one (2029). Blood counts and chemistry panel all normal too. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-17T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2024-10-17T12:30",
+              "author": "RN",
+              "body": "Flu vaccine, trivalent, IM L deltoid. Well today, no egg or vaccine reactions. Offered 2024-25 COVID — she'd like to hold off this year, will let us know. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bumps near anus",
+          "vitals": {
+            "bp": [
+              125,
+              67
+            ],
+            "hr": 86,
+            "temp_c": 36.7,
+            "weight_kg": 63.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-21T12:05",
+              "resulted": "2025-01-23T16:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Reagin Ab [Presence] in Serum by RPR",
+                  "loinc": "20507-0",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-01-21T11:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-21T12:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Perianal verrucous papules"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-21T12:20",
+              "author": "PCP",
+              "body": "Texted Sunday asking to be seen about some bumps; in today.\nS: Noticed small skin-colored bumps around the anus starting around early November, maybe 2 months now, a few more than at first. Not painful, no bleeding, no itch to speak of, no change in bowel habits. Mostly bothered by how they look and wants them gone. One partner, together about a year, monogamous. Never had an STI. No prior genital lesions.\nMeds: OCP. NKDA.\n\nO: Afebrile, vitals fine. External perianal exam (chaperoned): several flesh-colored, raised papules with a rough, verrucous surface clustered around the anal verge; nontender, no ulceration, no bleeding. No inguinal adenopathy. Vulva grossly without similar lesions.\n\nA/P\nPerianal papules, appearance most suggestive of anogenital warts.\n- Referral to dermatology for confirmation and treatment; asked them to see her within a few weeks.\n- STI screen since these can travel together: HIV, RPR, urine GC/CT. She is fine with this.\n- Reviewed that this is common, typically from HPV, and usually treatable. Avoid shaving/picking the area.\nWill message results."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-24a",
+          "kind": "portal_message",
+          "start": "2025-01-24T08:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your test results",
+              "date": "2025-01-24T08:20",
+              "author": "PCP",
+              "body": "Hi Beth, all the screening from Tuesday is negative — HIV, syphilis, chlamydia and gonorrhea. Dermatology should be calling you to schedule; let me know if you haven't heard by the end of next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Your test results",
+              "date": "2025-01-24T09:47",
+              "author": "patient",
+              "body": "Phew, thank you. They called yesterday, I'm in on Feb 10."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "specialist_visit",
+          "start": "2025-02-10T14:00",
+          "service": "Dermatology",
+          "reason": "Perianal growths",
+          "procedures": [
+            {
+              "procedure": "Tangential skin biopsy, single lesion",
+              "performed": "2025-02-10T14:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "done",
+              "date": "2025-02-10T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2025-02-12T10:05",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP — CONSULTATION\nDate of service: 02/10/2025\nReferred by: primary care, for perianal papules\n\nThank you for sending this 30-year-old woman. For roughly three months she has noticed a cluster of growths around the anus. They are skin-toned and do not hurt or bleed. Her main concern is cosmetic; she feels embarrassed by them.\n\nPast medical history: none significant. Surgery: tonsillectomy in childhood (age 8).\nCurrent medications: combined oral contraceptive (ethinyl estradiol/norgestimate), one tablet daily.\nAllergies: NKDA.\nFamily history: mother with breast cancer at 55; father with type 2 diabetes.\nSocial: in an exclusive relationship for about a year. Denies any previous sexually transmitted infection. Your recent HIV, RPR and GC/CT testing noted as negative.\n\nExamination: Perianal skin shows several verrucous papules measuring 1 to 2 cm encircling the anus. No inguinal or femoral lymphadenopathy. Remainder of the skin and general examination is unremarkable.\n\nProcedure: After informed consent and local anesthesia with 1% lidocaine with epinephrine, a tangential (shave) biopsy of one representative lesion was obtained and sent to pathology. Hemostasis with aluminum chloride. Wound care reviewed.\n\nImpression: Perianal verrucous papules, clinically consistent with condylomata acuminata; histology pending.\n\nPlan: We will call her with pathology. If confirmed, plan for in-office cryotherapy in about 4 weeks, likely requiring more than one session. Partner does not need treatment unless he has visible lesions.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-14a",
+          "kind": "outside_records",
+          "start": "2025-02-14T13:30",
+          "reason": "Pathology report",
+          "conditions": [
+            {
+              "label": "Condylomata acuminata",
+              "action": "diagnosed",
+              "onset": "2024-11-05",
+              "note": "Perianal; biopsy-confirmed",
+              "icd10": "A63.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-02-10T14:30",
+              "text": "Specimen: skin, perianal, tangential biopsy.\nGross: a tan, papillomatous shave of skin, submitted entirely.\nMicroscopic: exophytic squamous epithelium with papillomatosis, acanthosis and parakeratosis. Numerous koilocytes are present in the upper epidermis, with perinuclear clearing and wrinkled, hyperchromatic nuclei. No dysplasia is identified. No evidence of malignancy.",
+              "conclusion": "Skin, perianal, biopsy: condyloma acuminatum (koilocytic change present). Negative for dysplasia and malignancy.",
+              "issued": "2025-02-13T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pathology report received",
+              "date": "2025-02-14T13:30",
+              "author": "MA",
+              "body": "Surgical pathology report from dermatology biopsy of 2/10 received by fax. Scanned, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-14b",
+          "kind": "portal_message",
+          "start": "2025-02-14T17:10",
+          "reason": "Pathology result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Biopsy result",
+              "date": "2025-02-14T17:10",
+              "author": "PCP",
+              "body": "Hi Beth — I saw the biopsy report from dermatology. It confirms these are genital warts (condyloma), the HPV changes in the skin cells are exactly what we'd expect, and there is nothing precancerous. Dermatology plans freezing treatments starting next month. Your Pap and HPV test in August were normal, so nothing else to do on the cervical side. Happy to talk anytime."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Biopsy result",
+              "date": "2025-02-14T20:31",
+              "author": "patient",
+              "body": "Ok thank you. They already booked me for March 10. Is there anything my boyfriend should do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Biopsy result",
+              "date": "2025-02-17T08:05",
+              "author": "PCP",
+              "body": "Only if he notices any bumps himself — then he should see his own doctor. No routine testing for him otherwise."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "specialist_visit",
+          "start": "2025-03-10T09:15",
+          "service": "Dermatology",
+          "reason": "Cryotherapy, perianal condylomata",
+          "procedures": [
+            {
+              "procedure": "Destruction of benign lesions, up to 14",
+              "performed": "2025-03-10T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Procedure Note",
+              "date": "2025-03-11T15:20",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP — PROCEDURE NOTE\nDate of service: 03/10/2025\n\nPathology confirmed condyloma acuminatum. Biopsy site healed. Lesions unchanged since February.\nMedications: combined OCP. Allergies: NKDA.\n\nProcedure: liquid nitrogen cryotherapy to the perianal condylomata, two freeze-thaw cycles per lesion. Tolerated well. Post-procedure blistering and soreness reviewed; sitz baths as needed.\n\nPlan: return in 4 weeks for reassessment and repeat treatment of any residual lesions.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T07:40",
+          "reason": "Soreness after treatment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sore after freezing",
+              "date": "2025-03-12T07:40",
+              "author": "patient",
+              "body": "Had the freezing done Monday. It's pretty sore and a couple spots blistered. No fever. Is that normal or should I call derm?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Sore after freezing",
+              "date": "2025-03-12T09:02",
+              "author": "PCP",
+              "body": "That's the expected reaction — blisters and soreness for several days are how the treatment works. Warm sitz baths, loose cotton underwear, and ibuprofen or Tylenol if needed. If it gets red and spreading, very painful, drains pus or you get a fever, call dermatology or me the same day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Sore after freezing",
+              "date": "2025-03-12T09:20",
+              "author": "patient",
+              "body": "Ok good, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "specialist_visit",
+          "start": "2025-04-07T09:15",
+          "service": "Dermatology",
+          "reason": "Cryotherapy, perianal condylomata",
+          "procedures": [
+            {
+              "procedure": "Destruction of benign lesions, up to 14",
+              "performed": "2025-04-07T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Procedure Note",
+              "date": "2025-04-09T11:40",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP — FOLLOW-UP\nDate of service: 04/07/2025\n\nGood response to first session. Most lesions have resolved; a few small residual papules remain at the perianal margin. Treated sites healed without scarring.\nMedications: combined OCP. Allergies: NKDA.\n\nProcedure: liquid nitrogen cryotherapy to the remaining papules, two cycles each. Tolerated well.\n\nPlan: recheck in 5 weeks.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "specialist_visit",
+          "start": "2025-05-12T10:00",
+          "service": "Dermatology",
+          "reason": "Follow-up, perianal condylomata",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2025-05-13T14:10",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP — FOLLOW-UP\nDate of service: 05/12/2025\n\nNo new lesions noticed by the patient. Examination: perianal skin clear, with no residual or new verrucous papules; treated areas fully healed.\n\nAssessment: perianal condylomata acuminata, cleared after two cryotherapy sessions.\nPlan: no further treatment. Recurrence is possible; she will return or contact her primary care physician if new lesions appear.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Condylomata acuminata",
+              "action": "resolved",
+              "note": "Perianal lesions cleared after dermatology cryotherapy, May 2025",
+              "icd10": "A63.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              69
+            ],
+            "hr": 74,
+            "spo2": 98,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T08:40",
+              "resulted": "2025-08-20T07:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T08:40",
+              "resulted": "2025-08-20T07:25",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T09:05",
+              "author": "PCP",
+              "body": "Annual. 31F.\nInterval: perianal condylomata confirmed on derm biopsy in February, two rounds of cryo (March, April), clear at the May recheck. Nothing new since. Otherwise well. Back to running. Same partner.\nMeds: OCP daily. NKDA. No tobacco, alcohol 2-3/wk.\nROS negative.\n\nExam: well. BP normal. Thyroid normal size. Heart RRR, lungs clear. Abdomen soft. Skin: no lesions of concern. Perianal skin (chaperoned, at her request to check): clear, no residual warts, no scarring. No inguinal nodes. Ext: no edema.\nPHQ-2: 0.\n\nA/P\n1. Condylomata acuminata, perianal — resolved after treatment. Off the active list. Recurrence can happen; she knows to message early.\n2. Contraception — continue norgestimate/EE; normotensive.\n3. Prevention — Pap/HPV next 2029. Labs: CBC, CMP. Flu + COVID in October.\nFollow up in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2025-08-21T12:45",
+              "author": "PCP",
+              "body": "Quick note — blood counts and chemistry panel from Tuesday are normal, including your sugar. Nothing needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T12:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T12:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T12:28"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-14T12:45",
+              "author": "RN",
+              "body": "Here for this season's flu and COVID. Feels well, no fever. No previous reactions beyond a sore arm. Flu IM left arm, 2025-26 Moderna COVID IM right arm. Monitored 15 min, fine. Records updated."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "portal_message",
+          "start": "2026-01-29T21:14",
+          "reason": "New bump, genital area",
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "New external genital lesion, history of condylomata"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New bump",
+              "date": "2026-01-29T21:14",
+              "author": "patient",
+              "body": "Hi — about a week ago I noticed a new bump down near the vaginal opening, kind of toward the back. Doesn't hurt or itch, no discharge. I'm assuming it's the same wart thing as last year?? Do I go back to derm or do you want to see it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: New bump",
+              "date": "2026-01-30T08:10",
+              "author": "PCP",
+              "body": "Thanks for letting me know early. It may well be the same thing, but since it's in the genital area rather than around the anus, I'd like gynecology to take this one — they can examine it fully, including a speculum exam, and treat it in the office. I've put in the referral today; they should call within a few days. Message me if it grows quickly, bleeds or becomes painful before then."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral coordination",
+              "date": "2026-01-30T14:35",
+              "author": "MA",
+              "body": "Gyn referral faxed with last office note, derm letters and 2/2025 pathology. Gyn office confirmed receipt; pt scheduled 2/16."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "specialist_visit",
+          "start": "2026-02-16T13:40",
+          "service": "Gynecology",
+          "reason": "External genital lesion",
+          "conditions": [
+            {
+              "label": "Condylomata acuminata",
+              "action": "diagnosed",
+              "onset": "2026-01-22",
+              "note": "Recurrence near the perineum; treated by gynecology",
+              "icd10": "A63.0"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Destruction of benign lesions, up to 14",
+              "performed": "2026-02-16T14:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "done",
+              "date": "2026-02-16T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2026-02-18T10:30",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN PRACTICE — NEW CONSULTATION\nDate of service: 02/16/2026\nReason for referral: new external genital growth\n\nHPI: 31-year-old who comes in with a growth by the external genitalia. She had perianal condylomata in February 2025, treated by dermatology with cryotherapy and cleared. She first saw the new lesion a few weeks ago and thinks it has been slowly enlarging. No pain, discharge or pruritus.\n\nPMH: perianal condylomata acuminata (2025), treated. Otherwise in good health. Most recent cervical screening normal.\nPSH: tonsillectomy, age 8.\nMedications: ethinyl estradiol/norgestimate, 1 tab daily.\nAllergies: NKDA.\nFamily history: breast cancer in her mother at 55; type 2 diabetes in her father.\nSocial: one male partner; condoms used inconsistently. Nonsmoker.\n\nExam: External genitalia — a single soft, exophytic lesion adjacent to the perineum, formed of multiple small projections giving it an irregular, cauliflower-like surface. No inguinal lymphadenopathy. Speculum examination: vaginal walls and cervix without additional lesions. Bimanual not indicated.\n\nAssessment: recurrent condyloma acuminatum, perineal.\n\nProcedure: cryotherapy with liquid nitrogen to the lesion, two freeze-thaw cycles, after verbal consent. Tolerated well.\n\nCounseling: recurrence after clearance is common; consistent condom use reduces but does not eliminate transmission. Aftercare reviewed.\n\nPlan: recheck in 4 weeks; retreat if residual.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "specialist_visit",
+          "start": "2026-03-16T15:20",
+          "service": "Gynecology",
+          "reason": "Follow-up, condyloma",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-up",
+              "date": "2026-03-18T09:15",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN PRACTICE — FOLLOW-UP\nDate of service: 03/16/2026\n\nFour weeks after cryotherapy. Patient reports the area blistered and then healed; she has seen nothing new.\nExam: treated perineal site fully healed; no residual or new condylomata on external inspection. No inguinal nodes.\n\nAssessment: recurrent condyloma acuminatum, resolved after single cryotherapy treatment.\nPlan: no further treatment needed. Return or contact PCP for any new lesions. Cervical screening per her primary care schedule.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "pharmacy",
+          "start": "2026-03-19T08:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill",
+              "date": "2026-03-19T08:30",
+              "author": "MA",
+              "body": "Pharmacy request, norgestimate/ethinyl estradiol 0.25/0.035, 90 days. BP normal 8/2025. Routed."
+            },
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill approved",
+              "date": "2026-03-19T10:40",
+              "author": "PCP",
+              "body": "OK to refill through the August physical. Also read gyn's recheck note — glad it's cleared."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "annual_physical",
+          "start": "2026-08-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Condylomata acuminata",
+              "action": "resolved",
+              "note": "Perineal recurrence cleared after gynecology cryotherapy, March 2026",
+              "icd10": "A63.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              69
+            ],
+            "hr": 83,
+            "spo2": 96,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-11T08:40",
+              "resulted": "2026-08-12T07:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-11T08:40",
+              "resulted": "2026-08-12T07:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-11T08:40",
+              "resulted": "2026-08-12T07:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 86
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 107
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-11T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-11T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-08-11T09:15",
+              "author": "PCP",
+              "body": "32F, yearly visit.\nSince last year: one recurrence of condyloma near the perineum in late January; gyn froze it on 2/16 and it was gone at the 3/16 recheck. Nothing new since March. Feels well otherwise; work steady, running 3x/week. Same partner.\nMeds: norgestimate/EE daily, no missed pills or spotting. NKDA. Nonsmoker; alcohol 2-3/wk.\nROS: no headaches, chest pain, dyspnea, leg swelling.\n\nExam: NAD. BP normal. HEENT unremarkable. Thyroid not palpable. RRR, no murmur. Lungs clear. Breasts without masses or axillary nodes. Abdomen soft, NT. External genital and perianal inspection (chaperone present): no lesions. No inguinal adenopathy. Skin otherwise clear. No edema.\nPHQ-2: 0.\n\nA/P\n1. Condylomata acuminata — recurrence resolved after gyn treatment; back to resolved. Message early if anything returns.\n2. Contraception — continue OCP, refills sent for a year.\n3. Health maintenance — CBC, CMP, lipids today. Pap/HPV due 2029. Mammography at 40 per mom's history. Flu shot this fall — she'll book a visit for that.\nRTC October for flu shot/contraception check, then annual next August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bloodwork",
+              "date": "2026-08-12T16:05",
+              "author": "PCP",
+              "body": "Hi Beth — labs are back and all normal: blood counts, kidney and liver function, sugar, and cholesterol. Nothing to change. See you in October for the flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T13:22",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "October visit",
+              "date": "2026-08-20T13:22",
+              "author": "patient",
+              "body": "Hi, can I grab a slot in October for the flu shot? Tuesdays around lunch work best for me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: October visit",
+              "date": "2026-08-21T09:00",
+              "author": "front desk",
+              "body": "You're booked Tuesday 10/20 at 12:15. Reminder will come the week before."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "office_visit",
+          "start": "2026-10-20T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine and contraception check",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Condylomata acuminata|A63.0": {
+        "code": "A63.0",
+        "display": "Anogenital (venereal) warts",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "norgestimate 0.25 MG / ethinyl estradiol 0.035 MG Oral Tablet": {
+        "code": "240128",
+        "display": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+        "ingredient": "norgestimate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Reagin Ab [Presence] in Serum by RPR": {
+        "code": "20507-0",
+        "display": "Reagin Ab [Presence] in Serum by RPR",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,606 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002558",
+      "events": [
+        {
+          "id": "2026-02-19a",
+          "kind": "annual_physical",
+          "start": "2026-02-19T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical (rescheduled from December)",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-19T13:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-02-19T13:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-02-19T12:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-19T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-02-19T13:10",
+              "body": "Physical, pushed from December. Rough 2025 with two trauma admissions (January bicycle crash: R clavicle fracture, small PTX, subclavian artery intimal injury, all healed; October car crash: L tension PTX, resolved). Since then no problems. Back to full delivery work, more car than bike in winter. No shortness of breath, no shoulder pain, full use of the right arm.\n\nMeds none. NKDA. Never smoker. Alcohol a couple of drinks a month.\nFaith: Jehovah's Witness, declines blood products (on file since 2022).\n\nROS negative.\n\nExam: well. Healed L chest tube scar. Small callus over the R midclavicle, nontender. Supraclavicular area normal, radial pulses equal. Lungs clear with equal breath sounds. Heart regular. Abdomen soft. Normal gait.\nPHQ-2 0.\n\nA/P: healthy 29M with healed injuries from last year. CBC and lipids today (lipids last done 2022). Flu given in October. Discussed seatbelt, helmet, and taking breaks on long driving days. Next physical in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "portal_message",
+          "start": "2026-02-20T15:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2026-02-20T15:45",
+              "body": "Brandon, your blood count and cholesterol from yesterday are both normal. Nothing needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "hospital_admission",
+          "start": "2026-07-06T02:05",
+          "end": "2026-07-22T12:30",
+          "service": "Trauma Surgery",
+          "reason": "unresponsive with multiple injuries after motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Multiple traumatic injuries",
+              "icd10": "T07.XXXA",
+              "action": "diagnosed",
+              "onset": "2026-07-06"
+            },
+            {
+              "label": "Traumatic hemorrhagic shock",
+              "icd10": "T79.4XXA",
+              "action": "diagnosed",
+              "onset": "2026-07-06"
+            },
+            {
+              "label": "Acute traumatic coagulopathy",
+              "icd10": "D68.8",
+              "action": "diagnosed",
+              "onset": "2026-07-06"
+            },
+            {
+              "label": "Moderate laceration of liver",
+              "icd10": "S36.115A",
+              "action": "diagnosed",
+              "onset": "2026-07-06"
+            },
+            {
+              "label": "Fracture of shaft of left femur, closed",
+              "icd10": "S72.302A",
+              "action": "diagnosed",
+              "onset": "2026-07-06"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "diagnosed",
+              "onset": "2026-07-06"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            },
+            {
+              "drug_text": "enoxaparin sodium 40 MG in 0.4 ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 40 mg under the skin once daily for 4 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "VTE prophylaxis after femur fixation"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "acute blood loss anemia"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "acute blood loss anemia"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-06T02:10",
+              "bp": [
+                80,
+                50
+              ],
+              "hr": 130,
+              "rr": 24
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-06T02:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 18
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-06T02:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-06T02:20",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 6.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-07T04:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-09T04:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-22T05:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-22T05:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-06T06:40",
+              "text": "Noncontrast CT of the head after stabilization. No intracranial hemorrhage, mass effect or midline shift. Ventricles and sulci normal for age. Gray-white differentiation preserved. No skull fracture. Visualized sinuses and mastoids clear.",
+              "conclusion": "No acute intracranial abnormality."
+            },
+            {
+              "study": "Femur X-ray, left",
+              "loinc": "37637-6",
+              "performed": "2026-07-06T06:55",
+              "text": "Left femur, AP and lateral, portable. Displaced transverse fracture of the midshaft of the left femur. External fixator in place. Hip and knee joints intact.",
+              "conclusion": "Displaced transverse midshaft left femur fracture, external fixation."
+            },
+            {
+              "study": "Femur X-ray, left",
+              "loinc": "37637-6",
+              "performed": "2026-07-10T14:20",
+              "text": "Left femur, 2 views, after removal of the external fixator and intramedullary nailing. Nail and interlocking screws in expected position. Fracture alignment anatomic. No hardware complication.",
+              "conclusion": "Intramedullary nail fixation of left femoral shaft fracture, satisfactory position."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary - Trauma Surgery",
+              "author": "trauma surgery",
+              "date": "2026-07-23T10:15",
+              "body": "Regional hospital, trauma and acute care surgery\nAdmitted 07/06/2026 via trauma bay, discharged 07/22/2026 (hospital day 17)\n\nPresentation: 30 year old man brought in after a high-speed motor vehicle collision, unresponsive, with multiple injuries. BP 80/50, HR 130, RR 24. Pale and diaphoretic. Abdomen distended. Obvious deformity of the left thigh. Arrival labs: hemoglobin 6.0 g/dL, hematocrit 18%, platelets 250,000/uL, INR 1.9, lactate 6.4 mmol/L. Prior trauma history: right clavicle fracture and subclavian artery injury (Jan 2025), left tension pneumothorax (Oct 2025).\n\nBlood products: A friend who arrived with him told the team he is a Jehovah's Witness and has always refused transfusion. There was no advance directive and he could not participate in decisions. After discussion among the trauma attending, ethics on call and nursing leadership, the team honored the reported refusal and managed him without blood products. On waking he confirmed that he refuses all blood products.\n\nCourse:\n- Hemorrhagic shock with coagulopathy: tranexamic acid on arrival, crystalloid limited, damage-control laparotomy within the hour. Hemoperitoneum from a moderate laceration of the right lobe of the liver, hemostasis by perihepatic packing; temporary abdominal closure. Returned to the OR on day 2 for removal of packs; no further bleeding; abdomen closed. INR 1.2 by day 3. Lactate cleared.\n- Neuro: unresponsiveness attributed to shock; he woke as perfusion improved. CT head normal. Extubated day 3, neurologically intact.\n- Left femoral shaft fracture: displaced transverse midshaft fracture; external fixator placed the first night; converted to intramedullary nail on day 4. Weight bearing as tolerated.\n- Anemia: hemoglobin nadir 5.4 on day 2. Managed with IV iron sucrose, epoetin alfa, folic acid and minimized blood draws. Hemoglobin 7.3 on the day of discharge.\n- VTE prophylaxis with enoxaparin once hemostasis was secure.\n- Worked with PT; walking with a walker on discharge.\n\nDischarge diagnoses:\n1. Multiple traumatic injuries, motor vehicle collision\n2. Traumatic hemorrhagic shock with acute coagulopathy, resolved\n3. Moderate liver laceration, damage-control laparotomy with packing, subsequent closure\n4. Closed left femoral shaft fracture, intramedullary nail\n5. Acute blood loss anemia, refuses transfusion\nOther history carried on the hospital problem list: right subclavian vessel injury; tension pneumothorax.\n\nDischarge medications:\n- oxycodone-acetaminophen 5/325 mg, 1 tab q6h prn severe pain, #28\n- enoxaparin 40 mg SC daily, complete 4 weeks\n- ferrous sulfate 325 mg PO daily\n- folic acid 1 mg PO daily\nAllergies: NKDA. Blood products: refused (Jehovah's Witness).\n\nDisposition: home with walker and home PT.\nFollow-up: PCP within 1 week with CBC; orthopedics 3 weeks with x-ray; trauma clinic 3 weeks for incision check. No driving while taking opioids. No lifting over 10 lb.\nReturn for fever, wound drainage, abdominal pain, leg swelling, chest pain, shortness of breath, dizziness or fainting."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Exploratory Laparotomy",
+              "author": "trauma surgery",
+              "date": "2026-07-24T11:40",
+              "body": "Date of operation: 07/06/2026\nPreoperative diagnosis: hemorrhagic shock, distended abdomen after motor vehicle collision.\nPostoperative diagnosis: hemoperitoneum from moderate laceration of the right lobe of the liver.\nProcedure: exploratory laparotomy, perihepatic packing, temporary abdominal closure.\nAnesthesia: general.\nBlood products: none; patient's reported religious refusal honored. Tranexamic acid given in the trauma bay.\nFindings: large hemoperitoneum. Laceration of the right hepatic lobe with ongoing venous oozing, no major hepatic vein or caval injury. Spleen, bowel, mesentery, stomach, pancreas and both kidneys without injury. No retroperitoneal hematoma.\nDescription: midline incision. Blood evacuated. Four-quadrant packing, then systematic exploration. Hepatic bleeding controlled with manual compression and perihepatic packs above and below the liver. Remainder of the abdomen explored and normal. Negative-pressure temporary closure placed.\nDisposition: to trauma ICU, intubated, for warming and correction of coagulopathy, with planned return to the OR.\n\nReturn to OR 07/08/2026: packs removed, no rebleeding from the liver, abdomen irrigated and fascia closed primarily, skin left partially open with wicks."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Femur Fixation",
+              "author": "orthopedics",
+              "date": "2026-07-24T11:45",
+              "body": "Date of operation: 07/10/2026\nDiagnosis: closed displaced transverse midshaft fracture of the left femur, in external fixation since 07/06/2026.\nProcedure: removal of external fixator; antegrade reamed intramedullary nailing of the left femur with proximal and distal interlocking screws.\nBlood products: none, per patient's wishes, confirmed with him before surgery. Cell-conserving technique.\nFindings: pin sites clean. Fracture reduced closed with anatomic alignment. Nail length and rotation confirmed on fluoroscopy against the opposite side.\nComplications: none.\nPlan: weight bearing as tolerated, enoxaparin prophylaxis, PT."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "telephone",
+          "start": "2026-07-08T10:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital Call",
+              "author": "front desk",
+              "date": "2026-07-08T10:50",
+              "body": "Trauma service social worker called. Brandon admitted Monday after a serious car crash, in the ICU, sedated on a ventilator. Wanted to confirm PCP and any medication or allergy information. Sent last physical note and med/allergy list. Message sent to PCP, who asked to be updated when he is out of the ICU."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "telephone",
+          "start": "2026-07-23T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional Care Call",
+              "author": "RN",
+              "date": "2026-07-23T14:10",
+              "body": "TCM call, discharged yesterday after 17-day trauma stay (crash 7/6: liver laceration with laparotomy, L femur nail, hemorrhagic shock, no transfusion per his faith). Spoke with pt. Home, friend staying with him this week. Walking to bathroom and kitchen with walker. Pain 5/10, oxycodone-APAP about 3x/day. Doing his own enoxaparin shots, home health RN coming tomorrow to check technique. Taking iron and folic acid. Tired. Abdominal incision dry. No fever, no calf pain. Can't get to the office easily yet; set up video visit with PCP 7/28 and lab draw after. Told to call 911 if he faints, has chest pain or trouble breathing."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "outside_records",
+          "start": "2026-07-27T13:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Health Physical Therapy Evaluation",
+              "author": "physical therapy",
+              "date": "2026-07-27T13:30",
+              "body": "Home health agency, PT start of care 07/24/2026.\nDx: left femoral shaft fracture s/p IM nail 07/10/26; s/p laparotomy for liver laceration.\nHome: second-floor apartment, 12 steps with a rail. Lives alone; friend staying short-term.\nFindings: alert, oriented, follows instructions. Left hip and knee motion limited by pain, left quad weak, right leg normal. Transfers with supervision. Gait with front-wheeled walker, weight bearing as tolerated, household distances. Stairs one at a time with rail and supervision. Vitals stable during session.\nPlan: 2x/week for 4 weeks: gait training, stairs, quad and hip strengthening, transfers, home safety. Goal: independent with cane for community distances.\nPlan of care sent for physician signature."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "telehealth_visit",
+          "start": "2026-07-28T11:00",
+          "end": "2026-07-28T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "transitional care after trauma admission",
+          "conditions": [
+            {
+              "label": "Traumatic hemorrhagic shock",
+              "icd10": "T79.4XXA",
+              "action": "resolved",
+              "onset": "2026-07-06"
+            },
+            {
+              "label": "Acute traumatic coagulopathy",
+              "icd10": "D68.8",
+              "action": "resolved",
+              "onset": "2026-07-06"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-0728",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "acute blood loss anemia, no transfusion"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Video Visit",
+              "author": "PCP",
+              "date": "2026-07-28T11:55",
+              "body": "Video visit; Brandon at his apartment, on the couch with his leg up. Consent for telehealth given.\n\nDischarge summary reviewed in full. Admitted 7/6 to 7/22 after a severe car crash: hemorrhagic shock with coagulopathy, liver laceration managed with damage-control laparotomy and packing then closure, left femoral shaft fracture with ex-fix then IM nail. As a Jehovah's Witness he received no blood; his hemoglobin bottomed at 5.4 and was 7.3 at discharge on IV iron, epo and folate.\n\nToday: tired, naps in the afternoon. Walks room to room with the walker, home PT twice a week. Pain 4/10, using oxycodone-acetaminophen twice a day, mostly before PT and at night. Eating okay, bowels moving. Belly incision looks clean on camera, no redness or drainage. Thigh incisions closed. No calf swelling or pain. No fever. Giving his own enoxaparin each evening.\n\nPHQ-2 0.\n\nMedication reconciliation done against discharge list: oxycodone-acetaminophen prn, enoxaparin 40 daily through about 8/19, ferrous sulfate 325 daily, folic acid 1 mg daily. No other meds. NKDA.\n\nWe talked about blood. He confirms he declines all blood products and wants that clearly in our chart. It is.\n\nAssessment and plan:\n1. Acute posthemorrhagic anemia, no transfusion by patient choice: symptomatic but stable. CBC this week at our lab (he has a ride Thursday). Continue iron and folic acid.\n2. Hemorrhagic shock and coagulopathy: resolved in hospital.\n3. Liver laceration after damage-control laparotomy: healing, trauma clinic visit set for mid-August.\n4. Left femur fracture with IM nail: WBAT with walker, home PT, ortho in 2 weeks. Enoxaparin to finish 4 weeks.\n5. Pain: taper oxycodone as tolerated, acetaminophen between doses, not over 3 g/day total including the combination tablets. No driving on opioids.\nIn person with me in early September once he can manage the trip. Call sooner for fainting, shortness of breath, leg swelling, fever."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-30a",
+          "kind": "lab_only",
+          "start": "2026-07-30T09:20",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-30T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-0728",
+              "action": "done",
+              "date": "2026-07-30T09:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-30T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count Result",
+              "author": "PCP",
+              "date": "2026-07-30T17:05",
+              "body": "Hi Brandon, your hemoglobin today is 8.8, up from 7.3 the day you left the hospital. Your body is rebuilding well with the iron and folic acid. Keep taking both. Still low enough that you will feel tired with effort, so pace yourself. We'll recheck when I see you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "telephone",
+          "start": "2026-07-31T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home Health Orders Signed",
+              "author": "MA",
+              "date": "2026-07-31T09:40",
+              "body": "Home health PT plan of care signed by PCP and faxed back to the agency."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pain Pills",
+              "author": "patient",
+              "date": "2026-08-03T20:14",
+              "body": "I have about 6 of the oxycodone left. Mostly need one at night after PT now. Should I ask for more or just switch to regular Tylenol?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pain Pills",
+              "author": "PCP",
+              "date": "2026-08-04T08:50",
+              "body": "Sounds like you're on the right track. Use plain acetaminophen during the day, keep the remaining tablets for after PT or bedtime, and let them run out. If the pain at ortho on the 12th still needs more, they can decide on that. Stay under 3 grams of acetaminophen a day total."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "specialist_visit",
+          "start": "2026-08-12T09:30",
+          "service": "Orthopedic Surgery",
+          "reason": "left femur fracture follow-up after intramedullary nail",
+          "reports": [
+            {
+              "study": "Femur X-ray, left",
+              "loinc": "37637-6",
+              "performed": "2026-08-12T09:10",
+              "text": "Left femur, 2 views. Comparison 07/10/2026. Intramedullary nail and interlocking screws unchanged in position. Early callus at the midshaft fracture. Alignment maintained.",
+              "conclusion": "Healing left femoral shaft fracture, hardware intact."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics Clinic Letter",
+              "author": "orthopedics",
+              "date": "2026-08-13T16:20",
+              "body": "Orthopedic trauma clinic, 08/12/2026\n\nMr. Hastings is 5 weeks from a left femoral shaft fracture, external fixation then IM nail on 07/10. Using a walker at home, a cane for short distances. Pain modest.\n\nExam: incisions healed. Thigh soft. Knee motion improving. Calf soft, nontender. Distal pulses and sensation intact.\n\nX-ray: hardware in good position, early callus.\n\nPlan: weight bearing as tolerated, transition to cane as balance allows. Finish the enoxaparin at 4 weeks from discharge, then stop. Outpatient PT referral placed for gait and quad strength. Return in 6 weeks with x-ray. Not cleared for delivery work or cycling.\n\nMedications per patient: ferrous sulfate, folic acid, enoxaparin, acetaminophen; oxycodone-acetaminophen occasionally. Allergies NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "outside_records",
+          "start": "2026-08-10T15:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Health PT Progress Note",
+              "author": "physical therapy",
+              "date": "2026-08-10T15:05",
+              "body": "Home health PT visit 08/07/2026, visit 5 of 8. Pt walking household distances with walker, starting short distances with a cane under supervision. Stairs reciprocal going up with rail, step-to going down. Left quad strength improving. No calf pain or swelling. Continue plan of care."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "specialist_visit",
+          "start": "2026-08-14T13:40",
+          "service": "Trauma Surgery",
+          "reason": "post-laparotomy follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-14T13:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Trauma Clinic Letter",
+              "author": "trauma surgery",
+              "date": "2026-08-17T09:00",
+              "body": "Trauma and acute care surgery clinic, 08/14/2026\n\nSeen for follow-up after damage-control laparotomy for a liver laceration and perihepatic packing in July. Eating normally, no abdominal pain, no fever. Energy improving.\n\nExam: midline incision healed, no hernia, no tenderness. Abdomen soft.\n\nHemoglobin today 10.1 g/dL.\n\nPlan: no lifting more than 10 lb for 6 weeks to protect the abdominal wall. Continue iron per PCP. No driving while using opioids. Follow up with us as needed; orthopedics following the femur.\n\nThe hospital problem list still carries his 2025 right subclavian vessel injury and tension pneumothorax."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work Question",
+              "author": "patient",
+              "date": "2026-08-18T10:02",
+              "body": "Trauma clinic said the belly looks good and my blood was 10.1. Any chance I can do car deliveries soon? I'm off the oxycodone as of this weekend. Bills are piling up."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work Question",
+              "author": "PCP",
+              "date": "2026-08-18T15:30",
+              "body": "That's a big jump from 8.8, nice. Driving depends on your left leg strength and on ortho clearing you, and lifting packages is limited to 10 lb by the trauma team until late September. Let's go over it together at your September visit, and bring any forms the apps need."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-08a",
+          "kind": "office_visit",
+          "start": "2026-09-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after July trauma admission; anemia recheck",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

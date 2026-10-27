@@ -1,0 +1,409 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001726",
+      "events": [
+        {
+          "id": "2022-01-11a",
+          "kind": "pharmacy",
+          "start": "2022-01-11T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2022-01-11T09:30", "body": "eRx renewal request fluoxetine 20 mg #90 x1. Seen 11/16/21. Approved per standing refill protocol, sent."}
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "office_visit",
+          "start": "2022-03-07T10:30",
+          "end": "2022-03-07T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, dizziness, fainted once",
+          "conditions": [
+            {"label": "Anabolic steroid abuse", "icd10": "F55.3", "action": "diagnosed", "onset": "2021-12-01", "note": "resumed an online-bought anabolic steroid this winter; agrees to stop"},
+            {"label": "Hypokalemia", "icd10": "E87.6", "action": "diagnosed", "onset": "2022-03-07"},
+            {"label": "Orthostatic hypotension", "action": "diagnosed", "onset": "2022-03-07"}
+          ],
+          "medications": [
+            {"drug": "potassium chloride 20 MEQ Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily with food for 7 days", "dose": {"value": 20, "unit": "meq"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Hypokalemia"}
+          ],
+          "state": {"weight_kg": 49.0},
+          "vitals": {"bp": [95, 60], "hr": 98},
+          "measure": ["spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-07T11:05", "resulted": "2022-03-07T14:20", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 3.0}, {"test": "Chloride", "value": 95}, {"test": "Bicarbonate", "value": 24}, {"test": "Blood Urea Nitrogen", "value": 21}, {"test": "Creatinine", "value": 0.9}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2022-03-07T11:05", "resulted": "2022-03-07T15:40", "results": [{"test": "Urine sodium", "loinc": "2955-3", "unit": "mmol/L", "value": 150}, {"test": "Urine potassium", "loinc": "2828-2", "unit": "mmol/L", "value": 60}]},
+            {"panel": null, "collected": "2022-03-07T11:05", "results": [{"test": "Magnesium"}]},
+            {"panel": null, "collected": "2022-03-07T10:50", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2022-03-07T10:55", "text": "Normal sinus rhythm. Normal axis. PR, QRS and QT intervals within normal limits; QTc normal. No ST-segment or T-wave abnormality. No U waves.", "conclusion": "Normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2022-03-07T10:30"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-03-07T10:55"},
+            {"procedure": "Venipuncture", "performed": "2022-03-07T11:05"}
+          ],
+          "orders": [
+            {"id": "ed-program-referral", "action": "placed", "order": "Outpatient eating disorder program referral", "category": "referral", "to": "Eating disorder program (therapy and dietitian)", "reason": "Bulimia nervosa, purging type"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Fatigue, Dizziness, Syncope", "author": "PCP", "date": "2022-03-07T12:40", "body": "CC: tired, dizzy, passed out once.\n\nHPI: 24F with bulimia (purging type) and GAD. For about six months she has been deliberately trying to lose weight and is down roughly 15 lb. Increasingly tired and lightheaded, worst on standing. Last week she blacked out briefly getting up from her desk; coworker caught her, came to right away, no injury, no incontinence, no chest pain or palpitations beforehand. On intake she said she takes nothing except the fluoxetine (on and off). When I asked specifically about the steroids she used years ago, she paused and then told me she started an anabolic steroid again this winter, bought online, pills, to \"keep muscle while cutting.\" Denies laxatives or water pills. Purging some weeks.\n\nMeds: fluoxetine 20 mg daily, adherence variable. Allergies NKDA.\nFH/SH unchanged: no tobacco, no alcohol.\n\nExam: BP 95/60, HR 98 seated. Standing: 85/55, HR 108, lightheaded. Weight 49 kg. Thin, tired-appearing. Mucous membranes dry. No parotid swelling. Heart regular, no murmur. Lungs clear. No edema. Neuro nonfocal.\n\nECG in office: NSR, normal intervals, QTc normal.\n\nLabs (resulted this afternoon): Na 130, K 3.0, Cl 95, HCO3 24, BUN 21, Cr 0.9. Urine Na 150, urine K 60 - kidneys wasting both despite her being dry, which makes me think of a diuretic even though she denies one. Urine hCG negative.\n\nA/P:\n1. Syncope, orthostatic, with volume depletion and hypokalemia - KCl 20 mEq daily x7 days, oral fluids and regular meals, rise slowly. Recheck BMP in 1 week. Reviewed when to go to the ED (another faint, palpitations, chest pain).\n2. Anabolic steroid abuse - relapse on her history of steroid use disorder. Explained the cardiac, liver and hormonal risks. She agrees to stop today and throw out the rest.\n3. Renal Na/K losses - asked again about diuretics; she says no. Will revisit.\n4. Bulimia nervosa, purging type, worse with dieting - she agreed today to a referral to an outpatient eating-disorder program (therapy + dietitian). Referral placed.\n5. GAD - fluoxetine 20, take it daily.\n\nDiscussed at length (~60 min). Follow-up 1 week for labs, 2 months for visit."},
+            {"type": "Patient Instructions", "title": "After Visit Summary", "author": "PCP", "date": "2022-03-07T12:45", "body": "- Potassium chloride 20 mEq: 1 tablet daily with food for 7 days.\n- Stop the steroid pills completely.\n- Drink fluids through the day and eat regular meals; stand up slowly.\n- Lab recheck next Monday.\n- The eating disorder program will call you to schedule an intake.\nIf you faint again, have chest pain or a racing heartbeat: go to the ER."}
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "lab_only",
+          "start": "2022-03-14T07:45",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-14T07:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-03-14T07:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "BMP recheck", "author": "PCP", "date": "2022-03-14T13:10", "body": "Taylor - potassium and sodium are back to normal. Finish the last couple of potassium tablets and then stop. How's the dizziness? Any word from the eating disorder program?"},
+            {"type": "Patient Message", "title": "RE: BMP recheck", "author": "patient", "date": "2022-03-14T18:22", "body": "Less dizzy. Intake is booked for April. And I tossed the other stuff like you said."}
+          ]
+        },
+        {
+          "id": "2022-04-21a",
+          "kind": "outside_records",
+          "start": "2022-04-21T10:00",
+          "orders": [
+            {"id": "ed-program-referral", "action": "done", "date": "2022-04-21T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Eating Disorder Program - Intake Summary", "author": "eating disorder therapist", "date": "2022-04-21T10:00", "body": "Outpatient Eating Disorder Program\nIntake assessment completed 04/12/2022.\n\nThank you for referring Ms. Gallagher, 24, for evaluation.\n\nAssessment: Presentation meets criteria for bulimia nervosa, purging type, with self-induced vomiting as the main compensatory behavior and a recent period of restriction aimed at weight loss. Past laxative and diuretic misuse and anabolic steroid use reported; she reports no steroid use since her visit with you in March. Co-occurring generalized anxiety. No suicidal ideation.\n\nPlan: Weekly individual CBT-based therapy with our team; dietitian visits every two weeks for structured eating. We will defer medical monitoring and labs to primary care.\n\nMedications per patient: fluoxetine 20 mg daily. Allergies: none known.\n\nWe will update you as treatment progresses.\n\nOutpatient eating disorder therapist"}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia, electrolytes",
+          "state": {"weight_kg": 47.8},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 7},
+            {"survey": "GAD-7 total score", "value": 12}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-10T08:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2022-05-10T08:30", "results": [{"test": "Magnesium"}, {"test": "Phosphorus"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-10T08:00"},
+            {"procedure": "Venipuncture", "performed": "2022-05-10T08:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-05-10T08:40", "body": "S: Started at the ED program in April - has been to 3 therapy sessions and 1 dietitian visit, missed one when work got busy. No more steroids. No fainting since March; occasional head rush on standing. Purging \"less but not gone.\" Still wants to be smaller. Fluoxetine more days than not.\nO: Weight 47.8 kg, down a bit more. BP/HR ok seated. Mucous membranes moist today.\nPHQ-9 7, GAD-7 12.\nA/P: Bulimia - in treatment, early. Weight still drifting down; shared with her that I'd like the program to know. BMP, Mg, Phos today. GAD - continue fluoxetine; talked about using therapy for the anxiety piece too. RTC ~2 months."}
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "portal_message",
+          "start": "2022-05-11T12:05",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2022-05-11T12:05", "body": "Electrolytes, magnesium and phosphorus all normal this time. See you in July."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "office_visit",
+          "start": "2022-07-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-13a",
+          "kind": "telephone",
+          "start": "2022-07-13T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2022-07-13T10:15", "body": "Pt missed 7/12 appt. LVM x2 to reschedule. Portal reminder sent."}
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "office_visit",
+          "start": "2022-09-06T09:15",
+          "end": "2022-09-06T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, lightheadedness, urinating often",
+          "conditions": [
+            {"label": "Loop diuretic abuse (furosemide toxicity)", "icd10": "F55.8", "action": "diagnosed", "onset": "2022-06-01", "note": "furosemide-type water pill bought online; agrees to stop"}
+          ],
+          "medications": [
+            {"drug": "potassium chloride 20 MEQ Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily with food for 7 days", "dose": {"value": 20, "unit": "meq"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Hypokalemia"}
+          ],
+          "state": {"weight_kg": 46.3},
+          "vitals": {"hr": 106},
+          "measure": ["bp", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-09-06T09:55", "resulted": "2022-09-06T13:30", "results": [{"test": "Sodium", "value": 134}, {"test": "Potassium", "value": 3.1}, {"test": "Chloride", "value": 93}, {"test": "Bicarbonate", "value": 31}, {"test": "Blood Urea Nitrogen", "value": 24}, {"test": "Creatinine", "value": 1.0}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-09-06T09:15"},
+            {"procedure": "Venipuncture", "performed": "2022-09-06T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Fatigue and Lightheadedness", "author": "PCP", "date": "2022-09-06T13:50", "body": "First visit since May (missed July).\n\nS: Several months of fatigue, lightheadedness and going to the bathroom to urinate constantly. Feels \"drained\" most days. No fever, no recent illness. Says she isn't taking any prescription medicines - turns out she stopped the fluoxetine a while back. Asked again about OTC things and supplements: she admits she's been taking a \"water pill\" ordered online since early summer to keep her weight down. From her description, a loop diuretic (furosemide-type). Stopped going to the ED program in the summer.\n\nO: Supine pulse 106. On standing her systolic drops 18 points and HR climbs to 124. Thin, anxious woman, BMI 17 (46.3 kg). Mucous membranes dry. Neuro nonfocal.\n\nBMP: Na 134, K 3.1, Cl 93, HCO3 31, BUN 24, Cr 1.0 - volume contraction with K loss, fits the diuretic.\n\nA/P:\n1. Loop diuretic abuse (furosemide) with volume depletion and hypokalemia. Stop the pills - she agreed, and will bring the bottle to toss. KCl 20 mEq daily x7d. Fluids, salt with meals. BMP in 1 week. Explained rebound fluid retention for a week or two after stopping, so the scale will go up and that is not fat.\n2. Bulimia, low weight (BMI 17) - asked her to restart with the ED program; she'll call them this week. I'll send them a note with her consent.\n3. GAD - restart fluoxetine 20 mg daily.\nRTC 2-3 months, sooner prn."},
+            {"type": "Letter", "title": "Update to eating disorder program", "author": "PCP", "date": "2022-09-06T14:10", "body": "With Ms. Gallagher's written consent: seen today with fatigue and orthostatic symptoms, BMI 17, and has been taking an online-purchased loop diuretic since early summer, now stopped. Potassium 3.1, bicarbonate 31. She plans to resume with your program this week. I'll keep following her labs. Please call with any concerns.\n\nPrimary care physician"}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "lab_only",
+          "start": "2022-09-13T07:50",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-09-13T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-09-13T07:50"}],
+          "documents": [
+            {"type": "Result Note", "title": "BMP recheck", "author": "PCP", "date": "2022-09-13T12:30", "body": "Potassium and bicarbonate are normal again. Good. No more water pills, please."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T08:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T08:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T08:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2022-10-11T08:25", "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Both VIS/EUA fact sheets given. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "annual_physical",
+          "start": "2022-11-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "conditions": [
+            {"label": "Orthostatic hypotension", "action": "resolved", "note": "no orthostatic drop today"}
+          ],
+          "state": {"weight_kg": 47.5},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 6},
+            {"survey": "GAD-7 total score", "value": 11}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-11-22T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-22T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2022-11-22T09:40", "results": [{"test": "Magnesium"}, {"test": "Phosphorus"}]},
+            {"panel": null, "collected": "2022-11-22T09:30", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2022-11-22T09:30", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2022-11-22T09:25", "issued": "2022-11-29T11:00", "text": "Liquid-based cervical cytology. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. No organisms identified.", "conclusion": "NILM."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-11-22T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-11-22T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-11-22T09:55", "body": "Annual, 24F.\nInterval since Sept: off the water pills, she says completely. Back with the ED program, roughly every other week now rather than weekly. Purging \"a couple of times a week, some weeks none.\" Taking fluoxetine.  No syncope.\nPHQ-9 6, GAD-7 11.\nExam: weight 47.5 kg, up a little from September. Orthostatics today: no significant drop, no symptoms. Normal general exam. No parotid enlargement.\nA/P:\n- Bulimia: slowly steadier. Continue with the program. CMP, Mg, Phos, CBC.\n- Orthostatic hypotension: resolved off the diuretic, taking it off the active list.\n- GAD: fluoxetine 20.\n- Pap today (3 yr), GC/CT. Flu and bivalent booster done last month.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "portal_message",
+          "start": "2022-11-29T16:00",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2022-11-29T16:00", "body": "All of your labs from last week are normal, and the Pap is normal too (next in 3 years)."}
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "portal_message",
+          "start": "2023-01-17T20:41",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2023-01-17T20:41", "body": "Can I get the fluoxetine refilled? Down to my last few. Same pharmacy."},
+            {"type": "Telephone Encounter", "title": "Refill sent", "author": "MA", "date": "2023-01-18T09:05", "body": "Fluoxetine 20 mg #90 sent to pharmacy on file per PCP. Pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2023-03-04a",
+          "kind": "ed_visit",
+          "start": "2023-03-04T19:30",
+          "end": "2023-03-05T01:40",
+          "service": "Emergency Medicine",
+          "reason": "Sudden shortness of breath",
+          "conditions": [
+            {"label": "Psychogenic urinary retention due to acute stress reaction", "icd10": "F45.8", "action": "diagnosed", "onset": "2023-03-04"}
+          ],
+          "vitals": [
+            {"time": "2023-03-04T19:38", "bp": [135, 85], "hr": 110, "rr": 28, "spo2": 99, "temp_c": 36.8},
+            {"time": "2023-03-05T01:15", "bp": [118, 74], "hr": 84, "rr": 16, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-03-04T19:50", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.48}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 30}, {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 95}, {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}]},
+            {"panel": "Urinalysis", "collected": "2023-03-04T23:10", "results": [{"test": "Urine Specific Gravity"}, {"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]},
+            {"panel": null, "collected": "2023-03-04T23:10", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2023-03-04T19:45", "text": "Sinus tachycardia. Normal axis and intervals. No ST-segment elevation or depression, no acute T-wave changes.", "conclusion": "Sinus tachycardia, no acute changes."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2023-03-04T19:30"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Visit Record", "author": "emergency medicine", "date": "2023-03-08T11:30", "body": "Regional hospital emergency department - visit of 03/04/2023 (received 03/08/2023)\n\nCC: shortness of breath.\n\nHPI: 25-year-old woman with bulimia nervosa (purging type), GAD, and past anabolic steroid and diuretic misuse, here with one hour of sudden breathlessness and a sense she can't get a full breath. Under heavy pressure at work and more and more anxious for the past week. No chest pain, cough, fever or recent travel.\n\nMeds: fluoxetine 20 mg daily. Allergies: NKDA.\n\nTriage: RR 28, SpO2 99% RA, HR 110, BP 135/85.\nExam: anxious, talking in full sentences. Lungs clear bilaterally, no wheeze, crackles or rhonchi. Heart tachycardic, regular. Calves soft, nontender.\n\nABG (room air): pH 7.48, PaCO2 30, PaO2 95, HCO3 24 - acute respiratory alkalosis, normal oxygenation.\nECG: sinus tachycardia, no acute change.\n\nCourse: coached slow breathing; RR and HR settled within the hour. Later in her stay she had been unable to pass urine for several hours despite the urge, with lower abdominal fullness. Bladder scan 640 mL. Single in-and-out catheterization drained 700 mL. UA unremarkable, urine hCG negative. No neurologic deficits, no anticholinergic exposure. After reassurance and a quieter room she voided on her own before discharge.\n\nImpression:\n1. Hyperventilation with respiratory alkalosis in the setting of an acute stress reaction.\n2. Psychogenic urinary retention due to acute stress reaction, resolved after one catheterization.\n\nDisposition: home. Follow up with PCP this week; return for fever, inability to urinate, chest pain or worsening breathlessness.\n\nEmergency medicine attending"}
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "office_visit",
+          "start": "2023-03-09T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {"label": "Psychogenic urinary retention due to acute stress reaction", "icd10": "F45.8", "action": "resolved", "note": "voiding normally since the ED"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 8},
+            {"survey": "GAD-7 total score", "value": 15}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-09T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2023-03-09T14:10", "body": "Seen in ED Sat 3/4 for hyperventilation (ABG with resp alkalosis, ECG sinus tach) and couldn't void - straight cath x1, 700 mL. Read the ED note this morning.\n\nToday: breathing normal, voiding normally since, no dysuria, no fever. A big work deadline was the trigger. Anxiety high this week, GAD-7 15, PHQ-9 8. No SI. Purging up a bit with the stress. Fluoxetine - \"I've been good about it.\" Still sees the program's therapist every couple of weeks.\n\nExam: calm today, vitals normal. Abdomen soft, no suprapubic fullness or tenderness.\n\nA/P:\n1. Psychogenic urinary retention due to acute stress reaction - resolved.\n2. GAD, acute flare with work stress / hyperventilation - paced breathing taught; asked her to bring the anxiety into her therapy sessions. Continue fluoxetine 20 mg. Call me if another episode.\n3. Bulimia - continue program.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia and anxiety",
+          "state": {"weight_kg": 48.6},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 5},
+            {"survey": "GAD-7 total score", "value": 10}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-13T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-13T08:20"},
+            {"procedure": "Venipuncture", "performed": "2023-06-13T08:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-06-13T08:45", "body": "S: Work calmer. Training for a half-marathon in late summer, running 4 days a week. Purging occasionally. Therapy less often - \"when I can fit it in.\" No diuretics, laxatives or steroids. GAD-7 10.\nO: 48.6 kg. Vitals fine. Moist mucous membranes.\nA/P: Bulimia/GAD, steadier. Told her plainly that long runs on an empty tank are risky for her; eat before, carry water. BMP today. RTC fall."}
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "ed_visit",
+          "start": "2023-09-05T11:50",
+          "end": "2023-09-05T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Lightheaded and weak after a half-marathon",
+          "conditions": [
+            {"label": "Dehydration", "icd10": "E86.0", "action": "diagnosed", "onset": "2023-09-05"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2023-09-05T11:50"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Visit Record", "author": "emergency medicine", "date": "2023-10-24T09:15", "body": "Community hospital emergency department - date of service 09/05/2023. Copy sent on request; received 10/24/2023.\n\nChief complaint: dizziness and weakness after a road race.\n\nHPI: 25F, history of bulimia nervosa (purging type) and prior laxative/diuretic misuse, previously evaluated for loop diuretic toxicity and anabolic steroid abuse. Ran an outdoor half-marathon this morning in the heat. Nothing to eat or drink since last night and she had no water with her. Felt lightheaded and weak from around mile nine, kept going. At the finish she sat down, felt her heart pounding and her vision blur. Turned down water from a friend because of nausea. Became dizzy on standing and needed help to stay upright; friends brought her in. Denies chest pain or shortness of breath. Menses regular.\n\nMeds: fluoxetine 20 mg daily. Allergies: none known.\n\nExam: radial pulse fast and thready. Skin flushed. Alert and oriented, visibly fatigued and mildly disoriented. Extremities warm, capillary refill delayed. No bleeding or trauma. Mucous membranes dry. Pupils slightly sluggish to light. Heart and lungs normal on auscultation. Neuro exam intact.\nOrthostatic vitals: marked rise in heart rate on standing.\n\nTreatment: 2 L normal saline IV. Symptoms resolved; orthostatic heart rate improved on repeat.\n\nDiagnosis: Dehydration.\n\nDischarge: oral fluids and food, rest. Do not run in heat without fluids. PCP follow-up.\n\nEmergency medicine physician"}
+          ]
+        },
+        {
+          "id": "2023-09-07a",
+          "kind": "portal_message",
+          "start": "2023-09-07T08:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Went to the ER", "author": "patient", "date": "2023-09-07T08:55", "body": "Heads up - I ended up in the ER Tuesday after the half marathon. Got dizzy at the end, they gave me two bags of fluids and sent me home. Feel ok now just embarrassed. You were right about the water."},
+            {"type": "Patient Message", "title": "RE: Went to the ER", "author": "PCP", "date": "2023-09-07T12:20", "body": "Glad you're ok, and no need to be embarrassed. Come in next week so I can check your labs. We'll ask the hospital for the record."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, dehydration",
+          "conditions": [
+            {"label": "Dehydration", "icd10": "E86.0", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-12T12:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-09-12T12:15"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T12:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2023-09-12T12:40", "body": "ED 9/5 for collapse after a half-marathon, ran fasted and without water. IV fluids, discharged. ED record not here yet - requested.\nFeels back to normal. No dizziness, eating and drinking. Says she wasn't purging that week, just \"forgot\" to eat before. No diuretics.\nVitals normal, no orthostatic symptoms. Moist mucosa.\nA/P: dehydration - resolved. BMP today. Race-day fueling plan reviewed: breakfast, fluids, water on the course. Hold off on long runs in heat for now."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2023-09-12T13:05", "body": "Faxed request for 9/5/23 ED record to hospital HIM, release on file."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "telephone",
+          "start": "2023-09-26T10:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request follow-up", "author": "front desk", "date": "2023-09-26T10:30", "body": "No ED record received yet. Called hospital HIM, they have the request, said 2-4 weeks. Re-faxed."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T07:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T07:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2023-10-10T08:05", "body": "Influenza (L arm) and 2023-24 COVID (R arm). Screening questions negative. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "annual_physical",
+          "start": "2023-12-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "state": {"weight_kg": 49.5},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 5},
+            {"survey": "GAD-7 total score", "value": 9}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-05T10:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-05T10:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2023-12-05T10:35", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Magnesium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-12-05T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-12-05T10:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-12-05T10:50", "body": "Annual, just turned 26.\nInterval: ED in Sept (dehydration after race) - record finally arrived in Oct, consistent with what she told me. Otherwise a quieter year. Purging \"maybe once or twice a month.\" Sees the ED program's dietitian now and then, therapy has lapsed. Fluoxetine fairly regular. No diuretics, laxatives, steroids.\nPHQ-9 5, GAD-7 9.\nExam: 49.5 kg, slowly back up. Vitals normal. No parotid enlargement. Heart, lungs, abdomen normal.\nA/P:\n- Bulimia - better stretch. Encouraged keeping some regular contact with the program.\n- GAD - fluoxetine 20.\n- CMP, CBC, TSH, Mg.\n- Vaccines done in Oct. Pap next due 2025.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2023-12-07a",
+          "kind": "portal_message",
+          "start": "2023-12-07T09:10",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2023-12-07T09:10", "body": "Everything normal - chemistry, potassium, magnesium, thyroid and blood count."}
+          ]
+        }
+      ]
+    }
+  ]
+}

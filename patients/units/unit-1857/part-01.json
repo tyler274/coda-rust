@@ -1,0 +1,682 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001857",
+   "given": "Hannah",
+   "family": "O'Brien",
+   "birth_date": "1996-04-03",
+   "address_line": "41 Crescent Ridge Road",
+   "phone": "+1-978-555-0174",
+   "email": "hannah.obrien@example.test",
+   "marital_status": "single",
+   "summary": "Management consultant in her late twenties with lifelong heavy periods and restrictive eating who develops iron deficiency anemia, then an acute porphyria attack, then post-infectious cold agglutinin hemolysis, then a right Bell's palsy, each after a cold or a lean stretch. Records arrive late or not at all for some outside care.",
+   "events": [
+    {
+     "id": "2022-06-28a",
+     "kind": "telephone",
+     "start": "2022-06-28T10:20",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2022-06-28T10:20",
+       "body": "Caller wants to transfer her care here; moved to the area last year and her old doctor is two hours east. Works as a consultant and travels a lot, prefers early-morning slots. Booked new patient visit 7/12 at 7:40. Asked her to sign the release so we can pull her old records. Membership paperwork emailed."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "establish_care",
+     "start": "2022-07-12T07:40",
+     "end": "2022-07-12T08:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "new patient visit",
+     "state": {
+      "weight_kg": 53.5,
+      "height_cm": 165.0,
+      "bp": [
+       106,
+       66
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "conditions": [
+      {
+       "label": "Heavy menstrual bleeding",
+       "action": "history",
+       "note": "since menarche"
+      },
+      {
+       "label": "Restrictive eating behavior with frequent meal skipping",
+       "icd10": "Z72.4",
+       "action": "history"
+      },
+      {
+       "label": "Recurrent upper respiratory tract infections",
+       "icd10": "J06.9",
+       "action": "history",
+       "note": "several self-limited colds a year"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "multivitamin with iron Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "supplement; takes it sporadically"
+      },
+      {
+       "drug_text": "ibuprofen 400 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for menstrual cramps",
+       "dose": {
+        "value": 400,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "menstrual cramps"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None; lifelong abstinence"
+      },
+      {
+       "item": "Occupation",
+       "value": "Management consultant"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-07-12T08:30",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, low MDM",
+       "performed": "2022-07-12T07:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-07-12T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2022-07-12T09:10",
+       "body": "26 y/o woman establishing care. Consultant, on the road 2-3 days most weeks, says she runs on coffee.\n\nNo active complaints today. Periods have always been heavy: first 2-3 days she changes a pad or tampon every 1-2 hrs, occasional small clots, 6-7 days total, regular. Cramps handled with ibuprofen 400 as needed.\n\nEating: often skips breakfast and lunch on client days, admits she keeps her intake tight on purpose because she wants to stay at her current weight. Few fruits or vegetables. Denies purging or laxative use. Gets several colds a year, all self-limited, no pneumonias or hospital stays.\n\nPMH: as above. PSH: tonsillectomy at 8, wisdom teeth out at 22.\nMeds: multivitamin w/ iron (takes maybe half the days), ibuprofen PRN.\nAllergies: none to medications.\nFH: mother with lupus. Father with hypertension. Maternal grandmother had acute intermittent porphyria. A paternal aunt had a Bell's palsy.\nSH: single, lives alone. Never smoked. Has never drunk alcohol. No drug use.\n\nExam: thin, well-appearing. BP normal. HEENT normal, conjunctivae pink. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin normal. Neuro grossly intact. Mood bright.\n\nA/P\n1. Heavy menstrual bleeding, longstanding. Ibuprofen with food.\n2. Restrictive eating / meal skipping. Talked about regular meals and why it matters for energy. She heard me; will see.\n3. Recurrent colds, nothing worrisome in the history.\n4. HM: HIV and hep C screen today. Release signed for old records. Come back in the winter for a full physical with fasting labs.\n\nPHQ-2 0."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-14a",
+     "kind": "portal_message",
+     "start": "2022-07-14T16:05",
+     "reason": "screening results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your screening tests",
+       "author": "PCP",
+       "date": "2022-07-14T16:05",
+       "body": "Hi Hannah, both screening tests (HIV and hepatitis C) came back negative. Nothing else to do on those. Front desk will reach out to set up your physical for the winter. -PCP"
+      }
+     ]
+    },
+    {
+     "id": "2022-08-02a",
+     "kind": "outside_records",
+     "start": "2022-08-02T11:30",
+     "reason": "prior primary care records",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-03-06T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-17T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-05-08T10:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap)",
+       "performed": "2021-06-22T09:00",
+       "text": "Outside report, prior primary care office. Specimen: cervical, liquid-based. Satisfactory for evaluation; endocervical/transformation zone component present.",
+       "conclusion": "Negative for intraepithelial lesion or malignancy."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care practice",
+       "author": "MA",
+       "date": "2022-08-02T11:30",
+       "body": "38 pages received from patient's previous primary care office (2014-2022). Pertinent: Pap 6/2021 NILM. Tdap 3/2019. COVID Pfizer x2 spring 2021. HPV series completed as a teenager per immunization history. Tonsillectomy age 8. No hospitalizations. Problem list there: heavy menses, frequent URIs. Med list: MVI w/ iron, ibuprofen PRN. NKDA. Immunizations entered. Forwarded to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-27a",
+     "kind": "portal_message",
+     "start": "2022-09-27T12:10",
+     "reason": "scheduling",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Flu shot",
+       "author": "patient",
+       "date": "2022-09-27T12:10",
+       "body": "Can I just come in for a flu shot before work some morning in October? Physical will have to wait until things calm down at work."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Flu shot",
+       "author": "front desk",
+       "date": "2022-09-27T14:30",
+       "body": "Sure - nurse visit Tuesday 10/18 at 7:30 is open, booked you in."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T07:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - Influenza Vaccine",
+       "author": "RN",
+       "date": "2022-10-18T07:40",
+       "body": "In before work for her flu shot. Screening questions negative, no prior reactions. Influenza quadrivalent 0.5 mL IM left deltoid. VIS given. Waited 15 min, fine. Reminded her the physical still needs scheduling."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-10a",
+     "kind": "annual_physical",
+     "start": "2023-01-10T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "appointment": "cancelled",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Appointment cancelled",
+       "author": "front desk",
+       "date": "2023-01-09T17:50",
+       "body": "Pt left voicemail cancelling tomorrow morning's physical. Flying out for a client this week. Will call back to rebook."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-02a",
+     "kind": "telephone",
+     "start": "2023-03-02T09:45",
+     "reason": "physical recall",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Physical recall",
+       "author": "front desk",
+       "date": "2023-03-02T09:45",
+       "body": "Called to rebook the physical cancelled in January. LVM with call-back number."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-13a",
+     "kind": "office_visit",
+     "start": "2023-04-13T08:00",
+     "end": "2023-04-13T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "fatigue and lightheadedness",
+     "state": {
+      "labs": {
+       "Hemoglobin": 8.2,
+       "Mean Corpuscular Volume": 72,
+       "Hematocrit": 27.1,
+       "Ferritin": 5,
+       "Iron": 21,
+       "Transferrin Saturation": 5,
+       "Total Iron-Binding Capacity": 455,
+       "Red Cell Distribution Width": 18.2,
+       "Mean Corpuscular Hemoglobin": 22.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Iron deficiency anemia",
+       "action": "diagnosed",
+       "onset": "2023-03-15"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ferrous sulfate 325 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily with food or orange juice",
+       "dose": {
+        "value": 325,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "iron deficiency anemia"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-13T08:30",
+       "resulted": "2023-04-13T13:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 8.2
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 72
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2023-04-13T08:30",
+       "resulted": "2023-04-13T16:40",
+       "results": [
+        {
+         "test": "Ferritin",
+         "value": 5
+        },
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-13T08:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-04-13T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Fatigue",
+       "author": "PCP",
+       "date": "2023-04-13T09:20",
+       "body": "S: Came in because she is wiped out. Over about a month she has been more and more tired and gets woozy when she stands up quickly, worse on long client days. Periods unchanged, still very heavy. Still skipping meals most workdays. No black or bloody stools, no weight loss, no recent illness. No chest pain, no syncope.\n\nMeds: MVI w/ iron off and on, ibuprofen for cramps.\n\nO: Looks tired. Conjunctivae pale. Heart regular, soft systolic flow murmur at the left sternal border, no radiation. Lungs clear. Abdomen soft. No edema.\nIn-office CBC this morning: Hgb 8.2, MCV 72. Ferritin sent.\n\nA/P: Microcytic anemia, almost certainly iron deficiency from years of heavy periods plus low intake. Murmur fits with the anemia.\n- Ferrous sulfate 325 mg once daily, with food or OJ, not with coffee. Expect dark stools.\n- Regular meals, iron-rich foods - she is willing to try a packed breakfast.\n- Recheck CBC in ~8 wks.\n- Return sooner for chest pain, fainting, shortness of breath.\n\nAddendum 16:50: ferritin 5. Confirms iron deficiency. Plan unchanged."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-14a",
+     "kind": "portal_message",
+     "start": "2023-04-14T08:15",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Iron level",
+       "author": "PCP",
+       "date": "2023-04-14T08:15",
+       "body": "Hannah - your ferritin (iron stores) came back at 5, which is very low and explains the tiredness. Keep the iron tablet going every day. It can take a few weeks before you feel a difference. We'll recheck your blood count in early June."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Iron level",
+       "author": "patient",
+       "date": "2023-04-14T12:02",
+       "body": "Thanks. Already picked it up last night. Can I take it at night instead? Mornings are chaos."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Iron level",
+       "author": "PCP",
+       "date": "2023-04-14T12:40",
+       "body": "Nighttime is fine as long as you've eaten something."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-02a",
+     "kind": "portal_message",
+     "start": "2023-05-02T21:14",
+     "reason": "question about iron",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "iron + coffee?",
+       "author": "patient",
+       "date": "2023-05-02T21:14",
+       "body": "Quick question, does it matter if I take the iron near my coffee? I drink a lot of it."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: iron + coffee?",
+       "author": "RN",
+       "date": "2023-05-03T09:05",
+       "body": "Best to separate them by a couple of hours, coffee and tea cut down how much iron you absorb. Your evening dose plan works well for that."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-08a",
+     "kind": "office_visit",
+     "start": "2023-06-08T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "anemia follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.6,
+       "Mean Corpuscular Volume": 77,
+       "Hematocrit": 33.4,
+       "Red Cell Distribution Width": 17.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-06-08T07:45",
+       "resulted": "2023-06-08T11:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.6
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-06-08T07:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-06-08T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up - Iron deficiency anemia",
+       "author": "PCP",
+       "date": "2023-06-08T08:30",
+       "body": "Taking ferrous sulfate most evenings, maybe misses 1-2 a week. Less tired, no more lightheadedness getting out of bed. Periods same. Eating breakfast more often, still skips lunch.\n\nBP fine. Conjunctivae less pale. Still a faint flow murmur. Lungs clear.\n\nCBC today: Hgb 10.6, up from 8.2.\n\nA/P: IDA improving on oral iron. Continue. Recheck CBC and ferritin in the fall. Encouraged her to keep the lunch habit going."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-20a",
+     "kind": "pharmacy",
+     "start": "2023-07-20T14:22",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill - ferrous sulfate",
+       "author": "MA",
+       "date": "2023-07-20T14:22",
+       "body": "Electronic request from pt's pharmacy for ferrous sulfate 325 mg #90. Active, seen 6/8. Pended to PCP; approved with 1 refill."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "telephone",
+     "start": "2023-09-12T13:00",
+     "reason": "recall",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab recall",
+       "author": "front desk",
+       "date": "2023-09-12T13:00",
+       "body": "Pt due for repeat CBC/ferritin per PCP. Booked 10/5 7:40 with PCP, flu shot same day."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-05a",
+     "kind": "office_visit",
+     "start": "2023-10-05T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "anemia follow-up, vaccines",
+     "state": {
+      "labs": {
+       "Hemoglobin": 12.3,
+       "Mean Corpuscular Volume": 84,
+       "Hematocrit": 37.6,
+       "Ferritin": 34,
+       "Red Cell Distribution Width": 14.1,
+       "Mean Corpuscular Hemoglobin": 28.3,
+       "Iron": 78,
+       "Transferrin Saturation": 23,
+       "Total Iron-Binding Capacity": 340
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Iron deficiency anemia",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ferrous sulfate 325 MG Oral Tablet",
+       "action": "stop",
+       "reason": "iron stores replete"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-10-05T07:45",
+       "resulted": "2023-10-05T11:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.3
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2023-10-05T07:45",
+       "resulted": "2023-10-05T15:30",
+       "results": [
+        {
+         "test": "Ferritin",
+         "value": 34
+        },
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Transferrin Saturation"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-05T08:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-05T08:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-10-05T07:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-10-05T07:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-05T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up - Anemia",
+       "author": "PCP",
+       "date": "2023-10-05T09:00",
+       "body": "Feels like herself again, energy fine through long days. Has been on iron ~6 months. No lightheadedness. Periods unchanged.\n\nExam: well-appearing, conjunctivae pink. Heart regular, murmur no longer audible. Lungs clear.\n\nLabs: Hgb 12.3, ferritin 34.\n\nA/P\n1. Iron deficiency anemia - resolved. Stop ferrous sulfate. Keep the MVI with iron daily (she admits it's still hit or miss). Heavy periods remain the driver; she'll let me know if fatigue comes back.\n2. Flu and updated COVID given today.\nRTC for physical in the spring."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Blood count back to normal",
+       "author": "PCP",
+       "date": "2023-10-05T15:45",
+       "body": "Your hemoglobin is 12.3 and iron stores are 34 - both back in the normal range. You can stop the iron tablets now. Try to keep up with the multivitamin."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

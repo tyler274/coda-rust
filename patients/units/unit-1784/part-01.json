@@ -1,0 +1,661 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001784",
+      "given": "Shannon",
+      "family": "Wagner",
+      "birth_date": "1993-08-06",
+      "address_line": "27 Laurel Park Ave",
+      "phone": "+1-518-555-0185",
+      "email": "shannon.wagner@example.test",
+      "marital_status": "married",
+      "summary": "Retail store manager with PCOS on metformin, iron deficiency anemia and generalized anxiety who joined in early pregnancy in 2022. That pregnancy carried a fetal gastroschisis; a second in 2025 carried a fetal myelomeningocele, late virilizing ovarian enlargement and acute fatty liver of pregnancy found at a 37-week cesarean admission, with full recovery by her last visit.",
+      "events": [
+        {
+          "id": "2022-06-01a",
+          "kind": "telephone",
+          "start": "2022-06-01T10:20",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2022-06-01T10:20",
+              "body": "Caller wants to establish primary care here, moving her care over from a practice she has not seen in over a year. Currently pregnant, about 10 weeks, and already has an OB group lined up for the pregnancy. Takes metformin and an iron pill. Booked new patient visit 6/8 at 8:40. Sent the membership packet and records release form by email. Asked her to bring med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "establish_care",
+          "start": "2022-06-08T08:40",
+          "end": "2022-06-08T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Polycystic ovary syndrome",
+              "action": "history",
+              "onset": "2015-05-01"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history",
+              "onset": "2019-09-01"
+            },
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history",
+              "onset": "2016-03-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Polycystic ovary syndrome"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (65 mg elemental iron) by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            },
+            {
+              "drug_text": "prenatal vitamin with folic acid 4 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Latex",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0,
+            "height_cm": 164.0,
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Ferritin": 19,
+              "Hemoglobin A1c": 5.4,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 19
+                },
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail store manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-06-08T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "continuity of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-06-08T09:40",
+              "body": "28 y/o woman here to set up primary care. She is pregnant, roughly 10.5 weeks by an LMP of 3/25/22, and already has a first appointment with an outside OB group, which will manage the pregnancy. One prior pregnancy, no problems, healthy term baby.\n\nPCOS: diagnosed years ago for irregular cycles. On metformin 500 twice a day, tolerating it. OB knows she is on it.\nIron deficiency anemia: has been on ferrous sulfate daily for a few years, tolerating it. No bleeding history beyond periods.\nAnxiety (GAD): long-standing worry, sleep fine most nights. Never been on medication for it, not in counseling now. Feels it is manageable.\nAlso taking a prescription prenatal with 4 mg folate.\n\nPSH: tonsils out at 12. Laparoscopic R ovarian cystectomy at 24 for a bleeding corpus luteum cyst.\nAllergies: latex (hives, type I) and sulfa (rash).\nFamily: mother with T2DM, father with hypertension, a paternal aunt with lupus, and a cousin on her mother's side born with myelomeningocele.\nSocial: manages a retail store, long days on her feet. Married. Has never smoked, no alcohol, no drugs.\n\nExam: well appearing, pleasant. Vitals as recorded. Thyroid normal size. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin without rash.\n\nGAD-7 6, PHQ-9 3.\n\nA/P\n1. PCOS - continue metformin 500 BID for now, defer to OB on whether to continue through pregnancy. A1c with labs.\n2. Iron deficiency anemia - continue ferrous sulfate. CBC, iron studies today.\n3. GAD - mild by score. Talked through what helps her; recheck at future visits.\n4. Early pregnancy - prenatal care with OB. Continue the high-dose folate prenatal.\n5. Health maintenance - hep C and HIV screening with today's blood work. Records release signed for her old office.\nRTC 3 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-10a",
+          "kind": "portal_message",
+          "start": "2022-06-10T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-06-10T16:05",
+              "body": "Hi Shannon, your labs are back. Hemoglobin is a little low at 11.6 and your iron stores (ferritin 19) are on the low side, so please keep taking the iron every day. Kidney, liver and thyroid tests are normal, A1c is normal at 5.4, and the hepatitis C and HIV screens are negative. Nothing else to do for now. Let me know if the iron is bothering your stomach."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "outside_records",
+          "start": "2022-06-24T11:00",
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "done",
+              "date": "2022-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2022-06-24T11:00",
+              "body": "Prior practice records received, 31 pages, indexed under outside records.\nSummary for PCP: problem list PCOS, iron deficiency anemia, generalized anxiety. Meds metformin 500 BID, ferrous sulfate daily. Allergies latex, sulfa. Last cervical cytology 2020: negative for intraepithelial lesion or malignancy. Last office visit early 2021. Immunizations: childhood series documented, Tdap in her prior pregnancy, influenza 2020."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-15a",
+          "kind": "specialist_visit",
+          "start": "2022-07-15T10:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 16 weeks",
+          "conditions": [
+            {
+              "label": "Gastroschisis",
+              "icd10": "O35.8XX0",
+              "action": "diagnosed",
+              "onset": "2022-07-15",
+              "note": "fetal anterior abdominal wall defect on anatomy ultrasound"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-08T09:00",
+              "resulted": "2022-07-13T14:00",
+              "results": [
+                {
+                  "test": "Alpha-fetoprotein MoM, maternal serum",
+                  "loinc": "20450-3",
+                  "unit": "{MoM}",
+                  "value": 3.9
+                },
+                {
+                  "test": "Choriogonadotropin, maternal serum",
+                  "loinc": "19080-1",
+                  "text": "Within normal limits"
+                },
+                {
+                  "test": "Unconjugated estriol, maternal serum",
+                  "loinc": "2250-9",
+                  "text": "Within normal limits"
+                },
+                {
+                  "test": "Inhibin A, maternal serum",
+                  "loinc": "23883-2",
+                  "text": "Within normal limits"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Fetal anatomy ultrasound",
+              "loinc": "11525-3",
+              "performed": "2022-07-15T10:45",
+              "text": "Transabdominal obstetric ultrasound. Single live intrauterine pregnancy, biometry consistent with 16 weeks. Fetal heart activity present. Amniotic fluid volume normal. Placenta posterior, no previa. Intracranial anatomy and spine visualized without evidence of a neural tube defect. Anterior abdominal wall defect to the right of a normally inserted umbilical cord with free-floating loops of bowel outside the abdomen, no covering membrane. Stomach and bladder seen. Limbs present.",
+              "conclusion": "Single fetus with gastroschisis. Normal amniotic fluid. No neural tube defect."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit letter",
+              "author": "obstetrics",
+              "date": "2022-07-20T13:30",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 7/15/2022\nRe: Shannon Wagner, G2P1001, 16w0d by LMP\n\nThank you for allowing us to share her care. She feels well today without complaint. BP 120/78, HR 72. Fundal size appropriate for 16 weeks.\n\nHer second trimester quad screen returned with a markedly raised AFP at 3.9 MoM; hCG, unconjugated estriol and inhibin A were within normal limits. We performed a detailed ultrasound today: single fetus, normal fluid, no sign of an open neural tube defect, but there is a full-thickness abdominal wall defect with herniated bowel, consistent with gastroschisis.\n\nWe reviewed the finding with her at length. Plan: serial growth scans, antenatal testing in the third trimester, consultation with pediatric surgery, and delivery planned at a center with neonatal surgical capability. Continue prenatal vitamin with folate, iron and metformin.\n\nAllergies: latex, sulfa.\nObstetrics, maternal-fetal medicine consult to follow."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "telephone",
+          "start": "2022-07-21T12:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call after OB letter",
+              "author": "PCP",
+              "date": "2022-07-21T12:40",
+              "body": "Called her after reading the OB letter about the abdominal wall defect on the scan. She has had a few rough nights but says the OB team explained things well and the surgery plan for the baby made her feel better. Husband is with her on all the appointments. Sleeping ok most nights. Offered a visit sooner if the worry gets ahead of her; she will reach out. Next visit with me in Sept as planned."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-05a",
+          "kind": "specialist_visit",
+          "start": "2022-08-05T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 19 weeks",
+          "conditions": [
+            {
+              "label": "Pregnancy (second trimester)",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2022-08-05"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-05T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-05T09:50",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-04T07:00",
+              "results": [
+                {
+                  "test": "Protein, 24 hour urine",
+                  "loinc": "2889-4",
+                  "unit": "mg/(24.h)",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit letter",
+              "author": "obstetrics",
+              "date": "2022-08-11T15:10",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 8/5/2022\nRe: Shannon Wagner, 19w0d, known fetal gastroschisis\n\nRoutine visit. She feels well and has no concerns. Aside from the fetal finding, the maternal course has been smooth. BP 120/75, pulse 78. Exam unremarkable, no swelling of the legs.\n\nLabs: Hgb 11.2, Hct 33%. BUN 8, creatinine 0.5. 24-hour urine protein 150 mg, within the normal range for pregnancy and useful as a baseline.\n\nPlan: continue iron and prenatal vitamin. Growth ultrasound in 4 weeks. Pediatric surgery prenatal consult is being arranged.\nAllergies: latex, sulfa."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "specialist_visit",
+          "start": "2022-08-24T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Right lower abdominal pain, itching",
+          "conditions": [
+            {
+              "label": "Physiologic pruritus gravidarum",
+              "icd10": "O26.892",
+              "action": "diagnosed",
+              "onset": "2022-08-15"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-08-24T14:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-24T14:40",
+              "resulted": "2022-08-26T11:00",
+              "results": [
+                {
+                  "test": "Bile acids, total",
+                  "loinc": "14628-3",
+                  "unit": "umol/L",
+                  "value": 3.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics problem visit letter",
+              "author": "obstetrics",
+              "date": "2022-08-30T10:05",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 8/24/2022\nRe: Shannon Wagner, 29 y/o, 21w5d, pregnancy with fetal gastroschisis\n\nShe came in with five days of sharp, on-and-off pain low on the right side of the abdomen and pelvis. It catches her when she moves quickly or rolls over in bed and at times shoots into the right groin and labia. No bleeding, no tightening or contractions, no burning or frequency with urination.\n\nShe also mentioned itching all over for about the last week and a half, worse at night, without any rash.\n\nExam: abdomen soft, mild discomfort only with deep pressure in the right lower quadrant. Fundus at the umbilicus, appropriate for dates. Cervix long and closed. Skin with no rash and no excoriations.\n\nLiver panel normal. Total bile acids 3.8 umol/L (normal).\n\nAssessment:\n1. Round ligament pain from the growing uterus. Reassured; position changes slowly, warm compresses, a support belt if helpful.\n2. Itching of pregnancy without rash, normal liver tests and bile acids: physiologic pruritus gravidarum. Emollients, cool showers. Call if it worsens or concentrates on the palms and soles.\nAllergies: latex, sulfa."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "office_visit",
+          "start": "2022-09-21T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety and anemia",
+          "state": {
+            "weight_kg": 82.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-21T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-09-21T16:50",
+              "body": "S: Here for the 3 month check. Now about 25-26 weeks. OB following closely for the baby's gastroschisis, growth scans so far ok per her. Had the round ligament pain episode in August, now gone. Itching has calmed down with lotion. Anxiety a bit higher since the diagnosis, mostly at night, still working full time. Taking iron, prenatal and metformin daily.\n\nO: Vitals reviewed, weight up as expected for dates. Looks well. Heart and lungs normal. No edema.\nGAD-7 8.\nOB labs from August reviewed: Hgb 11.2.\n\nA/P:\n1. GAD - modestly higher in the setting of a stressful pregnancy. Talked about sleep, limiting late-night searching online, leaning on her husband. She prefers to keep going as is.\n2. Iron deficiency anemia - stable for pregnancy. Continue iron.\n3. PCOS - metformin continuing per OB.\nFlu shot next month. RTC after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T08:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-12T08:30",
+              "body": "Pt in for flu and bivalent COVID booster, 29 weeks pregnant, cleared by OB. Latex-free gloves and bandage used. Flu given L deltoid, COVID R deltoid. Lot numbers in immunization record. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "pharmacy",
+          "start": "2022-11-09T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2022-11-09T09:05",
+              "body": "Electronic request from pt's pharmacy for metformin 500 mg BID, 90 day supply. Last visit 9/21. Approved by PCP, sent with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "hospital_admission",
+          "start": "2022-12-09T06:30",
+          "end": "2022-12-11T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Planned induction of labor at 37 weeks, fetal gastroschisis",
+          "conditions": [
+            {
+              "label": "Gastroschisis",
+              "icd10": "O35.8XX0",
+              "action": "resolved",
+              "onset": "2022-07-15",
+              "note": "delivered"
+            },
+            {
+              "label": "Pregnancy (second trimester)",
+              "icd10": "Z33.1",
+              "action": "resolved",
+              "onset": "2022-08-05"
+            },
+            {
+              "label": "Physiologic pruritus gravidarum",
+              "icd10": "O26.892",
+              "action": "resolved",
+              "onset": "2022-08-15"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-09T07:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-10T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "author": "obstetrics",
+              "date": "2022-12-16T09:40",
+              "body": "Regional hospital, labor and delivery service.\nAdmitted: 12/9/2022  Discharged: 12/11/2022\nPatient: Shannon Wagner, 29 y/o G2P1001 at 37w0d\n\nIndication: scheduled induction at 37 weeks for known fetal gastroschisis, delivery at a center with neonatal surgery.\n\nCourse: induction of labor. Uncomplicated spontaneous vaginal delivery the same evening. Estimated blood loss within normal range. Infant taken to the NICU by the neonatal and pediatric surgery teams for abdominal wall repair. Mother recovered without complication; afebrile, ambulating, voiding, pain well controlled.\n\nAllergies: latex (latex-free precautions throughout), sulfa.\nDischarge meds: continue prenatal vitamin, ferrous sulfate, metformin 500 mg twice daily.\nFollow-up: postpartum visit with obstetrics in 6 weeks; primary care as scheduled.\nNow G2P2002."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

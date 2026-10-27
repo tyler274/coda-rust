@@ -1,0 +1,346 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001726",
+      "events": [
+        {
+          "id": "2024-03-08a",
+          "kind": "ed_visit",
+          "start": "2024-03-08T21:10",
+          "end": "2024-03-09T05:20",
+          "service": "Emergency Medicine",
+          "reason": "Vomiting for two days",
+          "conditions": [
+            {"label": "Hypochloremic metabolic alkalosis secondary to vomiting with hypovolemia", "icd10": "E87.3", "action": "diagnosed", "onset": "2024-03-06"}
+          ],
+          "medications": [
+            {"drug": "potassium chloride 20 MEQ Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 5 days", "dose": {"value": 20, "unit": "meq"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Hypokalemia"}
+          ],
+          "vitals": [
+            {"time": "2024-03-08T21:18", "bp": [95, 60], "hr": 110, "rr": 18, "spo2": 98, "temp_c": 36.9},
+            {"time": "2024-03-09T04:50", "bp": [108, 66], "hr": 88, "rr": 16, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-08T21:35", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 2.9}, {"test": "Chloride", "value": 90}, {"test": "Bicarbonate", "value": 32}, {"test": "Blood Urea Nitrogen", "value": 28}, {"test": "Creatinine", "value": 0.9}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-03-08T21:40", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.50}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 42}]},
+            {"panel": null, "collected": "2024-03-08T22:05", "results": [{"test": "Urine chloride", "loinc": "2078-4", "unit": "mmol/L", "value": 10}]},
+            {"panel": null, "collected": "2024-03-08T22:05", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-03-08T21:10"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Visit Record", "author": "emergency medicine", "date": "2024-03-12T10:40", "body": "Emergency Department - Physician Record\nArrival 03/08/2024 21:10. Faxed to PCP 03/12/2024.\n\nCC: vomiting x 2 days.\n\nHPI: 26-year-old woman with bulimia nervosa and a prior ED visit for dehydration, now vomiting for two days and unable to keep down food or fluids. No diarrhea, fever or travel. States her bulimia has been harder to control over the past few weeks.\n\nPMH: bulimia nervosa (purging), GAD, history of anabolic steroid and loop diuretic misuse, prior dehydration. Meds: fluoxetine 20 mg. NKDA.\n\nVS: BP 95/60, HR 110.\nExam: dry, tired-appearing. Abdomen soft, nontender. Heart tachycardic, regular. Lungs clear.\n\nLabs: Na 130, K 2.9, Cl 90, HCO3 32, BUN 28, Cr 0.9. Urine Cl 10. ABG pH 7.50, pCO2 42. Urine hCG negative.\n\nAssessment: Hypochloremic metabolic alkalosis from vomiting, with hypovolemia and hypokalemia. Chloride-responsive (urine Cl 10).\n\nED course: normal saline with KCl added, IV ondansetron. Tolerated PO by early morning, HR 88, BP 108/66.\n\nDischarge: KCl 20 mEq PO twice daily x 5 days. Follow up with PCP in 3-5 days for repeat electrolytes. Encouraged to reconnect with eating disorder treatment.\n\nEmergency physician"}
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "office_visit",
+          "start": "2024-03-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, electrolytes",
+          "conditions": [
+            {"label": "Hypochloremic metabolic alkalosis secondary to vomiting with hypovolemia", "icd10": "E87.3", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 7},
+            {"survey": "GAD-7 total score", "value": 12}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-13T11:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-03-13T11:25", "results": [{"test": "Magnesium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-13T11:00"},
+            {"procedure": "Venipuncture", "performed": "2024-03-13T11:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2024-03-13T11:40", "body": "ED Fri night: 2 days vomiting, K 2.9, HCO3 32, Cl 90, Na 130, urine Cl 10 - contraction/vomiting alkalosis. Fluids + KCl, home on KCl 20 BID x5d (day 5 today).\n\nShe's candid: purging much more since February, several times a day at the worst, around a stretch of long hours. Better since Sunday. Not using diuretics or laxatives. Fluoxetine - missed a lot of doses last month.\n\nVitals ok today, no orthostatic symptoms. Mucous membranes moist. No parotid swelling.\n\nA/P:\n1. Hypochloremic metabolic alkalosis with hypovolemia - resolved clinically; BMP and Mg today to confirm. Finish KCl.\n2. Bulimia, purging type - relapse. She will call the eating disorder program to restart therapy; I asked her to message me once she has an appointment.\n3. GAD - back to daily fluoxetine 20.\nRTC ~3 months."}
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "portal_message",
+          "start": "2024-03-14T08:30",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2024-03-14T08:30", "body": "Potassium, chloride and bicarbonate are all back to normal, magnesium normal. You can stop the potassium after today's dose."},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "patient", "date": "2024-03-14T19:02", "body": "Ok thank you. I have a therapy appt on the 21st."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "telehealth_visit",
+          "start": "2024-06-18T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia and anxiety",
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 5},
+            {"survey": "GAD-7 total score", "value": 10}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-06-18T12:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Follow-up", "author": "PCP", "date": "2024-06-18T12:25", "body": "Video from her office (closed door), consents.\nBack in therapy every other week since March. Purging down to occasional. Fluoxetine daily. Home scale steady to up a little. No dizziness. GAD-7 10, PHQ-9 5.\nA/P: bulimia improving with therapy back in place; GAD stable on fluoxetine 20. In-person for physical in the fall with labs."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T17:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T17:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2024-10-08T17:15", "body": "2024-25 flu and COVID given, one in each arm. No contraindications. Pt left after 15 min, no issues."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "annual_physical",
+          "start": "2024-11-19T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "state": {"weight_kg": 51.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "GAD-7 total score", "value": 8}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-19T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-11-19T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": null, "collected": "2024-11-19T09:50", "results": [{"test": "Magnesium"}, {"test": "Phosphorus"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-11-19T09:15"},
+            {"procedure": "Venipuncture", "performed": "2024-11-19T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-11-19T10:05", "body": "Annual, 26 (27 in a couple of weeks).\nInterval: good stretch since the spring. Therapy every 2-3 weeks. Purging rare by her account. No diuretics, laxatives, steroids. Fluoxetine daily. Running casually, eats before. Periods regular.\nPHQ-9 4, GAD-7 8.\nExam: 51 kg - best weight since I've known her post-2021. Vitals normal. No parotid enlargement. Heart, lungs, abdomen, skin normal.\nA/P:\n- Bulimia, purging type: in a better phase, keep the therapy.\n- GAD: fluoxetine 20.\n- CMP, CBC, Mg, Phos.\n- Flu + COVID done 10/8. Pap due next year.\nRTC 6 months or prn."}
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "portal_message",
+          "start": "2024-11-21T07:55",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2024-11-21T07:55", "body": "All normal this year. Keep doing what you're doing."}
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "portal_message",
+          "start": "2025-02-24T07:12",
+          "conditions": [
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "diagnosed", "onset": "2025-01-31", "note": "LMP 2025-01-17, EDD 2025-10-24"}
+          ],
+          "orders": [
+            {"id": "ob-referral", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "Pregnancy, early prenatal care"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Positive test", "author": "patient", "date": "2025-02-24T07:12", "body": "So... positive pregnancy test this morning. Two of them actually. Last period started Jan 17. I stopped the fluoxetine over the weekend because I wasn't sure it was safe. I bought prenatal vitamins. What do I do next?"},
+            {"type": "Patient Message", "title": "RE: Positive test", "author": "PCP", "date": "2025-02-24T11:40", "body": "Congratulations, Taylor. That puts you at about 5 1/2 weeks, due date around October 24. Next step is an OB - I've placed a referral and they'll call you for a first prenatal visit. Keep the prenatal vitamin going.\n\nOn fluoxetine: it is one of the better-studied antidepressants in pregnancy, and stopping can bring the anxiety and the eating symptoms back. It's your decision, and it's one to make with OB too - I'd rather you not make it alone. Please also tell your OB about the eating disorder so they can watch weight and labs closely. Message me any time."},
+            {"type": "Patient Message", "title": "RE: Positive test", "author": "patient", "date": "2025-02-24T18:30", "body": "Thanks. I think I'll stay off it for now and talk to the OB."}
+          ]
+        },
+        {
+          "id": "2025-03-15a",
+          "kind": "hospital_admission",
+          "start": "2025-03-15T14:20",
+          "end": "2025-03-18T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Severe nausea and vomiting in early pregnancy",
+          "conditions": [
+            {"label": "Hyperemesis gravidarum", "icd10": "O21.1", "action": "diagnosed", "onset": "2025-02-22"}
+          ],
+          "medications": [
+            {"drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth at bedtime", "dose": {"value": 2, "unit": "tablet"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "Hyperemesis gravidarum"},
+            {"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "start", "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea", "dose": {"value": 4, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "chronic", "reason": "Hyperemesis gravidarum"}
+          ],
+          "state": {"weight_kg": 45.0},
+          "vitals": [
+            {"time": "2025-03-15T14:30", "bp": [100, 60], "hr": 98, "rr": 16, "spo2": 99, "temp_c": 36.7, "weight_kg": 45.0},
+            {"time": "2025-03-18T08:00", "bp": [104, 64], "hr": 82, "rr": 16, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-15T14:50", "results": [{"test": "Sodium", "value": 135}, {"test": "Potassium", "value": 3.0}, {"test": "Chloride", "value": 90}, {"test": "Bicarbonate", "value": 32}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-03-15T14:55", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.50}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45}]},
+            {"panel": null, "collected": "2025-03-15T15:10", "results": [{"test": "Urine chloride", "loinc": "2078-4", "unit": "mmol/L", "value": 15}]}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-03-15T16:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-03-18T11:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Antepartum Discharge Summary", "author": "obstetrics", "date": "2025-04-29T14:05", "body": "Antepartum unit - Discharge Summary\nAdmitted 03/15/2025, discharged 03/18/2025. Received 04/29/2025.\n\nPatient: 27-year-old G1 at 8w1d by LMP (01/17/2025).\n\nReason for admission: three weeks of severe nausea and vomiting, 4-5 episodes a day, with difficulty keeping down food and fluids and a 6 kg weight loss since onset. Background of bulimia nervosa (purging type) and a previous ED visit for vomiting-related metabolic alkalosis.\n\nAdmission findings: BP 100/60, HR 98. Appeared dehydrated. Weight 45 kg.\nNa 135, K 3.0, Cl 90, HCO3 32; blood gas pH 7.50, PaCO2 45; urine chloride 15.\n\nDiagnosis: Hyperemesis gravidarum with hypokalemic, hypochloremic metabolic alkalosis.\n\nHospital course: IV crystalloid with potassium replacement, IV thiamine before dextrose, scheduled IV antiemetics. Advanced to oral intake on day 2, oral potassium on day 3. Tolerating meals and fluids at discharge. Discussed overlap with her eating disorder history; she reports no intentional purging during this pregnancy.\n\nDischarge medications:\n- doxylamine-pyridoxine 10 mg/10 mg DR, 2 tablets at bedtime\n- ondansetron 4 mg ODT every 8 hours as needed\n- prenatal vitamin daily\nHome fluoxetine listed; patient states she stopped it in February.\nAllergies: NKDA.\n\nFollow-up: OB clinic in 1 week; return for inability to keep fluids down.\n\nObstetrics hospitalist"}
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "telephone",
+          "start": "2025-03-19T09:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pt reports hospital stay", "author": "RN", "date": "2025-03-19T09:20", "body": "Pt called. Was admitted Sat-Tues for severe vomiting in pregnancy (\"hyperemesis\"), got IV fluids and potassium. Home on two nausea meds from OB. Keeping liquids and small meals down. No discharge paperwork sent to us - pt will ask OB. Scheduled with PCP next week."}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, hyperemesis",
+          "medications": [
+            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "orders": [
+            {"id": "ob-referral", "action": "done", "date": "2025-03-25T10:40"}
+          ],
+          "state": {"weight_kg": 46.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 7},
+            {"survey": "GAD-7 total score", "value": 12}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-25T11:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-25T10:40"},
+            {"procedure": "Venipuncture", "performed": "2025-03-25T11:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital Visit", "author": "PCP", "date": "2025-03-25T11:20", "body": "9w4d. Admitted 3/15-3/18 to the antepartum unit for hyperemesis (no summary yet; history from pt). Had her first OB visit at the start of March, so the referral is complete.\n\nNow: nausea most of the day but vomiting once or twice, keeping fluids and small meals down with the doxylamine-pyridoxine at night and ondansetron as needed. Prenatal vitamin daily, takes it at night with a snack. Off fluoxetine since February; anxiety up some (GAD-7 12) - mostly about the pregnancy. She is clear the vomiting is not self-induced. I believe her, and told her I'd rather she tell me if that changes than hide it.\n\nExam: 46 kg (45 at admission, by her report). Vitals fine. Mucous membranes moist.\n\nA/P:\n1. Hyperemesis gravidarum - improving on OB regimen. BMP today. Per OB: call for inability to keep fluids down.\n2. Pregnancy 9w4d - OB managing. Added OB meds and prenatal vitamin to our list.\n3. GAD / bulimia - off fluoxetine by choice; revisit with OB if anxiety climbs. Suggested she let her therapist know about the pregnancy.\nRTC 2-3 months or as needed."}
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "portal_message",
+          "start": "2025-03-26T08:05",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2025-03-26T08:05", "body": "Your potassium and the rest of the chemistry are back to normal. Good sign that the regimen is working."}
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "ed_visit",
+          "start": "2025-05-10T16:45",
+          "end": "2025-05-11T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Intractable vomiting in pregnancy",
+          "state": {"weight_kg": 44.5},
+          "vitals": [
+            {"time": "2025-05-10T16:55", "bp": [94, 56], "hr": 112, "rr": 16, "spo2": 99, "temp_c": 36.8, "weight_kg": 44.5},
+            {"time": "2025-05-11T08:30", "bp": [102, 62], "hr": 86, "rr": 14, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-05-10T17:10", "results": [{"test": "Urine Ketones", "text": "Moderate"}, {"test": "Urine Specific Gravity"}, {"test": "Urine Glucose", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2025-05-10T16:45"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Obstetric Triage Note", "author": "obstetrics", "date": "2025-06-17T13:20", "body": "Obstetric Triage - provider note, 05/10/2025 (copy received 06/17/2025)\n\n27 y/o G1 at 16w1d, known hyperemesis gravidarum (antepartum admission two months ago), bulimia nervosa (purging type) and prior laxative/diuretic misuse. Reports vomiting about ten times a day for the past two weeks, can't hold down food or liquids, weak and lightheaded. Down 4 kg (9 lb) over those two weeks. Prenatal course has otherwise been uncomplicated. Tearful, asks why she is the one friend who is pregnant and sick all the time.\n\nCurrent meds: prenatal vitamin only (has run out of / stopped her antiemetics, per patient). Fluoxetine on old list, not taking. NKDA.\n\nVS: P 112, BP 94/56. Wt 44.5 kg.\nExam: fatigued, mucous membranes dry. Abdomen soft, nontender, uterus appropriate for dates.\nUrine dip: ketones moderate.\nBedside US: single intrauterine pregnancy, viable, cardiac activity present.\n\nA/P: Hyperemesis gravidarum, recurrent, with dehydration and ketonuria.\n- 2 L IV fluids, IV ondansetron.\n- Observed overnight; tolerating clear liquids and crackers this morning, HR 86.\n- Discharge on doxylamine-pyridoxine 2 tabs QHS and ondansetron ODT q8h PRN (new supply sent). Prenatal vitamin.\n- OB clinic within the week. Return for inability to keep fluids down.\n\nOB triage provider"}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "portal_message",
+          "start": "2025-05-13T13:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Back in triage", "author": "patient", "date": "2025-05-13T13:48", "body": "FYI I was back at L&D triage over the weekend, throwing up constantly again. They gave me fluids overnight and restarted the nausea meds. I had stopped them because I thought I was past it. Feeling better today. OB appt Thursday."},
+            {"type": "Patient Message", "title": "RE: Back in triage", "author": "PCP", "date": "2025-05-13T16:15", "body": "I'm sorry - that sounds miserable. Please keep taking both meds until OB says otherwise. Can we see you in a few weeks to check weight and how you're doing overall?"}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in during pregnancy",
+          "state": {"weight_kg": 47.5},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 6},
+            {"survey": "GAD-7 total score", "value": 10}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-06-10T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-06-10T15:30", "body": "20w4d. Triage 5/10 for recurrent hyperemesis (fluids overnight) - triage note not received; pt summary. Since restarting both antiemetics: vomiting \"maybe every other day,\" eating small frequent meals.\nAnxiety moderate, GAD-7 10. Still off fluoxetine; seeing her therapist monthly. No purging.\nWt 47.5 kg, up 3 kg since triage. Vitals normal.\nA/P: hyperemesis improving; pregnancy per OB; GAD/bulimia stable off meds. Flu shot in the fall here. RTC after delivery, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "outside_records",
+          "start": "2025-06-17T13:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records filed", "author": "MA", "date": "2025-06-17T13:25", "body": "OB triage note from 5/10/25 received by fax and scanned. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine in pregnancy",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-30T12:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-09-30T12:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Flu Vaccine", "author": "RN", "date": "2025-09-30T12:40", "body": "36w4d. Inactivated flu vaccine IM L deltoid (recommended in pregnancy). No egg or vaccine reactions. Tolerated well. Pt says she had Tdap at OB in August."}
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "hospital_admission",
+          "start": "2025-10-20T03:40",
+          "end": "2025-10-22T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Labor at term",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2025-12-02T10:10", "body": "Labor and Delivery - Discharge Summary\nAdmitted 10/20/2025, discharged 10/22/2025. Copy received 12/02/2025.\n\n27 y/o G1 at 39w3d, admitted in spontaneous labor.\nPregnancy notable for hyperemesis gravidarum (admission at 8 weeks, triage visit at 16 weeks), resolving in the second trimester. History of bulimia nervosa and GAD; off fluoxetine during pregnancy. Prenatal labs unremarkable. Tdap given 08/12/2025.\n\nDelivery 10/20/2025: uncomplicated spontaneous vaginal delivery. Healthy infant.\nPostpartum course routine. Afebrile, vitals normal, ambulating, voiding, tolerating diet.\n\nDischarge meds: prenatal vitamin. Antiemetics no longer needed.\nFollow-up: postpartum visit with OB at 6 weeks. PCP follow-up for anxiety/eating disorder care.\n\nObstetrics"}
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "portal_message",
+          "start": "2025-10-27T21:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Baby is here", "author": "patient", "date": "2025-10-27T21:15", "body": "Delivered on the 20th, everything went smoothly and the baby is healthy. Exhausted but good. Wanted to let you know. I'll book a visit once things settle."},
+            {"type": "Patient Message", "title": "RE: Baby is here", "author": "PCP", "date": "2025-10-28T08:20", "body": "Congratulations! So happy for you. Rest when you can. Let's see you in about 6 weeks - and reach out sooner if your mood or eating start to slide."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in, anxiety and eating disorder",
+          "conditions": [
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "resolved"},
+            {"label": "Hyperemesis gravidarum", "icd10": "O21.1", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet", "action": "stop", "reason": "Delivered; no longer needed"},
+            {"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "stop", "reason": "Delivered; no longer needed"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-08-12T10:00"}
+          ],
+          "state": {"weight_kg": 53.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 7},
+            {"survey": "GAD-7 total score", "value": 9}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-09T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Postpartum Visit", "author": "PCP", "date": "2025-12-09T11:55", "body": "7 weeks postpartum, SVD 10/20 at term, healthy baby (came with her today, sleeping in the car seat). L&D discharge summary arrived last week - uncomplicated. Saw OB for the 6-week check.\n\nMood: tired, but no persistent low mood, no intrusive thoughts. Anxiety creeping up in the first weeks home, so she restarted her fluoxetine 20 mg on her own about 3 weeks after delivery - taking it daily. Eating: \"structured, I'm trying.\" Denies purging, laxatives, diuretics. Restarting therapy in January.\nPHQ-9 7, GAD-7 9.\n\nExam: 53 kg. Vitals normal. Well appearing, appropriate.\n\nA/P:\n1. Postpartum - pregnancy and hyperemesis resolved. Stopped doxylamine-pyridoxine and ondansetron on the list.\n2. GAD - back on fluoxetine 20 mg daily (it never came off our list). Good plan.\n3. Bulimia - watchful; restarting therapy. Asked her to message me if purging returns.\n4. Tdap 8/12/25 at OB per discharge summary - added to immunization record.\nRTC 3 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

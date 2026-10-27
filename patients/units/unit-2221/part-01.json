@@ -1,0 +1,714 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002221",
+   "given": "Thomas",
+   "family": "Casey",
+   "birth_date": "1953-01-09",
+   "address_line": "84 Bridge Road",
+   "phone": "+1-518-555-0145",
+   "email": "thomas.casey@example.test",
+   "marital_status": "married",
+   "summary": "Retired math teacher with type 2 diabetes, hypertension, hyperlipidemia and glaucoma who joins in 2020, develops diabetic kidney disease stage 3b, has a resected pancreatic head adenocarcinoma, bullous pemphigoid, sigmoid diverticulitis, an inferior STEMI with contrast nephropathy, and after his last visit an admission for hypertensive pulmonary edema.",
+   "events": [
+    {
+     "id": "2020-08-27a",
+     "kind": "telephone",
+     "start": "2020-08-27T10:20",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2020-08-27T10:31",
+       "body": "Mr. Casey phoned about membership. His longtime internist retired over the summer and he would like a doctor he can reach directly. 67, retired, says he has sugar diabetes, blood pressure and glaucoma drops from his eye doctor. Membership agreement and new patient packet emailed. Records release signed electronically, faxed to his former primary care office today. New patient visit set for 9/10 at 9:00, fasting for labs."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-10a",
+     "kind": "establish_care",
+     "start": "2020-09-10T09:00",
+     "end": "2020-09-10T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "new patient visit, diabetes and hypertension",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2009-06-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2007-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Primary open-angle glaucoma",
+       "action": "history",
+       "onset": "2016-01-01",
+       "note": "followed by outside ophthalmology"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 12.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      },
+      {
+       "drug": "latanoprost 0.05 MG/ML Ophthalmic Solution",
+       "action": "historical",
+       "sig": "Instill 1 drop in both eyes at bedtime",
+       "dose": {
+        "value": 1,
+        "unit": "drop"
+       },
+       "frequency": "QHS",
+       "route": "Ophthalmic",
+       "course": "chronic",
+       "reason": "glaucoma"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 glasses of wine per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired high school mathematics teacher"
+      }
+     ],
+     "state": {
+      "weight_kg": 86.2,
+      "height_cm": 176.0,
+      "labs": {
+       "Hemoglobin A1c": 6.9,
+       "Creatinine": 1.1,
+       "Low Density Lipoprotein": 82,
+       "Glucose": 138
+      },
+      "bp": [
+       126,
+       78
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-10T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-10T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-10T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 82
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-10T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.9
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-10T13:12",
+       "body": "NEW PATIENT VISIT\n\nThomas is a 67 year old retired math teacher (taught high school for 34 years) establishing care after his internist retired. Prior records requested, not yet here.\n\nHPI: Type 2 diabetes for roughly a decade, always on metformin, never on insulin. Does not check sugars often, maybe once a week fasting, 120s-130s. Blood pressure treated for over ten years, on lisinopril and a low-dose water pill, no lightheadedness. On atorvastatin for cholesterol without muscle aches. Has glaucoma, sees an outside eye doctor every 6 months or so, uses latanoprost nightly. Feels well. Walks most days, gardens.\n\nPMH: T2DM, HTN, hyperlipidemia, open-angle glaucoma.\nPSH: tonsillectomy as a boy (age 10). Screening colonoscopy at 63, told it was normal.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, HCTZ 12.5 mg daily, atorvastatin 40 mg daily, latanoprost 1 gtt OU qhs.\nAllergies: none known to medications.\nFamily: father had a heart attack at 67. Mother had type 2 diabetes and glaucoma. Sister with high blood pressure.\nSocial: retired. Never smoked. A glass or two of wine a week. No other substances.\n\nROS: no chest pain, dyspnea, claudication, polyuria, vision change beyond his usual, numbness in feet, GI or urinary complaints.\n\nExam: well appearing. Vitals as charted. Fundi not visualized well through undilated pupils. Neck supple, no bruits. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities without edema. Feet: skin intact, pulses 2+, monofilament sensation intact both feet.\n\nA/P:\n1. Type 2 diabetes, on metformin. A1c, CMP today. Foot exam normal.\n2. Hypertension, at goal on current regimen.\n3. Hyperlipidemia, lipid panel today, continue atorvastatin.\n4. Glaucoma, per ophthalmology. Asked him to have the eye doctor copy us on visit letters.\n5. Health maintenance: will reconcile vaccines and screening once old records arrive. Flu shot at a nurse visit next month when the high-dose supply is in.\n\nPHQ-2 negative. Follow up in about 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-14a",
+     "kind": "outside_records",
+     "start": "2020-09-14T14:05",
+     "reason": "records from prior primary care office",
+     "procedures": [
+      {
+       "procedure": "Tonsillectomy",
+       "performed": "1963-07-01T08:00"
+      },
+      {
+       "procedure": "Colonoscopy, screening, average risk",
+       "performed": "2016-05-11T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2017-03-21T10:00"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2018-02-06T10:00"
+      },
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2019-02-12T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "front desk",
+       "date": "2020-09-14T14:05",
+       "body": "Fax, 38 pages, from his former internist's office. Contents: problem list (diabetes type 2, hypertension, high cholesterol, glaucoma), medication list matching what the patient reported, office notes 2017 to 2020, lab flowsheet, immunization record.\n\nPertinent: colonoscopy May 2016 to the cecum, no polyps, repeat in 10 years. Tdap 3/2017. PCV13 2/2018, PPSV23 2/2019. Childhood tonsillectomy noted in surgical history.\n\nAbstracted to chart. Original to scanned media."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-15a",
+     "kind": "portal_message",
+     "start": "2020-09-15T08:42",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-09-15T08:42",
+       "body": "Hi Thomas, nice to meet you last week. Your labs are back. A1c is 6.9, right where we want it for you. Kidney and liver tests are normal and the LDL cholesterol is 82 on atorvastatin, which is good. Blood counts normal. Your old records arrived yesterday and you are up to date on tetanus and both pneumonia shots. See you for the flu shot in October."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "patient",
+       "date": "2020-09-15T11:16",
+       "body": "Thank you. Glad the numbers behave. I will book the flu shot with the front desk."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-06T10:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2020-10-06T10:44",
+       "body": "High-dose quadrivalent influenza vaccine 0.7 mL IM left deltoid. Screening questions negative. VIS given. Tolerated, waited 15 minutes in the lobby with mask on, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-07a",
+     "kind": "lab_only",
+     "start": "2021-01-07T08:10",
+     "reason": "labs before diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-01-07T08:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-01-07T08:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-01-07T08:10"
+      }
+     ]
+    },
+    {
+     "id": "2021-01-12a",
+     "kind": "telehealth_visit",
+     "start": "2021-01-12T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2021-01-12T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit: Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2021-01-12T14:31",
+       "body": "Video visit, he is at his kitchen table, consented to video format.\n\nDiabetes: A1c 7.0 last week, up a hair from 6.9. Admits to holiday baking. Fasting checks 120 to 140. No lows.\nBP: home cuff readings he holds up to the camera run 120s/70s.\nOtherwise well, has been staying home mostly. Plans to get the covid vaccine as soon as his age group opens at the pharmacy.\n\nBMP normal, creatinine 1.1.\n\nA/P: T2DM reasonably controlled, no change to metformin. HTN controlled. Encourage the vaccine. In-person wellness visit in the spring."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-04a",
+     "kind": "outside_records",
+     "start": "2021-02-04T11:20",
+     "reason": "pharmacy vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-01-21T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-11T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy COVID-19 vaccination",
+       "author": "MA",
+       "date": "2021-02-04T11:20",
+       "body": "Patient brought his vaccination card to the front desk. Pfizer dose 1 on 1/21/2021, dose 2 on 2/11/2021, both given at a retail pharmacy clinic. Entered in immunization history and state registry checked, matches."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-13a",
+     "kind": "annual_physical",
+     "start": "2021-04-13T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "initial annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-04-13T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-04-13T09:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-04-13T09:20",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2021-04-13T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-04-13T12:48",
+       "body": "INITIAL ANNUAL WELLNESS VISIT\n\nHealth risk assessment reviewed with him. Independent in all ADLs and IADLs, still drives (says nights are getting harder, which he puts down to the glaucoma; due back at the eye doctor in June). No falls. Hearing fine. Lives in a single-level home. Exercise: walking 30 to 40 minutes most days. Diet: mostly home cooked, watches sweets.\n\nCognition: 3-word recall 3/3, clock draw normal.\nMood: PHQ-2 0.\nAdvance directive: has a health care proxy on file with his attorney, will bring a copy.\n\nScreening: colonoscopy 2016 normal, next 2026. Hep C antibody today (never done). AAA screening not indicated, never smoked.\nImmunizations: Tdap 2017, PCV13 and PPSV23 complete, COVID x2 done, flu done. Shingrix not yet, recommended at the pharmacy (covered under his drug plan).\n\nExam: BP and weight as charted. Heart regular, lungs clear. Feet with good pulses, sensation intact.\n\nPlan: CMP, lipids, hep C today. Personalized prevention plan given. Diabetes visit in about 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-14a",
+     "kind": "portal_message",
+     "start": "2021-04-14T08:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Wellness visit labs",
+       "author": "PCP",
+       "date": "2021-04-14T08:30",
+       "body": "Hi Tom, results from yesterday: hepatitis C screen negative, which means no need to repeat it. Cholesterol numbers good on atorvastatin, kidney and liver tests normal. Remember the shingles shots at the pharmacy when you can."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-24a",
+     "kind": "pharmacy",
+     "start": "2021-05-24T09:05",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "90-day refills",
+       "author": "RN",
+       "date": "2021-05-24T09:15",
+       "body": "Mail-order pharmacy requested 90-day supplies of metformin 1000 mg BID, lisinopril 20 mg, HCTZ 12.5 mg and atorvastatin 40 mg. Last visit 4/13, labs current. Approved x3 refills each per protocol. Latanoprost is prescribed by his eye doctor, not refilled here."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-25a",
+     "kind": "specialist_visit",
+     "start": "2021-06-25T10:15",
+     "service": "Ophthalmology",
+     "reason": "glaucoma follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Visit Letter",
+       "author": "ophthalmology",
+       "date": "2021-07-02T15:40",
+       "body": "Re: Thomas Casey, DOB 01/09/1953\nDate of visit: 06/25/2021\n\nDear Doctor,\n\nI saw Mr. Casey for his scheduled glaucoma visit. He tells me night driving has become a struggle and that now and then he clips a doorframe or a chair he did not see off to the side. No pain, no redness in either eye.\n\nCurrent drops: latanoprost one drop each eye at bedtime. Other medications include metformin, lisinopril, hydrochlorothiazide and atorvastatin. No drug allergies. His mother also had glaucoma.\n\nExamination:\nBest corrected acuity 20/25 OD and 20/25 OS.\nApplanation pressures 22 mmHg OD, 24 mmHg OS.\nAnterior segments quiet, angles open.\nDilated fundus exam: cup-to-disc ratio 0.7 in each eye. No diabetic retinopathy, maculae flat.\nAutomated 24-2 fields: peripheral loss in both eyes.\n\nImpression: primary open-angle glaucoma, both eyes, with peripheral field loss that fits his symptoms.\n\nPlan: continue latanoprost nightly. We went over drop technique and the importance of not missing doses. Repeat visual fields in four months.\n\nThank you for allowing me to share in his care.\n\nOphthalmology"
+      }
+     ]
+    },
+    {
+     "id": "2021-08-17a",
+     "kind": "office_visit",
+     "start": "2021-08-17T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up; spot on back",
+     "state": {
+      "labs": {
+       "Creatinine": 1.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-08-17T10:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-17T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral-2021",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "enlarging lesion upper back"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-08-17T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2021-08-17T16:02",
+       "body": "S: Routine diabetes check. Feels well. Saw the eye doctor in June, letter in chart: pressures a bit high, fields worse, staying on latanoprost. Taking all his pills.\nNew: he noticed a brownish spot on his upper back some months ago and thinks it has gotten bigger. Not painful, never bled.\n\nO: Vitals as charted. Upper back right of midline: round tan lesion about 1.5 cm, sharply bordered, slightly rough. Few scattered small brown macules elsewhere on the back. Heart and lungs normal. Feet normal.\n\nLabs today: creatinine 1.2, potassium normal. A1c 7.0.\n\nA/P:\n1. T2DM, A1c 7.0, continue metformin.\n2. HTN, at goal.\n3. Lesion of back, growing per patient. Probably benign but I would like dermatology to see it and do a full skin check. Referral placed.\n4. Flu shot in the fall; mentioned the covid booster when eligible.\n\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-13a",
+     "kind": "specialist_visit",
+     "start": "2021-09-13T13:30",
+     "service": "Dermatology",
+     "reason": "lesion on back",
+     "conditions": [
+      {
+       "label": "Multiple melanocytic nevi",
+       "icd10": "D22.9",
+       "action": "diagnosed",
+       "onset": "2021-09-13"
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral-2021",
+       "action": "done",
+       "date": "2021-09-13T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology Consultation",
+       "author": "dermatology",
+       "date": "2021-11-30T11:10",
+       "body": "DERMATOLOGY CONSULTATION\nPatient: Thomas Casey  DOB 01/09/1953\nVisit date: 09/13/2021\nReferred by: primary care, for an enlarging back lesion\n\nHistory: 68 year old man who first saw the spot on his upper back several months back; since then it has grown slowly. It has not hurt, itched or bled. No weight loss, fevers or sweats at night. History of diabetes, hypertension, glaucoma. Medications: metformin, lisinopril, hydrochlorothiazide, atorvastatin, latanoprost drops. NKDA.\n\nExam: full skin examination performed. Upper back: a single round tan papule, 1.5 cm across, sharply demarcated, with a slightly rough, stuck-on surface. Nothing else on the skin looks like it. Scattered over the trunk and arms are multiple small, uniformly pigmented melanocytic nevi without atypical features.\n\nAssessment:\n1. Upper back lesion, benign on examination. No biopsy needed.\n2. Multiple benign melanocytic nevi.\n\nPlan: reassured. Return if the back lesion or any mole changes in size, color or shape, or bleeds. Sun protection reviewed.\n\nDermatology"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "influenza vaccine and COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T11:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-05T11:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2021-10-05T11:24",
+       "body": "High-dose flu vaccine IM left deltoid and Pfizer booster 0.3 mL IM right deltoid. Over 65, primary series 2/2021. No prior reactions. Observed 15 min, fine. Asked whether dermatology sent a note from his September visit; nothing received yet. He says they told him it was nothing to worry about. Will request."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "outside_records",
+     "start": "2021-10-19T09:30",
+     "reason": "pharmacy vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-10-12T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Shingrix dose 1",
+       "author": "MA",
+       "date": "2021-10-19T09:30",
+       "body": "Registry update shows Shingrix dose 1 given 10/12/2021 at his pharmacy. Added to immunization history. Dose 2 due in 2 to 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "telephone",
+     "start": "2021-11-16T13:45",
+     "reason": "records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request, dermatology",
+       "author": "front desk",
+       "date": "2021-11-16T13:52",
+       "body": "Called the dermatology office about the 9/13 consult, no letter in our chart. They said it was never routed back to us. Asked them to fax. Second request."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

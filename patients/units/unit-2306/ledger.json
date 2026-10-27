@@ -1,0 +1,5118 @@
+{
+  "unit": "unit-2306",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002306",
+      "given": "Michael",
+      "family": "Larkin",
+      "birth_date": "1957-08-09",
+      "address_line": "27 Linden Ridge Road",
+      "phone": "+1-646-555-0134",
+      "email": "michael.larkin@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired shipyard mechanic and metal fabricator with COPD/emphysema who joins in 2020, then develops combined pulmonary fibrosis and emphysema, a resected mucin-producing pancreatic head adenocarcinoma with diabetes, low-grade bladder cancer, limited-stage small cell lung cancer with Lambert-Eaton and SIADH, and in 2026 metastatic prostate cancer reported by urology after his last visit.",
+      "events": [
+        {
+          "id": "2020-09-22a",
+          "kind": "establish_care",
+          "start": "2020-09-22T09:00",
+          "end": "2020-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with emphysema",
+              "action": "history",
+              "onset": "2014-02-01",
+              "note": "Emphysema diagnosed at age 56 by prior pulmonologist",
+              "icd10": "J43.9"
+            },
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes, in remission",
+              "action": "history",
+              "onset": "2019-04-01",
+              "note": "40 pack-years, quit spring 2019",
+              "icd10": "F17.211"
+            },
+            {
+              "label": "Dependence on supplemental oxygen",
+              "action": "history",
+              "onset": "2019-06-01",
+              "note": "Overnight oxygen 2 L/min"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD with emphysema"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD with emphysema"
+            },
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth at bedtime",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "BPH with lower urinary tract symptoms"
+            },
+            {
+              "drug_text": "acetaminophen 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (650 mg) by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 650,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pain"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Shellfish",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              73
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 80.8,
+            "height_cm": 178.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-22T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 286
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired shipyard mechanic and metal fabricator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T09:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "procedure",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-22T10:20",
+              "author": "PCP",
+              "body": "63 y/o man transferring care; his last doctor retired and a neighbor recommended the membership model.\n\nLungs: told he had emphysema in 2014 (age 56) after years of breathlessness on hills. Followed by a pulmonologist at his old office, who put him on tiotropium and, after an overnight oximetry study, oxygen at 2 L by cannula while he sleeps. Uses albuterol a couple of times a week, mostly carrying groceries up his porch steps. Says breathing is 'about where it's been.' No recent flares or prednisone bursts that he can recall.\n\nUrinary: slow stream and gets up 2x a night; on tamsulosin at bedtime for years, happy with it.\n\nOther: takes acetaminophen now and then for aches. Smoked about a pack a day for 40 years, quit spring 2019 cold turkey. Beer with friends maybe once or twice a week. Worked 30 yrs as a mechanic at the shipyard and then metal fabrication shops; retired 2018. Divorced, lives alone, drives.\n\nPSH: appendectomy at 34, right knee scope at 52.\nFamily: father lung cancer at 72 (deceased), mother type 2 diabetes and pancreatic cancer at 78, brother prostate cancer at 68, paternal grandfather bladder cancer.\nAllergies: sulfa (rash), shellfish.\n\nExam: Comfortable at rest, speaks full sentences. Lungs with mildly diminished air movement, no wheeze, no crackles. Heart regular, no murmur. Abdomen soft, healed RLQ scar. No clubbing, no edema. Gait normal.\n\nA/P\n1. COPD/emphysema: continue tiotropium daily, albuterol prn, overnight O2 2 L. Requesting old PFTs and pulmonary notes.\n2. BPH with LUTS: continue tamsulosin.\n3. Tobacco use disorder, sustained remission: congratulated.\n4. Health maintenance: CMP, CBC, lipids, A1c today; one-time hep C and HIV screen. Flu shot given. Will ask old office for colonoscopy report.\nRTC 6 months, sooner prn."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2020-09-22T09:57",
+              "author": "MA",
+              "body": "Quadrivalent flu vaccine given IM left deltoid. VIS provided. Tolerated without issue."
+            }
+          ],
+          "state": {
+            "spo2": 95,
+            "weight_kg": 81.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6,
+              "Low Density Lipoprotein": 104
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2020-09-24T16:10",
+              "author": "PCP",
+              "body": "Hi Michael, your blood work looks good. Kidney and liver tests normal, blood counts normal, sugar (A1c) normal at 5.6, LDL cholesterol 104. Hepatitis C and HIV screens negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-09a",
+          "kind": "outside_records",
+          "start": "2020-10-09T11:00",
+          "reason": "Records from prior primary care office",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2020-10-09T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Summary",
+              "date": "2020-10-09T11:00",
+              "author": "front desk",
+              "body": "Records received by fax from patient's previous internal medicine office (42 pages), scanned under Media.\n\nContents: office notes 2012-2020; pulmonary clinic notes 2014-2019 documenting emphysema and starting tiotropium; overnight oximetry 2019 with recommendation for nocturnal oxygen 2 L/min; colonoscopy report 2018, normal exam to the cecum, no polyps, ten-year interval suggested; immunization record.\n\nFlagged for PCP review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2020-10-12T08:30",
+              "author": "PCP",
+              "body": "Reviewed old chart. Consistent with his account: emphysema since 2014 on tiotropium; overnight O2 since 2019. Colonoscopy 2018 clean, next due 2028. Updated health maintenance."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-03a",
+          "kind": "telephone",
+          "start": "2020-11-03T10:30",
+          "reason": "Oxygen supplier paperwork",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "DME Recertification",
+              "date": "2020-11-03T10:30",
+              "author": "RN",
+              "body": "Home oxygen company called; they need a signed order and face-to-face note from the new PCP to continue his overnight concentrator. Sent new-patient note and order for O2 2 L/min via nasal cannula during sleep. PCP signed."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "portal_message",
+          "start": "2021-02-22T19:40",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-28T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-18T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Got both shots",
+              "date": "2021-02-22T19:40",
+              "author": "patient",
+              "body": "Finally got both covid shots at the clinic at the senior center, Jan 28 and Feb 18. Pfizer. Card attached. Arm ached one night, that was all."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Got both shots",
+              "date": "2021-02-23T09:15",
+              "author": "MA",
+              "body": "Thank you! Both doses are entered in your chart now."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "office_visit",
+          "start": "2021-03-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              72
+            ],
+            "hr": 82,
+            "rr": 15,
+            "spo2": 94,
+            "weight_kg": 80.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-03-16T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-03-16T14:40",
+              "author": "PCP",
+              "body": "S: Here for routine follow-up. Winter was quiet. Breathing unchanged, albuterol a few times a week. Wears O2 at night, machine working. Up twice to urinate at night as before.\n\nO: Vitals reviewed. Lungs diminished but clear. Heart RRR. No edema.\n\nA/P: COPD with emphysema stable on tiotropium. BPH stable on tamsulosin. Refills sent. Wellness visit in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "pharmacy",
+          "start": "2021-06-08T08:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2021-06-08T08:20",
+              "author": "RN",
+              "body": "Electronic request for tiotropium capsules and tamsulosin 90-day supply. Last visit March, stable. Approved x 4 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              135,
+              73
+            ],
+            "hr": 81,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 95,
+            "weight_kg": 81.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-09-28T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-28T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2021-09-28T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-28T10:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-28T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-28T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2021-09-28T10:45",
+              "author": "PCP",
+              "body": "Initial Medicare AWV.\n\nFunctional: independent in all ADLs and IADLs, drives, does his own shopping and cooking. No falls in the past year. Hearing ok in quiet rooms, a bit of trouble in restaurants (years of shipyard noise). Vision fine with readers.\nCognition: three-word recall 3/3, clock drawing normal.\nMood: PHQ-2 0.\nSafety: smoke detectors, no firearms, wears seatbelt.\nAdvance directive: none; given blank health care proxy form, he will think about who to name.\n\nExam: lungs diminished, clear. Heart RRR. No edema.\n\nPrevention: flu today. Discussed pneumococcal (PCV20) and shingles series; he'll come back for a nurse visit next month with his COVID booster. Colonoscopy 2018 normal. Hep C/HIV done 2020.\nPersonalized plan printed and reviewed."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2021-09-28T10:17",
+              "author": "MA",
+              "body": "Influenza quadrivalent 0.5 mL IM right deltoid. No immediate reaction."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-19T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T11:08"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-10-19T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Immunizations",
+              "date": "2021-10-19T11:25",
+              "author": "RN",
+              "body": "Here for vaccines per PCP plan. Screening questions negative. Given: PCV20 left deltoid; Pfizer COVID booster right deltoid; Shingrix dose 1 left deltoid (separate site, 1 inch apart). Observed 15 min, no reaction. Reminded second Shingrix due in 2-6 months, booked for January."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-25a",
+          "kind": "nurse_visit",
+          "start": "2022-01-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-01-25T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-01-25T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Shingrix #2",
+              "date": "2022-01-25T10:50",
+              "author": "RN",
+              "body": "Second recombinant zoster dose given IM right deltoid. After dose 1 he had a sore arm and felt run down for about a day. Series now complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "office_visit",
+          "start": "2022-03-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2022-03-09T15:05",
+              "author": "front desk",
+              "body": "Patient phoned: car in the shop, can't make the 3/10 follow-up. Will call back to rebook in the spring."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-05-20a",
+          "kind": "office_visit",
+          "start": "2022-05-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening shortness of breath and cough",
+          "vitals": {
+            "bp": [
+              131,
+              81
+            ],
+            "hr": 71,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 94,
+            "weight_kg": 78.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-20T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral-2022",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "progressive dyspnea, dry cough, basilar crackles"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Dyspnea",
+              "date": "2022-05-20T10:50",
+              "author": "PCP",
+              "body": "CC: breathing worse.\n\nHPI: Over roughly the last year he has noticed he can't get up his stairs without stopping halfway; used to manage it in one go. Dry hacking cough most days, no phlegm. No fever, no coughing blood, no chest pain. Albuterol helps a little. Using the O2 at night as before. No new exposures since retiring. Has not smoked since 2019.\n\nExam: SpO2 94% RA at rest. Speaks full sentences. Fine dry crackles at both bases, otherwise diminished. No wheeze. Heart regular. No clubbing, no edema.\n\nA/P: Progressive exertional dyspnea and dry cough with bibasilar crackles in a former heavy smoker with known emphysema and decades of shipyard work. This isn't behaving like his COPD alone; worry about an interstitial process. Referring to pulmonology for full PFTs and high-resolution CT. Continue current inhalers. He knows to call for fever or worsening breathing."
+            }
+          ],
+          "state": {
+            "spo2": 94,
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-27a",
+          "kind": "specialist_visit",
+          "start": "2022-06-27T09:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Progressive dyspnea and dry cough",
+          "conditions": [
+            {
+              "label": "Idiopathic pulmonary fibrosis",
+              "action": "diagnosed",
+              "onset": "2022-06-27",
+              "note": "HRCT and PFT at pulmonary consult"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              78
+            ],
+            "hr": 82,
+            "rr": 20,
+            "temp_c": 36.9,
+            "spo2": 94
+          },
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2022-06-27T08:00",
+              "text": "HIGH-RESOLUTION CT CHEST WITHOUT CONTRAST, with prone and expiratory images.\nIndication: progressive dyspnea, dry cough, bibasilar crackles; former smoker; shipyard work history.\nFindings: Subpleural reticulation with honeycombing and traction bronchiectasis, predominantly in the lower lobes and persisting on prone imaging. Centrilobular and paraseptal emphysema in the upper lobes. No pleural or diaphragmatic thickening, no pleural plaques, no calcification. No consolidation or ground-glass predominance. No suspicious nodule or mass. Mediastinal nodes not enlarged. Heart size normal, no pericardial effusion.",
+              "conclusion": "Lower-lobe predominant fibrotic lung disease with honeycombing and traction bronchiectasis, a usual interstitial pneumonia pattern, together with upper-lobe emphysema. No pleural features of asbestos-related disease."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2022-06-27T08:30",
+              "text": "Complete pulmonary function testing: spirometry, lung volumes by plethysmography, diffusing capacity.\nFVC 66% predicted. FEV1 68% predicted. FEV1/FVC 0.80. No significant bronchodilator response. TLC 70% predicted. DLCO 38% predicted (hemoglobin-corrected).\nEffort and reproducibility acceptable.",
+              "conclusion": "Reduced FEV1 with a preserved FEV1/FVC ratio, reduced total lung capacity and a markedly reduced diffusing capacity."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral-2022",
+              "action": "done",
+              "date": "2022-06-27T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Consultation",
+              "date": "2022-06-27T11:30",
+              "author": "pulmonology",
+              "body": "PULMONARY AND CRITICAL CARE — NEW CONSULTATION\nReferred by: primary care physician\nReason: progressive breathlessness and dry cough\n\nThis 64-year-old retired shipyard mechanic reports about a year of slowly increasing breathlessness; stairs are now the main problem. Most days he has a nonproductive cough. He has had no fevers, no hemoptysis and no chest pain, and he has not traveled. Former smoker, 40 pack-years, stopped 3 years ago. Emphysema known since 2014, on tiotropium, with overnight oxygen 2 L.\n\nMedications: tiotropium 18 mcg daily, albuterol as needed, tamsulosin 0.4 mg at bedtime, acetaminophen as needed, oxygen 2 L/min overnight.\nAllergies: sulfa drugs (rash), shellfish.\nFamily: father with lung cancer.\n\nExam: Temp 36.9 C (98.4 F), BP 126/78, HR 82, RR 20, SpO2 94% on room air. Crackles at the end of inspiration at both bases. Fingers without clubbing. No cyanosis. No peripheral edema.\n\nStudies today: HRCT with a lower-lobe fibrotic pattern, honeycombing and traction bronchiectasis plus upper-lobe emphysema; no pleural plaques or thickening. PFTs: reduced FEV1, normal ratio, reduced TLC and very low DLCO.\n\nImpression: Fibrotic interstitial lung disease in a UIP pattern without features of asbestos-related pleural disease or another identifiable cause; idiopathic pulmonary fibrosis. Coexisting emphysema. The preserved ratio despite known emphysema fits the two processes offsetting each other.\n\nPlan: Continue tiotropium and overnight oxygen. Will present his imaging at our ILD conference and see him back in about 3 months.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "portal_message",
+          "start": "2022-07-06T20:15",
+          "reason": "Question about pulmonary consult",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung doctor",
+              "date": "2022-07-06T20:15",
+              "author": "patient",
+              "body": "The lung doctor said I have scarring in my lungs on top of the emphysema. Did you get the letter? What does this mean for me? I don't really understand the name he used."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung doctor",
+              "date": "2022-07-07T12:40",
+              "author": "PCP",
+              "body": "Hi Michael, yes, I have the letter and the CT. The scarring is called pulmonary fibrosis; in your case there's no clear outside cause, so it's labeled idiopathic. It usually changes slowly, over months to years. Your pulmonologist will see you again in the fall after reviewing your scan with their team. Happy to go over it in person anytime, just ask the front desk for a slot."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "specialist_visit",
+          "start": "2022-09-16T13:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Pulmonary fibrosis follow-up",
+          "conditions": [
+            {
+              "label": "Combined pulmonary fibrosis and emphysema",
+              "action": "diagnosed",
+              "onset": "2022-06-27",
+              "note": "IPF with upper-lobe emphysema",
+              "icd10": "J84.89"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 79,
+            "rr": 16,
+            "spo2": 95
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Follow-up",
+              "date": "2022-09-16T15:10",
+              "author": "pulmonology",
+              "body": "PULMONARY CLINIC — FOLLOW-UP\n\nInterval: He describes 8 months now of worsening exertional breathlessness, a dry cough and more tiredness than he is used to. He spent 30 years as a shipyard mechanic before fabrication work.\n\nExam: Clubbing of the fingers is present today. Crackles at end inspiration at both bases.\n\nImaging: His June HRCT was reviewed with thoracic radiology at our ILD conference: subpleural reticulation, honeycombing and traction bronchiectasis concentrated in the lower lobes; no pleural or diaphragmatic thickening, no plaques, no calcification. Upper-lobe emphysema.\nPFT: FVC and FEV1 both reduced, FEV1/FVC normal, DLCO reduced.\n\nAssessment: Combined pulmonary fibrosis and emphysema, with the fibrotic component meeting criteria for idiopathic pulmonary fibrosis.\n\nPlan: Continue tiotropium, albuterol as needed and nocturnal oxygen 2 L/min. Return in 6 months or sooner if worse.\n\nMedications reviewed: tiotropium, albuterol, tamsulosin, acetaminophen, nocturnal oxygen.\nAllergies: sulfa (rash), shellfish."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "annual_physical",
+          "start": "2022-10-04T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 94,
+            "weight_kg": 78.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-04T09:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-04T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-04T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-10-04T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-04T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-04T09:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T09:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-10-04T10:30",
+              "author": "PCP",
+              "body": "Subsequent AWV, age 65.\n\nInterval: Pulmonary consult in June and follow-up in September: idiopathic pulmonary fibrosis together with his emphysema (CPFE). Breathing about the same as summer; stairs slow but doable. Uses O2 overnight only.\n\nFunctional: independent; no falls. Mood: PHQ-9 3, a bit worried about the lung news but sleeping and eating ok.\nAdvance care planning: has now named a longtime friend as health care proxy; form scanned.\n\nExam: SpO2 low 90s RA. Dry crackles at the bases. Clubbing noted. Heart RRR. No edema.\n\nPlan: Continue lung regimen as per pulmonology. High-dose flu and bivalent COVID today. Screening labs drawn. Colonoscopy not due until 2028. Follow-up in about 2 months."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2022-10-04T09:49",
+              "author": "MA",
+              "body": "High-dose quadrivalent influenza left deltoid; Pfizer bivalent COVID booster right deltoid. Observed 15 min, fine."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up lungs and urinary symptoms",
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 82,
+            "rr": 15,
+            "spo2": 94,
+            "weight_kg": 77.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-12-13T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-12-13T15:35",
+              "author": "PCP",
+              "body": "Pt here for routine check. Breathing steady since fall. Some mild upper belly discomfort after big meals the past few weeks, thinks it's the holiday food; no vomiting, bowels regular, no black stools. Nocturia x2 unchanged.\n\nExam: Lungs bibasilar dry crackles, no wheeze. Abdomen soft, nontender today. No edema.\n\nA/P: CPFE stable on current regimen. BPH stable. Mild postprandial discomfort, nontender exam; trial of smaller meals, avoid late eating, return if persists or any weight loss. Refills sent. Recheck in 2-3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-03a",
+          "kind": "office_visit",
+          "start": "2023-02-03T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Upper abdominal pain and weight loss",
+          "vitals": {
+            "bp": [
+              127,
+              79
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 94,
+            "weight_kg": 73.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-03T09:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-03T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-03T09:20",
+              "resulted": "2023-02-04T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Lipase",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-03T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-02-03T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-ap-2023",
+              "action": "placed",
+              "order": "CT abdomen and pelvis with contrast",
+              "category": "imaging",
+              "reason": "epigastric pain radiating to back, weight loss"
+            },
+            {
+              "id": "gi-referral-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "epigastric pain to back, weight loss, new hyperglycemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Abdominal Pain",
+              "date": "2023-02-03T09:45",
+              "author": "PCP",
+              "body": "S: The upper belly ache from December hasn't let up. Gnawing pain in the pit of the stomach that goes through to his back, worse lying flat, about 2 months now. Appetite down. Pants are loose; weighs 74 kg today vs 78 in December and 81 when he joined. No vomiting, no change in bowel habits, no dark urine or yellow eyes. Thirstier than usual lately.\n\nO: Thin. No scleral icterus. Abdomen soft with mild epigastric tenderness, no mass, no organomegaly. Lungs bibasilar crackles as before.\n\nA/P: Epigastric pain boring to the back with weight loss and new thirst in a 65 y/o former smoker whose mother and sister had pancreatic cancer. Pancreatic process has to be excluded first. CT abdomen/pelvis with contrast ordered urgently; GI referral placed now so he's in line. CMP, CBC, lipase, A1c today. Explained my concern plainly; he wants to know as soon as results come."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call — A1c",
+              "date": "2023-02-04T10:15",
+              "author": "PCP",
+              "body": "Called pt with labs. A1c 7.4, new diabetes range; lipase normal; liver tests unremarkable. In this setting new diabetes may well be coming from the pancreas, CT will help sort that. Starting metformin 500 mg twice daily with food, will titrate once his stomach tolerates it. Glucometer and strips sent; check fasting each morning. CT scheduled for the 14th."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0,
+            "labs": {
+              "Hemoglobin": 12.6,
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-04a",
+          "kind": "telephone",
+          "start": "2023-02-04T10:15",
+          "reason": "New diabetes, start metformin",
+          "conditions": [
+            {
+              "label": "Diabetes mellitus due to underlying condition without complications",
+              "action": "diagnosed",
+              "onset": "2023-02-03",
+              "note": "New onset with weight loss; pancreatic cause suspected",
+              "icd10": "E08.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "new-onset diabetes"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "imaging",
+          "start": "2023-02-14T11:00",
+          "service": "Radiology",
+          "reason": "Epigastric pain and weight loss",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-02-14T11:00",
+              "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST, pancreatic phase and portal venous phase.\nIndication: epigastric pain radiating to the back, weight loss, new hyperglycemia.\nFindings: Hypoenhancing mass in the head of the pancreas measuring 3.0 cm. No metastatic lesions in the liver. No ascites. No peritoneal nodularity. No enlarged abdominal or pelvic lymph nodes. Pancreatic body and tail otherwise unremarkable. Gallbladder, spleen, adrenal glands and kidneys normal. Bowel unremarkable. Appendix surgically absent. Bladder and prostate unremarkable for technique. Visualized lung bases show subpleural reticulation consistent with known fibrotic lung disease.",
+              "conclusion": "3.0 cm mass in the pancreatic head, concerning for pancreatic adenocarcinoma. No evidence of metastatic disease in the abdomen or pelvis.",
+              "issued": "2023-02-14T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-ap-2023",
+              "action": "done",
+              "date": "2023-02-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT Result Call",
+              "date": "2023-02-14T17:30",
+              "author": "PCP",
+              "body": "Called pt, he asked to hear it straight. CT shows a 3 cm mass at the head of the pancreas, nothing seen spreading in the belly. Told him this most likely needs a biopsy and a surgical opinion. Called GI office; they moved his consult up to the 27th. He'll come in or call anytime before then; gave him my cell line."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-24a",
+          "kind": "telephone",
+          "start": "2023-02-24T12:10",
+          "reason": "Metformin titration",
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Glucose Check-in",
+              "date": "2023-02-24T12:10",
+              "author": "RN",
+              "body": "Pt reports fasting sugars 150s-170s on metformin 500 bid, no GI upset from the pill. Per PCP increase to 1000 mg twice daily, new Rx sent. GI visit confirmed for Monday the 27th."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T10:00",
+          "service": "Gastroenterology",
+          "reason": "Pancreatic head mass",
+          "conditions": [
+            {
+              "label": "Cachexia",
+              "action": "diagnosed",
+              "onset": "2023-02-27",
+              "icd10": "R64"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 66,
+            "weight_kg": 72.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-27T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 118
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-02-27T10:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-02-27T10:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.4
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-27T10:40",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 156
+                },
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 560
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 142
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL{FEU}",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "done",
+              "date": "2023-02-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2023-02-27T13:00",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY — NEW PATIENT CONSULTATION\nReferral: primary care, for pancreatic head mass\n\nHPI: 65-year-old man with combined pulmonary fibrosis and emphysema (seen by pulmonary in June and September 2022) who has had three months of epigastric pain that bores into the back, a 15 lb weight loss he did not intend, and diabetes newly found this month. Bowel habits unchanged. No jaundice.\n\nMeds: metformin 1000 mg twice daily, tiotropium, albuterol as needed, tamsulosin, acetaminophen as needed, nocturnal oxygen.\nAllergies: sulfa (rash), shellfish.\nFamily history: sister diagnosed with pancreatic cancer at 58; mother with pancreatic cancer late in life.\nSocial: 40 pack-years, quit.\n\nExam: Cachectic appearing. Abdomen soft, mildly tender in the epigastrium, no palpable mass. No icterus.\n\nLabs today: hemoglobin 12.1, total bilirubin 1.2, alkaline phosphatase 120, CA 19-9 560, fasting glucose 156. Platelets 118, PT 14.4 / INR 1.2, fibrinogen 142, D-dimer 5.6.\nCT 2/14: 3 cm pancreatic head mass, no metastases.\n\nImpression: Pancreatic head mass highly suspicious for adenocarcinoma, radiographically resectable, with new diabetes and cachexia. Low platelets and fibrinogen with a raised D-dimer and mildly long PT suggest a low-grade consumptive coagulopathy; no bleeding or clot.\n\nPlan: EUS with fine-needle aspiration next week. Referral to hepatobiliary surgery and medical oncology in parallel. Nutrition consult.\n\ncc: primary care physician"
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "labs": {
+              "Hemoglobin": 12.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "procedure_visit",
+          "start": "2023-03-07T08:00",
+          "service": "Gastroenterology",
+          "reason": "EUS with fine-needle aspiration of pancreatic mass",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of pancreas",
+              "action": "diagnosed",
+              "onset": "2023-02-14",
+              "note": "Mucin-producing adenocarcinoma, pancreatic head, 3.0 cm, no metastases"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "diagnosed",
+              "onset": "2023-02-27",
+              "note": "Chronic compensated DIC with mucin-producing adenocarcinoma; no bleeding or thrombosis",
+              "icd10": "D65"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-03-07T08:40",
+              "text": "Specimen: pancreas, head mass, EUS-guided fine-needle aspiration and core.\nMicroscopic: Malignant glandular epithelium forming irregular glands in a desmoplastic stroma, with abundant extracellular and intracellular mucin. Cytologic atypia with enlarged irregular nuclei.\nImmunostains support pancreaticobiliary origin.",
+              "conclusion": "Pancreas, head mass: adenocarcinoma, mucin-producing.",
+              "issued": "2023-03-08T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Endoscopic Ultrasound",
+              "date": "2023-03-07T10:15",
+              "author": "gastroenterology",
+              "body": "PROCEDURE: Upper EUS with fine-needle biopsy.\nSedation: monitored anesthesia care; oxygen by nasal cannula throughout given lung disease.\nFindings: 30 mm hypoechoic, irregular mass in the pancreatic head. No vascular involvement on EUS. No liver lesions in views obtained. No ascites. Four passes with a 22G biopsy needle; on-site cytology adequate.\nComplications: none.\nPathology (final 3/8): mucin-producing adenocarcinoma.\nAssessment: pancreatic adenocarcinoma, resectable. With the coagulation pattern at consult, findings fit a chronic, compensated DIC from the tumor. To hepatobiliary surgery; oncology aware.\n\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "telephone",
+          "start": "2023-03-09T17:45",
+          "reason": "Discuss biopsy result and surgery plan",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Call",
+              "date": "2023-03-09T17:45",
+              "author": "PCP",
+              "body": "Spoke with pt after his surgery consult. Biopsy confirms pancreatic adenocarcinoma (mucin-producing type). Surgeon offering a pancreaticoduodenectomy on the 21st; anesthesia and pulmonary have reviewed his lungs and felt it was reasonable with care. He has decided to go ahead. Talked through recovery and that his blood sugars will likely need insulin afterward. Friend (his proxy) will help at home. I'll see him after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "hospital_admission",
+          "start": "2023-03-20T06:00",
+          "end": "2023-03-29T13:00",
+          "service": "Surgical Oncology",
+          "reason": "Pancreaticoduodenectomy for pancreatic head adenocarcinoma",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis",
+              "action": "diagnosed",
+              "note": "Post-op day 2; due to excess normal saline infusion after surgery",
+              "icd10": "E87.29"
+            },
+            {
+              "label": "Exocrine pancreatic insufficiency",
+              "action": "diagnosed",
+              "note": "After pancreaticoduodenectomy",
+              "icd10": "K86.81"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "start",
+              "sig": "Inject 20 units under the skin at bedtime",
+              "dose": {
+                "value": 20,
+                "unit": "U"
+              },
+              "frequency": "QHS",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "diabetes after pancreatic resection"
+            },
+            {
+              "drug_text": "amylase 120000 UNT / lipase 24000 UNT / protease 76000 UNT Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules with each meal and 1 capsule with snacks",
+              "dose": {
+                "value": 2,
+                "unit": "capsule"
+              },
+              "frequency": "WITH MEALS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "exocrine pancreatic insufficiency"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-23T05:30",
+              "results": [
+                {
+                  "test": "Chloride",
+                  "value": 114
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 17
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-27T05:30",
+              "results": [
+                {
+                  "test": "Chloride",
+                  "value": 106
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-27T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-03-21T12:00",
+              "text": "Specimen: pancreaticoduodenectomy (pancreatic head, duodenum, distal bile duct, gallbladder, regional lymph nodes).\nTumor site: pancreatic head. Histologic type: adenocarcinoma, mucin-producing. Tumor size: 3.0 cm. Margins: pancreatic neck, bile duct, uncinate/SMA and duodenal margins negative. Regional lymph nodes: 0 of 16 involved. No distant metastasis sampled.\nGallbladder: unremarkable.",
+              "conclusion": "Mucin-producing adenocarcinoma of the pancreatic head, 3.0 cm, margins negative, 0/16 lymph nodes (pT2 N0).",
+              "issued": "2023-03-27T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2023-03-29T12:30",
+              "author": "surgical oncology",
+              "body": "SURGICAL ONCOLOGY — DISCHARGE SUMMARY\nAdmitted 3/20/2023, discharged 3/29/2023.\n\nDiagnosis: pancreatic head adenocarcinoma, mucin-producing, with chronic compensated DIC.\nProcedure: open pancreaticoduodenectomy 3/21/2023.\n\nCourse: Uneventful operation. Given IV normal saline freely in the first 48 hours for borderline urine output; on post-op day 2 chemistry showed chloride 114, bicarbonate 17 with a normal anion gap of 8: hyperchloremic metabolic acidosis from the saline load. Fluids changed to a balanced solution and the bicarbonate was back to 24 by 3/27. Oxygen needs stayed at his usual overnight 2 L with brief daytime support early on. Diet advanced; stools loose and greasy until enzyme replacement started. Glucose 200s on metformin alone; basal insulin begun. Pathology: 3.0 cm, margins negative, 0/16 nodes. Inpatient VTE prophylaxis given; no bleeding.\n\nDischarge medications: insulin glargine 20 units at bedtime (NEW); pancrelipase (lipase 24,000 units) 2 caps with meals, 1 with snacks (NEW); metformin 1000 mg twice daily; tiotropium 18 mcg daily; albuterol as needed; tamsulosin 0.4 mg at bedtime; acetaminophen as needed; oxygen 2 L/min overnight.\nAllergies: sulfa (rash), shellfish.\n\nFollow-up: surgery clinic 2 weeks; medical oncology to discuss adjuvant chemotherapy; PCP within 1-2 weeks for diabetes and recovery."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-07a",
+          "kind": "office_visit",
+          "start": "2023-04-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after pancreatic surgery",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis",
+              "action": "resolved",
+              "note": "Resolved in hospital after fluid change",
+              "icd10": "E87.29"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              76
+            ],
+            "hr": 87,
+            "rr": 16,
+            "temp_c": 36.1,
+            "spo2": 94,
+            "weight_kg": 69.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-07T11:40",
+              "results": [
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-07T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-04-07T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-07T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2023-04-07T12:05",
+              "author": "PCP",
+              "body": "Seen 9 days after discharge from pancreaticoduodenectomy. Discharge summary reviewed: margins clear, nodes negative; brief hyperchloremic acidosis from saline on POD2, corrected before discharge.\n\nHe's tired but walking more each day. Incision healing, surgical team happy at their check. Eating small frequent meals; with the enzymes the greasy stools have settled. Fasting sugars 130-180 on glargine 20 units plus metformin 1000 bid, no lows. Breathing at baseline, O2 overnight.\n\nExam: 68 kg (72 at the GI visit). Thin. Midline incision clean, healing, no erythema. Lungs bibasilar crackles. No edema.\n\nA/P\n1. Pancreatic adenocarcinoma s/p resection: oncology appointment 4/24 for adjuvant therapy.\n2. Diabetes after pancreatic resection: continue glargine 20 u qhs and metformin. Keep logging; hypoglycemia teaching reviewed.\n3. Exocrine insufficiency: pancrelipase with meals; dietitian follow-up arranged.\n4. Acidosis: resolved; BMP today to confirm.\n5. Cachexia: protein shakes between meals.\nMeds reconciled. Recheck 2 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "labs": {
+              "Hemoglobin": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "pharmacy",
+          "start": "2023-04-12T09:30",
+          "reason": "Prior authorization pancrelipase",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization",
+              "date": "2023-04-12T09:30",
+              "author": "RN",
+              "body": "Part D plan requires PA for pancreatic enzymes at the prescribed quantity (~8 caps/day). Submitted with op note and diagnosis of exocrine insufficiency after pancreaticoduodenectomy. Approved for 12 months; pharmacy notified, pt picking up today."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "specialist_visit",
+          "start": "2023-04-24T14:00",
+          "service": "Medical Oncology",
+          "reason": "Adjuvant therapy for resected pancreatic adenocarcinoma",
+          "conditions": [
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "resolved",
+              "note": "Coagulation markers normal after resection",
+              "icd10": "D65"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              72
+            ],
+            "hr": 73,
+            "weight_kg": 67.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-24T13:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.63
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-24T13:30",
+              "results": [
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 31
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 288
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL{FEU}",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Oncology Consultation",
+              "date": "2023-04-24T16:00",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — NEW CONSULT\n\nDiagnosis: pancreatic head adenocarcinoma, mucin-producing, pT2 N0, R0, resected 3/21/2023. Pre-operative CA 19-9 560; chronic compensated DIC at diagnosis.\n\nToday: recovering well, weight 68 kg, ECOG 1. Combined pulmonary fibrosis and emphysema on nocturnal oxygen. Diabetes on glargine and metformin.\n\nLabs: CA 19-9 31 (normal). Platelets 236, fibrinogen 288, D-dimer 0.7: the coagulopathy has resolved with removal of the tumor.\n\nPlan: Adjuvant modified FOLFIRINOX every 14 days for 12 cycles, starting 5/8/2023. Port placement next week. Discussed neuropathy, diarrhea, cytopenias. Chose this over gemcitabine-based therapy partly because of his fibrotic lung disease. Surveillance CT and CA 19-9 after completion.\n\nAllergies: sulfa (rash), shellfish.\ncc: primary care physician, hepatobiliary surgery"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up during chemotherapy",
+          "vitals": {
+            "bp": [
+              129,
+              79
+            ],
+            "hr": 82,
+            "rr": 16,
+            "spo2": 93,
+            "weight_kg": 66.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-20T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-20T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-20T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-20T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-06-20T10:00",
+              "author": "PCP",
+              "body": "S: Cycle 4 of adjuvant chemo done last week. Tired for 2-3 days after each pump disconnect, then rebounds. Sugars: fasting mostly 120s-150s, a couple of 90s, no lows. Enzymes with every meal, stools formed. Lungs same.\n\nO: 67 kg. Port site R chest clean. Lungs bibasilar crackles. Feet: intact skin, pulses palpable, monofilament normal.\n\nA/P: Diabetes after pancreatectomy, reasonable control for his situation; goal is avoiding lows, not tight numbers. A1c, BMP, urine microalbumin today. Weight stable-ish on chemo; continue supplements. Eye exam referral sent. Follow-up after chemo finishes."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0,
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "Microalbumin/Creatinine Ratio": 12
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "outside_records",
+          "start": "2023-08-02T13:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2023-08-02T13:00",
+              "author": "optometry",
+              "body": "Dilated retinal exam 7/27/2023. Visual acuity 20/25 OU with correction. No diabetic retinopathy either eye. Mild nuclear lens changes, not visually significant. Recommend yearly exam. Allergies on file: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "nurse_visit",
+          "start": "2023-09-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-09-26T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-26T10:07"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-09-26T10:09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Immunizations",
+              "date": "2023-09-26T10:30",
+              "author": "RN",
+              "body": "Timed between chemo cycles per oncology (off-week). Given high-dose flu L deltoid, updated COVID R deltoid, RSV L deltoid lower site. Tolerated. 15 min observation fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "portal_message",
+          "start": "2023-10-11T07:55",
+          "reason": "Blood in urine",
+          "orders": [
+            {
+              "id": "uro-referral-2023",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "painless gross hematuria"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Red urine",
+              "date": "2023-10-11T07:55",
+              "author": "patient",
+              "body": "For about two weeks my urine has been pinkish red off and on. Doesn't hurt, no burning. Finished my last chemo Monday. Should I worry?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Hematuria Call",
+              "date": "2023-10-11T09:20",
+              "author": "PCP",
+              "body": "Called pt. Visible blood in urine on and off x2 weeks, painless, no fever, no flank pain, no clots blocking flow, voiding as usual for him. No new meds. Former heavy smoker, grandfather had bladder cancer: painless gross hematuria needs cystoscopy and upper-tract imaging. Urgent urology referral placed; their scheduler can see him 10/20. Go to ED if unable to urinate or passing large clots."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "outside_records",
+          "start": "2023-10-16T15:00",
+          "reason": "Oncology letter, adjuvant chemotherapy complete",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Medical Oncology Progress Note",
+              "date": "2023-10-16T15:00",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — END OF TREATMENT\nCompleted cycle 12 of adjuvant modified FOLFIRINOX on 10/9/2023. No hospitalizations. Plan: surveillance CT chest/abdomen/pelvis and CA 19-9 in about 3 months, then every 3-6 months. Port to stay for now. Noted he reports new hematuria; PCP has referred to urology.\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "specialist_visit",
+          "start": "2023-10-20T13:30",
+          "service": "Urology",
+          "reason": "Painless gross hematuria",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of bladder",
+              "action": "diagnosed",
+              "onset": "2023-10-20",
+              "note": "Papillary bladder tumor on office cystoscopy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 83,
+            "weight_kg": 66.9
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-10-20T13:40",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Large"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": ">50"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-20T13:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-20T13:40",
+              "resulted": "2023-10-22T09:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2023",
+              "action": "done",
+              "date": "2023-10-20T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Consultation",
+              "date": "2023-10-20T16:00",
+              "author": "urology",
+              "body": "UROLOGY — NEW PATIENT\n\nThis gentleman with CPFE and a resected pancreatic adenocarcinoma (adjuvant chemo finished 10/9) has seen blood in his urine for two weeks without pain. No recent urinary infection, and no drugs associated with cystitis. Longstanding nocturia and slow stream on tamsulosin. Metal worker; retired five years ago. 40 pack-years.\n\nBP 130/85. General exam unremarkable; abdomen soft, no CVA tenderness; genitalia normal.\n\nUA: gross hematuria, no leukocytes or nitrite; culture sent. Creatinine 1.1, BUN 14.\n\nOffice flexible cystoscopy today: single papillary tumor on the left lateral wall, roughly 1.5-2 cm. Remaining urothelium normal. Prostatic urethra with lateral lobe enlargement.\n\nImpression: papillary bladder tumor, presumed urothelial carcinoma.\nPlan: CT urogram; TURBT with single post-op intravesical chemotherapy instillation. Continue tamsulosin.\nAllergies: sulfa (rash), shellfish.\ncc: PCP"
+            }
+          ],
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "imaging",
+          "start": "2023-10-27T09:00",
+          "service": "Radiology",
+          "reason": "CT urogram for hematuria",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-10-27T09:00",
+              "text": "CT UROGRAM (noncontrast, nephrographic and excretory phases).\nIndication: gross hematuria; papillary bladder lesion on cystoscopy.\nFindings: 1.7 cm papillary filling defect along the left lateral bladder wall. No perivesical stranding. Kidneys enhance symmetrically without mass or stone. Collecting systems and ureters opacify fully without filling defect or hydronephrosis. Post-surgical changes of pancreaticoduodenectomy without mass at the operative bed. Liver without lesions. No enlarged lymph nodes. Prostate mildly enlarged.",
+              "conclusion": "1.7 cm papillary lesion of the left lateral bladder wall. Normal upper urinary tracts. No evidence of recurrent pancreatic cancer."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "procedure_visit",
+          "start": "2023-11-08T07:30",
+          "service": "Urology",
+          "reason": "Transurethral resection of bladder tumor",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-11-08T08:15",
+              "text": "Specimen: bladder tumor, left lateral wall, transurethral resection; separate deep base biopsy.\nPapillary urothelial neoplasm with fibrovascular cores, mild nuclear atypia, orderly architecture. No invasion of lamina propria. Muscularis propria present in deep specimen and free of tumor. No carcinoma in situ.",
+              "conclusion": "Noninvasive papillary urothelial carcinoma, low grade (pTa). Muscularis propria present and uninvolved.",
+              "issued": "2023-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "TURBT Operative Report",
+              "date": "2023-11-08T10:00",
+              "author": "urology",
+              "body": "PROCEDURE: Cystoscopy, transurethral resection of bladder tumor (2 cm, left lateral wall), single immediate post-op intravesical gemcitabine instillation.\nAnesthesia: general via LMA with pulmonary input given fibrotic lung disease; extubated uneventfully.\nFindings: solitary papillary tumor completely resected with deep base sampled. No other lesions. Ureteral orifices normal.\nEBL minimal. Catheter removed same day after instillation dwell; voided before discharge.\nPathology (final): low-grade noninvasive papillary urothelial carcinoma, pTa, muscle present and uninvolved.\nPlan: surveillance cystoscopy at 3 months, then per low-grade protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up diabetes, cancer care coordination",
+          "vitals": {
+            "bp": [
+              135,
+              75
+            ],
+            "hr": 94,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 70.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-12T10:35",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.07
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-12T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-12-12T10:50",
+              "author": "PCP",
+              "body": "A busy year for him: pancreatic resection in March, 12 cycles of chemo through October, then a low-grade bladder tumor resected in November. Recovering. Appetite back, weight creeping up to 69 kg. No more blood in the urine. Breathing same; stairs with a rest.\n\nSugars: fasting 110-160, a few post-meal 200s around holidays. No lows.\n\nExam: lungs bibasilar crackles, clubbing. Port site fine. No edema. Feet normal sensation today.\nPHQ-9 4.\n\nA/P\n- Diabetes after pancreatectomy: glargine 20 u, metformin 1000 bid; A1c pending.\n- Pancreatic cancer: surveillance with oncology, CT in January.\n- Bladder cancer pTa low grade: cystoscopy February.\n- CPFE: pulmonary follow-up due in 2024.\n- Exocrine insufficiency: enzymes working.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0,
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-16a",
+          "kind": "outside_records",
+          "start": "2024-02-20T10:00",
+          "reason": "Urology surveillance cystoscopy",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology Surveillance Cystoscopy",
+              "date": "2024-02-20T10:00",
+              "author": "urology",
+              "body": "UROLOGY — OFFICE CYSTOSCOPY 2/16/2024\nIndication: surveillance, low-grade pTa urothelial carcinoma resected 11/2023.\nFindings: resection scar on left lateral wall well healed. No papillary or flat lesions. Urine cytology sent, negative.\nPlan: next cystoscopy in about 9 months. Continue tamsulosin.\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Three-month follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              73
+            ],
+            "hr": 78,
+            "rr": 15,
+            "spo2": 93,
+            "weight_kg": 71.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-19T14:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-03-19T15:00",
+              "author": "PCP",
+              "body": "Winter went fine. Cystoscopy in Feb clean. Oncology CT next month. Weight up to 70.5. Sugars in range, rare 200 after pasta. Taking enzymes, stools fine. Breathing: stairs with a stop, O2 at night, albuterol a few times a week.\n\nExam: bibasilar crackles, clubbing, no edema.\n\nPlan: A1c, BMP. No changes. Pulmonary visit due this summer; reminded him to book. RTC 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "outside_records",
+          "start": "2024-04-09T12:00",
+          "reason": "Oncology surveillance note",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-02T09:00",
+              "results": [
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Medical Oncology Surveillance",
+              "date": "2024-04-09T12:00",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — SURVEILLANCE VISIT 4/4/2024\nPancreatic adenocarcinoma pT2 N0 R0, adjuvant mFOLFIRINOX completed 10/2023.\nCT chest/abdomen/pelvis 4/2/2024: no local recurrence or metastatic disease; stable post-surgical changes; known lower-lobe fibrotic changes and upper-lobe emphysema unchanged.\nCA 19-9: 22.\nPlan: continue surveillance every 6 months. Port flushed; plan removal later this year.\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-28a",
+          "kind": "specialist_visit",
+          "start": "2024-06-28T10:30",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Routine follow-up, combined pulmonary fibrosis and emphysema",
+          "vitals": {
+            "bp": [
+              119,
+              82
+            ],
+            "hr": 70,
+            "rr": 16,
+            "spo2": 94,
+            "weight_kg": 70.4
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-06-28T10:00",
+              "text": "PA and lateral chest.\nLungs are hyperexpanded with flattened hemidiaphragms and an enlarged retrosternal clear space. Reticular opacities at both lung bases, consistent with known fibrosis. No consolidation, effusion or pneumothorax. Heart size normal. Right chest port catheter tip at the cavoatrial junction.",
+              "conclusion": "Hyperinflation with flattened diaphragms and increased retrosternal air space. Basilar reticular changes. No acute process."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Follow-up",
+              "date": "2024-06-28T13:00",
+              "author": "pulmonology",
+              "body": "PULMONARY CLINIC — ROUTINE FOLLOW-UP\n\nCPFE (IPF with emphysema), returning in the setting of a resected pancreatic adenocarcinoma (2023) and a low-grade bladder cancer (2023). He wears oxygen at night and walks slowly with a cane. No hospital stays since we last saw him; he feels about the same as usual. Main complaint is daytime tiredness, which he blames on poor sleep. He brings up sputum daily, unchanged in amount and color.\n\nSmoking: former, 40 pack-years. Alcohol: 1-2 drinks a week. Retired shipyard mechanic and metal fabricator. Emphysema diagnosed in 2014.\n\nExam: RR 16, SpO2 94% on room air. Alert, speaking in full sentences, no respiratory distress. Breath sounds decreased on both sides with mild wheeze. No JVD, no leg edema.\n\nStudies: ABG drawn at today's visit for routine reassessment: no acid-base disturbance; resting oxygenation adequate on room air. Chest x-ray: flattened diaphragms, increased retrosternal air space, basilar reticulation.\n\nAssessment: CPFE, clinically stable. Fatigue likely sleep-related.\nPlan: Continue tiotropium, albuterol as needed, nocturnal O2 2 L/min. Sleep hygiene discussed. Return in 6 months.\n\nMedication list (as provided): metformin, insulin glargine, tiotropium, albuterol, tamsulosin, acetaminophen, oxygen.\nAllergies: sulfa (rash), shellfish."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 82,
+            "rr": 17,
+            "temp_c": 37.0,
+            "spo2": 93,
+            "weight_kg": 71.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-23T09:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-23T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-23T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-23T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-23T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-07-23T09:45",
+              "author": "PCP",
+              "body": "Pulm letter from 6/28 reviewed: CPFE stable, CXR hyperinflation, ABG without acid-base problem.\n\nHe says he's sleeping in the recliner some nights because he likes it, then wakes stiff and tired. Using O2 in bed only. No snoring complaints from anyone, lives alone. Daily morning phlegm, same as always.\n\nExam: 71 kg. Lungs diminished with scattered wheeze, bibasilar crackles. No edema.\n\nA/P: CPFE stable. Fatigue: bed with O2 rather than the recliner, regular hours; labs today. Diabetes: steady. Oncology and urology surveillance on track. RTC fall for wellness visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0,
+            "labs": {
+              "Hemoglobin": 13.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "outside_records",
+          "start": "2024-08-21T11:30",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2024-08-21T11:30",
+              "author": "optometry",
+              "body": "Dilated exam 8/15/2024. VA 20/25 right, 20/30 left with correction. No diabetic retinopathy OU. Early lens opacities. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              126,
+              74
+            ],
+            "hr": 87,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 94,
+            "weight_kg": 70.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-01T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-01T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 101
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-10-01T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-01T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-01T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-01T09:17"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2024-10-01T09:19"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-10-01T09:50",
+              "author": "PCP",
+              "body": "Subsequent AWV, age 67.\n\nFunction: independent, walks with a cane outside the house since spring for balance on uneven ground; no falls. Drives short distances. Cognition: recall 3/3, clock normal. PHQ-9 2.\nProxy form on file (friend). Reviewed POLST-type wishes briefly; he wants full treatment for now and will revisit.\n\nExam: lungs diminished, bibasilar crackles, clubbing. Heart RRR. No edema. Feet: sensation intact, skin ok.\n\nPrevention: high-dose flu, updated COVID, Tdap today. RSV done 2023. Pneumococcal and shingles complete. Colonoscopy due 2028 (may defer given other cancers - revisit). Eye exam done in August.\nLabs: A1c, urine microalbumin, BMP.\nFollow-up in 2-3 months."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2024-10-01T09:22",
+              "author": "MA",
+              "body": "Flu HD L deltoid, COVID R deltoid, Tdap L deltoid lower site. No reaction during observation."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "outside_records",
+          "start": "2024-10-29T14:00",
+          "reason": "Oncology surveillance note",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-21T09:00",
+              "results": [
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 19
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Medical Oncology Surveillance",
+              "date": "2024-10-29T14:00",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — 18 MONTHS FROM RESECTION\nCT chest/abdomen/pelvis 10/21/2024: no evidence of recurrent or metastatic pancreatic cancer. Lungs: chronic basal fibrosis and upper-lobe emphysema, unchanged; no new nodule or mass. CA 19-9: 19.\nPort removed in clinic procedure suite today without issue.\nNext surveillance in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-22a",
+          "kind": "outside_records",
+          "start": "2024-11-26T09:30",
+          "reason": "Urology surveillance cystoscopy",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology Surveillance Cystoscopy",
+              "date": "2024-11-26T09:30",
+              "author": "urology",
+              "body": "Office cystoscopy 11/22/2024: no recurrence; bladder mucosa normal; prostatic lateral lobes enlarged as before. Next cystoscopy in 1 year. Continue tamsulosin."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "office_visit",
+          "start": "2024-12-11T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weakness and weight loss",
+          "vitals": {
+            "bp": [
+              127,
+              75
+            ],
+            "hr": 70,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 95,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-11T11:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-11T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 304
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-11T11:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 88
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-12-11T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-11T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Weakness",
+              "date": "2024-12-11T11:30",
+              "author": "PCP",
+              "body": "S: Over the past few months his legs have been giving out on him: hard to get up from the couch and to climb stairs. Odd thing he noticed: if he pushes through, the second or third try is easier. Cough persists. Down to 64.5 kg from 71 in July without trying. Eating ok, enzymes as usual. No fever, no new pain, sugars unchanged.\n\nO: Thin. Proximal leg strength 4/5, arms near full. Knee and ankle jerks hard to get. Lungs crackles at bases, mild wheeze. No edema.\n\nA/P: Proximal weakness that improves with effort, low reflexes, and weight loss in a man with a 40 pack-year history and prior cancers. Concerned about a paraneoplastic process and a new malignancy. CMP, CBC, TSH, CK, A1c today. Called pulmonary: they will keep his 12/27 slot and get a chest x-ray that day; oncology surveillance scan was clean in October but I've let them know. He understands the worry."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab Result Call",
+              "date": "2024-12-12T15:10",
+              "author": "RN",
+              "body": "Per PCP: CK normal, TSH normal, CMP and CBC without new problems. Keep pulmonary appointment 12/27. Pt verbalized understanding."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5,
+            "labs": {
+              "Hemoglobin": 12.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-27a",
+          "kind": "specialist_visit",
+          "start": "2024-12-27T09:30",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Progressive weakness, cough, weight loss",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 80,
+            "rr": 16,
+            "spo2": 95,
+            "weight_kg": 63.7
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-12-27T09:00",
+              "text": "PA and lateral chest. Compared with 6/28/2024.\nNew right hilar mass. Background hyperinflation and basilar reticular opacities unchanged. No effusion. No pneumothorax. Heart size normal.",
+              "conclusion": "New right hilar mass, suspicious for malignancy. Chronic changes of emphysema and fibrosis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Follow-up",
+              "date": "2024-12-27T12:00",
+              "author": "pulmonology",
+              "body": "PULMONARY CLINIC\n\nPatient with CPFE and previously treated pancreatic and bladder cancers returns with weakness that has crept up over several months: stairs and getting out of chairs are hard, though his strength picks up with repeated attempts. Ongoing cough. He has lost 6.8 kg (15 lb) without trying. 40 pack-years, quit.\n\nExam: lower-extremity deep tendon reflexes diminished, and they become brisker after a short burst of exercise. Bibasilar crackles.\n\nChest x-ray today: right hilar mass.\n\nAssessment: suspected primary lung malignancy, right hilum. The pattern of weakness and reflex facilitation raises concern for a paraneoplastic neuromuscular junction disorder.\nPlan: bronchoscopy with EBUS-guided biopsy scheduled 1/8/2025; PET-CT and brain MRI ordered; voltage-gated calcium channel antibodies sent.\n\nAllergies: sulfa (rash), shellfish.\ncc: PCP, oncology"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "procedure_visit",
+          "start": "2025-01-08T07:30",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Bronchoscopy with EBUS-guided biopsy",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of lung",
+              "action": "diagnosed",
+              "onset": "2024-12-27",
+              "note": "Small cell carcinoma, right hilum"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-01-08T08:30",
+              "text": "Specimens: right hilar mass, EBUS-TBNA; station 10R and 7 lymph nodes, EBUS-TBNA.\nSheets of small round-to-oval cells with scant cytoplasm, finely granular chromatin, absent nucleoli, nuclear molding, crush artifact and frequent mitoses. Immunostains: synaptophysin and chromogranin positive, TTF-1 positive, Ki-67 high.\nLymph nodes 10R and 7: involved by the same tumor.",
+              "conclusion": "Small cell carcinoma, right hilar mass, with involvement of station 10R and subcarinal (7) lymph nodes.",
+              "issued": "2025-01-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Bronchoscopy / EBUS",
+              "date": "2025-01-08T10:30",
+              "author": "pulmonology",
+              "body": "Flexible bronchoscopy with linear EBUS under moderate sedation. Airways: extrinsic narrowing of the right upper lobe bronchus origin, mucosa intact. EBUS: hypoechoic right hilar mass sampled x4; stations 10R and 7 sampled x3 each. ROSE: malignant cells. No complications; SpO2 maintained on 3 L.\nFinal pathology 1/10: small cell carcinoma, nodes 10R and 7 positive. Oncology referral placed."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "specialist_visit",
+          "start": "2025-01-16T13:00",
+          "service": "Medical Oncology",
+          "reason": "New small cell lung cancer",
+          "conditions": [
+            {
+              "label": "Lambert-Eaton syndrome in neoplastic disease",
+              "action": "diagnosed",
+              "onset": "2024-12-11",
+              "note": "P/Q-type VGCC antibodies positive",
+              "icd10": "G73.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 78,
+            "weight_kg": 63.9
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Oncology Consultation",
+              "date": "2025-01-16T15:30",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — NEW DIAGNOSIS\nKnown to our clinic for pancreatic adenocarcinoma (resected 2023, no recurrence).\n\nNew: small cell lung carcinoma, right hilum, EBUS 1/8/2025, nodes 10R and 7 positive.\nPET-CT 1/13/2025: FDG-avid right hilar mass 4.3 cm with avid ipsilateral hilar and subcarinal nodes. No distant metastases. No uptake in the pancreatic bed.\nBrain MRI 1/14/2025: no metastases.\nP/Q-type voltage-gated calcium channel antibodies: positive. With proximal weakness that improves with effort and reflex facilitation, this is Lambert-Eaton myasthenic syndrome.\n\nStage: limited-stage SCLC.\nDiscussion: Standard would be concurrent chemoradiation. Radiation oncology reviewed today and advised against thoracic radiation because of his idiopathic pulmonary fibrosis and very low DLCO (high risk of fatal pneumonitis). Plan carboplatin AUC 5 day 1 with etoposide days 1-3 every 21 days for 4 cycles starting 1/20/2025, then restaging. Treating the tumor is the main therapy for the Lambert-Eaton weakness.\nECOG 1-2. Peripheral IV access adequate for now.\n\nMeds: metformin 1000 bid, glargine 20 u, pancrelipase, tiotropium, albuterol prn, tamsulosin, acetaminophen prn, O2 nightly.\nAllergies: sulfa (rash), shellfish.\ncc: PCP, pulmonology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telephone",
+          "start": "2025-01-21T16:30",
+          "reason": "PCP check-in after lung cancer diagnosis",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Call",
+              "date": "2025-01-21T16:30",
+              "author": "PCP",
+              "body": "Called to check in after his oncology visit; first chemo was yesterday. Tired but managing. He was matter-of-fact: 'third one, I know the drill.' Reviewed sugar plan around infusion days: call if over 300 or any under 70. Friend driving him to infusions. Telehealth visit set for late February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes check during chemotherapy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-02-25T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-02-25T11:30",
+              "author": "PCP",
+              "body": "Video, pt at home, identity verified by DOB.\n\nTwo cycles of carboplatin/etoposide done, third next week. Fatigue the week after each, then improves. Says climbing out of the car is a bit easier than in December. Appetite fair. Home weight 63 kg.\n\nSugars: fasting 110-170, highest 240 on chemo day, no lows. Taking glargine 20 u and metformin; enzymes with meals.\n\nA/P: Diabetes acceptable; no change. Weakness improving on treatment. Oncology following counts. In-person visit after cycle 4."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after chemotherapy",
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 77,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 94,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-08T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-08T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-08T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-04-08T10:55",
+              "author": "PCP",
+              "body": "Finished 4th cycle of carboplatin/etoposide 3/24. Restaging CT planned mid-May. Legs noticeably stronger: up from a chair without using arms most times. Cough same. Weight 62.\n\nExam: proximal strength near 5/5 today; reflexes still faint. Lungs crackles at bases. No edema.\n\nA/P: SCLC limited stage, post chemo: awaiting restaging. LEMS improving. Diabetes: A1c today. Cachexia: shakes twice daily, enzymes. Recheck in 2 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "labs": {
+              "Hemoglobin": 11.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "imaging",
+          "start": "2025-05-12T08:30",
+          "service": "Radiology",
+          "reason": "Restaging after chemotherapy",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-05-12T08:30",
+              "text": "CT CHEST WITH CONTRAST. Compared with PET-CT 1/13/2025.\nCentral right hilar mass now 2.7 cm (previously 4.3 cm). Right hilar lymphadenopathy, decreased but persistent. Subcarinal node smaller. No new nodules. No pleural effusion. Background lower-lobe honeycombing and traction bronchiectasis with upper-lobe emphysema, unchanged. Visualized upper abdomen without liver or adrenal lesion.",
+              "conclusion": "Partial response: residual central right hilar mass 2.7 cm with hilar lymphadenopathy. No new disease.",
+              "issued": "2025-05-12T15:40"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-06a",
+          "kind": "office_visit",
+          "start": "2025-06-06T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              65
+            ],
+            "hr": 80,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 94,
+            "weight_kg": 61.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-06T09:50",
+              "resulted": "2025-06-06T14:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 127
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": -3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-06T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-06T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-06-06T10:15",
+              "author": "PCP",
+              "body": "S: CT last month showed the lung tumor shrank by about a third but is still there; oncology plans close surveillance. Feeling 'so-so.' Strength holding. Drinking a lot of water and iced tea since it got warm, 'trying to stay hydrated like they told me during chemo.'\n\nO: 61.5 kg. Alert, conversant, oriented. Mucous membranes moist, no edema, no orthostatic drop. Lungs basilar crackles.\n\nA/P: SCLC partial response, surveillance per oncology. Diabetes stable. BMP today."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call — Sodium",
+              "date": "2025-06-06T16:20",
+              "author": "PCP",
+              "body": "Sodium back at 127 (normal earlier this spring). Euvolemic on exam this morning and drinking large volumes; in someone with small cell lung cancer this is most likely SIADH. Asked him to cut total fluids to about 1.2 liters a day (showed him with a measuring jug at the visit, re-explained), skip the extra water and tea. Repeat sodium in 1 week. Call or go to ED for confusion, unsteadiness, vomiting. Oncology notified by message."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "lab_only",
+          "start": "2025-06-13T08:15",
+          "reason": "Sodium recheck",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-13T08:15",
+              "resulted": "2025-06-13T12:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 125
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": -3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-13T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call — Sodium",
+              "date": "2025-06-13T14:00",
+              "author": "PCP",
+              "body": "Sodium 125, lower despite the restriction. He admits he's been going over on hot days. No confusion, no headache, no vomiting; answering clearly. Tightened to 1 liter total per day, written out with him; repeat early next week. Messaged oncology re: salt tablets vs other options. ED precautions repeated."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "ed_visit",
+          "start": "2025-06-18T15:40",
+          "end": "2025-06-18T21:30",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, fatigue and nausea",
+          "conditions": [
+            {
+              "label": "Syndrome of inappropriate secretion of antidiuretic hormone",
+              "action": "diagnosed",
+              "onset": "2025-06-06",
+              "note": "Paraneoplastic, small cell lung cancer",
+              "icd10": "E22.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              83
+            ],
+            "hr": 83,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 94
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-18T16:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 120
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": -9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-18T16:05",
+              "results": [
+                {
+                  "test": "Serum osmolality",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 260
+                },
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 500
+                },
+                {
+                  "test": "Urine sodium",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 58
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-18T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "date": "2025-06-18T21:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT — PHYSICIAN NOTE\n\nHPI: 67-year-old man with combined pulmonary fibrosis and emphysema and a lung malignancy (copied history lists 'suspected malignant neoplasm of lung'; per oncology records, small cell carcinoma treated with chemotherapy) brought by a friend for a week of fatigue, nausea and some confusion. Primary care found low sodium on 6/6 and 6/13 and put him on fluid restriction, but his sodium has kept falling and he remains mildly confused.\n\nMeds (per pharmacy list): metformin 1000 mg twice daily, insulin glargine 20 units at bedtime, tiotropium 18 mcg daily, albuterol as needed, tamsulosin 0.4 mg at bedtime, acetaminophen as needed, oxygen 2 L overnight, pancrelipase with meals.\nAllergies: sulfa (rash), shellfish.\nFamily history: father lung cancer; mother diabetes and pancreatic cancer; brother prostate cancer; paternal grandfather bladder cancer.\nSocial: long smoking history, quit.\n\nExam: Oriented to person and place, slow to give the date. Clinically euvolemic: no peripheral edema, no orthostatic hypotension, no JVD. Lungs with basilar crackles. No focal deficits.\n\nLabs: sodium 120, serum osmolality 260, urine osmolality 500, urine sodium 58. Glucose and creatinine unremarkable.\nImaging: CT chest from 5/12 reviewed: central lung mass with hilar lymphadenopathy.\n\nMDM: Hypotonic hyponatremia with inappropriately concentrated urine and high urine sodium in a euvolemic patient with small cell lung cancer: SIADH. Mild symptoms; no seizure. Fluid restriction 1 L, admit to medicine for monitored correction with sodium checks every 4-6 hours and a limit on the rate of rise.\nDisposition: admitted."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-18b",
+          "kind": "hospital_admission",
+          "start": "2025-06-18T21:30",
+          "end": "2025-06-21T14:00",
+          "service": "Hospital Medicine",
+          "reason": "Hyponatremia due to SIADH",
+          "medications": [
+            {
+              "drug_text": "sodium chloride 1000 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (1 g) by mouth three times daily with meals",
+              "dose": {
+                "value": 1,
+                "unit": "g"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "SIADH"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-19T06:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Cortisol, AM",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-21T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 126
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": -5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-18T22:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-06-21T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2025-06-21T13:30",
+              "author": "hospital medicine",
+              "body": "HOSPITAL MEDICINE — DISCHARGE SUMMARY\nAdmitted 6/18/2025, discharged 6/21/2025.\nPrincipal diagnosis: hyponatremia from SIADH, paraneoplastic (small cell lung cancer).\n\nCourse: Na 120 on arrival with mild confusion. Strict fluid restriction to 1 L/day and sodium chloride tablets 1 g three times daily. TSH 2.1 and morning cortisol 15, excluding thyroid and adrenal causes. Sodium rose in a controlled way, within safe limits, to 126 by discharge; confusion cleared by day 2 and he was fully oriented. Diabetes managed on glargine with correction insulin; metformin resumed. Oncology saw him in hospital and will follow up in clinic.\n\nDischarge medications: sodium chloride 1 g three times daily (NEW); fluid restriction 1 L/day; metformin 1000 mg twice daily; insulin glargine 20 units at bedtime; pancrelipase with meals; tiotropium 18 mcg daily; albuterol as needed; tamsulosin 0.4 mg at bedtime; acetaminophen as needed; oxygen 2 L/min overnight.\nAllergies: sulfa (rash), shellfish.\nFollow-up: PCP within 1 week with BMP; oncology 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "office_visit",
+          "start": "2025-06-27T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, hyponatremia",
+          "vitals": {
+            "bp": [
+              130,
+              81
+            ],
+            "hr": 83,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 93,
+            "weight_kg": 62.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-27T13:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Glucose",
+                  "value": 102
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-27T13:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-27T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-06-27T14:20",
+              "author": "PCP",
+              "body": "Discharge summary reviewed: SIADH from his small cell cancer, Na 120 -> 126, started salt tabs and 1 L restriction.\n\nToday clear-headed, does the crossword again. Keeping a tally sheet of fluids on the fridge.\n\nExam: oriented x3, conversant. Euvolemic. Lungs basilar crackles.\nNa today 130.\n\nA/P: SIADH improving on restriction plus NaCl 1 g tid. Continue. Recheck sodium in 6 weeks or sooner if symptoms. Oncology visit next week. Med list reconciled."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.8,
+              "Sodium": 131
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "lab_only",
+          "start": "2025-08-12T08:30",
+          "reason": "Sodium recheck",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-12T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 132
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.12
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-12T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium result",
+              "date": "2025-08-12T15:40",
+              "author": "PCP",
+              "body": "Hi Michael, your sodium is holding in the low 130s, which is right where we want it on the salt tablets and fluid limit. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "outside_records",
+          "start": "2025-09-23T11:00",
+          "reason": "Oncology surveillance note",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Medical Oncology Follow-up",
+              "date": "2025-09-23T11:00",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — FOLLOW-UP 9/18/2025\n1) Limited-stage SCLC, carboplatin/etoposide x4 (Jan-Mar 2025), partial response. CT chest 9/15/2025: residual right hilar mass and hilar nodes stable compared with May; no new lesions.\n2) SIADH on fluid restriction and sodium chloride tablets; sodium low 130s.\n3) LEMS: strength improved after chemotherapy.\n4) Pancreatic adenocarcinoma 2023: no recurrence on abdominal imaging; CA 19-9 within normal limits.\nPlan: CT every 3-4 months. Discussed that thoracic radiation remains off the table given IPF.\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              135,
+              71
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 94,
+            "weight_kg": 61.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-07T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.08
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-07T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-07T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-10-07T09:00"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2025-10-07T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-07T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T09:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T09:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-10-07T10:30",
+              "author": "PCP",
+              "body": "Subsequent AWV, age 68.\n\nFunction: cane outdoors, independent at home; friend helps with big grocery runs. No falls. Recall 3/3. PHQ-9 5: some low days, attributes to 'the cancer merry-go-round,' still enjoys the ballgames and his crossword; no thoughts of self-harm. Declines counseling for now.\n\nAdvance care planning (separate time, ~20 min): reviewed his goals with three cancers behind him and a lung tumor being watched. He would want hospital care and treatment that could get him home, but not a breathing machine for long if his lungs failed. MOLST completed: full treatment except no long-term ventilation; attempt CPR. Copy to proxy.\n\nExam: thin, lungs diminished with crackles, clubbing. No edema. Feet fine.\n\nPrevention: flu HD and COVID today. Colonoscopy (due 2028) deferred by mutual decision given his active cancer surveillance.\nA1c deferred to December visit."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2025-10-07T09:50",
+              "author": "MA",
+              "body": "Flu HD L deltoid, COVID R deltoid. Observed, no reaction."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "outside_records",
+          "start": "2025-11-18T10:00",
+          "reason": "Urology surveillance cystoscopy",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology Surveillance Cystoscopy",
+              "date": "2025-11-18T10:00",
+              "author": "urology",
+              "body": "Office cystoscopy 11/14/2025 for history of low-grade pTa bladder cancer: no recurrence. Prostate enlarged, unchanged. He reports his usual slow stream and getting up twice at night. Continue tamsulosin. Follow-up visit in spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "office_visit",
+          "start": "2025-12-19T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              78
+            ],
+            "hr": 85,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 94,
+            "weight_kg": 62.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-19T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-19T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-19T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-19T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-19T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-12-19T11:10",
+              "author": "PCP",
+              "body": "S: Holding steady. Oncology in September said the lung tumor is unchanged; next CT in January. Cystoscopy clean in November. Sticking to the fluid limit and salt tabs. Sugars fasting 120-160. Strength 'good enough,' uses cane outside. Usual morning cough. Urinary: slow stream, up twice at night, unchanged.\n\nO: 62.5 kg, stable since summer. Lungs diminished, basilar crackles, clubbing. No edema. Oriented, sharp.\n\nA/P\n1. Small cell lung cancer, limited stage, partial response: surveillance with oncology.\n2. SIADH: stable on NaCl 1 g tid + 1 L restriction; Na today.\n3. Diabetes after pancreatectomy: glargine 20, metformin 1000 bid; A1c today.\n4. CPFE: tiotropium, prn albuterol, O2 nightly. Pulmonary due for a visit; asked him to call them.\n5. Pancreatic and bladder cancers: no recurrence.\n6. BPH: tamsulosin.\nRefills sent for 90 days. Follow-up in about 3 months; front desk to book."
+            },
+            {
+              "type": "Patient Message",
+              "title": "December lab results",
+              "date": "2025-12-20T09:30",
+              "author": "PCP",
+              "body": "Hi Michael, sodium 133, the best it's been since June. A1c 7.0, same good range. Happy holidays, and see you in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "outside_records",
+          "start": "2026-01-20T10:30",
+          "reason": "Oncology surveillance note",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Medical Oncology Follow-up",
+              "date": "2026-01-20T10:30",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY — FOLLOW-UP 1/15/2026\nSCLC (limited stage), one year from diagnosis. CT chest/abdomen 1/12/2026: residual right hilar mass and hilar nodes unchanged from September; no new pulmonary, hepatic or adrenal lesions; pancreatic bed without mass. CA 19-9 normal. Sodium in the low 130s on salt tablets.\nPlan: imaging every 4 months. Return in April.\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T08:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-02-10T08:45",
+              "author": "RN",
+              "body": "Pharmacy e-request: insulin glargine pens, pen needles, metformin 1000 mg. Seen 12/19, A1c 7.0. Approved 90-day supplies with 1 refill per PCP protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-31a",
+          "kind": "office_visit",
+          "start": "2026-03-31T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Three-month follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2026-03-27T11:20",
+              "author": "front desk",
+              "body": "Pt called to cancel 3/31 visit; has oncology and urology appointments in April and would rather not make three trips in a month. Asked to rebook after those. Message routed to PCP."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T21:05",
+          "reason": "Back pain",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lower back",
+              "date": "2026-04-14T21:05",
+              "author": "patient",
+              "body": "My lower back has been aching for a few weeks and it's getting worse, especially at night. Tylenol takes the edge off. I see urology on the 27th anyway for my yearly bladder check and I'll tell them. Pants are loose again too. Do you want me to do anything before then?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lower back",
+              "date": "2026-04-15T08:10",
+              "author": "PCP",
+              "body": "Thanks for telling me, Michael. With your history I'd like to look at you rather than wait; we have openings this week, call the front desk or reply here and we'll fit you in. If you'd rather keep it to the urology visit, please make sure they hear about the back pain and the weight. Go straight to the ED for any leg weakness or numbness, trouble controlling your bladder or bowels, or fever. Acetaminophen up to 650 mg every 6 hours is fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Lower back",
+              "date": "2026-04-15T12:30",
+              "author": "patient",
+              "body": "I'll stick with urology on the 27th, they're doing a scan anyway. Legs are fine. I'll let you know."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "outside_records",
+          "start": "2026-05-14T15:30",
+          "reason": "Urology consultation letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology Clinic Letter",
+              "date": "2026-05-14T15:30",
+              "author": "urology",
+              "body": "UROLOGY — CLINIC LETTER\nVisit 4/27/2026; addendum 5/14/2026.\n\nHe returns for urologic follow-up with a history of low-grade bladder cancer, CPFE, treated pancreatic adenocarcinoma and small cell lung cancer. Main concern is low back pain that has been worsening, along with further weight loss. Longstanding hesitancy and nocturia.\n\nProblem list (as recorded): idiopathic pulmonary fibrosis; pancreatic adenocarcinoma (mucin-producing) with chronic DIC; bladder cancer; hyperchloremic metabolic acidosis; suspected malignant neoplasm of lung; CPFE; COPD with emphysema; diabetes secondary to pancreatic insufficiency; BPH with LUTS; tobacco use disorder in remission.\nMeds: metformin, insulin glargine, tiotropium, albuterol, tamsulosin, acetaminophen, nocturnal oxygen, pancrelipase, sodium chloride tablets.\nAllergies: sulfa (rash), shellfish.\nFamily history: brother with prostate cancer at 68.\n\nExam: Digital rectal exam: prostate firm and nodular.\nPSA 4/27/2026: 64 ng/mL.\nBone scan 5/4/2026: multiple foci of increased uptake in the lumbar spine and pelvis, consistent with metastases.\nTransrectal prostate biopsy 5/11/2026: adenocarcinoma of the prostate, ISUP grade group 4.\n\nAssessment: metastatic prostate adenocarcinoma to bone.\nPlan: androgen deprivation with leuprolide 22.5 mg every 3 months, first injection 6/2/2026. Bicalutamide 50 mg daily starting 5/26/2026 for 4 weeks to cover the initial testosterone surge. Discussed with his oncologist. Continue tamsulosin.\ncc: PCP, medical oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "telephone",
+          "start": "2026-05-15T12:15",
+          "reason": "PCP call after urology letter",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Call",
+              "date": "2026-05-15T12:15",
+              "author": "PCP",
+              "body": "Called after reading urology's letter: new prostate cancer with spread to the bones of the low back and pelvis. He had already heard it from urology and has the hormone shot scheduled for June 2. Back pain manageable with acetaminophen. Offered a visit to go over everything; he wants to get through the first injection and see me after. Reminded him of ED precautions for leg weakness or bladder/bowel changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "outside_records",
+          "start": "2026-06-09T09:40",
+          "reason": "Urology injection visit note",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology Treatment Note",
+              "date": "2026-06-09T09:40",
+              "author": "urology",
+              "body": "UROLOGY — INJECTION VISIT 6/2/2026\nLeuprolide acetate 22.5 mg given intramuscularly, left gluteal. Started bicalutamide 50 mg daily on 5/26, to complete 4 weeks. Next leuprolide in 3 months (early September). PSA and testosterone with that visit.\nAllergies: sulfa, shellfish."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T08:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-07-21T08:30",
+              "author": "RN",
+              "body": "E-request for tamsulosin 0.4 mg and tiotropium capsules. Last PCP visit 12/2025; follow-up booked September. Approved 90 days each. Left voicemail reminding pt of the 9/15 appointment."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cachexia|R64": {
+        "code": "R64",
+        "display": "Cachexia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chronic obstructive pulmonary disease with emphysema|J43.9": {
+        "code": "J43.9",
+        "display": "Emphysema, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Combined pulmonary fibrosis and emphysema|J84.89": {
+        "code": "J84.89",
+        "display": "Other specified interstitial pulmonary diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Diabetes mellitus due to underlying condition without complications|E08.9": {
+        "code": "E08.9",
+        "display": "Diabetes mellitus due to underlying condition without complications",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Disseminated intravascular coagulation|D65": {
+        "code": "D65",
+        "display": "Disseminated intravascular coagulation [defibrination syndrome]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Exocrine pancreatic insufficiency|K86.81": {
+        "code": "K86.81",
+        "display": "Exocrine pancreatic insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperchloremic metabolic acidosis|E87.29": {
+        "code": "E87.29",
+        "display": "Other acidosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lambert-Eaton syndrome in neoplastic disease|G73.1": {
+        "code": "G73.1",
+        "display": "Lambert-Eaton syndrome in neoplastic disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Nicotine dependence, cigarettes, in remission|F17.211": {
+        "code": "F17.211",
+        "display": "Nicotine dependence, cigarettes, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Syndrome of inappropriate secretion of antidiuretic hormone|E22.2": {
+        "code": "E22.2",
+        "display": "Syndrome of inappropriate secretion of antidiuretic hormone",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "acetaminophen 325 MG Oral Tablet": {
+        "code": "313782",
+        "display": "acetaminophen 325 MG Oral Tablet",
+        "ingredient": "acetaminophen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "amylase 120000 UNT / lipase 24000 UNT / protease 76000 UNT Delayed Release Oral Capsule": {
+        "code": "855495",
+        "display": "amylase 120000 UNT / lipase 24000 UNT / protease 76000 UNT Delayed Release Oral Capsule",
+        "ingredient": "amylase",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sodium chloride 1000 MG Oral Tablet": {
+        "code": "313009",
+        "display": "sodium chloride 1000 MG Oral Tablet",
+        "ingredient": "sodium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "CA 19-9": {
+        "code": "24108-3",
+        "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ug/mL{FEU}",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Serum osmolality": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine osmolality": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine sodium": {
+        "code": "2955-3",
+        "display": "Sodium [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,444 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002306",
+      "events": [
+        {
+          "id": "2022-01-25a",
+          "kind": "nurse_visit",
+          "start": "2022-01-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-01-25T10:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-01-25T10:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Shingrix #2", "author": "RN", "date": "2022-01-25T10:50", "body": "Second recombinant zoster dose given IM right deltoid. After dose 1 he had a sore arm and felt run down for about a day. Series now complete."}
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "office_visit",
+          "start": "2022-03-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment Cancelled", "author": "front desk", "date": "2022-03-09T15:05", "body": "Patient phoned: car in the shop, can't make the 3/10 follow-up. Will call back to rebook in the spring."}
+          ]
+        },
+        {
+          "id": "2022-05-20a",
+          "kind": "office_visit",
+          "start": "2022-05-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening shortness of breath and cough",
+          "state": {"weight_kg": 79.0, "spo2": 94},
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-20T10:00"}],
+          "orders": [{"id": "pulm-referral-2022", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "progressive dyspnea, dry cough, basilar crackles"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit — Dyspnea", "author": "PCP", "date": "2022-05-20T10:50", "body": "CC: breathing worse.\n\nHPI: Over roughly the last year he has noticed he can't get up his stairs without stopping halfway; used to manage it in one go. Dry hacking cough most days, no phlegm. No fever, no coughing blood, no chest pain. Albuterol helps a little. Using the O2 at night as before. No new exposures since retiring. Has not smoked since 2019.\n\nExam: SpO2 94% RA at rest. Speaks full sentences. Fine dry crackles at both bases, otherwise diminished. No wheeze. Heart regular. No clubbing, no edema.\n\nA/P: Progressive exertional dyspnea and dry cough with bibasilar crackles in a former heavy smoker with known emphysema and decades of shipyard work. This isn't behaving like his COPD alone; worry about an interstitial process. Referring to pulmonology for full PFTs and high-resolution CT. Continue current inhalers. He knows to call for fever or worsening breathing."}
+          ]
+        },
+        {
+          "id": "2022-06-27a",
+          "kind": "specialist_visit",
+          "start": "2022-06-27T09:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Progressive dyspnea and dry cough",
+          "vitals": {"temp_c": 36.9, "bp": [126, 78], "hr": 82, "rr": 20, "spo2": 94},
+          "conditions": [{"label": "Idiopathic pulmonary fibrosis", "action": "diagnosed", "onset": "2022-06-27", "note": "HRCT and PFT at pulmonary consult"}],
+          "orders": [{"id": "pulm-referral-2022", "action": "done", "date": "2022-06-27T09:00"}],
+          "reports": [
+            {"study": "CT chest", "performed": "2022-06-27T08:00", "text": "HIGH-RESOLUTION CT CHEST WITHOUT CONTRAST, with prone and expiratory images.\nIndication: progressive dyspnea, dry cough, bibasilar crackles; former smoker; shipyard work history.\nFindings: Subpleural reticulation with honeycombing and traction bronchiectasis, predominantly in the lower lobes and persisting on prone imaging. Centrilobular and paraseptal emphysema in the upper lobes. No pleural or diaphragmatic thickening, no pleural plaques, no calcification. No consolidation or ground-glass predominance. No suspicious nodule or mass. Mediastinal nodes not enlarged. Heart size normal, no pericardial effusion.", "conclusion": "Lower-lobe predominant fibrotic lung disease with honeycombing and traction bronchiectasis, a usual interstitial pneumonia pattern, together with upper-lobe emphysema. No pleural features of asbestos-related disease."},
+            {"study": "Spirometry", "performed": "2022-06-27T08:30", "text": "Complete pulmonary function testing: spirometry, lung volumes by plethysmography, diffusing capacity.\nFVC 66% predicted. FEV1 68% predicted. FEV1/FVC 0.80. No significant bronchodilator response. TLC 70% predicted. DLCO 38% predicted (hemoglobin-corrected).\nEffort and reproducibility acceptable.", "conclusion": "Reduced FEV1 with a preserved FEV1/FVC ratio, reduced total lung capacity and a markedly reduced diffusing capacity."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonary Consultation", "author": "pulmonology", "date": "2022-06-27T11:30", "body": "PULMONARY AND CRITICAL CARE — NEW CONSULTATION\nReferred by: primary care physician\nReason: progressive breathlessness and dry cough\n\nThis 64-year-old retired shipyard mechanic reports about a year of slowly increasing breathlessness; stairs are now the main problem. Most days he has a nonproductive cough. He has had no fevers, no hemoptysis and no chest pain, and he has not traveled. Former smoker, 40 pack-years, stopped 3 years ago. Emphysema known since 2014, on tiotropium, with overnight oxygen 2 L.\n\nMedications: tiotropium 18 mcg daily, albuterol as needed, tamsulosin 0.4 mg at bedtime, acetaminophen as needed, oxygen 2 L/min overnight.\nAllergies: sulfa drugs (rash), shellfish.\nFamily: father with lung cancer.\n\nExam: Temp 36.9 C (98.4 F), BP 126/78, HR 82, RR 20, SpO2 94% on room air. Crackles at the end of inspiration at both bases. Fingers without clubbing. No cyanosis. No peripheral edema.\n\nStudies today: HRCT with a lower-lobe fibrotic pattern, honeycombing and traction bronchiectasis plus upper-lobe emphysema; no pleural plaques or thickening. PFTs: reduced FEV1, normal ratio, reduced TLC and very low DLCO.\n\nImpression: Fibrotic interstitial lung disease in a UIP pattern without features of asbestos-related pleural disease or another identifiable cause; idiopathic pulmonary fibrosis. Coexisting emphysema. The preserved ratio despite known emphysema fits the two processes offsetting each other.\n\nPlan: Continue tiotropium and overnight oxygen. Will present his imaging at our ILD conference and see him back in about 3 months.\n\ncc: primary care physician"}
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "portal_message",
+          "start": "2022-07-06T20:15",
+          "reason": "Question about pulmonary consult",
+          "documents": [
+            {"type": "Patient Message", "title": "Lung doctor", "author": "patient", "date": "2022-07-06T20:15", "body": "The lung doctor said I have scarring in my lungs on top of the emphysema. Did you get the letter? What does this mean for me? I don't really understand the name he used."},
+            {"type": "Patient Message", "title": "RE: Lung doctor", "author": "PCP", "date": "2022-07-07T12:40", "body": "Hi Michael, yes, I have the letter and the CT. The scarring is called pulmonary fibrosis; in your case there's no clear outside cause, so it's labeled idiopathic. It usually changes slowly, over months to years. Your pulmonologist will see you again in the fall after reviewing your scan with their team. Happy to go over it in person anytime, just ask the front desk for a slot."}
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "specialist_visit",
+          "start": "2022-09-16T13:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "Pulmonary fibrosis follow-up",
+          "measure": ["bp", "hr", "rr", "spo2"],
+          "conditions": [{"label": "Combined pulmonary fibrosis and emphysema", "icd10": "J84.89", "action": "diagnosed", "onset": "2022-06-27", "note": "IPF with upper-lobe emphysema"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonary Follow-up", "author": "pulmonology", "date": "2022-09-16T15:10", "body": "PULMONARY CLINIC — FOLLOW-UP\n\nInterval: He describes 8 months now of worsening exertional breathlessness, a dry cough and more tiredness than he is used to. He spent 30 years as a shipyard mechanic before fabrication work.\n\nExam: Clubbing of the fingers is present today. Crackles at end inspiration at both bases.\n\nImaging: His June HRCT was reviewed with thoracic radiology at our ILD conference: subpleural reticulation, honeycombing and traction bronchiectasis concentrated in the lower lobes; no pleural or diaphragmatic thickening, no plaques, no calcification. Upper-lobe emphysema.\nPFT: FVC and FEV1 both reduced, FEV1/FVC normal, DLCO reduced.\n\nAssessment: Combined pulmonary fibrosis and emphysema, with the fibrotic component meeting criteria for idiopathic pulmonary fibrosis.\n\nPlan: Continue tiotropium, albuterol as needed and nocturnal oxygen 2 L/min. Return in 6 months or sooner if worse.\n\nMedications reviewed: tiotropium, albuterol, tamsulosin, acetaminophen, nocturnal oxygen.\nAllergies: sulfa (rash), shellfish."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "annual_physical",
+          "start": "2022-10-04T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-04T09:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-04T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-10-04T09:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T09:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T09:47"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2022-10-04T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-10-04T09:40"},
+            {"procedure": "Immunization administration", "performed": "2022-10-04T09:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2022-10-04T10:30", "body": "Subsequent AWV, age 65.\n\nInterval: Pulmonary consult in June and follow-up in September: idiopathic pulmonary fibrosis together with his emphysema (CPFE). Breathing about the same as summer; stairs slow but doable. Uses O2 overnight only.\n\nFunctional: independent; no falls. Mood: PHQ-9 3, a bit worried about the lung news but sleeping and eating ok.\nAdvance care planning: has now named a longtime friend as health care proxy; form scanned.\n\nExam: SpO2 low 90s RA. Dry crackles at the bases. Clubbing noted. Heart RRR. No edema.\n\nPlan: Continue lung regimen as per pulmonology. High-dose flu and bivalent COVID today. Screening labs drawn. Colonoscopy not due until 2028. Follow-up in about 2 months."},
+            {"type": "Nursing Note", "title": "Immunization", "author": "MA", "date": "2022-10-04T09:49", "body": "High-dose quadrivalent influenza left deltoid; Pfizer bivalent COVID booster right deltoid. Observed 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up lungs and urinary symptoms",
+          "state": {"weight_kg": 78.0},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-12-13T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-12-13T15:35", "body": "Pt here for routine check. Breathing steady since fall. Some mild upper belly discomfort after big meals the past few weeks, thinks it's the holiday food; no vomiting, bowels regular, no black stools. Nocturia x2 unchanged.\n\nExam: Lungs bibasilar dry crackles, no wheeze. Abdomen soft, nontender today. No edema.\n\nA/P: CPFE stable on current regimen. BPH stable. Mild postprandial discomfort, nontender exam; trial of smaller meals, avoid late eating, return if persists or any weight loss. Refills sent. Recheck in 2-3 months."}
+          ]
+        },
+        {
+          "id": "2023-02-03a",
+          "kind": "office_visit",
+          "start": "2023-02-03T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Upper abdominal pain and weight loss",
+          "state": {"weight_kg": 74.0, "labs": {"Hemoglobin A1c": 7.4, "Hemoglobin": 12.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-02-03T09:20", "results": [{"test": "Glucose"}, {"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-02-03T09:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2023-02-03T09:20", "resulted": "2023-02-04T07:30", "results": [{"test": "Hemoglobin A1c", "value": 7.4}, {"test": "Lipase", "value": 34}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-03T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-02-03T09:20"}
+          ],
+          "orders": [
+            {"id": "ct-ap-2023", "action": "placed", "order": "CT abdomen and pelvis with contrast", "category": "imaging", "reason": "epigastric pain radiating to back, weight loss"},
+            {"id": "gi-referral-2023", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "epigastric pain to back, weight loss, new hyperglycemia"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit — Abdominal Pain", "author": "PCP", "date": "2023-02-03T09:45", "body": "S: The upper belly ache from December hasn't let up. Gnawing pain in the pit of the stomach that goes through to his back, worse lying flat, about 2 months now. Appetite down. Pants are loose; weighs 74 kg today vs 78 in December and 81 when he joined. No vomiting, no change in bowel habits, no dark urine or yellow eyes. Thirstier than usual lately.\n\nO: Thin. No scleral icterus. Abdomen soft with mild epigastric tenderness, no mass, no organomegaly. Lungs bibasilar crackles as before.\n\nA/P: Epigastric pain boring to the back with weight loss and new thirst in a 65 y/o former smoker whose mother and sister had pancreatic cancer. Pancreatic process has to be excluded first. CT abdomen/pelvis with contrast ordered urgently; GI referral placed now so he's in line. CMP, CBC, lipase, A1c today. Explained my concern plainly; he wants to know as soon as results come."},
+            {"type": "Telephone Encounter", "title": "Result Call — A1c", "author": "PCP", "date": "2023-02-04T10:15", "body": "Called pt with labs. A1c 7.4, new diabetes range; lipase normal; liver tests unremarkable. In this setting new diabetes may well be coming from the pancreas, CT will help sort that. Starting metformin 500 mg twice daily with food, will titrate once his stomach tolerates it. Glucometer and strips sent; check fasting each morning. CT scheduled for the 14th."}
+          ]
+        },
+        {
+          "id": "2023-02-04a",
+          "kind": "telephone",
+          "start": "2023-02-04T10:15",
+          "reason": "New diabetes, start metformin",
+          "conditions": [{"label": "Diabetes mellitus due to underlying condition without complications", "icd10": "E08.9", "action": "diagnosed", "onset": "2023-02-03", "note": "New onset with weight loss; pancreatic cause suspected"}],
+          "medications": [{"drug": "metformin hydrochloride 500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "new-onset diabetes"}]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "imaging",
+          "start": "2023-02-14T11:00",
+          "service": "Radiology",
+          "reason": "Epigastric pain and weight loss",
+          "orders": [{"id": "ct-ap-2023", "action": "done", "date": "2023-02-14T11:00"}],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-02-14T11:00", "issued": "2023-02-14T16:20", "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST, pancreatic phase and portal venous phase.\nIndication: epigastric pain radiating to the back, weight loss, new hyperglycemia.\nFindings: Hypoenhancing mass in the head of the pancreas measuring 3.0 cm. No metastatic lesions in the liver. No ascites. No peritoneal nodularity. No enlarged abdominal or pelvic lymph nodes. Pancreatic body and tail otherwise unremarkable. Gallbladder, spleen, adrenal glands and kidneys normal. Bowel unremarkable. Appendix surgically absent. Bladder and prostate unremarkable for technique. Visualized lung bases show subpleural reticulation consistent with known fibrotic lung disease.", "conclusion": "3.0 cm mass in the pancreatic head, concerning for pancreatic adenocarcinoma. No evidence of metastatic disease in the abdomen or pelvis."}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "CT Result Call", "author": "PCP", "date": "2023-02-14T17:30", "body": "Called pt, he asked to hear it straight. CT shows a 3 cm mass at the head of the pancreas, nothing seen spreading in the belly. Told him this most likely needs a biopsy and a surgical opinion. Called GI office; they moved his consult up to the 27th. He'll come in or call anytime before then; gave him my cell line."}
+          ]
+        },
+        {
+          "id": "2023-02-24a",
+          "kind": "telephone",
+          "start": "2023-02-24T12:10",
+          "reason": "Metformin titration",
+          "medications": [
+            {"drug": "metformin hydrochloride 500 MG Oral Tablet", "action": "stop", "reason": "dose increased"},
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "diabetes"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Glucose Check-in", "author": "RN", "date": "2023-02-24T12:10", "body": "Pt reports fasting sugars 150s-170s on metformin 500 bid, no GI upset from the pill. Per PCP increase to 1000 mg twice daily, new Rx sent. GI visit confirmed for Monday the 27th."}
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T10:00",
+          "service": "Gastroenterology",
+          "reason": "Pancreatic head mass",
+          "state": {"weight_kg": 72.0, "labs": {"Hemoglobin": 12.1}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "conditions": [{"label": "Cachexia", "icd10": "R64", "action": "diagnosed", "onset": "2023-02-27"}],
+          "orders": [{"id": "gi-referral-2023", "action": "done", "date": "2023-02-27T10:00"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-02-27T10:40", "results": [{"test": "Hemoglobin", "value": 12.1}, {"test": "Platelets", "value": 118}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-02-27T10:40", "results": [{"test": "Bilirubin, Total", "value": 1.2}, {"test": "Alkaline Phosphatase", "value": 120}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-02-27T10:40", "results": [{"test": "Prothrombin Time", "value": 14.4}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.2}]},
+            {"panel": null, "collected": "2023-02-27T10:40", "results": [
+              {"test": "Fasting Glucose", "value": 156},
+              {"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 560},
+              {"test": "Fibrinogen", "loinc": "3255-7", "unit": "mg/dL", "value": 142},
+              {"test": "D-dimer", "loinc": "48065-7", "unit": "ug/mL{FEU}", "value": 5.6}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2023-02-27T13:00", "body": "GASTROENTEROLOGY — NEW PATIENT CONSULTATION\nReferral: primary care, for pancreatic head mass\n\nHPI: 65-year-old man with combined pulmonary fibrosis and emphysema (seen by pulmonary in June and September 2022) who has had three months of epigastric pain that bores into the back, a 15 lb weight loss he did not intend, and diabetes newly found this month. Bowel habits unchanged. No jaundice.\n\nMeds: metformin 1000 mg twice daily, tiotropium, albuterol as needed, tamsulosin, acetaminophen as needed, nocturnal oxygen.\nAllergies: sulfa (rash), shellfish.\nFamily history: sister diagnosed with pancreatic cancer at 58; mother with pancreatic cancer late in life.\nSocial: 40 pack-years, quit.\n\nExam: Cachectic appearing. Abdomen soft, mildly tender in the epigastrium, no palpable mass. No icterus.\n\nLabs today: hemoglobin 12.1, total bilirubin 1.2, alkaline phosphatase 120, CA 19-9 560, fasting glucose 156. Platelets 118, PT 14.4 / INR 1.2, fibrinogen 142, D-dimer 5.6.\nCT 2/14: 3 cm pancreatic head mass, no metastases.\n\nImpression: Pancreatic head mass highly suspicious for adenocarcinoma, radiographically resectable, with new diabetes and cachexia. Low platelets and fibrinogen with a raised D-dimer and mildly long PT suggest a low-grade consumptive coagulopathy; no bleeding or clot.\n\nPlan: EUS with fine-needle aspiration next week. Referral to hepatobiliary surgery and medical oncology in parallel. Nutrition consult.\n\ncc: primary care physician"}
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "procedure_visit",
+          "start": "2023-03-07T08:00",
+          "service": "Gastroenterology",
+          "reason": "EUS with fine-needle aspiration of pancreatic mass",
+          "conditions": [
+            {"label": "Malignant neoplasm of pancreas", "action": "diagnosed", "onset": "2023-02-14", "note": "Mucin-producing adenocarcinoma, pancreatic head, 3.0 cm, no metastases"},
+            {"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "diagnosed", "onset": "2023-02-27", "note": "Chronic compensated DIC with mucin-producing adenocarcinoma; no bleeding or thrombosis"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-03-07T08:40", "issued": "2023-03-08T15:00", "text": "Specimen: pancreas, head mass, EUS-guided fine-needle aspiration and core.\nMicroscopic: Malignant glandular epithelium forming irregular glands in a desmoplastic stroma, with abundant extracellular and intracellular mucin. Cytologic atypia with enlarged irregular nuclei.\nImmunostains support pancreaticobiliary origin.", "conclusion": "Pancreas, head mass: adenocarcinoma, mucin-producing."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Endoscopic Ultrasound", "author": "gastroenterology", "date": "2023-03-07T10:15", "body": "PROCEDURE: Upper EUS with fine-needle biopsy.\nSedation: monitored anesthesia care; oxygen by nasal cannula throughout given lung disease.\nFindings: 30 mm hypoechoic, irregular mass in the pancreatic head. No vascular involvement on EUS. No liver lesions in views obtained. No ascites. Four passes with a 22G biopsy needle; on-site cytology adequate.\nComplications: none.\nPathology (final 3/8): mucin-producing adenocarcinoma.\nAssessment: pancreatic adenocarcinoma, resectable. With the coagulation pattern at consult, findings fit a chronic, compensated DIC from the tumor. To hepatobiliary surgery; oncology aware.\n\nAllergies: sulfa, shellfish."}
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "telephone",
+          "start": "2023-03-09T17:45",
+          "reason": "Discuss biopsy result and surgery plan",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "PCP Call", "author": "PCP", "date": "2023-03-09T17:45", "body": "Spoke with pt after his surgery consult. Biopsy confirms pancreatic adenocarcinoma (mucin-producing type). Surgeon offering a pancreaticoduodenectomy on the 21st; anesthesia and pulmonary have reviewed his lungs and felt it was reasonable with care. He has decided to go ahead. Talked through recovery and that his blood sugars will likely need insulin afterward. Friend (his proxy) will help at home. I'll see him after discharge."}
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "hospital_admission",
+          "start": "2023-03-20T06:00",
+          "end": "2023-03-29T13:00",
+          "service": "Surgical Oncology",
+          "reason": "Pancreaticoduodenectomy for pancreatic head adenocarcinoma",
+          "conditions": [
+            {"label": "Hyperchloremic metabolic acidosis", "icd10": "E87.29", "action": "diagnosed", "note": "Post-op day 2; due to excess normal saline infusion after surgery"},
+            {"label": "Exocrine pancreatic insufficiency", "icd10": "K86.81", "action": "diagnosed", "note": "After pancreaticoduodenectomy"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "start", "sig": "Inject 20 units under the skin at bedtime", "dose": {"value": 20, "unit": "U"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic", "reason": "diabetes after pancreatic resection"},
+            {"drug_text": "amylase 120000 UNT / lipase 24000 UNT / protease 76000 UNT Delayed Release Oral Capsule", "action": "start", "sig": "Take 2 capsules with each meal and 1 capsule with snacks", "dose": {"value": 2, "unit": "capsule"}, "frequency": "WITH MEALS", "route": "Oral", "course": "chronic", "reason": "exocrine pancreatic insufficiency"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-23T05:30", "results": [{"test": "Chloride", "value": 114}, {"test": "Bicarbonate", "value": 17}, {"test": "Anion Gap", "value": 8}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-27T05:30", "results": [{"test": "Chloride", "value": 106}, {"test": "Bicarbonate", "value": 24}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-27T05:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-03-21T12:00", "issued": "2023-03-27T14:00", "text": "Specimen: pancreaticoduodenectomy (pancreatic head, duodenum, distal bile duct, gallbladder, regional lymph nodes).\nTumor site: pancreatic head. Histologic type: adenocarcinoma, mucin-producing. Tumor size: 3.0 cm. Margins: pancreatic neck, bile duct, uncinate/SMA and duodenal margins negative. Regional lymph nodes: 0 of 16 involved. No distant metastasis sampled.\nGallbladder: unremarkable.", "conclusion": "Mucin-producing adenocarcinoma of the pancreatic head, 3.0 cm, margins negative, 0/16 lymph nodes (pT2 N0)."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary", "author": "surgical oncology", "date": "2023-03-29T12:30", "body": "SURGICAL ONCOLOGY — DISCHARGE SUMMARY\nAdmitted 3/20/2023, discharged 3/29/2023.\n\nDiagnosis: pancreatic head adenocarcinoma, mucin-producing, with chronic compensated DIC.\nProcedure: open pancreaticoduodenectomy 3/21/2023.\n\nCourse: Uneventful operation. Given IV normal saline freely in the first 48 hours for borderline urine output; on post-op day 2 chemistry showed chloride 114, bicarbonate 17 with a normal anion gap of 8: hyperchloremic metabolic acidosis from the saline load. Fluids changed to a balanced solution and the bicarbonate was back to 24 by 3/27. Oxygen needs stayed at his usual overnight 2 L with brief daytime support early on. Diet advanced; stools loose and greasy until enzyme replacement started. Glucose 200s on metformin alone; basal insulin begun. Pathology: 3.0 cm, margins negative, 0/16 nodes. Inpatient VTE prophylaxis given; no bleeding.\n\nDischarge medications: insulin glargine 20 units at bedtime (NEW); pancrelipase (lipase 24,000 units) 2 caps with meals, 1 with snacks (NEW); metformin 1000 mg twice daily; tiotropium 18 mcg daily; albuterol as needed; tamsulosin 0.4 mg at bedtime; acetaminophen as needed; oxygen 2 L/min overnight.\nAllergies: sulfa (rash), shellfish.\n\nFollow-up: surgery clinic 2 weeks; medical oncology to discuss adjuvant chemotherapy; PCP within 1-2 weeks for diabetes and recovery."}
+          ]
+        },
+        {
+          "id": "2023-04-07a",
+          "kind": "office_visit",
+          "start": "2023-04-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after pancreatic surgery",
+          "state": {"weight_kg": 68.0, "labs": {"Hemoglobin": 11.4}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [{"label": "Hyperchloremic metabolic acidosis", "icd10": "E87.29", "action": "resolved", "note": "Resolved in hospital after fluid change"}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-07T11:40", "results": [{"test": "Bicarbonate"}, {"test": "Chloride"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-07T11:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2023-04-07T11:00"},
+            {"procedure": "Venipuncture", "performed": "2023-04-07T11:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2023-04-07T12:05", "body": "Seen 9 days after discharge from pancreaticoduodenectomy. Discharge summary reviewed: margins clear, nodes negative; brief hyperchloremic acidosis from saline on POD2, corrected before discharge.\n\nHe's tired but walking more each day. Incision healing, surgical team happy at their check. Eating small frequent meals; with the enzymes the greasy stools have settled. Fasting sugars 130-180 on glargine 20 units plus metformin 1000 bid, no lows. Breathing at baseline, O2 overnight.\n\nExam: 68 kg (72 at the GI visit). Thin. Midline incision clean, healing, no erythema. Lungs bibasilar crackles. No edema.\n\nA/P\n1. Pancreatic adenocarcinoma s/p resection: oncology appointment 4/24 for adjuvant therapy.\n2. Diabetes after pancreatic resection: continue glargine 20 u qhs and metformin. Keep logging; hypoglycemia teaching reviewed.\n3. Exocrine insufficiency: pancrelipase with meals; dietitian follow-up arranged.\n4. Acidosis: resolved; BMP today to confirm.\n5. Cachexia: protein shakes between meals.\nMeds reconciled. Recheck 2 months."}
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "pharmacy",
+          "start": "2023-04-12T09:30",
+          "reason": "Prior authorization pancrelipase",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior Authorization", "author": "RN", "date": "2023-04-12T09:30", "body": "Part D plan requires PA for pancreatic enzymes at the prescribed quantity (~8 caps/day). Submitted with op note and diagnosis of exocrine insufficiency after pancreaticoduodenectomy. Approved for 12 months; pharmacy notified, pt picking up today."}
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "specialist_visit",
+          "start": "2023-04-24T14:00",
+          "service": "Medical Oncology",
+          "reason": "Adjuvant therapy for resected pancreatic adenocarcinoma",
+          "measure": ["bp", "hr", "weight_kg"],
+          "conditions": [{"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "resolved", "note": "Coagulation markers normal after resection"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-24T13:30", "results": [{"test": "Platelets", "value": 236}]},
+            {"panel": null, "collected": "2023-04-24T13:30", "results": [
+              {"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 31},
+              {"test": "Fibrinogen", "loinc": "3255-7", "unit": "mg/dL", "value": 288},
+              {"test": "D-dimer", "loinc": "48065-7", "unit": "ug/mL{FEU}", "value": 0.7}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Consultation", "author": "oncology", "date": "2023-04-24T16:00", "body": "MEDICAL ONCOLOGY — NEW CONSULT\n\nDiagnosis: pancreatic head adenocarcinoma, mucin-producing, pT2 N0, R0, resected 3/21/2023. Pre-operative CA 19-9 560; chronic compensated DIC at diagnosis.\n\nToday: recovering well, weight 68 kg, ECOG 1. Combined pulmonary fibrosis and emphysema on nocturnal oxygen. Diabetes on glargine and metformin.\n\nLabs: CA 19-9 31 (normal). Platelets 236, fibrinogen 288, D-dimer 0.7: the coagulopathy has resolved with removal of the tumor.\n\nPlan: Adjuvant modified FOLFIRINOX every 14 days for 12 cycles, starting 5/8/2023. Port placement next week. Discussed neuropathy, diarrhea, cytopenias. Chose this over gemcitabine-based therapy partly because of his fibrotic lung disease. Surveillance CT and CA 19-9 after completion.\n\nAllergies: sulfa (rash), shellfish.\ncc: primary care physician, hepatobiliary surgery"}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up during chemotherapy",
+          "state": {"weight_kg": 67.0, "labs": {"Hemoglobin A1c": 7.0, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-06-20T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-20T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-20T09:20"},
+            {"procedure": "Venipuncture", "performed": "2023-06-20T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-06-20T10:00", "body": "S: Cycle 4 of adjuvant chemo done last week. Tired for 2-3 days after each pump disconnect, then rebounds. Sugars: fasting mostly 120s-150s, a couple of 90s, no lows. Enzymes with every meal, stools formed. Lungs same.\n\nO: 67 kg. Port site R chest clean. Lungs bibasilar crackles. Feet: intact skin, pulses palpable, monofilament normal.\n\nA/P: Diabetes after pancreatectomy, reasonable control for his situation; goal is avoiding lows, not tight numbers. A1c, BMP, urine microalbumin today. Weight stable-ish on chemo; continue supplements. Eye exam referral sent. Follow-up after chemo finishes."}
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "outside_records",
+          "start": "2023-08-02T13:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2023-08-02T13:00", "body": "Dilated retinal exam 7/27/2023. Visual acuity 20/25 OU with correction. No diabetic retinopathy either eye. Mild nuclear lens changes, not visually significant. Recommend yearly exam. Allergies on file: sulfa, shellfish."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "nurse_visit",
+          "start": "2023-09-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-09-26T10:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T10:07"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-09-26T10:09"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-09-26T10:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Immunizations", "author": "RN", "date": "2023-09-26T10:30", "body": "Timed between chemo cycles per oncology (off-week). Given high-dose flu L deltoid, updated COVID R deltoid, RSV L deltoid lower site. Tolerated. 15 min observation fine."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "portal_message",
+          "start": "2023-10-11T07:55",
+          "reason": "Blood in urine",
+          "orders": [{"id": "uro-referral-2023", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "painless gross hematuria"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Red urine", "author": "patient", "date": "2023-10-11T07:55", "body": "For about two weeks my urine has been pinkish red off and on. Doesn't hurt, no burning. Finished my last chemo Monday. Should I worry?"},
+            {"type": "Telephone Encounter", "title": "Hematuria Call", "author": "PCP", "date": "2023-10-11T09:20", "body": "Called pt. Visible blood in urine on and off x2 weeks, painless, no fever, no flank pain, no clots blocking flow, voiding as usual for him. No new meds. Former heavy smoker, grandfather had bladder cancer: painless gross hematuria needs cystoscopy and upper-tract imaging. Urgent urology referral placed; their scheduler can see him 10/20. Go to ED if unable to urinate or passing large clots."}
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "outside_records",
+          "start": "2023-10-16T15:00",
+          "reason": "Oncology letter, adjuvant chemotherapy complete",
+          "documents": [
+            {"type": "Outside Records", "title": "Medical Oncology Progress Note", "author": "oncology", "date": "2023-10-16T15:00", "body": "MEDICAL ONCOLOGY — END OF TREATMENT\nCompleted cycle 12 of adjuvant modified FOLFIRINOX on 10/9/2023. No hospitalizations. Plan: surveillance CT chest/abdomen/pelvis and CA 19-9 in about 3 months, then every 3-6 months. Port to stay for now. Noted he reports new hematuria; PCP has referred to urology.\nAllergies: sulfa, shellfish."}
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "specialist_visit",
+          "start": "2023-10-20T13:30",
+          "service": "Urology",
+          "reason": "Painless gross hematuria",
+          "vitals": {"bp": [130, 85]},
+          "measure": ["hr", "weight_kg"],
+          "conditions": [{"label": "Malignant neoplasm of bladder", "action": "diagnosed", "onset": "2023-10-20", "note": "Papillary bladder tumor on office cystoscopy"}],
+          "orders": [{"id": "uro-referral-2023", "action": "done", "date": "2023-10-20T13:30"}],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2023-10-20T13:40", "results": [{"test": "Urine Blood", "text": "Large"}, {"test": "Urine Red Blood Cells", "text": ">50"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-20T13:40", "results": [{"test": "Creatinine", "value": 1.1}, {"test": "Blood Urea Nitrogen", "value": 14}]},
+            {"panel": null, "collected": "2023-10-20T13:40", "resulted": "2023-10-22T09:00", "results": [{"test": "Urine Culture", "text": "No growth"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology Consultation", "author": "urology", "date": "2023-10-20T16:00", "body": "UROLOGY — NEW PATIENT\n\nThis gentleman with CPFE and a resected pancreatic adenocarcinoma (adjuvant chemo finished 10/9) has seen blood in his urine for two weeks without pain. No recent urinary infection, and no drugs associated with cystitis. Longstanding nocturia and slow stream on tamsulosin. Metal worker; retired five years ago. 40 pack-years.\n\nBP 130/85. General exam unremarkable; abdomen soft, no CVA tenderness; genitalia normal.\n\nUA: gross hematuria, no leukocytes or nitrite; culture sent. Creatinine 1.1, BUN 14.\n\nOffice flexible cystoscopy today: single papillary tumor on the left lateral wall, roughly 1.5-2 cm. Remaining urothelium normal. Prostatic urethra with lateral lobe enlargement.\n\nImpression: papillary bladder tumor, presumed urothelial carcinoma.\nPlan: CT urogram; TURBT with single post-op intravesical chemotherapy instillation. Continue tamsulosin.\nAllergies: sulfa (rash), shellfish.\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "imaging",
+          "start": "2023-10-27T09:00",
+          "service": "Radiology",
+          "reason": "CT urogram for hematuria",
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-10-27T09:00", "text": "CT UROGRAM (noncontrast, nephrographic and excretory phases).\nIndication: gross hematuria; papillary bladder lesion on cystoscopy.\nFindings: 1.7 cm papillary filling defect along the left lateral bladder wall. No perivesical stranding. Kidneys enhance symmetrically without mass or stone. Collecting systems and ureters opacify fully without filling defect or hydronephrosis. Post-surgical changes of pancreaticoduodenectomy without mass at the operative bed. Liver without lesions. No enlarged lymph nodes. Prostate mildly enlarged.", "conclusion": "1.7 cm papillary lesion of the left lateral bladder wall. Normal upper urinary tracts. No evidence of recurrent pancreatic cancer."}
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "procedure_visit",
+          "start": "2023-11-08T07:30",
+          "service": "Urology",
+          "reason": "Transurethral resection of bladder tumor",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-11-08T08:15", "issued": "2023-11-13T11:00", "text": "Specimen: bladder tumor, left lateral wall, transurethral resection; separate deep base biopsy.\nPapillary urothelial neoplasm with fibrovascular cores, mild nuclear atypia, orderly architecture. No invasion of lamina propria. Muscularis propria present in deep specimen and free of tumor. No carcinoma in situ.", "conclusion": "Noninvasive papillary urothelial carcinoma, low grade (pTa). Muscularis propria present and uninvolved."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "TURBT Operative Report", "author": "urology", "date": "2023-11-08T10:00", "body": "PROCEDURE: Cystoscopy, transurethral resection of bladder tumor (2 cm, left lateral wall), single immediate post-op intravesical gemcitabine instillation.\nAnesthesia: general via LMA with pulmonary input given fibrotic lung disease; extubated uneventfully.\nFindings: solitary papillary tumor completely resected with deep base sampled. No other lesions. Ureteral orifices normal.\nEBL minimal. Catheter removed same day after instillation dwell; voided before discharge.\nPathology (final): low-grade noninvasive papillary urothelial carcinoma, pTa, muscle present and uninvolved.\nPlan: surveillance cystoscopy at 3 months, then per low-grade protocol."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up diabetes, cancer care coordination",
+          "state": {"weight_kg": 69.0, "labs": {"Hemoglobin": 12.4}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-12T10:35", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-12T10:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-12-12T10:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-12T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-12-12T10:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-12-12T10:50", "body": "A busy year for him: pancreatic resection in March, 12 cycles of chemo through October, then a low-grade bladder tumor resected in November. Recovering. Appetite back, weight creeping up to 69 kg. No more blood in the urine. Breathing same; stairs with a rest.\n\nSugars: fasting 110-160, a few post-meal 200s around holidays. No lows.\n\nExam: lungs bibasilar crackles, clubbing. Port site fine. No edema. Feet normal sensation today.\nPHQ-9 4.\n\nA/P\n- Diabetes after pancreatectomy: glargine 20 u, metformin 1000 bid; A1c pending.\n- Pancreatic cancer: surveillance with oncology, CT in January.\n- Bladder cancer pTa low grade: cystoscopy February.\n- CPFE: pulmonary follow-up due in 2024.\n- Exocrine insufficiency: enzymes working.\nRTC 3 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

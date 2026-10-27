@@ -1,0 +1,324 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002559",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up; vaccines",
+          "conditions": [{"label": "Septic arthritis, multiple sites", "icd10": "M00.9", "action": "resolved"}],
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2025-01-21T15:30"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2025-01-21T15:32"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-21T15:00"},
+            {"procedure": "Immunization administration", "performed": "2025-01-21T15:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-01-21T15:50",
+              "body": "Monthly visit. Says January is slow for work which makes the days long. Still no use. Taking the HIV pill most days, \"forgot a couple over New Year's.\" Knee is back to normal, kneeling on job sites without trouble, wrists and elbows fine.\n\nWeight back up 3 kg. Exam: R knee no effusion, full ROM, portals healed. Wrists/elbows normal. No murmur.\nUDS bup +, otherwise neg. PDMP ok.\n\nA/P\n1. Septic arthritis: resolved, off the active list.\n2. OUD: continue buprenorphine/naloxone 8/2 BID, 4 wk Rx. Talked about what slow weeks do to cravings and having a plan.\n3. HIV: on ART, next HIV clinic visit in June. Reinforced daily dosing.\n4. Hep B #2 today, series complete. MenACWY #1 today (recommended with HIV), #2 in 8+ weeks.\n\nRTC 1 month (video ok)."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-25T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-02-25T12:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-02-25T12:45",
+              "body": "Video visit, pt in his truck on a break, consented.\n\nOn 8/2 BID. Reports more cravings the past couple weeks, a friend he used with is back in town. Denies use. Not keen on increasing the dose; we agreed he'll call if it gets worse and we could go to 8 mg three times a day. Still has naloxone. HIV meds \"mostly.\"\n\nNo UDS today (video); will do next visit in person.\nPDMP reviewed.\n\nPlan: same dose, 4 wk Rx sent. In-person visit 3/25."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "telephone",
+          "start": "2025-03-26T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach",
+              "author": "MA",
+              "date": "2025-03-26T10:10",
+              "body": "Pt no-showed yesterday. Called cell, voicemail full. Sent text asking him to call to reschedule. Flagged for PCP since his buprenorphine supply runs out around now."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach, second try",
+              "author": "RN",
+              "date": "2025-03-31T14:30",
+              "body": "Second attempt, no answer. Portal message sent. Per PCP, will bridge a week of films if he calls."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-19a",
+          "kind": "hospital_admission",
+          "start": "2025-04-19T11:30",
+          "end": "2025-05-07T12:00",
+          "service": "Neurology — Intensive Care",
+          "reason": "ptosis, double vision, trouble swallowing",
+          "conditions": [{"label": "Wound botulism", "icd10": "A48.52", "action": "diagnosed", "onset": "2025-04-17"}],
+          "medications": [
+            {"drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film", "action": "stop", "reason": "stopped by patient in March 2025"},
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "stop", "reason": "stopped by patient in March 2025"}
+          ],
+          "vitals": {"bp": [130, 85], "hr": 70, "rr": 16},
+          "measure": ["temp_c", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-19T12:00", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin", "value": 14.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-19T12:00", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 1.0}, {"test": "Glucose", "value": 98}]},
+            {"panel": null, "collected": "2025-04-21T06:00", "resulted": "2025-04-23T10:00", "results": [
+              {"test": "HIV-1 RNA Viral Load", "value": 6200},
+              {"test": "CD4 Count", "value": 262}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology ICU consultation",
+              "author": "neurology",
+              "date": "2025-05-09T09:30",
+              "body": "Neurology Consultation, Neuro ICU\nDate of service: 04/19/2025\nPatient: Brandon Crowley, 32M\n\nReason: acute cranial nerve palsies and weakness.\n\nHPI: Two days ago his eyelids began to droop; since then he has had double vision, food and pills sticking when he swallows, and his speech has become thick. He has HIV and opioid use disorder; septic arthritis last fall. He says he had been off his buprenorphine and his HIV medication for about a month and went back to heroin, last injecting three days ago into the right forearm with a needle that was not clean.\n\nAllergies: none known. Meds: none currently.\n\nExam: afebrile. BP 130/85, pulse 70, RR 16, saturating well on room air. Alert, fully oriented, follows commands. Ptosis on both sides. Pupils dilated and fixed to light. Dysarthric. Weakness is symmetric and descends from the cranial muscles. Sensation normal throughout. Reflexes present and symmetric. No rash. Right forearm with a small puncture site, no redness, fluctuance or drainage.\n\nLabs: WBC 12,000, Hgb 14.2, plt 250,000. Na 140, K 4.2, Cr 1.0, glucose 98.\n\nImpression: clinical picture of wound botulism from heroin injection.\nRecommendations: heptavalent antitoxin now via the state health department, do not wait for confirmation. Serum for toxin assay before antitoxin. Surgical exploration and debridement of the forearm site. IV penicillin G. Vital capacity and negative inspiratory force every 4 hours; low threshold to intubate. NPO, swallow evaluation. Neurology will follow daily."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary: wound botulism",
+              "author": "hospitalist",
+              "date": "2025-05-09T14:00",
+              "body": "Community teaching hospital\nAdmitted 04/19/2025 (Neuro ICU), transferred to floor 04/27, discharged 05/07/2025\n\nPrincipal diagnosis: wound botulism (right forearm injection site)\nOther: HIV, off ART for ~1 month before admission; opioid use disorder, relapse\nAllergies: NKDA\n\nCourse: Heptavalent botulinum antitoxin given on the day of admission. Pre-treatment serum positive for botulinum toxin type A (state laboratory). Right forearm site explored and debrided 04/20, no abscess. Penicillin G IV for 10 days. Vital capacity followed closely in the ICU, declined modestly then stabilized; never needed intubation. NG tube feeding 6 days until speech-language pathology cleared him for a regular diet. Ptosis and eye movements improved slowly; at discharge mild bilateral ptosis and intermittent double vision on far lateral gaze remain. Speech and swallow normal, strength normal.\n\nHIV: VL 6,200, CD4 262. ID restarted bictegravir/emtricitabine/tenofovir alafenamide.\nOUD: buprenorphine/naloxone restarted and titrated back to 8/2 mg twice daily. Naloxone kit given.\n\nDischarge medications:\n1. bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily\n2. buprenorphine/naloxone 8/2 mg SL BID (bridge to PCP)\n3. naloxone 4 mg nasal spray PRN\n\nFollow-up: PCP within 1 week; neurology clinic in 4-6 weeks; HIV clinic as scheduled.\nNo driving while double vision persists."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "outside_records",
+          "start": "2025-05-09T15:00",
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth once daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV"},
+            {"drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film", "action": "start", "sig": "Dissolve 1 film under the tongue twice daily", "dose": {"value": 1, "unit": "film"}, "frequency": "BID", "route": "Sublingual", "course": "chronic", "reason": "opioid use disorder"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Discharge records reviewed; TCM call",
+              "author": "RN",
+              "date": "2025-05-09T15:00",
+              "body": "Discharge summary and neuro consult received and routed to PCP. Spoke with pt: home since 5/7, says he feels \"like I got hit by a truck\" but eating normally. Eyes still droop by evening, double vision only looking far to the side. On both meds again. Not driving, a coworker is giving him rides. Hospital films last until 5/14. Booked 5/13 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "state": {"weight_kg": 66.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-05-13T10:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-05-13T11:30",
+              "body": "Seen after his 4/19-5/7 admission for wound botulism (forearm injection site), records reviewed.\n\nHe's frank about it: stopped both the films and the HIV pill in March after the cravings built up, went back to using. Didn't answer our calls because he was embarrassed. Glad to be back on everything.\n\nNow: swallowing normal, voice normal. Lids heavier at the end of the day. Double vision only at the far edge of side gaze, rare. Arms feel normal. Tired. Lost 5 kg in hospital, eating well now. No use since admission. Has naloxone.\n\nExam: afebrile. Mild symmetric ptosis, pupils now reactive. EOM full with a few beats of diplopia on far right gaze. Speech clear. Strength 5/5 throughout. R forearm debridement site healing, clean.\nUDS bup +, otherwise negative. PDMP: only the hospital Rx.\n\nA/P\n1. Wound botulism, recovering. Neuro clinic 6/10. No driving until the double vision is fully gone.\n2. OUD, relapse in March, back on buprenorphine/naloxone 8/2 BID. Rx 2 weeks then visits every 2-4 wk for now. We talked about how to reach me when it starts slipping again rather than going quiet.\n3. HIV, ART restarted in hospital. Will remind the HIV clinic.\n4. Smoking: 1 ppd.\n\nRTC 2 weeks (video ok), in person in June."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "pharmacy",
+          "start": "2025-05-27T09:15",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Buprenorphine/naloxone refill",
+              "author": "PCP",
+              "date": "2025-05-27T09:15",
+              "body": "Spoke with pt by phone, doing ok, no use, eyes better. Buprenorphine/naloxone 8/2 mg films BID, #56, sent. PDMP reviewed. In-person visit 6/17."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "outside_records",
+          "start": "2025-06-12T11:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology clinic follow-up",
+              "author": "neurology",
+              "date": "2025-06-12T11:00",
+              "body": "Neurology Clinic\nVisit date: 06/10/2025\nRe: Brandon Crowley\n\nFollow-up after wound botulism treated with antitoxin in April. He reports his eyelids and vision are back to normal for about two weeks now, no double vision even when tired. Chewing, swallowing and speech normal. Strength normal at work.\n\nMeds: bictegravir/FTC/TAF daily, buprenorphine/naloxone 8/2 mg BID, naloxone PRN. Allergies: NKDA.\n\nExam: lids symmetric without ptosis. Pupils equal and briskly reactive. Extraocular movements full, no diplopia in any direction including sustained gaze. Facial strength, palate and tongue normal. Strength full in all limbs including neck flexors. Reflexes 2+ and symmetric. Sensation intact.\n\nImpression: full recovery from wound botulism.\nPlan: no further neurology follow-up needed. Cleared to drive from a neurologic standpoint. Prevention of recurrence rests on treatment of his opioid use disorder, which he is engaged in."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "conditions": [{"label": "Wound botulism", "icd10": "A48.52", "action": "resolved"}],
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [{"vaccine": "Meningococcal conjugate MenACWY", "date": "2025-06-17T15:30"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-17T15:00"},
+            {"procedure": "Immunization administration", "performed": "2025-06-17T15:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-06-17T15:45",
+              "body": "Neuro letter reviewed: fully recovered, cleared to drive. He agrees, eyes are normal. Back on job sites full days.\n\nOUD: on 8/2 BID, no use since April, cravings mild. UDS bup +, otherwise negative. PDMP fine.\nHIV: taking the pill daily, pillbox now. HIV clinic in July.\n\nA/P\n- Wound botulism resolved, off the active list.\n- OUD in early remission on buprenorphine/naloxone: same dose, 4-week Rx, monthly visits.\n- MenACWY #2 today.\n- Smoking: asked about cutting down; says maybe in the fall.\n\nRTC 1 month; physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "outside_records",
+          "start": "2025-07-18T09:40",
+          "labs": [
+            {"panel": null, "collected": "2025-07-16T10:00", "resulted": "2025-07-18T08:00", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "<20 copies/mL (not detected)"},
+              {"test": "CD4 Count", "value": 371}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "HIV clinic follow-up",
+              "author": "infectious disease",
+              "date": "2025-07-18T09:40",
+              "body": "Infectious Disease / HIV Clinic\nVisit date: 07/16/2025\nRe: Brandon Crowley\n\nInterval: admitted in April with wound botulism after a relapse during which he stopped ART and buprenorphine for about a month. Both restarted in hospital. Since then reports no missed doses, uses a pillbox. Feels well.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 mg BID; naloxone PRN. Allergies: NKDA.\n\nLabs today: HIV-1 RNA below 20 copies/mL, CD4 371.\n\nAssessment: virologically suppressed on current regimen. Continue. Recheck in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 5},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-08-12T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-12T08:30", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-12T08:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-08-12T08:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2025-08-12T08:40"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-08-12T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-08-12T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-12T09:10",
+              "body": "Preventive visit, 33M.\n\nInterval: septic arthritis 10/2024 and wound botulism 4/2025, both fully recovered. HIV suppressed in July per ID (VL <20, CD4 371). On buprenorphine/naloxone 8/2 BID, no use since April.\n\nNo complaints. Working full time on a framing crew. Eats two meals a day, a lot of takeout. Sleeps ok.\nSmokes 1 ppd (about 13 pack-years). Alcohol 1-2 drinks a month. No other drugs.\nFH: father with CAD, mother with HTN, brother with depression. No new history.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 BID; naloxone nasal spray PRN. NKDA.\n\nExam: well-appearing. Vitals normal, weight back to 71 kg. HEENT normal, no thrush. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin: healed scar R forearm, old antecubital marks, no active sites. Joints normal. Neuro: lids symmetric, EOM full, strength normal. Mood good, PHQ-9 5, AUDIT-C 2.\nUDS bup +, otherwise negative.\n\nA/P\n1. Health maintenance: CBC, CMP, lipids, hep C antibody (yearly while risk continues). Tdap today. Flu and COVID in October. Vaccines otherwise current (PCV20, hep B series, MenACWY x2).\n2. HIV: per ID, suppressed.\n3. OUD in early remission on buprenorphine: continue, 4-week Rx.\n4. Tobacco: discussed varenicline and patches again; he'll think about it, no Rx today.\n\nRTC 3 months, sooner as needed."
+            },
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-08-13T13:30",
+              "body": "Your blood counts and kidney and liver tests are normal, and the hepatitis C test is negative. Cholesterol is fine for your age and risk, no medicine needed. Nothing to change. See you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "pharmacy",
+          "start": "2025-09-09T11:20",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Buprenorphine/naloxone film PA renewal",
+              "author": "MA",
+              "date": "2025-09-09T11:20",
+              "body": "Pharmacy notified that MassHealth needs the yearly PA renewal on the buprenorphine/naloxone films. Form completed with diagnosis and dose, sent for PCP signature, faxed. Approved same day per plan portal, good through 9/2026. Pharmacy informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T16:15"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-07T16:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T16:15"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: vaccines",
+              "author": "RN",
+              "date": "2025-10-07T16:25",
+              "body": "In after work for fall shots. Afebrile, feels well. Influenza (L deltoid) and 2025-26 COVID mRNA (R deltoid) given, VIS provided. Waited 15 min, no reaction. Reminded him of his November visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-11-18T15:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-11-18T16:05",
+              "body": "Seven months without use. Steady on 8/2 BID. Work slowing for winter, he's lined up some indoor drywall jobs. Shots done at the October nurse visit, no issues.\nHIV: taking ART daily, he says. Next HIV clinic visit in January (they moved it).\nSmoking: still about a pack a day.\n\nVitals ok, weight stable. Exam brief: well, no murmur, lungs clear.\nUDS bup +, otherwise negative. PDMP appropriate.\n\nA/P\n- OUD in early remission (7 months), continue buprenorphine/naloxone 8/2 BID. Moving to 2-month visits with monthly refills.\n- HIV: per ID.\n- Tobacco: offered NRT again, declined.\n\nRTC 2 months (video ok)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

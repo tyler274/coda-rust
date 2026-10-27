@@ -1,0 +1,1700 @@
+{
+  "unit": "unit-1697",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001697",
+      "given": "Susan",
+      "family": "Farrell",
+      "birth_date": "1995-12-06",
+      "address_line": "58 Pomeroy Terrace",
+      "phone": "+1-518-555-0137",
+      "email": "susan.farrell@example.test",
+      "summary": "HR coordinator who joined mid-way through her second pregnancy, then delivered at 32 weeks by emergent repeat cesarean for fetal distress; her son had a NICU course with IVH and anemia of prematurity. Quiet primary-care years followed until a 2026 complete hydatidiform mole with severe preeclampsia, evacuated by suction curettage, now under gynecology hCG surveillance.",
+      "events": [
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2023-06-13T10:20",
+              "author": "front desk",
+              "body": "Caller wants to establish with Dr. as PCP. Membership info emailed and she signed up online while on the phone. Mentions she is about 20 wks pregnant and has an OB already, wants a regular doctor for everything else. Booked new pt 6/20 at 8:40. Asked her to bring med bottles and the name of her old primary office so we can send for records."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "establish_care",
+          "start": "2023-06-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit",
+          "conditions": [
+            {
+              "label": "History of cesarean section",
+              "action": "history",
+              "onset": "2021-06-01",
+              "note": "Low transverse cesarean, first pregnancy, term",
+              "icd10": "Z98.891"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2023-01-22",
+              "note": "Second pregnancy, prenatal care with outside OB"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prescribed by OB during pregnancy"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              81
+            ],
+            "hr": 77,
+            "spo2": 98,
+            "weight_kg": 72.8,
+            "height_cm": 165.3
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Human resources coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2023-06-20T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-pcp-records",
+              "action": "placed",
+              "order": "Records request, prior primary care office",
+              "category": "procedure",
+              "reason": "Establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-06-20T09:30",
+              "author": "PCP",
+              "body": "27 yo here to set up primary care. Currently pregnant, about 21 weeks by LMP (~1/22/23), seeing an outside OB group for prenatal care; she says everything has gone smoothly so far. No bleeding, no leaking, no headaches or vision change.\n\nOB hx: this is her second pregnancy. First was in 2021, carried to term, delivered by low transverse C-section, healthy baby.\n\nPMH: nothing chronic. PSH: C-section as above.\nMeds: ferrous sulfate 325 mg daily, started by her OB this pregnancy.\nAllergies: NKDA.\nFH: her mother had preeclampsia with a pregnancy. A maternal aunt was treated for gestational trophoblastic disease.\nSH: works in HR as a coordinator. Never smoker. Drinks rarely, a drink or two a month before pregnancy, none now.\n\nROS otherwise negative.\n\nExam: well, gravid. Ht 165 cm. Heart regular, no murmur. Lungs clear. Abdomen gravid, low transverse scar well healed. No leg swelling. Mood and affect normal.\n\nA/P\n1. Pregnancy, ~21 wks, followed by OB. Uncomplicated so far. We will stay out of the prenatal lane; she knows to call OB first for anything pregnancy-related. Asked her to have OB copy us on major notes.\n2. Health maintenance: will get records from her old primary office (form signed). Vaccines in pregnancy per OB, she expects Tdap there in the third trimester.\n3. Iron per OB, continue.\n\nRTC after delivery or sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "outside_records",
+          "start": "2023-07-06T14:05",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-04-19T10:00",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-pcp-records",
+              "action": "done",
+              "date": "2023-07-06T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-07-06T14:05",
+              "author": "front desk",
+              "body": "38 pages received from her previous primary care office, covering 2016-2022. Mostly annual visits and a couple of sick visits. Pap with HPV co-test 4/2022 normal (report abstracted). Immunization record shows childhood series complete, HPV series complete, MMR x2, varicella immune, Tdap 2021 during first pregnancy. Surgical hx lists C-section 2021. No chronic problems listed. Routed to PCP to review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "date": "2023-07-07T07:50",
+              "author": "PCP",
+              "body": "Reviewed old primary records. Nothing chronic. Last cervical screen 4/2022 co-test negative, next due 2027. Vaccines current apart from the pregnancy Tdap she'll get at OB."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "portal_message",
+          "start": "2023-08-17T19:42",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-15T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tdap at OB",
+              "date": "2023-08-17T19:42",
+              "author": "patient",
+              "body": "Hi, just so you have it, I got the whooping cough booster at my OB appt on Tuesday 8/15. Left arm. All good otherwise!"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Immunization entered",
+              "date": "2023-08-18T08:15",
+              "author": "MA",
+              "body": "Tdap 8/15/23 given at outside OB entered into immunization history per patient report."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-10a",
+          "kind": "hospital_admission",
+          "start": "2023-09-10T04:30",
+          "end": "2023-09-14T12:00",
+          "service": "Obstetrics",
+          "reason": "Rupture of membranes at 32 weeks",
+          "conditions": [
+            {
+              "label": "Acute fetal distress requiring emergent delivery",
+              "action": "diagnosed",
+              "onset": "2023-09-10",
+              "icd10": "O76"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "portal_message",
+          "start": "2023-09-12T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby came early",
+              "date": "2023-09-12T21:10",
+              "author": "patient",
+              "body": "Wanted to let you know the baby came Sunday at 32 weeks. My water broke early that morning and his heart rate kept dropping on the monitor so they did an emergency C-section. I'm sore but ok. He's in the NICU. Yesterday the nurses saw him turn blue a few times while he was sleeping, maybe 20 seconds each, he goes floppy and then comes back on his own. They say his oxygen is fine in between and it's not with feeding. They're watching him closely. Not really sure what I'm asking, I guess just keeping you in the loop. I'm still in the hospital until Thursday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Baby came early",
+              "date": "2023-09-13T07:35",
+              "author": "PCP",
+              "body": "Susan, thank you for letting me know, and congratulations on your son. That's a lot to happen in one weekend. The NICU team is the right place for him and they will walk you through what they're seeing. For you: rest, take the pain medicine the OB team sends you home with, and call your OB for fever, heavy bleeding or wound redness. I'd like to see you in about a month to check in on how you're recovering. Front desk will reach out. Thinking of you all."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "telephone",
+          "start": "2023-09-19T11:00",
+          "orders": [
+            {
+              "id": "delivery-records",
+              "action": "placed",
+              "order": "Records request, hospital discharge summary",
+              "category": "procedure",
+              "reason": "Delivery admission 9/10-9/14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-09-19T11:00",
+              "author": "front desk",
+              "body": "Requested discharge summary from the hospital L&D unit for admission 9/10-9/14/23 (signed release on file). Told 5-7 business days."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T15:20",
+          "orders": [
+            {
+              "id": "delivery-records",
+              "action": "done",
+              "date": "2023-09-26T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2023-09-26T15:20",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY (outside hospital)\nAdmitted 09/10/2023, discharged 09/14/2023.\n\nG2P1 at 32 weeks with a prior low transverse cesarean presented with a sudden gush of clear fluid and irregular contractions roughly every 10 minutes. No bleeding, no significant pain. Prenatal course uncomplicated with adequate care. Vitals stable on arrival. Sterile speculum exam confirmed ROM; cervix 3 cm, vertex. Continuous monitoring showed abrupt decelerations from a baseline of 140 to 90 bpm with quick recovery, variable in relation to contractions. Given recurrent decelerations, proceeded to emergent repeat low transverse cesarean for fetal distress. Liveborn male, admitted to NICU.\n\nPostoperative course unremarkable; incision clean and dry at discharge, ambulating, tolerating diet.\n\nAllergies: NKDA.\nDischarge medications: ferrous sulfate 325 mg daily (continue).\nFollow-up: OB postpartum visit; routine wound care."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2023-09-27T08:05",
+              "author": "PCP",
+              "body": "Discharge summary reviewed. Preterm ROM at 32 wks, decels, emergent repeat LTCS. Follow up postpartum next month."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "portal_message",
+          "start": "2023-10-04T13:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update and appointment",
+              "date": "2023-10-04T13:25",
+              "author": "patient",
+              "body": "Hi. Update on the baby since you asked. He's still on CPAP for his breathing (respiratory distress syndrome they call it) and yesterday he had more spells where he stops breathing and his heart rate drops. They did a head ultrasound and found a bleed in his brain, an intraventricular hemorrhage. His soft spot was a little sunken. They said no seizures and his neuro exam was ok. He also has anemia of prematurity. His scores at birth were 8 and 9 so they were hopeful at first. It's a lot. Could I move my appointment with you to later in the month? I'm at the NICU most days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Update and appointment",
+              "date": "2023-10-04T17:50",
+              "author": "PCP",
+              "body": "Thank you for telling me, Susan. I'm sorry this has been so hard. Of course we can move it. The front desk will offer you 10/17, first slot of the morning so you can get to the NICU after. Please reach out sooner if you're not sleeping, not eating, or feeling hopeless, any time."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment rescheduled",
+              "date": "2023-10-05T09:10",
+              "author": "front desk",
+              "body": "Moved f/u to 10/17 at 8:00 per Dr. Pt confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "office_visit",
+          "start": "2023-10-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "conditions": [
+            {
+              "label": "History of preterm birth (32 weeks gestation)",
+              "action": "history",
+              "onset": "2023-09-10",
+              "icd10": "Z87.51"
+            },
+            {
+              "label": "Acute fetal distress requiring emergent delivery",
+              "action": "resolved",
+              "onset": "2023-09-10",
+              "icd10": "O76"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2023-01-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              77
+            ],
+            "hr": 64,
+            "spo2": 98,
+            "weight_kg": 67.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-17T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-17T09:05",
+              "author": "PCP",
+              "body": "S: Five weeks out from emergent repeat C-section at 32 wks (9/10). Incision sore early on, now barely notices it. Bleeding tapered to spotting. Son still inpatient: on CPAP, had apnea/bradycardia spells, head US showed an IVH, and he has anemia of prematurity. She is at the NICU most days. Sleeping in pieces. Feels anxious and teary at times, mostly around his ups and downs; no thoughts of self-harm. Eating ok. Has her OB postpartum visit at the end of the month.\nMeds: ferrous sulfate 325 daily.\n\nO: Looks tired but engaged, good eye contact. Heart RRR. Lungs clear. Abd soft, LTCS incision healed, no erythema or drainage. No calf tenderness or leg swelling. PHQ-9: 8.\n\nA/P\n1. S/p preterm delivery at 32 wks for fetal distress. Recovering well. Added history of preterm birth to her list; fetal distress problem closed.\n2. Mood: PHQ-9 8 with a lot of situational strain. Not depression by history at this point. Talked about the NICU social worker and parent support group, sleep in shifts where she can. Told her to message me if it gets heavier; will re-screen at the next visit.\n3. Iron: on ferrous sulfate. CBC today.\n4. Flu and updated COVID given today.\n\nRTC for physical in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "portal_message",
+          "start": "2023-10-18T12:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2023-10-18T12:40",
+              "author": "PCP",
+              "body": "Hi Susan, your blood count from yesterday is normal, no anemia. Keep doing what you're doing. Hope the week is going ok."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2023-12-05T09:30",
+              "author": "RN",
+              "body": "Electronic request from pharmacy: ferrous sulfate 325 mg, #90, original Rx from OB. Pt is on it per our med list. Sent 90-day supply with 1 refill per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "portal_message",
+          "start": "2024-02-27T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2024-02-27T20:15",
+              "author": "patient",
+              "body": "Is it time for my yearly physical? I can do a Tuesday morning before work if there's anything in March."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical",
+              "date": "2024-02-28T08:45",
+              "author": "front desk",
+              "body": "Yes! You're booked Tuesday 3/12 at 7:40. Please come fasting, we'll draw labs at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "annual_physical",
+          "start": "2024-03-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              84
+            ],
+            "hr": 58,
+            "spo2": 99,
+            "weight_kg": 64.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-12T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 223
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-12T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-12T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T08:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-12T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-12T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-12T08:40",
+              "author": "PCP",
+              "body": "28F for her yearly exam. Six months postpartum after the 32-week delivery. Sleep is better than in the fall. Mood feels steadier; PHQ-9 down to 4 from 8. Still taking iron daily, no GI trouble with it.\n\nROS: no fatigue out of proportion, no palpitations, no bowel or urinary complaints, periods per OB.\n\nMeds: ferrous sulfate 325 mg daily. NKDA.\nSocial: HR coordinator. Never smoker. Alcohol rare.\n\nExam: Well appearing. HEENT unremarkable, thyroid not enlarged. Heart regular without murmur. Lungs clear. Abdomen soft, healed LTCS scar. Skin without rash. Extremities warm, no swelling. Neuro grossly intact.\n\nA/P\n- Preventive: cervical screen up to date (co-test 2022). Fasting CBC, CMP, lipids today. One-time HIV and hep C screening offered and accepted.\n- Mood: improved, keep checking yearly.\n- Iron: continue as is.\n- Flu/COVID next fall.\n\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "portal_message",
+          "start": "2024-03-14T16:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-03-14T16:30",
+              "author": "PCP",
+              "body": "Hi Susan, all of your labs came back fine: blood count, kidney and liver tests, sugar and cholesterol in good range, and the HIV and hepatitis C screens were negative. Nothing to change. See you next year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Lab results",
+              "date": "2024-03-14T18:02",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2024-06-18T10:05",
+              "author": "RN",
+              "body": "Pharmacy e-request ferrous sulfate 325 mg daily #90. Last seen 3/12/24. Approved 90 days + 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T07:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-08T08:05",
+              "author": "RN",
+              "body": "In for seasonal vaccines before work. Not ill today, no prior reactions. Influenza (trivalent) L deltoid, 2024-25 COVID (Moderna) R deltoid. VIS given. Waited 15 min, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "portal_message",
+          "start": "2025-03-04T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booking",
+              "date": "2025-03-04T12:10",
+              "author": "patient",
+              "body": "Hi, I'm due for my physical. Same deal as last year if possible, early on a Tuesday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Booking",
+              "date": "2025-03-04T13:30",
+              "author": "front desk",
+              "body": "Got you in Tuesday 3/18 at 7:40. Fasting is fine but not required this time."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "annual_physical",
+          "start": "2025-03-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              85
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 62.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-18T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-18T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 10
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-18T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-18T08:30",
+              "author": "PCP",
+              "body": "29 yo, annual. Doing well, work is busy with open enrollment behind her. No health complaints. Mood good, PHQ-9 2. Still on the daily iron tablet.\n\nMeds: ferrous sulfate 325 mg. Allergies none.\nSH: never smoker, a drink here and there.\n\nExam: BP and vitals per flowsheet, normal. Comfortable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin clear.\n\nA/P\nHealthy 29 yo. CBC and CMP today. Cervical screening next due 2027. Lipids and HIV/HCV already done last year. Flu and COVID in the fall. RTC 6 months for a quick check-in, or a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T11:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2025-03-20T11:45",
+              "author": "PCP",
+              "body": "Susan, your blood count and chemistry panel are both normal. Have a good spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "pharmacy",
+          "start": "2025-06-24T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2025-06-24T09:20",
+              "author": "RN",
+              "body": "Ferrous sulfate 325 mg renewal request from pharmacy. Seen 3/18/25. Renewed x1 yr per standing order."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-09-15T16:40",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's 8:00 check-in, work conflict. Feels fine, will rebook later. Reminded her about fall vaccines."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2025-10-07T07:58",
+              "author": "RN",
+              "body": "Seasonal influenza vaccine given L deltoid, lot and VIS documented. Offered 2025-26 COVID; she would rather skip it this year. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "ed_visit",
+          "start": "2026-05-11T16:10",
+          "end": "2026-05-11T21:30",
+          "service": "Emergency Medicine",
+          "reason": "Vaginal bleeding in pregnancy",
+          "vitals": [
+            {
+              "time": "2026-05-11T16:20",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-11T16:45",
+              "results": [
+                {
+                  "test": "Choriogonadotropin beta subunit, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 200000
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-11T16:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-05-11T18:30",
+              "text": "Transabdominal and transvaginal imaging. The uterus is enlarged for dates and its cavity is filled by a heterogeneous mass made up of numerous small cystic spaces. No gestational sac with fetal pole or cardiac activity is identified. Both ovaries are enlarged and contain multiple cysts. No free fluid.",
+              "conclusion": "Intrauterine heterogeneous multicystic mass without a fetus; bilateral enlarged multicystic ovaries. Findings suggest molar pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visits",
+              "date": "2026-05-14T07:55",
+              "author": "patient",
+              "body": "Hi, I wanted you to hear this from me. I found out I was pregnant again but hadn't started seeing anyone yet. I'd had on and off bleeding and pressure for about two weeks and I've been a lot sicker with nausea and throwing up than with my other pregnancies, so I went to the ER Monday. They did bloodwork and an ultrasound and there was no baby, just a mass with lots of little cysts, and my ovaries had cysts too. They thought it was a molar pregnancy and sent me home to see GYN. Then the bleeding kept getting heavier so I went back yesterday. It doesn't hurt, it's just a lot. My hCG had gone up to 250,000 and the ultrasound had that snowstorm look, so now they're calling it a complete molar pregnancy. GYN is doing a D&C on June 9. My aunt had something like this. I'm kind of scared. Do I need to do anything with you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: ER visits",
+              "date": "2026-05-14T12:20",
+              "author": "PCP",
+              "body": "Susan, I'm so sorry, that's a hard thing to hear twice in one week. GYN is the right team to lead this, and the D&C is the treatment. Afterward they will follow your hCG level until it goes to zero, which is how they make sure it's fully cleared. Before the procedure: if the bleeding soaks more than a pad an hour, or you get lightheaded, or you get a bad headache, vision changes or swelling, go back to the ER right away, don't wait for June 9. Let's see each other after the procedure. I'll ask the ER to send me their note."
+            },
+            {
+              "type": "Outside Records",
+              "title": "ED note",
+              "date": "2026-05-14T15:05",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT NOTE (faxed). Date of service 05/11/2026.\nCC: vaginal bleeding, pelvic pressure x 2 wk.\n30F, G3P1102, no prenatal care this pregnancy. Intermittent bleeding and pelvic pressure for two weeks, nausea and vomiting heavier than in prior pregnancies. Denies fever, chills, pain. PMH: preterm delivery at 32 wk (2023). Allergies: NKDA. Meds: ferrous sulfate.\nBP 130/85, HR 88. Abdomen soft, nontender; fundal height larger than expected by dates.\nhCG 200,000. Hgb 12.2, WBC 7.0, plt 250.\nPelvic US: heterogeneous intrauterine mass with numerous cystic spaces, no fetus; bilateral enlarged multicystic ovaries.\nImpression: suspected molar pregnancy. Hemodynamically stable. Discharged with GYN follow-up in 1-2 days, bleeding precautions."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-30a",
+          "kind": "hospital_admission",
+          "start": "2026-05-30T19:05",
+          "end": "2026-06-01T13:00",
+          "service": "Gynecology",
+          "reason": "Severe preeclampsia with molar pregnancy",
+          "vitals": [
+            {
+              "time": "2026-05-30T19:15",
+              "bp": [
+                165,
+                105
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-30T19:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-30T19:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-30T19:40",
+              "results": [
+                {
+                  "test": "Choriogonadotropin beta subunit, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 200000
+                },
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "mg/mg",
+                  "value": 0.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-05-30T21:10",
+              "text": "Enlarged uterus containing an echogenic intracavitary mass with innumerable small cystic spaces in a snowstorm pattern. No fetus or fetal parts. Adnexa as previously described.",
+              "conclusion": "Findings consistent with complete molar pregnancy; no fetus."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-05-31T09:40",
+              "text": "Specimen: uterine contents, suction curettage. Gross: abundant hemorrhagic tissue with numerous translucent grape-like vesicles. Microscopic: diffusely enlarged, edematous chorionic villi with central cisterns and circumferential trophoblastic proliferation. No embryonic or fetal tissue identified.",
+              "conclusion": "Complete hydatidiform mole.",
+              "issued": "2026-06-02T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "portal_message",
+          "start": "2026-06-02T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Out of the hospital",
+              "date": "2026-06-02T10:30",
+              "author": "patient",
+              "body": "Update: I ended up back in the ER Saturday night with a terrible headache, my vision was off and I was swollen everywhere. My blood pressure was 165/105. They said it was severe preeclampsia from the molar pregnancy and did the D&C Sunday instead of waiting. Home since yesterday. Headache is gone. GYN started me on birth control pills and I go to their lab for hCG every week. Can I see you next week?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-06-02T14:15",
+              "author": "RN",
+              "body": "Called pt after her message. Home 6/1 after admission 5/30-6/1 for severe preeclampsia with complete molar pregnancy, suction D&C 5/31. Today: no headache, vision normal, swelling going down, light bleeding. No home cuff. Reviewed ER precautions for headache, visual change, chest pain, SOB, heavy bleeding. Booked with PCP 6/10. Requested discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "outside_records",
+          "start": "2026-06-03T11:40",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Gynecology discharge summary",
+              "date": "2026-06-03T11:40",
+              "author": "gynecology",
+              "body": "DISCHARGE SUMMARY (outside hospital, gynecology service)\nAdmitted 05/30/2026 via ED, discharged 06/01/2026.\n\nDiagnoses: complete hydatidiform mole; severe preeclampsia.\n\n30 yo G3 with a complete molar pregnancy diagnosed 5/13, evacuation scheduled for 6/9, presented with two days of severe headache, visual disturbance and generalized edema. BP 165/105. Bilateral pitting edema of the legs; reflexes brisk. Hgb 13.2, plt 210, Cr 0.9, AST 30, ALT 28, urine protein/creatinine 0.3, beta-hCG 200,000. Ultrasound: snowstorm pattern, no fetus.\n\nCourse: severe-range pressures treated with IV antihypertensive on the unit. Suction curettage performed 5/31 without complication. Pathology: complete hydatidiform mole. BP normal range by discharge without oral agents. Headache and visual symptoms resolved.\n\nAllergies: NKDA.\nDischarge meds: norgestimate 0.25 mg / ethinyl estradiol 0.035 mg one tablet daily (new); ferrous sulfate 325 mg daily (continue).\nFollow-up: GYN clinic; weekly serial beta-hCG; contraception throughout surveillance."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "office_visit",
+          "start": "2026-06-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Complete hydatidiform mole",
+              "action": "diagnosed",
+              "onset": "2026-05-13",
+              "note": "Suction curettage 5/31/26; hCG surveillance by gynecology",
+              "icd10": "O01.0"
+            },
+            {
+              "label": "History of preeclampsia",
+              "action": "history",
+              "onset": "2026-05-30",
+              "note": "Severe, with molar pregnancy; resolved after evacuation"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "norgestimate 0.25 MG / ethinyl estradiol 0.035 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Contraception during hCG surveillance, prescribed by gynecology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              78
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 63.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-10T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-10T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-10T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-10T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-06-10T09:15",
+              "author": "PCP",
+              "body": "S: 30F seen after admission 5/30-6/1. Background: third pregnancy, no prenatal care, two ER visits 5/11 and 5/13 for bleeding with hCG 200,000 then 250,000 and a multicystic intrauterine mass without a fetus, called complete mole; then back 5/30 with severe headache, visual change and swelling, BP 165/105, urine P/C 0.3, normal platelets, creatinine and LFTs; severe preeclampsia. Suction curettage 5/31, path confirmed complete mole. Discharged on a combined pill, no BP medicine.\nSince home: headache gone after the second day, vision back to normal, swelling down, light bleeding tapering. Taking the pill daily, no side effects. Weekly hCG at GYN lab, first draw last week, result not back to her yet. Sad and a little on edge but sleeping. Family history noted: her mother had preeclampsia and an aunt had a trophoblastic disease.\nMeds: norgestimate/EE 0.25/0.035 daily, ferrous sulfate 325 daily. NKDA.\n\nO: BP normal today. Comfortable. No papilledema on fundoscopy, visual fields full. Heart RRR. Lungs clear. Abdomen soft, nontender. No leg edema. Reflexes 2+ and symmetric. PHQ-9 6.\n\nA/P\n1. Complete hydatidiform mole s/p suction curettage 5/31. GYN leading serial hCG and contraception. Added to problem list.\n2. Severe preeclampsia, resolved after evacuation. BP normal off meds. Logged as history; this matters for any future pregnancy and for long-term cardiovascular risk.\n3. Estrogen-containing pill after preeclampsia: acceptable now that BP is normal; she knows to tell us about headaches or leg swelling.\n4. CBC, CMP today to confirm recovery.\n5. Mood: PHQ-9 6, understandable. Will recheck next visit.\nRTC ~4-5 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "portal_message",
+          "start": "2026-06-11T13:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "date": "2026-06-11T13:20",
+              "author": "PCP",
+              "body": "Hi Susan, yesterday's blood count, kidney and liver tests are all back to normal. Good sign that the preeclampsia has settled. See you next month."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "portal_message",
+          "start": "2026-07-01T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "hCG",
+              "date": "2026-07-01T20:40",
+              "author": "patient",
+              "body": "GYN called with my one month number, hCG was 5,000. They said it's coming down the way they want. Just passing it along."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: hCG",
+              "date": "2026-07-02T07:40",
+              "author": "PCP",
+              "body": "That is a big drop from 200,000, glad to hear it. Keep up the weekly checks. See you on the 14th."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after molar pregnancy",
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 73,
+            "spo2": 99,
+            "weight_kg": 64.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-14T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-07-14T08:35",
+              "author": "PCP",
+              "body": "Follow-up, 6 weeks after suction curettage for complete mole. Feels like herself again. No bleeding now, no pelvic pain, no headaches. Taking the pill every day. Yesterday's hCG at GYN was 1,200 (5,000 at one month). Mood better, PHQ-9 3.\nMeds: norgestimate/EE daily, ferrous sulfate daily.\n\nExam: BP normal. Well appearing. Heart and lungs normal. Abdomen soft, nontender. No edema.\n\nA/P: complete mole, hCG falling, surveillance with GYN; preeclampsia resolved, BP normal. No changes. She'll forward GYN updates. Physical due in the spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-30a",
+          "kind": "pharmacy",
+          "start": "2026-07-30T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2026-07-30T09:10",
+              "author": "RN",
+              "body": "Pharmacy renewal request, ferrous sulfate 325 mg daily. Seen 7/14. Renewed 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "outside_records",
+          "start": "2026-08-06T10:25",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology follow-up letter",
+              "date": "2026-08-06T10:25",
+              "author": "gynecology",
+              "body": "Gynecology clinic, visit of 08/03/2026.\n\nDear colleague,\nI saw Ms. Farrell, 30, in follow-up after suction curettage on 5/31 for a complete hydatidiform mole. Her pre-evacuation beta-hCG was 200,000 mIU/mL. Serial values since: 5,000 at one month, 1,200 at six weeks and 800 at eight weeks. She is taking her oral contraceptive as advised and has had no bleeding or pelvic pain. Examination today was unremarkable.\n\nPlan: weekly beta-hCG until normal, then monthly. Continue contraception through surveillance. We will keep you informed.\n\nAllergies: NKDA. Medications: norgestimate/ethinyl estradiol daily; ferrous sulfate 325 mg daily."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records filed",
+              "date": "2026-08-06T10:30",
+              "author": "MA",
+              "body": "GYN letter 8/3 scanned and routed to PCP."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute fetal distress requiring emergent delivery|O76": {
+        "code": "O76",
+        "display": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Complete hydatidiform mole|O01.0": {
+        "code": "O01.0",
+        "display": "Classical hydatidiform mole",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of cesarean section|Z98.891": {
+        "code": "Z98.891",
+        "display": "History of uterine scar from previous surgery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of preterm birth (32 weeks gestation)|Z87.51": {
+        "code": "Z87.51",
+        "display": "Personal history of pre-term labor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "norgestimate 0.25 MG / ethinyl estradiol 0.035 MG Oral Tablet": {
+        "code": "240128",
+        "display": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+        "ingredient": "norgestimate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Choriogonadotropin beta subunit, quantitative": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein/Creatinine ratio, urine": {
+        "code": "2890-2",
+        "display": "Protein/Creatinine [Mass Ratio] in Urine",
+        "unit": "mg/mg",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

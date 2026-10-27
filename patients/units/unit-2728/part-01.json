@@ -1,0 +1,822 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002728",
+      "given": "Paula",
+      "family": "Nowak",
+      "birth_date": "1978-02-25",
+      "address_line": "37 Woodbridge Street",
+      "phone": "+1-201-555-0136",
+      "email": "paula.nowak@example.test",
+      "marital_status": "single",
+      "summary": "Self-employed landscaper who joins in 2019 with peptic ulcer disease on pantoprazole, develops hypertension that becomes resistant with hypokalemia, and is found to have primary aldosteronism. A functioning pancreatic VIPoma is found in 2024 and resected; a vomiting ED visit in 2025 and a basilar tip aneurysm rupture in 2026 follow, with spironolactone finally added at her last visit.",
+      "events": [
+        {
+          "id": "2019-03-26a",
+          "kind": "telephone",
+          "start": "2019-03-26T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2019-03-26T10:12",
+              "body": "Caller wants to establish care with us. Previous PCP retired and the office closed out its panel. Works for herself doing landscaping, prefers early morning appts before she heads out to job sites. Booked new pt physical 4/9 at 7:40. Release form emailed for her old records. Membership info and fee schedule sent."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-09a",
+          "kind": "establish_care",
+          "start": "2019-04-09T07:40",
+          "end": "2019-04-09T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {
+              "label": "Peptic ulcer disease",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "per patient and prior office; on daily PPI since"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "peptic ulcer disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 68.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Potassium": 3.7,
+              "Bicarbonate": 28,
+              "Thyroid Stimulating Hormone": 1.6,
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine monthly"
+            },
+            {
+              "item": "Occupation",
+              "value": "Self-employed landscaper and horticulturist"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-04-09T08:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-04-09T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-04-09T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-09T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2019-04-09T08:20",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-04-09T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2019-04-09T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-04-09T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-04-09T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2019-04-09T08:45",
+              "body": "41F here to establish care. Prior PCP retired; records requested.\n\nConcerns: none really. Feels well. Works outdoors all season, slower in winter.\n\nPMH: peptic ulcer disease about 7 yrs ago, treated at her old office; has stayed on pantoprazole 40 daily since and doesn't want to come off it (\"every time I tried, the burning came back\"). Diagnostic laparoscopy at 32 for abdominal pain, nothing found.\nMeds: pantoprazole 40 mg daily. No OTC NSAIDs - was told to avoid after the ulcer.\nAllergies: NKDA.\nFHx: father HTN, died after a ruptured brain aneurysm at 67. Mother T2DM and high cholesterol. Paternal aunt has an adrenal problem causing high BP - pt thinks it was called hyperaldosteronism.\nSHx: self-employed landscaper/horticulturist, runs a small crew in season. Never smoker. Wine 1-2 glasses a month. Exercises through work.\nGYN: regular cycles. Last Pap \"a few years ago,\" normal. No mammogram yet.\n\nROS: no headaches, chest pain, palpitations, dyspnea, abdominal pain, change in bowels, melena. Otherwise negative.\n\nExam: BP above, repeated after rest similar. Pleasant, fit-appearing, tanned forearms. HEENT normal. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopy port scars. No edema. Skin: no concerning lesions on sun-exposed areas. Pelvic: normal external genitalia, cervix normal, Pap/HPV collected. Breasts: no masses bilaterally.\n\nA/P\n1. Health maintenance: Pap/HPV done. Screening mammogram ordered. Tdap today. CMP, CBC, lipids, TSH, A1c. One-time HCV and HIV screening, discussed and agreed.\n2. BP borderline today. With her father's history I'd like real numbers - asked her to buy a home cuff and send readings over the next couple months. Low salt diet reviewed.\n3. PUD hx - continue pantoprazole. Avoid NSAIDs.\n4. FHx of ruptured aneurysm in father - noted.\nRTC 1 yr, sooner for BP."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ]
+          }
+        },
+        {
+          "id": "2019-04-11a",
+          "kind": "portal_message",
+          "start": "2019-04-11T16:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2019-04-11T16:20",
+              "body": "Hi Paula - all of your bloodwork came back fine. Kidney and liver tests normal, blood count normal, cholesterol in a good range, thyroid and sugar normal. Hepatitis C and HIV screens were negative. Pap results will take a few more days."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2019-04-15T09:05",
+              "body": "Pap normal and HPV negative. Next one in 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-16a",
+          "kind": "outside_records",
+          "start": "2019-04-16T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2019-04-16T13:00",
+              "body": "Summary of care, prior internal medicine office (records released at patient request).\n\nPatient: Paula Nowak, DOB 02/25/1978.\nProblem list: peptic ulcer disease, 2012, treated, maintained on PPI.\nSurgical: diagnostic laparoscopy 2010 for abdominal pain, no pathology identified.\nMedications: pantoprazole 40 mg daily.\nAllergies: no known drug allergies.\nScreening: Pap 2015 normal. Routine labs 2017 unremarkable.\nVitals at last visit (2017): BP 132/84.\n\nScanned to chart. Reviewed - consistent with her history. [PCP]"
+            }
+          ]
+        },
+        {
+          "id": "2019-05-21a",
+          "kind": "imaging",
+          "start": "2019-05-21T09:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2019-05-21T09:30",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies available for comparison. Breast composition: scattered areas of fibroglandular density. No suspicious masses, calcifications or architectural distortion in either breast.",
+              "conclusion": "BI-RADS 1, negative. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "done",
+              "date": "2019-05-21T09:30"
+            }
+          ]
+        },
+        {
+          "id": "2019-07-02a",
+          "kind": "portal_message",
+          "start": "2019-07-02T20:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home BP",
+              "author": "patient",
+              "date": "2019-07-02T20:41",
+              "body": "Sorry this is late, June was crazy. Here's what I have from the cuff, mostly mornings: 136/86, 140/88, 134/84, 142/90, 138/86, 137/88. Is that ok?"
+            },
+            {
+              "type": "Portal Reply",
+              "title": "RE: Home BP",
+              "author": "PCP",
+              "date": "2019-07-03T07:15",
+              "body": "Thanks Paula. Borderline but not in treatment range yet. Keep the salt down and check a few times a month; let's look again at your next visit or if you start seeing 140s/90s regularly."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T07:50",
+          "reason": "flu shot",
+          "measure": [
+            "bp"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-22T07:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2019-10-22T07:58",
+              "body": "Flu vaccine L deltoid, tolerated. VIS given. BP checked at pt request, recorded. Reminded to send home readings to Dr."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-28a",
+          "kind": "portal_message",
+          "start": "2020-01-28T19:03",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP numbers going up",
+              "author": "patient",
+              "date": "2020-01-28T19:03",
+              "body": "My readings have crept up this winter. Last two weeks: 150/96, 148/94, 152/98, 149/95, 151/96, 147/94. Not doing anything different. Should I come in?"
+            },
+            {
+              "type": "Portal Reply",
+              "title": "RE: BP numbers going up",
+              "author": "PCP",
+              "date": "2020-01-29T08:10",
+              "body": "Yes - those are consistently high. Front desk will set you up in the next couple of weeks. Bring the cuff so we can check it against ours."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "office_visit",
+          "start": "2020-02-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "elevated home blood pressure",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2020-01-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "state": {
+            "bp": [
+              150,
+              96
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-11T08:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-02-11T08:10",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Blood"
+                },
+                {
+                  "test": "Urine Glucose"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2020-02-11T08:00",
+              "text": "Normal sinus rhythm, rate 74. Normal axis. PR, QRS and QT intervals normal. No voltage criteria for left ventricular hypertrophy. No ST-T abnormalities.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-02-11T07:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2020-02-11T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2020-02-11T08:30",
+              "body": "S: Home BPs running ~150/96 over the last few weeks (log in portal). Her cuff read within 3 points of ours today. No headaches, chest pain, vision change, palpitations. No NSAIDs, decongestants, licorice or supplements. Sleeping fine. Salt is moderate - eats out a lot during season, less now.\n\nO: BP as recorded, repeated by me 148/96. Fundi not well seen without dilation. Heart RRR no murmur, no carotid bruits. Lungs clear. No edema. ECG normal, no LVH.\n\nA/P: Hypertension, now sustained on home and office readings. Age 41, strong family hx.\n- Start lisinopril 10 mg daily. Discussed cough and lip/tongue swelling as reasons to call.\n- BMP and UA today, BMP again in 2 wks on the ACE.\n- DASH handout, sodium under 2 g.\n- Telehealth check in 3 months with home log."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              150,
+              96
+            ]
+          }
+        },
+        {
+          "id": "2020-02-12a",
+          "kind": "portal_message",
+          "start": "2020-02-12T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2020-02-12T12:30",
+              "body": "Kidney function and electrolytes normal; urine clean. Potassium is at the low end of normal - fine for now. Recheck in 2 weeks as planned."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-26a",
+          "kind": "lab_only",
+          "start": "2020-02-26T07:20",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-26T07:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-26T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP on lisinopril",
+              "author": "PCP",
+              "date": "2020-02-26T15:44",
+              "body": "Creatinine and potassium stable after starting lisinopril. Continue."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-02a",
+          "kind": "telephone",
+          "start": "2020-04-02T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Visit change",
+              "author": "front desk",
+              "date": "2020-04-02T11:15",
+              "body": "Office moving routine follow-ups to video for now. Pt OK with video visit 5/14. Link sent to email on file."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-14a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-14T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "state": {
+            "bp": [
+              144,
+              92
+            ]
+          },
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-14T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - BP",
+              "author": "PCP",
+              "date": "2020-05-14T12:45",
+              "body": "Video from her truck between jobs, identity verified. Busy spring - business is fine.\nHome readings on lisinopril 10 averaging about 144/92 (14 readings sent). No cough, no swelling. Tolerating fine.\nA/P: HTN improved but not at goal (<130/80). Increase lisinopril to 20 mg daily. New Rx sent; she'll finish the 10s by taking two. BMP when she is next near the office - order in. Recheck in ~4 months in person."
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2020-05",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "lisinopril dose increase"
+            }
+          ]
+        },
+        {
+          "id": "2020-06-03a",
+          "kind": "lab_only",
+          "start": "2020-06-03T06:55",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-06-03T06:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2020-05",
+              "action": "done",
+              "date": "2020-06-03T06:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "author": "PCP",
+              "date": "2020-06-03T14:02",
+              "body": "Stable on lisinopril 20. No action."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-07a",
+          "kind": "pharmacy",
+          "start": "2020-07-07T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Lisinopril 90-day",
+              "author": "MA",
+              "date": "2020-07-07T09:20",
+              "body": "Pharmacy asking to convert lisinopril 20 mg to a 90-day supply per pt's insurance. Sent 90 days x 1 refill per protocol. Pantoprazole 90-day also sent."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "office_visit",
+          "start": "2020-09-24T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "state": {
+            "bp": [
+              146,
+              94
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-24T07:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-09-24T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-24T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2020-09-24T08:05",
+              "body": "HTN f/u. Masked. On lisinopril 20 since May, says she hasn't missed doses. Home log mid-140s/low-90s. No headaches, no cough. Summer was long, lots of heat, drinking plenty of water.\nExam: BP as above both arms similar. RRR. Lungs clear. No edema.\nA/P\nHTN - still above goal on max-ish ACE dose. Add amlodipine 5 mg daily. Ankle swelling discussed. Video check in ~10 wks.\nFlu shot today.\nPUD - stable on pantoprazole."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              146,
+              94
+            ]
+          }
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-08T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "state": {
+            "bp": [
+              142,
+              92
+            ]
+          },
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-12-08T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - BP",
+              "author": "PCP",
+              "date": "2020-12-08T13:20",
+              "body": "Video, pt at home. Off-season, doing wreaths and holiday greens out of her greenhouse.\nOn lisinopril 20 + amlodipine 5. Home avg ~142/92 over the past month. No ankle swelling, no flushing.\nA/P: Better, still not at goal. Amlodipine up to 10 mg. If not at goal by spring will add a third agent. In-person visit March."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

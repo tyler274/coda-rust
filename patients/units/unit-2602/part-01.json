@@ -1,0 +1,197 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002602",
+      "given": "Hunter",
+      "family": "Wright",
+      "birth_date": "1992-06-10",
+      "address_line": "27 Bardwell Ridge Road",
+      "phone": "+1-603-555-0116",
+      "email": "hunter.wright@example.test",
+      "marital_status": "single",
+      "summary": "Software engineer in his early thirties who joins in 2024 with oral ulcers, constipation and new back stiffness; a bilateral uveitis that autumn leads to an ankylosing spondylitis diagnosis and biologic therapy, and in 2025 a perianal abscess uncovers ileal Crohn's disease. A second perianal abscess sends him to an ED after his last visit.",
+      "events": [
+        {
+          "id": "2024-07-03a",
+          "kind": "telephone",
+          "start": "2024-07-03T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2024-07-03T10:20",
+              "body": "Caller is moving his primary care to us; his old office is closing its adult panel. Works remotely as a software engineer, flexible schedule. Membership info emailed, he signed up during the call. New patient visit set for 7/17 at 9:00. Records release signed electronically and faxed to his former primary care office. He'll bring his supplement bottle to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-17a",
+          "kind": "establish_care",
+          "start": "2024-07-17T09:00",
+          "end": "2024-07-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Recurrent oral aphthae", "icd10": "K12.0", "action": "diagnosed", "onset": "2015-01-01", "note": "years of recurrent mouth ulcers, self-limited"},
+            {"label": "Chronic constipation", "action": "diagnosed", "onset": "2016-01-01", "note": "long-standing, managed with fiber and diet"},
+            {"label": "Unspecified acute and subacute iridocyclitis", "icd10": "H20.00", "action": "history", "onset": "2023-10-01", "note": "one episode autumn 2023, treated with drops at an outside eye clinic, resolved"}
+          ],
+          "medications": [
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule (2000 IU) by mouth daily", "dose": {"value": 2000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "over-the-counter supplement"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 71.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 2-3 drinks per week"},
+            {"item": "Occupation", "value": "Software engineer"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-07-17T09:00"},
+            {"procedure": "Tonsillectomy", "performed": "2004-08-01T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-07-17T09:50"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-17T09:50", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-17T09:50", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2024-07-17T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-07-17T09:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-07-17T09:00",
+              "body": "32M here to establish. Software engineer, works from home most days at a standing desk he admits he rarely stands at.\n\nConcerns today:\n1. Low back stiffness for roughly two weeks. Worst first thing in the morning, loosens up after he's been moving around for a while. No injury, no leg symptoms, no bowel or bladder change. Has not taken anything for it.\n2. Mouth ulcers on and off for years, a few times a year, heal on their own in a week or so. Uses an OTC numbing gel when they flare.\n3. Has always run constipated; does fine with a fiber supplement and fruit, no laxatives.\n4. Had one bout of iritis last October, painful red eye, an eye clinic treated it with drops and it cleared. Nothing since.\n\nPMH: as above. PSH: tonsils out at 12.\nMeds: vitamin D3 2000 IU daily, self-started.\nAllergies: none to medications.\nFamily: father has Crohn's disease. Maternal uncle with ankylosing spondylitis. Mother hypothyroid.\nSocial: single, lives in Belchertown. Never smoked. 2-3 drinks a week socially. Hikes on weekends.\n\nExam: well-appearing, lean. HEENT: no active oral ulcers today, conjunctivae clear. Neck supple, no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Back: no midline tenderness, full forward flexion and extension, negative straight leg raise both sides. Neuro grossly intact, reflexes symmetric. Skin clear.\n\nA/P:\n- Low back stiffness: likely mechanical, desk posture and sitting. Gave a stretching handout, encouraged breaking up sitting time and getting back to his core routine. Let me know if not better in 4-6 weeks.\n- Recurrent aphthous ulcers: benign course, continue OTC care.\n- Chronic constipation: stable on fiber.\n- Past iritis: resolved; should call us or eye care same day for any red painful eye.\n- Health maintenance: CBC, CMP, lipids, one-time HIV and hep C screen today. PHQ-2 0. Flu and COVID when available in the fall.\nRTC in the fall or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "portal_message",
+          "start": "2024-07-19T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-07-19T14:05",
+              "body": "Hi Hunter, all of your labs from Wednesday look good: blood counts, kidney and liver tests, and cholesterol are normal, and the HIV and hepatitis C screens are negative. Nothing to do. Hope the stretching is helping."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "telephone",
+          "start": "2024-09-30T08:12",
+          "reason": "red painful eyes",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Triage: bilateral eye pain and redness",
+              "author": "RN",
+              "date": "2024-09-30T08:12",
+              "body": "Pt calling, both eyes red and painful since Saturday, vision blurry, light hurts. Says it feels like the iritis he had last year but both sides this time. No injury, no contacts, no discharge. Discussed with PCP: needs to be seen by eye care today. Called the ophthalmology group's urgent line and got him an 11:30 slot. Pt has a friend driving him. Also mentioned the low back stiffness never really went away. Told him to keep that for his follow-up with us."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "outside_records",
+          "start": "2024-10-10T13:40",
+          "reason": "ophthalmology consult records",
+          "conditions": [
+            {"label": "Unspecified acute and subacute iridocyclitis", "icd10": "H20.00", "action": "resolved"},
+            {"label": "Recurrent acute iridocyclitis, bilateral", "icd10": "H20.023", "action": "diagnosed", "onset": "2024-09-28", "note": "HLA-B27 positive anterior uveitis"},
+            {"label": "Ankylosing spondylitis of unspecified sites in spine", "action": "diagnosed", "onset": "2024-07-01", "note": "bilateral sacroiliitis on X-ray, HLA-B27 positive"}
+          ],
+          "medications": [
+            {"drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension", "action": "historical", "sig": "1 drop in both eyes every 2 hours while awake, then taper as directed", "route": "Ophthalmic", "course": "short", "reason": "anterior uveitis"},
+            {"drug_text": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution", "action": "historical", "sig": "1 drop in both eyes three times daily", "route": "Ophthalmic", "course": "short", "reason": "anterior uveitis"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-09-30T12:40", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 45},
+              {"test": "C Reactive Protein", "value": 30},
+              {"test": "HLA-B27 antigen", "loinc": "4821-5", "text": "Positive"}
+            ]}
+          ],
+          "reports": [
+            {"study": "X-ray pelvis", "loinc": "28561-9", "performed": "2024-09-30T13:05", "text": "AP view of the pelvis. Both sacroiliac joints show erosive change with subchondral sclerosis and irregular joint margins. Hip joints preserved. No fracture. Visualized lower lumbar spine without acute finding.", "conclusion": "Bilateral sacroiliitis."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation, visit 09/30/2024",
+              "author": "ophthalmology",
+              "date": "2024-10-10T13:40",
+              "body": "Re: Hunter Wright, DOB 06/10/1992. Date of visit 09/30/2024.\n\nThank you for sending Mr. Wright. He came in with two days of aching, red eyes with blurring in both eyes. He had one prior bout of anterior uveitis about a year ago. On review he also describes three months of low back pain, at its worst on waking and better with exercise. No recent infection or trauma. Recurrent oral ulcers by history.\n\nMedications: vitamin D3. Allergies: NKDA.\n\nExam: Visual acuity reduced in both eyes. Ciliary flush OU. Slit lamp: anterior chamber cell OU. Corneas clear, no keratic precipitates of note, IOP normal. Dilated fundus exam without posterior involvement. Lumbar spine tender on palpation with limited range of motion.\n\nWorkup: ESR 45 mm/hr, CRP 3.0 mg/dL, HLA-B27 positive. AP pelvis: bilateral sacroiliitis.\n\nImpression: Recurrent acute anterior uveitis, bilateral, HLA-B27 associated. Inflammatory back pain with radiographic sacroiliitis, consistent with ankylosing spondylitis.\n\nPlan: Prednisolone acetate 1% OU every 2 hours while awake with a taper over about four weeks; cyclopentolate 1% OU three times daily for comfort. Recheck here in one week. Recommend rheumatology evaluation for the spondyloarthritis.\n\nAllergies: NKDA.\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "office_visit",
+          "start": "2024-10-14T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after uveitis; back pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {"weight_kg": 70.5},
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-14T15:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-14T15:35"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-14T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-14T15:37"}
+          ],
+          "orders": [
+            {"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "ankylosing spondylitis with HLA-B27 uveitis"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-10-14T15:00",
+              "body": "S: Following up after the eye episode. Eye letter arrived Thursday, reviewed. Eyes feel almost back to normal, light sensitivity gone, still on the steroid drop taper (down to twice a day) and finished the dilating drops. Eye doctor saw him back last week and was happy.\nBack: honestly no better than in July. Still stiff for the first hour of the day, eases with a walk. Stretches have not changed much.\n\nReviewed ophtho workup: ESR 45, CRP 3.0 mg/dL, HLA-B27 positive, pelvis film with bilateral sacroiliitis.\n\nO: Looks well. Conjunctivae minimally injected. Lumbar paraspinals mildly tender, forward bending limited compared to July. Hips full range.\n\nA/P:\n- Ankylosing spondylitis: B27 positive with SI changes on film and morning stiffness that eases with activity; his uncle has it too. Referral to rheumatology placed, asked for the next new patient opening. Keep moving, swimming or yoga fine.\n- Recurrent anterior uveitis, both eyes: improving, finish taper per ophthalmology, same-day eye care for any recurrence.\n- Flu and COVID vaccines given today.\nF/u after rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-22a",
+          "kind": "portal_message",
+          "start": "2024-11-22T19:48",
+          "orders": [
+            {"id": "rheum-referral", "action": "done", "date": "2024-11-22T19:48"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rheumatology update",
+              "author": "patient",
+              "date": "2024-11-22T19:48",
+              "body": "Saw rheumatology Wednesday. They agree it's AS. Started me on sulfasalazine, working up to 2 pills twice a day over a month. They also drew a TB test and hepatitis labs because they want to add Humira once insurance says yes. Just keeping you posted. Eyes are totally fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rheumatology update",
+              "author": "PCP",
+              "date": "2024-11-23T09:15",
+              "body": "Thanks for the update, Hunter. That plan makes sense. Taking the sulfasalazine with food helps the stomach. I'll watch for their letter."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

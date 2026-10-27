@@ -1,0 +1,387 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002722",
+      "events": [
+        {
+          "id": "2022-01-11a",
+          "kind": "specialist_visit",
+          "start": "2022-01-11T09:20",
+          "service": "Gynecology",
+          "reason": "follow-up after uterine artery embolization",
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology follow-up", "author": "gynecology", "date": "2022-01-13T11:00", "body": "Outside gynecology, visit 01/11/2022. Six weeks after uterine artery embolization (11/30/2021). ED visit two days post procedure for post-embolization syndrome, settled with NSAIDs. First period since was noticeably lighter, about four days, no clots, did not miss work. Abdomen soft, nontender. Plan: no further intervention; will reassess if bleeding returns. Back to routine gynecologic care with PCP. NKDA."}
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "annual_physical",
+          "start": "2022-02-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-02-22T08:50"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-02-22T08:45", "results": [{"test": "Potassium"}, {"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-02-22T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-02-22T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-02-22T08:45", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-02-22T08:00"},
+            {"procedure": "Immunization administration", "performed": "2022-02-22T08:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-02-22T09:10", "body": "Annual exam. 43F. Feeling well. Energy good since spironolactone. Periods lighter since the embolization in Nov. No headaches beyond the odd one from grading late. Home BP mostly 128-136 / 80s.\nMeds: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN. NKDA.\nSocial: teaching 2nd grade at the new school, likes it. Walks after work. Never smoker, no alcohol.\nFamily: mother breast ca at 58; father HTN and cerebral aneurysm; sister hypothyroid.\nROS negative.\nExam: well. Thyroidectomy scar healed. Breasts symmetric, no masses, no nipple change, axillae clear. Heart RRR. Lungs clear. Abdomen soft, nontender. No edema. Skin unremarkable.\nA/P\n- Primary aldosteronism / resistant HTN: at goal-ish at home. CMP today for K and Cr.\n- PTC s/p thyroidectomy: endo yearly, TSH today.\n- Fibroids s/p UAE: improved.\n- Screening: Tdap today. HCV and HIV screening today. Cervical co-test due 2025. Mammogram - mother's history; she's had one in 2020, order screening yearly - she'd like to wait until summer when school is out.\n- Flu given in the fall; COVID booster discussed."},
+            {"type": "Result Note", "title": "Annual labs", "author": "PCP", "date": "2022-02-23T12:30", "body": "CMP, CBC, lipids, TSH normal. K normal on spironolactone + lisinopril. HCV and HIV nonreactive. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2022-05-03a",
+          "kind": "portal_message",
+          "start": "2022-05-03T20:41",
+          "reason": "refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Refills", "author": "patient", "date": "2022-05-03T20:41", "body": "Hi, could I get 90 day refills on the spironolactone and the levothyroxine? My insurance changed the mail order rules. Thank you!"},
+            {"type": "Patient Message", "title": "Re: Refills", "author": "MA", "date": "2022-05-04T09:12", "body": "Hi Ms. Reed, 90-day supplies of both sent to the mail order pharmacy with 3 refills. Let us know if they don't arrive within 10 days."}
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "office_visit",
+          "start": "2022-06-13T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right breast lump",
+          "conditions": [
+            {"label": "Lump in right breast, upper outer quadrant", "icd10": "N63.11", "action": "diagnosed", "onset": "2022-05-13"},
+            {"label": "Situational anxiety", "icd10": "F41.8", "action": "diagnosed", "onset": "2022-05-13"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "GAD-7 total score", "value": 8}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-06-13T13:40"}],
+          "orders": [
+            {"id": "dx-mammo-2022", "action": "placed", "order": "Diagnostic mammogram, bilateral, and right breast ultrasound", "category": "imaging", "reason": "palpable right breast mass"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - breast lump", "author": "PCP", "date": "2022-06-13T14:15", "body": "Found a lump in her right breast in the shower about a month ago. Has not changed since. Not painful. No discharge from the nipple, no skin dimpling or redness. She has been checking it every day and admits she is scared - mother's cancer, plus her own thyroid cancer last year. Sleeping less. GAD-7 8.\nExam: firm mass about 1.5 cm R breast upper outer quadrant, does not move freely, nontender. No skin changes, no nipple retraction. No axillary or supraclavicular nodes. L breast normal.\nA/P\n1. Palpable R breast mass. Diagnostic mammogram + targeted ultrasound, marked urgent. Explained most lumps at her age turn out benign but this one needs imaging and likely a biopsy.\n2. Situational anxiety around the lump. Talked it through; she'd rather not start anything, has her sister for support. Will move quickly so she's not waiting. Message me anytime."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "imaging",
+          "start": "2022-06-21T10:00",
+          "reason": "diagnostic breast imaging",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2022-06-21T10:00", "text": "Bilateral diagnostic mammogram with spot compression of the right breast. Breasts heterogeneously dense. A BB marker at the palpable site, right breast upper outer quadrant, overlies an oval circumscribed equal-density mass. No suspicious calcifications. Left breast: no mass, distortion or suspicious calcifications.", "conclusion": "Oval circumscribed mass at the palpable site, right breast. See ultrasound."},
+            {"study": "Breast ultrasound", "performed": "2022-06-21T10:30", "text": "Targeted right breast ultrasound at the palpable site. At 10 o'clock, 6 cm from the nipple: oval, circumscribed, hypoechoic solid mass, parallel orientation, 1.6 x 1.0 x 1.2 cm. No posterior shadowing. Right axilla: normal lymph nodes.", "conclusion": "1.6 cm solid mass, right breast 10 o'clock, corresponding to the palpable finding. BI-RADS 4A: low suspicion for malignancy. Ultrasound-guided core biopsy recommended."}
+          ],
+          "orders": [
+            {"id": "dx-mammo-2022", "action": "done", "date": "2022-06-21T10:30"},
+            {"id": "breast-bx-2022", "action": "placed", "order": "Ultrasound-guided core biopsy, right breast", "category": "procedure", "reason": "BI-RADS 4A mass"}
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "procedure_visit",
+          "start": "2022-06-28T11:00",
+          "service": "Breast Imaging",
+          "reason": "ultrasound-guided core biopsy, right breast",
+          "conditions": [
+            {"label": "Lump in right breast, upper outer quadrant", "icd10": "N63.11", "action": "resolved"},
+            {"label": "Fibroadenoma of right breast", "icd10": "D24.1", "action": "diagnosed", "onset": "2022-05-13"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-06-28T11:20", "issued": "2022-07-01T09:00", "text": "Specimen: right breast, 10 o'clock, ultrasound-guided core needle biopsy (4 cores).\nFibroadenoma. No atypia. No malignancy identified.", "conclusion": "Fibroadenoma, right breast. Benign."}
+          ],
+          "orders": [{"id": "breast-bx-2022", "action": "done", "date": "2022-06-28T11:20"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Breast biopsy report", "author": "radiology", "date": "2022-07-01T13:00", "body": "Outside breast imaging center. Ultrasound-guided core biopsy, right breast 10 o'clock, 14-gauge, 4 cores, 06/28/2022. Clip placed, confirmed on post-procedure mammogram. No complications.\nAddendum 07/01: pathology fibroadenoma, benign and concordant with imaging. Recommend follow-up right breast ultrasound in 6 months, then annual screening mammography."}
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "telephone",
+          "start": "2022-07-01T14:10",
+          "reason": "biopsy result",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Biopsy result call", "author": "PCP", "date": "2022-07-01T14:10", "body": "Called with path: fibroadenoma, benign. She cried with relief. Follow-up ultrasound in 6 months per radiology, then yearly mammograms. Ordered."}
+          ],
+          "orders": [
+            {"id": "breast-us-6mo", "action": "placed", "order": "Right breast ultrasound, 6-month follow-up", "category": "imaging", "reason": "fibroadenoma after biopsy"}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "specialist_visit",
+          "start": "2022-09-13T09:40",
+          "service": "Endocrinology",
+          "reason": "thyroid cancer surveillance; primary aldosteronism",
+          "conditions": [
+            {"label": "Malignant neoplasm of thyroid gland", "icd10": "C73", "action": "resolved", "note": "no evidence of disease one year after surgery"},
+            {"label": "History of thyroid cancer", "action": "history", "onset": "2021-05-11"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-09-13T09:20", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Thyroglobulin", "loinc": "3013-0", "unit": "ng/mL", "text": "<0.1"}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-09-13T09:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}]}
+          ],
+          "reports": [
+            {"study": "Thyroid ultrasound", "performed": "2022-09-08T14:00", "text": "Neck ultrasound after total thyroidectomy. Thyroid bed: no residual tissue or mass. Central and lateral neck compartments: no abnormal lymph nodes.", "conclusion": "Post-thyroidectomy neck without evidence of recurrence."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2022-09-16T10:00", "body": "Outside endocrinology, visit 09/13/2022.\nOne year after total thyroidectomy for 2.5 cm PTC (vascular invasion, N0), no RAI. Feels well. Benign breast biopsy this summer.\nLevothyroxine 125 mcg; TSH in range today. Thyroglobulin <0.1. Neck ultrasound 09/08: empty thyroid bed, no abnormal nodes.\nExcellent response to therapy. Continue current dose; yearly TSH, thyroglobulin and ultrasound.\nAldosteronism: on spironolactone 50 with lisinopril, amlodipine, HCTZ. K and creatinine normal today. BP 134/84 here. Continue. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "office_visit",
+          "start": "2022-09-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-09-27T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "BP Follow-up", "author": "PCP", "date": "2022-09-27T16:20", "body": "BP check. School started, busy but fine. Home log 120s-130s/80s. Endo note reviewed - thyroglobulin undetectable, ultrasound clean; endo calling it no evidence of disease, list updated. K normal there.\nExam: lungs clear, heart RRR, no edema.\nA/P: aldosteronism/HTN stable on 4 meds; no change. Flu and COVID booster at a nurse visit next month. RTC winter."}
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-13T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-13T15:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-13T15:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit - vaccines", "author": "RN", "date": "2022-10-13T16:05", "body": "Flu vaccine R deltoid, bivalent COVID booster L deltoid. Observed 15 min, no reaction. VIS given."}
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "office_visit",
+          "start": "2022-11-21T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "headaches",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-11-21T15:50"}],
+          "orders": [
+            {"id": "neuro-referral-2022", "action": "placed", "order": "Neurology referral, urgent", "category": "referral", "to": "Neurology", "reason": "progressive headaches with nocturnal and positional features, morning vomiting"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - headaches", "author": "PCP", "date": "2022-11-21T16:30", "body": "Headaches since late summer, close to three months. Dull, all over the front, worse at night and when she bends to help the kids at their desks. Some mornings nauseated and has vomited a few times before work. Acetaminophen takes the edge off. Never had headaches like this.\nBP fine at home. No fever, no trauma.\nExam: BP normal. Alert, fluent. Cranial nerves grossly intact. Moves all limbs; gait normal.\nA/P: new progressive headache with nighttime/positional worsening and morning vomiting - red flags. Urgent neurology referral today for evaluation and brain imaging; called the neurology office myself to get her in. ED if sudden severe headache, weakness, vision change or confusion. Acetaminophen as needed in the meantime."}
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "specialist_visit",
+          "start": "2022-12-12T09:00",
+          "service": "Neurology",
+          "reason": "three months of headaches",
+          "medications": [
+            {"drug_text": "dexamethasone 4 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily, then taper over 4 weeks as directed", "dose": {"value": 4, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "vasogenic edema around right frontal mass"}
+          ],
+          "reports": [
+            {"study": "MRI brain without and with contrast", "loinc": "24590-2", "performed": "2022-12-12T11:30", "text": "Indication: progressive headache, left-sided weakness.\nFindings: 2 cm enhancing mass in the right frontal lobe with surrounding vasogenic edema. No hemorrhage. No midline shift. Ventricles normal in size. No other lesions.", "conclusion": "2 cm enhancing right frontal lobe mass with surrounding vasogenic edema."}
+          ],
+          "orders": [
+            {"id": "neuro-referral-2022", "action": "done", "date": "2022-12-12T09:00"},
+            {"id": "nsgy-referral-2022", "action": "placed", "order": "Neurosurgery referral, urgent", "category": "referral", "to": "Neurosurgery", "reason": "right frontal mass"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation", "author": "neurology", "date": "2022-12-14T08:30", "body": "Outside neurology, visit 12/12/2022. Urgent referral from PCP.\n44F with primary aldosteronism and papillary thyroid carcinoma treated by thyroidectomy in 2021. Three months of dull aching headache, worse at night and on bending forward, with nausea and some morning vomiting.\nMeds: spironolactone, lisinopril, amlodipine, HCTZ, levothyroxine, acetaminophen PRN. NKDA.\nExam: BP normal. Mild left-sided weakness, 4+/5 arm and leg. Slight tremor of the left hand. Rest of the neuro exam normal.\nMRI brain with and without contrast (same day): 2 cm enhancing right frontal lobe mass with vasogenic edema.\nImpression: right frontal brain mass with edema explaining her headache and left-sided signs.\nPlan: dexamethasone 4 mg twice daily, tapering over 4 weeks. Urgent neurosurgery referral placed. No driving until neurosurgery has seen her. Return for worse headache, vomiting, weakness or seizure."}
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "telehealth_visit",
+          "start": "2022-12-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology",
+          "conditions": [
+            {"label": "Right frontal brain mass", "icd10": "D43.0", "action": "diagnosed", "onset": "2022-09-01"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2022-12-19T16:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit", "author": "PCP", "date": "2022-12-19T16:40", "body": "Video, at home. Neurology letter and MRI reviewed with her: 2 cm right frontal mass with edema. On dexamethasone a week - headache much better, no vomiting since Wednesday, says the left hand feels steadier. Some trouble sleeping on the steroid. Neurosurgery appt Jan 10.\nTaking the week off before break; colleagues covering. Mother staying with her.\nA/P: R frontal mass - added to list. Steroid: take with food, take the dose by early afternoon. Watch BP and sugars while on it - no symptoms of high sugar. Let me know what neurosurgery says. ED precautions reviewed."}
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "imaging",
+          "start": "2023-01-05T09:30",
+          "reason": "6-month breast ultrasound",
+          "reports": [
+            {"study": "Breast ultrasound", "performed": "2023-01-05T09:30", "text": "Right breast 10 o'clock: biopsy-proven fibroadenoma, oval circumscribed hypoechoic mass, 1.6 x 1.0 x 1.1 cm, unchanged. Biopsy clip in place.", "conclusion": "Stable biopsy-proven fibroadenoma. BI-RADS 2: benign. Return to annual screening mammography."}
+          ],
+          "orders": [{"id": "breast-us-6mo", "action": "done", "date": "2023-01-05T09:30"}]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "specialist_visit",
+          "start": "2023-01-10T13:00",
+          "service": "Neurosurgery",
+          "reason": "right frontal mass",
+          "orders": [{"id": "nsgy-referral-2022", "action": "done", "date": "2023-01-10T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurosurgery consultation", "author": "neurosurgery", "date": "2023-01-12T15:00", "body": "Outside neurosurgery, visit 01/10/2023.\n44F referred by neurology for a 2 cm enhancing right frontal mass with vasogenic edema (MRI 12/12/2022), found on workup of three months of headache with mild left-sided weakness and left-hand tremor. On a dexamethasone taper; headache gone, weakness and tremor resolved.\nPMH: primary aldosteronism; papillary thyroid cancer, thyroidectomy 2021, no evidence of disease.\nExam today: neuro intact, strength 5/5 throughout, no tremor.\nImaging reviewed: the appearance favors a meningioma.\nDiscussion: offered resection now versus surveillance MRI now that she is asymptomatic. She wishes to avoid surgery if she can and to finish the school year. Reasonable. Repeat MRI in 3 months; sooner for any recurrent headache, weakness or seizure. Finish the steroid taper. OK to drive."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "annual_physical",
+          "start": "2023-03-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "GAD-7 total score", "value": 4}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-14T08:40", "results": [{"test": "Potassium"}, {"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-14T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-03-14T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-03-14T08:40", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-03-14T08:00"}],
+          "orders": [
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "annual screening; mother with breast cancer"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-03-14T09:05", "body": "Annual. 44F. Off dexamethasone since mid-January, no headaches. Neurosurgery watching the R frontal mass, repeat MRI in April. Back at work fully. Worry about the mass comes and goes; sleeping better. GAD-7 4.\nMeds: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN.\nExam: well appearing. Neuro: strength symmetric, no tremor, gait normal. Breasts: small firm mobile R UOQ lump at the biopsy site, unchanged; no other masses. Heart RRR, lungs clear, abd benign, no edema.\nA/P\n- R frontal mass, likely meningioma per neurosurgery: on surveillance.\n- Aldosteronism/HTN: stable, CMP today.\n- Hx PTC: endo yearly.\n- Fibroadenoma R breast: stable on Jan US. Screening mammogram this summer.\n- Colorectal screening at 45 - next year.\nLabs today."},
+            {"type": "Result Note", "title": "Annual labs", "author": "PCP", "date": "2023-03-15T11:40", "body": "All normal, K 4.3 range. Sent to portal."}
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "imaging",
+          "start": "2023-04-11T07:30",
+          "reason": "surveillance MRI brain",
+          "reports": [
+            {"study": "MRI brain without and with contrast", "loinc": "24590-2", "performed": "2023-04-11T07:30", "text": "Comparison 12/12/2022. Enhancing right frontal mass measures 2.0 cm, unchanged. Surrounding vasogenic edema markedly decreased. No new lesion. No hemorrhage or mass effect.", "conclusion": "Stable 2 cm right frontal mass with much less edema."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurosurgery follow-up", "author": "neurosurgery", "date": "2023-04-13T10:00", "body": "MRI 04/11/2023 reviewed by phone with patient: mass unchanged at 2 cm, edema much reduced. Asymptomatic. Continue surveillance, next MRI in 6 months."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "imaging",
+          "start": "2023-06-20T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-06-20T08:20", "text": "Breasts heterogeneously dense. Biopsy clip right breast 10 o'clock at the known fibroadenoma, stable. No new mass, suspicious calcifications or architectural distortion.", "conclusion": "BI-RADS 2: benign. Annual screening recommended."}
+          ],
+          "orders": [{"id": "mammo-2023", "action": "done", "date": "2023-06-20T08:20"}]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "office_visit",
+          "start": "2023-07-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-07-18T10:50", "results": [{"test": "Potassium"}, {"test": "Sodium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-07-18T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "BP Follow-up", "author": "PCP", "date": "2023-07-18T10:45", "body": "Rescheduled from last week - forgot, first week of summer break. Feels well. No headaches. Mammogram benign. MRI in April stable.\nHome BP log averages 132/84.\nExam: RRR, lungs clear, no edema. Neuro nonfocal.\nA/P: aldosteronism/HTN - stable, BMP today. Refills x1 yr sent. Endo in Sept, neurosurgery MRI Oct."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "specialist_visit",
+          "start": "2023-09-12T09:40",
+          "service": "Endocrinology",
+          "reason": "thyroid cancer surveillance; primary aldosteronism",
+          "labs": [
+            {"panel": null, "collected": "2023-09-12T09:20", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Thyroglobulin", "loinc": "3013-0", "unit": "ng/mL", "text": "<0.1"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Thyroid ultrasound", "performed": "2023-09-07T15:00", "text": "Post-thyroidectomy neck. Thyroid bed clear. No abnormal cervical lymph nodes.", "conclusion": "No evidence of recurrence."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2023-09-14T11:00", "body": "Outside endocrinology, visit 09/12/2023. Two years after thyroidectomy for PTC. Tg undetectable, TSH in goal, neck US clear. Continues to show excellent response. Levothyroxine 125 unchanged.\nAldosteronism: on spironolactone 50, lisinopril, amlodipine, HCTZ; BP 136/86 today. Continue.\nNoted right frontal mass on neurosurgical surveillance.\nReturn 1 year."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T07:30",
+          "reason": "surveillance MRI brain",
+          "reports": [
+            {"study": "MRI brain without and with contrast", "loinc": "24590-2", "performed": "2023-10-10T07:30", "text": "Comparison 04/11/2023. Right frontal enhancing mass 2.0 cm, unchanged. Mild surrounding edema, similar. No new lesion.", "conclusion": "Stable right frontal mass."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurosurgery follow-up", "author": "neurosurgery", "date": "2023-10-12T14:00", "body": "MRI 10/10/2023: right frontal mass stable at 2 cm. No symptoms. Continue surveillance; MRI in 6 months or sooner with symptoms."}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-19T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-19T15:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-19T15:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit - vaccines", "author": "MA", "date": "2023-10-19T16:00", "body": "Flu L arm, updated COVID R arm. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "ed_visit",
+          "start": "2023-12-14T06:50",
+          "end": "2023-12-14T15:30",
+          "service": "Emergency Medicine",
+          "reason": "severe headaches with morning vomiting and blurry vision",
+          "medications": [
+            {"drug_text": "dexamethasone 4 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily until surgery", "dose": {"value": 4, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "edema around right frontal mass"}
+          ],
+          "vitals": {"bp": [142, 88], "hr": 78},
+          "measure": ["temp_c", "rr", "spo2"],
+          "reports": [
+            {"study": "MRI brain without and with contrast", "loinc": "24590-2", "performed": "2023-12-14T10:15", "text": "Comparison 10/10/2023. The known enhancing right frontal mass with increased surrounding edema. No hemorrhage. No hydrocephalus.", "conclusion": "Known right frontal mass with increased surrounding edema."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2023-12-15T08:00", "body": "Regional hospital emergency department. Date of visit 12/14/2023.\nCC: severe headaches, morning nausea, blurry vision.\nHPI: 45F with a known right frontal mass on surveillance and primary aldosteronism. Over recent weeks her headaches have become severe and throbbing, felt at the back of the head, daily and worst on waking, with nausea and vomiting most mornings. Brief episodes of blurred vision. No head injury, no new medications.\nMeds: spironolactone, lisinopril, amlodipine, HCTZ, levothyroxine, acetaminophen. NKDA.\nVitals: BP 142/88, HR 78. BMI 30.\nExam: bilateral papilledema on fundoscopy. Remainder of neurologic exam unremarkable.\nMRI brain: known right frontal mass, now with more surrounding edema.\nED diagnosis: structural intracranial lesion with raised pressure signs.\nCourse: dexamethasone 10 mg IV. Headache improved. Discussed with on-call neurosurgery, who know her - plan resection; to be scheduled within weeks.\nDispo: home on dexamethasone 4 mg twice daily until surgery. Return for worsening headache, vomiting, vision loss, weakness or seizure."}
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "office_visit",
+          "start": "2023-12-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-21T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED visit", "author": "PCP", "date": "2023-12-21T11:40", "body": "Seen in ED last Thursday - several weeks of worsening morning headaches with vomiting and blurred vision; papilledema; MRI known R frontal mass with more edema. Back on dexamethasone 4 bid. Neurosurgery booked craniotomy Jan 9.\nToday: headaches much less, no vomiting since steroid. Vision clear. Nervous about surgery but says it's a relief to have a plan. On leave from school until after recovery.\nExam: alert, neuro nonfocal, strength 5/5.\nA/P: R frontal mass - surgery 1/9. Steroid precautions as before. Pre-op labs will be done by neurosurgery. Will see her after."}
+          ]
+        }
+      ]
+    }
+  ]
+}

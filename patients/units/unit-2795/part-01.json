@@ -1,0 +1,263 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002795",
+      "given": "Doris",
+      "family": "Hastings",
+      "birth_date": "1966-11-21",
+      "address_line": "28 Lathrop Street",
+      "phone": "+1-201-555-0129",
+      "email": "doris.hastings@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with hypertension, type 2 diabetes, hyperlipidemia, hypothyroidism and obesity who transferred care in August 2023. A midline laparotomy scar from a 2020 small bowel obstruction develops an incisional hernia in 2025, managed expectantly by surgery. After her last practice visit in March 2026 she has a laparoscopic cholecystectomy and returns to an outside ED with a retained common bile duct stone cleared at ERCP; the records arrive piecemeal.",
+      "events": [
+        {
+          "id": "2023-08-03a",
+          "kind": "telephone",
+          "start": "2023-08-03T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2023-08-03T10:12", "body": "Caller is moving her primary care to us from her old office, which she says has had a lot of turnover. Teaches second grade, wants to get settled before school starts. Insurance BCBS PPO, verified. Takes several daily meds for BP, sugar, cholesterol and thyroid and has about a month left on each. Scheduled new patient visit 8/22 at 9:00. Sent portal invite and the records release form; she will sign and return it so we can request her old chart."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T09:00",
+          "end": "2023-08-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; chronic disease management",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2012-05-01", "note": "Long-standing, on lisinopril from prior care"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "diagnosed", "onset": "2014-03-01", "note": "On metformin from prior care"},
+            {"label": "Hyperlipidemia", "action": "diagnosed", "onset": "2014-03-01", "note": "Dyslipidemia, on atorvastatin"},
+            {"label": "Hypothyroidism", "action": "diagnosed", "onset": "2009-06-01", "note": "On levothyroxine"},
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2010-01-01", "note": "BMI 33"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "levothyroxine sodium 0.075 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning on an empty stomach", "dose": {"value": 75, "unit": "ug"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypothyroidism"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Primary prevention"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Denies alcohol use"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "state": {"bp": [134, 84], "weight_kg": 87.7, "height_cm": 163.0, "labs": {"Hemoglobin A1c": 7.3, "Low Density Lipoprotein": 84, "Glucose": 141, "Thyroid Stimulating Hormone": 2.1, "Microalbumin/Creatinine Ratio": 9}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T10:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-08-22T10:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-08-22T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-08-22T10:05", "body": "NEW PATIENT VISIT\n\n56 y/o woman, elementary school teacher, transferring from another primary care office. Here to set up care before the school year. Feels well.\n\nChronic problems, per patient and her pill bottles:\n- HTN for roughly a decade, lisinopril 10 daily. Does not check at home.\n- T2DM since about 2014, metformin 1000 BID, tolerates it. Says her last A1c was \"around 7.\" Checks sugars a few mornings a week, 120s-140s. No hypoglycemia. Has an eye doctor she sees yearly.\n- Dyslipidemia, atorvastatin 20, no muscle complaints.\n- Hypothyroid, levothyroxine 75 mcg, takes it first thing before coffee.\n- Weight has been about the same for years. Walks the track at school in nice weather.\n- Aspirin 81 daily, started by her prior doctor.\n\nPSH: C-section 1995 (low transverse). Exploratory laparotomy 2020 for a small bowel obstruction, midline incision, recovered without problems. Nothing since.\nAllergies: none to medications.\nFH: Mother - T2DM and HTN. Father - CAD, high cholesterol. Sister had her gallbladder out for stones. Brother had an inguinal hernia fixed.\nSH: Never smoked. No alcohol. No drugs. Teaches second grade.\n\nROS: no chest pain, dyspnea, polyuria, foot numbness, abdominal pain or bowel change. Mood fine, PHQ-2 0.\n\nEXAM: Vitals as charted. BMI about 33.\nWell appearing. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen obese, soft, nontender; healed lower transverse scar and healed lower midline scar, no bulge. Legs without edema. Feet: skin intact, pulses 2+, monofilament intact bilaterally.\n\nASSESSMENT/PLAN\n1. HTN - a bit above goal today, first visit nerves; recheck next visit before changing anything. Continue lisinopril 10.\n2. T2DM - continue metformin. A1c, CMP, urine microalbumin today.\n3. Dyslipidemia - lipids today, continue atorvastatin 20.\n4. Hypothyroidism - TSH today.\n5. Obesity BMI 33 - discussed modest goals.\n6. Health maintenance - requesting prior office records to see where she is on colonoscopy, Pap, mammogram and vaccines. Flu and COVID in the fall.\n\nFollow up 4-6 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2023-08-24T16:40", "body": "Hi Doris, your labs from Tuesday are back. A1c is a little over 7, about where you thought it was. Kidney function, liver tests, blood counts and thyroid are all normal, and there is no protein in the urine. LDL cholesterol is in the 80s on the atorvastatin. No changes for now. Have a good start to the school year."},
+            {"type": "Patient Message", "title": "Re: Your lab results", "author": "patient", "date": "2023-08-24T19:02", "body": "Thank you! I signed the release for my old office yesterday so they should be sending things."}
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "outside_records",
+          "start": "2023-09-14T11:20",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records received", "author": "MA", "date": "2023-09-14T11:20", "body": "Outside records, 64 pages, from patient's previous primary care office. Abstracted for the chart:\n- Colonoscopy 2019: no polyps, recall 10 years.\n- Pap with HPV cotest 2021: negative for intraepithelial lesion, HPV not detected.\n- Screening mammogram 2022: negative, BI-RADS 1.\n- Tdap 2017.\n- COVID: two-dose mRNA series 2021 plus one booster.\n- No pneumococcal or shingles vaccines on file.\n- Hospital discharge summary 2020: small bowel obstruction treated with exploratory laparotomy, uneventful course.\nMed list matches ours. Flagged for PCP."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2023-09-15T07:50", "body": "Reviewed prior records. Colonoscopy 2019 normal, next 2029. Cervical screening cotest 2021 normal, due 2026. Mammogram due now, will order at next visit if not done. Needs flu, updated COVID, Shingrix and pneumococcal; nurse visit in October."}
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-12T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-12T15:52"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-10-12T15:54"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-12T15:50"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2023-10-12T16:05", "body": "Came after school. Screening questions negative, no prior vaccine reactions. Flu L deltoid, COVID R deltoid, Shingrix #1 L deltoid below flu site. VIS given. Waited 15 min, no reaction. Told her Shingrix can make her feel achy for a day or two. Dose 2 due in 2-6 months; will try to line it up with her winter follow-up."}
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "outside_records",
+          "start": "2023-11-20T13:05",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry diabetic eye exam", "author": "optometry", "date": "2023-11-20T13:05", "body": "Diabetic Eye Examination\nExam date: 11/08/2023\nPatient: Doris Hastings, DOB 11/21/1966\nHistory: type 2 diabetes, on metformin. Medications reviewed. NKDA.\nVisual acuity with correction: 20/20 OD, 20/25 OS.\nIOP 15 / 16 mmHg.\nDilated fundus exam: no diabetic retinopathy either eye. No macular edema. Optic nerves healthy.\nImpression: Type 2 diabetes without retinopathy. Mild presbyopia, new reading Rx given.\nRecommend dilated exam yearly.\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "pharmacy",
+          "start": "2024-01-04T09:30",
+          "reason": "Refill request, 90-day supply",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Mail-order refill request", "author": "MA", "date": "2024-01-04T09:30", "body": "Mail-order pharmacy request for 90-day supplies of metformin 1000 mg BID, lisinopril 10 mg, atorvastatin 20 mg and levothyroxine 75 mcg (insurance change to mail order for maintenance meds). All active, last visit 8/2023, labs current. Sent 90 days with 1 refill each per protocol. Aspirin is OTC."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {"bp": [132, 82], "weight_kg": 88.1},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-02-13T16:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-13T16:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-02-13T16:15"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-02-13T16:16"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-13T15:40"},
+            {"procedure": "Immunization administration", "performed": "2024-02-13T16:15"},
+            {"procedure": "Venipuncture", "performed": "2024-02-13T16:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: diabetes, hypertension", "author": "PCP", "date": "2024-02-13T16:30", "body": "S: Routine f/u. Busy at school, a lot of sick kids in her class but she has stayed well. Taking all meds. Home sugars mostly 120-150 fasting. No lows. No foot symptoms. Eye exam in November was clear (letter on file). Felt tired for a day after the first Shingrix, nothing more.\n\nO: BP at goal, weight stable (see vitals). Heart RRR. Lungs clear. No edema. Feet normal.\n\nA/P:\nT2DM - A1c today. Continue metformin 1000 BID.\nHTN - at goal on lisinopril 10.\nHyperlipidemia, hypothyroid - stable, labs due with physical.\nPrevention - Shingrix #2 and PCV20 today. Screening mammogram ordered; she will book over April break.\nPhysical in September, f/u in about 4 months."}
+          ]
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "portal_message",
+          "start": "2024-02-15T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "A1c result", "author": "PCP", "date": "2024-02-15T12:10", "body": "Doris - A1c came back about the same as August. Kidney function and potassium are normal. Keep doing what you're doing."}
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "imaging",
+          "start": "2024-04-09T08:30",
+          "reason": "Screening mammogram",
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-04-09T08:30"}
+          ],
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-04-09T08:30", "issued": "2024-04-10T14:00", "text": "Bilateral screening digital mammogram with tomosynthesis. Comparison: outside study from 2022. Breast composition: scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion in either breast. Skin and axillae unremarkable.", "conclusion": "BI-RADS 1: Negative. Routine screening mammogram in 1 year."}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Mammogram result", "author": "RN", "date": "2024-04-11T10:20", "body": "Your screening mammogram from April 9 was normal. Next one due in a year. Reminder letter will go out."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-06-11T16:15", "body": "Did not arrive for 3:30 f/u. Left VM to reschedule. 6/12 - she called back, end-of-year field day ran late and she forgot. Rebooked 6/27."}
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "office_visit",
+          "start": "2024-06-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-06-27T10:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-06-27T10:20"},
+            {"procedure": "Venipuncture", "performed": "2024-06-27T10:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2024-06-27T11:00", "body": "First week of summer break, apologetic about the missed visit. Doing well. Has been walking mornings now that school is out. Fasting sugars 110s-130s. No med issues.\n\nExam: vitals reviewed. BP up a little today - she hurried over from a dentist appointment; it has been at goal otherwise. Weight about the same. Heart and lungs normal. No edema.\n\nT2DM: A1c today, continue metformin.\nHTN: recheck at the physical, no change.\nOthers stable.\nPhysical with fasting labs in September."},
+            {"type": "Result Note", "title": "A1c result", "author": "PCP", "date": "2024-06-28T08:15", "body": "A1c 6.6, lowest yet. Released to portal with a note: summer walking is paying off."}
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-16T07:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-16T07:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-16T07:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-16T07:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-16T08:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-16T08:12"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-16T07:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-16T08:10"},
+            {"procedure": "Venipuncture", "performed": "2024-09-16T07:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-16T08:25", "body": "ANNUAL EXAM - 57F\n\nEarly appointment before school. Fasting. No new concerns. Sleeping okay. Mood good, PHQ-2 0.\n\nMeds: metformin 1000 BID, lisinopril 10, atorvastatin 20, levothyroxine 75 mcg, ASA 81. No allergies.\nFH/SH unchanged: never smoker, no alcohol.\n\nROS negative across systems including chest pain, dyspnea, GI, GU, skin, neuro.\n\nExam:\nGen: well, obese.\nHEENT: normal. Neck: no thyroid enlargement, no nodes.\nCV: RRR, no murmur. Lungs: clear.\nBreasts: deferred, mammogram April.\nAbd: soft, nontender, old scars healed, no masses.\nExt: no edema. Feet: intact sensation, good pulses, no skin breakdown.\nSkin: no worrisome lesions.\n\nPlan:\n- Labs: CMP, CBC, lipids, A1c, TSH, urine microalbumin. One-time hep C and HIV screening, she agrees.\n- Vaccines: flu and the 2024-25 COVID shot today.\n- Colonoscopy 2029, Pap/HPV due 2026, mammogram April.\n- Eye exam in November.\n- F/u winter."}
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T17:25",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs", "author": "PCP", "date": "2024-09-18T17:25", "body": "Hi Doris, all of your physical labs look good. A1c is 7.4, back up a little from June but close to where you've been. Cholesterol is at goal on the current dose, thyroid level normal, kidney and liver tests normal, no protein in the urine. Hepatitis C and HIV screens negative. Nothing to change."},
+            {"type": "Patient Message", "title": "Re: Physical labs", "author": "patient", "date": "2024-09-18T20:41", "body": "Great news, thanks. Arm was a little sore from the shots but fine now."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T19:15",
+          "reason": "Refill; eye exam update",
+          "documents": [
+            {"type": "Patient Message", "title": "Levothyroxine and eye doctor", "author": "patient", "date": "2024-12-03T19:15", "body": "Hello - the mail order says my levothyroxine is out of refills. Could you send a new one? Also I had my eye exam in November and the eye doctor said everything was fine, no diabetes changes. I asked them to send it to you."},
+            {"type": "Patient Message", "title": "Re: Levothyroxine and eye doctor", "author": "RN", "date": "2024-12-04T08:35", "body": "Levothyroxine 75 mcg 90 days with 3 refills sent to your mail order pharmacy. Thanks for the eye exam update - we haven't received their report yet, I've noted what you told us in your chart."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002642",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T21:10",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Recurrent rash of groin and feet despite antifungal creams"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Rash in groin",
+              "author": "patient",
+              "date": "2026-01-20T21:10",
+              "body": "Kind of embarrassing but I've had an itchy red rash in my groin since around the beginning of October. I've been using the store-brand antifungal cream and it clears up, then a few weeks after I stop it's right back. Feet keep doing the same thing too. Is there something stronger, or should I see someone?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Rash in groin",
+              "author": "PCP",
+              "date": "2026-01-21T07:35",
+              "body": "Not embarrassing at all, this is common, especially with the feet already involved. Since it keeps coming back after good courses of cream, I'd like dermatology to take a look and possibly culture it. I've put the referral in; our front desk will call you with a time. Until then keep the area dry and use the cream as you have been."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "telephone",
+          "start": "2026-01-22T10:18",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "author": "front desk",
+              "date": "2026-01-22T10:18",
+              "body": "Referral and last two visit notes faxed to outside dermatology. They offered Mon 2/9 at 9:40. Called pt, confirmed. He'll bring his insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "specialist_visit",
+          "start": "2026-02-09T09:40",
+          "service": "Dermatology",
+          "reason": "Recurrent groin and foot rash",
+          "conditions": [
+            {
+              "label": "Tinea cruris",
+              "icd10": "B35.6",
+              "action": "diagnosed",
+              "onset": "2025-10-01"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-09T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Platelet Volume"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-09T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "terbinafine 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 14 days",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Tinea cruris and tinea pedis"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2026-02-09T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "author": "dermatology",
+              "date": "2026-02-12T13:30",
+              "body": "Outside dermatology group\nDate of service: 02/09/2026\nRe: Mason Dean, DOB 10/18/1989\nReferring: primary care physician\n\nThank you for sending Mr. Dean, a 36-year-old construction worker, for a rash in the groin.\n\nHistory: For about four months he has had an itchy, red rash in both groin folds. Over-the-counter antifungal cream settles it each time, but it returns within a few weeks of stopping. He had a foot rash evaluated by your office in August 2025 (KOH positive at that visit) and reports athlete's foot treated several times over the past year. He denies new sexual partners and has not changed soaps, detergents or other hygiene products.\n\nMedications: none at present (intermittent OTC antifungal cream).\nAllergies: no known drug allergies.\nPMH: tinea pedis. PSH: none.\nFamily history: father with type 2 diabetes; mother with hypertension.\nSocial: construction work, boots all day. Never smoker. Alcohol 1-2 drinks weekly.\n\nExamination: Bilateral inguinal folds with sharply bordered, erythematous, scaly plaques. Feet show scale and maceration in the toe-web spaces bilaterally. Toenails are thickened and discolored. No inguinal or other lymphadenopathy. Remainder of the skin examined is clear.\n\nStudies today: CBC within normal limits. HIV antigen/antibody negative. Fungal culture of a groin scraping sent; result to follow.\n\nImpression:\n1. Tinea cruris, recurrent.\n2. Tinea pedis, recurrent, likely the reservoir for the groin.\n\nPlan:\n- Terbinafine 250 mg by mouth once daily for 14 days.\n- Dry the groin thoroughly after showering; put socks on before underwear so the feet don't seed the groin; loose cotton underwear; separate towel for the feet.\n- Absorbent antifungal powder in boots.\n- We will forward the culture result.\n\nFollow-up with us as needed.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "outside_records",
+          "start": "2026-03-05T11:02",
+          "reason": "Dermatology culture result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-09T10:15",
+              "resulted": "2026-03-04T09:00",
+              "results": [
+                {
+                  "test": "Fungal culture, groin skin scraping",
+                  "loinc": "580-1",
+                  "text": "Trichophyton rubrum isolated"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatology addendum: fungal culture",
+              "author": "dermatology",
+              "date": "2026-03-05T11:02",
+              "body": "Addendum to consultation of 02/09/2026, Mason Dean.\n\nFungal culture, skin scraping, right and left inguinal folds: Trichophyton rubrum isolated (final 03/04/2026).\n\nConsistent with the clinical diagnosis of tinea cruris. He has completed the prescribed terbinafine course. No change to the plan."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "portal_message",
+          "start": "2026-03-30T19:47",
+          "conditions": [
+            {
+              "label": "Tinea cruris",
+              "icd10": "B35.6",
+              "action": "resolved"
+            },
+            {
+              "label": "Tinea pedis",
+              "icd10": "B35.3",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "All cleared up",
+              "author": "patient",
+              "date": "2026-03-30T19:47",
+              "body": "Just wanted to let you know the pills worked. Groin and feet both totally clear since about a week after I finished. Doing the powder and socks thing."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: All cleared up",
+              "author": "PCP",
+              "date": "2026-03-31T08:12",
+              "body": "Glad to hear it, and thanks for the update. I saw the dermatology letter and the culture, which grew the usual fungus behind athlete's foot and jock itch. Keep the prevention habits going, especially through the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "portal_message",
+          "start": "2026-07-29T06:14",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Feet again",
+              "author": "patient",
+              "date": "2026-07-29T06:14",
+              "body": "The foot rash is back for about two weeks, worse after I run. Groin is fine. Can I get in Friday?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Feet again",
+              "author": "front desk",
+              "date": "2026-07-29T08:30",
+              "body": "Friday 7/31 at 7:15 am works. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "office_visit",
+          "start": "2026-07-31T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Recurrent foot rash",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Tinea pedis",
+              "icd10": "B35.3",
+              "action": "diagnosed",
+              "onset": "2026-07-17"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-31T07:30",
+              "results": [
+                {
+                  "test": "Fungal elements, KOH preparation",
+                  "loinc": "6575-2",
+                  "text": "Branching hyphae seen"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "terbinafine hydrochloride 1 % Topical Cream",
+              "action": "start",
+              "sig": "Apply to the toe webs and surrounding skin of both feet twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea pedis"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-31T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: Recurrent Tinea Pedis",
+              "author": "PCP",
+              "date": "2026-07-31T07:50",
+              "body": "Mason is back with two weeks of itching between the toes on both feet. Notices it most after his morning run. He'd been completely clear since the oral terbinafine in February. No travel, no one sick at home. Groin fine. Not taking any medications. NKDA.\n\nExam: vitals unremarkable. Both feet: redness, scale and soggy white maceration in the toe webs, most marked in the 4th-5th spaces. Soles look clean this time. No vesicles, no pustules, no cellulitis. Inguinal skin clear.\nKOH from the web spaces: branching hyphae.\n\nAssessment: tinea pedis, recurrence, interdigital.\n\nPlan:\n- Terbinafine 1% cream BID x 2 weeks.\n- Running shoes are probably the new culprit: dry them out between runs, swap socks right after, powder.\n- If it keeps recurring we can talk with dermatology about a longer plan.\n- Message me if not clearly better in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "portal_message",
+          "start": "2026-08-14T20:02",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Foot follow-up",
+              "author": "patient",
+              "date": "2026-08-14T20:02",
+              "body": "Two weeks in on the cream. Way better, just a little peeling between the last toes. Should I keep going?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Foot follow-up",
+              "author": "PCP",
+              "date": "2026-08-15T07:22",
+              "body": "Yes, keep going another week past the point it looks normal, then stop. The peeling is the skin healing. Let me know if it comes back."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

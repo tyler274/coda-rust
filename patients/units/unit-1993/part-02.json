@@ -1,0 +1,669 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001993",
+   "events": [
+    {
+     "id": "2023-10-27a",
+     "kind": "hospital_admission",
+     "start": "2023-10-27T14:20",
+     "end": "2023-11-03T12:30",
+     "service": "Emergency Medicine; Nephrology",
+     "reason": "fatigue, low urine output, leg swelling, dark urine",
+     "conditions": [
+      {
+       "label": "Microscopic polyangiitis",
+       "icd10": "M31.7",
+       "action": "diagnosed",
+       "onset": "2023-10-13"
+      },
+      {
+       "label": "Acute kidney injury",
+       "icd10": "N17.9",
+       "action": "diagnosed",
+       "onset": "2023-10-13"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "held for acute kidney injury"
+      },
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "stop",
+       "reason": "held for acute kidney injury"
+      },
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 3 tablets (60 mg) by mouth daily, then taper per rheumatology",
+       "dose": {
+        "value": 60,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "microscopic polyangiitis"
+      },
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth three times weekly (Mon, Wed, Fri)",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "3x weekly",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pneumocystis prophylaxis"
+      }
+     ],
+     "state": {
+      "bp": [
+       155,
+       95
+      ],
+      "labs": {
+       "Creatinine": 4.6
+      }
+     },
+     "vitals": [
+      {
+       "time": "2023-10-27T14:25",
+       "bp": [
+        155,
+        95
+       ]
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-10-27T14:50",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 4.6
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-10-27T15:10",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "2+"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "3+"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "text": ">50"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-10-27T14:50",
+       "results": [
+        {
+         "test": "C Reactive Protein",
+         "value": 46,
+         "unit": "mg/L"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-10-30T10:00",
+       "issued": "2023-11-01T16:00",
+       "text": "Specimen: kidney, left, percutaneous needle core biopsy.\nLight microscopy: glomeruli with segmental fibrinoid necrosis and cellular crescents. Interstitial inflammation in the surrounding cortex.\nImmunofluorescence: no significant immunoglobulin or complement deposition (pauci-immune pattern).\nElectron microscopy: no immune-type electron-dense deposits.",
+       "conclusion": "Pauci-immune necrotizing crescentic glomerulonephritis, consistent with ANCA-associated vasculitis."
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2023-11-21T09:40",
+       "body": "Regional hospital ED, 10/27/2023\n\n51 M with granulomatosis with polyangiitis, in remission over the summer and off steroids since early September, presenting with two weeks of tiredness and passing less urine, swelling in both legs that is new, and three days of urine the color of cola. No sinus congestion, earache or rash.\n\nBP 155/95. Crackles at both bases. 2+ pitting edema of both legs to the knee.\n\nUA: protein 2+, blood 3+, >50 RBC/hpf. Creatinine 4.6. CRP 46. p-ANCA positive by immunofluorescence.\n\nImpression: rapidly progressive renal failure in a patient with known ANCA vasculitis, likely relapse.\nPlan: admit to nephrology. Kidney biopsy. Hold lisinopril and HCTZ. Rheumatology aware."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "nephrology",
+       "date": "2023-11-21T09:40",
+       "body": "Regional hospital, admitted 10/27/2023, discharged 11/3/2023\n\nPrincipal diagnosis: microscopic polyangiitis (p-ANCA positive) with pauci-immune necrotizing crescentic glomerulonephritis; acute kidney injury.\nHistory: ANCA-associated vasculitis first diagnosed as GPA 3/2023 (sinus, lung nodules, renal), induced with prednisone and rituximab, prednisone completed 9/2023.\n\nCourse: Creatinine 4.6 on arrival. Renal biopsy 10/30: pauci-immune necrotizing crescentic GN. Rheumatology and nephrology agree on microscopic polyangiitis features alongside his prior GPA picture. Methylprednisolone 500 mg IV daily x 3, then prednisone 60 mg daily. Rituximab 1 g IV 10/31; second dose due day 15 at the outpatient infusion center. IV furosemide for volume overload with good diuresis; edema and crackles improved. Did not require dialysis. Lisinopril and hydrochlorothiazide held. Creatinine 3.4 at discharge.\n\nDischarge medications: prednisone 60 mg daily with taper per rheumatology; TMP-SMX DS three times weekly; albuterol as needed; octreotide LAR per endocrinology. HOLD lisinopril and hydrochlorothiazide until reviewed by nephrology.\nAllergies: NKDA\nFollow-up: PCP within 1 week, nephrology 4 to 6 weeks, rheumatology 2 weeks."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hospital records reviewed",
+       "author": "PCP",
+       "date": "2023-11-21T15:30",
+       "body": "Discharge summary, ED note and biopsy report received and reviewed. Matches what we went over on 11/9. Problem list updated with MPA; GPA left on as rheumatology still carries both labels. Lisinopril and HCTZ remain on hold pending nephrology."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-30a",
+     "kind": "portal_message",
+     "start": "2023-10-30T19:22",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "In the hospital",
+       "author": "patient",
+       "date": "2023-10-30T19:22",
+       "body": "Wanted you to know I've been in the hospital since Friday. Kidneys went bad again, legs blew up. They did a biopsy this morning. Back on the big steroid dose. They say maybe home end of the week."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: In the hospital",
+       "author": "PCP",
+       "date": "2023-10-31T07:30",
+       "body": "Thanks for telling me, Keith, I'm sorry this flared. I'll ask the hospital for records. When you're discharged, call us and we'll get you in within the week so we can go over everything and check labs."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-06a",
+     "kind": "telephone",
+     "start": "2023-11-06T09:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2023-11-06T09:10",
+       "body": "Pt discharged Friday. Requested discharge summary, ED note and biopsy report from hospital HIM by fax. TCM visit booked 11/9 at 4:30."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-09a",
+     "kind": "office_visit",
+     "start": "2023-11-09T16:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hospital follow-up",
+     "state": {
+      "bp": [
+       152,
+       94
+      ],
+      "labs": {
+       "Creatinine": 2.6,
+       "Hemoglobin": 12.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-11-09T17:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.6
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-11-09T17:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.1
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-11-09T17:10",
+       "results": [
+        {
+         "test": "Urine Blood",
+         "text": "2+"
+        },
+        {
+         "test": "Urine Protein",
+         "text": "1+"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2023-11-09T16:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2023-11-09T17:40",
+       "body": "Hospital follow-up. Admitted 10/27 to 11/3 with a vasculitis relapse in the kidneys. Hospital summary not here yet; going off his discharge paperwork and what he tells me. Biopsy showed crescentic GN, pauci-immune. p-ANCA positive. Got 3 days of IV steroids and the first of two rituximab doses, second scheduled at the infusion center next week. Discharge creatinine 3.4 per the paperwork.\n\nFeels washed out. Urine looks normal color now. Leg swelling down a lot. Took the water pill in the hospital, none since. Lisinopril and HCTZ both on hold per the hospital. Prednisone 60 mg. TMP-SMX back on. Says he hasn't had a drink since the admission.\n\nBP 152/94 off both BP meds. Lungs clear. Trace ankle edema. \nLabs today: creatinine 2.6, Hgb 12.1, UA blood 2+, protein 1+.\n\nA/P:\n- Microscopic polyangiitis / GPA relapse with crescentic GN and AKI. Creatinine trending down. Rituximab dose 2 next week. Rheumatology and nephrology appointments made.\n- HTN: elevated off meds and on high-dose prednisone. Leaving them held as the hospital asked until nephrology sees him; he'll check home BP daily and send readings. Low salt.\n- Alcohol: congratulated him on two weeks without. Offered support again.\n- Med list reconciled. Records request sent again for the summary."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-16a",
+     "kind": "telephone",
+     "start": "2023-11-16T14:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request, second",
+       "author": "front desk",
+       "date": "2023-11-16T14:05",
+       "body": "No records yet from the hospital. Called HIM, they had no request on file. Sent the request again with the signed release. They said 3 to 5 business days."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "specialist_visit",
+     "start": "2023-12-12T11:00",
+     "service": "Nephrology",
+     "reason": "ANCA glomerulonephritis follow-up",
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension, proteinuria"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 1.9
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-12-12T11:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.9
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2023-12-28T13:15",
+       "body": "Outside nephrology group\nVisit 12/12/2023\n\nFollow-up after admission for p-ANCA crescentic GN. Both rituximab doses received. Prednisone tapering per rheumatology, currently 40 mg. Edema resolved. Home BP readings 140s to 150s over 90s.\nCreatinine today 1.9 (3.4 at discharge). \nPlan: restart lisinopril 20 mg daily for blood pressure and antiproteinuric effect; BMP in 2 weeks with PCP. Hydrochlorothiazide stays off for now, PCP may resume if BP remains above goal. Return 3 months.\nNKDA."
+      },
+      {
+       "type": "Result Note",
+       "title": "Nephrology note reviewed",
+       "author": "PCP",
+       "date": "2023-12-28T16:05",
+       "body": "Nephrology restarted lisinopril 20 on 12/12, creatinine 1.9. Med list updated. HCTZ still off; will reassess at February visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-10a",
+     "kind": "portal_message",
+     "start": "2024-01-10T20:15",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-12-27T07:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "BP numbers",
+       "author": "patient",
+       "date": "2024-01-10T20:15",
+       "body": "Here's my BP since the kidney doc put me back on lisinopril. Mornings mostly 142-150 over 88-94. Did the blood test before New Year like they said."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: BP numbers",
+       "author": "PCP",
+       "date": "2024-01-11T08:05",
+       "body": "Thanks. Potassium and kidney function were fine on the December draw. Your numbers are still above where I want them. Let's look at adding back the HCTZ when I see you in February, once the prednisone is lower. Keep logging."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-13a",
+     "kind": "office_visit",
+     "start": "2024-02-13T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure, kidney follow-up",
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      }
+     ],
+     "state": {
+      "bp": [
+       146,
+       90
+      ],
+      "labs": {
+       "Creatinine": 1.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-13T08:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.5
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-02-13T08:15",
+       "results": [
+        {
+         "test": "Urine Blood"
+        },
+        {
+         "test": "Urine Protein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-13T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-02-13T08:30",
+       "body": "Back on lisinopril since December. Prednisone down to 10 mg. Feels stronger, working full days. Admits to a few beers on weekends again, 'not like before.'\n\nBP 146/90, home log similar. No edema. Lungs clear. Steroid fullness in the face easing.\nCreatinine 1.5 today, UA clean.\n\nA/P\n- HTN above goal on lisinopril alone. Kidney function recovered enough to resume HCTZ 25 mg daily, as nephrology suggested. BMP in 2 to 3 weeks; he can do it with his rheumatology labs.\n- MPA/GPA: in remission per rheum. Maintenance rituximab due in April.\n- Alcohol: back to some drinking. Reminded him what the kidneys and the vasculitis have been through. He hears it.\nRTC 3 months."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Labs",
+       "author": "PCP",
+       "date": "2024-02-14T08:00",
+       "body": "Creatinine 1.5 and urine clean. Go ahead and start the HCTZ today if you haven't, and get the BMP done in 2 to 3 weeks with your rheumatology labs."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-19a",
+     "kind": "pharmacy",
+     "start": "2024-03-19T11:00",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2024-03-19T11:00",
+       "body": "Albuterol HFA refill requested by pharmacy. Last fill 10 months ago. Sent. HCTZ 25 already has refills."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "specialist_visit",
+     "start": "2024-04-16T09:00",
+     "service": "Rheumatology",
+     "reason": "vasculitis maintenance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-05-02T10:20",
+       "body": "Outside rheumatology practice\nSeen 4/16/2024\n\nANCA vasculitis (GPA presentation 2023, p-ANCA crescentic GN relapse 10/2023) in remission. No upper airway, chest or urinary symptoms. Rituximab 500 mg maintenance infused today; repeat every 6 months. Prednisone 5 mg, to stop by mid-May. TMP-SMX may stop once off prednisone.\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, albuterol, octreotide LAR, prednisone 5 mg, TMP-SMX DS three times weekly. NKDA.\nReturn in October."
+      },
+      {
+       "type": "Result Note",
+       "title": "Rheumatology note reviewed",
+       "author": "PCP",
+       "date": "2024-05-02T17:10",
+       "body": "Rituximab maintenance 4/16. Prednisone to finish mid-May; TMP-SMX can come off then. Will reconcile at his next visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-30a",
+     "kind": "office_visit",
+     "start": "2024-04-30T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "3-month follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2024-04-30b",
+     "kind": "telephone",
+     "start": "2024-04-30T09:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-04-30T09:15",
+       "body": "Pt no-show for 7:40 today. Left voicemail. He called back at lunch, said a pour got moved up and he forgot to call. Rebooked 6/5 at 7:40."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-05a",
+     "kind": "office_visit",
+     "start": "2024-06-05T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up; tired",
+     "conditions": [
+      {
+       "label": "Acute kidney injury",
+       "icd10": "N17.9",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "taper completed per rheumatology"
+      },
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "stop",
+       "reason": "off prednisone"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       84
+      ],
+      "weight_kg": 107.0,
+      "labs": {
+       "Creatinine": 1.2,
+       "Hemoglobin": 13.8
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-06-05T08:20",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-06-05T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.8
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "AUDIT-C total score",
+       "value": 12
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-05T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-06-05T08:45",
+       "body": "S: Rescheduled from April. He has been dragging for a couple of months, tired by midafternoon and asleep in the chair after dinner. Less interest in sex, his words, which his wife has noticed. Pants tighter. Finished prednisone mid-May. Rituximab maintenance in April. Monthly octreotide shots continuing. No headaches or vision change. No sinus, cough or blood in urine.\nDrinking is back to most nights, 6 or more. AUDIT-C 12. Naltrexone offered again, declined. PHQ-9 4, doesn't feel depressed, just tired.\n\nO: BP 134/84, weight 107 kg (103 last summer). Lungs clear. No edema. No rash.\nLabs today: creatinine 1.2, Hgb 13.8, rest of CMP fine.\n\nA/P:\n1. Fatigue, low libido, weight gain. Coming off months of steroids and drinking nightly, both can do this. Not starting anything today. He sees endocrinology for the octreotide every month; asked him to bring these symptoms up there next visit. \n2. HTN at goal on lisinopril and HCTZ.\n3. ANCA vasculitis in remission, kidney function back near baseline. AKI resolved. Prednisone and TMP-SMX off the list.\n4. Alcohol use disorder, severe, ongoing. Brief counseling again.\nRTC 3 to 4 months, physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-06a",
+     "kind": "portal_message",
+     "start": "2024-06-06T12:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2024-06-06T12:10",
+       "body": "Keith, kidney function is the best it has been since all this started (creatinine 1.2), and the blood count is back to normal. Liver and sugar fine. Please do mention the tiredness and the libido to endocrinology when you go for your shot this month."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

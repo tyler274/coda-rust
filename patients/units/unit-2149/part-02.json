@@ -1,0 +1,439 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002149",
+   "events": [
+    {
+     "id": "2025-01-06a",
+     "kind": "telephone",
+     "start": "2025-01-06T11:05",
+     "reason": "Home after hospitalization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2025-01-06T11:05",
+       "body": "Pt called. Discharged 1/3 from the hospital in New Mexico and flew home with his wife on the 4th. Still on ciprofloxacin twice a day, last doses 1/7. Tired, mild cough, no fever, breathing ok walking around the house. Took Keppra and lisinopril throughout. Booked with PCP 1/14. Asked him to have the hospital fax records; he will call them."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-14a",
+     "kind": "office_visit",
+     "start": "2025-01-14T10:30",
+     "end": "2025-01-14T11:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "conditions": [
+      {
+       "label": "Acute hypoxemic respiratory failure",
+       "icd10": "J96.01",
+       "action": "resolved",
+       "onset": "2024-12-21"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily to complete 14 days of plague therapy",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Pneumonic plague"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "rr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-01-14T11:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-14T11:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-followup",
+       "action": "placed",
+       "order": "Chest X-ray, 2 views",
+       "category": "imaging",
+       "reason": "Follow-up of plague pneumonia"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2025-01-14T10:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-01-14T11:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2025-01-14T10:30",
+       "body": "Seen after hospitalization out of state. Only the ED record has reached us so far (received 1/10); the rest is from Theo and his wife.\n\nOn 12/21 he came into an ED in New Mexico by ambulance, febrile, hypotensive and confused, coughing blood-tinged sputum, about a week after working on a prairie dog control project. Intubated in the ED, ICU for septic shock. They told him the cultures grew plague (Y. pestis). Treated with IV gentamicin, off the ventilator on hospital day 5, moved to the floor, discharged 1/3 on oral ciprofloxacin 500 BID to finish 14 days total. Last dose 1/7. Levetiracetam was continued throughout and no seizures were reported; lisinopril was held while his pressure was low and restarted before discharge.\n\nNow: energy maybe 60%, naps in the afternoon. Occasional dry cough, no more blood. No fever, chills or chest pain. Walks the dog a mile without stopping. Appetite back.\n\nExam: looks tired but comfortable. Afebrile. Pulse ox normal on room air. Lungs clear throughout, no crackles today. Heart regular. No calf tenderness or swelling. Neuro nonfocal, fully oriented.\n\nA/P\n1. Pneumonic plague, treated. Clinically recovering. Follow-up 2-view CXR in about 6 weeks to confirm clearing.\n2. Hypoxic respiratory failure, resolved, on room air.\n3. Post-ICU fatigue. Expect gradual improvement; return to field work as tolerated.\n4. Seizure d/o: no events, continue levetiracetam 1000 BID.\n5. HTN: restarted lisinopril 10, pressure fine today.\nCBC, BMP today. Will chase the hospital discharge summary."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-16a",
+     "kind": "portal_message",
+     "start": "2025-01-16T12:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Blood work after the hospital",
+       "author": "PCP",
+       "date": "2025-01-16T12:20",
+       "body": "Theo, your blood counts have recovered and your kidney function and potassium are normal. The chest x-ray order is in for late February; any of our imaging sites can do it without an appointment."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-04a",
+     "kind": "telephone",
+     "start": "2025-02-04T14:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request follow-up",
+       "author": "MA",
+       "date": "2025-02-04T14:00",
+       "body": "Called the New Mexico hospital HIM department a second time for inpatient discharge summary. Told the request is in queue. Will try again in a month."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "imaging",
+     "start": "2025-02-25T16:10",
+     "conditions": [
+      {
+       "label": "Pneumonic plague",
+       "icd10": "A20.2",
+       "action": "resolved",
+       "onset": "2024-12-20"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-02-25T16:10",
+       "text": "PA and lateral chest. Comparison: none available. Lungs are clear. No consolidation, effusion or pneumothorax. Heart and mediastinal contours normal. Osseous structures intact.",
+       "conclusion": "No acute cardiopulmonary process. Previously reported bilateral infiltrates have cleared."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-followup",
+       "action": "done",
+       "date": "2025-02-25T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CXR result note",
+       "author": "PCP",
+       "date": "2025-02-26T08:05",
+       "body": "Follow-up CXR clear. Plague pneumonia resolved. Message sent to pt."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Chest x-ray",
+       "author": "PCP",
+       "date": "2025-02-26T08:07",
+       "body": "Good news, your chest x-ray is completely clear. Your lungs have healed from the infection."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-08a",
+     "kind": "annual_physical",
+     "start": "2025-04-08T08:15",
+     "end": "2025-04-08T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Physical and follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "rr",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-04-08T09:05",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-04-08T08:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-04-08T09:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-04-08T08:15",
+       "body": "Annual exam, also following up HTN and seizures.\n\nInterval: recovered from the December plague pneumonia; Feb CXR clear. Back at work full time since March, mostly office and local surveys for now. Energy near normal. No cough. Still no discharge summary from NM despite two requests; not chasing further.\n\nSeizures: none. Levetiracetam 1000 BID, no missed doses.\nHTN: lisinopril 10 daily. No home readings.\nSleeping ok. Mood fine. Same 2-3 beers a week. Never smoked.\nPHQ-2: 1.\n\nExam: NAD. HEENT normal. Neck no nodes or thyromegaly. CV RRR no murmur. Lungs clear. Abd soft, nontender, old appendectomy scar. Skin without rashes or worrisome lesions. Ext no edema. Neuro normal gait, strength symmetric.\n\nA/P\n1. Health maintenance, age 38: vaccines current through fall 2024 (Tdap 2020). No other screening due by age. Discussed sunscreen and tick checks with the field work.\n2. HTN at goal. BMP today. Lisinopril 10 renewed, 90 days x 3.\n3. Generalized seizure disorder, controlled. Levetiracetam 1000 BID renewed, 90 days x 3.\n4. Plague pneumonia, resolved.\nRTC 6 months for BP, sooner prn."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-10a",
+     "kind": "portal_message",
+     "start": "2025-04-10T13:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab result",
+       "author": "PCP",
+       "date": "2025-04-10T13:30",
+       "body": "Your chemistry panel is normal. Prescriptions went to the mail-order pharmacy. We'll plan to see you in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-22a",
+     "kind": "pharmacy",
+     "start": "2025-07-22T09:30",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Mail-order fill notice",
+       "author": "MA",
+       "date": "2025-07-22T09:30",
+       "body": "Fill confirmation from mail-order: levetiracetam 1000 mg #180 and lisinopril 10 mg #90 shipped 7/21. Refills remain. No action needed."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "portal_message",
+     "start": "2025-10-14T18:22",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, unspecified",
+       "date": "2025-10-11T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Flu shot",
+       "author": "patient",
+       "date": "2025-10-14T18:22",
+       "body": "Got my flu shot at the drugstore Saturday since I'm in and out of the field this month. Can you add it to my chart? I'll set up a BP visit once things calm down."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Flu shot",
+       "author": "MA",
+       "date": "2025-10-14T19:01",
+       "body": "Added to your record, thanks. Use the scheduling link or call when you're ready to book."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-23a",
+     "kind": "hospital_admission",
+     "start": "2025-12-23T17:40",
+     "end": "2026-01-05T12:00",
+     "service": "Pulmonary and Critical Care",
+     "reason": "Hypoxemia after cold-water submersion",
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2025-12-23T18:05",
+       "text": "Portable AP chest. Bilateral patchy airspace opacities. Cardiac silhouette normal in size. No pneumothorax.",
+       "conclusion": "Bilateral patchy opacities without cardiomegaly."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-12-23T19:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-01-05T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "ICU Discharge Summary",
+       "author": "critical care",
+       "date": "2026-01-30T10:45",
+       "body": "DISCHARGE SUMMARY\nAdmitted 12/23/2025, discharged 1/5/2026. Service: Pulmonary and Critical Care.\n\n39M with generalized seizure disorder (well controlled on levetiracetam), hypertension, and pneumonic plague in Dec 2024, fully recovered. Brought in after being under cold water for several minutes before rescue. Hypoxemic on arrival in spite of supplemental O2.\n\nOn exam: tachypneic, using accessory muscles, crackles diffusely over both lungs. ABG: hypoxemia, widened A-a gradient. CXR: bilateral patchy opacities, heart size normal.\n\nDiagnoses: ARDS with refractory hypoxemia; acute hypoxemic respiratory failure.\n\nCourse: intubated, lung-protective ventilation, proned for refractory hypoxemia. Oxygenation improved; extubated hospital day 6. Weaned to room air, ambulating before discharge. Levetiracetam continued, no seizures. Lisinopril held early, resumed.\n\nDischarge meds: levetiracetam 1000 mg BID, lisinopril 10 mg daily.\nAllergies: NKDA.\nFollow-up: pulmonary clinic in about 3 months with PFTs; PCP.\n\n[Received 1/30/2026, filed to chart.]"
+      }
+     ]
+    },
+    {
+     "id": "2025-12-29a",
+     "kind": "portal_message",
+     "start": "2025-12-29T20:14",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Theo in ICU again",
+       "author": "patient",
+       "date": "2025-12-29T20:14",
+       "body": "Hi, it's Theo's wife again. He went under in very cold water on the 23rd and was pulled out after a few minutes. He's in the ICU at the regional hospital, on a breathing machine, and they say it's ARDS. He's improving a little each day. Just wanted you to know."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Theo in ICU again",
+       "author": "PCP",
+       "date": "2025-12-30T08:02",
+       "body": "Thank you for telling us. Glad he is improving. Please have the hospital send his discharge summary, and call to book a visit once he's home."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "pharmacy",
+     "start": "2026-02-10T10:10",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Renewal request",
+       "author": "RN",
+       "date": "2026-02-10T10:10",
+       "body": "Mail-order asking for renewal of levetiracetam 1000 mg BID and lisinopril 10 mg daily (out of refills). Last seen 4/8/25; hospitalized Dec-Jan, discharge summary on file, same meds. Sent 90-day supply each, 1 refill. Pt needs a visit before further renewals; portal reminder sent."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "specialist_visit",
+     "start": "2026-04-21T13:00",
+     "service": "Pulmonary Medicine",
+     "reason": "Post-ARDS follow-up",
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2026-04-21T13:15",
+       "text": "Good effort, acceptable and repeatable maneuvers. FVC, FEV1 and FEV1/FVC within normal limits. No obstruction or restriction pattern.",
+       "conclusion": "Normal spirometry."
+      },
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2026-04-21T13:40",
+       "text": "PA and lateral chest. Lungs clear. No effusion or pneumothorax. Normal heart size and mediastinum.",
+       "conclusion": "Clear chest."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonary clinic follow-up letter",
+       "author": "pulmonology",
+       "date": "2026-05-04T09:30",
+       "body": "Re: Theo Lewandowski, seen 4/21/2026.\n\nThank you for allowing us to follow Mr. Lewandowski after his December ICU stay for ARDS following cold-water submersion. He reports breathing back to his baseline, hiking without limitation, no cough. On exam his lungs are clear. Spirometry today is normal and his chest film is clear.\n\nImpression: recovered ARDS, no residual impairment on testing. No further pulmonary follow-up needed; we're glad to see him again if symptoms arise.\n\nMeds per patient: levetiracetam 1000 mg BID, lisinopril 10 mg daily. NKDA.\n\nPulmonary Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "telephone",
+     "start": "2026-08-11T16:25",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Scheduling",
+       "author": "front desk",
+       "date": "2026-08-11T16:25",
+       "body": "Pt called to book follow-up, says he's been meaning to since winter. Next opening with PCP 9/15 at 8:30, booked. Reminded him he's down to his last refill."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-15a",
+     "kind": "office_visit",
+     "start": "2026-09-15T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after hospitalization; hypertension and seizure disorder",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

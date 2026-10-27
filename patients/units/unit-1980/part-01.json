@@ -1,0 +1,860 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001980",
+      "given": "Kurt",
+      "family": "Blanchard",
+      "birth_date": "1969-02-27",
+      "address_line": "118 Linseed Road",
+      "phone": "+1-978-555-0100",
+      "email": "kurt.blanchard@example.test",
+      "marital_status": "married",
+      "summary": "Software developer with long-standing type 2 diabetes, hypertension, hyperlipidemia and class II obesity who joins in 2021. Adds an unexplained hyperzincemia, metabolic syndrome, obesity hypoventilation with obstructive sleep apnea, and an ED gout flare after his last practice visit.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T11:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2021-09-02T11:20",
+              "body": "Caller is 52, wants a new primary care doctor. Previous office is closing its adult panel at the end of the year. Has diabetes and blood pressure, on 4 meds, says he is 'behind on everything.' Membership info emailed. New patient slot booked 9/14 at 8:20. Records release form sent for his prior office, he will sign and return."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:20",
+          "end": "2021-09-14T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; diabetes, blood pressure",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2014-06-01",
+              "note": "long-standing, control poor by his account"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Obesity, class 2",
+              "icd10": "E66.812",
+              "action": "history",
+              "onset": "2012-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 106.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Hemoglobin A1c": 8.0,
+              "Glucose": 158,
+              "Triglycerides": 520,
+              "Low Density Lipoprotein": 127,
+              "High Density Lipoprotein": 36,
+              "Hemoglobin": 15.6,
+              "Microalbumin/Creatinine Ratio": 12
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "3-4 beers most days after work"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software developer"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:05",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-26T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-16T10:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-14T09:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-14T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "procedure",
+              "reason": "establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T09:15",
+              "body": "52M here to establish. Prior PCP office is closing its adult panel.\n\nHPI: Type 2 diabetes for about 7 years, by his own description never well controlled. Admits he takes the metformin 'most days,' sometimes forgets the evening dose, and that his diet is heavy on carbs and takeout during deadline weeks. No polyuria or polydipsia right now. No vision change, no foot numbness. HTN and cholesterol on meds for several years. Weight has crept up since he went fully remote.\n\nMeds: metformin 1000 BID, lisinopril 20 daily, atorvastatin 40 qhs, HCTZ 25 daily.\nAllergies: NKDA.\nPSH: none.\nFHx: father T2DM and HTN; mother high cholesterol and obesity; paternal grandfather MI at 62.\nSHx: married. Software developer, desk all day. Never smoked. 3-4 beers most evenings after work. No regular exercise.\nScreening: colonoscopy 2019 at prior office, he believes normal. Two Pfizer doses this spring.\n\nExam: obese, comfortable. BP as recorded. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, obese, nontender. No leg edema. Feet: skin intact, monofilament and vibration intact, DP pulses 2+.\nPHQ-2 negative.\n\nA/P:\n1. T2DM, likely above goal. A1c, CMP, UACR today. Reviewed adherence; pillbox suggested. Continue metformin.\n2. HTN, near goal in office. Continue lisinopril and HCTZ.\n3. Hyperlipidemia on atorvastatin 40. Lipids today.\n4. Obesity class II. Talked about the beer as a big calorie source; he is not ready to cut back yet.\n5. Health maintenance: flu shot today. HCV and HIV screening today, he agrees. Prior records requested.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2021-09-16T16:40",
+              "body": "Hi Kurt, your labs are back. Kidney and liver tests are fine, blood count normal, urine protein normal, and the hepatitis C and HIV screens are negative. Your A1c is 8.0, which is above where we want it (under 7). Triglycerides are high too, and both of those move with sugar, beer and weight. Let's see what a few months of taking the metformin every day does before we talk about adding anything. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T10:10",
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "done",
+              "date": "2021-10-05T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2021-10-05T10:10",
+              "body": "38 pages received by fax from the patient's former primary care office, covering 2015 to 2021. Includes problem list (type 2 diabetes, hypertension, hyperlipidemia, obesity), medication list matching current meds, A1c values mostly between 7.5 and 8.5, and a screening colonoscopy report dated 05/2019: complete to cecum, good prep, no polyps, repeat in 10 years. No allergies listed. Scanned and routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2021-10-07T12:30",
+              "body": "Prior records reviewed. Long history of A1c in the high 7s to mid 8s on metformin alone, no other agents ever tried per notes. Colonoscopy 2019 normal, next due 2029. Nothing else actionable. Health maintenance updated."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "pharmacy",
+          "start": "2021-11-09T14:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization report",
+              "author": "MA",
+              "date": "2021-11-09T14:00",
+              "body": "Retail pharmacy reported a Pfizer COVID booster given 11/6/2021. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {
+            "weight_kg": 106.4,
+            "labs": {
+              "Hemoglobin A1c": 7.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-12-14T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-12-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2021-12-14T16:40",
+              "body": "S: Back for diabetes and BP check. Says he has been better about the evening metformin, maybe 5 nights out of 7. Diet unchanged; holiday season at work means pizza in the office. Still having beers most nights. No hypoglycemia symptoms, no GI upset on metformin.\nO: Vitals as charted. Lungs clear, heart regular. No edema.\nPOC A1c 7.9.\nA/P: T2DM still above goal, barely moved. Options discussed including a second agent; he wants one more round of trying on his own first. Continue current regimen. Recheck at physical in spring with lipids. HTN fine today. Refills x 90 days with 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about checking sugars",
+              "author": "patient",
+              "date": "2022-01-11T20:15",
+              "body": "Is it worth me getting a glucose meter to check at home? Old doctor never had me do it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about checking sugars",
+              "author": "PCP",
+              "date": "2022-01-12T08:05",
+              "body": "On metformin alone, routine fingersticks don't add much and your A1c tells us what we need. If we add a medicine later that can cause lows, we'll set you up with one then."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-21a",
+          "kind": "pharmacy",
+          "start": "2022-02-21T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2022-02-21T09:05",
+              "body": "Electronic request from patient's pharmacy for 90-day fills of atorvastatin 40 mg and hydrochlorothiazide 25 mg. Last visit 12/14/21. Approved under refill protocol, 90 days x 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "annual_physical",
+          "start": "2022-04-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 106.9,
+            "labs": {
+              "Hemoglobin A1c": 7.9
+            }
+          },
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 106.9
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-04-19T08:25",
+              "resulted": "2022-04-20T14:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 210
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 130
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 650
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-04-19T08:25",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-04-19T08:25",
+              "resulted": "2022-04-20T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.9
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Zinc",
+                  "loinc": "5763-0",
+                  "unit": "ug/dL",
+                  "value": 141
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-04-19T08:45"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-04-19T08:46"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-04-19T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-04-19T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-04-19T09:00",
+              "body": "53-year-old man for his yearly exam. Feels fine, no complaints. Honest that he has been inconsistent with both the diet and the pills since winter; some weeks good, some not.\n\nROS otherwise negative: no chest pain, no shortness of breath, no urinary symptoms, no bowel change.\nMeds unchanged (metformin 1000 BID, lisinopril 20, atorvastatin 40 qhs, HCTZ 25). NKDA.\nSocial unchanged; still 3-4 beers most evenings.\n\nExam: BP 138/86. BMI 33. Well appearing. Eyes and ears normal. Neck without nodes or thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen obese, soft, no masses. Extremities without edema. Feet: no ulcers or calluses, monofilament intact both sides, pulses good. Skin without concerning lesions.\nPHQ-2 0.\n\nA/P:\n1. Annual exam. Shingrix #1 and PCV20 today. Colonoscopy current to 2029. Eye exam this year, he will book.\n2. T2DM, adherence uneven. A1c, CMP, urine microalbumin today.\n3. Lipids with labs today.\n4. HTN at goal-ish, continue.\n5. Weight and alcohol: same conversation as before.\nWill message results."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-21a",
+          "kind": "telephone",
+          "start": "2022-04-21T12:15",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Hyperzincemia",
+              "icd10": "E83.2",
+              "action": "diagnosed",
+              "onset": "2022-04-19"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "type 2 diabetes above goal, triglycerides 650"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "author": "PCP",
+              "date": "2022-04-21T12:15",
+              "body": "Called pt with physical labs. Triglycerides 650, total 210, LDL 130, HDL 35. A1c remains well above goal. Kidney function and urine protein normal, liver tests normal. Zinc level 141, high; reference 60-120. Asked about supplements, multivitamins, zinc lozenges, denture cream, work exposures: none, he works from home. Will repeat zinc with his second Shingrix in June to confirm before calling it anything.\nGiven triglycerides this high plus persistent A1c, offered endocrinology input; he agrees. Referral placed. Reinforced cutting back alcohol, which drives the triglycerides.\nAdded hyperzincemia to problem list pending recheck."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "nurse_visit",
+          "start": "2022-06-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix #2, zinc recheck",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-21T07:45",
+              "resulted": "2022-06-22T15:30",
+              "results": [
+                {
+                  "test": "Zinc",
+                  "loinc": "5763-0",
+                  "unit": "ug/dL",
+                  "value": 137
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-06-21T07:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-21T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2022-06-21T07:55",
+              "body": "In for second Shingrix, given L deltoid, tolerated. Reports a sore arm and a low-energy day after dose 1, nothing more. Blood drawn for repeat zinc level per PCP order, fasting not required. Reminded about the endocrinology appointment on 7/20; he has it on his calendar."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-23a",
+          "kind": "portal_message",
+          "start": "2022-06-23T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Zinc recheck",
+              "author": "PCP",
+              "date": "2022-06-23T08:50",
+              "body": "Kurt, the repeat zinc came back at 137, still a little above the normal range (60-120), so the first result was not a lab fluke. You told me you don't take any multivitamin, lozenges or supplements, and nothing on your medication list explains it. It is not causing any problem we can see. I'd like to keep an eye on it with your yearly blood work rather than chase it further right now. Let me know if you start any supplements."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Zinc recheck",
+              "author": "patient",
+              "date": "2022-06-23T19:12",
+              "body": "OK thanks. Nope, nothing like that, I don't even take vitamin D. Should I avoid anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Zinc recheck",
+              "author": "PCP",
+              "date": "2022-06-24T07:58",
+              "body": "No restrictions. Just skip zinc lozenges and cold remedies with zinc if you get a cold."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-20a",
+          "kind": "specialist_visit",
+          "start": "2022-07-20T13:30",
+          "service": "Endocrinology",
+          "reason": "Diabetes and lipid consultation",
+          "conditions": [
+            {
+              "label": "Metabolic syndrome",
+              "icd10": "E88.810",
+              "action": "diagnosed",
+              "onset": "2022-07-20"
+            }
+          ],
+          "state": {
+            "weight_kg": 103.7,
+            "labs": {
+              "Hemoglobin A1c": 7.2,
+              "Triglycerides": 260
+            }
+          },
+          "vitals": {
+            "bp": [
+              145,
+              92
+            ],
+            "weight_kg": 103.7
+          },
+          "measure": [
+            "hr",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-07-20T13:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 220
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 140
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-20T13:10",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 132
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-07-20T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2022-08-05T10:20",
+              "body": "OUTSIDE ENDOCRINOLOGY GROUP — CONSULTATION LETTER\nDate of service: 07/20/2022\nReferred by: primary care physician\nReason: diabetes above goal, hypertriglyceridemia\n\nThank you for sending Mr. Blanchard, a 53-year-old software developer with type 2 diabetes, hypertension, hypercholesterolemia and obesity. Since his visit with you in April he has noticed being thirsty a lot more, getting up to urinate, and he has lost about 10 pounds over the last two months without trying.\n\nMedications: metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 40 mg at bedtime, hydrochlorothiazide 25 mg daily.\nAllergies: none known.\nSocial: sedentary desk job; beer most evenings.\nFamily: father with diabetes and hypertension, mother with high cholesterol and obesity, paternal grandfather MI at 62.\n\nExam: BP 145/92. BMI 32. Waist circumference 102 cm. Acanthosis nigricans along the posterior neck. Thyroid not enlarged. Heart and lungs normal. Feet with intact sensation.\n\nFasting labs: glucose 132 mg/dL, hemoglobin A1c 7.2%, total cholesterol 220, HDL 35, triglycerides 250, LDL (calculated) 140.\n\nImpression:\n1. Type 2 diabetes with insulin resistance; symptoms of hyperglycemia recently, A1c 7.2 today.\n2. Metabolic syndrome: waist, triglycerides, low HDL, blood pressure and glucose all meet criteria.\n3. Hypertriglyceridemia, improved from the 650 you saw in April.\n\nRecommendations: We spent most of the visit on diet. Cutting the daily beer and refined carbohydrates is the single biggest lever on both his sugars and triglycerides, and he seemed receptive. No medication changes for now; continue metformin, statin and his blood pressure medicines. Follow-up with primary care; happy to see him again if A1c stays above goal.\n\nOutside Endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-08a",
+          "kind": "portal_message",
+          "start": "2022-08-08T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrinology letter",
+              "author": "PCP",
+              "date": "2022-08-08T10:30",
+              "body": "Got the endocrinologist's letter. A1c 7.2, which is better than spring. She agrees with no new meds for now and put a lot of weight on cutting back the beer and carbs. I'd like to recheck your A1c and fasting sugar around the new year. We'll set up a visit in early January."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrinology letter",
+              "author": "patient",
+              "date": "2022-08-08T21:03",
+              "body": "Sounds good. I'm down to weekends only on the beer for now. We'll see how long that lasts lol."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "pharmacy",
+          "start": "2022-09-06T08:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2022-09-06T08:40",
+              "body": "Refill request: metformin 1000 mg BID #180, atorvastatin 40 mg #90. Last office contact 6/21, endo letter 8/5 no med changes. Approved x 90 days, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T17:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2022-10-11T17:25",
+              "body": "Seasonal flu (R deltoid) and bivalent Pfizer booster (L deltoid) given after screening questions. No prior reactions. Observed 15 min, left without issue. VIS provided."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "outside_records",
+          "start": "2022-11-17T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2022-11-17T13:00",
+              "body": "Optometry report, dilated exam 11/09/2022. Visual acuity 20/20 OD, 20/25 OS with correction. IOP normal both eyes. Fundus: no diabetic retinopathy either eye, no macular edema. Recall 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-29a",
+          "kind": "lab_only",
+          "start": "2022-12-29T07:30",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.8,
+              "Glucose": 132
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-29T07:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 132
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Lab Note",
+              "title": "Fasting draw",
+              "author": "MA",
+              "date": "2022-12-29T07:40",
+              "body": "Fasting draw ahead of 1/6 visit. Pt fasted since 8 pm. Sent to lab."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

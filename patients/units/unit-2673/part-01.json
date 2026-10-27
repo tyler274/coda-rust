@@ -1,0 +1,184 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002673",
+      "given": "Malcolm",
+      "family": "Kirby",
+      "birth_date": "1995-05-05",
+      "address_line": "118 Bay Road, Apt 2",
+      "phone": "+1-518-555-0164",
+      "email": "malcolm.kirby@example.test",
+      "marital_status": "single",
+      "summary": "Sales representative in his late twenties who joined in 2022 as a pack-a-day smoker. In 2025 a weight-loss and nosebleed workup uncovered intranasal cocaine use; after an ED visit for cocaine intoxication he entered an outpatient addiction program and reports abstinence since.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T10:42",
+          "reason": "New patient scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2022-08-29T10:42", "body": "Caller is looking for a new PCP, his last doctor was back near where he grew up and he hasn't been in a few years. Works in sales, on the road a lot, likes that he can text. Membership info emailed. Booked new pt physical 9/12 at 8:30. Asked him to sign the records release for his old office."}
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {"label": "Tobacco use disorder", "icd10": "F17.210", "action": "diagnosed", "onset": "2013-06-01"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 81.5, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "Occupation", "value": "Sales representative"},
+            {"item": "History of alcohol use", "value": "Social; occasional weekend binge of 4-6 drinks"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "AUDIT-C total score", "value": 5}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-12T09:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-12T09:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-12T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-12T09:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-09-12T09:10"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-12T09:12"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-12T08:30"},
+            {"procedure": "Venipuncture", "performed": "2022-09-12T09:05"},
+            {"procedure": "Immunization administration", "performed": "2022-09-12T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Physical", "author": "PCP", "date": "2022-09-12T08:30", "body": "27M establishing care. Last physical was 3-4 yrs ago at a family practice out of state, nothing ever came of it per him. Feels well. No complaints today.\n\nPMH: none he knows of. PSH: none. Meds: none, no supplements. NKDA.\n\nSocial: outside sales, lots of driving and client dinners. Single, rents in town. Smokes 1 ppd, started around 18. Has tried to quit cold turkey twice, lasted about a week each time. Alcohol: social, will have 4-6 drinks on a weekend night out a couple times a month. Denies other substances when asked.\n\nFamily: dad with alcohol use disorder. Paternal grandfather had CAD at 48. Mom has generalized anxiety.\n\nROS negative across systems.\n\nExam: well-appearing, NAD. HEENT: TMs clear, nares patent, mucosa pink, oropharynx clear. Neck supple, no nodes or thyroid enlargement. Heart RRR, no murmur. Lungs clear, no wheeze. Abd soft, NT, no HSM. Ext no edema. Skin: no rashes. Neuro grossly intact. Mood good, affect full.\n\nPHQ-9 2. AUDIT-C 5.\n\nA/P\n1. Preventive: CBC, CMP, lipids, one-time HIV and HCV today. Tdap and flu given.\n2. Tobacco use disorder, 1 ppd ~9 yrs. Talked about quitting, gave the state quitline number. Not interested in patches or medication right now. Will keep asking.\n3. Alcohol: weekend binge pattern. Discussed limits. He says it's mostly work-related.\n\nRTC 1 yr for physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-09-14T16:20", "body": "Hi Malcolm, all your labs from Monday came back fine: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to do here. The quitline offer stands whenever you want to take a run at the cigarettes."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:05",
+          "reason": "Records from prior primary care",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "front desk", "date": "2022-09-20T11:05", "body": "Received 6 pages by fax from former family practice. Covers visits 2016-2019: two physicals and a sports physical form. Healthy young adult, no chronic problems, no prescriptions. Smoker noted at each visit. Normal CBC and metabolic panel 2018. Childhood vaccines documented. Scanned to media tab, flagged for PCP."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2022-09-21T07:50", "body": "Old records reviewed. Nothing new. Childhood series complete. No changes."}
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "annual_physical",
+          "start": "2023-09-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 82.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "AUDIT-C total score", "value": 5}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-25T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-25T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-25T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-25T08:47"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-25T08:00"},
+            {"procedure": "Venipuncture", "performed": "2023-09-25T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-09-25T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-25T08:00", "body": "Yearly visit. Busy year at work, new territory, more nights out with clients. Feels fine. Still about a pack a day, more on long drive days.\n\nNo new meds. NKDA. FHx unchanged.\n\nROS: no chest pain, no SOB, no cough beyond morning throat clearing, no weight change.\n\nExam: NAD. Nose and throat normal. No adenopathy. RRR without murmur. Lungs clear. Abdomen soft, non-tender. No edema. Skin clear.\n\nScreens: PHQ-9 2, AUDIT-C 5.\n\nA/P\n- Health maintenance: CBC, CMP. Lipids were fine last year, will skip.\n- Tobacco use disorder: precontemplative. Briefly reviewed options again, he'll think about it. 5 A's done.\n- Weekend drinking unchanged, discussed.\n- Flu and updated COVID today.\n\nSee him next September."}
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "portal_message",
+          "start": "2023-09-27T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2023-09-27T12:15", "body": "Labs look normal across the board. Have a good fall."},
+            {"type": "Patient Message", "title": "RE: Results", "author": "patient", "date": "2023-09-27T19:02", "body": "thanks doc"}
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "annual_physical",
+          "start": "2024-08-05T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 81.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "AUDIT-C total score", "value": 5}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-05T08:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-05T08:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-05T08:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-05T07:45"},
+            {"procedure": "Venipuncture", "performed": "2024-08-05T08:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-08-05T07:45", "body": "29 y/o here for yearly. Came early before a sales trip. No concerns.\n\nMeds none. NKDA.\nSocial: 1 ppd unchanged. Alcohol same weekend pattern. Denies drug use.\n\nExam: well, NAD. Wt 81 kg, about where he's been. HEENT unremarkable, nasal mucosa normal. Neck without nodes. Heart regular, no murmur. Lungs clear. Abd benign. No edema.\n\nPHQ-9 3, AUDIT-C 5.\n\nPlan:\n1. Labs: CBC, CMP, lipids (due).\n2. Tobacco: still not ready. Offered nicotine replacement, declined. Quitline info re-sent.\n3. Flu/COVID when available, nurse visit in Oct.\n\n1 year."}
+          ]
+        },
+        {
+          "id": "2024-08-07a",
+          "kind": "portal_message",
+          "start": "2024-08-07T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results from your physical", "author": "PCP", "date": "2024-08-07T09:30", "body": "Malcolm, your cholesterol, blood counts and chemistry panel are all in the normal range. Our nurses will reach out in October about the flu shot."}
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "nurse_visit",
+          "start": "2024-10-07T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-07T17:15"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-07T17:17"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-07T17:15"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine visit", "author": "RN", "date": "2024-10-07T17:10", "body": "Late-day slot after work. Afebrile, no acute illness. Screening questions negative. Flu (trivalent) L deltoid, COVID 2024-25 R deltoid. Observed 15 min, no reaction. VIS given."}
+          ]
+        }
+      ]
+    }
+  ]
+}
