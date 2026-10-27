@@ -261,13 +261,13 @@ stateDiagram-v2
 %% event open For my doctor | by you | needs TabToday, TCur | reason: the workspace is yours whether or not it has anything yet; newer Terms wait first | Your workspace for your doctor, empty or saved, with your appointment (ENG-169).
 %% event open your doctor's plan | by you | needs TabToday, DpCurrent, DpOld, TCur | reason: only a plan your practice sent opens; newer Terms wait first | Your doctor's documented decisions and open items, with source, author and date, and whether it is still updated (ENG-45).
 %% event go back on Today | by you | needs TabToday | reason: only the tab you're on goes back | You return to Today; nothing you had saved changes.
-%% event open a records group | by you | needs TabYou, RecHave, TCur | reason: only records you have are grouped; newer Terms wait first | Medications, Allergies, Conditions, Recent labs, Procedures, Imaging, or Records & documents (north-star.md, You).
-%% event open a record | by you | needs TabYou, RecHave, TCur | reason: only a record you have opens; newer Terms wait first | The record as its source sent it, with its source and date; a corrected record shows its current version and keeps the earlier one (north-star.md, You).
-%% event open Measurements & trends | by you | needs TabYou, RecHave, TCur | reason: only measurements you have are listed; newer Terms wait first | Every measurement category you have.
-%% event open a measurement in You | by you | needs TabYou, RecHave, TCur | reason: only a measurement you have opens; newer Terms wait first | Its chart over any period, with its source and coverage.
-%% event open Health history | by you | needs TabYou, RecHave, TCur | reason: only history you have is shown; newer Terms wait first | Everything in time order: clinical events, daily measurements and documents.
+%% event open a records group | by you | needs TabYou, TCur | reason: newer Terms wait first | Medications, Allergies, Conditions, Recent labs, Procedures, Imaging, or Records & documents (north-star.md, You).
+%% event open a record | by you | needs TabYou, TCur | reason: newer Terms wait first | The record as its source sent it, with its source and date; a corrected record shows its current version and keeps the earlier one (north-star.md, You).
+%% event open Measurements & trends | by you | needs TabYou, TCur | reason: newer Terms wait first | Every measurement category you have.
+%% event open a measurement in You | by you | needs TabYou, TCur | reason: newer Terms wait first | Its chart over any period, with its source and coverage.
+%% event open Health history | by you | needs TabYou, TCur | reason: newer Terms wait first | Everything in time order: clinical events, daily measurements and documents.
 %% event open Earlier insights | by you | needs TabYou, TCur | reason: newer Terms wait first | Insights that have left Today, as written, with any you marked not accurate (north-star.md, Today).
-%% event search your health | by you | needs TabYou, RecHave, TCur | reason: only what you have is searched; newer Terms wait first | Search shows only its results, or a quiet no matches.
+%% event search your health | by you | needs TabYou, TCur | reason: newer Terms wait first | Search shows only its results, or a quiet no matches.
 %% event open Sources & data | by you | needs TabYou, TCur | reason: newer Terms wait first | Your phone's health data and Doctors & hospitals, each with its own status (north-star.md, Source access).
 %% event open Doctors & hospitals | by you | needs TabYou, TCur | reason: newer Terms wait first | Your organizations, each with its status and actions, and Connect.
 %% event open your phone's health data | by you | needs TabYou, TCur | reason: newer Terms wait first | Its connection, what it brought in, and its controls.
@@ -1384,16 +1384,15 @@ stateDiagram-v2
       PrcEnded --> PrcNone : delete your account
     }
     --
-    %% What you have: from your sources, and the notes and medications you enter, which are records
-    %% in You like any other (ENG-52). Kept through any disconnect, gone only with your account (F1, F2).
-    %% events you enter a note or medication = add a note | save the proposed note | add a medication | Duet saves a note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked
-    state "Your health records" as Rec {
+    %% What your sources sent: kept through any disconnect, gone only with your account (F1, F2). Notes
+    %% and medications you enter are records in You too (ENG-52) and open without this; it decides only
+    %% what a source-backed step, like confirming a medication from your records, can act on.
+    state "Records from your sources" as Rec {
       [*] --> RecNone
-      state "No records yet" as RecNone
-      state "Records kept" as RecHave
+      state "Nothing from your sources yet" as RecNone
+      state "Records from your sources kept" as RecHave
       RecNone --> RecHave : records come in
       RecNone --> RecHave : your phone's readings arrive
-      RecNone --> RecHave : you enter a note or medication
       RecHave --> RecNone : the deletion finishes
     }
     --
@@ -1456,7 +1455,7 @@ stateDiagram-v2
     %% never PhoneOnlyWithAccount: Phone connected & No account -- Sources belong to an account; deleting it ends every one (F2).
     %% never OrganizationNotWhileDeleting: Organization connected & Deleting your account -- Deletion stops every source at once (F2).
     %% never PhoneNotWhileDeleting: Phone connected & Deleting your account -- Deletion stops every source at once (F2).
-    %% never RecordsGoWithAccount: Records kept & No account -- Records are kept until the account is deleted, and not after (F1, F2).
+    %% never RecordsGoWithAccount: Records from your sources kept & No account -- Records are kept until the account is deleted, and not after (F1, F2).
     %% never SessionWithoutAccount: Signed in on this device & No account -- A session always belongs to an account (ENG-111).
     %% never OtherSessionWithoutAccount: Signed in on another device & No account -- A session always belongs to an account (ENG-111).
   }
