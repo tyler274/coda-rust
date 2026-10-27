@@ -10,7 +10,8 @@
 #  3. Start a disposable PostgreSQL (initdb in mktemp, loopback only), run
 #     both migration images twice, and start the servers with PORT set:
 #     /health and /readyz must answer 200. physician-worker starts hosted
-#     on the image's own PHYSICIAN_AUTH.
+#     on the image's own PHYSICIAN_AUTH and packaged skill catalog, and
+#     refuses to start when its catalog directory is missing.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
@@ -195,6 +196,19 @@ serve coda-physician-worker "$worker_port" \
   -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com
 expect_status "http://127.0.0.1:$worker_port/health" 200
 expect_status "http://127.0.0.1:$worker_port/readyz" 200
+# Listening at all proves hosted startup loaded the image's packaged catalog:
+# the worker loads PHYSICIAN_SKILLS_DIR before binding, outside any source
+# checkout. Pointed at a directory with no catalog, it must refuse to start.
+expect_failure "${tag_of[coda-physician-worker]} without its skill catalog" "physician skill catalog at /tmp/no-skills is unavailable" \
+  run "${locked[@]}" --network host \
+    --entrypoint "$(binary_of "${tag_of[coda-physician-worker]}")" \
+    -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_db" \
+    -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
+    -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
+    -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
+    -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com \
+    -e PHYSICIAN_SKILLS_DIR=/tmp/no-skills -e PORT="$(free_port)" \
+    "${tag_of[coda-physician-worker]}"
 
 duet_port=$(free_port)
 publication_key=$(python3 -c 'import base64; print(base64.urlsafe_b64encode(b"0123456789abcdef0123456789abcdef").decode().rstrip("="))')

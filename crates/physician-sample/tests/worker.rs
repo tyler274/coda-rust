@@ -36,7 +36,7 @@ impl Drop for Running {
 }
 
 async fn running(label: &str, failures: Option<u32>, delay_ms: Option<u64>) -> Option<Running> {
-    running_with(label, failures, delay_ms, false).await
+    running_with(label, failures, delay_ms, false, &[]).await
 }
 
 async fn running_with(
@@ -44,6 +44,7 @@ async fn running_with(
     failures: Option<u32>,
     delay_ms: Option<u64>,
     fail_marker: bool,
+    extra: &[(&str, &str)],
 ) -> Option<Running> {
     let database = support::Database::create(label).await?;
     let store = Store::connect(&database.url).await.expect("runtime store");
@@ -74,6 +75,7 @@ async fn running_with(
     if fail_marker {
         env.push(("PHYSICIAN_WORKER_FIXED_FAIL_MARKER", "1"));
     }
+    env.extend_from_slice(extra);
     let mut worker = support::Process::spawn("worker", support::worker_bin(), &[], &env, &home);
     support::wait_ready(&mut worker, worker_port).await;
     Some(Running {
@@ -278,7 +280,7 @@ fn attempt_statuses(state: &Conversation) -> Vec<&str> {
 #[tokio::test]
 async fn fail_marker_fails_only_the_marked_message() {
     let _guard = lock().lock().await;
-    let Some(running) = running_with("marker", None, None, true).await else {
+    let Some(running) = running_with("marker", None, None, true, &[]).await else {
         return;
     };
     let (plain_scope, plain) = accept_turn(&running.database.url, &running.store).await;
@@ -311,7 +313,7 @@ async fn fail_marker_fails_only_the_marked_message() {
 #[tokio::test]
 async fn fail_marker_count_survives_a_worker_restart() {
     let _guard = lock().lock().await;
-    let Some(mut running) = running_with("marker_restart", None, None, true).await else {
+    let Some(mut running) = running_with("marker_restart", None, None, true, &[]).await else {
         return;
     };
     let (scope, marked) =
@@ -478,4 +480,229 @@ async fn concurrent_pushes_on_one_worker_run_side_by_side() {
         let state = wait_assistant(&running.store, scope, &running.worker).await;
         assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
     }
+}
+
+/// Copies the workspace catalog to a directory outside the source checkout,
+/// as the packaged worker sees it.
+fn copied_skills(home: &std::path::Path) -> std::path::PathBuf {
+    fn copy(from: &std::path::Path, to: &std::path::Path) {
+        std::fs::create_dir_all(to).expect("skills directory");
+        for entry in std::fs::read_dir(from).expect("read skills") {
+            let entry = entry.expect("skills entry");
+            let target = to.join(entry.file_name());
+            if entry.file_type().expect("file type").is_dir() {
+                copy(&entry.path(), &target);
+            } else {
+                std::fs::copy(entry.path(), target).expect("copy skill file");
+            }
+        }
+    }
+    let target = home.join("packaged-skills");
+    copy(
+        &std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../skills"),
+        &target,
+    );
+    target
+}
+
+fn tool_returned(state: &Conversation) -> Vec<(String, String, bool)> {
+    state
+        .attempts
+        .iter()
+        .flat_map(|attempt| &attempt.events)
+        .filter_map(|event| match &event.kind {
+            harness::engine::EventKind::ToolReturned {
+                call_id,
+                output,
+                executed,
+            } => Some((call_id.clone(), output.clone(), *executed)),
+            _ => None,
+        })
+        .collect()
+}
+
+/// The real worker binary, its host and Postgres, with a scripted provider:
+/// round one reads a skill body next to malformed, unknown, unavailable and
+/// over-budget calls; round two reads a supporting resource; then it answers.
+/// Each round's results must reach the next request or the fixed provider
+/// fails the attempt. Only the final text is published; every exact result
+/// stays in the saved attempt.
+#[tokio::test]
+async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
+    let _guard = lock().lock().await;
+    let staging = std::env::temp_dir().join(format!(
+        "physician-worker-skills-{}-{}",
+        std::process::id(),
+        uuid::Uuid::new_v4().simple()
+    ));
+    let skills = copied_skills(&staging);
+    let skills_text = skills.display().to_string();
+    let rounds = serde_json::json!([
+        [
+            {"name": "skill_view", "arguments": {"name": "pre-visit-preparation", "file_path": null, "max_result_bytes": 65536}},
+            {"name": "skill_view", "arguments": {"name": "pre-visit-preparation"}},
+            {"name": "skill_view", "arguments": "not json"},
+            {"name": "write_patient_memory", "arguments": {}},
+            {"name": "skill_view", "arguments": {"name": "not-a-skill", "file_path": null, "max_result_bytes": 4096}},
+            {"name": "skill_view", "arguments": {"name": "pre-visit-preparation", "file_path": null, "max_result_bytes": 4096}}
+        ],
+        [
+            {"name": "skill_view", "arguments": {"name": "patient-memory-maintenance", "file_path": "references/authoring-guide.md", "max_result_bytes": 65536}}
+        ]
+    ])
+    .to_string();
+    let extra = [
+        ("PHYSICIAN_SKILLS_DIR", skills_text.as_str()),
+        ("PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS", rounds.as_str()),
+    ];
+    let Some(running) = running_with("skills", None, None, false, &extra).await else {
+        let _ = std::fs::remove_dir_all(&staging);
+        return;
+    };
+    let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
+    running.emulator.publish(&delivery).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(state.status, "completed");
+    assert_eq!(attempt_statuses(&state), ["completed"]);
+    assert_eq!(
+        assistant_texts(&state),
+        [support::FIXED_TEXT],
+        "tool-round narration must stay internal"
+    );
+
+    // Durable readback through a fresh connection.
+    let store = Store::connect(&running.database.url)
+        .await
+        .expect("fresh store");
+    let saved = store
+        .read(&scope)
+        .await
+        .expect("read")
+        .expect("conversation");
+    let catalog = harness::Harness::load(&skills).expect("copied catalog");
+    let requests: Vec<_> = saved.attempts[0]
+        .events
+        .iter()
+        .filter_map(|event| match &event.kind {
+            harness::engine::EventKind::ProviderStarted { context, .. } => Some(context),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(requests.len(), 3, "two tool rounds and one answer");
+    for context in &requests {
+        assert!(
+            context
+                .instructions
+                .contains(local_product::physician_chat::INSTRUCTIONS_VERSION)
+        );
+        assert!(context.instructions.contains(&catalog.catalog()));
+        assert_eq!(
+            context
+                .tools
+                .iter()
+                .map(|tool| tool.name.as_str())
+                .collect::<Vec<_>>(),
+            ["skill_view"]
+        );
+    }
+    let returned = tool_returned(&saved);
+    assert_eq!(returned.len(), 7);
+    let output = |id: &str| {
+        returned
+            .iter()
+            .find(|(call, ..)| call == id)
+            .unwrap_or_else(|| panic!("no result for {id}"))
+    };
+    let exact = |name: &str, path: Option<&str>, bytes: u32| {
+        catalog.skill_view(name, path, bytes).unwrap().to_json()
+    };
+    assert_eq!(
+        output("fixed-1-0"),
+        &(
+            "fixed-1-0".into(),
+            exact("pre-visit-preparation", None, 65536),
+            true
+        )
+    );
+    assert_eq!(output("fixed-1-4").1, exact("not-a-skill", None, 4096));
+    assert_eq!(
+        output("fixed-1-5").1,
+        exact("pre-visit-preparation", None, 4096)
+    );
+    assert!(output("fixed-1-5").1.contains("\"over_budget\""));
+    assert_eq!(
+        output("fixed-2-0").1,
+        exact(
+            "patient-memory-maintenance",
+            Some("references/authoring-guide.md"),
+            65536
+        )
+    );
+    for refused in ["fixed-1-1", "fixed-1-2", "fixed-1-3"] {
+        let (_, text, executed) = output(refused);
+        assert!(!executed, "{refused}");
+        assert!(text.contains("\"executed\":false"), "{refused}: {text}");
+    }
+    // The next request carried each exact result.
+    for (call, text, _) in &returned {
+        let round: usize = if call.starts_with("fixed-1-") { 1 } else { 2 };
+        assert!(requests[round].items.iter().any(|item| matches!(
+            item,
+            harness::engine::Item::Result { call_id, output } if call_id == call && output == text
+        )));
+    }
+    drop(running);
+    let _ = std::fs::remove_dir_all(&staging);
+}
+
+/// A worker pointed at a directory without the catalog exits at startup
+/// instead of serving with an empty one.
+#[tokio::test]
+async fn a_worker_without_its_catalog_never_serves() {
+    let _guard = lock().lock().await;
+    let missing = std::env::temp_dir().join(format!(
+        "physician-worker-no-skills-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    let missing_text = missing.display().to_string();
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-no-skills-home-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let port = support::free_port().to_string();
+    let listen = format!("127.0.0.1:{port}");
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PUBSUB_EMULATOR_HOST", "127.0.0.1:1"),
+            (
+                "PHYSICIAN_DATABASE_URL",
+                "postgres://unused@127.0.0.1:1/unused",
+            ),
+            ("PHYSICIAN_SKILLS_DIR", missing_text.as_str()),
+        ],
+        &home,
+    );
+    let deadline = Instant::now() + Duration::from_secs(20);
+    let code = loop {
+        if let Some(code) = worker.exited() {
+            break code;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "worker kept running\n{}",
+            worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    assert_ne!(code, 0);
+    let log = worker.tail();
+    assert!(log.contains("physician skill catalog at"), "{log}");
+    assert!(log.contains(&missing_text), "{log}");
+    let _ = std::fs::remove_dir_all(&home);
 }

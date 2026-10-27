@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 """Inspect dockerTools archives without credentials or a running Docker daemon."""
 import json
+import pathlib
 import sys
 import tarfile
+
+SKILLS = pathlib.Path(__file__).resolve().parent.parent / "skills"
+
+
+def packaged_skills():
+    """Every file of the source catalog, relative to skills/."""
+    return sorted(
+        str(path.relative_to(SKILLS)) for path in SKILLS.rglob("*") if path.is_file()
+    )
 
 ROLES = {"runtime", "migration", "job"}
 SECRET_KEYS = {
@@ -66,6 +76,17 @@ def check(path):
             # Hosted physician startup refuses without it; Doppler must not be
             # the only place it is set.
             assert env.get("PHYSICIAN_AUTH") == "required", "physician servers require sessions"
+        if labels["com.coda.binary"].endswith("/physician-worker"):
+            # Hosted worker startup loads the catalog from here and refuses
+            # without it; every packaged file must be in the image.
+            assert "PHYSICIAN_SKILLS_DIR" in env, "the worker image must name its skill catalog"
+            directory = env["PHYSICIAN_SKILLS_DIR"].lstrip("/")
+            expected = packaged_skills()
+            assert expected, "the source catalog is empty"
+            missing = [name for name in expected if f"{directory}/{name}" not in paths]
+            assert not missing, f"skill assets missing from the worker image: {missing}"
+        elif "PHYSICIAN_SKILLS_DIR" in env:
+            raise AssertionError("only the worker image carries the skill catalog")
         for key in ("PHYSICIAN_SITE_DIR", "DUET_SITE_DIR"):
             if key in env:
                 directory = env[key].lstrip("/")
