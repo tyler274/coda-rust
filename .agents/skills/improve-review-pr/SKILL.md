@@ -48,8 +48,9 @@ Determine where the workflow succeeded or failed:
 - **Coordination:** Did the session reconcile the whole problem before editing,
   or patch successive entry points into the same broken contract? Did it respect
   review-only scope and instructions or promises to wait?
-- **Correction:** Did the combined change resolve the cause across relevant
-  paths, or accumulate exceptions, duplicate state, and tests of isolated examples?
+- **Correction and verification:** Did the change resolve the cause across relevant
+  paths and prove the intended behavior, or add exceptions, duplicate state, and
+  tests of isolated examples? Did a suggested fix harm previously valid behavior?
 
 Check cross-PR interactions where relevant: duplicated fixes, contradictory
 recommendations, missing dependencies, or individually sound changes that combine
@@ -67,11 +68,13 @@ transport failed. Put:
 - Scope, handoff, authority, and whole-report reconciliation in `review-pr/SKILL.md`.
 - Review judgment in `review-pr/references/reviewer.md`.
 - Invocation and result handling in its launcher or execution reference.
-- Product-specific contracts in their existing repository owner, within authority.
+- Product behavior and missing guarantees or proof in their existing code, tests,
+  or repository guidance, within authority.
 
-Do not try to fix a coordinator's behavior solely by adding reviewer instructions.
-Missing access may need a tooling fix; false product assumptions may need a
-product decision. Neither automatically calls for another global review rule.
+Repair the owner of the failure: context, judgment, coordination, or verification.
+Do not compensate for a coordinator's behavior with reviewer instructions, or for
+a product defect or missing test with a global review rule. Missing access may need
+a tooling fix; false product assumptions may need a product decision.
 
 Prefer replacing, consolidating, or deleting guidance over appending exceptions.
 A repeated pattern, explicit user principle, or well-evidenced consequential miss

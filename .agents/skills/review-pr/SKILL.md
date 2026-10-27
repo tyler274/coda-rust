@@ -83,11 +83,11 @@ before adding a patch. Back-and-forth may clarify or challenge a finding without
 requiring a code change.
 
 Resume the reviewer for a concrete clarification, changed code, or new evidence,
-carrying sourced dispositions and verification. It should assess the combined
-correction against current source, not just whether individual examples pass.
-Do not repeat unchanged broad reviews to obtain a clean verdict. Finish when the
-requested outcome and appropriate proof are complete; state unresolved concerns
-and any final changes that remain unreviewed.
+carrying sourced dispositions and verification. Focus follow-ups on the correction,
+unresolved findings, and affected contracts and consumers in the cumulative change.
+Broaden investigation when new evidence warrants it; do not repeat unchanged broad
+reviews to obtain a clean verdict. Finish when the requested outcome and appropriate
+proof are complete; state unresolved concerns and final changes left unreviewed.
 
 A review does not authorize publication, commits, pushes, merges, deployment, or
 scheduling. External communication requires approval of the exact content and

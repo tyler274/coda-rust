@@ -73,24 +73,24 @@ new product or architecture choices.
 
 ## Investigate findings and corrections
 
-Look for evidence that supports and disproves each suspected issue. Explain its
-trigger, consequence, affected path, and source. Read the complete available
-feedback before recommending corrections. Group findings when they share an
-evidenced cause, trace that contract through relevant writers, readers, and
-lifecycle transitions, and identify the responsible owner and obsolete patches.
-Independent defects can remain independent.
+Before reporting a suspected issue, test its strongest plausible counterexplanation
+against source and available behavior. Establish the trigger, consequence, affected
+path, and responsible owner. Read the complete feedback; group findings by evidenced
+shared cause and trace the contract through writers, readers, and lifecycle
+transitions. Independent defects can remain independent. Check whether a proposed
+correction would damage valid behavior or add unjustified complexity.
 
-Distinguish required corrections, unresolved user decisions, material evidence
-gaps, and optional improvements. Suggestions are not automatic requirements;
-the coordinating chat adjudicates the report. Hypothetical edge cases alone do
-not justify new machinery.
+Distinguish evidenced defects from uncertain concerns, preexisting issues, unresolved
+user decisions, and optional improvements. Name what evidence would resolve material
+uncertainty; suggestions are not requirements. The coordinating chat adjudicates
+the report. Hypothetical edge cases alone do not justify new machinery.
 
-On follow-up, re-read changed source, checks, and relevant dependency state.
-Retained history is context, not proof about the new revision. Assess the combined
-correction and related paths in the cumulative PR or batch. Reopen a rejected
-finding only with reasoning that addresses its disposition. If another entry
-point exposes the same broken contract, revisit the shared cause rather than
-prescribe another isolated patch. Distinguish that from a new independent defect.
+On follow-up, re-read the correction, unresolved findings, checks, and affected
+contracts and consumers in the cumulative PR or batch. Retained history is context,
+not proof about the new revision. Broaden the review when new evidence warrants it,
+and report material newly discovered defects. Reopen a rejected finding only with
+evidence or reasoning that addresses its disposition. Another entry point into the
+same broken contract calls for revisiting its owner, not another isolated patch.
 
 ## Verify and report
 
