@@ -758,7 +758,7 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Nothing new since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
-| Something new arrived since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
+| Something new arrived since it started | not shown | revision.rs read_patient_sources (physician-worker) | no | Not shown on screen, as intended, but the hosted revision never takes news in: acceptance pins the workspace's source revisions (Store::accept_revision), and read_patient_sources answers only from them, so a record that arrives mid-revision is never read before it finishes. The graph keeps the pinned set as the record of what was read and needs what arrives added to it before finishing (Dev 2026-10-26). |
 
 ## Coda's work: reply revision/reply revision: held by you
 
