@@ -34,10 +34,10 @@ runtime_and_database_contract_approved = true
 # Approved staging relay networking; preserve the Workspace-allowlisted IP.
 enable_physician_smtp_relay = true
 
-# Selected shared-mail image from Rust c0773fb920dea0aaef93894a71176d719b8b5ac8.
+# Selected sender-split image for staging qualification only.
 # Publish and verify this exact digest before applying; desired configuration
-# does not establish deployment or delivery. Production selects the same bytes.
-mail_relay_image    = "us-east1-docker.pkg.dev/coda-rust-staging/apps/mail-relay@sha256:2c6e167df7ece92dca647240de8ee17c2f46207f0f8ce85b4156fcac756076f9"
+# does not establish deployment or delivery. Production retains its selected image.
+mail_relay_image    = "us-east1-docker.pkg.dev/coda-rust-staging/apps/mail-relay@sha256:4179edf841befcfa33b5dcdb0e1efe0bf20d1dce184fe9359efcb9eef71c6ea4"
 mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com"]
 
 # Physician scaling (book/src/gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns):
