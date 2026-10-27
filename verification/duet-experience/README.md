@@ -8,6 +8,7 @@ graph's method ([physician-experience](../physician-experience/README.md)).
 | [duet.mmd](duet.mmd) | The spec: the ideal behavior of the full product for every person. |
 | [decisions.md](decisions.md) | Why: Dev's dated decisions and the sources the graph cites. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph assumes away and the runtime must still guarantee. |
+| [coverage.md](coverage.md) | What the Rust Duet app shows today for each graph state: built, partial, missing or not shown, and whether the wire carries the data. `statechart.mjs coverage` checks it against the graph. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
 | [../connected-care](../connected-care/README.md) | How this graph meets the physician graph: shared events and the rules across them. |
 
