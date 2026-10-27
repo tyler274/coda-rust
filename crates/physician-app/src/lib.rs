@@ -60,6 +60,8 @@ const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
+const SAVING: &str = "Saving…";
+const SAVED: &str = "Saved";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
@@ -1040,6 +1042,9 @@ fn PhysicianShell(
         }
         let chat = new_chat_id();
         draft.set(String::new());
+        if matches!(notice.peek().as_str(), SAVED | SAVING) {
+            notice.set(String::new());
+        }
         open_chat.set(Some(chat));
     };
     let shell_class = format!(
@@ -1553,7 +1558,14 @@ fn PhysicianShell(
                             on_open_source: move |chip: SourceChip| {
                                 reading.set(Some(source_reading(chip)));
                             },
-                            on_draft: move |value: String| draft.set(value),
+                            on_draft: move |value: String| {
+                                draft.set(value);
+                                // "Saved" describes the text that was saved;
+                                // an edit makes it untrue.
+                                if notice.peek().as_str() == SAVED {
+                                    notice.set(String::new());
+                                }
+                            },
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
                             conversation_resume_busy: chat_resume_slot.sending(),
@@ -1573,21 +1585,27 @@ fn PhysicianShell(
                                 let Some(id) = selected() else { return };
                                 let client = client.read().clone();
                                 let text = draft();
-                                let chat_id = open_chat();
+                                // Before a chat is open the draft is saved
+                                // under the chat id "draft". Either way, name
+                                // the revision the server holds now.
+                                let chat_id = open_chat().unwrap_or_else(|| "draft".to_owned());
+                                notice.set(SAVING.to_owned());
                                 spawn(async move {
-                                    let saved = if let Some(chat_id) = chat_id {
-                                        match client.read_draft(&id, &chat_id).await {
-                                            Ok(existing) => {
-                                                client
-                                                    .save_draft(&id, &chat_id, existing.revision, &text)
-                                                    .await
-                                            }
-                                            Err(error) => Err(error),
+                                    let saved = match client.read_draft(&id, &chat_id).await {
+                                        Ok(existing) => {
+                                            client
+                                                .save_draft(&id, &chat_id, existing.revision, &text)
+                                                .await
                                         }
-                                    } else {
-                                        client.save_draft(&id, "draft", 0, &text).await
+                                        Err(error) => Err(error),
                                     };
+                                    // Only this save's own mark is replaced: a
+                                    // newer notice (dictation, an edit) stays.
+                                    if notice.peek().as_str() != SAVING {
+                                        return;
+                                    }
                                     notice.set(match saved {
+                                        Ok(()) if *draft.peek() == text => SAVED.to_owned(),
                                         Ok(()) => String::new(),
                                         Err(_) => NOT_SAVED.to_owned(),
                                     });
@@ -3187,7 +3205,7 @@ fn PatientSurface(
                             button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
                             button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
                             if !notice.is_empty() {
-                                span { class: "composer-notice", "{notice}" }
+                                span { class: "composer-notice", role: "status", "{notice}" }
                             }
                         }
                         {send_notice}

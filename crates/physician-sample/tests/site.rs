@@ -211,6 +211,49 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     );
 
     let message = "Review the discharge summary before the follow-up visit";
+    // Save confirms itself beside the composer, and an edit clears the mark.
+    let notice =
+        r#"document.querySelector('.composer-actions .composer-notice')?.textContent ?? ''"#;
+    let saved = browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => {{
+                [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click();
+                const started = Date.now();
+                const poll = () => {{
+                    const text = {notice};
+                    if (text === 'Saved' || text === 'Not saved' || Date.now() - started > 10000) resolve(text);
+                    else setTimeout(poll, 50);
+                }};
+                poll();
+            }}, 100);
+        }})"#,
+            serde_json::to_string(message).unwrap()
+        ))
+        .await;
+    assert_eq!(
+        saved.pointer("/result/result/value"),
+        Some(&serde_json::json!("Saved")),
+        "Save gave no confirmation: {saved}"
+    );
+    let edited = browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, box.value + ' ');
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => resolve({notice}), 200);
+        }})"#
+        ))
+        .await;
+    assert_eq!(
+        edited.pointer("/result/result/value"),
+        Some(&serde_json::json!("")),
+        "an edit left the Saved mark: {edited}"
+    );
     browser
         .eval(&format!(
             r#"new Promise(resolve => {{

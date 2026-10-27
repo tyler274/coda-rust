@@ -850,8 +850,8 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | Composer empty | partial | PatientWorkspace composer textarea (physician-app lib.rs) | yes | An empty composer shows, but an accepted Send doesn't clear the draft and a saved draft is never read back. |
 | Draft written.Saving quietly | missing |  | yes | There is no autosave; drafts save only through the Save button, with no saving mark. |
-| Draft written.Saved | partial | on_save, PhysicianClient::save_draft (physician-app lib.rs) | no | A successful manual Save only clears the notice, and the sample's draft save always answers 409. |
-| Draft written.Not saved, with Retry | partial | on_save, NOT_SAVED composer-notice (physician-app lib.rs) | yes | "Not saved" shows beside the composer, but there is no Retry, only the Save button. |
+| Draft written.Saved | partial | on_save, SAVED composer-notice (physician-app lib.rs); chat_draft.rs (physician-sample) | yes | Save reads the current revision and saves over it, showing "Saving…" and then "Saved" beside the composer until the next edit. The live sample stores the draft per physician, patient and chat: in Postgres on hosted sites and in the session inline. Saving happens only on the button, not quietly as you type. The recorded and simulation projections are read-only and still answer 409. |
+| Draft written.Not saved, with Retry | partial | on_save, NOT_SAVED composer-notice (physician-app lib.rs) | yes | "Not saved" shows beside the composer when the save fails or another instance saved a newer revision first (409), but there is no Retry, only the Save button. |
 
 ## Queued messages
 
