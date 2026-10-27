@@ -445,10 +445,37 @@ pub enum AllergyType {
     Intolerance,
 }
 
+/// What an allergy is to, as FHIR groups it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum AllergyCategory {
+    Food,
+    Medication,
+    Environment,
+    Biologic,
+}
+
+impl AllergyCategory {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            AllergyCategory::Food => "food",
+            AllergyCategory::Medication => "medication",
+            AllergyCategory::Environment => "environment",
+            AllergyCategory::Biologic => "biologic",
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AllergyItem {
     pub substance: String,
+    /// The SNOMED CT substance for an allergen the catalog lacks; `check` verifies it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub snomed: Option<String>,
+    /// Required for an allergen the catalog lacks; the catalog's otherwise.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub category: Option<AllergyCategory>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reaction: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -578,6 +605,9 @@ pub struct Report {
 #[serde(deny_unknown_fields)]
 pub struct ProcedureItem {
     pub procedure: String,
+    /// The SNOMED CT procedure for one the catalog lacks; `check` verifies it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub snomed: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub performed: Option<Stamp>,
 }
@@ -677,6 +707,12 @@ pub struct Terms {
     /// A report study's label to its confirmed LOINC code and official display.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub reports: BTreeMap<String, VerifiedCode>,
+    /// An allergen's label to its confirmed SNOMED CT substance and display.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub allergens: BTreeMap<String, VerifiedCode>,
+    /// A procedure's label to its confirmed SNOMED CT procedure and display.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub procedures: BTreeMap<String, VerifiedCode>,
     /// What could not be verified and stays text-only.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub rejected: Vec<String>,

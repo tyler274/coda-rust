@@ -503,6 +503,7 @@ impl Renderer<'_> {
             });
         }
 
+        let allergies = tl.allergies(self.catalog);
         let mut height: Option<f64> = None;
         let vital_cat =
             CodeableConcept::coding_only(Coding::new(OBS_CAT, "vital-signs", "Vital Signs"));
@@ -538,9 +539,9 @@ impl Renderer<'_> {
                 });
             }
 
-            for (i, a) in ev.allergies.iter().enumerate() {
-                let entry = self.catalog.allergens.get(&a.substance);
-                let code = match entry {
+            for allergy in allergies.iter().filter(|a| a.event.id == ev.id) {
+                let (a, i) = (allergy.item, allergy.index);
+                let code = match self.catalog.allergens.get(&a.substance) {
                     Some(e) => CodeableConcept::coded(coding(e), &a.substance),
                     None => {
                         receipt
@@ -549,10 +550,7 @@ impl Renderer<'_> {
                         CodeableConcept::text(&a.substance)
                     }
                 };
-                let category = match entry.and_then(|e| e.category.as_ref()) {
-                    Some(Category::Text(c)) => c.clone(),
-                    _ => "medication".into(),
-                };
+                let category = self.catalog.allergy_class(a).0.to_string();
                 let reaction = a.reaction.as_ref().map(|r| Reaction {
                     manifestation: vec![match self.catalog.reactions.get(r) {
                         Some(e) => CodeableConcept::coded(coding(e), r),
@@ -568,11 +566,11 @@ impl Renderer<'_> {
                     resource_type: "AllergyIntolerance",
                     id: opaque("allergy", &[mrn, eid, &i.to_string()]),
                     meta: Meta::on(&start),
-                    clinical_status: status(
-                        "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
-                        "active",
-                        "Active",
-                    ),
+                    clinical_status: if allergy.active(at) {
+                        status(ALLERGY_CLINICAL, "active", "Active")
+                    } else {
+                        status(ALLERGY_CLINICAL, "inactive", "Inactive")
+                    },
                     verification_status: status(
                         "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
                         "confirmed",
@@ -936,13 +934,7 @@ impl Renderer<'_> {
                 OrderCategory::Imaging => "imaging",
                 OrderCategory::Procedure => "procedure",
             };
-            let known = self
-                .catalog
-                .procedures
-                .get(what)
-                .or_else(|| self.catalog.reports.get(what))
-                .filter(|e| e.display.is_some());
-            let code = match known {
+            let code = match self.catalog.orderable(item) {
                 Some(e) => CodeableConcept::coded(coding(e), what),
                 None => CodeableConcept::text(what),
             };
@@ -968,7 +960,12 @@ impl Renderer<'_> {
                 subject: subject.clone(),
                 encounter: encounter_of(o.event),
                 authored_on: authored,
-                performer_type: item.to.iter().map(|t| CodeableConcept::text(t)).collect(),
+                performer_type: (item.to.iter())
+                    .map(|t| match self.catalog.specialties.get(t) {
+                        Some(e) => CodeableConcept::coded(coding(e), t),
+                        None => CodeableConcept::text(t),
+                    })
+                    .collect(),
                 reason_code: item
                     .reason
                     .iter()
@@ -982,6 +979,7 @@ impl Renderer<'_> {
 }
 
 const ACT_CODE: &str = "http://terminology.hl7.org/CodeSystem/v3-ActCode";
+const ALLERGY_CLINICAL: &str = "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical";
 
 fn procedure(
     id: String,

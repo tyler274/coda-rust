@@ -2,10 +2,10 @@
   "unit": "unit-2553",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002553/2024-10-22a: allergen \"risperidone\" not in catalog (text only)",
     "MRN00002553/2024-10-22a: reaction \"Neuroleptic malignant syndrome\" not in catalog (text only)",
-    "MRN00002553/2025-10-28a: allergen \"aripiprazole\" not in catalog (text only)",
     "MRN00002553/2025-10-28a: reaction \"Neuroleptic malignant syndrome\" not in catalog (text only)",
+    "MRN00002553/2025-12-11a: lab order \"CBC with differential and CK, weekly, standing\" names no one catalog lab, panel, study or procedure",
+    "MRN00002553/2026-01-12a: lab order \"CBC with differential and CK, standing, weekly then every 2 weeks\" names no one catalog lab, panel, study or procedure",
     "left text-only (not verified): lab \"Amphetamines screen, urine\" LOINC 19343-9 not found; closest real codes: 19268-2 Amphetamines screen method [Identifier] in Urine; 19261-7 Amphetamines [Presence] in Urine by Screen method; 19262-5 Amphetamines tested for in Urine by Screen method Nominal; 70138-3 Amphetamines [Mass/volume] in Urine by Screen method; 8152-1 Amphetamines [Presence] in Urine by SAMHSA screen method",
     "left text-only (not verified): lab \"Opiates screen, urine\" LOINC 19295-1 not found; closest real codes: 19301-1 Opiates screen method [Identifier] in Urine; 19295-5 Opiates [Presence] in Urine by Screen method; 8222-2 Opiates [Presence] in Urine by SAMHSA screen method; 70150-8 Opiates [Mass/volume] in Urine by Screen method; 19296-3 Opiates tested for in Urine by Screen method Nominal"
   ],
@@ -1929,6 +1929,8 @@
           "allergies": [
             {
               "substance": "risperidone",
+              "snomed": "386840002",
+              "category": "medication",
               "reaction": "Neuroleptic malignant syndrome",
               "severity": "severe",
               "criticality": "high",
@@ -2855,6 +2857,8 @@
           "allergies": [
             {
               "substance": "aripiprazole",
+              "snomed": "406784005",
+              "category": "medication",
               "reaction": "Neuroleptic malignant syndrome",
               "severity": "severe",
               "criticality": "high",
@@ -6315,6 +6319,18 @@
         "code": "3397-7",
         "display": "Cocaine [Presence] in Urine",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "aripiprazole": {
+        "code": "406784005",
+        "display": "Aripiprazole",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "risperidone": {
+        "code": "386840002",
+        "display": "Risperidone",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

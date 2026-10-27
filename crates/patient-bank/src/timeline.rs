@@ -4,17 +4,19 @@
 //! This is the only owner of time in the bank. Each record has its own instant
 //! (a medication's order date, a vital set's time, a result's release), and a
 //! chart as of a moment holds exactly the records whose instant is before it.
-//! Medication and problem status come from each concept's whole history, so a
-//! restarted drug can stop again and a resolved problem can recur.
+//! Medication, problem and allergy status come from each concept's whole history,
+//! so a restarted drug can stop again, a resolved problem can recur, and "no known
+//! drug allergies" ends when a drug allergy is recorded.
 
 use std::collections::HashMap;
 
 use jiff::{Span, ToSpan};
 use sha2::{Digest, Sha256};
 
+use crate::catalog::Catalog;
 use crate::ledger::{
-    ConditionAction, ConditionItem, Course, Event, Lab, MedicationAction, MedicationItem,
-    OrderAction, OrderItem, Patient, Report, Stamp, VitalSet,
+    AllergyItem, ConditionAction, ConditionItem, Course, Event, Lab, MedicationAction,
+    MedicationItem, OrderAction, OrderItem, Patient, Report, Stamp, VitalSet,
 };
 use crate::rng::Rng;
 use crate::time;
@@ -96,6 +98,26 @@ impl Problem<'_> {
             .map_or(ProblemStatus::Active, |&(when, _)| {
                 ProblemStatus::Resolved(when)
             })
+    }
+}
+
+/// One allergy-list entry. An allergen stays on the list once recorded. A "no
+/// known" entry says the patient has none of one category, so it stays true only
+/// until an allergy of that category is recorded.
+pub struct Allergy<'a> {
+    pub event: &'a Event,
+    pub index: usize,
+    pub item: &'a AllergyItem,
+    pub recorded: Stamp,
+    /// The category a "no known" entry rules out.
+    pub negates: Option<&'a str>,
+    /// When an allergy this entry ruled out was recorded.
+    pub refuted: Option<Stamp>,
+}
+
+impl Allergy<'_> {
+    pub fn active(&self, at: Stamp) -> bool {
+        self.refuted.is_none_or(|when| when >= at)
     }
 }
 
@@ -231,6 +253,41 @@ impl<'a> Timeline<'a> {
             service_orders,
             base: hash_prefix(&patient.mrn, 8),
         }
+    }
+
+    /// The allergy list's entries in the order recorded.
+    pub fn allergies(&self, catalog: &'a Catalog) -> Vec<Allergy<'a>> {
+        let mut list: Vec<Allergy> = Vec::new();
+        for ev in &self.events {
+            for (index, item) in ev.allergies.iter().enumerate() {
+                let (category, negates) = catalog.allergy_class(item);
+                let refuted = match negates {
+                    // ruled out from the start by an allergy already listed, even
+                    // one recorded at the same visit
+                    Some(none_of) => list
+                        .iter()
+                        .any(|a| a.negates.is_none() && catalog.allergy_class(a.item).0 == none_of)
+                        .then_some(ev.start),
+                    None => {
+                        for a in list.iter_mut().filter(|a| a.refuted.is_none()) {
+                            if a.negates == Some(category) {
+                                a.refuted = Some(ev.start);
+                            }
+                        }
+                        None
+                    }
+                };
+                list.push(Allergy {
+                    event: ev,
+                    index,
+                    item,
+                    recorded: ev.start,
+                    negates,
+                    refuted,
+                });
+            }
+        }
+        list
     }
 
     /// When an untimed rooming set was taken: a few minutes after the visit started.

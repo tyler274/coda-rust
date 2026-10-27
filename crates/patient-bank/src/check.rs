@@ -12,9 +12,11 @@ use std::collections::{HashMap, HashSet};
 use jiff::ToSpan;
 
 use crate::catalog::Catalog;
+use crate::draw::IDENTITIES;
 use crate::labs::DIFFERENTIAL;
 use crate::ledger::{
-    Appointment, ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, num,
+    Appointment, ConditionAction, Event, Lab, MedicationAction, OrderAction, OrderCategory,
+    Patient, Stamp, num,
 };
 use crate::seeds::Unit;
 use crate::time;
@@ -132,6 +134,10 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 &mut errors,
                 &mut warnings,
             );
+            for lab in &ev.labs {
+                let age = time::age_on(birth, Timeline::collected(ev, lab).date());
+                arithmetic(lab, &eid, age, seed.female(), &mut errors);
+            }
             for d in &ev.documents {
                 if d.body.trim().is_empty() {
                     errors.push(format!("{eid}: document {:?} has no body", d.title()));
@@ -208,6 +214,7 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
             }
         }
         check_orders(mrn, &tl, &mut errors);
+        check_allergies(mrn, &tl, catalog, &mut errors);
         // A stop that finds no open order of its drug documents nothing.
         for ev in &tl.events {
             for m in ev
@@ -231,6 +238,66 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
         }
     }
     (errors, warnings)
+}
+
+/// Every calculated test on a finished draw is what a lab's formula gives from the
+/// draw's inputs, to the rounding the lab reports in.
+fn arithmetic(lab: &Lab, eid: &str, age: i64, female: bool, errors: &mut Vec<String>) {
+    let value = |t: &str| {
+        let r = lab.results.iter().find(|r| r.test == t)?;
+        Some(num(r.value.as_ref()?)).filter(|v| *v != 0.0)
+    };
+    for id in IDENTITIES {
+        let (Some(stated), Some(inputs)) = (
+            value(id.test),
+            id.inputs
+                .iter()
+                .map(|t| value(t))
+                .collect::<Option<Vec<f64>>>(),
+        ) else {
+            continue;
+        };
+        let want = (id.formula)(&inputs, age, female);
+        let (lo, hi) = id.band.map_or((want, want), |band| band(&inputs));
+        // inputs and test are each rounded to what the lab reports
+        let slack = (1.5 * 10f64.powi(-(id.decimals as i32))).max(want.abs() * 0.03);
+        if stated < lo - slack || stated > hi + slack {
+            let round = |x: f64| {
+                fmt_num(
+                    (x * 10f64.powi(id.decimals as i32)).round() / 10f64.powi(id.decimals as i32),
+                )
+            };
+            let gives = if id.band.is_some() {
+                format!("{} to {}", round(lo), round(hi))
+            } else {
+                round(want)
+            };
+            errors.push(format!(
+                "{eid}: {} {} disagrees with its inputs, which give {gives}; state the test or \
+                 its inputs, not both, and code makes the rest agree",
+                id.test,
+                fmt_num(stated),
+            ));
+        }
+    }
+}
+
+/// A "no known" entry is never recorded while an allergy it rules out is listed.
+fn check_allergies(mrn: &str, tl: &Timeline, catalog: &Catalog, errors: &mut Vec<String>) {
+    let list = tl.allergies(catalog);
+    for nk in list.iter().filter(|a| a.negates.is_some()) {
+        let listed = list.iter().find(|a| {
+            a.negates.is_none()
+                && a.recorded <= nk.recorded
+                && Some(catalog.allergy_class(a.item).0) == nk.negates
+        });
+        if let Some(a) = listed {
+            errors.push(format!(
+                "{mrn}/{}: {:?} while {:?} is on the allergy list",
+                nk.event.id, nk.item.substance, a.item.substance
+            ));
+        }
+    }
 }
 
 /// Each order is placed once with what it is, and closed only after it was placed.
@@ -513,11 +580,31 @@ fn check_event<'a>(
         }
     }
     for x in &ev.procedures {
-        if !catalog.procedures.contains_key(&x.procedure) {
+        if !catalog.procedures.contains_key(&x.procedure) && x.snomed.is_none() {
             warnings.push(format!(
-                "{eid}: procedure {:?} not in catalog (text only, no CPT)",
+                "{eid}: procedure {:?} not in catalog and has no snomed (text only)",
                 x.procedure
             ));
+        }
+    }
+    for o in ev.orders.iter().filter(|o| o.action == OrderAction::Placed) {
+        let what = o.order.as_deref().unwrap_or("");
+        match o.category.unwrap_or(OrderCategory::Referral) {
+            OrderCategory::Referral => {
+                if let Some(to) =
+                    o.to.as_deref()
+                        .filter(|t| !catalog.specialties.contains_key(*t))
+                {
+                    warnings.push(format!(
+                        "{eid}: referral to {to:?} names no catalog specialty"
+                    ));
+                }
+            }
+            category if catalog.orderable(o).is_none() => warnings.push(format!(
+                "{eid}: {} order {what:?} names no one catalog lab, panel, study or procedure",
+                format!("{category:?}").to_lowercase(),
+            )),
+            _ => {}
         }
     }
     for i in &ev.immunizations {
@@ -530,10 +617,19 @@ fn check_event<'a>(
     }
     for a in &ev.allergies {
         if !catalog.allergens.contains_key(&a.substance) {
-            warnings.push(format!(
-                "{eid}: allergen {:?} not in catalog (text only)",
-                a.substance
-            ));
+            if a.category.is_none() {
+                errors.push(format!(
+                    "{eid}: allergen {:?} is not in the catalog; give its \"category\" \
+                     (food, medication, environment or biologic)",
+                    a.substance
+                ));
+            }
+            if a.snomed.is_none() {
+                warnings.push(format!(
+                    "{eid}: allergen {:?} not in catalog and has no snomed (text only)",
+                    a.substance
+                ));
+            }
         }
         if let Some(r) = &a.reaction
             && !catalog.reactions.contains_key(r)
