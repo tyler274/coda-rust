@@ -195,9 +195,13 @@ runs on pushes to `main`, after every check job, when the repository variable
 `staging` environment's `GCP_WORKLOAD_IDENTITY_PROVIDER` and
 `GCP_DEPLOYER_SERVICE_ACCOUNT` (with `GCP_PROJECT_ID` and `GCP_REGION`), then:
 
-1. builds the physician and Duet runtime and migration images and
-   `physician-worker-image`, and pushes each to `apps/` tagged with the commit,
-   recording its digest;
+1. downloads the successful `images` job's tested archives by immutable artifact
+   ID from the same workflow run. [`staging_images.py`](/scripts/staging_images.py)
+   checks the complete manifest, source revision and archive checksums before
+   cloud authentication. It pushes those archives to `apps/` tagged with the
+   commit, checks that each published image's configuration digest (including
+   its uncompressed layer identities) matches the tested image, and records the
+   registry digest. It never rebuilds an image;
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
@@ -206,8 +210,15 @@ runs on pushes to `main`, after every check job, when the repository variable
    once that service exists. The first push, before the scaling plan creates the
    service, still publishes the digest for `images.physician.worker` and leaves
    the service alone;
-4. uploads a receipt (digests, executions, revisions) as the
+4. uploads a receipt (tested-archive manifest, digests, executions, revisions) as the
    `release-receipt-*` artifact.
+
+The tested archive artifact is produced only while staging deployment is enabled
+and retained for three days. A failed-job rerun uses
+the original successful image job's artifact ID; rerunning the image job creates
+a new artifact for that attempt. A missing, expired or invalid artifact stops the
+release; rerun the image proof to produce a new handoff. PR image proofs and their
+separate operator qualification artifacts retain their existing behavior.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
 probe, so a failed rollout leaves the previous revision serving; fix forward.
