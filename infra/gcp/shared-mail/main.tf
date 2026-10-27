@@ -96,7 +96,10 @@ resource "google_cloud_run_v2_service" "mail" {
     execution_environment            = "EXECUTION_ENVIRONMENT_GEN2"
     timeout                          = "60s"
     max_instance_request_concurrency = 8
-    scaling { max_instance_count = 1 }
+    scaling {
+      min_instance_count = 1 # Keep the sign-in mail path warm between requests.
+      max_instance_count = 1
+    }
     vpc_access {
       egress = "ALL_TRAFFIC"
       network_interfaces {
