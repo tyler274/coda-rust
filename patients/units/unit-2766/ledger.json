@@ -2,11 +2,10 @@
   "unit": "unit-2766",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002766/2022-09-13a: allergen \"Trimethoprim-sulfamethoxazole\" not in catalog (text only)",
     "MRN00002766/2022-09-13a: reaction \"Stevens-Johnson syndrome\" not in catalog (text only)",
-    "MRN00002766/2026-03-24a: procedure \"Percutaneous nephrolithotomy, right\" not in catalog (text only, no CPT)",
-    "MRN00002766/2026-03-24a: procedure \"Antegrade ureteral stent placement, right\" not in catalog (text only, no CPT)",
-    "MRN00002766/2026-04-07a: procedure \"Cystoscopy with removal of ureteral stent\" not in catalog (text only, no CPT)"
+    "MRN00002766/2026-03-24a: procedure \"Percutaneous nephrolithotomy, right\" not in catalog and has no snomed (text only)",
+    "MRN00002766/2026-03-24a: procedure \"Antegrade ureteral stent placement, right\" not in catalog and has no snomed (text only)",
+    "MRN00002766/2026-04-07a: procedure \"Cystoscopy with removal of ureteral stent\" not in catalog and has no snomed (text only)"
   ],
   "patients": [
     {
@@ -112,6 +111,8 @@
           "allergies": [
             {
               "substance": "Trimethoprim-sulfamethoxazole",
+              "snomed": "398731002",
+              "category": "medication",
               "reaction": "Stevens-Johnson syndrome",
               "severity": "severe",
               "criticality": "high",
@@ -2808,6 +2809,13 @@
         "code": "24799-9",
         "display": "XR Abdomen AP",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Trimethoprim-sulfamethoxazole": {
+        "code": "398731002",
+        "display": "Sulfamethoxazole- and trimethoprim-containing product",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

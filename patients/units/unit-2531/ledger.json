@@ -2,7 +2,6 @@
   "unit": "unit-2531",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002531/2025-10-09a: allergen \"Phenazopyridine\" not in catalog (text only)",
     "MRN00002531/2025-10-09a: reaction \"Methemoglobinemia\" not in catalog (text only)",
     "left text-only (not verified): lab \"Metanephrines, 24 hour urine\" LOINC 2671-8 not found; closest real codes: 14833-8 Metanephrines [Moles/time] in 24 hour Urine; 71791-8 Metanephrines [Moles/volume] in 24 hour Urine; 19050-4 Metanephrines [Mass/volume] in 24 hour Urine; 2609-6 Metanephrines [Mass/time] in 24 hour Urine; 27978-6 Metanephrines/Creatinine [Molar ratio] in 24 hour Urine",
     "left text-only (not verified): lab \"Normetanephrine, 24 hour urine\" LOINC 2668-4 not found; closest real codes: 101400-0 Metanephrine, Normetanephrine, 3-Methoxytyramine panel - 24 hour Urine; 79575-7 Metanephrine, Normetanephrine, 3-Methoxytyramine and Creatinine panel - 24 hour Urine; 25964-8 Normetanephrine [Moles/volume] in 24 hour Urine; 2671-6 Normetanephrine [Mass/time] in 24 hour Urine; 21422-1 Normetanephrine [Mass/volume] in 24 hour Urine",
@@ -4404,6 +4403,8 @@
           "allergies": [
             {
               "substance": "Phenazopyridine",
+              "snomed": "15785009",
+              "category": "medication",
               "reaction": "Methemoglobinemia",
               "severity": "severe",
               "criticality": "high",
@@ -5008,6 +5009,13 @@
         "code": "580-1",
         "display": "Fungus identified in Specimen by Culture",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Phenazopyridine": {
+        "code": "15785009",
+        "display": "Phenazopyridine",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

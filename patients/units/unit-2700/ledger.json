@@ -2,7 +2,6 @@
   "unit": "unit-2700",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002700/2025-04-25a: allergen \"Trimethoprim-sulfamethoxazole\" not in catalog (text only)",
     "MRN00002700/2025-04-25a: reaction \"Diffuse alveolar hemorrhage and rash\" not in catalog (text only)"
   ],
   "patients": [
@@ -3510,6 +3509,8 @@
           "allergies": [
             {
               "substance": "Trimethoprim-sulfamethoxazole",
+              "snomed": "398731002",
+              "category": "medication",
               "reaction": "Diffuse alveolar hemorrhage and rash",
               "severity": "severe",
               "criticality": "high",
@@ -4713,6 +4714,13 @@
         "code": "N39.41",
         "display": "Urge incontinence",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "allergens": {
+      "Trimethoprim-sulfamethoxazole": {
+        "code": "398731002",
+        "display": "Sulfamethoxazole- and trimethoprim-containing product",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

@@ -2,7 +2,6 @@
   "unit": "unit-1836",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001836/2026-03-17a: allergen \"Ceftriaxone\" not in catalog (text only)",
     "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
   ],
   "patients": [
@@ -2715,6 +2714,8 @@
           "allergies": [
             {
               "substance": "Ceftriaxone",
+              "snomed": "372670001",
+              "category": "medication",
               "reaction": "Anaphylaxis",
               "severity": "severe",
               "criticality": "high",
@@ -3211,6 +3212,13 @@
         "display": "Methylmalonate [Moles/volume] in Serum or Plasma",
         "unit": "umol/L",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Ceftriaxone": {
+        "code": "372670001",
+        "display": "Ceftriaxone",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

@@ -1,9 +1,7 @@
 {
   "unit": "unit-2013",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001101/2020-06-09a: allergen \"ACE inhibitors\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001101",
@@ -1205,6 +1203,8 @@
           "allergies": [
             {
               "substance": "ACE inhibitors",
+              "snomed": "372733002",
+              "category": "medication",
               "reaction": "Cough",
               "severity": "mild",
               "criticality": "low",
@@ -4322,6 +4322,13 @@
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
         "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "allergens": {
+      "ACE inhibitors": {
+        "code": "372733002",
+        "display": "Angiotensin-converting enzyme inhibitor",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

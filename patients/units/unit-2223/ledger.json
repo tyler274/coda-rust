@@ -1,9 +1,7 @@
 {
   "unit": "unit-2223",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002223/2022-01-29a: allergen \"Hydrochlorothiazide\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002223",
@@ -2473,6 +2471,8 @@
           "allergies": [
             {
               "substance": "Hydrochlorothiazide",
+              "snomed": "387525002",
+              "category": "medication",
               "reaction": "Angioedema",
               "severity": "moderate",
               "criticality": "high",
@@ -6876,6 +6876,13 @@
         "display": "Protein [Mass/time] in 24 hour Urine",
         "unit": "g/(24.h)",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Hydrochlorothiazide": {
+        "code": "387525002",
+        "display": "Hydrochlorothiazide",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

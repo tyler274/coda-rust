@@ -2,7 +2,6 @@
   "unit": "unit-2834",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002834/2020-08-17a: allergen \"Hydrochlorothiazide\" not in catalog (text only)",
     "MRN00002834/2020-08-17a: reaction \"Hyponatremia and hypokalemia\" not in catalog (text only)"
   ],
   "patients": [
@@ -1382,7 +1381,7 @@
                 },
                 {
                   "test": "Triglycerides",
-                  "value": 126
+                  "value": 225
                 },
                 {
                   "test": "Non-HDL Cholesterol",
@@ -1531,6 +1530,8 @@
           "allergies": [
             {
               "substance": "Hydrochlorothiazide",
+              "snomed": "387525002",
+              "category": "medication",
               "reaction": "Hyponatremia and hypokalemia",
               "severity": "moderate",
               "criticality": "low",
@@ -1614,11 +1615,11 @@
                 },
                 {
                   "test": "High Density Lipoprotein",
-                  "value": 45
+                  "value": 30
                 },
                 {
                   "test": "Non-HDL Cholesterol",
-                  "value": 165
+                  "value": 180
                 }
               ]
             },
@@ -5269,6 +5270,13 @@
         "code": "Z96.1",
         "display": "Presence of intraocular lens",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "allergens": {
+      "Hydrochlorothiazide": {
+        "code": "387525002",
+        "display": "Hydrochlorothiazide",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

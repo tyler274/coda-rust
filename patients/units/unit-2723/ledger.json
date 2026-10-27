@@ -1,9 +1,7 @@
 {
   "unit": "unit-2723",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002723/2023-05-16a: allergen \"ACE inhibitors\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002723",
@@ -1258,6 +1256,8 @@
           "allergies": [
             {
               "substance": "ACE inhibitors",
+              "snomed": "372733002",
+              "category": "medication",
               "reaction": "Cough",
               "severity": "mild",
               "criticality": "low",
@@ -4788,6 +4788,13 @@
         "display": "Lithium [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "ACE inhibitors": {
+        "code": "372733002",
+        "display": "Angiotensin-converting enzyme inhibitor",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

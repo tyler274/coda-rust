@@ -2,8 +2,6 @@
   "unit": "unit-1912",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001912/2022-09-13a: allergen \"Dust mites\" not in catalog (text only)",
-    "MRN00001912/2022-09-13a: allergen \"Pollen (seasonal)\" not in catalog (text only)",
     "left text-only (not verified): drug \"petrolatum Topical Ointment\""
   ],
   "patients": [
@@ -59,11 +57,15 @@
             },
             {
               "substance": "Dust mites",
+              "snomed": "260147004",
+              "category": "environment",
               "criticality": "low",
               "type": "allergy"
             },
             {
               "substance": "Pollen (seasonal)",
+              "snomed": "256259004",
+              "category": "environment",
               "criticality": "low",
               "type": "allergy"
             }
@@ -1313,6 +1315,18 @@
         "display": "Tryptase [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Dust mites": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Pollen (seasonal)": {
+        "code": "256259004",
+        "display": "Pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

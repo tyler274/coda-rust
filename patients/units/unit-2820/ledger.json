@@ -1,9 +1,7 @@
 {
   "unit": "unit-2820",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002820/2022-09-20a: allergen \"Dust mites\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002820",
@@ -90,6 +88,8 @@
             },
             {
               "substance": "Dust mites",
+              "snomed": "260147004",
+              "category": "environment",
               "criticality": "low",
               "type": "allergy"
             }
@@ -1591,6 +1591,13 @@
         "code": "C43.59",
         "display": "Malignant melanoma of other part of trunk",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "allergens": {
+      "Dust mites": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }
