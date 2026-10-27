@@ -825,6 +825,50 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await;
     assert_eq!(denied.composer().await.0, "Kept only in memory");
     assert_eq!(denied.settled_mark().await, "Saved");
+    drop(denied);
+
+    // 7. Same-clinic panel removal answers 200 with demographics, not 404.
+    // Recovery must be purged even on this successful workspace read.
+    let mut removed = CdpBrowser::launch(&chromium(), &format!("http://{address}/")).await;
+    removed
+        .wait_for_text("Work email", Duration::from_secs(20))
+        .await;
+    removed.request_sign_in("physician@codahealth.test").await;
+    removed
+        .wait_for_text("Mary Louis", Duration::from_secs(20))
+        .await;
+    removed.navigate(&chat_url).await;
+    removed
+        .wait_composer("Kept only in memory", Duration::from_secs(20))
+        .await;
+    removed
+        .type_composer("Must not survive panel removal")
+        .await;
+    assert_eq!(removed.recovery_keys().await.len(), 1);
+    let removed_bearer = removed
+        .eval("sessionStorage.getItem('coda.physician.session')")
+        .await
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .unwrap()
+        .to_owned();
+    let revoked = http
+        .delete(format!(
+            "http://{address}/auth/panels/staging-physician/{patient}"
+        ))
+        .bearer_auth(&removed_bearer)
+        .send()
+        .await
+        .unwrap();
+    assert!(revoked.status().is_success());
+    removed.reload().await;
+    removed
+        .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(20))
+        .await;
+    assert!(
+        removed.recovery_keys().await.is_empty(),
+        "demographic-only access retained clinical recovery"
+    );
 }
 
 /// Send from the keyboard (Ctrl+Enter) with text typed while the command is

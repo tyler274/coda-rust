@@ -854,6 +854,9 @@ fn PhysicianShell(
             let answer = match open_id.clone() {
                 Some(id) => match client.workspace(&id).await {
                     Ok(open) => {
+                        if open.is_clinic_demographic() {
+                            forget_workspace_drafts(composer, &client, whoami, &id);
+                        }
                         shown.set(true);
                         gone.set(None);
                         Ok(Some(open))
@@ -870,18 +873,7 @@ fn PhysicianShell(
                             workspace_cache.set(None);
                             // No access (or no patient): its unsent text is
                             // not kept for a later reload or account.
-                            composer.write().forget_workspace(&id);
-                            #[cfg(target_arch = "wasm32")]
-                            if let Some(account) = whoami.peek().as_ref()
-                                && let Some(scope) = local_draft::Scope::new(
-                                    client.base(),
-                                    &account.practice_id,
-                                    &account.physician_id,
-                                )
-                                && let Some(storage) = local_draft::SessionStorage::open()
-                            {
-                                local_draft::forget_workspace(&storage, &scope, &id);
-                            }
+                            forget_workspace_drafts(composer, &client, whoami, &id);
                             gone.set(Some(id));
                         }
                         Err(())
@@ -1019,10 +1011,18 @@ fn PhysicianShell(
             let Some(account) = whoami.read().clone() else {
                 return;
             };
-            let validated = workspace_cache
-                .read()
-                .as_ref()
-                .is_some_and(|open| open.patient_workspace_id == target.workspace);
+            let open = workspace_cache.read().clone();
+            let validated = open.as_ref().is_some_and(|open| {
+                open.patient_workspace_id == target.workspace && !open.is_clinic_demographic()
+            });
+            if open.as_ref().is_some_and(|open| {
+                open.patient_workspace_id == target.workspace && open.is_clinic_demographic()
+            }) {
+                // whoami may arrive after the demographic-only workspace.
+                // Purge again once the storage scope is known, never restore.
+                forget_workspace_drafts(composer, &client.peek(), whoami, &target.workspace);
+                return;
+            }
             if !validated || restored.peek().contains(&target) {
                 return;
             }
@@ -4093,6 +4093,27 @@ fn autosave_retry_ms(failures: u32) -> Option<u32> {
     (1..=AUTOSAVE_RETRIES)
         .contains(&failures)
         .then(|| 2_000u32 << (failures - 1))
+}
+
+/// Clinical access can be withdrawn with a successful demographic-only read,
+/// not just a 404. Drop memory and same-tab recovery together.
+fn forget_workspace_drafts(
+    mut composer: Signal<Composer>,
+    client: &PhysicianClient,
+    whoami: Signal<Option<WhoamiResponse>>,
+    workspace: &str,
+) {
+    composer.write().forget_workspace(workspace);
+    #[cfg(target_arch = "wasm32")]
+    if let Some(account) = whoami.peek().as_ref()
+        && let Some(scope) =
+            local_draft::Scope::new(client.base(), &account.practice_id, &account.physician_id)
+        && let Some(storage) = local_draft::SessionStorage::open()
+    {
+        local_draft::forget_workspace(&storage, &scope, workspace);
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    let _ = (client, whoami);
 }
 
 /// Waits `ms` milliseconds without blocking the page.
