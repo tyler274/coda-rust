@@ -1,8 +1,8 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "9272a3c9cfb6de8506464c4b8a5d6b132cd994379470baeca934095c70e3c897",
-  "generated_sha256": "981cf13aa3968900a3fef045351c13a5bf77451d26d21f041e8ecf5845f0651a",
+  "chart_sha256": "14074d9bb8bd32e22dff84f0c25ee2f206ecef05139eed7820ce448066a82071",
+  "generated_sha256": "b6ec59ef43cb9f7e62632622be067d5d7a95aac6bda5d26ee7abb07d32d5f09d",
   "steps_sha256": "87d78e548f87ba8070e5ab73af3031a314d25bd086945259ce2442acbf9293ab",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
@@ -25041,7 +25041,7 @@
       "label": "the patient's account is deleted",
       "function": "event_the_patient_s_account_is_deleted",
       "cause": "the patient through Duet",
-      "intent": "The connection or invitation ends at once.",
+      "intent": "The connection or invitation ends at once; the practice keeps what it already received, dated.",
       "needs": null,
       "transitions": [
         {

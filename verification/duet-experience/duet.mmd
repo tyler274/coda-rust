@@ -29,7 +29,7 @@ stateDiagram-v2
 %% event sign out everywhere | by you | needs DIn | reason: commands need a session on this device | Every session ends, here and on your other devices, which must sign in again; your account, history and any practice connection stay (ENG-161). Duet says done only once every session has ended (22780b06).
 %% event sign in on another device | by you | needs not ANone, ADeleting | reason: another device joins an account that exists and isn't being deleted | You sign in to the same account on another device. The graph follows the account from this device, so the account starts here.
 %% event sign out on another device | by you | needs ODIn | reason: only a signed-in device signs out | That device forgets your account.
-%% event delete your account | by you | command on your account: Delete account, clicked while DIn | needs AAgree, AName, AChoose, AReady | reason: deletion is yours alone, once, for an account not already being deleted | After confirming who you are, Duet starts deleting everything it keeps about you and ends any practice connection (ENG-161, F2).
+%% event delete your account | by you | command on your account: Delete account, clicked while DIn | needs AAgree, AName, AChoose, AReady | reason: deletion is yours alone, once, for an account not already being deleted | After confirming who you are, Duet starts deleting everything it keeps about you and ends any practice connection; the practice keeps what it already received, dated (ENG-161, F2, ENG-70).
 %% event the deletion finishes | by Duet | needs ADeleting | reason: only a started deletion finishes | Everything is gone from Duet and from every device; nothing old work or a restored backup does brings it back (ENG-161). A deletion still finishing is never shown as done.
 %% event export your data | by you | command on your account: Export, clicked while DIn | needs AReady, ExNone, ExReady, ExFailed | reason: exporting is always yours, even before newer Terms, as deleting your account is (Dev 2026-10-26); one export is prepared at a time | You ask for everything Duet keeps about you; a new export replaces the last one (ENG-161).
 %% event your export is ready | by Duet | needs ExPreparing | reason: only an export being prepared finishes | Everything Duet keeps about you is ready to save, each item with its source and date: the conversation and its runs with your feedback, your health records and readings, insights, Plans, Reminders and Check-ins, For my doctor, your doctor's plan, and your sources and connections (ENG-161; north-star.md, Source access, export and deletion).
@@ -147,7 +147,8 @@ stateDiagram-v2
 %% event a record is corrected | by your records source | needs OrgImporting | reason: corrections and deletions arrive only through an import that is running | A source corrects or replaces a record you already have. The new version arrives; anything already published keeps the version it used (E5; ENG-162). Unfinished work looks again before it publishes, so nothing goes out from the old version (ENG-34).
 %% events records come in = new records arrive | clinical records arrive from your phone's health app
 %% Work takes in what arrives while it runs (Dev 2026-10-26): a reply, a Check-in and Duet's own work
-%% each look again when new data reaches Duet, as they do when something they read changes.
+%% each take in new data that reaches Duet before they finish. Taking it in is not a restart: an
+%% unrelated arrival changes nothing it says (north-star.md, Sep 27); a change to what it read does.
 %% events new data arrives for Duet = new records arrive | clinical records arrive from your phone's health app | your phone's readings arrive
 %% Unfinished work looks again before it publishes when something it read changes (ENG-34). A reply
 %% hears the changes you or your sources make, including your own edits to a Reminder or Check-in, so a
@@ -429,8 +430,8 @@ stateDiagram-v2
           %% when PAllowed, SwOn, TCur | reason: Duet's AI needs your permission, the switch on and current Terms (F3)
           RWriting --> RWriting : you or your sources change what Duet read / looks again at the reply
           RPaused --> RPaused : you or your sources change what Duet read / looks again at the reply
-          RWriting --> RWriting : new data arrives for Duet / looks again at the reply
-          RPaused --> RPaused : new data arrives for Duet / looks again at the reply
+          RWriting --> RWriting : new data arrives for Duet / takes in what arrived
+          RPaused --> RPaused : new data arrives for Duet / takes in what arrived
           RWriting --> RDone : Duet finishes the reply
           RWriting --> RUnfinished : the reply can't finish
           RUnfinished --> RWriting : try the reply again
@@ -630,7 +631,7 @@ stateDiagram-v2
           %% only checkin
           FuRun --> FuDue : what Duet read changes
           %% only checkin
-          FuRun --> FuDue : new data arrives for Duet
+          FuRun --> FuRun : new data arrives for Duet / takes in what arrived
           %% only checkin
           FuRun --> FuDue : Duet receives your message / may look again at the Check-in
           %% only checkin
@@ -748,7 +749,7 @@ stateDiagram-v2
           }
           OwIdle --> OwRun : Duet takes on its own work
           OwIdle --> OwRun : retry the check
-          OwRun --> OwRun : new data arrives for Duet
+          OwRun --> OwRun : new data arrives for Duet / takes in what arrived
           OwRun --> OwRun : what Duet read changes
           OwRun --> OwRun : you change your follow-through
           OwRun --> OwRun : Duet receives your message / may look again at its own work

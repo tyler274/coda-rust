@@ -51,10 +51,11 @@ Linear wins.
   it used, marked when a newer one exists: a reply's citations, published
   insights, and what you sent to your practice.
 - **Work takes in what arrives (Dev 2026-10-26, as on the physician side).**
-  A reply, a running Check-in and Duet's own work each look again when new
-  records or readings reach Duet while they run, just as they do when
-  something they read changes. Nothing Duet finishes rests on an older
-  reading than what had arrived.
+  A reply, a running Check-in and Duet's own work each take in new records or
+  readings that reach Duet while they run, before they finish. Taking in is
+  not a restart: an unrelated arrival changes nothing they say, as the north
+  star's stable reply snapshot settled (Sep 27); a change to something they
+  read makes them look again. Nothing Duet finishes ignores what had arrived.
 - **Behavior, not presentation.** Layout, motion, the companion's face and copy
   belong to the surface map and the app, not the graph. The graph keeps what a
   person can do, what Duet does, and what is guaranteed.

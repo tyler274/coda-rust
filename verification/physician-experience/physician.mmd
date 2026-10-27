@@ -182,7 +182,7 @@ stateDiagram-v2
 %% event the patient joins and consents | by the patient through Duet | needs PcInvited | reason: any invitation the practice still holds open can be accepted, even while it is being resent (Dev 2026-10-25) | Duet owns joining and consent; connected means sharing, so everything the patient already shares arrives with the join, on a first join and on joining again.
 %% event the patient leaves the practice | by the patient through Duet | needs PcConnected | reason: only a live connection can end | The connection ends at once; the practice keeps what it already received, dated.
 %% event discharge the patient | by you | command on the patient's connection: Discharge, clicked while SIn | needs PcConnected | reason: only a live connection can end | Any practice member ends the connection; what was received stays, dated.
-%% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once.
+%% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once; the practice keeps what it already received, dated.
 %%
 %% Patient messaging (PM, ENG-8). Coda never sends on its own: you copy a reply and send it in Gmail or
 %% Spruce, or Send has Coda send exactly your approved words for you, shown as sent by Coda for you
