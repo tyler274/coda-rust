@@ -146,6 +146,9 @@ stateDiagram-v2
 %% event new records arrive | by your records source | needs OrgImporting | reason: records arrive only through an import that is running | A portal or other source delivers something new; a changed record is a correction. Reprocessing Duet's own data is not an arrival (C5).
 %% event a record is corrected | by your records source | needs OrgImporting | reason: corrections and deletions arrive only through an import that is running | A source corrects or replaces a record you already have. The new version arrives; anything already published keeps the version it used (E5; ENG-162). Unfinished work looks again before it publishes, so nothing goes out from the old version (ENG-34).
 %% events records come in = new records arrive | clinical records arrive from your phone's health app
+%% Work takes in what arrives while it runs (Dev 2026-10-26): a reply, a Check-in and Duet's own work
+%% each look again when new data reaches Duet, as they do when something they read changes.
+%% events new data arrives for Duet = new records arrive | clinical records arrive from your phone's health app | your phone's readings arrive
 %% Unfinished work looks again before it publishes when something it read changes (ENG-34). A reply
 %% hears the changes you or your sources make, including your own edits to a Reminder or Check-in, so a
 %% reply already writing never overwrites them (D9; behaviour-contract rule 16). Duet's own Plan saves
@@ -426,6 +429,8 @@ stateDiagram-v2
           %% when PAllowed, SwOn, TCur | reason: Duet's AI needs your permission, the switch on and current Terms (F3)
           RWriting --> RWriting : you or your sources change what Duet read / looks again at the reply
           RPaused --> RPaused : you or your sources change what Duet read / looks again at the reply
+          RWriting --> RWriting : new data arrives for Duet / looks again at the reply
+          RPaused --> RPaused : new data arrives for Duet / looks again at the reply
           RWriting --> RDone : Duet finishes the reply
           RWriting --> RUnfinished : the reply can't finish
           RUnfinished --> RWriting : try the reply again
@@ -625,6 +630,8 @@ stateDiagram-v2
           %% only checkin
           FuRun --> FuDue : what Duet read changes
           %% only checkin
+          FuRun --> FuDue : new data arrives for Duet
+          %% only checkin
           FuRun --> FuDue : Duet receives your message / may look again at the Check-in
           %% only checkin
           FuRun --> FuActive : withdraw AI permission
@@ -741,7 +748,7 @@ stateDiagram-v2
           }
           OwIdle --> OwRun : Duet takes on its own work
           OwIdle --> OwRun : retry the check
-          OwRun --> OwRun : records come in
+          OwRun --> OwRun : new data arrives for Duet
           OwRun --> OwRun : what Duet read changes
           OwRun --> OwRun : you change your follow-through
           OwRun --> OwRun : Duet receives your message / may look again at its own work
