@@ -12,6 +12,7 @@ import { checkRules, printRules } from "./chart-rules.mjs";
 import { compareCharts, printComparison, readRenames } from "./compare-charts.mjs";
 import { against, printAgainst, readMap } from "./chart-against.mjs";
 import { coverage, printCoverage } from "./chart-coverage.mjs";
+import { journeys, printJourneys } from "./chart-journey.mjs";
 import { COMPOSES, resolveComposition } from "./chart-compose.mjs";
 
 class Usage extends Error {}
@@ -78,6 +79,10 @@ export const COMMANDS = {
   coverage: {
     inputs: 2,
     run: ([chart, table]) => printCoverage(coverage(read(chart), read(table))),
+  },
+  journey: {
+    inputs: 2,
+    run: ([chart, list]) => printJourneys(journeys(read(chart), read(list))),
   },
   flat: {
     inputs: 1,

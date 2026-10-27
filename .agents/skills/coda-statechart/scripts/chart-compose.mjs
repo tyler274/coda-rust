@@ -228,5 +228,5 @@ export function compose(text, options = {}) {
   names.set("composition", "Composition");
   const root = { name: "", parts: [{ children: [{ name: "composition", parts }], transitions: [] }] };
   return { root, names, nevers, instances, ignored, catalog, events: declared, groups,
-    strict: expanded.every(({ x }) => x.strict), problems };
+    strict: expanded.every(({ x }) => x.strict), problems, keys: scopeOf };
 }

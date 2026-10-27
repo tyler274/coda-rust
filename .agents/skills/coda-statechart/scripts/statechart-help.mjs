@@ -7,6 +7,7 @@ export const USAGE = {
   compare: "node statechart.mjs compare FIRST.mmd SECOND.mmd [--rename MAP.json]",
   against: "node statechart.mjs against DETAIL.mmd AGREED.mmd --map MAP.json [--out LAYERED.mmd]",
   coverage: "node statechart.mjs coverage CHART.mmd COVERAGE.md",
+  journey: "node statechart.mjs journey CHART.mmd JOURNEYS.md",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
   lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats] [--unread]",
@@ -89,6 +90,20 @@ const COVERAGE = `coverage CHART.mmd COVERAGE.md
   and states and unknown statuses, then the count for each status.
   Exit: 0 the table matches the chart; 1 problems or an invalid chart.`;
 
+const JOURNEY = `journey CHART.mmd JOURNEYS.md
+  Replay constructive journeys: useful outcomes a person reaches, shown reachable
+  from the chart's start by the same step semantics as trace and the Verus model.
+  One "## NAME" heading per journey, then numbered steps, each an event label,
+  optionally followed by "→" and the states that must hold after it, separated
+  by ";" (a composite caption covers its nested states; in a composition, name a
+  state KEY: caption). A first line "From: NAME" starts where an earlier journey
+  ended. Each step keeps every state the event can lead to, then only those where
+  its states hold; prose and "#" sections are ignored.
+  Reports, per journey, that it reaches its outcome, or the first step that can't
+  happen or whose states never hold, with where the chart was instead.
+  Exit: 0 every journey reaches its outcome; 1 a failure, no journeys, or an
+  invalid chart.`;
+
 const AGAINST = `against DETAIL.mmd AGREED.mmd --map MAP.json [--out LAYERED.mmd]
   Check a chart that details part of another against it, through one map in the
   agreed chart's words (adapted from pstack's --against):
@@ -169,6 +184,7 @@ Commands:
   compare differences between two charts' flat models
   against check a detailed chart against the chart it details, through a map
   coverage check a table that accounts for every state of the chart
+  journey replay constructive journeys: useful outcomes are reachable
   flat    print the expanded chart as plain flat Mermaid
   query   ways in and out of a state, who reacts to an event, a region summary
   lint    unreachable states, dead edges, and event-declaration problems
@@ -188,6 +204,7 @@ chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   compare: COMPARE,
   against: AGAINST,
   coverage: COVERAGE,
+  journey: JOURNEY,
   flat: FLAT,
   query: QUERY,
   lint: LINT,

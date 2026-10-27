@@ -44,6 +44,25 @@ const definition = (name, parameters, clauses) =>
 
 const SEMANTICS = "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed";
 
+// The regions and states a caption names: a state, or a composite's nested states. In a
+// composition, `scope` (a composed chart's top caption) limits it to that chart. Templates:
+// "Caption@KEY" names a state of that instance, and a caption written inside a template
+// (`home`) that names one of the template's states means its own instance's state.
+export function locate(regions, caption, scope, home) {
+  const within = (r) => !scope || r.caption === scope || r.caption.startsWith(`${scope}/`);
+  const find = (words) => regions.flatMap((r, ri) => {
+    if (!within(r)) return [];
+    const states = r.states.has(words) ? [words] : r.values.filter((s) => s.startsWith(`${words}.`));
+    return states.length ? [{ ri, states }] : [];
+  });
+  const hits = find(caption);
+  const named = /^(.*)@([A-Za-z0-9_]+)$/.exec(caption);
+  if (!hits.length && named) return find(named[1]).filter((h) => regions[h.ri].instance?.key === named[2]);
+  if (home && hits.some((h) => regions[h.ri].instance?.template === home.template))
+    return hits.filter((h) => regions[h.ri].instance?.template === home.template && regions[h.ri].instance.key === home.key);
+  return hits;
+}
+
 export function compile(text, module, options = {}) {
   const parsed = parseMermaid(text, options);
   const types = new Set(), fields = new Set(), functions = new Set();
@@ -102,21 +121,7 @@ export function compile(text, module, options = {}) {
     if (ruleNames.has(n.name)) throw new Error(`duplicate never name ${n.name}`);
     ruleNames.add(n.name);
     const parts = n.states.map((caption, ci) => {
-      // A composed chart's rule names states of that chart only.
-      const scope = n.scopes?.[ci];
-      const within = (r) => !scope || r.caption === scope || r.caption.startsWith(`${scope}/`);
-      const find = (words) => regions.flatMap((r, ri) => {
-        if (!within(r)) return [];
-        const states = r.states.has(words) ? [words] : r.values.filter((s) => s.startsWith(`${words}.`));
-        return states.length ? [{ ri, states }] : [];
-      });
-      let hits = find(caption);
-      // Templates: "Caption@KEY" names a state of that instance. A rule written inside a
-      // template that names one of the template's states means its own instance's state.
-      const named = /^(.*)@([A-Za-z0-9_]+)$/.exec(caption);
-      if (!hits.length && named) hits = find(named[1]).filter((h) => regions[h.ri].instance?.key === named[2]);
-      else if (n.home && hits.some((h) => regions[h.ri].instance?.template === n.home.template))
-        hits = hits.filter((h) => regions[h.ri].instance?.template === n.home.template && regions[h.ri].instance.key === n.home.key);
+      const hits = locate(regions, caption, n.scopes?.[ci], n.home);
       if (hits.length !== 1) throw new Error(`never ${n.name}: "${caption}" must identify one state or composite in one region`);
       return hits[0];
     });
