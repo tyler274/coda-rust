@@ -174,7 +174,8 @@ Commands:
   lint    unreachable states, dead edges, and event-declaration problems
 
 CHART may be a composition: %% compose lines join separate charts through shared
-events (references/compiler.md, Compositions); verus and check take one chart.
+events (references/compiler.md, Compositions). verus and check judge drift on the
+composition and every chart it composes.
 
 ${more()}
 

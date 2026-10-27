@@ -264,6 +264,9 @@ events unless shared: an unshared label another chart also uses gets ` (KEY)`.
 `%% outside F: by CAUSE` says events F declares with that cause happen in another chart, so
 each must be shared. Each chart's own `%% never` rules hold as `KEY.Name`, naming its states
 only; a composition's rules name a state as `KEY: caption`.
+`verus` compiles a composition to one model like a chart; its header hashes the
+composition with each composed chart's text, and its map lists each chart by its path
+as written with its own hash, so `check` reports drift when any of them changes.
 
 **Reasons.** Any limit can say what it protects with free text after `| reason:`,
 on `%% when Ids | reason: ...`, after a declaration's `needs Ids | reason: ...`, or

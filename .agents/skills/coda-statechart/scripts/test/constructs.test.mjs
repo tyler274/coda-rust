@@ -1422,10 +1422,36 @@ test("compose joins separate charts through shared events and checks rules acros
   const missing = cmd("rules", write(base.join("\n").replace("app: save a note", "app: save a nate")));
   assert.equal(missing.status, 1);
   assert.match(missing.text, /%% shared names "save a nate", which app does not carry/);
-  // Verus judges drift on one chart's text, so it refuses a composition.
-  const model = cmd("verus", both, "--module", "Both");
-  assert.equal(model.status, 1);
-  assert.match(model.text, /verus and check take one chart/);
+  // Verus compiles the composition like one chart; check judges drift on it and on every
+  // chart it composes, by paths as written, so the model reads the same on every machine.
+  const out = path.join(dir, "verus");
+  const model = cmd("verus", both, "--module", "Both", "--dir", out);
+  assert.equal(model.status, 0, model.text);
+  const f = { dir: out, proof: path.join(out, "Both_proof.rs"), map: path.join(out, "Both.map.json") };
+  // Like any proof, a composition's may need a support fact: here, that the app shows an
+  // invitation only while the practice holds it open.
+  const strengthen = (proof) => fs.writeFileSync(proof, fs.readFileSync(proof, "utf8").replace(
+    "pub open spec fn inductive(s: State) -> bool { safety(s) }",
+    "pub open spec fn inductive(s: State) -> bool {\n    safety(s) && ((s.region_patient_app_your_practice == RegionPatientAppYourPractice::StateInvited)\n" +
+    "        ==> (s.region_practice_connection == RegionPracticeConnection::StateInvited))\n}"));
+  strengthen(f.proof);
+  assert.deepEqual(JSON.parse(fs.readFileSync(f.map, "utf8")).composes.map((c) => [c.key, c.file]),
+    [["app", "compose-app.mmd"], ["practice", "compose-practice.mmd"]]);
+  assert.match(fs.readFileSync(path.join(out, "Both.rs"), "utf8"), /rule_practice_owed_only_from_sharing[\s\S]*rule_same_status\(/);
+  verify(f);
+  assert.equal(cmd("check", both, "--module", "Both", "--dir", out).status, 0);
+  const practiceText = here("compose-practice.mmd");
+  fs.writeFileSync(path.join(dir, "compose-practice.mmd"), `${practiceText}%% A note changes the chart's text, so its model is redrawn.\n`);
+  const drift = cmd("check", both, "--module", "Both", "--dir", out);
+  assert.equal(drift.status, 1);
+  assert.match(drift.text, /diagram\/generated drift/);
+  fs.writeFileSync(path.join(dir, "compose-practice.mmd"), practiceText);
+  assert.equal(cmd("check", both, "--module", "Both", "--dir", out).status, 0);
+  // Negative control: joining on the wrong event fails the proof at that event's step.
+  const wrongOut = path.join(dir, "verus-wrong");
+  assert.equal(cmd("verus", wrong, "--module", "Both", "--dir", wrongOut).status, 0);
+  strengthen(path.join(wrongOut, "Both_proof.rs"));
+  verify({ dir: wrongOut, proof: path.join(wrongOut, "Both_proof.rs") }, false, "preserves_event_save_a_note");
   // A composition names chart: caption, and a rule's caption is looked up in that chart only.
   const loose = cmd("rules", write([...base.slice(0, 7), "%% never Loose: Connected & practice: Not connected -- x"].join("\n")));
   assert.equal(loose.status, 1);

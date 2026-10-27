@@ -9,6 +9,7 @@ shared events, never shared states, and holds the rules that span both.
 | [connection.mmd](connection.mmd) | Which events cross between the graphs, and the rules across them. |
 | [../duet-experience/duet.mmd](../duet-experience/duet.mmd) | The patient's side: invitation, joining and consent, leaving, deletion, and the live feed. |
 | [../physician-experience/physician.mmd](../physician-experience/physician.mmd) | The practice's side: inviting, discharge, and the physician agents' work on what arrives. |
+| [verus/](verus/) | The Verus model of the composition, and the proof that every rule holds across both graphs. |
 
 The connection is live (Dev 2026-10-25): while connected, each change to what the
 patient shares in Duet reaches the practice as "a shared Duet record arrives",
@@ -44,6 +45,29 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/co
 
 Lint must report no findings. Every rule written here must hold; each graph's own
 rules hold as they do alone. The physician graph's `NoRevisionWithoutReply` stops at
-the explicit search's state limit here and alone; the physician Verus proof
-(`every_initialized_finite_trace_is_safe`) proves it, with every other physician rule,
-in every reachable state.
+the explicit search's state limit here and alone; the Verus proof below proves it,
+with every other rule, in every reachable state.
+
+## The Verus proof
+
+`verus/` derives from the composition and both graphs. `connection.rs`,
+`connection_steps.rs` and `connection.map.json` are generated and never edited by
+hand; the map lists each composed graph with its hash, and `check` reports drift
+when the composition or either graph changes. `connection_proof.rs` is the proof:
+its `inductive()` is every rule (both graphs' and the composition's) plus each
+graph's own support facts, carried over in the composed names. The shared events
+need no support fact of their own.
+
+After any change to either graph or the composition, regenerate the model, then
+check the proof:
+
+```bash
+node .agents/skills/coda-statechart/scripts/statechart.mjs verus verification/connected-care/connection.mmd --module connection --dir verification/connected-care/verus
+```
+
+```bash
+python3 verification/check.py formal --spec verification/connected-care/verus/connection_proof.rs
+```
+
+When a graph gains a support fact, add it here too, in the composed names
+(`region_duet_...`, `region_physician_web_app_...`).
