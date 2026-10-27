@@ -474,12 +474,8 @@ stateDiagram-v2
           state "Safety line shown" as SlShown
           SlNone --> SlOwed : Duet's AI sees a possible emergency or self-harm
           SlShown --> SlOwed : Duet's AI sees a possible emergency or self-harm
-          SlOwed --> SlShown : Duet finishes the reply
-          SlOwed --> SlShown : the reply can't finish
-          SlOwed --> SlShown : withdraw AI permission
-          SlOwed --> SlShown : turn AI off
-          SlOwed --> SlShown : Duet publishes new Terms
-          SlOwed --> SlShown : Duet publishes a new AI permission
+          SlOwed --> SlShown : Duet posts in the thread
+          SlOwed --> SlShown : Duet stops writing early
           SlShown --> SlOwed : try the reply again
           SlShown --> SlNone : Duet receives your message [starts a new reply]
           %% when not RWriting, RPaused | reason: a steer belongs to the reply in progress, writing or paused

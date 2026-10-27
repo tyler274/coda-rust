@@ -335,16 +335,10 @@ stateDiagram-v2
           %% when ANone | reason: you land where your access allows; identity only never shows clinical content (CT-012, PX-047)
           PDemo --> PGone : follow a link [no access]
           %% when ANone | reason: you land where your access allows; identity only never shows clinical content (CT-012, PX-047)
-          PToday --> PConv : open a conversation
-          PPatient --> PConv : open a conversation
-          PPatient --> PConv : start a new conversation
           %% Discuss, and Stop and discuss once accepted, open the work's exact anchored conversation (px.md:133, 514).
-          PToday --> PConv : discuss what you're reading
-          PPatient --> PConv : discuss what you're reading
-          PToday --> PConv : stop and discuss the {held}
-          PPatient --> PConv : stop and discuss the {held}
-          PToday --> PConv : stop and discuss the follow-up
-          PPatient --> PConv : stop and discuss the follow-up
+          PToday --> PConv : you open a conversation
+          PPatient --> PConv : you open a conversation
+          PPatient --> PConv : start a new conversation
           PPatient --> PConv : send
           PConv --> PPatient : open the patient [clinical access]
           %% when AClin | reason: you land where your access allows; identity only never shows clinical content (CT-012, PX-047)
@@ -972,21 +966,9 @@ stateDiagram-v2
         WHand --> WIdle : Coda finishes the patient review [the practice replied] / may close the reply as answered
         %% when PrShown, MRReady, MRNewMsg | reason: the reply closes as answered only while open and after the practice replied
         %% only revision
-        WIdle --> WOwed : send
+        WIdle --> WOwed : you write to Coda
         %% only answer
-        WStalled --> WOwed : send
-        %% only answer
-        WIdle --> WOwed : send to steer the answer
-        %% only answer
-        WStalled --> WOwed : send to steer the answer
-        %% only answer
-        WIdle --> WOwed : send next
-        %% only answer
-        WStalled --> WOwed : send next
-        %% only answer
-        WIdle --> WOwed : send a queued message now
-        %% only answer
-        WStalled --> WOwed : send a queued message now
+        WStalled --> WOwed : you write to Coda
         %% only answer
         WIdle --> WOwed : the queued message starts
         %% only answer
@@ -1032,21 +1014,9 @@ stateDiagram-v2
         %% except understanding
         HYes --> HNo : resume the {held}
         %% except understanding
-        HYes --> HNo : send
+        HYes --> HNo : you write to Coda
         %% only answer
-        HYes --> HNo : send to steer the answer
-        %% only answer
-        HYes --> HNo : send next
-        %% only answer
-        HYes --> HNo : send a queued message now
-        %% only answer
-        HNo --> HYes : clinical access reduced [work in hand]
-        %% when WHand | reason: losing access stops what this physician started
-        %% only asked, answer, revision
-        HNo --> HYes : patient access removed [work in hand]
-        %% when WHand | reason: losing access stops what this physician started
-        %% only asked, answer, revision
-        HNo --> HYes : practice access removed [work in hand]
+        HNo --> HYes : you lose clinical access [work in hand]
         %% when WHand | reason: losing access stops what this physician started
         %% only asked, answer, revision
         HYes --> HNo : the correction's Undo ends
@@ -1329,17 +1299,9 @@ stateDiagram-v2
       DText --> DEmpty : discard the draft
       DEmpty --> DKept : remove a queued message
       DText --> DKept : remove a queued message
-      DEmpty --> DKept : clinical access reduced [a message waits]
+      DEmpty --> DKept : you lose clinical access [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DText --> DKept : clinical access reduced [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DEmpty --> DKept : patient access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DText --> DKept : patient access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DEmpty --> DKept : practice access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DText --> DKept : practice access removed [a message waits]
+      DText --> DKept : you lose clinical access [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
     }
     --

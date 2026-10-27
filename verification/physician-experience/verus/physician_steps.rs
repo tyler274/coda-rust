@@ -70,9 +70,6 @@ pub proof fn preserves_event_follow_a_link(s: State, t: State)
 pub proof fn preserves_event_open_a_conversation(s: State, t: State)
     requires inductive(s), ensures event_open_a_conversation(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_start_a_new_conversation(s: State, t: State)
-    requires inductive(s), ensures event_start_a_new_conversation(s, t) ==> inductive(t),
-{}
 pub proof fn preserves_event_discuss_what_you_re_reading(s: State, t: State)
     requires inductive(s), ensures event_discuss_what_you_re_reading(s, t) ==> inductive(t),
 {}
@@ -99,6 +96,9 @@ pub proof fn preserves_event_your_stop_and_discuss_on_the_reply_revision_goes_th
 {}
 pub proof fn preserves_event_your_stop_and_discuss_on_the_follow_up_goes_through(s: State, t: State)
     requires inductive(s), ensures event_your_stop_and_discuss_on_the_follow_up_goes_through(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_start_a_new_conversation(s: State, t: State)
+    requires inductive(s), ensures event_start_a_new_conversation(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_your_send_on_the_conversation_goes_through(s: State, t: State)
     requires inductive(s), ensures event_your_send_on_the_conversation_goes_through(s, t) ==> inductive(t),
@@ -1799,7 +1799,6 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_open_the_patient(s, t);
     preserves_event_follow_a_link(s, t);
     preserves_event_open_a_conversation(s, t);
-    preserves_event_start_a_new_conversation(s, t);
     preserves_event_discuss_what_you_re_reading(s, t);
     preserves_event_your_stop_and_discuss_on_the_patient_review_goes_through(s, t);
     preserves_event_your_stop_and_discuss_on_the_weekly_review_goes_through(s, t);
@@ -1809,6 +1808,7 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_your_stop_and_discuss_on_the_answer_goes_through(s, t);
     preserves_event_your_stop_and_discuss_on_the_reply_revision_goes_through(s, t);
     preserves_event_your_stop_and_discuss_on_the_follow_up_goes_through(s, t);
+    preserves_event_start_a_new_conversation(s, t);
     preserves_event_your_send_on_the_conversation_goes_through(s, t);
     preserves_event_go_to_today(s, t);
     preserves_event_clinical_access_reduced(s, t);

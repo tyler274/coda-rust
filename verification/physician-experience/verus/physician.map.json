@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "f179066107804c9edce0f338c72f23adb7d7b4d73b06775f6540dc1f35800881",
-  "generated_sha256": "fcd73a1109dab77b3a20141cbe23d4b78d48188ee08f8e4237a0157a64ba0f05",
-  "steps_sha256": "87d78e548f87ba8070e5ab73af3031a314d25bd086945259ce2442acbf9293ab",
+  "chart_sha256": "59304540d7f2d9dc5925cf8118db4b4f4028c91e58023f3d422679c302bfbf83",
+  "generated_sha256": "e6ecc0285c65d4b690fc869dd687ce7a3c34a349e6e89f0936c24a9b98429e5a",
+  "steps_sha256": "2deee70219b9497f8fa97e72b61a68546155672ae305c34bfde9c88f4b185fbe",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -5715,116 +5715,6 @@
       ]
     },
     {
-      "label": "start a new conversation",
-      "function": "event_start_a_new_conversation",
-      "cause": "you",
-      "intent": "You start a fresh conversation about the patient.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ]
-        },
-        "reason": "commands need an active session and clinical access"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Conversation read",
-          "from": "Loading the conversation",
-          "to": "No conversation to read",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Conversation read",
-          "from": "Showing the conversation",
-          "to": "No conversation to read",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Conversation read",
-          "from": "Showing the conversation, with one quiet line and Retry",
-          "to": "No conversation to read",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Conversation read",
-          "from": "Couldn't load the conversation, with Retry",
-          "to": "No conversation to read",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Dictation",
-          "from": "Waiting for microphone permission",
-          "to": "Microphone idle",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Dictation",
-          "from": "Recording",
-          "to": "Microphone idle",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Dictation",
-          "from": "Transcribing",
-          "to": "Microphone idle",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Dictation",
-          "from": "Transcript waiting to insert at your cursor",
-          "to": "Microphone idle",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Dictation",
-          "from": "Dictation failed, your text kept",
-          "to": "Microphone idle",
-          "guard": null
-        }
-      ]
-    },
-    {
       "label": "discuss what you're reading",
       "function": "event_discuss_what_you_re_reading",
       "cause": "you",
@@ -7160,6 +7050,116 @@
           "region": "Follow-up",
           "from": "Active follow-up.Due, its review owed",
           "to": "Stopped, held until Resume",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "start a new conversation",
+      "function": "event_start_a_new_conversation",
+      "cause": "you",
+      "intent": "You start a fresh conversation about the patient.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Physician session/Signed in/Sign-in state": [
+            "Signed in to the practice"
+          ],
+          "Access to the patient": [
+            "Clinical access"
+          ]
+        },
+        "reason": "commands need an active session and clinical access"
+      },
+      "transitions": [
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Conversation read",
+          "from": "Loading the conversation",
+          "to": "No conversation to read",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Conversation read",
+          "from": "Showing the conversation",
+          "to": "No conversation to read",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Conversation read",
+          "from": "Showing the conversation, with one quiet line and Retry",
+          "to": "No conversation to read",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Conversation read",
+          "from": "Couldn't load the conversation, with Retry",
+          "to": "No conversation to read",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Dictation",
+          "from": "Waiting for microphone permission",
+          "to": "Microphone idle",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Dictation",
+          "from": "Recording",
+          "to": "Microphone idle",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Dictation",
+          "from": "Transcribing",
+          "to": "Microphone idle",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Dictation",
+          "from": "Transcript waiting to insert at your cursor",
+          "to": "Microphone idle",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Dictation",
+          "from": "Dictation failed, your text kept",
+          "to": "Microphone idle",
           "guard": null
         }
       ]
