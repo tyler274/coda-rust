@@ -144,8 +144,8 @@ Linear wins.
   draft, the item follows its current version, marked if it was corrected, and
   a changed item never bounces the message; once sent, the message keeps the
   version it carried (Dev 2026-10-26, live where you work). An item deleted
-  while you draft drops off the unsent message with a quiet note, and Send
-  still works (Dev 2026-10-26).
+  while you draft, by you, by Duet as you asked, or by its source, drops off the
+  unsent message with a quiet note, and Send still works (Dev 2026-10-26).
 - Modeling note: "Your latest message" tracks the newest message on its way, on
   the account;
   each earlier message keeps its own state the same way. Person-to-person
@@ -168,7 +168,7 @@ Linear wins.
   (backend-architecture.md, Accepted follow-through: the person's edit, pause
   or cancel "remains permanent for the old assignment"). In conversation, Duet's AI changes, pauses, cancels or deletes only
   as your message asked, and never resumes or starts anything; only you do.
-- A Reminder leads with your agreed words, unchanged; with AI on, Duet may add
+- A Reminder leads with your agreed words, unchanged; with AI allowed, on and current Terms, Duet may add
   what it judges useful (Dev 2026-10-26, replacing "no new AI" from D10). A
   Check-in uses Duet's AI. Both need your consent and pause with proactive
   work; a Check-in also needs the AI switch and current Terms. Both continue
@@ -426,8 +426,9 @@ map; Page and state inventory), with later decisions winning.
 - Duet's own messages wait while it is replying to you and post right after
   the reply ends. A message from you still steers and goes ahead of anything
   waiting (Dev 2026-10-26).
-- Reminders and Check-ins deliver as messages. With AI off they pass
-  undelivered, as follow-through already says.
+- Reminders and Check-ins deliver as messages. A Reminder's agreed words post
+  even with AI off; anything Duet adds, and every Check-in, needs AI, so with
+  AI off a Check-in passes undelivered, as follow-through says.
 - Your practice's news posts in the thread. With AI off it posts as fixed
   product text, never AI wording, and links to Today for the details
   (Dev 2026-10-26).

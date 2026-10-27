@@ -107,8 +107,10 @@ overdue.
 fires is not.
 
 **Must guarantee.** Reminders and Check-ins fire at their time in the timezone
-the person agreed. A time that comes while AI work is paused passes undelivered
-(Dev 2026-10-25). A Check-in may wait until the chat is quiet, but delivers
+the person agreed. A Reminder's agreed words post at their time even while AI
+work is paused; a Check-in time that comes then, or any time while proactive work
+is paused or AI permission is withdrawn, passes undelivered (Dev 2026-10-25,
+2026-10-26). A Check-in may wait until the chat is quiet, but delivers
 once (D2). The caps on follow-through (three per reply, twenty open) are bounds
 the runtime enforces without changing what the person sees as saved.
 
