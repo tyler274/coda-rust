@@ -263,6 +263,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
     let mut terms = Terms::default();
     if errors.is_empty() {
         terms = verify(unit, &merged.patients, catalog)?;
+        warnings.extend(check::uncoded_orders(&merged.patients, catalog, &terms));
         warnings.extend(
             terms
                 .rejected
