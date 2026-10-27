@@ -1,0 +1,195 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002034",
+      "given": "Ousmane",
+      "family": "Diallo",
+      "birth_date": "1965-06-15",
+      "address_line": "27 Lathrop Street",
+      "phone": "+1-646-555-0188",
+      "email": "ousmane.diallo@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal worker with ESRD from hypertensive nephrosclerosis, a failed 2016 kidney graft and a December 2020 re-transplant, and bipolar I disorder on lithium. His transplant course brings lithium nephrogenic DI, tacrolimus toxicity, acute and later chronic rejection, and three opportunistic infections (Pneumocystis, nocardiosis, cryptococcal meningitis).",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2019-08-27T10:40", "body": "Mr. Diallo called, would like to transfer his primary care here. Goes to dialysis Mon/Wed/Fri mornings so needs an afternoon or a Tuesday/Thursday slot. Kidney transplant team and psychiatrist are both outside, he will keep them. Signed release faxed to his former primary care office for records. New patient visit booked 9/17 at 1:30."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "outside_records",
+          "start": "2019-09-10T15:05",
+          "service": "Outside records",
+          "reason": "records from prior primary care office",
+          "immunizations": [{"vaccine": "Tdap", "date": "2017-04-11T10:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "outside primary care", "date": "2019-09-10T15:05", "body": "Records packet from patient's previous primary care office, 41 pages, covering 2012 to 2019.\n\nHighlights pulled by MA for PCP review:\n- Hypertension for many years; kidney failure attributed to hypertensive nephrosclerosis, hemodialysis, then deceased-donor kidney transplant 2016.\n- 2017: rejection episode treated by the transplant center with high-dose cyclophosphamide; complicated by hemorrhagic cystitis (gross hematuria, suprapubic pain), managed with IV hydration and mesna; finished the drug without further bladder trouble.\n- 2019: transplant note copy, graft failed, back on in-center hemodialysis since March.\n- Bipolar disorder type I on lithium since 2011, managed by his psychiatrist.\n- Screening colonoscopy 2017 for transplant listing: normal to the terminal ileum, no polyps, 10-year interval.\n- Hepatitis C antibody and HIV screen negative 2017 (listing labs).\n- Tdap 2017.\n- No known drug allergies.\n\nFiled to chart."}
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T13:30",
+          "end": "2019-09-17T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2004-06-01"},
+            {"label": "End stage renal disease", "action": "history", "onset": "2013-01-01", "note": "secondary to hypertensive nephrosclerosis"},
+            {"label": "Dependence on renal dialysis", "icd10": "Z99.2", "action": "history", "onset": "2019-03-01", "note": "in-center hemodialysis after failure of 2016 graft"},
+            {"label": "Kidney transplant status", "action": "history", "onset": "2016-05-01", "note": "deceased-donor graft 2016, failed 2019, left in place"},
+            {"label": "Bipolar disorder, unspecified", "action": "history", "onset": "2009-01-01", "note": "type I"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2016-01-01", "note": "quit 2016"},
+            {"label": "Other cystitis with hematuria", "icd10": "N30.81", "action": "history", "onset": "2017-03-01", "note": "hemorrhagic cystitis from cyclophosphamide 2017; resolved"}
+          ],
+          "medications": [
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "kidney transplant"},
+            {"drug_text": "lithium carbonate 300 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth after each dialysis session (three times weekly)", "dose": {"value": 300, "unit": "mg"}, "frequency": "THREE TIMES WEEKLY", "route": "Oral", "course": "chronic", "reason": "bipolar disorder"},
+            {"drug": "amlodipine 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [138, 86], "weight_kg": 86.0, "height_cm": 180.0},
+          "vitals": {"bp": [138, 86]},
+          "measure": ["hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Retired postal worker"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2019-09-17T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-17T13:30", "body": "54 y/o man transferring primary care. Non-dialysis day. Sharp historian, has a typed medication list.\n\nKidneys: long-standing HTN -> ESRD (hypertensive nephrosclerosis), HD, then deceased-donor transplant 2016. Several rejections with that graft; the 2017 one needed high-dose cyclophosphamide and he developed hemorrhagic cystitis, treated with hydration and mesna, no bladder problems since. Graft failed early this year and he is back on in-center HD M/W/F through a L forearm fistula. Relisted at the transplant center. Transplant kept him on prednisone 5 mg; tacrolimus and mycophenolate were stopped when the graft failed.\n\nPsych: bipolar I, on lithium since 2011, no admissions in years. His psychiatrist adjusted lithium for dialysis: one 300 mg capsule after each run, levels drawn at the unit.\n\nOther: HTN on amlodipine. Former smoker, quit 2016. No alcohol. Retired from the postal service. Married. Fishes most mornings he is not at dialysis; used to fish bass tournaments when younger.\n\nFamily: father HTN and CKD. Sister bipolar disorder. Maternal uncle ESRD.\n\nMeds: prednisone 5 daily, lithium 300 mg after HD, amlodipine 10 daily.\nAllergies: NKDA.\n\nExam: BP 138/86. Well appearing. Heart regular, no murmur. Lungs clear. Abdomen soft, healed RLQ transplant incision, nontender. L forearm AV fistula with good thrill. No edema. Neuro nonfocal. Mood euthymic, linear.\n\nPHQ-9: 3.\n\nA/P\n1. ESRD on HD, failed 2016 graft, relisted: dialysis unit draws monthly labs; asked them to copy us. Transplant center remains lead for immunosuppression.\n2. HTN: acceptable on amlodipine for a dialysis patient, unit tracks pre/post pressures.\n3. Bipolar I, stable: lithium per psychiatry. Will request his psychiatrist's notes.\n4. Hx cyclophosphamide hemorrhagic cystitis, resolved.\n5. Health maintenance: colonoscopy 2017 normal (due 2027). Tdap 2017. Flu shot next month; no live vaccines.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2019-10-09a",
+          "kind": "outside_records",
+          "start": "2019-10-09T11:20",
+          "service": "Outside records",
+          "reason": "dialysis unit summary",
+          "documents": [
+            {"type": "Outside Records", "title": "Dialysis unit quarterly summary", "author": "nephrology", "date": "2019-10-09T11:20", "body": "Outpatient hemodialysis unit, quarterly care plan summary.\n\nPatient: Ousmane Diallo. Modality: in-center hemodialysis three times weekly, 4 hours. Access: left forearm AV fistula, functioning well, no interventions this quarter.\nAdequacy at goal. Interdialytic weight gains modest. Pre-dialysis BP generally 130s-140s systolic on amlodipine.\nMonthly labs reviewed with the patient and acceptable for dialysis; no changes to his dialysis prescription.\nActive on the deceased-donor transplant wait list.\nAllergies: NKDA.\nCopy to primary care per patient request."}
+          ]
+        },
+        {
+          "id": "2019-10-24a",
+          "kind": "nurse_visit",
+          "start": "2019-10-24T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "measure": ["bp", "hr"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-24T14:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-24T14:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Influenza Vaccine", "author": "RN", "date": "2019-10-24T14:10", "body": "Here for flu vaccine on a non-dialysis day. No fever today. Inactivated quadrivalent given IM right deltoid (fistula arm avoided). Tolerated well, VIS given."}
+          ]
+        },
+        {
+          "id": "2019-12-12a",
+          "kind": "office_visit",
+          "start": "2019-12-12T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up hypertension, dialysis",
+          "conditions": [{"label": "Other cystitis with hematuria", "icd10": "N30.81", "action": "resolved", "onset": "2017-03-01"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-12T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2019-12-12T15:00", "body": "S: Three month follow-up. Dialysis going smoothly, a bit tired the afternoons after runs, otherwise fine. No calls from transplant yet. Mood steady. Out on the river less now that it is cold.\nMeds unchanged: prednisone 5, lithium 300 after HD, amlodipine 10.\n\nO: Vitals as charted. Lungs clear, no edema, fistula thrill present.\n\nA/P:\n- ESRD on HD awaiting transplant: dialysis unit summary reviewed. Nothing to change.\n- HTN: fine for a dialysis patient.\n- Bipolar I: stable.\n- Old cyclophosphamide cystitis: no urinary symptoms since 2017; marked resolved on the problem list.\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "outside_records",
+          "start": "2020-02-11T09:45",
+          "service": "Outside records",
+          "reason": "psychiatry letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient psychiatry annual letter", "author": "psychiatry", "date": "2020-02-11T09:45", "body": "Outside psychiatry practice, annual update to primary care.\n\nMr. Diallo has bipolar I disorder, euthymic for many years on lithium. Since resuming hemodialysis he takes lithium carbonate 300 mg after each session; the dialysis unit draws a pre-dialysis level every month and his levels have stayed in the range we want. No mood episodes, sleeping well, no psychotic symptoms. Wife reports no concerns.\n\nPlan: continue same dosing; when he receives a kidney he should call us so we can return him to twice-daily dosing with closer levels.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2020-04-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-16T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-04-16T14:00", "body": "Video, patient at his kitchen table, wife helped with the camera. Converted from in-person because of the pandemic.\nStill dialyzing in-center; the unit has masking and screening, he feels okay going. No fever, cough or shortness of breath. Mood good. Transplant center says he remains active on the list.\nNo med changes. Reviewed precautions given his immunosuppression and dialysis. Psychiatry letter from February reviewed.\nPlan: in-person in the summer."}
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "office_visit",
+          "start": "2020-07-21T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-07-21T13:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2020-07-21T13:45", "body": "Masked visit. Doing well. Fishing again at the reservoir on non-dialysis mornings. Energy fair. No hospital stays.\nMeds: prednisone 5, lithium 300 after HD, amlodipine 10. Refills sent for amlodipine.\nExam: vitals as charted. Heart and lungs normal. Fistula thrill good. No edema.\nPHQ-2 negative.\nA/P: ESRD on HD on the list, HTN, bipolar I, all stable. Flu shot in the fall. RTC 4-5 months."}
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "nurse_visit",
+          "start": "2020-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "measure": ["bp", "hr"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-07T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-07T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Influenza Vaccine", "author": "RN", "date": "2020-10-07T15:30", "body": "Flu vaccine, inactivated, given IM R deltoid. Screening questions negative. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2020-12-14a",
+          "kind": "outside_records",
+          "start": "2020-12-14T10:15",
+          "service": "Outside records",
+          "reason": "transplant admission discharge summary",
+          "conditions": [
+            {"label": "Dependence on renal dialysis", "icd10": "Z99.2", "action": "resolved", "onset": "2019-03-01"},
+            {"label": "End stage renal disease", "action": "resolved", "onset": "2013-01-01"},
+            {"label": "Long term (current) use of other immunomodulators and immunosuppressants", "icd10": "Z79.69", "action": "diagnosed", "onset": "2020-12-03"}
+          ],
+          "medications": [
+            {"drug_text": "lithium carbonate 300 MG Oral Capsule", "action": "stop", "reason": "dose change after transplant"},
+            {"drug_text": "lithium carbonate 300 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "bipolar disorder"},
+            {"drug_text": "tacrolimus 1 MG Oral Capsule", "action": "historical", "sig": "Take 5 capsules (5 mg) by mouth twice daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "kidney transplant"},
+            {"drug_text": "mycophenolate mofetil 250 MG Oral Capsule", "action": "historical", "sig": "Take 3 capsules (750 mg) by mouth twice daily", "dose": {"value": 750, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "kidney transplant"},
+            {"drug_text": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pneumocystis prophylaxis"},
+            {"drug_text": "valganciclovir 450 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily for 6 months", "dose": {"value": 450, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "CMV prophylaxis after transplant"}
+          ],
+          "procedures": [{"procedure": "Transplant of kidney", "snomed": "70536003", "performed": "2020-12-03T08:00"}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-12-10T05:30", "results": [{"test": "Creatinine", "value": 1.4}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Transplant center discharge summary", "author": "transplant surgery", "date": "2020-12-14T10:15", "body": "Academic transplant center, inpatient transplant surgery service.\nAdmitted 12/03/2020. Discharged 12/10/2020.\n\nProcedure: deceased-donor kidney transplant (second graft), 12/03/2020. First graft (2016) left in situ.\nIndication: ESRD from hypertensive nephrosclerosis; failure of first graft after rejection episodes, on hemodialysis since 03/2019.\n\nCourse: immediate graft function, no dialysis needed after surgery. Creatinine fell steadily, 1.4 on the morning of discharge. Steroid taper started; prednisone to return to 5 mg daily per the taper calendar given to the patient. Psychiatry consulted for lithium now that he has a working kidney: back to 300 mg twice daily with a level in one week.\n\nDischarge medications:\n- tacrolimus 5 mg twice daily (levels at clinic)\n- mycophenolate mofetil 750 mg twice daily\n- prednisone per taper, then 5 mg daily\n- trimethoprim-sulfamethoxazole single strength daily (Pneumocystis prophylaxis)\n- valganciclovir 450 mg daily for 6 months (CMV prophylaxis)\n- lithium carbonate 300 mg twice daily\n- amlodipine 10 mg daily\n\nAllergies: NKDA.\nFollow-up: transplant clinic twice weekly for the first month. Hemodialysis discontinued; dialysis unit notified."}
+          ]
+        },
+        {
+          "id": "2020-12-22a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-transplant check-in",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-12-22T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit: After Kidney Transplant", "author": "PCP", "date": "2020-12-22T11:00", "body": "Video, patient at home, wife present. Got his second kidney 12/3, home 12/10. Making plenty of urine, says it is strange not going to dialysis. Incision healing, a little sore. No fever. Transplant clinic twice a week, labs good so far per patient.\n\nMed reconciliation from the discharge summary: tacrolimus 5 mg BID, mycophenolate 750 mg BID, prednisone taper down to 5 mg, TMP-SMX SS daily, valganciclovir 450 daily x 6 months, lithium back to 300 mg BID (psychiatry following the level), amlodipine 10 daily. Our list updated.\n\nA/P: s/p deceased-donor re-transplant, early course smooth. Transplant team manages immunosuppression and labs. Talked about avoiding NSAIDs and checking with us/transplant before any new medicine. Will see in person in a few months; COVID vaccine as soon as he is eligible."}
+          ]
+        }
+      ]
+    }
+  ]
+}

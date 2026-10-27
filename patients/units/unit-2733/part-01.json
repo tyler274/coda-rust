@@ -1,0 +1,836 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002733",
+   "given": "Judith",
+   "family": "Rosenblum",
+   "birth_date": "1976-01-31",
+   "address_line": "27 Wheeler Avenue",
+   "phone": "+1-508-555-0120",
+   "email": "judith.rosenblum@example.test",
+   "marital_status": "married",
+   "summary": "Administrative assistant who joined in 2019 with hypothyroidism, asthma and quiet uveitis; over seven years outside specialists add a prolactinoma, seronegative RA, carpal tunnel, a right vestibular schwannoma, pemphigus vulgaris, RA-ILD and steroid-induced glaucoma.",
+   "events": [
+    {
+     "id": "2019-05-28a",
+     "kind": "telephone",
+     "start": "2019-05-28T10:42",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New Patient Call",
+       "author": "front desk",
+       "date": "2019-05-28T10:42",
+       "body": "Caller Judith Rosenblum, DOB 1/31/1976. Wants to move her primary care to us; her current office is losing her doctor to retirement this summer. Has thyroid and asthma meds she'll bring. Insurance PPO, card on file request sent. Booked new pt physical 6/11 at 9:00. Asked her to sign the records release so we can pull her old chart."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-11a",
+     "kind": "establish_care",
+     "start": "2019-06-11T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "end": "2019-06-11T10:00",
+     "conditions": [
+      {
+       "label": "Hypothyroidism",
+       "action": "history",
+       "note": "On levothyroxine for many years"
+      },
+      {
+       "label": "Moderate persistent asthma",
+       "action": "history"
+      },
+      {
+       "label": "Chronic anterior uveitis",
+       "icd10": "H20.13",
+       "action": "history",
+       "note": "Both eyes, followed by outside ophthalmology; quiet, no drops"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+       "dose": {
+        "value": 125,
+        "unit": "mcg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypothyroidism"
+      },
+      {
+       "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+       "action": "historical",
+       "sig": "Inhale 1 puff twice daily, rinse mouth after",
+       "dose": {
+        "value": 1,
+        "unit": "puff"
+       },
+       "frequency": "BID",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "Moderate persistent asthma"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "Q4-6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "Moderate persistent asthma"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Penicillin",
+       "type": "allergy",
+       "criticality": "low"
+      },
+      {
+       "substance": "Sulfonamide antibiotics",
+       "type": "allergy",
+       "criticality": "low"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Administrative assistant"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 glasses of wine per week"
+      }
+     ],
+     "state": {
+      "weight_kg": 68.0,
+      "height_cm": 163.0,
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-06-11T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-06-11T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-06-11T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-06-11T10:05",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-06-11T10:05",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-06-11T10:05",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, new patient, 40-64",
+       "performed": "2019-06-11T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2019",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Preventive Visit",
+       "author": "PCP",
+       "date": "2019-06-11T09:55",
+       "body": "43 y/o woman establishing care. Transferring from a nearby internal medicine office; records release signed today.\n\nPMH\n- Hypothyroidism, on levothyroxine for >10 yrs. Dose 125 mcg for the last several years per her. Takes it with coffee some mornings, we talked about spacing it.\n- Asthma for many years. On fluticasone-salmeterol 250/50 one inhalation BID and albuterol as needed, uses rescue maybe twice a month. Night symptoms rare. No ED visits or hospital stays for asthma in years. Needs a steroid burst once in a while.\n- Chronic anterior uveitis, both eyes. Sees an outside ophthalmologist about yearly. Has needed steroid drops for flares in the past, nothing in over a year; eyes quiet now.\n\nPSH: T&A at 12. Wisdom teeth out at 22.\nMeds: as above.\nAllergies: penicillin, sulfa antibiotics. Doesn't remember what happened with either, told as a child/young adult.\nFH: mother with autoimmune thyroid disease. Father T2DM. Sister has lupus. Maternal aunt with RA.\nSH: administrative assistant. Married. Smoked about half a pack a day for ~20 years, quit 2016 (~10 pack-years). Wine a glass or two a week. No drugs.\nOB/GYN: never pregnant. Periods regular. Last Pap 2016 normal with negative HPV per her; mammogram last year normal.\n\nROS otherwise negative.\n\nExam: well appearing, BMI ~25.6. HEENT: conjunctivae white, PERRL, TMs clear, oropharynx clear. Neck: thyroid not enlarged, no nodules. Lungs clear, no wheeze, good air movement. Heart regular, no murmur. Abd soft, nontender. Ext no edema. Skin warm. Joints without swelling.\n\nA/P\n1. Hypothyroidism: continue levothyroxine 125 mcg; TSH today.\n2. Moderate persistent asthma, well controlled on current regimen. Continue. Refills as needed.\n3. Chronic anterior uveitis, quiescent; continue outside ophthalmology.\n4. Health maintenance: CBC, CMP, lipids. One-time HCV and HIV screening, she agrees. Mammogram ordered. Pap due 2021. Colonoscopy at 45. Tdap 2014 per her, will confirm in old records. Flu shot in the fall.\n5. Former smoker, 10 pk-yr, below the threshold for lung screening.\nRTC 1 year for physical, sooner for asthma or thyroid."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-14a",
+     "kind": "portal_message",
+     "start": "2019-06-14T16:20",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent lab results",
+       "author": "PCP",
+       "date": "2019-06-14T16:20",
+       "body": "Hi Judith, all of your labs from Tuesday look good: thyroid level is right where it should be on the 125, blood counts and kidney/liver tests are normal, cholesterol is fine, and the hepatitis C and HIV screens are negative. No changes. Nice to meet you."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-09a",
+     "kind": "outside_records",
+     "start": "2019-07-09T11:00",
+     "reason": "Records from prior primary care office",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2014-03-18T10:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2016-04-12T10:00",
+       "text": "ThinPrep cervical cytology: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+       "conclusion": "NILM, HPV negative."
+      },
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2018-05-22T09:00",
+       "text": "Bilateral screening mammogram. Scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior Primary Care Records",
+       "author": "MA",
+       "date": "2019-07-09T11:00",
+       "body": "Records received from the patient's prior internal medicine office (2013 to 2019), 64 pages. Abstracted for the chart:\n- Problem list there: hypothyroidism, asthma, uveitis (ophthalmology).\n- Meds: levothyroxine 125 mcg, fluticasone-salmeterol 250/50, albuterol prn. Matches what she told us.\n- Tdap 3/2014.\n- Pap/HPV 4/2016 negative.\n- Screening mammogram 5/2018 negative.\n- Allergies listed there: PCN, sulfa (reaction not recorded).\nFull packet to scanning."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-13a",
+     "kind": "imaging",
+     "start": "2019-08-13T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2019-08-13T08:30",
+       "text": "Bilateral CC and MLO views with tomosynthesis. Compared with 2018. Breasts are heterogeneously dense, which may lower sensitivity. No suspicious mass, grouped calcifications or distortion. Skin and nipples normal.",
+       "conclusion": "BI-RADS 1: negative. Routine screening recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2019",
+       "action": "done",
+       "date": "2019-08-13T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram Result",
+       "author": "PCP",
+       "date": "2019-08-14T12:10",
+       "body": "Screening mammogram negative, dense tissue noted. Letter to pt. Repeat next year."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-08T16:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T16:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Immunization",
+       "author": "RN",
+       "date": "2019-10-08T16:50",
+       "body": "Here for seasonal influenza vaccine. No fever today, no prior reaction to flu shots. Egg ok. Given IM L deltoid, lot recorded. VIS given. Tolerated well, left after a short wait."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-10a",
+     "kind": "pharmacy",
+     "start": "2019-12-10T09:05",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill Request",
+       "author": "RN",
+       "date": "2019-12-10T09:05",
+       "body": "E-refill request from pt's pharmacy: levothyroxine 125 mcg #90. Last TSH 6/2019 normal. Sent 90 days x 3 refills per protocol."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-04a",
+     "kind": "office_visit",
+     "start": "2020-02-04T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Wheezing and chest tightness",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (40 mg) by mouth each morning with food for 5 days",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Asthma exacerbation"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-02-04T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Asthma",
+       "author": "PCP",
+       "date": "2020-02-04T14:55",
+       "body": "S: About a week of wheezing and a tight chest, worse at night and climbing the stairs at work. Using albuterol 3-4 times a day the last few days, which helps for a couple of hours. No fever. Not coughing anything up. Taking her fluticasone-salmeterol twice daily, she says she hasn't missed doses. Has needed a few days of prednisone for similar spells before, last one maybe 2 years ago.\nO: Comfortable, speaking full sentences. Vitals as recorded, sat normal on RA. Scattered expiratory wheeze both sides, moving air well. No accessory muscle use. Heart RRR.\nA: Moderate persistent asthma with flare.\nP: Prednisone 40 mg daily x 5 days, no taper. Continue controller BID, albuterol q4h prn. Reviewed when to go to the ED (rescue lasting <2h, can't talk in sentences, lips blue). Portal update in a week, sooner if not improving."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-11a",
+     "kind": "portal_message",
+     "start": "2020-02-11T19:12",
+     "reason": "Asthma follow-up",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Breathing update",
+       "author": "patient",
+       "date": "2020-02-11T19:12",
+       "body": "Finished the prednisone Saturday. Way better, back to using the rescue inhaler maybe once a day and not at all yesterday. Slept through the night. Thank you!"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Breathing update",
+       "author": "PCP",
+       "date": "2020-02-12T08:30",
+       "body": "Great to hear. Keep the twice-daily inhaler going even when you feel well. Let me know if it flares again."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-12a",
+     "kind": "pharmacy",
+     "start": "2020-05-12T11:15",
+     "reason": "Prior authorization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior Authorization - Inhaler",
+       "author": "MA",
+       "date": "2020-05-12T11:15",
+       "body": "Insurer requires annual PA renewal for fluticasone-salmeterol 250/50. Submitted with dx moderate persistent asthma, prior trial of lower-dose ICS documented in old records. Approved through 5/2021, pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-14a",
+     "kind": "annual_physical",
+     "start": "2020-07-14T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-07-14T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-07-14T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-14T09:20",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2020-07-14T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2020-07-14T09:25",
+       "body": "Annual exam. Mask on, working from home since spring which she likes.\n\nThyroid: taking levothyroxine most mornings. No palpitations, weight steady.\nAsthma: one flare in Feb treated with a 5-day prednisone course, fine since. Controller BID, rescue rarely.\nEyes: saw ophthalmology in the winter, no uveitis activity.\n\nExam: Pleasant, NAD. Thyroid normal size. Lungs clear. Heart regular. Breasts without masses, no axillary nodes. Abdomen soft. Skin unremarkable. No joint swelling.\n\nPlan:\n- TSH, CBC, BMP today.\n- Mammogram ordered.\n- Pap due next year.\n- Flu shot when it arrives in the fall.\n- Discussed colonoscopy at 45 next year.\nReturn 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-16a",
+     "kind": "portal_message",
+     "start": "2020-07-16T13:02",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-07-16T13:02",
+       "body": "Your thyroid test and the rest of your bloodwork are normal. Keep the levothyroxine as is."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-01a",
+     "kind": "imaging",
+     "start": "2020-09-01T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-09-01T10:10",
+       "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2019 and 2018. Heterogeneously dense breasts. No new mass, suspicious calcification or asymmetry.",
+       "conclusion": "BI-RADS 1. Negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "done",
+       "date": "2020-09-01T10:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram Result",
+       "author": "PCP",
+       "date": "2020-09-02T08:15",
+       "body": "Negative screening mammogram. Normal letter mailed."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-06T15:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu",
+       "author": "RN",
+       "date": "2020-10-06T15:40",
+       "body": "Flu vaccine IM R deltoid. Screened, no contraindications, mask and distancing per office protocol. No issues after."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "pharmacy",
+     "start": "2020-12-08T10:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill - Inhalers",
+       "author": "MA",
+       "date": "2020-12-08T10:30",
+       "body": "Pharmacy fax for albuterol HFA and fluticasone-salmeterol. Both refilled x3 per PCP standing protocol for stable asthma."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-29a",
+     "kind": "portal_message",
+     "start": "2021-01-29T21:40",
+     "reason": "COVID vaccine question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Covid shot",
+       "author": "patient",
+       "date": "2021-01-29T21:40",
+       "body": "My work says I might qualify sooner because of my asthma. Is it safe for me to get the covid vaccine with asthma and the eye thing? Should I hold my inhaler?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Covid shot",
+       "author": "PCP",
+       "date": "2021-02-01T07:55",
+       "body": "Yes, I'd recommend it, and asthma isn't a reason to wait. Keep all your inhalers and the thyroid pill as usual. Book wherever you can get an appointment first and send me the dates so we can add them to your chart."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-02a",
+     "kind": "outside_records",
+     "start": "2021-04-02T12:00",
+     "reason": "Immunization registry update",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-24T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-17T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization Registry",
+       "author": "MA",
+       "date": "2021-04-02T12:00",
+       "body": "State registry query: COVID-19 Pfizer dose 1 on 2/24/21, dose 2 on 3/17/21 at a community vaccine clinic. Added to immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-22a",
+     "kind": "annual_physical",
+     "start": "2021-06-22T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2021-06-23a",
+     "kind": "telephone",
+     "start": "2021-06-23T09:10",
+     "reason": "Missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "No-Show Follow-up",
+       "author": "front desk",
+       "date": "2021-06-23T09:10",
+       "body": "Pt missed yesterday's physical. LVM to reschedule, also sent portal reminder. No call back yet."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-17a",
+     "kind": "outside_records",
+     "start": "2021-08-17T14:00",
+     "reason": "Colonoscopy report",
+     "procedures": [
+      {
+       "procedure": "Colonoscopy, screening, average risk",
+       "performed": "2021-08-10T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Colonoscopy Report",
+       "author": "gastroenterology",
+       "date": "2021-08-17T14:00",
+       "body": "Outside gastroenterology endoscopy center. Procedure date 8/10/2021.\nIndication: first screening colonoscopy, age 45, no family history of colon cancer.\nAllergies: penicillin, sulfa.\nSedation: monitored anesthesia care.\nFindings: prep good (BBPS 8). Cecum reached, appendiceal orifice and ileocecal valve photographed. Withdrawal 9 min. No polyps or masses. Small internal hemorrhoids.\nImpression: normal screening exam.\nRecommendation: repeat in 10 years."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-04a",
+     "kind": "office_visit",
+     "start": "2021-10-04T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Tired, weight gain, hand tingling",
+     "state": {
+      "weight_kg": 74.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-04T11:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-2021",
+       "action": "placed",
+       "order": "Endocrinology referral",
+       "category": "referral",
+       "to": "Endocrinology",
+       "reason": "Hypothyroidism, missed doses, symptomatic"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-10-04T11:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-04T11:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-10-04T11:45",
+       "body": "First visit in over a year (missed June physical).\n\nS: Exhausted for months, up ~6 kg since last summer without eating differently, always cold at work when others aren't. Since about April her hands go numb and tingle, mostly thumb, index and middle fingers both sides, wakes her at night and she shakes them out. Admits she's been skipping her levothyroxine most days for roughly a year, \"fell off the routine\" when she went back to the office. Asthma fine. No vision change, no headaches.\n\nO: Weight 74 kg (68 in 2019). BP normal. Skin dry on the forearms and shins. Thyroid not palpable. Lungs clear.\n\nA/P:\n1. Hypothyroidism, likely undertreated from missed doses. She would like to see an endocrinologist this time; her mother's thyroid was managed by one and she wants help setting up the routine and checking whether the dose is right. Referral placed; she has an appt 10/25 and they will draw labs there. Restart levothyroxine 125 daily now, every morning.\n2. Bilateral hand paresthesias, nocturnal. Will see how this does once thyroid is treated; endocrine will look too.\n3. Flu shot today.\n4. Reschedule physical in the spring; Pap at that visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-02a",
+     "kind": "outside_records",
+     "start": "2021-11-02T10:30",
+     "reason": "Endocrinology consult letter",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-10-25T09:40",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 12
+        },
+        {
+         "test": "Free Thyroxine",
+         "value": 0.5
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-2021",
+       "action": "done",
+       "date": "2021-10-25T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Consultation",
+       "author": "endocrinology",
+       "date": "2021-11-02T10:30",
+       "body": "Outside endocrinology clinic. Date of service 10/25/2021.\nRe: Judith Rosenblum, 45 F. Thank you for this referral.\n\nShe describes about half a year of numb, tingling fingers on both hands (thumb through middle finger) that is worse overnight and wakes her, along with tiredness, weight gain and feeling cold. Long history of hypothyroidism on levothyroxine 125 mcg, but by her own account she has taken it only sporadically over the past year.\n\nOther history: asthma on ICS/LABA, chronic anterior uveitis (ophthalmology). Former smoker. Allergies: penicillin, sulfa drugs.\nFamily: mother with Hashimoto disease.\n\nExam: skin dry and coarse. Delayed relaxation phase of the ankle and biceps reflexes. Tinel's sign at both wrists produces finger tingling; Phalen's maneuver brings on her symptoms.\n\nLabs today: TSH 12 mIU/L (ref 0.4-4.0). Free T4 0.5 ng/dL (ref 0.9-1.7).\n\nImpression: overt hypothyroidism due to missed doses rather than an inadequate dose. The hand findings point to median nerve irritation at the wrist, which often improves as the thyroid is corrected; worth re-examining once she is euthyroid.\n\nPlan: levothyroxine 125 mcg every morning, consistently. We set up a weekly pillbox and phone alarm. TSH in 6-8 weeks; she can draw at your lab. I will see her again in about six months."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "pharmacy",
+     "start": "2021-11-16T15:00",
+     "reason": "Vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-13T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pharmacy Immunization Notice",
+       "author": "MA",
+       "date": "2021-11-16T15:00",
+       "body": "Retail pharmacy notification: COVID-19 Pfizer booster given 11/13/2021. Entered in immunizations."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-07a",
+     "kind": "portal_message",
+     "start": "2021-12-07T12:48",
+     "reason": "Thyroid medicine",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Thyroid",
+       "author": "patient",
+       "date": "2021-12-07T12:48",
+       "body": "Just wanted you to know I've been taking the thyroid pill every single day since the endocrinologist visit. Pillbox is working. Less tired already. They want a blood test in January, can I do it at your lab?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Thyroid",
+       "author": "RN",
+       "date": "2021-12-08T09:20",
+       "body": "That's great news. Yes, we have the endocrinologist's order on file. Walk in any weekday morning after the first week of January."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

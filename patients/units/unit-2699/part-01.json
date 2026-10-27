@@ -1,0 +1,622 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002699",
+      "given": "Andrea",
+      "family": "Keegan",
+      "birth_date": "1975-08-25",
+      "address_line": "88 Ryan Road",
+      "phone": "+1-518-555-0128",
+      "email": "andrea.keegan@example.test",
+      "marital_status": "partnered",
+      "summary": "Retail cashier turned high school science teacher with hypertension on HCTZ, obesity and varicose veins who joins in 2021. Chronic low back pain and chronic venous insufficiency in 2023, abnormal bleeding with a benign biopsy, then an unexpected first pregnancy at 48 delivered in May 2024. Right plantar fasciitis in 2025 and right-leg cellulitis in January 2026, recurring in August 2026 with a hospital admission.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2021-08-30T10:20",
+              "body": "Ms. Keegan phoned about membership. Her old primary care office is cutting hours and she wants a doctor she can actually reach. Explained the membership and that insurance still covers labs and specialists. Booked new patient visit 9/14 at 8:40. Release of information form emailed for her prior office; she will sign and return today. Reminded her to bring her pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "outside_records",
+          "start": "2021-09-08T14:05",
+          "reason": "Records from prior primary care office",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-27T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2021-09-08T14:05",
+              "body": "Faxed records, 23 pages, from the patient's previous family practice, covering 2015 to 2021.\n\nProblem list on their summary: essential hypertension (on treatment since about 2017), obesity, varicose veins of both legs. Status post laparoscopic cholecystectomy around 2011.\nMedications: hydrochlorothiazide 25 mg daily.\nAllergies: NKDA.\nLast office BP on file 130/82. Weight 192 lb at the last visit.\nPap 2019 negative per their note. Last labs 2020: BMP normal, potassium 4.1.\nImmunizations: COVID-19 Pfizer x2, March and April 2021. Tdap 2013.\n\nFiled to chart. Reviewed for the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:40",
+          "end": "2021-09-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2017-03-01"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Varicose veins of lower extremities",
+              "action": "history",
+              "onset": "2010-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 88.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail cashier"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2021",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T08:40",
+              "body": "46 yo woman new to me. Previous office records reviewed (faxed 9/8).\n\nHTN since roughly 2017, on HCTZ 25 every morning, doesn't check at home. No headaches, chest pain, palpitations. Weight has been her struggle for about ten years; she's tried a couple of commercial programs. Varicose veins both legs for years, mother has the same. Legs ache a bit after long shifts but no real swelling she's noticed.\n\nPSH: lap chole ~age 35.\nMeds: HCTZ 25 daily. Allergies: none to medications.\nFHx: mother HTN and varicose veins. Father obese with type 2 DM. Maternal aunt had endometrial cancer at 50.\nSocial: works the register at a grocery store, long hours on her feet. Lives with her partner. Never smoked. A drink or two a month. Periods regular. Never pregnant.\nCOVID vaccines x2 this spring. Tdap 2013.\n\nExam: vitals as charted, BMI 32. Well appearing. Heart regular, no murmur. Lungs clear. Abdomen soft, healed lap scars. Legs: scattered varicosities on both calves, no edema, skin intact, pulses good.\n\nA/P\n1. HTN: at goal on HCTZ. CMP today for K and Cr.\n2. Obesity, BMI 32: talked through food and activity in broad terms; she'd like to revisit once she's settled in. A1c and lipids today given father's diabetes.\n3. Varicose veins: asymptomatic, observe.\n4. Health maintenance: due for colon screening at 46, GI referral placed. Screening mammogram ordered. HCV and HIV one-time screens with today's draw. Flu and COVID booster at a nurse visit next month. Pap last 2019, normal; due next year.\nFollow up 6 months for BP."
+            }
+          ],
+          "vitals": {
+            "height_cm": 165.0
+          }
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T17:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2021-09-16T17:10",
+              "body": "Hi Andrea, all of your blood work from Tuesday looks good. Kidney function and potassium are normal on the water pill, A1c is in the normal range, cholesterol is fine, and the hepatitis C and HIV screens are negative. Nothing to change. Gastroenterology should be calling you about the colonoscopy."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-05T15:38"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2021-10-05T15:30",
+              "body": "Here after work for flu and COVID booster. Booster eligibility reviewed per current guidance (BMI over 30). Flu L deltoid, Pfizer booster R deltoid, both tolerated. Observed 15 min, no reaction. BP checked while here, see vitals. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "imaging",
+          "start": "2021-10-19T09:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-10-19T09:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies available for comparison. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and axillae unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine screening in one year."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-10-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2021-10-20T12:15",
+              "body": "Screening mammogram negative, BI-RADS 1. Dense tissue noted. Letter to patient via portal. Repeat next fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "outside_records",
+          "start": "2021-11-23T11:40",
+          "reason": "Colonoscopy report",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-11-18T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2021",
+              "action": "done",
+              "date": "2021-11-23T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Screening colonoscopy report",
+              "author": "gastroenterology",
+              "date": "2021-11-23T11:40",
+              "body": "Outside gastroenterology group. Procedure date 11/18/2021.\nIndication: first screening colonoscopy, age 46, no family history of colon cancer.\nAllergies: NKDA. Medications: hydrochlorothiazide.\nSedation: monitored anesthesia care. Prep: good (Boston-type score 8 of 9 per report).\nFindings: scope advanced to the cecum, appendiceal orifice photographed. Mucosa normal throughout. No polyps, no diverticula. Small internal hemorrhoids on retroflexion.\nImpression: normal screening colonoscopy.\nRecommendation: next screening colonoscopy in 10 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "pharmacy",
+          "start": "2021-12-14T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ refill",
+              "author": "RN",
+              "date": "2021-12-14T09:05",
+              "body": "Electronic request from her pharmacy, previous prescriber's script out of refills. HCTZ 25 mg #90 with 3 refills sent under PCP per protocol. BMP 9/2021 normal."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-08T16:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-08T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: hypertension",
+              "author": "PCP",
+              "date": "2022-03-08T16:00",
+              "body": "S: Six-month BP check. Taking HCTZ most mornings, misses maybe one a week when she opens early. No lightheadedness or cramps. Busy winter at the store. Not much exercise.\nO: BP and weight per vitals. Heart RRR. No leg edema; varicosities unchanged.\nA/P: HTN at goal. Continue HCTZ 25. BMP today. Suggested pairing the pill with her morning coffee. Weight: she is interested in walking with her partner once the weather turns; we'll revisit. Physical in the summer; Pap due then."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "portal_message",
+          "start": "2022-03-10T08:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP result",
+              "author": "PCP",
+              "date": "2022-03-10T08:30",
+              "body": "Andrea, your potassium, sodium and kidney numbers are all normal. Keep going with the HCTZ as you are. See you this summer for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "annual_physical",
+          "start": "2022-07-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-07-19T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-07-19T10:10",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-19T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-07-19T09:50",
+              "text": "ThinPrep liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV DNA not detected.",
+              "conclusion": "NILM, HPV negative. Co-testing interval 5 years."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-07-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-07-19T09:20",
+              "body": "Annual exam, 46F.\n\nInterval: no new issues. Walking some evenings with her partner, irregularly. Still on her feet all day at work. Periods regular, monthly. No breast concerns. Sleeping ok. PHQ-9 2.\n\nMeds: HCTZ 25 daily. NKDA. Never smoker, rare alcohol.\n\nExam: vitals as charted. HEENT normal. Thyroid not enlarged. Heart and lungs normal. Breasts symmetric, no masses, no nipple discharge, axillae clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix normal in appearance, Pap with HPV collected; bimanual unremarkable. Legs with varicosities, no edema. Skin without suspicious lesions.\n\nA/P\n- HTN: at goal. CMP.\n- Obesity: weight stable. Encouraged the walking, 30 minutes most days, and fewer meals out of the break room vending machine.\n- Preventive: Pap/HPV today. Colonoscopy 2021 normal, next 2031. Mammogram this fall. Lipids and A1c today. Flu and the new COVID booster in September.\nReturn 6-8 months for BP, physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "portal_message",
+          "start": "2022-07-26T13:40",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap smear and labs",
+              "author": "PCP",
+              "date": "2022-07-26T13:40",
+              "body": "Good news: your Pap smear is normal and the HPV test is negative, so you won't need another one for five years. Cholesterol, sugar (A1c) and kidney tests from your physical are all normal too."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "nurse_visit",
+          "start": "2022-09-27T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T16:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-27T16:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID bivalent",
+              "author": "MA",
+              "date": "2022-09-27T16:10",
+              "body": "Flu vaccine and Pfizer bivalent booster given, one in each arm. Pt denies prior reactions. Waited 15 minutes, fine. Next mammogram reminder given, she will call radiology to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "imaging",
+          "start": "2022-11-01T08:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-01T08:10",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared with the October 2021 study. Heterogeneously dense breast tissue. No new mass, distortion or suspicious calcification. Stable appearance bilaterally.",
+              "conclusion": "BI-RADS 1, negative. Annual screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2022",
+              "author": "PCP",
+              "date": "2022-11-02T07:55",
+              "body": "Negative, stable. Patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "pharmacy",
+          "start": "2022-12-06T10:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ renewal",
+              "author": "RN",
+              "date": "2022-12-06T10:45",
+              "body": "Pharmacy asking for new HCTZ 25 mg script, last refill used. Seen 7/2022 with normal CMP. Renewed #90 x3 per protocol."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,259 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002692",
+      "events": [
+        {
+          "id": "2025-03-04a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-04T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.7}},
+          "labs": [
+            {"panel": null, "collected": "2025-02-27T07:35", "results": [{"test": "Hemoglobin A1c", "value": 7.7}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-27T07:35", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-03-04T12:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2025-03-04T12:35", "body": "Video from her office break room. A1c 7.7 from last week, holding. Taking metformin regularly with the auto-refill. Saw GI in December, letter on file: hepatic adenoma, repeat MRI late summer, weight loss. She's trying to cut portions but finds it hard with the store hours. Eye injections continue, spaced out more now she says. No home BP cuff yet.\nPlan: no changes. In-person visit early summer with vitals and labs."}
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "specialist_visit",
+          "start": "2025-03-18T13:30",
+          "service": "Ophthalmology",
+          "reason": "diabetic macular edema follow-up",
+          "procedures": [{"procedure": "Intravitreal injection of anti-VEGF", "snomed": "1004045004", "performed": "2025-03-18T14:10"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Ophthalmology follow-up", "author": "ophthalmology", "date": "2025-03-26T10:00", "body": "Outside ophthalmology practice. Visit 03/18/2025.\nDiabetic macular edema OU with nonproliferative retinopathy, on intravitreal bevacizumab since 04/2024.\nVA cc 20/30 OD, 20/40 OS (from 20/50 and 20/60 at presentation). OCT: marked reduction in central macular thickness both eyes, small residual intraretinal fluid. Fundus: scattered microaneurysms and exudates, fewer than before. No neovascularization.\nInjections given today OU. Interval now extended to every 8 to 10 weeks.\nContinue glucose and BP control. Copy to PCP."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "state": {"bp": [140, 88], "weight_kg": 96.0, "labs": {"Hemoglobin A1c": 7.8, "Creatinine": 1.08, "Aspartate Aminotransferase": 46, "Alanine Aminotransferase": 70}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-06-10T16:30", "results": [{"test": "Hemoglobin A1c", "value": 7.8}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-10T16:30", "results": [{"test": "Glucose"}, {"test": "Creatinine", "value": 1.08}, {"test": "Potassium"}, {"test": "Aspartate Aminotransferase", "value": 46}, {"test": "Alanine Aminotransferase", "value": 70}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-10T16:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-06-10T17:15", "body": "DM/HTN follow-up.\nFeels fine. Waist still bigger. Hands OK, eyes OK. Saw gyn in the spring per patient, IUD in place, no biopsy needed this time (no letter).\nMeds: metformin 500 BID, lisinopril 20, atorvastatin 20, hydroxychloroquine 200 BID (rheum), LNG-IUD.\nExam: BP and weight as charted. Heart regular. Lungs clear. Liver edge palpable, non-tender, as before. No edema. Feet normal, monofilament intact.\nA/P: continue current regimen. GI MRI due August, she has it scheduled. Labs today. Physical in the fall.\nAddendum: A1c 7.8. Creatinine 1.08. AST 46, ALT 70, mildly up as GI has seen; they are following."}
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "imaging",
+          "start": "2025-08-04T17:45",
+          "service": "Radiology",
+          "reports": [
+            {"study": "MRI abdomen with and without contrast", "loinc": "24557-1", "performed": "2025-08-04T17:45", "text": "Indication: surveillance of known hepatic adenoma. Comparison 11/25/2024. Hepatomegaly, unchanged. The right hepatic lobe lesion measures 3.9 x 3.4 cm (previously 3.8 x 3.4 cm), with the same intralesional fat and arterial enhancement pattern, no washout. No hemorrhage. No new hepatic lesions. Vessels patent. Remaining upper abdominal organs unremarkable. No ascites.", "conclusion": "Stable 3.9 cm hepatic adenoma without hemorrhage or new lesion."}
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "specialist_visit",
+          "start": "2025-08-13T10:30",
+          "service": "Gastroenterology",
+          "reason": "hepatic adenoma follow-up",
+          "state": {"labs": {"Glucose": 162, "Hemoglobin A1c": 7.8, "Aspartate Aminotransferase": 48, "Alanine Aminotransferase": 82, "Total Cholesterol": 220, "High Density Lipoprotein": 35, "Triglycerides": 250}},
+          "labs": [
+            {"panel": null, "collected": "2025-08-13T10:10", "results": [{"test": "Fasting Glucose", "value": 162}]},
+            {"panel": null, "collected": "2025-08-13T10:10", "results": [{"test": "Hemoglobin A1c", "value": 7.8}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-08-13T10:10", "results": [{"test": "Aspartate Aminotransferase", "value": 48}, {"test": "Alanine Aminotransferase", "value": 82}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-13T10:10", "results": [{"test": "Total Cholesterol", "value": 220}, {"test": "High Density Lipoprotein", "value": 35}, {"test": "Triglycerides", "value": 250}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology follow-up", "author": "gastroenterology", "date": "2025-09-30T14:20", "body": "Outside gastroenterology and hepatology group\nFollow-up visit 08/13/2025\n\nMs. Thompson returns for her liver adenoma. Her waist has kept growing even though she has been dieting. No abdominal pain. No alcohol.\nMeds: metformin, lisinopril, atorvastatin 20 mg daily. NKDA.\nExam: BMI 34. Mild hepatomegaly. No jaundice, no spider angiomata, no ascites.\nLabs today: fasting glucose 162, A1c 7.8, AST 48, ALT 82, total cholesterol 220, HDL 35, triglycerides 250.\nMRI 08/04/2025: adenoma 3.9 cm, essentially unchanged, no bleeding.\nAssessment: stable hepatocellular adenoma under 5 cm. Transaminases somewhat higher than in December.\nPlan: continue weight loss efforts, avoid estrogen. Yearly MRI. Recheck liver tests with her PCP. Return after next MRI."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T07:55"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-14T07:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T07:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2025-10-14T08:05", "body": "Seasonal flu L arm and Moderna 2025-26 R arm. No issues. GI follow-up letter from August arrived 9/30 and is in the chart for PCP; she asked if her liver numbers were bad, told her the doctor will go over it at the physical."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"bp": [142, 88], "weight_kg": 96.9, "labs": {"Hemoglobin A1c": 7.9, "Creatinine": 1.2, "Total Cholesterol": 216, "High Density Lipoprotein": 36, "Triglycerides": 246, "Aspartate Aminotransferase": 47, "Alanine Aminotransferase": 76, "Hemoglobin": 12.7}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-18T08:10", "results": [{"test": "Glucose"}, {"test": "Creatinine", "value": 1.2}, {"test": "Potassium"}, {"test": "Aspartate Aminotransferase", "value": 47}, {"test": "Alanine Aminotransferase", "value": 76}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-11-18T08:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-11-18T08:10", "results": [{"test": "Hemoglobin A1c", "value": 7.9}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-18T08:10", "results": [{"test": "Hemoglobin", "value": 12.7}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-11-18T08:00"}],
+          "orders": [
+            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"},
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-11-18T09:20", "body": "55 y/o for physical.\nNo new complaints. Energy OK. No chest pain or breathing trouble. Eyes: injections every couple of months, vision good enough to drive. Hands: occasional morning stiffness, rheum every 6 months (no letters since Feb 2024). Gyn yearly per patient.\nGI letter (8/13) reviewed: adenoma stable 3.9 cm, yearly MRI, ALT 82 there.\nMeds: metformin 500 BID, lisinopril 20, atorvastatin 20, hydroxychloroquine 200 BID, LNG-IUD.\nSH: 1 ppd. No alcohol. Two jobs.\n\nExam: BP and weight as charted. Heart regular, no murmur. Lungs clear. Abdomen obese, liver edge palpable as before, non-tender. No edema. Feet: intact, pulses present, monofilament normal. Joints without active synovitis.\n\nA/P\n1. T2DM with macular edema: continue metformin; ophthalmology injections ongoing.\n2. HTN: continue lisinopril 20.\n3. Lipids: continue atorvastatin 20.\n4. Hepatic adenoma: GI surveillance, MRI next summer.\n5. RA: rheum managing hydroxychloroquine.\n6. Endometrial hyperplasia: gyn surveillance with IUD.\n7. Tobacco: still 1 ppd; advised quitting.\n8. HM: mammogram and LDCT ordered. Flu/COVID done 10/14.\nAddendum 11/19: creatinine 1.2, eGFR now below 60 for the first time (previous creatinine about 1.0-1.1). Will repeat at next visit before calling it anything. A1c 7.9. AST/ALT 47/76, in line with GI's. Hgb 12.7."}
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "imaging",
+          "start": "2025-11-25T15:10",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-11-25T15:10", "text": "Screening tomosynthesis compared with prior studies back to 2021. Scattered fibroglandular density. No mass, suspicious calcification or architectural distortion.", "conclusion": "BI-RADS 1, negative. Annual screening."}
+          ],
+          "orders": [{"id": "mammo-2025", "action": "done", "date": "2025-11-25T15:10"}]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "imaging",
+          "start": "2025-12-09T12:15",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-12-09T12:15", "text": "Annual screening, comparison 12/10/2024. No pulmonary nodules. Lungs clear. Heart size within normal limits. No effusion. Known hepatomegaly partly imaged.", "conclusion": "Lung-RADS 1, negative. Continue annual screening."}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-12-09T12:15"}]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-10T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-10b",
+          "kind": "telephone",
+          "start": "2026-03-10T09:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2026-03-10T09:05", "body": "Pt cancelled today's video visit, short-staffed at the office and can't step away. Offered dates in April; she'll call back when she has her schedule. Portal reminder set."}
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "ed_visit",
+          "start": "2026-06-10T15:40",
+          "end": "2026-06-11T14:30",
+          "service": "Emergency Medicine",
+          "reason": "worsening fatigue, shortness of breath on exertion, weight loss",
+          "conditions": [{"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2026-06-10"}],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "stop", "reason": "held in the ED for creatinine 1.8"},
+            {"drug": "furosemide 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "heart failure"}
+          ],
+          "state": {"bp": [142, 90], "weight_kg": 90.3, "labs": {"Creatinine": 1.8, "Hemoglobin A1c": 8.2, "Glucose": 176, "Hemoglobin": 12.2}},
+          "vitals": [
+            {"time": "2026-06-10T15:45", "bp": [142, 90], "hr": 88, "rr": 20, "spo2": 94, "temp_c": 36.8},
+            {"time": "2026-06-10T21:00", "bp": [134, 84], "hr": 82, "rr": 18, "spo2": 96, "temp_c": 36.7},
+            {"time": "2026-06-11T08:00", "bp": [130, 82], "hr": 78, "rr": 16, "spo2": 97, "temp_c": 36.6}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-10T16:05", "results": [{"test": "Creatinine", "value": 1.8}, {"test": "Glucose"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-10T16:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-06-10T16:05", "results": [{"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 580}]},
+            {"panel": null, "collected": "2026-06-10T16:05", "results": [{"test": "Troponin I, High Sensitivity", "value": 6}]},
+            {"panel": null, "collected": "2026-06-10T19:10", "results": [{"test": "Troponin I, High Sensitivity", "value": 7}]},
+            {"panel": null, "collected": "2026-06-10T16:05", "results": [{"test": "Hemoglobin A1c", "value": 8.2}]},
+            {"panel": "Urinalysis", "collected": "2026-06-10T16:30", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Glucose", "text": "Negative"}, {"test": "Urine Ketones", "text": "Negative"}]},
+            {"panel": null, "collected": "2026-06-11T06:00", "results": [{"test": "Fasting Glucose", "value": 176}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-06-10T15:55", "text": "Sinus rhythm at 88 bpm. Normal axis. Normal intervals. No acute ST-segment elevation or depression.", "conclusion": "Sinus rhythm without acute ischemic changes."},
+            {"study": "Chest X-ray, 1 view", "performed": "2026-06-10T16:20", "text": "Portable AP chest. The cardiac silhouette is enlarged. Pulmonary vascular congestion with indistinct vessels. No focal consolidation. No pneumothorax. No large effusion.", "conclusion": "Cardiomegaly with pulmonary vascular congestion."},
+            {"study": "Transthoracic echocardiogram", "performed": "2026-06-11T09:30", "text": "Technically adequate study. Left ventricle normal in size with concentric left ventricular hypertrophy. Global systolic function reduced, ejection fraction estimated 40% by biplane method. Right ventricle normal size and function. Atria normal size. Valves structurally normal without significant stenosis or regurgitation. No pericardial effusion. IVC normal caliber.", "conclusion": "Left ventricular hypertrophy with reduced ejection fraction, LVEF 40%."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-06-10T15:40"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-06-24T10:15", "body": "Regional emergency department, received by fax 06/24/2026.\nArrived 06/10/2026 15:40. Placed in observation; discharged 06/11/2026.\n\nCC: getting more tired and short of breath.\nHPI: 56-year-old woman with type 2 diabetes, hypertension, dyslipidemia and prior iron deficiency anemia. Fatigue and breathlessness with exertion have built up over about six months and became much worse this week; she could not finish a shift. Unintentionally lost about 15 pounds over the same six months. No chest pain.\nMeds: metformin, lisinopril, atorvastatin 20 mg. NKDA. Smokes. No alcohol.\nSocial: works two jobs, little time to exercise, mostly processed food because it is cheaper and closer to home.\n\nExam: BP 142/90, HR 88, RR 20, SpO2 94% on room air, BMI 32. Bibasilar crackles. Heart regular. 1+ pitting edema both lower legs.\n\nResults: A1c 8.2, fasting glucose 176 (next morning), creatinine 1.8 (baseline 1.2), BNP 580. Urinalysis 2+ protein, no glucose or ketones. High-sensitivity troponin 6 then 7, not elevated. ECG sinus rhythm, no acute changes. CXR: cardiomegaly and pulmonary congestion. Echo (6/11): LVH, EF 40%.\n\nCourse: furosemide 40 mg IV once with good urine output; breathing easier overnight, SpO2 97% on room air by morning.\n\nDiagnosis: new heart failure with reduced ejection fraction.\nDisposition: home. Furosemide 20 mg by mouth daily. Lisinopril held until kidney function rechecked. Other medications unchanged. Daily weights, 2 g sodium. See primary care within 1-2 weeks for BMP and medication review; outpatient cardiology referral recommended."}
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "portal_message",
+          "start": "2026-06-12T18:30",
+          "documents": [
+            {"type": "Patient Message", "title": "I was in the ER", "author": "patient", "date": "2026-06-12T18:30", "body": "I was in the ER Wednesday and stayed overnight. They said my heart isn't pumping right and gave me a water pill. They stopped my lisinopril. They told me to see you in a week or two. Breathing is better."},
+            {"type": "Patient Message", "title": "RE: I was in the ER", "author": "RN", "date": "2026-06-12T19:10", "body": "Sorry to hear that, glad you're breathing easier. I booked you with the doctor on Friday 6/26 at 4:20 and we're requesting the ER records. Weigh yourself every morning and write it down. If you gain more than 3 pounds in a day or 5 in a week, or get short of breath lying flat, call us or go back to the ER."}
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "office_visit",
+          "start": "2026-06-26T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for heart failure",
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "heart failure, hypertension"},
+            {"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "heart failure with reduced ejection fraction"}
+          ],
+          "state": {"bp": [132, 82], "weight_kg": 88.6, "labs": {"Creatinine": 1.3, "Hemoglobin": 12.3}},
+          "vitals": {"bp": [132, 82]},
+          "measure": ["hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-26T16:35", "resulted": "2026-06-26T19:40", "results": [{"test": "Creatinine", "value": 1.3}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-26T16:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-06-26T16:35", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.6}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2026-06-26T16:20"}],
+          "orders": [
+            {"id": "cards-referral", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "new HFrEF, EF 40% with LVH"},
+            {"id": "bmp-2026-07", "action": "placed", "order": "Basic Metabolic Panel (BMP)", "category": "lab"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED Follow-up", "author": "PCP", "date": "2026-06-26T17:40", "body": "S: Seen in the ED 6/10 with observation overnight (record received 6/24): new heart failure, EF 40% with LVH on echo, BNP 580, creatinine 1.8 against a 1.2 baseline, CXR with congestion. Sent home on furosemide 20 daily with lisinopril held. Since then breathing is much better, can do the office stairs slowly, ankles less puffy, sleeping flat. Home weights trending down. No chest pain, no palpitations, no lightheadedness. She also notes she had lost about 15 pounds over the six months before the ED without trying; appetite has been so-so.\nMeds now: furosemide 20 daily, metformin 500 BID, atorvastatin 20, hydroxychloroquine 200 BID (rheum), LNG-IUD. Lisinopril on hold.\nSH: still smoking about a pack a day.\n\nO: BP 132/82. Weight as charted, a little lower than in the ED. Not in distress, speaking full sentences. JVP not elevated. Heart regular, no gallop or murmur. Lungs clear at the bases today. Trace ankle edema. Liver edge palpable as before.\n\nA/P\n1. HFrEF, new, EF 40% with LVH; likely hypertensive/diabetic but needs a cardiology workup. Euvolemic today. Continue furosemide 20 daily. Restart ACE inhibitor at lisinopril 10 mg daily if today's creatinine allows; start metoprolol succinate 25 mg daily. Cardiology referral placed for further therapy and evaluation. Daily weights, sodium limit, call for gain of 3 lb/day or 5 lb/week.\n2. Kidney function: BMP today and again in 2 weeks after the restart.\n3. Weight loss: CBC and TSH today; will review with cardiology input and at follow-up.\n4. T2DM: A1c 8.2 in ED. Continue metformin for now pending kidney function.\n5. Tobacco: quitting matters more than ever with her heart; she'll think about a quit date and call.\n6. Hepatic adenoma: MRI due around August per GI.\nRTC 4-6 weeks.\nAddendum 19:50: creatinine 1.3. OK to restart lisinopril at 10 mg as planned; message sent."}
+          ]
+        },
+        {
+          "id": "2026-06-27a",
+          "kind": "portal_message",
+          "start": "2026-06-27T09:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs from yesterday", "author": "PCP", "date": "2026-06-27T09:15", "body": "Good morning. Kidney number is 1.3, much better than the 1.8 in the ER, so please start the lisinopril 10 mg (new prescription at your pharmacy) along with the metoprolol. Blood count and thyroid are normal. Lab again in about 2 weeks, order is in. Keep logging your weights."},
+            {"type": "Patient Message", "title": "RE: Your labs from yesterday", "author": "patient", "date": "2026-06-27T11:02", "body": "Ok thank you. Picked up both. Weight this morning 195."}
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "lab_only",
+          "start": "2026-07-10T07:30",
+          "state": {"labs": {"Creatinine": 1.3, "Potassium": 4.7}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-10T07:30", "results": [{"test": "Creatinine", "value": 1.3}, {"test": "Potassium", "value": 4.7}, {"test": "Sodium"}, {"test": "Glucose"}]}
+          ],
+          "orders": [{"id": "bmp-2026-07", "action": "done", "date": "2026-07-10T07:30"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Lab result", "author": "PCP", "date": "2026-07-10T15:10", "body": "Kidney function steady at 1.3 and potassium 4.7 on the lisinopril. No changes. Has cardiology called you with a date yet? If not, let us know and we'll follow up on the referral."}
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "pharmacy",
+          "start": "2026-07-28T10:40",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill request", "author": "MA", "date": "2026-07-28T10:40", "body": "Electronic refill request for furosemide 20 mg from the pharmacy; the ER prescription was a 30-day supply. Sent 90 days per PCP. Metoprolol and lisinopril filled 6/27 with refills."}
+          ]
+        }
+      ]
+    }
+  ]
+}

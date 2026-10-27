@@ -1,0 +1,779 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001986",
+   "events": [
+    {
+     "id": "2025-01-14a",
+     "kind": "pharmacy",
+     "start": "2025-01-14T08:25",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "RN",
+       "date": "2025-01-14T08:25",
+       "body": "Mail-order pharmacy asking for new prescriptions for metformin 1000 mg, atorvastatin 40 mg and hydrochlorothiazide 25 mg; his plan switched them to 90-day mail service. Labs current from November. Sent all three, 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-18a",
+     "kind": "outside_records",
+     "start": "2025-02-18T11:40",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam letter",
+       "author": "optometry",
+       "date": "2025-02-18T11:40",
+       "body": "Dilated retinal exam 02/11/2025 for diabetes. Acuity 20/20 right, 20/25 left with correction. No retinopathy, no macular edema in either eye. Mild lens changes stable. Next exam in a year."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-22a",
+     "kind": "annual_physical",
+     "start": "2025-04-22T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-04-22T08:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-04-22T08:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-04-22T08:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-22T08:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-04-22T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-04-22T07:30",
+       "body": "58 y.o. M, annual exam. Well. One gout flare last June, none since. Eye exam in February clear. Dermatology yearly check last summer clear; due again.\n\nMeds: metformin 1000 mg twice daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily.\nAllergies: sulfonamide antibiotics - rash; ACE inhibitors - cough.\n\nROS: negative.\n\nPE: vitals as charted. Alert, well. Oropharynx clear. No lymphadenopathy. Heart regular rate and rhythm. Lungs clear to auscultation. Abdomen non-tender. Extremities without edema. Skin: healed back scar, no suspicious lesions seen. Feet: normal monofilament, pulses palpable.\n\nA/P: chronic conditions stable; routine labs drawn. Remind about dermatology annual. Colonoscopy due 2027."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-02a",
+     "kind": "ed_visit",
+     "start": "2025-06-02T13:50",
+     "end": "2025-06-02T20:30",
+     "service": "Emergency Medicine",
+     "reason": "shortness of breath and cough after pneumonia",
+     "conditions": [
+      {
+       "label": "Community-acquired pneumonia",
+       "action": "diagnosed",
+       "onset": "2025-05-19",
+       "note": "treated at urgent care with an oral antibiotic"
+      },
+      {
+       "label": "Uncomplicated parapneumonic effusion, left",
+       "icd10": "J91.8",
+       "action": "diagnosed",
+       "onset": "2025-05-26"
+      }
+     ],
+     "vitals": {
+      "rr": 22,
+      "spo2": 94
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c"
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-06-02T14:30",
+       "text": "PA and lateral chest. Moderate left pleural effusion layering to occupy roughly one third of the left hemithorax, with blunting of the costophrenic angle and adjacent compressive atelectasis. No mediastinal shift. Right lung clear. Heart size normal.",
+       "conclusion": "Moderate left pleural effusion."
+      },
+      {
+       "study": "Pleural fluid analysis",
+       "loinc": "34562-9",
+       "performed": "2025-06-02T16:40",
+       "text": "Specimen: pleural fluid, left, diagnostic thoracentesis. Appearance: hazy, straw-colored. pH 7.36. Glucose 112 mg/dL. LDH 310 U/L (serum LDH 190 U/L). Protein 3.9 g/dL (serum protein 6.8 g/dL). Nucleated cells 3,200/uL, neutrophil predominant. Gram stain: no organisms seen. Culture: no growth at 5 days (final). Cytology: negative for malignant cells.",
+       "conclusion": "Exudate by protein and LDH ratios; pH and glucose not in the complicated range; Gram stain and culture negative."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Thoracentesis",
+       "snomed": "91602002",
+       "performed": "2025-06-02T16:30"
+      },
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-06-02T13:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2025-06-09T09:15",
+       "body": "Regional medical center ED. Date of service 06/02/2025.\n\nChief complaint: worsening shortness of breath and dry cough for a week, worse lying down.\n\nHPI: 59-year-old man with type 2 diabetes, hypertension, hyperlipidemia and gout. Had a lisinopril-related cough back in 2021. Diagnosed with a left-sided pneumonia at an urgent care about two weeks ago and finished the oral antibiotic he was given. Over the past week has become more short of breath, has a nagging dry cough and is wiped out; breathing is harder when he lies flat. No other recent illness. Never smoked. Denies fever, chest pain or coughing blood.\n\nHome medications (from prior record): metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: ACE inhibitors (cough intolerance), sulfa drugs (rash).\nFHx: brother melanoma, father T2DM, mother HTN.\n\nExam: RR 22, SpO2 94% RA, afebrile, BP and HR within normal limits; mildly tachypneic, hemodynamically stable, speaking full sentences. Left lower chest: reduced breath sounds, dull to percussion, decreased tactile fremitus. Right lung clear. Heart regular. No leg edema.\n\nCXR: moderate left effusion, about a third of the hemithorax.\n\nProcedure: diagnostic thoracentesis, left midaxillary line, needle passed over the upper border of the rib below the chosen interspace, after consent and local anesthesia. Fluid sent. No complications; post-procedure film without pneumothorax.\n\nMDM: effusion following a recent pneumonia. Fluid results consistent with an uncomplicated parapneumonic effusion. Given size and symptoms, discussed with hospitalist and pulmonary: admit for IV antibiotics and drainage.\n\nDisposition: admitted to medicine."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-02b",
+     "kind": "hospital_admission",
+     "start": "2025-06-02T20:30",
+     "end": "2025-06-06T11:45",
+     "service": "Hospital Medicine",
+     "reason": "left parapneumonic effusion",
+     "medications": [
+      {
+       "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "parapneumonic effusion after pneumonia"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2025-06-03T15:10",
+       "text": "Portable AP chest after left small-bore pleural catheter placement. Catheter tip projects over the left lower hemithorax. Left effusion substantially smaller. No pneumothorax. Right lung clear.",
+       "conclusion": "Left pleural catheter in place, effusion decreased, no pneumothorax."
+      },
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2025-06-05T09:00",
+       "text": "Portable AP chest following removal of left pleural catheter. Minimal residual blunting of the left costophrenic angle. No pneumothorax.",
+       "conclusion": "Catheter removed, no pneumothorax, trace residual fluid."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Insertion of pleural tube drain",
+       "snomed": "264957007",
+       "performed": "2025-06-03T13:30"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-06-02T20:30"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-06-06T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "author": "hospitalist",
+       "date": "2025-06-20T14:10",
+       "body": "Admitted 06/02/2025, discharged 06/06/2025. Hospital medicine service.\n\nDiagnoses: uncomplicated parapneumonic effusion, left, following community-acquired pneumonia. Type 2 diabetes, hypertension, hyperlipidemia, gout (history).\n\nCourse: admitted from the ED after diagnostic thoracentesis showed an exudative effusion with pH 7.36, glucose 112, LDH 310 and negative Gram stain; culture later finalized as no growth and cytology negative. Started on IV ampicillin-sulbactam. Because the effusion was moderate and he was breathless, interventional pulmonology placed a small-bore chest tube on 6/3, draining about 1,100 mL over two days with steady improvement in his breathing. Tube removed 6/5; follow-up film showed only trace residual fluid and no pneumothorax. Room air throughout, afebrile. Blood sugars acceptable on metformin.\n\nDischarge medications: amoxicillin-clavulanate 875/125 mg twice daily for 7 more days. Resume home medications (metformin, atorvastatin, hydrochlorothiazide).\nAllergies: ACE inhibitors (cough), sulfonamides (rash).\n\nFollow-up: PCP within one week; repeat chest x-ray in 6 to 8 weeks to confirm resolution."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-04a",
+     "kind": "telephone",
+     "start": "2025-06-04T09:30",
+     "reason": "wife calling about admission",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call from wife",
+       "author": "RN",
+       "date": "2025-06-04T09:30",
+       "body": "Patient's wife called: Scott was admitted Monday with fluid around his left lung after a pneumonia he had a couple of weeks ago (seen at an urgent care, we have no record of that visit). He has a chest tube in and is feeling better. Expected home Thursday or Friday. Scheduled hospital follow-up 6/10. Will request urgent care and hospital records."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "office_visit",
+     "start": "2025-06-10T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hospital follow-up",
+     "conditions": [
+      {
+       "label": "Community-acquired pneumonia",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 95.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "cxr-followup",
+       "action": "placed",
+       "order": "Chest X-ray, 2 views",
+       "category": "imaging",
+       "reason": "confirm resolution of left parapneumonic effusion"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-06-10T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital follow-up",
+       "author": "PCP",
+       "date": "2025-06-10T08:00",
+       "body": "Home since Friday after 4 days in the hospital for a left pleural effusion following pneumonia. Pneumonia was diagnosed at an urgent care in mid-May; he finished a week of an antibiotic but can't remember which. In hospital: tap, then a chest tube for 2 days, IV antibiotics; home on amoxicillin-clavulanate, 3 days left. We don't have the discharge paperwork yet; going from his account and the hospital portal printout he brought.\n\nBreathing close to normal, can do stairs at home, still tires by afternoon. Cough nearly gone. No fever. Lost a few pounds.\n\nExam: vitals as charted, comfortable on room air. Chest tube site clean, dressing off, no drainage. Left base slightly diminished breath sounds, no dullness I can appreciate. Right clear. Heart regular. No edema.\n\nA/P\n1. Left parapneumonic effusion, drained, improving. Finish amoxicillin-clavulanate. Chest x-ray late July to confirm it's cleared. Light duty at work for another week or two.\n2. Pneumonia, treated.\n3. Diabetes/HTN: continue metformin, HCTZ, atorvastatin. Labs at December visit.\nReturn sooner for fever, worsening breathing or chest pain."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-20a",
+     "kind": "outside_records",
+     "start": "2025-06-20T14:10",
+     "reason": "hospital records received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hospital records received",
+       "author": "front desk",
+       "date": "2025-06-20T14:10",
+       "body": "Discharge summary and ED record for 6/2-6/6 admission received from the hospital and filed. Urgent care office says their visit note will be faxed; not received. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-22a",
+     "kind": "imaging",
+     "start": "2025-07-22T07:20",
+     "reason": "follow-up chest x-ray",
+     "orders": [
+      {
+       "id": "cxr-followup",
+       "action": "done",
+       "date": "2025-07-22T07:20"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Uncomplicated parapneumonic effusion, left",
+       "icd10": "J91.8",
+       "action": "resolved"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-07-22T07:20",
+       "text": "PA and lateral views. Lungs are clear. No pleural effusion; costophrenic angles sharp. Heart size and mediastinal contours normal. No pneumothorax.",
+       "conclusion": "Resolution of the previously seen left pleural effusion. No acute findings."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Chest x-ray result",
+       "author": "PCP",
+       "date": "2025-07-22T15:45",
+       "body": "Scott - your chest x-ray is clear. The fluid on the left side is completely gone and the lungs look normal. No further imaging needed."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-07a",
+     "kind": "nurse_visit",
+     "start": "2025-10-07T07:10",
+     "reason": "fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-07T07:10"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-10-07T07:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-07T07:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "MA",
+       "date": "2025-10-07T07:10",
+       "body": "Seasonal flu (L deltoid) and 2025-26 COVID (R deltoid). Patient feeling well. No reactions observed."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "office_visit",
+     "start": "2025-12-09T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "state": {
+      "weight_kg": 97.0,
+      "labs": {
+       "Hemoglobin A1c": 7.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-12-09T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-12-09T07:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-12-09T07:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-12-09T07:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-12-09T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2025-12-09T07:30",
+       "body": "Routine check. Fully recovered from the summer's lung infection; back to full days. Weight back up. No gout. Admits holiday eating has started early.\n\nExam: vitals as charted. Lungs clear both bases. Heart regular. Feet normal sensation and pulses.\n\nPlan: A1c, BMP, lipids, urine microalbumin. If A1c creeps much higher we'll talk about adding a second diabetes drug in the spring. Same meds for now. Return in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-11a",
+     "kind": "portal_message",
+     "start": "2025-12-11T12:05",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "December labs",
+       "author": "PCP",
+       "date": "2025-12-11T12:05",
+       "body": "Hi Scott, A1c is close to target. Kidney function, potassium and cholesterol are fine; the urine protein is about where it has been. Let's recheck in March."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "office_visit",
+     "start": "2026-03-10T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2026-03-10b",
+     "kind": "telephone",
+     "start": "2026-03-10T11:20",
+     "reason": "missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed visit",
+       "author": "front desk",
+       "date": "2026-03-10T11:20",
+       "body": "Left voicemail after no-show at 7:30 this morning. Called back at noon: forgot, a pour got moved up at one of his sites. Will call back to reschedule once his spring schedule settles."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-09a",
+     "kind": "office_visit",
+     "start": "2026-06-09T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up; headaches",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-06-09T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-06-09T08:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-06-09T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-brain",
+       "action": "placed",
+       "order": "MRI brain with and without contrast",
+       "category": "imaging",
+       "reason": "new progressive headaches with nausea and morning vomiting, age 60"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2026-06-09T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2026-06-09T07:30",
+       "body": "Rescheduled from the March no-show. Wife came with him, mostly, she says, to make sure he mentions the headaches.\n\nHeadaches started about six weeks ago. Dull, both sides or more on the left, worst when he wakes and easing as the morning goes on. Queasy most mornings and has vomited a few times before breakfast. Acetaminophen takes the edge off. Never had headaches like this before. No fever, no neck stiffness, no vision change, no injury. Wife says he's been short with her and the crew lately, which isn't like him; he says it's the heat and the headaches. He denies weakness, numbness, trouble speaking or falls.\n\nExam: afebrile, vitals as charted. Alert, oriented, conversant, answers appropriately. Pupils equal and reactive, extraocular movements full, no nystagmus, face symmetric. Strength 5/5 in all four limbs, no pronator drift, reflexes symmetric, toes downgoing. Finger-nose and gait normal. Neck supple. Fundi not well seen through undilated pupils.\n\nA/P\n1. New, progressive headaches with morning predominance, nausea and vomiting at 60, with a personality change noticed by his wife. Nonfocal exam today, but this pattern needs imaging soon. Ordered an urgent MRI of the brain with gadolinium; prior auth submitted today. Told both of them plainly: any weakness, confusion, trouble talking, worsening vomiting or the worst headache of his life means go straight to the ED, don't wait for the MRI.\n2. Diabetes: A1c and labs today.\n3. HTN and lipids: no changes.\nWill call with MRI scheduling."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-11a",
+     "kind": "telephone",
+     "start": "2026-06-11T14:40",
+     "reason": "MRI scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "MRI authorization",
+       "author": "RN",
+       "date": "2026-06-11T14:40",
+       "body": "Insurance approved the brain MRI. Imaging center's first opening is Thursday 6/18 at 6:40 am. Called patient, confirmed the time, and repeated the ED precautions. He says the headaches are about the same."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-11b",
+     "kind": "portal_message",
+     "start": "2026-06-11T17:05",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Labs",
+       "author": "PCP",
+       "date": "2026-06-11T17:05",
+       "body": "Scott, Tuesday's blood work is reassuring: blood counts, kidney and liver tests and sodium are normal, and your A1c is close to target. Keep the MRI appointment on the 18th."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "ed_visit",
+     "start": "2026-06-16T15:20",
+     "end": "2026-06-16T23:10",
+     "service": "Emergency Medicine",
+     "reason": "headache, vomiting, confusion, right-sided weakness",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "reports": [
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-06-16T16:05",
+       "text": "Non-contrast CT of the head. Large mass in the left cerebral hemisphere with surrounding low density and mass effect, effacing the left lateral ventricle, with rightward midline shift. No acute hemorrhage. No hydrocephalus. Calvarium intact.",
+       "conclusion": "Large left hemispheric mass with midline shift. MRI with contrast recommended."
+      },
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24587-8",
+       "performed": "2026-06-16T19:30",
+       "text": "Multiplanar multisequence MRI of the brain before and after gadolinium. Large heterogeneous left hemispheric mass with thick, serpiginous rim enhancement surrounding central necrosis, extending across the corpus callosum to the opposite hemisphere in a butterfly configuration. Surrounding T2/FLAIR signal abnormality and mass effect with midline shift to the right. No other enhancing lesions.",
+       "conclusion": "Necrotic, enhancing left hemispheric mass crossing the corpus callosum (butterfly pattern), most consistent with a high-grade glial neoplasm."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-06-16T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2026-06-23T10:30",
+       "body": "Regional medical center ED. Seen 06/16/2026.\n\nCC: headache and vomiting, now confused and weak on the right.\n\nHPI: 60-year-old man with diabetes, hypertension, hyperlipidemia and gout, last seen in this ED a year ago. Two months of worsening headache with nausea and vomiting. Over the past couple of weeks has had spells of confusion, and since yesterday his right arm and leg are weak. His wife says he has become more and more sluggish and irritable. He had an outpatient MRI booked for later this week.\n\nHome meds (prior record): metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: ACE inhibitors (cough intolerance), sulfa drugs (rash).\nFHx: brother melanoma, father T2DM, mother HTN.\nSocial: never smoker, no alcohol, construction site supervisor.\n\nExam: vitals reviewed. Awake and alert but looks exhausted. Right-sided hemiparesis, arm more than leg. Right Babinski sign present. Speech fluent.\n\nImaging: non-contrast head CT with a large left hemispheric mass and midline shift. MRI with contrast: heterogeneous, necrotic mass with serpiginous enhancement crossing the corpus callosum, butterfly pattern.\n\nMDM: large left hemispheric mass with mass effect, imaging favoring a high-grade glioma. Dexamethasone 10 mg IV given. Neurosurgery consulted and accepts.\n\nDisposition: admitted to neurosurgery."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16b",
+     "kind": "hospital_admission",
+     "start": "2026-06-16T23:10",
+     "end": "2026-06-25T13:00",
+     "service": "Neurosurgery",
+     "reason": "left hemispheric brain mass",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2026-06-19T10:40",
+       "issued": "2026-06-24T15:00",
+       "text": "Specimen: brain, left hemisphere, mass, resection. Microscopic: highly cellular infiltrating astrocytic neoplasm with marked nuclear pleomorphism, brisk mitotic activity, microvascular proliferation and pseudopalisading necrosis. Immunohistochemistry: GFAP positive; IDH1 R132H negative; ATRX retained. Molecular: IDH1/IDH2 wild-type. MGMT promoter: methylated.",
+       "conclusion": "Glioblastoma, IDH-wildtype, CNS WHO grade 4. MGMT promoter methylated."
+      },
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24587-8",
+       "performed": "2026-06-20T08:15",
+       "text": "Postoperative MRI within 72 hours of surgery. Expected postsurgical changes of left craniotomy and resection cavity. Residual nodular enhancing tumor along the margin and across the corpus callosum. Mass effect reduced compared with 06/16. No new hemorrhage of concern.",
+       "conclusion": "Subtotal resection with residual enhancing tumor crossing the corpus callosum."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Craniotomy with debulking of brain tumor",
+       "snomed": "446103006",
+       "performed": "2026-06-19T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Neurosurgery Discharge Summary",
+       "author": "neurosurgery",
+       "date": "2026-07-30T09:50",
+       "body": "Admitted 06/16/2026, discharged 06/25/2026, neurosurgery service.\n\nPrincipal diagnosis: glioblastoma, IDH-wildtype, WHO grade 4, left hemisphere crossing the corpus callosum.\nOther: type 2 diabetes, hypertension, hyperlipidemia, history of gout, history of stage IA melanoma (2021).\n\nCourse: admitted from the ED with a large left hemispheric mass and right hemiparesis. Dexamethasone 4 mg every 6 hours with improvement in headache and alertness. On 06/19 he underwent left craniotomy with debulking of the mass; because of extension across the corpus callosum a subtotal resection was the goal. Postoperative MRI on 06/20 showed residual enhancing tumor across the callosum and less mass effect. Pathology: glioblastoma, IDH-wildtype, MGMT promoter methylated. Seen by neuro-oncology and radiation oncology in house; plan is standard radiation with concurrent temozolomide after wound healing. Right-sided weakness is somewhat better but persists. Blood sugars were followed closely while on steroids.\n\nDischarge: home with his wife. Dexamethasone taper per the attached schedule. Resume home metformin, atorvastatin and blood pressure medication. No driving. Staples out at the neurosurgery clinic on day 10-14.\n\nFollow-up: neurosurgery 2 weeks; neuro-oncology and radiation oncology to schedule chemoradiation."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-17a",
+     "kind": "telephone",
+     "start": "2026-06-17T08:15",
+     "reason": "wife calling: admitted",
+     "orders": [
+      {
+       "id": "mri-brain",
+       "action": "cancelled",
+       "date": "2026-06-17T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call from wife",
+       "author": "RN",
+       "date": "2026-06-17T08:15",
+       "body": "Wife called from the hospital. Scott went to the ED yesterday afternoon with confusion and right arm and leg weakness. They found a large mass in the brain on CT and MRI and he's admitted to neurosurgery; surgery is being planned. She is understandably shaken. Let her know the PCP will be told right away. Cancelled Thursday's outpatient MRI with the imaging center since it was done in the hospital. Will request records."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "PCP call back",
+       "author": "PCP",
+       "date": "2026-06-17T12:30",
+       "body": "Spoke with his wife at lunchtime. Told her how sorry I was and that we'd help however we can with whatever comes after the hospital. She'll call with updates; gave her the direct line."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-23a",
+     "kind": "outside_records",
+     "start": "2026-06-23T10:30",
+     "reason": "ED record received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "ED record received",
+       "author": "front desk",
+       "date": "2026-06-23T10:30",
+       "body": "ED note and imaging reports from 6/16 received from the hospital and filed. Discharge summary not yet available. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "specialist_visit",
+     "start": "2026-07-14T10:00",
+     "service": "Neuro-Oncology",
+     "reason": "newly diagnosed glioblastoma",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neuro-oncology consultation",
+       "author": "neuro-oncology",
+       "date": "2026-08-18T13:30",
+       "body": "Cancer center neuro-oncology clinic. Visit date 07/14/2026.\n\nReason: newly diagnosed left hemispheric glioblastoma, IDH-wildtype, WHO grade 4, MGMT promoter methylated, status post subtotal resection 06/19/2026.\n\nHe comes with his wife. Headaches are much better since surgery. Right-sided weakness persists, improving slowly with home exercises. No seizures. Tapering dexamethasone, now 2 mg daily.\n\nOther history: type 2 diabetes, hypertension, hyperlipidemia, gout; stage IA melanoma of the back excised in 2021.\nMedications per patient: metformin, atorvastatin, hydrochlorothiazide, dexamethasone taper.\nAllergies: ACE inhibitors (cough), sulfonamide antibiotics (rash).\n\nExam: alert, oriented, speech normal. Right arm 4/5, right leg 4+/5. Incision healed.\n\nAssessment and plan: we discussed the diagnosis and the standard treatment: radiation 60 Gy in 30 fractions with concurrent daily temozolomide 75 mg/m2, then adjuvant temozolomide cycles after a 4-week break. The methylated MGMT promoter predicts a better response to temozolomide. Chemoradiation is planned to start 07/20. Weekly blood counts during treatment. Taper dexamethasone off as tolerated. Return at the end of radiation, with MRI about 4 weeks after completion."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-21a",
+     "kind": "telephone",
+     "start": "2026-07-21T15:05",
+     "reason": "update from wife; refill",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call from wife",
+       "author": "RN",
+       "date": "2026-07-21T15:05",
+       "body": "Wife called with an update. Surgery was June 19; pathology was a glioblastoma. He started radiation yesterday, every weekday for six weeks, along with a daily chemotherapy pill from the cancer center. She's driving him. He is still weak on the right but walking around the house. She asked for a metformin refill; mail order says the prescription is out of refills. We have not received the discharge summary or any cancer center notes; requested again."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill",
+       "author": "PCP",
+       "date": "2026-07-21T16:20",
+       "body": "Metformin 1000 mg twice daily, 90 days, sent to mail order. Asked RN to let the wife know I'm available by phone and will reach out to the neuro-oncology team once their notes arrive."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-30a",
+     "kind": "outside_records",
+     "start": "2026-07-30T09:50",
+     "reason": "discharge summary received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hospital records received",
+       "author": "front desk",
+       "date": "2026-07-30T09:50",
+       "body": "Neurosurgery discharge summary, operative note and pathology from the 6/16-6/25 admission received on third request. Filed. Routed to PCP."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

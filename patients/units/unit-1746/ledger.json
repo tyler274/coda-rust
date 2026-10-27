@@ -1,0 +1,3995 @@
+{
+  "unit": "unit-1746",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001746/2021-06-21a: imaging order \"MRI brain with and without contrast\" names no one catalog lab, panel, study or procedure"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001746",
+      "given": "Stephanie",
+      "family": "Fleming",
+      "birth_date": "1986-02-21",
+      "address_line": "112 Orchard Hill Lane",
+      "phone": "+1-646-555-0151",
+      "email": "stephanie.fleming@example.test",
+      "marital_status": "single",
+      "summary": "Marketing manager with Hashimoto thyroiditis and mild asthma who joined in 2020; relapsing-remitting MS diagnosed by neurology in 2021 with later relapses, depression on sertraline, trigeminal neuralgia in 2024, a sertraline-dose tremor in 2025 and a liver injury with unexplained bruising at an ED in 2026.",
+      "events": [
+        {
+          "id": "2020-09-08a",
+          "kind": "telephone",
+          "start": "2020-09-08T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2020-09-08T10:20",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor closer to home after moving out to Belchertown; her old office is over an hour each way now. Insurance BCBS PPO verified. Membership info emailed. New patient appt set for Mon 9/14 at 9:00. Asked her to sign a release so we can get records from her prior PCP; form sent through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T09:00",
+          "end": "2020-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Hashimoto thyroiditis",
+              "action": "history",
+              "onset": "2011-06-01",
+              "note": "diagnosed in her twenties at her prior practice; on levothyroxine since"
+            },
+            {
+              "label": "Mild intermittent asthma",
+              "action": "history",
+              "onset": "1994-01-01",
+              "note": "since childhood; uses albuterol a few times a year"
+            },
+            {
+              "label": "Personal history of (healed) traumatic fracture",
+              "action": "history",
+              "onset": "2019-03-01",
+              "note": "pelvic fracture 2019, ORIF",
+              "icd10": "Z87.81"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 100,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hashimoto thyroiditis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1-2 puffs every 4-6 hours as needed for wheeze or shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "asthma"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              69
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 62.2,
+            "height_cm": 165.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-14T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T09:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-14T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 88
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T09:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T09:55",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Marketing manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Open reduction of fracture of pelvic bone with internal fixation",
+              "snomed": "608808003",
+              "performed": "2019-03-20T08:00"
+            },
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-14T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-14T09:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-14T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-09-14T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-14T10:40",
+              "author": "PCP",
+              "body": "34 yo woman, new to us. Moved to Belchertown this summer and wants care closer to home.\n\nPMH\n- Hashimoto's, picked up in her 20s when she was tired all the time. On levothyroxine 100 mcg for years, never had the dose changed that she remembers. No palpitations, no heat or cold intolerance.\n- Asthma since grade school. Albuterol maybe 3-4 times a year, mostly with colds or cold air running. No ED visits or steroid bursts as an adult.\n- Pelvic fracture in 2019 after a fall down the stairs at home, ORIF at the hospital where she lived then. Healed, walks without limits.\n\nMeds: levothyroxine 100 mcg qAM, albuterol HFA prn.\nAllergies: no known drug allergies.\nFHx: mother with Hashimoto's, father treated for depression, a maternal aunt with MS.\nSocial: marketing manager, works hybrid. Never smoked. 2-3 drinks a week, social. Lives in town. Exercises some, likes walking the reservoir trails.\n\nROS otherwise negative. PHQ-9 3.\n\nExam: well appearing. Thyroid not enlarged, no nodules felt. Lungs clear, no wheeze. RRR, no murmur. Abdomen soft. Well-healed surgical scars over the pelvis. Gait normal. Neuro grossly nonfocal. Skin clear.\n\nA/P\n1. Hashimoto thyroiditis - continue levothyroxine 100 mcg; TSH today.\n2. Mild intermittent asthma - well controlled on prn albuterol, nothing to add.\n3. Health maintenance - Tdap given (last one she thinks was in college). HIV and hep C screening once, she agrees. CBC, CMP, lipids. Records from prior PCP requested, including last Pap.\n4. Hx pelvic ORIF - no issues.\nRTC for a physical next fall, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "portal_message",
+          "start": "2020-09-16T16:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "New patient labs",
+              "date": "2020-09-16T16:05",
+              "author": "PCP",
+              "body": "Hi Stephanie, all of your labs came back fine: thyroid level right where it should be on the 100 mcg, blood counts, kidney and liver tests, cholesterol all normal, and the HIV and hepatitis C screens are negative. No changes. Good to meet you this week."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-28a",
+          "kind": "outside_records",
+          "start": "2020-09-28T13:30",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2019-07-10T10:00",
+              "text": "Specimen adequate for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care",
+              "date": "2020-09-28T13:30",
+              "author": "front desk",
+              "body": "Records arrived by fax from her former primary care office, 41 pages. Includes problem list (hypothyroidism/Hashimoto's, asthma), med list matching ours, 2019 hospital discharge summary for pelvic fracture with ORIF, and a July 2019 Pap/HPV co-test, negative. Scanned to chart and routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "date": "2020-09-29T07:45",
+              "author": "PCP",
+              "body": "Reviewed prior records. Nothing new: thyroid stable on the same dose for years, asthma mild. Pap/HPV co-test 7/2019 negative, so next due 2024. 2019 ortho discharge summary consistent with her account. Health maintenance updated."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-19a",
+          "kind": "nurse_visit",
+          "start": "2020-10-19T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-19T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-19T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2020-10-19T08:25",
+              "author": "RN",
+              "body": "In before work for her flu shot. Screening questions negative, no egg or vaccine reactions in the past. Quadrivalent given L deltoid, tolerated well, waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "pharmacy",
+          "start": "2021-03-22T11:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Albuterol refill",
+              "date": "2021-03-22T11:10",
+              "author": "MA",
+              "body": "E-refill request for albuterol HFA; last fill over a year ago. Per pt she used the last one up during a cold in February and is fine now. Sent 1 inhaler, 1 refill, per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-12a",
+          "kind": "portal_message",
+          "start": "2021-04-12T19:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-18T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine card",
+              "date": "2021-04-12T19:40",
+              "author": "patient",
+              "body": "Hi, I finished both Pfizer shots at the pharmacy (3/18 and 4/8). Attaching a picture of my card for my file. Second one knocked me out for a day but I'm fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: COVID vaccine card",
+              "date": "2021-04-13T09:05",
+              "author": "MA",
+              "body": "Thanks Stephanie, both doses are entered in your chart now. Glad you're feeling better."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "office_visit",
+          "start": "2021-06-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Numbness left arm and leg, blurry vision",
+          "vitals": {
+            "bp": [
+              127,
+              75
+            ],
+            "hr": 64,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 63.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-21T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-brain-2021",
+              "action": "placed",
+              "order": "MRI brain with and without contrast",
+              "category": "imaging",
+              "reason": "intermittent left-sided sensory symptoms, transient right monocular blurring"
+            },
+            {
+              "id": "neuro-ref-2021",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "intermittent left arm/leg paresthesias, episodes of right-eye blurring, brisk left-sided reflexes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-06-21T16:20",
+              "author": "PCP",
+              "body": "S: Comes in because for a few months she's had on-and-off numbness and pins and needles down the left arm and left leg. Comes and goes, sometimes for a day or two. Separately, twice this spring the vision in her right eye went blurry, like looking through a smudged lens, and it cleared on its own within a few days each time. No eye pain she remembers. She is worried, her aunt has MS and she has been reading. No headache, no weakness, no bladder change. No new meds.\n\nO: Vitals fine. Alert, a little anxious. CN II-XII grossly intact in the office, acuity not formally tested here. Strength 5/5 throughout. Reflexes brisker on the left arm and leg than the right. Sensation to light touch intact today. Gait normal.\n\nA/P: Episodic left-sided sensory symptoms plus transient monocular blurring with asymmetric reflexes. With the family history, demyelinating disease needs to be looked at. Ordering MRI brain with and without contrast and referring to neurology; she would like the first available. Discussed that we don't know anything yet. Call sooner for new weakness or vision loss."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-07-29a",
+          "kind": "imaging",
+          "start": "2021-07-29T07:30",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2021-07-29T07:30",
+              "text": "Indication: intermittent left-sided paresthesias, transient right visual blurring.\nTechnique: multiplanar multisequence MRI of the brain before and after IV gadolinium.\nFindings: Several T2/FLAIR hyperintense foci in the periventricular white matter. No enhancing lesion. No mass, hemorrhage or acute infarct on diffusion. Ventricles and sulci normal for age. Posterior fossa unremarkable. Orbits grossly normal. Major flow voids present.",
+              "conclusion": "Several periventricular white matter lesions. Not by themselves diagnostic of multiple sclerosis; correlate clinically."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-brain-2021",
+              "action": "done",
+              "date": "2021-07-29T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI brain with and without contrast",
+              "date": "2021-07-29T14:10",
+              "author": "radiology",
+              "body": "Outside imaging center report received electronically. Several periventricular white matter lesions, no enhancement; not diagnostic of MS on their own. See full report."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-30a",
+          "kind": "portal_message",
+          "start": "2021-07-30T12:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "MRI result",
+              "date": "2021-07-30T12:15",
+              "author": "PCP",
+              "body": "Stephanie, the MRI shows a few small spots in the white matter of the brain. On their own they don't make a diagnosis, and the neurologist is the right person to put them together with your symptoms. Your appointment on 8/11 is still on. Happy to talk by phone before then if you want; just reply here."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: MRI result",
+              "date": "2021-07-30T18:02",
+              "author": "patient",
+              "body": "Thank you for telling me straight. I'll wait for neuro. A little scared honestly."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "specialist_visit",
+          "start": "2021-08-11T10:00",
+          "service": "Neurology",
+          "reason": "Left arm and leg paresthesias, right visual blurring",
+          "conditions": [
+            {
+              "label": "Relapsing-remitting multiple sclerosis",
+              "action": "diagnosed",
+              "onset": "2021-03-01"
+            },
+            {
+              "label": "Right optic neuropathy",
+              "action": "diagnosed",
+              "onset": "2021-04-01",
+              "note": "after right optic neuritis; RAPD on exam",
+              "icd10": "H47.091"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-11T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-11T11:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "loinc": "2345-7",
+                  "unit": "mg/dL",
+                  "value": 95
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-11T11:00",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref-2021",
+              "action": "done",
+              "date": "2021-08-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2021-08-16T09:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP\nDate of visit: 08/11/2021\nReason for consult: left arm and leg paresthesias, right visual blurring. Referred by her primary care physician.\n\nThank you for asking me to see this 35-year-old woman. Over several months she has had intermittent numbness and tingling affecting the left arm and leg. She describes two separate episodes of blurred vision in the right eye, each clearing within a few days without treatment. She is understandably anxious and wants answers.\n\nPMH: Hashimoto thyroiditis, mild asthma, pelvic fracture with ORIF in 2019.\nMedications: levothyroxine 100 mcg daily; albuterol HFA 90 mcg 1-2 puffs q4-6h prn.\nAllergies: NKDA.\nFamily history: mother Hashimoto's; father depression; maternal aunt with MS.\nSocial: never smoker, social alcohol, marketing manager.\n\nExamination: Alert, fluent. Visual acuity normal in each eye. A right relative afferent pupillary defect is present. Fundi without obvious pallor on undilated view. Extraocular movements full. Face symmetric. Strength full. Reflexes increased in the left upper and lower limbs. Intention tremor of the left hand on finger-nose. Sensation and gait otherwise unremarkable.\n\nData: WBC 7.0, Hgb 13.5, platelets 250, glucose 95, B12 400. I reviewed the 7/29/21 MRI brain with and without contrast: several periventricular white matter lesions which, as the radiologist notes, would not be diagnostic in isolation.\n\nImpression: Two clinically distinct events - right optic neuritis, now with a residual right afferent defect, and left hemisensory symptoms with objective upper motor neuron signs on the left - together with periventricular lesions. I think this is relapsing-remitting multiple sclerosis. Right optic neuropathy from the earlier optic neuritis. B12 normal.\n\nPlan: We talked through the diagnosis at length; her aunt's course weighs on her. I will follow her in clinic and repeat imaging in the coming months. She should call us for any new vision loss, weakness or imbalance.\n\nCc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2021-08-25a",
+          "kind": "telehealth_visit",
+          "start": "2021-08-25T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after neurology",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-08-25T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2021-08-25T13:05",
+              "author": "PCP",
+              "body": "Video from her office at lunch. Wanted to go over the neurology letter. Neurology has diagnosed relapsing-remitting MS and a right optic neuropathy from an earlier optic neuritis. She has read the letter twice. Mostly wants to know how we split things: neurology runs the MS, we handle everything else and help coordinate. Numbness is quieter this month. Sleeping okay. Eating okay. Says she is \"processing.\" Offered to see her in person any time.\n\nA/P: RRMS, newly diagnosed by neurology; right optic neuropathy. Problem list updated. Continue thyroid and asthma meds as is. Physical in October as planned."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "annual_physical",
+          "start": "2021-10-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              75
+            ],
+            "hr": 75,
+            "rr": 12,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 63.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-13T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-10-13T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-13T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-13T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-13T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-13T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-13T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-13T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-ref-2021",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "low mood and anhedonia, PHQ-9 14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-13T09:40",
+              "author": "PCP",
+              "body": "35 yo here for her yearly visit.\n\nInterval: MS diagnosed by neurology in August. Since around then she has felt flat and down most days, about two months now. Lost interest in things she used to look forward to, including the trail walks; drags herself through work. Sleep broken. Appetite a bit lower. No thoughts of harming herself or of being better off dead, asked directly. No alcohol increase. Says the diagnosis hit hard but this feels like more than worry. Her father has been treated for depression and she recognizes it.\nPHQ-9 14.\n\nNeuro symptoms: occasional tingling, nothing new. Thyroid and asthma quiet.\n\nExam: tearful at times, otherwise well appearing. Neck supple, thyroid normal size. Lungs clear. Heart regular. Abdomen soft. No edema. Neuro unchanged from June. Skin normal.\n\nA/P\n1. Depressive symptoms, moderate by PHQ-9, no safety concerns. She would rather see psychiatry, partly because of the MS overlap with fatigue. Referral placed; crisis line numbers given. Will check in by portal in two weeks.\n2. RRMS - followed by neurology.\n3. Hashimoto - TSH today.\n4. Asthma - fine.\n5. HM - flu shot and COVID booster today. Pap not due until 2024."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "portal_message",
+          "start": "2021-10-27T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Check-in",
+              "date": "2021-10-27T08:50",
+              "author": "PCP",
+              "body": "Hi Stephanie, checking in as promised. Labs from your physical were all normal including thyroid. How are you holding up, and did psychiatry get you scheduled?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Check-in",
+              "date": "2021-10-27T21:16",
+              "author": "patient",
+              "body": "Thanks for checking. Same, not worse. They have me on November 8th. I'm okay till then."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-08a",
+          "kind": "specialist_visit",
+          "start": "2021-11-08T14:00",
+          "service": "Psychiatry",
+          "reason": "Depression, fatigue",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, single episode, moderate",
+              "action": "diagnosed",
+              "onset": "2021-08-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "major depressive disorder"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-08T15:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T15:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T15:00",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T15:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-ref-2021",
+              "action": "done",
+              "date": "2021-11-08T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry consultation",
+              "date": "2021-11-12T10:30",
+              "author": "psychiatry",
+              "body": "OUTSIDE BEHAVIORAL HEALTH PRACTICE - PSYCHIATRIC EVALUATION\nVisit date: 11/08/2021\n\nIdentifying data: 35-year-old woman, marketing manager, referred by her PCP for low mood. Known relapsing-remitting MS (neurology dx August 2021), Hashimoto thyroiditis on replacement, asthma.\n\nHistory: About six months of intermittent numbness and tingling in the hands and feet, along with fatigue and some unsteadiness on her feet. Her right-eye blurring has come and gone, each spell clearing over a few weeks. For roughly three months she has felt down and lost interest in usual activities. Sleep broken, energy poor, concentration slipping at work. Denies suicidal ideation, plan or intent; no history of attempts. No mania or psychosis. No bowel or bladder incontinence. Father has had depression.\n\nMeds: levothyroxine; albuterol HFA prn. Allergies: NKDA. Never smoker; 2-3 drinks weekly.\n\nExam: Cooperative, constricted affect, linear thought, no SI. On brief neurological screen: nystagmus on lateral gaze, diminished vibration sense in the lower extremities, hyperreflexia.\n\nLabs today: Hgb 13.2, WBC 7.0, TSH 2.5, B12 400, RPR non-reactive. Reviewed her July brain MRI report (multiple periventricular white matter lesions).\n\nAssessment: Major depressive disorder, single episode, moderate, in the setting of a new MS diagnosis. Thyroid and B12 do not explain the picture. Fatigue likely mixed MS and mood.\n\nPlan: Start sertraline 50 mg daily. Reviewed common early side effects. Supportive therapy referral list given. Safety plan reviewed. Follow up in about 8 weeks.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-22a",
+          "kind": "portal_message",
+          "start": "2021-11-22T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New medication",
+              "date": "2021-11-22T07:30",
+              "author": "patient",
+              "body": "Quick update since psychiatry started me on sertraline two weeks ago. Little queasy in the mornings the first week, taking it with breakfast fixed that. Nothing else to report, just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: New medication",
+              "date": "2021-11-22T12:45",
+              "author": "PCP",
+              "body": "Thanks for the update, Stephanie. Taking it with food is exactly right. It often takes 4-6 weeks to feel the full effect, so hang in there and keep your psychiatry follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-10a",
+          "kind": "outside_records",
+          "start": "2022-01-10T11:20",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry follow-up",
+              "date": "2022-01-10T11:20",
+              "author": "psychiatry",
+              "body": "OUTSIDE BEHAVIORAL HEALTH PRACTICE - MEDICATION FOLLOW-UP\nVisit date: 01/05/2022\n\nEight weeks on sertraline 50 mg. Mood noticeably better, sleeping through most nights, back to some walks. Mild nausea the first week, gone. No SI. PHQ-9 9 today, down from the low teens.\n\nAssessment: MDD, single episode, moderate - responding.\nPlan: Continue sertraline 50 mg daily. She is stable enough for her PCP to continue prescribing; we are glad to see her again if mood slips or the dose needs rethinking.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "office_visit",
+          "start": "2022-03-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 63.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-14T16:35",
+              "author": "PCP",
+              "body": "Mood follow-up, first since psychiatry handed sertraline back to us. Feels \"most of the way back.\" Enjoying work again, sleeping okay. No side effects now. PHQ-9 7. No SI.\nMS: tingling still drifts in and out, nothing new. Next neuro visit in May with a repeat MRI first.\nThyroid fine. Asthma: no albuterol since the winter cold.\nExam: bright, engaged. Lungs clear. Heart regular.\nA/P: MDD single episode, moderate, improving on sertraline 50 - continue, we'll refill. RRMS per neurology. Hashimoto - continue 100 mcg, TSH at the physical. Back in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-30a",
+          "kind": "pharmacy",
+          "start": "2022-03-30T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline and levothyroxine",
+              "date": "2022-03-30T09:40",
+              "author": "MA",
+              "body": "Pharmacy requesting 90-day supplies for sertraline 50 mg and levothyroxine 100 mcg. Both current on med list, seen 3/14. Sent 90 days x 3 refills each per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-09a",
+          "kind": "imaging",
+          "start": "2022-05-09T18:00",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2022-05-09T18:00",
+              "text": "Indication: multiple sclerosis, follow-up.\nComparison: 07/29/2021.\nFindings: Multiple T2/FLAIR hyperintense lesions in the periventricular white matter. No restricted diffusion. No mass effect, hemorrhage or hydrocephalus. Posterior fossa and cervicomedullary junction unremarkable on included images.",
+              "conclusion": "Multiple periventricular white matter lesions."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI brain follow-up",
+              "date": "2022-05-10T08:30",
+              "author": "radiology",
+              "body": "Copy of the neurology-ordered follow-up MRI brain received for our records. Multiple periventricular white matter lesions."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "specialist_visit",
+          "start": "2022-05-16T09:30",
+          "service": "Neurology",
+          "reason": "Multiple sclerosis follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-16T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-16T10:15",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-16T10:15",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 398
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2022-05-20T15:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP - FOLLOW-UP\nDate of visit: 05/16/2022\n\n36-year-old woman with relapsing-remitting MS, Hashimoto thyroiditis, asthma and depression on sertraline (via psychiatry, now her PCP).\n\nShe continues to have intermittent numbness and tingling of the left arm and leg, coming and going without a clear pattern, and the right eye still blurs from time to time and then settles on its own.\n\nMedications: levothyroxine 100 mcg daily; albuterol HFA prn; sertraline 50 mg daily. Allergies: NKDA.\nFamily history: mother with an autoimmune thyroid disease.\n\nExam: Acuity normal. Right relative afferent pupillary defect persists. Hyperreflexia of the left arm and leg. Left-hand intention tremor unchanged. Remainder of the exam as before.\n\nData: CBC, ESR and B12 all within normal limits. MRI brain with and without contrast 05/09/2022: multiple periventricular white matter lesions.\n\nImpression: RRMS; exam stable compared with August.\nPlan: Return in about six months or sooner with new symptoms.\n\ncc: PCP"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Erythrocyte Sedimentation Rate": 11,
+              "Vitamin B12": 430
+            }
+          }
+        },
+        {
+          "id": "2022-07-11a",
+          "kind": "portal_message",
+          "start": "2022-07-11T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler",
+              "date": "2022-07-11T07:55",
+              "author": "patient",
+              "body": "Morning! My albuterol expired last month, can I get a fresh one before we go camping? Also want to book my physical for late September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Inhaler",
+              "date": "2022-07-11T10:30",
+              "author": "MA",
+              "body": "Sent a new albuterol inhaler to your pharmacy. Physical booked Monday 9/26 at 8:00. Have fun camping!"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "annual_physical",
+          "start": "2022-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 67,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 63.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-26T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-26T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-26T08:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-26T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-26T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-26T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-26T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-26T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-26T09:15",
+              "author": "PCP",
+              "body": "36 yo, yearly visit.\nMood good on sertraline 50, PHQ-9 5. Work busy but manageable. Sleep fine.\nMS: saw neurology in May, exam stable, repeat MRI unchanged pattern per their letter. Same on-and-off tingling. No falls.\nThyroid: no symptoms. Asthma: one inhaler a year.\nMeds: levothyroxine 100 mcg, sertraline 50 mg, albuterol prn. NKDA.\nExam: well. Thyroid normal. Lungs clear. Heart regular, no murmur. Abdomen benign. No edema. Brisk reflexes on the left, as known; strength full; gait steady. Skin: no rashes.\nA/P: Health maintenance - flu and bivalent COVID booster today. CMP, CBC, TSH. Pap due 2024. MDD in remission on sertraline - continue. RRMS - per neurology. Hashimoto - continue. Asthma - mild intermittent, controlled. RTC 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "imaging",
+          "start": "2022-10-27T17:30",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2022-10-27T17:30",
+              "text": "Indication: new diplopia in a patient with multiple sclerosis.\nComparison: 05/09/2022.\nTechnique: multiplanar imaging before and after gadolinium.\nFindings: Multiple periventricular white matter T2/FLAIR hyperintense lesions. No acute infarct. No mass or hemorrhage. Ventricles normal in size. Orbits unremarkable.",
+              "conclusion": "Multiple periventricular white matter lesions."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI brain with gadolinium",
+              "date": "2022-10-28T09:10",
+              "author": "radiology",
+              "body": "Report of neurology-ordered MRI brain with gadolinium received and filed: multiple periventricular white matter lesions."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-31a",
+          "kind": "specialist_visit",
+          "start": "2022-10-31T13:15",
+          "service": "Neurology",
+          "reason": "Double vision",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology visit - diplopia",
+              "date": "2022-11-04T12:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP\nDate of visit: 10/31/2022\nSeen in urgent slot (covering for her usual neurologist).\n\n36-year-old woman with established multiple sclerosis, seen in this clinic last year for left-sided numbness and right visual blurring. For one week she has had horizontal double vision, worse looking to the left, which disappears if she covers either eye. Over the last few months there has also been occasional tingling in the hands and feet. Previous right optic neuritis settled without treatment.\n\nMedications: levothyroxine 100 mcg daily, albuterol HFA prn, sertraline 50 mg daily. NKDA.\nFamily history: mother Hashimoto thyroiditis; father depression; maternal aunt MS.\n\nExam: On leftward gaze the right eye fails to adduct, with nystagmus of the abducting left eye. Visual acuity 20/20 OD and OS. The other cranial nerves are normal. Sensation intact to all modalities. Reflexes increased in both lower limbs.\n\nMRI brain with gadolinium 10/27/2022: multiple periventricular white matter lesions.\n\nImpression: Right internuclear ophthalmoplegia - a relapse of her MS.\nPlan: Follow up in this clinic; call if the diplopia worsens or new symptoms appear.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "pharmacy",
+          "start": "2022-12-05T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Levothyroxine supply",
+              "date": "2022-12-05T14:00",
+              "author": "MA",
+              "body": "Pharmacy called: her usual levothyroxine manufacturer is backordered, they want to dispense a different generic, same 100 mcg. OK per PCP. Pt notified by portal; TSH will be checked at her next routine draw."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-23a",
+          "kind": "office_visit",
+          "start": "2023-01-23T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              71
+            ],
+            "hr": 73,
+            "spo2": 97,
+            "weight_kg": 64.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-23T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-23T15:50",
+              "author": "PCP",
+              "body": "Four-month check. The double vision she had at the end of October went away over the next few weeks without anything being done; she was driving again by late November. Some hand tingling here and there. Mood good, PHQ-9 4. Took a long holiday break. Thyroid fine.\nExam: eye movements full and conjugate today, no nystagmus that I can see. Lungs clear. Heart regular.\nA/P: RRMS, recent INO relapse now resolved - neuro to follow. MDD on sertraline 50, doing well. Hashimoto stable. Next visit spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-06a",
+          "kind": "office_visit",
+          "start": "2023-03-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-03-06T08:10",
+              "author": "front desk",
+              "body": "Pt called to cancel today, product launch at work ran late all week. Feels fine, will reschedule after the launch. Left on recall list for May."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-05-03a",
+          "kind": "hospital_admission",
+          "start": "2023-05-03T09:40",
+          "end": "2023-05-08T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Sudden right leg weakness and numbness, blurred vision",
+          "medications": [
+            {
+              "drug_text": "methylprednisolone 1000 MG Injection",
+              "action": "start",
+              "sig": "1,000 mg IV once daily for 5 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "acute multiple sclerosis exacerbation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              76
+            ],
+            "hr": 53,
+            "rr": 16,
+            "temp_c": 36.2,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-03T15:30",
+              "results": [
+                {
+                  "test": "Oligoclonal bands in CSF",
+                  "loinc": "32358-4",
+                  "text": "Present"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2023-05-03T12:10",
+              "text": "Indication: acute right leg weakness and numbness, known multiple sclerosis.\nComparison: 10/27/2022.\nFindings: Multiple periventricular white matter T2/FLAIR hyperintense lesions, some of which enhance after gadolinium, indicating active demyelination. No hemorrhage, mass or acute infarct. Ventricles normal.",
+              "conclusion": "Multiple periventricular white matter lesions, some enhancing: active demyelinating disease."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Lumbar puncture",
+              "snomed": "277762005",
+              "performed": "2023-05-03T15:30"
+            },
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-05-03T09:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2023-05-03T18:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2023-05-08T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2023-05-11T10:00",
+              "author": "emergency medicine",
+              "body": "REGIONAL MEDICAL CENTER - EMERGENCY DEPARTMENT\nDate of service: 05/03/2023\n\nCC: Right leg weakness and numbness since this morning.\n\nHPI: 37-year-old woman with MS and previous visual episodes. Woke this morning unable to lift the right leg properly, with numbness down the leg. Also a week of blurred vision in the left eye.\nPMH: RRMS; previous optic neuritis years ago that cleared by itself; depression; Hashimoto thyroiditis; asthma. Pelvic ORIF 2019.\nHome meds: levothyroxine 100 mcg daily, albuterol HFA prn, sertraline 50 mg daily. NKDA.\nFamily: mother Hashimoto's, father depression, maternal aunt MS. Social: never smoker, social alcohol.\n\nExam: Right lower extremity strength 3/5 with reduced light-touch sensation. Other limbs full strength.\n\nMRI brain with and without contrast: multiple periventricular lesions, some gadolinium-enhancing. LP performed; CSF oligoclonal bands present.\n\nAssessment: Acute exacerbation of multiple sclerosis.\nDisposition: Admitted to medicine with neurology consult for IV methylprednisolone."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2023-05-11T10:05",
+              "author": "hospital medicine",
+              "body": "REGIONAL MEDICAL CENTER - DISCHARGE SUMMARY\nAdmitted 05/03/2023, discharged 05/08/2023.\n\nPrincipal diagnosis: Acute exacerbation of relapsing-remitting multiple sclerosis.\n\nCourse: Admitted from the ED with acute right leg weakness (3/5) and numbness and a week of left-eye blurring. MRI with enhancing periventricular lesions; CSF positive for oligoclonal bands. Received IV methylprednisolone 1,000 mg daily for five days. At the end of the course her symptoms had not improved: right leg remains weak and numb. Tolerated the steroids. Walking short distances with supervision; safe for discharge home.\n\nDischarge medications: levothyroxine 100 mcg daily; sertraline 50 mg daily; albuterol HFA prn. No new medications.\nAllergies: NKDA.\nFollow-up: Neurology clinic; PCP within 1-2 weeks.\n\ncc: PCP, neurology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2023-05-11T10:10",
+              "author": "front desk",
+              "body": "ED record, MRI report and discharge summary from the regional medical center (5/3-5/8) received by fax and scanned. Routed to PCP. Pt already scheduled 5/15."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-05-15a",
+          "kind": "office_visit",
+          "start": "2023-05-15T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              71
+            ],
+            "hr": 52,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2023-05-15T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2023-05-15T11:50",
+              "author": "PCP",
+              "body": "Seen one week after discharge from the regional medical center (5/3-5/8) for an MS relapse: right leg weakness and numbness, enhancing lesions on MRI, oligoclonal bands on LP. Five days of IV methylprednisolone, no improvement by discharge.\n\nToday: right leg still weak and numb, no better than at discharge. Getting around the house carefully, a friend drove her today. Left eye blur about the same. No fevers, no bladder trouble. Slept poorly on the steroids, now settling. Mood shaken but she is coping; no SI.\n\nExam: right leg weaker than the left, lifts it against gravity only; right leg light touch reduced. Lungs clear.\n\nA/P: RRMS with acute relapse, not improved after IV steroids. Neurology appointment requested soonest, our office called theirs today. Work note for two weeks out, can extend. Continue current meds. Return to ED for new weakness, vision loss or fever."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work paperwork",
+              "date": "2023-05-22T13:30",
+              "author": "patient",
+              "body": "HR sent me a leave form for my provider to fill in, uploading it here. Neuro is fitting me in soon. I'm working a few hours from home but not going in yet."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Work paperwork",
+              "date": "2023-05-23T07:20",
+              "author": "PCP",
+              "body": "Got it, filled out and sent back to your HR through the fax on the form. I listed intermittent leave as well so you're covered for appointments. Hope the neuro visit gives you a plan."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "telephone",
+          "start": "2023-06-12T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Work note",
+              "date": "2023-06-12T10:40",
+              "author": "front desk",
+              "body": "Pt asking for an updated work note: returning to the office part time starting 6/19, full time in July if she tolerates it. Note drafted per PCP and uploaded to portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "office_visit",
+          "start": "2023-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              79
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 63.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-21T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-08-21T09:40",
+              "author": "PCP",
+              "body": "Follow-up. Back at work full time since July. Neurology following her. Mood okay, a rough spring, PHQ-9 6. No SI. Sertraline 50 continuing.\nThyroid no symptoms; asthma quiet over the summer.\nExam: lungs clear, heart regular. Walks into the room without help.\nA/P: RRMS per neurology. MDD single episode on sertraline, stable. Hashimoto - labs at the physical. Physical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "annual_physical",
+          "start": "2023-10-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              131,
+              69
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 64.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-16T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-16T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-16T08:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-16T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-16T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-16T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-16T09:10",
+              "author": "PCP",
+              "body": "37 yo yearly visit.\nSince last: spring MS relapse with the admission; neurology following. Doing her job. Mood good, PHQ-9 4.\nMeds: levothyroxine 100 mcg, sertraline 50 mg, albuterol prn. NKDA.\nROS: no chest pain or breathing trouble. Periods regular.\nExam: thyroid normal, lungs clear, heart regular. Abdomen soft. No edema. Neuro: hyperreflexia, gait steady without a device.\nA/P: Flu and updated COVID today. CMP, CBC, TSH, lipids. Pap/HPV next year. Continue everything. Follow-up 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-29a",
+          "kind": "imaging",
+          "start": "2024-01-29T19:00",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2024-01-29T19:00",
+              "text": "Indication: multiple sclerosis; facial pain.\nComparison: 05/03/2023.\nFindings: Multiple periventricular white matter T2/FLAIR hyperintensities. No restricted diffusion. No hemorrhage or mass. Ventricles and extra-axial spaces normal.",
+              "conclusion": "Multiple periventricular white matter lesions."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI brain",
+              "date": "2024-01-30T08:15",
+              "author": "radiology",
+              "body": "Neurology-ordered MRI brain with and without contrast, copy to PCP: multiple periventricular white matter lesions."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-05a",
+          "kind": "specialist_visit",
+          "start": "2024-02-05T10:45",
+          "service": "Neurology",
+          "reason": "Facial pain",
+          "conditions": [
+            {
+              "label": "Trigeminal neuralgia",
+              "action": "diagnosed",
+              "onset": "2023-08-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "trigeminal neuralgia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology visit - facial pain",
+              "date": "2024-02-09T14:20",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP\nDate of visit: 02/05/2024\n\n37-year-old woman with relapsing-remitting MS, followed in our clinic. For six months she has had bouts of severe, stabbing pain in the cheeks and jaw. Chewing sets it off, and sometimes just a light touch to the face; each jab lasts a few seconds up to a couple of minutes. She also mentions fatigue and the odd spell of blurred vision, which she had been putting down to a heavy workload.\n\nMedications: levothyroxine 100 mcg daily; albuterol HFA prn; sertraline 50 mg daily. NKDA.\nFamily history: maternal aunt with MS.\n\nExam: Light touch over the maxillary and mandibular areas provokes the pain. Mild weakness of the left leg. Hyperreflexia.\n\nMRI brain with and without contrast 01/29/2024: multiple periventricular white matter lesions.\n\nImpression: Trigeminal neuralgia, in the setting of MS.\nPlan: Carbamazepine 200 mg twice daily. Please check sodium, CBC and liver tests in about four weeks. Follow up in six months, sooner if the pain is not controlled.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "telephone",
+          "start": "2024-02-12T12:10",
+          "orders": [
+            {
+              "id": "cbz-bmp-2024",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "carbamazepine monitoring"
+            },
+            {
+              "id": "cbz-cbc-2024",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "carbamazepine monitoring"
+            },
+            {
+              "id": "cbz-lft-2024",
+              "action": "placed",
+              "order": "Hepatic Panel (LFT)",
+              "category": "lab",
+              "reason": "carbamazepine monitoring"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Carbamazepine labs",
+              "date": "2024-02-12T12:10",
+              "author": "RN",
+              "body": "Called pt re: neurology letter asking us to do carbamazepine safety labs. She started it 2/6. A little dizzy the first couple of days, better now, and the face pain is already less sharp. Labs ordered per PCP, she will come Mon 3/4 before work."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "lab_only",
+          "start": "2024-03-04T07:40",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-04T07:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-04T07:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 208
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-03-04T07:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-04T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbz-bmp-2024",
+              "action": "done",
+              "date": "2024-03-04T07:40"
+            },
+            {
+              "id": "cbz-cbc-2024",
+              "action": "done",
+              "date": "2024-03-04T07:40"
+            },
+            {
+              "id": "cbz-lft-2024",
+              "action": "done",
+              "date": "2024-03-04T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Carbamazepine labs",
+              "date": "2024-03-05T08:30",
+              "author": "PCP",
+              "body": "Stephanie, your sodium, blood counts and liver tests are all normal on the carbamazepine. I'm sending a copy to neurology. Keep taking it as prescribed."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "office_visit",
+          "start": "2024-04-22T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 63.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-22T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-22T17:05",
+              "author": "PCP",
+              "body": "Six-month visit. Trigeminal neuralgia diagnosed by neurology in February, on carbamazepine 200 mg bid. No face pain since about mid-March, eating normally again. Some daytime sleepiness at first, faded. Safety labs in March were normal.\nMood steady, PHQ-9 5. Thyroid and asthma unchanged.\nExam: comfortable. Light touch to the cheeks does not trigger pain today. Lungs clear. Heart regular.\nA/P: Trigeminal neuralgia controlled on carbamazepine - neuro follows. RRMS per neuro. MDD stable on sertraline 50. Hashimoto - continue 100 mcg. Physical in the fall, Pap due then."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "portal_message",
+          "start": "2024-06-03T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2024-06-03T21:10",
+              "author": "patient",
+              "body": "Can I move my fall physical to early October? Work travel the last week of September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Scheduling",
+              "date": "2024-06-04T09:15",
+              "author": "front desk",
+              "body": "Done - you're now Monday 10/7 at 8:00. Please plan for your Pap at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "specialist_visit",
+          "start": "2024-08-12T14:30",
+          "service": "Neurology",
+          "reason": "Trigeminal neuralgia follow-up",
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "pain-free; tapered off over 2 weeks"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2024-08-16T11:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP - FOLLOW-UP\nDate of visit: 08/12/2024\n\nTrigeminal neuralgia: no attacks since March on carbamazepine 200 mg twice daily. She would like to try coming off it. Reasonable after this long without pain.\n\nMS: no new symptoms since the last visit. Exam unchanged from February.\n\nPlan: Taper carbamazepine - 200 mg once daily for one week, then 100 mg daily for one week, then stop. Restart and call us if the pain returns. Return in six months.\n\nMedications after taper: levothyroxine 100 mcg daily, sertraline 50 mg daily, albuterol HFA prn. NKDA.\n\ncc: PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside letter review",
+              "date": "2024-08-19T08:05",
+              "author": "PCP",
+              "body": "Neurology letter reviewed. Carbamazepine being tapered off over 2 weeks; removed from active med list. Trigeminal neuralgia remains on problem list."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "annual_physical",
+          "start": "2024-10-07T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              78
+            ],
+            "hr": 62,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 64.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-07T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-07T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-07T08:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-10-07T08:35",
+              "text": "Specimen adequate, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2024-10-10T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-07T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-07T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-07T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-07T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-07T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-07T09:20",
+              "author": "PCP",
+              "body": "38 yo, yearly visit.\nInterval: off carbamazepine since late August, no face pain since. MS quiet, saw neuro in August.\nMood: a bit flatter since the summer, still functioning; PHQ-9 6. No SI. Wants to stay on 50 for now and see.\nMeds: levothyroxine 100 mcg, sertraline 50 mg, albuterol prn. NKDA.\nGyn: periods regular; Pap/HPV due (last 2019).\nExam: thyroid normal, lungs clear, heart regular, breasts without masses, abdomen soft. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV collected. Neuro: hyperreflexia, gait steady.\nA/P: Pap/HPV done. Flu and COVID today. CMP, CBC, TSH. Mammogram screening starts at 40 - will order at next physical. Mood - watch; revisit in January. Continue meds."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-11a",
+          "kind": "portal_message",
+          "start": "2024-10-11T10:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and labs",
+              "date": "2024-10-11T10:00",
+              "author": "PCP",
+              "body": "Good news: your Pap and HPV test are normal, so the next one is in five years. Thyroid, blood counts and chemistry panel all normal too."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "pharmacy",
+          "start": "2024-12-02T09:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day refills",
+              "date": "2024-12-02T09:15",
+              "author": "MA",
+              "body": "Pharmacy refill requests: levothyroxine 100 mcg #90 and sertraline 50 mg #90. Both on active list, seen in October. Approved, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "office_visit",
+          "start": "2025-01-08T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low mood",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "major depressive disorder"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              66
+            ],
+            "hr": 76,
+            "spo2": 98,
+            "weight_kg": 63.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-08T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-08T12:40",
+              "author": "PCP",
+              "body": "Came in as planned. Mood has slid over the past couple of months: low most days, pulling back from friends, forcing herself through work. Sleep okay. No SI, no plan, asked directly. PHQ-9 13, up from 6 in October. Taking sertraline 50 every day.\nExam: flat affect, otherwise well. Lungs clear.\nA/P: MDD, single episode, moderate - symptoms back up on 50 mg after a good stretch. Increase sertraline to 100 mg daily. Reviewed what to watch for with a dose change. Portal check-in in 2-3 weeks, visit in about 6-8 weeks, sooner if worse. Psychiatry is an option again if this doesn't help - she'd like to try the dose first."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T20:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shaky hands",
+              "date": "2025-01-27T20:45",
+              "author": "patient",
+              "body": "Mood maybe a little better on the higher dose. But for the last couple of weeks my hands have been shaky, worst when I'm writing or holding a coffee. Not my usual MS stuff, it's both hands. Should I be worried?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Shaky hands",
+              "date": "2025-01-28T08:10",
+              "author": "RN",
+              "body": "Thanks for letting us know. Dr. would like to see you in person - we have Monday 2/3 at 9:30. Keep taking your medicines as usual until then, and call if you get new weakness or trouble walking."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "office_visit",
+          "start": "2025-02-03T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hand tremor",
+          "conditions": [
+            {
+              "label": "Drug-induced tremor due to sertraline (enhanced physiologic tremor)",
+              "action": "diagnosed",
+              "onset": "2025-01-13",
+              "icd10": "G25.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "tremor"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "major depressive disorder"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 63.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-03T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-03T10:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-03T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-03T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-03T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - tremor",
+              "date": "2025-02-03T10:30",
+              "author": "PCP",
+              "body": "S: About three weeks of shaking in both hands, worse when she writes or holds a mug, not there when her hands are resting in her lap. Started roughly a week after sertraline went from 50 to 100 mg on 1/8. No head injury. No new meds or supplements otherwise, caffeine unchanged, no palpitations or heat intolerance. Mood a little better.\n\nO: Vitals normal. Fine, fast tremor of both outstretched hands, which gets more pronounced on finger-to-nose. No rest tremor, no rigidity, no bradykinesia. Gait steady. Neuro otherwise at her baseline.\n\nA/P\n1. Tremor - enhanced physiologic tremor, timing fits the sertraline increase. Thyroid overactivity on replacement would be the other thing to exclude: TSH, CBC, lytes and glucose today. Plan to drop sertraline back to 50 mg daily.\n2. MDD - partial improvement at 100; we'll see how she does back at 50 and reconsider (psychiatry, another agent) if mood slips.\nFollow up 6 weeks.\n\nAddendum 2/4: CBC, TSH, electrolytes and glucose all normal. Sertraline 50 mg sent; she has 50s at home already. Drug-induced tremor due to sertraline added to problem list."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-17a",
+          "kind": "office_visit",
+          "start": "2025-03-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tremor and mood follow-up",
+          "conditions": [
+            {
+              "label": "Drug-induced tremor due to sertraline (enhanced physiologic tremor)",
+              "action": "resolved",
+              "icd10": "G25.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 63.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-17T09:30",
+              "author": "PCP",
+              "body": "Back on sertraline 50 for six weeks. The shaking faded within about ten days and has not come back. Mood has held - not where it was a year ago but better than January, PHQ-9 8. No SI.\nExam: no tremor with arms outstretched or finger-nose today.\nA/P: Drug-induced tremor - resolved after dose reduction. MDD on sertraline 50, improving; keep as is, low threshold for psychiatry. Recheck in 3 months (video fine)."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-23T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-23T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-06-23T12:40",
+              "author": "PCP",
+              "body": "Video, she is in her car outside the office on lunch. Doing well. Mood better with longer days, PHQ-9 5. No tremor. Albuterol once this year. Continue sertraline 50, levothyroxine 100. Physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "portal_message",
+          "start": "2025-09-08T08:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical reminder",
+              "date": "2025-09-08T08:20",
+              "author": "front desk",
+              "body": "Reminder: your annual physical is Monday 10/6 at 8:00. Please come fasting for labs. Flu and COVID vaccines will be available at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "annual_physical",
+          "start": "2025-10-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 71,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-06T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-06T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-06T08:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-06T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-06T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-06T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-06T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-06T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening, due after 40th birthday in February"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-06T09:20",
+              "author": "PCP",
+              "body": "39 yo, yearly visit.\nMood good, PHQ-9 4, steady on sertraline 50 since February. No tremor. Face pain has not returned off carbamazepine. MS: no new attacks this year that she is aware of.\nMeds: levothyroxine 100 mcg, sertraline 50 mg, albuterol prn. NKDA.\nExam: thyroid normal; lungs clear; heart regular; breasts no masses; abdomen soft; no edema. Neuro: hyperreflexia, steady gait.\nA/P: Flu and COVID today. CMP, CBC, TSH, lipids. Screening mammogram ordered for after her 40th birthday; she'll schedule in the spring. Pap next 2029. Continue all meds. See in the spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "portal_message",
+          "start": "2025-10-08T14:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2025-10-08T14:20",
+              "author": "PCP",
+              "body": "Your labs look good across the board: thyroid in range on the same dose, cholesterol fine, kidney and liver tests and blood counts normal."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "pharmacy",
+          "start": "2026-01-05T11:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "New year refills",
+              "date": "2026-01-05T11:30",
+              "author": "MA",
+              "body": "Pharmacy refill requests after insurance renewal: levothyroxine 100 mcg #90, sertraline 50 mg #90. Approved, 3 refills each. Insurance still BCBS PPO, no change."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "ed_visit",
+          "start": "2026-02-04T07:50",
+          "end": "2026-02-05T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe abdominal pain",
+          "conditions": [
+            {
+              "label": "Hepatic injury",
+              "action": "diagnosed",
+              "onset": "2026-02-03",
+              "icd10": "S36.119A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for pain, no more than 3,000 mg a day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "abdominal pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              77
+            ],
+            "hr": 70,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-04T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-02-04T08:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 150
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 125
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 100
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-04T08:15",
+              "results": [
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 50
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-04T08:15",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-05T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-02-04T09:40",
+              "text": "Indication: acute right upper quadrant pain with tenderness and elevated transaminases.\nTechnique: axial CT of the abdomen and pelvis after IV contrast, portal venous phase, with multiplanar reformats.\nFindings: Small subcapsular hematoma along the right hepatic lobe. No active contrast extravasation. No free fluid in the abdomen or pelvis. Liver otherwise enhances normally. Gallbladder, bile ducts, pancreas, spleen, adrenals and kidneys normal. Bowel normal in caliber. Appendix normal. Uterus and ovaries unremarkable. Postoperative change of prior pelvic fixation, healed. Lung bases clear.",
+              "conclusion": "Small subcapsular hematoma of the right hepatic lobe without active extravasation or free fluid."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-04T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-02-09T09:00",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL - EMERGENCY DEPARTMENT AND OBSERVATION UNIT\nDate of service: 02/04/2026 - 02/05/2026\n\nCC: Abdominal pain.\n\nHPI: 39 yo F with MS, Hashimoto thyroiditis, asthma and depression, with a history of a medication side effect, presents with severe abdominal pain that came on suddenly last night and has grown steadily worse. No nausea or vomiting, no change in bowel habits. She does not describe a fall or other injury. Appears anxious and has trouble keeping eye contact during the interview.\nPMH: as above; previously hospitalized for a pelvic fracture after a fall down the stairs, treated with ORIF.\nHome meds: levothyroxine 100 mcg daily; albuterol HFA prn; sertraline 50 mg daily. NKDA.\nSocial: never smoker, social alcohol, marketing manager.\n\nExam: Multiple bruises of varying ages on both arms. A single bruise on the abdomen that looks recent. RUQ tenderness with guarding, no rebound.\n\nLabs: Hgb 12.5, WBC 9.0, plt 250. AST 150, ALT 125, alk phos 100. Amylase 50, lipase 45.\nCT abdomen/pelvis with contrast: small subcapsular hematoma of the right hepatic lobe, no active extravasation, no free fluid.\n\nAssessment: Hepatic injury.\n\nCourse: Kept overnight in observation for pain control and a repeat count. Morning Hgb 12.2. Pain improved; tolerating diet.\nSafety: Asked privately, without anyone else present, whether she feels safe at home and whether anyone has hurt her. She said she is safe and did not want to talk further. Declined social work. Given printed resource information including a 24-hour hotline.\n\nDischarge: Acetaminophen as needed, avoid NSAIDs and strenuous activity for now. PCP follow-up within one week; return for worsening pain, dizziness or fainting.\n\ncc: PCP"
+            },
+            {
+              "type": "Outside Records",
+              "title": "ED records received",
+              "date": "2026-02-09T09:05",
+              "author": "front desk",
+              "body": "ED and observation records from 2/4-2/5 received by fax, CT report attached. Scanned and routed to PCP. Pt booked 2/11."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "office_visit",
+          "start": "2026-02-11T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              81
+            ],
+            "hr": 79,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-02-11T15:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-11T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-11T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lft-2026-03",
+              "action": "placed",
+              "order": "Hepatic Panel (LFT)",
+              "category": "lab",
+              "reason": "follow-up after hepatic injury"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED follow-up",
+              "date": "2026-02-11T16:00",
+              "author": "PCP",
+              "body": "S: Seen at the ED 2/4 with sudden severe abdominal pain; CT showed a small subcapsular hematoma of the right lobe of the liver, AST 150 / ALT 125, held overnight with a stable count, sent home on acetaminophen. Today she says the pain is much better, a dull ache under the right ribs if she twists. Eating normally. No fever, no lightheadedness. She does not offer how it happened and I did not press beyond asking once.\n\nO: Vitals normal. Fading bruises on both forearms. Abdomen soft, mild RUQ tenderness, no guarding.\n\nA/P\n1. Hepatic injury - clinically improving. LFTs today, repeat in a month. No contact sports or heavy lifting until we see normal values.\n2. Safety - Spoke with her alone. Asked if anyone at home or elsewhere is hurting her or scaring her. She said no, that she is fine, and didn't want to go into it. Told her she can bring it up with me any time, by phone or portal, and that we can help quietly if things ever change. Gave the same hotline info the ED did.\n3. MDD on sertraline 50 - PHQ deferred today.\n\nResult addendum 2/12: AST 61, ALT 68 - coming down. Repeat 3/11."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T13:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests",
+              "date": "2026-02-12T13:30",
+              "author": "PCP",
+              "body": "Stephanie, your liver numbers are already about halfway back toward normal (AST 61, ALT 68). That fits with healing. Let's recheck on March 11. Reach out any time - for this or anything else."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Liver tests",
+              "date": "2026-02-12T19:05",
+              "author": "patient",
+              "body": "Thanks. I'll come in on the 11th."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T08:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab reminder",
+              "date": "2026-03-09T08:00",
+              "author": "MA",
+              "body": "Reminder that your repeat liver blood test is due this Wednesday 3/11. No appointment needed, walk in any time 7-11."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "lab_only",
+          "start": "2026-03-11T07:45",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-11T07:45",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-11T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lft-2026-03",
+              "action": "done",
+              "date": "2026-03-11T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests normal",
+              "date": "2026-03-11T16:10",
+              "author": "PCP",
+              "body": "Liver tests are back to normal. You can go back to your usual activity. I'll see you in May for a regular check."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "imaging",
+          "start": "2026-04-13T08:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-04-13T08:30",
+              "text": "Bilateral screening mammogram with tomosynthesis, baseline study. Breasts are scattered areas of fibroglandular density. No suspicious mass, calcification or architectural distortion in either breast. Skin and axillae unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "done",
+              "date": "2026-04-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram",
+              "date": "2026-04-14T09:00",
+              "author": "PCP",
+              "body": "Your first mammogram is normal. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "office_visit",
+          "start": "2026-05-11T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Hepatic injury",
+              "action": "resolved",
+              "icd10": "S36.119A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              76
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 63.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-11T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-05-11T16:50",
+              "author": "PCP",
+              "body": "Follow-up. No abdominal pain since early March; LFTs normalized 3/11. Back to her walks. Mood okay, PHQ-9 6, no SI. Asked again, alone, whether things are okay at home: she says yes. Mammogram in April normal.\nExam: abdomen soft, nontender, no organomegaly. No bruising seen today. Lungs clear.\nA/P: Hepatic injury - resolved. MDD on sertraline 50 - stable. RRMS per neurology. Hashimoto - continue. Physical in August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "pharmacy",
+          "start": "2026-07-06T10:00",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "date": "2026-07-06T10:00",
+              "author": "MA",
+              "body": "Refill requests for levothyroxine 100 mcg and sertraline 50 mg, 90-day each, plus albuterol HFA. All on the current list; approved per PCP. Physical on the books for 8/20."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "annual_physical",
+          "start": "2026-08-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 71,
+            "rr": 15,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 62.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-20T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-20T08:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-08-20T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-20T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-08-20T09:25",
+              "author": "PCP",
+              "body": "40 yo, yearly visit (first one in her forties, as she pointed out).\nInterval: liver injury from February resolved, LFTs normal in March. No abdominal symptoms. MS: no new attacks she reports; neurology following. Face pain has stayed away. No tremor.\nMood: steady, PHQ-9 5. No SI.\nMeds: levothyroxine 100 mcg daily, sertraline 50 mg daily, albuterol HFA prn. NKDA.\nHM: mammogram 4/2026 normal; Pap/HPV 10/2024 normal; Tdap 2020. Colon screening starts at 45. Flu and COVID once available this fall, nurse visit.\nExam: well. Thyroid normal size, no nodules. Lungs clear. Heart regular. Breasts without masses. Abdomen soft, nontender. Skin without bruising. Neuro: hyperreflexia, steady gait.\nA/P: CMP, CBC, TSH today. Continue current meds. Follow-up in November."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "portal_message",
+          "start": "2026-08-21T15:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2026-08-21T15:40",
+              "author": "PCP",
+              "body": "All of your labs from yesterday are normal, including thyroid and liver tests. No changes. See you in November."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical labs",
+              "date": "2026-08-21T18:22",
+              "author": "patient",
+              "body": "Great, thank you! Can I get the flu shot at the November visit or should I come in sooner?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical labs",
+              "date": "2026-08-24T09:00",
+              "author": "RN",
+              "body": "We expect flu vaccine in late September - I'll message you when it's in so you can come for a quick nurse visit rather than wait."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-16a",
+          "kind": "office_visit",
+          "start": "2026-11-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Drug-induced tremor due to sertraline (enhanced physiologic tremor)|G25.1": {
+        "code": "G25.1",
+        "display": "Drug-induced tremor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hepatic injury|S36.119A": {
+        "code": "S36.119A",
+        "display": "Unspecified injury of liver, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of (healed) traumatic fracture|Z87.81": {
+        "code": "Z87.81",
+        "display": "Personal history of (healed) traumatic fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Right optic neuropathy|H47.091": {
+        "code": "H47.091",
+        "display": "Other disorders of optic nerve, not elsewhere classified, right eye",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "carbamazepine 200 MG Oral Tablet": {
+        "code": "308979",
+        "display": "carbamazepine 200 MG Oral Tablet",
+        "ingredient": "carbamazepine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "methylprednisolone 1000 MG Injection": {
+        "code": "1743726",
+        "display": "methylprednisolone 1000 MG Injection",
+        "ingredient": "methylprednisolone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oligoclonal bands in CSF": {
+        "code": "32358-4",
+        "display": "Oligoclonal bands [Presence] in Cerebrospinal Fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24587-8",
+        "display": "MR Brain WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Lumbar puncture": {
+        "code": "277762005",
+        "display": "Lumbar puncture",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Open reduction of fracture of pelvic bone with internal fixation": {
+        "code": "608808003",
+        "display": "Open reduction of fracture of pelvic bone with internal fixation",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001872",
+      "given": "Jada",
+      "family": "Owusu",
+      "birth_date": "2000-11-09",
+      "address_line": "18 Plumtree Road",
+      "phone": "+1-603-555-0176",
+      "email": "jada.owusu@example.test",
+      "marital_status": "single",
+      "summary": "Young administrative assistant with HbSS sickle cell disease and HIV diagnosed in April 2025, never treated, who joins the practice in August 2025. She becomes pregnant in January 2026; two acute chest syndrome admissions and an abdominal vaso-occlusive crisis at 28 weeks follow, and inpatient ID finally starts ART in late July 2026, after her last practice visit.",
+      "events": [
+        {
+          "id": "2025-08-12a",
+          "kind": "establish_care",
+          "start": "2025-08-12T09:20",
+          "end": "2025-08-12T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, sickle cell disease and HIV",
+          "conditions": [
+            {
+              "label": "Sickle-cell disease without crisis",
+              "action": "history",
+              "onset": "2000-11-09",
+              "note": "HbSS genotype"
+            },
+            {
+              "label": "Asymptomatic human immunodeficiency virus [HIV] infection status",
+              "icd10": "Z21",
+              "action": "history",
+              "onset": "2025-04-10",
+              "note": "diagnosed at prior clinic April 2025; never on ART"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "sickle cell disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfamethoxazole",
+              "snomed": "363528007",
+              "category": "medication",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "bp": [
+              108,
+              66
+            ],
+            "weight_kg": 58.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 9.5,
+              "Red Cell Distribution Width": 19.0,
+              "Bilirubin, Total": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-12T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.5
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-12T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.9
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-08-12T09:55",
+              "issued": "2025-08-19T15:30",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-08-12T10:08"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-08-12T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-08-12T10:08"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral",
+              "action": "placed",
+              "order": "Infectious Disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "HIV, not on antiretroviral therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2025-08-12T10:40",
+              "body": "24F transferring care after a move to Sunderland. Works as an administrative assistant.\n\nHbSS sickle cell disease since birth. Usual hemoglobin runs mid-9s per her. Takes folic acid 1 mg daily. No hospital stays reported. Not on hydroxyurea.\n\nHIV: tested positive at her old clinic in April of this year. Was given a name of an HIV clinic there but never went, then moved. Has never taken antiretrovirals. Feels well, no fevers, weight steady, no thrush, no rashes.\n\nAllergy: sulfamethoxazole, listed by her old clinic as an anaphylaxis risk. She does not remember the episode herself.\n\nFamily: younger brother has sickle cell disease. Mom and dad both carry the trait. A paternal aunt has lupus.\nSocial: never smoked, no alcohol, no drug use. Single.\n\nExam: well appearing. Sclerae anicteric. Oropharynx clear, no thrush. No lymphadenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without rash. Pelvic: normal external genitalia, cervix without lesions, Pap collected.\n\nA/P\n1. HIV, untreated. Explained that treatment keeps her well and protects partners. Referral to Infectious Disease placed today. She agrees to call them.\n2. HbSS. CBC and CMP today. Continue folic acid.\n3. Health maintenance: Pap today. PCV20 given (sickle cell and HIV both qualify). Flu and COVID when available this fall. PHQ-2 negative.\nReturn in about 4 months."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Immunization Record",
+              "author": "MA",
+              "date": "2025-08-12T10:12",
+              "body": "PCV20 0.5 mL IM, left deltoid. VIS reviewed. Tolerated well, no reaction during 15 minute wait."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-15a",
+          "kind": "portal_message",
+          "start": "2025-08-15T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-08-15T08:40",
+              "body": "Hi Jada, your blood counts are right where you said they usually run, hemoglobin 9.5. Kidney function and liver enzymes are normal. Bilirubin is a little high at 1.9, which is expected with sickle cell. Nothing to change. The Pap result takes about a week. Please do call the infectious disease clinic if you haven't yet."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "portal_message",
+          "start": "2025-08-20T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2025-08-20T12:15",
+              "body": "Your Pap came back normal. With HIV we repeat it every year, so we'll do the next one next summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap result",
+              "author": "patient",
+              "date": "2025-08-20T17:48",
+              "body": "ok thank you!! ID clinic said first opening is october, i'm on the list"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:38"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T16:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2025-10-07T16:55",
+              "body": "In after work for influenza and the 2025-26 COVID vaccine. Afebrile, no illness today. Influenza right deltoid, COVID left deltoid. Sulfa allergy noted, not relevant to either. Waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, sickle cell disease and HIV",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2025-12-09T16:30",
+              "body": "No-show for 3:40 follow-up. Left voicemail to reschedule."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

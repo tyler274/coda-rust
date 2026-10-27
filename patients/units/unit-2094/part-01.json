@@ -1,0 +1,178 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002094",
+      "given": "Robert",
+      "family": "Nowak",
+      "birth_date": "1965-04-24",
+      "address_line": "212 Granby Road",
+      "phone": "+1-917-555-0172",
+      "email": "robert.nowak@example.test",
+      "marital_status": "single",
+      "summary": "Marine mechanic with transfusion-acquired hepatitis C who joins in 2018, decompensates with hepatocellular carcinoma in 2021, has a bridge resection and a liver transplant in 2022, then a perforated duodenal ulcer, tacrolimus nephrotoxicity, two ICU stays in 2025 (septic shock with central diabetes insipidus, then ARDS), and necrotizing fasciitis of the left leg in 2026 after the practice last saw him.",
+      "events": [
+        {
+          "id": "2018-09-05a",
+          "kind": "telephone",
+          "start": "2018-09-05T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2018-09-05T10:20", "body": "Mr. Nowak phoned about moving his primary care here. Says his old doctor retired over the summer and he has not had a physical in a couple of years. Works for himself fixing boat engines, schedule is flexible midweek. Explained the membership and that insurance still covers labs and specialists. Booked new patient visit 9/12 at 8:40. Records release form emailed for his prior office."}
+          ]
+        },
+        {
+          "id": "2018-09-12a",
+          "kind": "establish_care",
+          "start": "2018-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Chronic hepatitis C", "action": "diagnosed", "onset": "1988-01-01", "note": "Genotype 1a; acquired from transfusions in the 1980s; never treated"},
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "diagnosed", "onset": "2005-01-01", "note": "History of a remote peptic ulcer, details not available"},
+            {"label": "Alcohol use disorder, in remission", "action": "diagnosed", "onset": "2016-01-01", "note": "Former heavy drinking; abstinent since 2016"}
+          ],
+          "medications": [
+            {"drug_text": "calcium carbonate 500 MG Chewable Tablet", "action": "historical", "sig": "Chew 1 tablet by mouth as needed for heartburn", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "dyspepsia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 88.0, "height_cm": 180.0, "labs": {"Aspartate Aminotransferase": 52, "Alanine Aminotransferase": 61}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-09-12T09:30", "results": [{"test": "Aspartate Aminotransferase", "value": 52}, {"test": "Alanine Aminotransferase", "value": 61}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-09-12T09:30", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2018-09-12T09:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": "Lipid Panel", "collected": "2018-09-12T09:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-09-12T09:30", "results": [{"test": "Hepatitis C Viral Load, PCR", "value": 1450000}]},
+            {"panel": null, "collected": "2018-09-12T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Former heavy drinker; none since 2016"},
+            {"item": "Occupation", "value": "Self-employed marine mechanic"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2018-09-12T09:25"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2018-09-12T08:40"},
+            {"procedure": "Immunization administration", "performed": "2018-09-12T09:25"},
+            {"procedure": "Venipuncture", "performed": "2018-09-12T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2018-09-12T08:40", "body": "53M new to me. Previous PCP retired; records requested.\n\nHep C: picked up years ago, he thinks it came from blood he got in the 80s. Genotype 1a per what he remembers from old paperwork. Never treated. He was told at some point he could get the newer pills but never followed up on it. No jaundice, no swelling of the belly or legs, no confusion, no GI bleeding.\n\nReflux: on and off for 10+ years, uses calcium carbonate chews when it acts up, maybe twice a week. Had an ulcer a long time ago, can't recall the year or what was done, no surgery.\n\nAlcohol: drank heavily for many years. Stopped in 2016 on his own, nothing since. Father drank and died with cirrhosis, which he says is part of why he quit.\n\nPMH: as above. PSH: none. Meds: calcium carbonate 500 mg chew PRN. Allergies: none to medications.\nFH: father alcohol use disorder with cirrhosis; paternal uncle had liver cancer; mother type 2 diabetes.\nSH: self-employed, repairs outboard and inboard marine engines out of his own shop. Never smoked. No drugs. Single.\n\nROS: negative except heartburn as above.\n\nExam: well appearing. No scleral icterus. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly palpable, no fluid wave. No spider angiomas, no palmar erythema. No edema. Neuro grossly normal, no asterixis.\n\nA/P\n1. Chronic hepatitis C, untreated: CMP, CBC, INR, viral load today.\n2. GERD with remote PUD: stable on PRN calcium carbonate.\n3. Alcohol use disorder in remission since 2016: commended.\n4. Health maintenance: HIV screen with labs. Tdap today. Lipids. Will talk colon screening at his physical.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2018-09-14a",
+          "kind": "portal_message",
+          "start": "2018-09-14T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2018-09-14T16:05", "body": "Hi Robert, your labs are back. Your liver enzymes are mildly up, which is typical with hepatitis C. Your liver's protein production, clotting test and blood counts are normal. Hepatitis C virus level is 1.45 million. HIV test negative. Cholesterol and kidney function fine. We will keep watching these. Flu shots arrive next month, stop in any morning for one."}
+          ]
+        },
+        {
+          "id": "2018-10-10a",
+          "kind": "nurse_visit",
+          "start": "2018-10-10T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-10T09:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-10T09:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu Vaccine", "author": "RN", "date": "2018-10-10T09:10", "body": "Walk-in for flu vaccine. No prior reactions, feels well. Quadrivalent flu given L deltoid, tolerated. VIS given."}
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "office_visit",
+          "start": "2019-03-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up hepatitis C, reflux",
+          "state": {"weight_kg": 87.2, "labs": {"Aspartate Aminotransferase": 48, "Alanine Aminotransferase": 57}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2019-03-19T14:40", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2019-03-19T14:00"},
+            {"procedure": "Venipuncture", "performed": "2019-03-19T14:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2019-03-19T14:00", "body": "S: Doing fine. Busy getting customers' boats ready for spring launch. Heartburn about the same, chews a calcium carbonate a couple times a week, more after spicy food. Still not drinking. No abdominal swelling, no yellowing, appetite good.\nO: Vitals as charted. Alert, not icteric. Abd soft, NT, no masses. No edema.\nA/P:\n- Hep C, chronic: recheck liver panel today.\n- GERD: lifestyle reviewed, keep PRN antacid.\n- Abstinent from alcohol, nearly 3 years.\nPhysical in September."}
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "annual_physical",
+          "start": "2019-09-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 86.4, "labs": {"Aspartate Aminotransferase": 55, "Alanine Aminotransferase": 66}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-26T09:10", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}, {"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-26T09:10", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-26T09:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-26T09:10", "results": [{"test": "Hemoglobin A1c", "value": 5.4}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-09-26T08:30"},
+            {"procedure": "Venipuncture", "performed": "2019-09-26T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-09-26T08:30", "body": "54M for yearly exam.\n\nInterval: no new issues. Reflux controlled with occasional chews. Still sober, 3+ years.\n\nPrevention: colon cancer screening reviewed (colonoscopy vs stool test). He'd rather put it off until winter when work slows; will revisit. Tdap done 2018. Flu next month. A1c with labs given mother's diabetes.\n\nExam: NAD. HEENT normal, no icterus. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, liver and spleen not palpable. Skin: no spider angiomas. Ext: no edema. Neuro nonfocal.\n\nA/P: healthy-appearing 54M with chronic untreated hep C, GERD, alcohol use disorder in remission. Labs ordered. Follow up spring."}
+          ]
+        },
+        {
+          "id": "2019-10-16a",
+          "kind": "nurse_visit",
+          "start": "2019-10-16T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-16T08:55"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-16T08:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu Vaccine", "author": "MA", "date": "2019-10-16T08:50", "body": "Seasonal flu vaccine given R deltoid. Screening questions negative. Pt waited 10 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-21T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-04-21T11:00", "body": "Video from his shop, consented to telehealth.\nMarinas are slow with the shutdown, he's doing mostly small engine work. Feels well. No yellow eyes, no belly swelling, no dark urine. Heartburn quiet. No alcohol.\nNo exam beyond general appearance: looks well, speaking full sentences, not jaundiced on camera.\nPlan: defer labs to fall physical unless symptoms. Reviewed when to call. Colon screening still on hold until things open up."}
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "annual_physical",
+          "start": "2020-10-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 87.0, "labs": {"Aspartate Aminotransferase": 58, "Alanine Aminotransferase": 68}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-10-13T09:40", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-10-13T09:40", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2020-10-13T09:40", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-13T09:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2020-10-13T09:00"},
+            {"procedure": "Immunization administration", "performed": "2020-10-13T09:35"},
+            {"procedure": "Venipuncture", "performed": "2020-10-13T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-10-13T09:00", "body": "55M annual. Masked visit.\nNo complaints. Good season at work despite everything. Sleeping fine, mood fine (PHQ-9 2). Not drinking. Heartburn rare.\nExam: comfortable. Anicteric. Cardiac and lung exams normal. Abdomen soft, no hepatosplenomegaly felt, no shifting dullness. No edema. Skin unremarkable.\nA/P\n- Chronic hep C: labs today.\n- GERD: fine.\n- Prevention: flu vaccine given. Colon screening again deferred by pt; he says after the holidays.\nSee in spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

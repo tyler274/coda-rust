@@ -1,0 +1,142 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001929",
+      "events": [
+        {
+          "id": "2026-04-28a",
+          "kind": "portal_message",
+          "start": "2026-04-28T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hearing worse",
+              "author": "patient",
+              "date": "2026-04-28T21:14",
+              "body": "Hi, my hearing has gotten noticeably worse since around the fall, mostly the right side. Weirdly I follow people a little better when there's background noise, it's quiet rooms that are hard. I want to go back to ENT. Do you need to send a new referral for my insurance?"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "portal_message",
+          "start": "2026-04-29T11:03",
+          "orders": [
+            {"id": "ent-referral-2026", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "otosclerosis, hearing worse over 6 months, right more than left"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Hearing worse",
+              "author": "RN",
+              "date": "2026-04-29T11:03",
+              "body": "Hi Andrea, your plan doesn't strictly require one, but the ENT office asked for an updated referral, so the doctor signed it this morning and it was faxed with your last notes. Better hearing with background noise is something they'll want to hear about. Please book your summer follow-up with us too, your yearly EKG is due."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "office_visit",
+          "start": "2026-06-19T14:00",
+          "end": "2026-06-19T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "myotonic dystrophy follow-up, yearly ECG",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2026-06-19T14:35"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-19T14:40", "resulted": "2026-06-20T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-06-19T14:40", "resulted": "2026-06-20T09:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-06-19T14:20", "text": "Sinus rhythm, rate 72. PR 192 ms, QRS 100 ms, QTc 422 ms. Normal axis. No AV block or bundle branch block. No ST or T wave changes.", "conclusion": "Normal ECG. Intervals within normal limits."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-19T14:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-06-19T14:20"},
+            {"procedure": "Immunization administration", "performed": "2026-06-19T14:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-06-19T14:40",
+              "body": "Yearly ECG and check-in.\n\nENT 5/15 (letter not received yet): per her, hearing tested worse on the right; the left was about the same. They talked about trying a hearing aid on the right first versus surgery on the small ear bone, and the surgeon wanted to think through anesthesia with her myotonic dystrophy before going that way. She is leaning toward the hearing aid. She also learned at that visit that an aunt and her grandmother on her mother's side had hearing trouble starting in their thirties.\n\nNeurology 2/10 (no note to us): told things were stable, see them again in a year.\n\nStrength unchanged since last summer. Swallowing about the same, using the techniques. No palpitations, fainting or shortness of breath. No vision change. Has not done genetic counseling.\n\nNo meds. NKDA.\n\nO: Vitals as charted. Mild bilateral ptosis. TMs normal. Heart regular, no murmur. Lungs clear. Shoulder abduction and hip flexion 4/5, unchanged.\nECG: sinus 72, PR 192, QRS 100, QTc 422. Normal, similar to last July.\n\nA/P\n1. Myotonic dystrophy type 1: stable. ECG normal, repeat in a year. CMP and A1c today. Eye recheck due in September.\n2. Otosclerosis, right progressing: agree with hearing aid trial first. Will watch for the ENT letter.\n3. Tdap due (last 2016), given.\n\nPhysical in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2026-06-22T08:50",
+              "body": "Andrea, Friday's EKG was normal and the blood work (kidneys, liver, electrolytes and A1c) came back normal as well. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T09:25",
+          "reports": [
+            {"study": "Audiogram", "performed": "2026-05-15T09:40", "text": "Outside otolaryngology audiology, date of test 5/15/2026. Right ear: conductive hearing loss, pure-tone average 52 dB HL, air-bone gap 35 dB, word recognition 92%. Left ear: conductive hearing loss, pure-tone average 30 dB HL, air-bone gap 20 dB, word recognition 100%. Tympanometry type A bilaterally. Acoustic reflexes absent bilaterally.", "conclusion": "Progression of right conductive hearing loss since 11/2024; left ear stable."}
+          ],
+          "orders": [
+            {"id": "ent-referral-2026", "action": "done", "date": "2026-07-14T09:25"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up",
+              "author": "otolaryngology",
+              "date": "2026-07-14T09:25",
+              "body": "Outside otolaryngology group. Date of visit: 5/15/2026. Received 7/14/2026.\n\nMs. Morrow returns with bilateral otosclerosis, now also carrying a diagnosis of myotonic dystrophy type 1. Over the last 6 months her hearing has declined further. She notices speech is somewhat easier to follow against background noise. No otalgia, otorrhea or tinnitus. Family history: father with otosclerosis; a maternal aunt and her maternal grandmother had hearing loss beginning in their thirties.\n\nExam: external ears and canals normal. Tympanic membranes normal bilaterally. Weber lateralizes right. Rinne negative on the right.\n\nAudiogram: right conductive loss has progressed, PTA 52 dB with 35 dB air-bone gap; left unchanged from 2024.\n\nImpression: otosclerosis, progressive on the right.\n\nPlan: Recommend amplification first, referral to audiology for hearing aid evaluation on the right. Stapedotomy remains an option; given myotonic dystrophy, we would coordinate with anesthesia and neurology before any surgery. Recheck audiogram in a year.\n\nMedications: none. Allergies: NKDA."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside record filed",
+              "author": "MA",
+              "date": "2026-07-14T09:40",
+              "body": "ENT note and audiogram from 5/15 scanned and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T13:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hearing aid appointment",
+              "author": "patient",
+              "date": "2026-08-11T13:22",
+              "body": "Just an FYI, ENT's audiology department has me down for a hearing aid evaluation in September. I'll let you know how it goes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hearing aid appointment",
+              "author": "PCP",
+              "date": "2026-08-11T17:05",
+              "body": "Thanks Andrea, I saw the ENT letter come through. Hope the fitting goes smoothly."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T08:20",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

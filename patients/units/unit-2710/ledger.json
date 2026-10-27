@@ -1,0 +1,1735 @@
+{
+  "unit": "unit-2710",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002710",
+      "given": "Paula",
+      "family": "Delaney",
+      "birth_date": "1972-03-31",
+      "address_line": "118 Bardwell Street",
+      "phone": "+1-860-555-0103",
+      "email": "paula.delaney@example.test",
+      "marital_status": "single",
+      "summary": "International sales manager with hypertension on hydrochlorothiazide and a remote DVT who joined the practice in 2020 and was last seen in April 2024. Afterward she had three pulmonary emboli tied to long-haul travel (ED June 2024, ICU February 2025, ICU December 2025), all reaching the chart only as outside records; she is now on indefinite apixaban through pulmonology.",
+      "events": [
+        {
+          "id": "2020-06-30a",
+          "kind": "telephone",
+          "start": "2020-06-30T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2020-06-30T10:20",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; her previous office in the area is closing its internal medicine side. Commercial PPO, card info taken. Works in sales and is on the road a lot, asked for a morning slot. Booked new patient visit 7/14 at 8:40. Release of information form emailed so we can pull records from the old office. Reminded her masks are required in the building."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "establish_care",
+          "start": "2020-07-14T08:40",
+          "end": "2020-07-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; hypertension",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2014-01-01",
+              "note": "On hydrochlorothiazide, well controlled"
+            },
+            {
+              "label": "History of deep vein thrombosis",
+              "action": "diagnosed",
+              "onset": "2008-01-01",
+              "note": "Remote DVT, treated years ago; no current anticoagulation"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "diagnosed",
+              "onset": "2015-06-01",
+              "note": "Laparoscopic cholecystectomy 2015"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              73
+            ],
+            "hr": 58,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 72.9,
+            "height_cm": 166.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.62
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-14T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "International sales manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-07-14T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-07-14T09:40",
+              "author": "PCP",
+              "body": "48 y/o woman transferring care; former PCP office is closing its adult medicine practice.\n\nHTN: diagnosed about six years ago. Has been on HCTZ 25 mg every morning the whole time, no side effects she notices, no dizziness or cramping. Checks pressure at home once in a while, usually high 120s over low 80s.\n\nPMH: hypertension. Remote DVT many years ago, treated with blood thinners for a limited course at the time and off them since; she doesn't remember the specifics and no clot since. \nPSH: laparoscopic cholecystectomy 2015.\nMeds: hydrochlorothiazide 25 mg daily.\nAllergies: no known drug allergies.\nFamily: mother had a pulmonary embolism at 68. Father with hypertension and high cholesterol. A sister had a DVT.\nSocial: international sales manager, travels often, many long flights and long drives between accounts. Never smoked. A glass or two of wine a week. Single, lives in Belchertown.\n\nROS: no chest pain, no dyspnea, no leg swelling, no headaches. Otherwise negative.\n\nExam: vitals as charted, pressure controlled. Well appearing. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, healed laparoscopic scars. Legs without edema, calves nontender, no varicosities. Skin no rashes.\n\nA/P:\n1. Essential hypertension, controlled on HCTZ. Continue. BMP today for sodium and potassium.\n2. History of DVT, remote. With her travel schedule and family history, talked about long-flight habits: aisle seat, get up every hour or two, calf pumps, fluids, and knee-high compression stockings on anything over four hours. No drug prophylaxis. She should call right away for one-sided leg swelling or sudden shortness of breath.\n3. Health maintenance: CBC, lipids, A1c, TSH. One-time hep C and HIV screening, she agrees. Last mammogram about a year ago per her report, ordering screening mammogram. Cervical screening history to come with old records. Colon screening at 50.\n4. Records release signed.\n\nRTC 6 months for BP, sooner if needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              123,
+              78
+            ],
+            "weight_kg": 71.6,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-07-16a",
+          "kind": "portal_message",
+          "start": "2020-07-16T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2020-07-16T16:05",
+              "author": "PCP",
+              "body": "Hi Paula, your labs from Tuesday all came back fine. Kidney function, sodium and potassium are normal on the hydrochlorothiazide, blood count normal, cholesterol in a good range, A1c normal, thyroid normal, and the hepatitis C and HIV screens were negative. Nothing to change. Enjoy the rest of the summer."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-28a",
+          "kind": "outside_records",
+          "start": "2020-07-28T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2020-07-28T11:30",
+              "author": "front desk",
+              "body": "Records received by fax from the patient's previous internal medicine office (42 pages), covering 2014 through spring 2020.\n\nSummary for chart:\n- Hypertension, on hydrochlorothiazide 25 mg daily throughout; office pressures in the 120s to low 130s systolic.\n- Remote deep vein thrombosis listed in past history; no anticoagulant on any medication list in these records.\n- Laparoscopic cholecystectomy 2015 (operative note not included).\n- Screening mammogram 2019: BI-RADS 1, negative.\n- Cervical cytology 2016: negative for intraepithelial lesion; HPV negative.\n- Tdap 2011.\n- Allergies: NKDA.\n\nFiled to media. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "imaging",
+          "start": "2020-09-22T07:50",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-09-22T07:50",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: prior outside study, 2019. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-09-22T07:50"
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2020-10-06T16:45",
+              "author": "RN",
+              "body": "Here after work for her seasonal flu shot. Feeling well, no fever. No prior vaccine reactions, no egg issues. Quadrivalent flu given IM left deltoid, lot and expiration in the immunization record. VIS given. Waited 15 minutes, fine on departure."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "telehealth_visit",
+          "start": "2021-01-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-01-19T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2021-01-19T12:40",
+              "author": "PCP",
+              "body": "Video visit; patient in her car parked outside a client's office, private. Identity confirmed by DOB.\n\nBP follow-up. Travel is mostly paused, working from home most days. Taking HCTZ every morning. Sent a photo of her home cuff log: 10 readings over two weeks, range 122-131 / 76-84. No headaches, no lightheadedness, no leg cramps.\n\nNo exam beyond appearance: comfortable, speaking full sentences.\n\nA/P: Hypertension, at goal by home readings. Continue hydrochlorothiazide 25 mg, 90-day supply with refills sent. Physical with fasting labs in June. She'll get the COVID vaccine when her group opens up."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "outside_records",
+          "start": "2021-04-06T09:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-09T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-30T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 vaccination record",
+              "date": "2021-04-06T09:10",
+              "author": "MA",
+              "body": "Patient uploaded her vaccination card through the portal. Pfizer-BioNTech primary series, dose 1 3/9/21 and dose 2 3/30/21, both at a retail pharmacy clinic. Entered into immunization history; state registry matches."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "annual_physical",
+          "start": "2021-06-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              79
+            ],
+            "hr": 60,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-22T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-22T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-06-22T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-06-22T08:30",
+              "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative. Co-testing interval 5 years.",
+              "issued": "2021-06-25T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-06-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-06-22T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-06-22T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-06-22T09:05",
+              "author": "PCP",
+              "body": "Annual exam. Feels well. Fully vaccinated for COVID in March. Expects to start flying for work again in the fall.\n\nMeds: HCTZ 25 mg daily. NKDA.\nInterval: nothing new. No chest pain, dyspnea, palpitations, leg swelling. Periods regular.\nFamily and social history unchanged from intake.\n\nExam: BP and vitals as charted. Alert, well. Eyes, ears, throat normal. No lymphadenopathy, thyroid normal. Heart RRR, no murmurs. Lungs clear throughout. Breasts symmetric without masses, skin changes or axillary nodes. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal, Pap with HPV collected. Extremities without edema or calf tenderness. Skin unremarkable.\n\nPHQ-2 negative.\n\nA/P:\n1. Health maintenance: Pap/HPV done (last 2016). Tdap today, last was 2011. Mammogram due again fall 2022. Colonoscopy referral next year when she turns 50. Fasting BMP, CBC, lipids drawn.\n2. Hypertension, controlled. Continue HCTZ.\n3. Remote DVT: refreshed the long-flight plan before travel picks back up.\n\nSee me in about 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-25a",
+          "kind": "portal_message",
+          "start": "2021-06-25T15:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2021-06-25T15:40",
+              "author": "PCP",
+              "body": "Paula, everything from your physical looks good. The Pap smear is normal and the HPV test negative, so no cervical screening for five years. Metabolic panel, blood count and cholesterol are all normal. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical results",
+              "date": "2021-06-25T19:12",
+              "author": "patient",
+              "body": "Great news, thank you. My arm was achy from the tetanus shot for a couple of days but it's fine now."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2021-10-12T07:58",
+              "author": "MA",
+              "body": "Flu vaccine before an early flight tomorrow. Afebrile, no complaints. Quadrivalent given right deltoid. Tolerated well, observed per protocol, left at 8:05."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "office_visit",
+          "start": "2021-12-07T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 60,
+            "spo2": 98,
+            "weight_kg": 70.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-12-07T17:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-16T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-12-07T17:25",
+              "author": "PCP",
+              "body": "S: BP recheck. Back on the road since October, two overseas trips so far and one more before the holidays. Took her HCTZ along, no missed doses. Wore stockings on the flights and walked the aisle. No leg swelling, no shortness of breath, no chest pain. COVID booster at a pharmacy 11/16, card shown today and entered.\n\nO: vitals as charted. Heart regular. Lungs clear. Calves soft and symmetric, no edema.\n\nA: Hypertension, controlled on HCTZ 25 mg.\n\nP: No changes. Refills on file. Physical with labs in late spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              80
+            ],
+            "hr": 67,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 71.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-17T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-17T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-17T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 197
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 141
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-05-17T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-17T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-05-17T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-colonoscopy",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Average-risk colorectal cancer screening, turned 50"
+            },
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-05-17T09:15",
+              "author": "PCP",
+              "body": "Physical. Turned 50 in March. Traveling about two weeks a month again, overseas and the West Coast. Feels well.\n\nCurrent: HCTZ 25 mg qAM. NKDA.\nROS negative: no chest pain, breathlessness, palpitations, calf pain, change in bowel habits or bleeding.\nNo change to family or social history.\n\nExam: vitals in flowsheet; pressure fine. Pleasant, well. Oropharynx clear. Neck without nodes or thyroid enlargement. Heart regular rate, no murmur or gallop. Lungs clear bilaterally. Breasts without mass, no axillary nodes. Abdomen benign. Legs without swelling, calves soft. Skin: no worrisome moles.\n\nA/P:\n- Colorectal screening: referred to GI for screening colonoscopy; she prefers that over stool testing.\n- Shingrix #1 today, #2 in two to six months at a nurse visit.\n- Screening mammogram this fall.\n- Pap/HPV not due until 2026.\n- HTN controlled. BMP, CBC, lipids today.\n- Continue the flight routine: stockings, moving every hour or two, fluids.\nFollow-up in about six months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-05-19T12:30",
+              "author": "PCP",
+              "body": "Hi Paula, blood work is all normal again this year, including potassium and kidney numbers on your water pill. GI will call you to set up the colonoscopy. If you don't hear from them in two weeks let us know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2022-05-19T21:48",
+              "author": "patient",
+              "body": "Thanks! Also I felt pretty run down the day after the shingles shot, chills and a sore arm, all gone by the next evening. Is that normal and should I still get the second one?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2022-05-20T08:10",
+              "author": "PCP",
+              "body": "Very common with Shingrix and not a reason to skip the second dose. Plan the second one for a day when you have a quiet day after."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "nurse_visit",
+          "start": "2022-07-19T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-07-19T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-07-19T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix #2",
+              "date": "2022-07-19T16:35",
+              "author": "RN",
+              "body": "Second Shingrix dose, 9 weeks after the first. Had a day of chills after dose 1, aware it may happen again; she scheduled it before a weekend on purpose. Given IM left deltoid. Series complete. Watched in the waiting area 15 min without problems."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-27a",
+          "kind": "outside_records",
+          "start": "2022-07-27T10:45",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2022-07-21T07:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-colonoscopy",
+              "action": "done",
+              "date": "2022-07-27T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Colonoscopy report",
+              "date": "2022-07-27T10:45",
+              "author": "gastroenterology",
+              "body": "Outpatient endoscopy center, procedure date 07/21/2022.\nIndication: screening, average risk, age 50.\nMedications on file: hydrochlorothiazide. Allergies: NKDA.\nSedation: monitored anesthesia care with propofol.\nPrep: split-dose; preparation excellent throughout.\nFindings: cecum reached and identified by the appendiceal orifice and ileocecal valve; withdrawal time 9 minutes. Mucosa normal throughout the colon. No polyps, masses or diverticula. Retroflexion in the rectum unremarkable.\nImpression: normal screening colonoscopy.\nRecommendation: next screening colonoscopy in 10 years.\n\nForwarded to referring PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "imaging",
+          "start": "2022-09-13T08:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-09-13T08:10",
+              "text": "Digital screening mammography of both breasts with tomosynthesis. Compared with 09/2020. Scattered fibroglandular densities. No new or suspicious mass, distortion or calcification. Stable appearance.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-09-13T08:10"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T17:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2022-10-18T17:30",
+              "author": "RN",
+              "body": "Flu (left arm) and Pfizer bivalent booster (right arm) together. Well today, no recent illness. Tolerated both, no reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "office_visit",
+          "start": "2022-11-29T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 71.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-29T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-11-29T08:20",
+              "author": "PCP",
+              "body": "Six-month HTN check. Busy travel year, all fine. Home readings when she remembers are mid 120s/80. Takes HCTZ daily, no side effects. No chest pain, no breathing trouble, no leg swelling.\n\nExam: BP as recorded, fine. Heart and lungs normal. No edema.\n\nAssessment and plan: hypertension at goal, continue hydrochlorothiazide 25 mg. Colonoscopy normal in July, mammogram normal in September, vaccines current. Physical in May."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "pharmacy",
+          "start": "2023-03-21T09:35",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2023-03-21T09:35",
+              "author": "RN",
+              "body": "eRx renewal request from her mail-order pharmacy, hydrochlorothiazide 25 mg #90. Seen 11/2022, BP at goal, BMP normal 5/2022. Approved 90 days with 1 refill per refill protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 71.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-05-23T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-23T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-05-23T07:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-05-23T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-05-23T08:15",
+              "author": "PCP",
+              "body": "Annual. 51. Doing well, work steady, still on planes a lot. No health concerns today.\n\nMedications: hydrochlorothiazide 25 mg daily. Allergies: none to drugs.\nROS: denies exertional symptoms, dyspnea, leg swelling or pain, bleeding, weight change.\nHistory otherwise unchanged.\n\nExam: vitals reviewed. NAD. HEENT clear. Neck supple. Cardiac exam regular, no murmur. Lungs clear. Breast exam normal bilaterally. Abdomen soft. Extremities: no edema, calves nontender and equal. Skin without suspicious lesions.\n\nA/P\n1. Hypertension: controlled, continue HCTZ. BMP.\n2. Prevention: CBC and lipids. Mammogram next fall (every two years). Colonoscopy 2032. Pap/HPV 2026. Shingrix and Tdap complete. Flu and COVID in the fall.\n3. Remote DVT: no events. Flight precautions reviewed again.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-26a",
+          "kind": "portal_message",
+          "start": "2023-05-26T11:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2023-05-26T11:20",
+              "author": "PCP",
+              "body": "All of this week's labs are normal: electrolytes, kidney function, blood counts and cholesterol. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "portal_message",
+          "start": "2023-06-20T07:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Long flights next month",
+              "date": "2023-06-20T07:05",
+              "author": "patient",
+              "body": "Hi, I have a trip coming up with two 13-hour legs each way. My sister keeps telling me I should be on a baby aspirin or a shot for the flights because of my old clot. Do I need anything besides the stockings?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Long flights next month",
+              "date": "2023-06-20T13:30",
+              "author": "PCP",
+              "body": "Good question. For your situation I'd stick with what we've been doing rather than a medication: knee-high compression stockings, an aisle seat, walk every hour or two, calf exercises while seated, plenty of water and go easy on alcohol on the plane. Aspirin isn't the right tool for this. If you ever get one-sided leg swelling or pain, or sudden chest pain or shortness of breath, during or after a trip, get seen urgently and tell them your history. Safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T12:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2023-10-10T12:28",
+              "author": "MA",
+              "body": "Lunch-hour visit for flu and the 2023-24 COVID shot. No fever or illness. Flu L deltoid, COVID R deltoid. No issues while observed."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "office_visit",
+          "start": "2023-11-28T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "telephone",
+          "start": "2023-11-29T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-11-29T09:15",
+              "author": "front desk",
+              "body": "Reached pt about yesterday's missed BP visit. Her flight home got delayed and she forgot to call. Very apologetic. Next few months are full of travel; booked 4/19/24 at 4:00. Enough HCTZ on hand per pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "pharmacy",
+          "start": "2024-01-23T14:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2024-01-23T14:50",
+              "author": "RN",
+              "body": "Refill request hydrochlorothiazide 25 mg. Missed November follow-up, rebooked for 4/19. Last BMP 5/2023 normal. 90 days approved to carry her to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-19a",
+          "kind": "office_visit",
+          "start": "2024-04-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              85
+            ],
+            "hr": 57,
+            "spo2": 97,
+            "weight_kg": 71.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-19T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-19T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-19T16:30",
+              "author": "PCP",
+              "body": "Overdue BP check (missed Nov, travel). Feels fine. HCTZ daily without problems. Home numbers 120s/70s-80s. Denies chest pain, dyspnea, calf pain or swelling. Says the stockings-and-walking routine has become habit on every flight.\n\nExam: vitals per flowsheet, BP at goal. Lungs clear, heart RRR. No edema, calves soft.\n\nA/P: HTN controlled, continue hydrochlorothiazide 25 mg daily. BMP today (last one 11 months ago). Screening mammogram ordered, due. Physical overdue since May; she'll book one around her summer schedule. Flu/COVID in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "portal_message",
+          "start": "2024-04-22T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab result",
+              "date": "2024-04-22T10:05",
+              "author": "PCP",
+              "body": "Paula, Friday's metabolic panel is normal, potassium and sodium right where they should be. No changes. Please do book your physical for this summer when you know your travel."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-16a",
+          "kind": "outside_records",
+          "start": "2024-05-16T13:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-05-14T09:20",
+              "text": "Bilateral screening mammography with 3D tomosynthesis. Comparison 09/2022 and 09/2020. Breast composition: scattered areas of fibroglandular density. No suspicious masses, calcifications or areas of distortion. No change from prior.",
+              "conclusion": "BI-RADS 1: Negative. Continue routine screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-05-16T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Mammogram report received",
+              "date": "2024-05-16T13:00",
+              "author": "MA",
+              "body": "Screening mammogram 5/14/24 done at an outside imaging center closer to her office; report faxed and attached. Negative. Result letter sent to patient by the imaging center."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "outside_records",
+          "start": "2024-06-13T08:55",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency department record",
+              "date": "2024-06-13T08:55",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD — community hospital\nVisit 06/11/2024, arrival 21:40.\nPCP on file: internal medicine practice (copy sent).\n\nCC: shortness of breath, chest pain with breathing.\n\nHPI: 52-year-old woman, abrupt onset of breathlessness and pain on inspiration about two hours prior to arrival. Landed three days ago after a 12-hour international flight. No cough, fever or hemoptysis.\n\nPMH: hypertension; DVT remotely. PSH: lap cholecystectomy 2015. Medications: hydrochlorothiazide. Allergies: NKDA. Social: nonsmoker.\n\nTriage vitals: BP 135/85, HR 110, RR 22, SpO2 94% on room air, afebrile.\n\nExam: anxious but conversant. Lungs clear to auscultation bilaterally. Tachycardic, regular, no murmur. Lower extremities without swelling or calf tenderness.\n\nED course:\n- ECG: sinus tachycardia, no ST changes.\n- Portable chest radiograph: no acute cardiopulmonary findings.\n- D-dimer: within normal limits.\n- Given tachycardia, prior DVT and recent long-haul travel with no alternative diagnosis more likely, clinical probability was judged high and a negative D-dimer was not used to exclude PE. CT angiogram of the chest obtained.\n- CTA chest (PE protocol): filling defects within segmental branches of the right lower lobe pulmonary artery, consistent with acute pulmonary emboli. No CT evidence of right heart strain. No pleural effusion. Lungs otherwise clear.\n- Heart rate improved with rest; saturations acceptable on room air with ambulation.\n\nImpression: acute pulmonary embolism, right lower lobe segmental, after prolonged air travel.\n\nDisposition: discharged home in stable condition after shared discussion; patient preferred outpatient treatment.\nNew prescription: apixaban 10 mg by mouth twice daily for 7 days, then 5 mg twice daily. Planned duration 3 months (provoked by travel). Bleeding precautions reviewed.\nContinue hydrochlorothiazide.\nFollow up with primary care physician within 1 week to review anticoagulation. Return for worsening breathing, chest pain, fainting or bleeding.\n\nReceived by fax 6/13/24. Scanned. For PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "portal_message",
+          "start": "2024-06-14T06:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit",
+              "date": "2024-06-14T06:40",
+              "author": "patient",
+              "body": "I wanted to let you know I was in the ER Tuesday night. They found a blood clot in my lung after my flight home and started me on a blood thinner, apixaban, for 3 months. Breathing is a lot better already. They said to see you within a week but I'm in client meetings through the end of the month. Can it wait until July?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit",
+              "date": "2024-06-14T12:15",
+              "author": "PCP",
+              "body": "Paula, I'm glad you went in and that you're feeling better. I have the ER record. I would like to see you sooner than July, even a 20-minute video visit, mainly to talk about how long you should stay on the blood thinner given your earlier clot. Our front desk will reach out with times. Until then take the apixaban twice a day without missing doses, and go back to the ER for worse breathing, chest pain, fainting, or any significant bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "telephone",
+          "start": "2024-06-24T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach for follow-up",
+              "date": "2024-06-24T11:00",
+              "author": "front desk",
+              "body": "Per PCP, called to offer a post-ED video visit this week or next. No answer, voicemail left with our number; second portal message sent with three open times. 6/27: no response to either. Will try again with the recall."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "pharmacy",
+          "start": "2024-08-20T15:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2024-08-20T15:30",
+              "author": "RN",
+              "body": "Mail-order renewal for hydrochlorothiazide 25 mg. BMP normal 4/2024, BP at goal at that visit. 90 days approved. Note sent to pt through portal: still hoping to see her for the post-ER visit and her physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "portal_message",
+          "start": "2024-11-12T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Recall: physical overdue",
+              "date": "2024-11-12T09:00",
+              "author": "front desk",
+              "body": "Dear Ms. Delaney, our records show you are due for your annual physical and a follow-up visit with your doctor. Please call the office or use the portal to book. Flu and COVID vaccines are available at nurse visits this season."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "outside_records",
+          "start": "2025-03-04T14:20",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-03-04T14:20",
+              "author": "pulmonology",
+              "body": "DISCHARGE SUMMARY — Pulmonary and Critical Care Service, regional medical center\nAdmitted 02/20/2025 (MICU). Discharged 02/25/2025.\n\nDischarge diagnosis: massive pulmonary embolism, bilateral. Secondary: essential hypertension; history of DVT; PE 06/2024.\n\nPresentation: 52-year-old woman brought in with abrupt dyspnea and sharp chest pain worse on inspiration, onset about two hours before arrival, following a drive of more than eight hours with no stops. Treated for a PE last June with three months of apixaban, completed in September; home list at admission hydrochlorothiazide only. NKDA. Does not smoke.\n\nAdmission exam: BP 135/85, HR 110, RR 22, SpO2 94% on room air. JVP flat. Clear breath sounds without wheezes, crackles or rhonchi. Legs without signs of DVT.\n\nData: D-dimer 0.8 mg/L (ref <0.5). Chest radiograph without consolidation; small right pleural effusion. ECG sinus tachycardia, no ST-segment changes. CT pulmonary angiogram: extensive bilateral emboli in the right and left main pulmonary arteries extending into lobar branches; small right pleural effusion.\n\nHospital course: admitted to the MICU for clot burden and close monitoring. Remained normotensive throughout; thrombolysis not indicated. Unfractionated heparin infusion, transitioned to apixaban on hospital day 3. Off oxygen and walking the unit without desaturation before discharge home.\n\nDischarge medications:\n- apixaban 10 mg PO twice daily through 02/27, then 5 mg PO twice daily (NEW). Planned 6 months, duration to be reassessed in pulmonary clinic.\n- hydrochlorothiazide 25 mg PO daily (continued).\nAllergies: NKDA.\n\nFollow-up: pulmonary clinic in 6 weeks; PCP in 1 to 2 weeks.\n\nReceived 3/4/25, scanned for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "portal_message",
+          "start": "2025-03-06T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Another clot",
+              "date": "2025-03-06T19:30",
+              "author": "patient",
+              "body": "Hi, you probably got the hospital papers. Another clot, worse this time, I was in the ICU for a few days. Back on the apixaban for 6 months and seeing the lung doctors in April. I know I owe you a visit. I'm working from home for a few weeks so I'll try to set something up."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Another clot",
+              "date": "2025-03-07T08:20",
+              "author": "PCP",
+              "body": "Paula, I'm sorry, that sounds frightening. Yes, I have the summary. Please do come in while you're home; the front desk can find you a time this month, video is fine if that's easier. Keep the apixaban going twice daily and keep your pulmonary appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "outside_records",
+          "start": "2025-04-14T10:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary clinic follow-up",
+              "date": "2025-04-14T10:30",
+              "author": "pulmonology",
+              "body": "Pulmonary Clinic — visit 04/10/2025\nRe: Paula Delaney, DOB 03/31/1972\n\nSeen in follow-up after her February MICU admission for bilateral PE.\n\nShe reports her breathing is back to her usual; walking several miles without difficulty. No chest pain. Taking apixaban 5 mg twice daily without missed doses and without bleeding. Also on hydrochlorothiazide. NKDA.\n\nExam: vital signs normal, oxygen saturation normal on room air. Lungs clear. No leg edema.\n\nAssessment: bilateral pulmonary embolism 02/2025, recovering well. Prior segmental PE 06/2024 and a remote DVT.\nPlan: continue apixaban 5 mg twice daily to complete 6 months, then return to reassess duration. Travel precautions reviewed.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T13:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2025-06-10T13:15",
+              "author": "RN",
+              "body": "Renewal request, hydrochlorothiazide 25 mg. Not seen here since 4/2024; last BMP 4/2024. Discussed with PCP: 90 days sent once more, pt must be seen and have labs before the next renewal. Portal message sent asking her to book."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "outside_records",
+          "start": "2025-08-26T09:40",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary clinic follow-up",
+              "date": "2025-08-26T09:40",
+              "author": "pulmonology",
+              "body": "Pulmonary Clinic — visit 08/21/2025\nRe: Paula Delaney\n\nSix-month visit after February bilateral PE. Asymptomatic, exercising, no bleeding on apixaban. Medications: apixaban 5 mg BID, hydrochlorothiazide 25 mg daily. NKDA.\n\nExam: comfortable, saturating normally on room air. Lungs clear. No edema.\n\nAssessment: has now completed 6 months of anticoagulation for the February event. Both PE episodes followed prolonged travel; we discussed the option of extended anticoagulation versus stopping, including the remote DVT history, and the patient prefers to stop.\nPlan: stop apixaban after today. Travel precautions for every long trip: get up and walk every 1 to 2 hours, stay hydrated, wear compression stockings. Seek care promptly for leg swelling, chest pain or dyspnea. Return as needed.\n\nCopy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "outside_records",
+          "start": "2025-12-16T15:05",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-12-16T15:05",
+              "author": "pulmonology",
+              "body": "DISCHARGE SUMMARY — Pulmonary and Critical Care Service, regional medical center\nAdmission 12/05/2025, ICU. Discharge 12/09/2025.\n\nPrincipal diagnosis: recurrent acute pulmonary embolism, left. Other: essential hypertension; prior PE 06/2024 and 02/2025; remote DVT.\n\nHistory: 53-year-old woman with sudden dyspnea and left chest pain on deep inspiration, which she said felt like her two earlier clots. Flew back from across the Atlantic two days before. Anticoagulation stopped in August after 6 months. Home medication: hydrochlorothiazide 25 mg daily. NKDA. Family history: PE in her mother at 68; DVT in a sister; father with hypertension and hyperlipidemia. Never smoker; wine once or twice a week. Works as an international sales manager.\n\nOn arrival: BP 135/85, HR 110, RR 24, SpO2 92% on room air. Anxious and tachypneic. Diminished breath sounds and dullness to percussion at the left base.\n\nStudies: D-dimer elevated. Troponin normal. BNP normal. Arterial blood gas with hypoxemia. CT pulmonary angiogram: filling defect in a peripheral branch of the left pulmonary artery; small left pleural effusion.\n\nCourse: admitted to the ICU for hypoxemia given her history; nasal cannula oxygen briefly, off it within a couple of days. Started on apixaban. No thoracentesis. Ambulating on room air at discharge.\n\nDischarge medications:\n- apixaban 10 mg PO BID for 7 days total (through 12/11), then 5 mg PO BID. Third VTE: anticoagulation is to continue indefinitely.\n- hydrochlorothiazide 25 mg PO daily.\nAllergies: NKDA.\n\nFollow-up: pulmonary clinic in 6 to 8 weeks; primary care in 1 to 2 weeks.\n\nReceived 12/16/25 by fax. Scanned for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-18a",
+          "kind": "portal_message",
+          "start": "2025-12-18T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Clot again",
+              "date": "2025-12-18T20:10",
+              "author": "patient",
+              "body": "Third clot, after the last trip. Home again and on apixaban now for good, they said. Feeling ok, just tired. I'll call about coming in after the holidays."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Clot again",
+              "date": "2025-12-19T07:45",
+              "author": "PCP",
+              "body": "Paula, thank you for telling me, and I'm glad you're home. I've read the hospital summary. Please do come in early January, we haven't seen you since April 2024 and I'd like to go over everything with you in one place. I'll ask the front desk to reach out."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T10:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2026-01-13T10:50",
+              "author": "RN",
+              "body": "Hydrochlorothiazide 25 mg renewal from mail order. Not seen since 4/19/24, no labs here since then. Per PCP: 30-day bridge only, needs appointment. Called pt, left message; portal note sent with booking link."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-17T11:25",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary clinic follow-up",
+              "date": "2026-02-17T11:25",
+              "author": "pulmonology",
+              "body": "Pulmonary Clinic — 02/12/2026\nRe: Paula Delaney\n\nFollow-up after December admission for recurrent left PE, her third VTE.\n\nNo dyspnea at rest, back at work. No bleeding. Taking apixaban 5 mg twice daily and hydrochlorothiazide. NKDA.\n\nExam: vitals within normal limits. Lungs clear. Legs without edema.\n\nAssessment: recurrent pulmonary embolism, now on indefinite anticoagulation.\nPlan: continue apixaban 5 mg twice daily indefinitely. Travel precautions continue. Return in one year.\n\nCopy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Recall: overdue visit",
+              "date": "2026-05-19T09:00",
+              "author": "front desk",
+              "body": "Dear Ms. Delaney, it has been more than two years since your last visit with us. Your doctor would like to see you for a physical and to review your recent hospital care and medications. Please call the office or reply here to schedule."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {}
+}

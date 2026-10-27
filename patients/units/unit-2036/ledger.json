@@ -1,0 +1,4272 @@
+{
+  "unit": "unit-2036",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002036",
+      "given": "Brian",
+      "family": "Goodwin",
+      "birth_date": "1963-03-31",
+      "address_line": "41 Kings Corner Road, Westhampton, MA 01027",
+      "phone": "+1-802-555-0186",
+      "email": "brian.goodwin@example.test",
+      "marital_status": "married",
+      "summary": "Office administrator with poorly controlled hypertension, CAD with a 2016 LAD stent, and paroxysmal AF who joins in 2019. Essential tremor is diagnosed in 2021, CML in December 2021, and stage IV ascending colon adenocarcinoma in 2022, treated with hemicolectomy and capecitabine; flecainide toxicity in 2025 and a chemotherapy-induced pancytopenia later that year.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:12",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2019-08-27T10:12",
+              "author": "front desk",
+              "body": "Caller is moving his primary care here; previous doctor retired this summer. Has a cardiologist he will keep. Booked new patient visit 9/10 at 8:40. Asked him to bring all pill bottles and to sign the records release when he comes in. Membership packet emailed."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "end": "2019-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2011-06-01",
+              "note": "Above goal on two agents"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "history",
+              "onset": "2016-03-01",
+              "note": "LAD drug-eluting stent 2016"
+            },
+            {
+              "label": "Angina pectoris",
+              "action": "history",
+              "onset": "2016-03-01",
+              "note": "Stable exertional angina, infrequent"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "history",
+              "onset": "2016-03-01"
+            },
+            {
+              "label": "Paroxysmal atrial fibrillation",
+              "action": "history",
+              "onset": "2018-05-01",
+              "note": "Followed by outside cardiology"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2013-01-01",
+              "note": "20 pack-years, quit 2013"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "CAD, atrial fibrillation"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "CAD with stent"
+            },
+            {
+              "drug_text": "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Stable angina"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              152,
+              92
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 89.3,
+            "height_cm": 178.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 311
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office administrator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-10T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-10T09:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2019",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "20 pack-years, quit 2013"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T09:50",
+              "author": "PCP",
+              "body": "56 yo man, office administrator, transferring care after his longtime PCP retired.\n\nHTN for years, on lisinopril 20 and HCTZ 25. Home cuff readings he brought average mid 140s over low 90s. Says it has \"never really been where they want it.\" Takes meds every morning, no missed doses he can think of.\n\nCAD: had chest tightness with exertion in 2016, cath at an outside hospital, one drug-eluting stent to the LAD. Since then rare tightness with heavy exertion, settles with rest, unchanged for a couple of years. On metoprolol succinate 50, ISMN 30, aspirin 81.\n\nParoxysmal AF picked up in 2018 when he had a spell of fluttering; sees outside cardiology yearly. Occasional brief palpitations, nothing lasting.\n\nSocial: married. Former smoker, about 20 pack-years, quit 2013. 1-2 drinks a week. Jogs a couple of times a week.\nFamily: father HTN and an MI at 62; father also had shaky hands. Mother type 2 diabetes. One older brother, healthy as far as he knows.\nAllergies: NKDA.\n\nExam: BP 148/92 (repeat similar), HR in the 60s regular, BMI ~28. Well appearing. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. No edema. Normal gait.\n\nA/P\n1. HTN, above goal on 2 drugs. Basic labs today. Will keep going with home log and revisit in 3 months.\n2. CAD s/p LAD stent, stable angina - stable. Continue current regimen, cardiology following.\n3. Paroxysmal AF - rate controlled on metoprolol, cardiology following.\n4. Health maintenance: Tdap today. Hep C and HIV screen once - ok'd. Colonoscopy has never been done; discussed screening at length. He'd rather wait until after the busy season at work, will revisit. Qualifies for lung screening by pack-years and quit date - low-dose CT ordered. Shingrix at flu shot visit next month.\n\nRecords release signed. RTC 3 mo."
+            }
+          ],
+          "state": {
+            "bp": [
+              148,
+              92
+            ],
+            "weight_kg": 89.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-12T16:20",
+              "author": "PCP",
+              "body": "Brian, your labs from Tuesday look fine: kidney function, potassium and blood count normal, A1c normal, hepatitis C and HIV screens negative. Cholesterol panel attached. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-30a",
+          "kind": "outside_records",
+          "start": "2019-09-30T11:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-09-30T11:05",
+              "author": "front desk",
+              "body": "Received 46 pages from the patient's former primary care office (faxed). Includes visit notes 2014-2019, medication lists matching current, and a 2016 hospital summary: diagnostic cardiac catheterization for exertional angina, single drug-eluting stent to the proximal LAD, no complications, discharged next day. Prior office notes document routine labs, all unremarkable, and repeated advice to schedule a colonoscopy, never completed. Indexed and sent to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "imaging",
+          "start": "2019-10-08T13:30",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2019-10-08T13:30",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Baseline. Indication: former smoker, 20 pack-years, quit 2013. Technique: low-dose helical acquisition without contrast. Lungs: no pulmonary nodules. No consolidation or effusion. Airways patent. Mediastinum: no adenopathy. Heart size normal; coronary stent and mild coronary calcification. Upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2019",
+              "action": "done",
+              "date": "2019-10-08T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2019-10-09T08:15",
+              "author": "PCP",
+              "body": "Negative screening CT, Lung-RADS 1. Repeat next fall. Released to patient with a note."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and shingles vaccines",
+          "vitals": {
+            "bp": [
+              146,
+              96
+            ],
+            "hr": 53
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-22T07:55"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-10-22T07:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2019-10-22T08:05",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid, Shingrix #1 R deltoid. VIS given. Tolerated. Told him the second Shingrix is due in 2-6 months and that the arm may ache a day or two. BP recorded for the PCP, cuff reading above goal as usual for him."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "outside_records",
+          "start": "2019-11-19T14:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology follow-up letter",
+              "date": "2019-11-19T14:40",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 11/12/2019.\n\nDear colleague,\nI saw Mr. Goodwin for his yearly visit. He has coronary disease with a drug-eluting stent to the LAD in 2016 and paroxysmal atrial fibrillation diagnosed in 2018. He describes the occasional tightness only with hard exertion, no change in pattern, and a few short palpitation episodes this year that end on their own. BP 146/90, HR 62. Heart regular, lungs clear, no edema. ECG: sinus rhythm, normal intervals, no acute change.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg. Allergies: none known.\n\nImpression: stable angina; paroxysmal AF, infrequent and rate controlled. Plan unchanged; see him in a year.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              152,
+              89
+            ],
+            "hr": 62,
+            "spo2": 97,
+            "weight_kg": 89.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-12-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2019-12-10T16:35",
+              "author": "PCP",
+              "body": "BP f/u. Home log Oct-Dec: mostly 140-150/88-94. Feels fine. No chest pain beyond his usual rare exertional tightness, no palpitations lately. Still jogging.\nBP today above goal, similar to home. Heart regular. No edema.\nA/P: HTN not at goal. Talked about salt and keeping the jogging up; he is taking his pills. Recheck spring. Second Shingrix due Feb - MA will schedule. Colonoscopy: still not ready, says next year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-02-25a",
+          "kind": "nurse_visit",
+          "start": "2020-02-25T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-02-25T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2020-02-25T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix #2",
+              "date": "2020-02-25T08:20",
+              "author": "MA",
+              "body": "Shingrix 2 of 2 given L deltoid. Series complete. No reaction to first dose other than a sore arm."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "pharmacy",
+          "start": "2020-03-24T09:02",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day refills",
+              "date": "2020-03-24T09:02",
+              "author": "RN",
+              "body": "Pharmacy asking for 90-day supplies on lisinopril, HCTZ, metoprolol succinate and isosorbide so he can stay home more. Approved per protocol, 90 days x 3 refills each. Last BMP 9/2019 normal."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check by video",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-21T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-04-21T11:45",
+              "author": "PCP",
+              "body": "Video visit, he is at home, working remotely now. Home readings last 3 wks avg about 144/91. No headaches, chest pain or dyspnea. Hasn't jogged as much with the stay-at-home order, walking instead.\nA/P: HTN still above goal. He'd like to hold off on changing anything while things are unsettled; agreed to revisit at the physical. Keep log. Labs then."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "portal_message",
+          "start": "2020-07-14T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Aspirin question",
+              "date": "2020-07-14T19:40",
+              "author": "patient",
+              "body": "Is it ok to buy the 81 mg aspirin over the counter instead of the prescription? It's cheaper at the store."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Aspirin question",
+              "date": "2020-07-15T08:50",
+              "author": "RN",
+              "body": "Yes, the over-the-counter 81 mg enteric coated tablet is the same thing. Keep taking it daily."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              150,
+              92
+            ],
+            "hr": 57,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 88.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2020-09-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2020",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening, never screened"
+            },
+            {
+              "id": "ldct-2020",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-22T09:05",
+              "author": "PCP",
+              "body": "Annual exam. 57 yo. Feels well. Working from home, back to jogging 2-3x/wk. No chest tightness this summer. A couple of 10-minute palpitation spells, self-limited.\nROS otherwise neg.\nMeds unchanged (lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81). NKDA.\nExam: BP above goal again. Well. HEENT normal. Neck no thyromegaly. Lungs clear. Heart regular, no murmur. Abdomen benign. No edema. Skin unremarkable. Neuro grossly normal.\nA/P\n- HTN: home average ~143/90. He'd still like to try harder on lifestyle before adding anything. BMP today.\n- CAD/stable angina, pAF: stable, cardiology in Nov.\n- CRC screening: still declines colonoscopy for now; agreed to a FIT kit, mailed from here.\n- Lung screening: annual LDCT ordered.\n- Lipids, A1c, CBC today. Flu shot given.\n- PHQ-2 negative.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "imaging",
+          "start": "2020-10-20T15:10",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2020-10-20T15:10",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Annual. Comparison 10/08/2019. Lungs: no nodules. No consolidation, effusion or pneumothorax. Central airways clear. No mediastinal or hilar adenopathy. Coronary stent and coronary calcification, unchanged. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2020",
+              "action": "done",
+              "date": "2020-10-20T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2020-10-21T07:40",
+              "author": "PCP",
+              "body": "Negative again. Next one fall 2021."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "outside_records",
+          "start": "2020-11-17T10:25",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology follow-up letter",
+              "date": "2020-11-17T10:25",
+              "author": "cardiology",
+              "body": "Outside cardiology group, telehealth follow-up 11/10/2020.\n\nMr. Goodwin is doing well. Angina is rare, only with the hardest efforts, no rest symptoms. Palpitations a few times this year, brief. Home BP mid 140s. He had a resting ECG at our office last month: sinus rhythm, rate 61, normal QRS.\n\nCurrent medicines: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, isosorbide mononitrate ER 30 mg daily, aspirin 81 mg daily. No known drug allergies.\n\nAssessment: stable angina, paroxysmal atrial fibrillation in sinus rhythm. No changes. Return in one year.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "portal_message",
+          "start": "2020-12-08T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Reminder: stool test kit",
+              "date": "2020-12-08T12:10",
+              "author": "MA",
+              "body": "Hi Brian, we haven't received your FIT stool kit back yet. It only takes a few minutes and you can drop it in the mail. Let us know if you need a new one."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Reminder: stool test kit",
+              "date": "2020-12-09T20:31",
+              "author": "patient",
+              "body": "Sorry, it's sitting on the counter. I'll get to it after the holidays."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "portal_message",
+          "start": "2021-03-02T18:05",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-02T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine dates",
+              "date": "2021-03-02T18:05",
+              "author": "patient",
+              "body": "Got both Pfizer shots at the state clinic, Feb 2 and Feb 23. Photo of the card attached. Also I'd like to come in about my hands, they've been shaky for a while and it's getting annoying at work."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine dates",
+              "date": "2021-03-03T09:12",
+              "author": "MA",
+              "body": "Thanks Brian, both doses entered in your record. You're booked with the doctor Tuesday 3/9 at 3:20 for the tremor."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "office_visit",
+          "start": "2021-03-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hand tremor",
+          "vitals": {
+            "bp": [
+              140,
+              89
+            ],
+            "hr": 55,
+            "spo2": 96,
+            "weight_kg": 89.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-09T15:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.62
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-09T15:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-09T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref-2021",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Bilateral hand tremor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-03-09T15:50",
+              "author": "PCP",
+              "body": "Shaky hands since around October, both sides. Notices it holding his coffee and signing things; coworkers have commented. Says a beer in the evening calms it. No falls, no change in walking, no voice change. No new meds. Caffeine 2 cups/day.\nBP still above goal. Fine bilateral tremor with arms outstretched, less at rest. Finger-nose ok. Normal tone, normal rapid alternating movements, gait normal.\nA/P: bilateral action tremor, sounds like essential tremor (father had a tremor too) but would like neurology to confirm. TSH and BMP today. Referral placed. He's already on a beta-blocker for his heart.\nHTN unchanged, discussed again, he wants to wait."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-10a",
+          "kind": "portal_message",
+          "start": "2021-03-10T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid and kidney tests",
+              "date": "2021-03-10T13:30",
+              "author": "PCP",
+              "body": "Thyroid and kidney/electrolyte labs normal. Neurology should call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-21a",
+          "kind": "outside_records",
+          "start": "2021-04-21T09:40",
+          "conditions": [
+            {
+              "label": "Essential tremor",
+              "action": "diagnosed",
+              "onset": "2020-10-01",
+              "note": "Neurology 4/14/2021"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref-2021",
+              "action": "done",
+              "date": "2021-04-21T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Neurology consultation",
+              "date": "2021-04-21T09:40",
+              "author": "neurology",
+              "body": "Outside neurology practice. Date of service: 04/14/2021.\nReason for referral: hand tremor.\n\nHPI: 58-year-old right-handed man with six months of tremor in both hands. It is most noticeable when he holds a cup of coffee or writes, and he has noticed it lessens after a drink. No head trauma and no seizures. No stiffness or slowness.\n\nPMH: hypertension, coronary artery disease with LAD stent, paroxysmal atrial fibrillation.\nMedications: lisinopril and hydrochlorothiazide for blood pressure; also metoprolol succinate 50 mg daily, aspirin 81 mg daily, isosorbide mononitrate ER 30 mg daily.\nAllergies: no known drug allergies.\nFamily history: his father had a tremor of the hands; no other movement disorder in the family.\nSocial: office administrator. Former smoker (quit 2013, 20 pack-years). One to two drinks a week.\n\nExam: BP 142/88. Alert, fluent. Cranial nerves intact. Postural tremor of both upper extremities, low amplitude, symmetric, with mild kinetic component on finger-nose. No rest tremor. Tone normal, no rigidity. No bradykinesia on finger taps. Strength, reflexes and sensation normal. Gait and tandem normal.\n\nData: recent routine labs and TSH from his primary care office normal.\n\nImpression: essential tremor.\nPlan: reassurance; he is already on a beta-blocker (metoprolol succinate) for cardiac reasons, and he does not want another medication now. Discussed adaptive strategies for writing and cups. Return as needed.\n\nOutside neurology"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "office_visit",
+          "start": "2021-05-04T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension; discuss clinical trial enrollment",
+          "vitals": {
+            "bp": [
+              147,
+              106
+            ],
+            "hr": 58,
+            "spo2": 98,
+            "weight_kg": 89.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-05-04T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-05-04T08:55",
+              "author": "PCP",
+              "body": "Here to go over whether he'd qualify for the outside study of a new blood pressure medicine (saw the notice in our newsletter). BP has run above goal for the whole time I've known him on lisinopril 20 + HCTZ 25, home average about 145/91.\nNeurology saw him for the tremor, essential tremor, no new medicine.\nWent through the study criteria with him: uncontrolled pressure on 1-2 agents, stable cardiac disease - he fits on paper, final eligibility is the study team's call. Explained it is randomized and blinded, so he might get the study drug or a placebo on top of his usual pills, and that he keeps all his current medicines. Visits at the study site for 6 months. He'd like to do it.\nExam: BP above goal. Heart regular, lungs clear, no edema.\nA/P: HTN uncontrolled. Referral letter and recent labs sent to the study coordinator. Will see him for the baseline visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              148,
+              93
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-01a",
+          "kind": "office_visit",
+          "start": "2021-06-01T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Clinical trial baseline visit",
+          "vitals": {
+            "bp": [
+              152,
+              93
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 89.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-01T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2021-06-01T07:55",
+              "text": "12-lead ECG. Rate 62. Normal sinus rhythm. PR 168 ms, QRS 92 ms, QTc 418 ms. Normal axis. No ST-T abnormality.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-06-01T07:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2021-06-01T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Trial Baseline Visit",
+              "date": "2021-06-01T08:20",
+              "author": "PCP",
+              "body": "Baseline visit for the blood pressure study; the study team asked for a resting ECG and a chemistry from us. He was accepted and randomized last week to study drug or placebo, blinded; the site dispenses it and he takes it in addition to his usual lisinopril and HCTZ. Primary endpoint is change in systolic pressure at 6 months.\nFeels well. No palpitations in months.\nBP above goal (recorded for the site). ECG: sinus rhythm, normal.\nA/P: enrolled. No change in his own medicines. Baseline BMP today, results to the coordinator. He knows to call us or the site with any side effects."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "portal_message",
+          "start": "2021-06-22T12:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Study visits",
+              "date": "2021-06-22T12:44",
+              "author": "patient",
+              "body": "FYI the study wants me in every 4 weeks, last visit around Thanksgiving week. No problems with the pills so far. Do I need to tell the pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Study visits",
+              "date": "2021-06-22T15:10",
+              "author": "RN",
+              "body": "No need to tell the pharmacy since the study supplies it. Just keep taking your regular medicines the same way. Thanks for the update."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              143,
+              92
+            ],
+            "hr": 58,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 89.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-28T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-28T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-28T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2020",
+              "action": "cancelled",
+              "date": "2021-09-28T08:00"
+            },
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-28T09:00",
+              "author": "PCP",
+              "body": "58 yo here for yearly exam. In the BP study, month 4 of 6. Feels ok, a bit more tired than usual the last few weeks, puts it down to work being busy. Tremor about the same.\nNo chest pain beyond usual, rare palpitations.\nMeds: lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81, plus blinded study drug. NKDA.\nExam: BP above goal. Well appearing. Lungs clear, heart regular, abdomen soft and nontender, no edema. Fine postural tremor both hands.\nA/P\n- HTN: stays in the study through November, then reassess.\n- Essential tremor: stable, no treatment wanted.\n- CAD, pAF: stable.\n- CRC screening: FIT never returned, closing that order. He agrees he really needs a colonoscopy; wants to finish the study first. Will bring it up again in the winter.\n- Lung LDCT due next month, ordered. Flu shot today.\nRTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID booster",
+              "date": "2021-10-19T12:30",
+              "author": "RN",
+              "body": "Pfizer booster given R deltoid. Observed 15 min, no reaction. Card updated."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "imaging",
+          "start": "2021-10-26T14:00",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2021-10-26T14:00",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Annual. Comparison 10/20/2020. No pulmonary nodules. No consolidation or effusion. No adenopathy. Coronary stent and calcification unchanged. Upper abdomen: no acute finding in the visualized portions.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "done",
+              "date": "2021-10-26T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2021-10-27T08:05",
+              "author": "PCP",
+              "body": "Third negative screening CT. Released."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "outside_records",
+          "start": "2021-11-09T16:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology follow-up letter",
+              "date": "2021-11-09T16:15",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 11/02/2021.\n\nMr. Goodwin returns for his annual review. He is enrolled in an outside blood pressure study. Angina remains infrequent and unchanged with exertion; palpitations rare. BP 144/90, HR 64. Exam unremarkable. ECG: sinus rhythm, normal QRS and intervals.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg; blinded study medication. NKDA.\n\nImpression: stable angina; paroxysmal AF, quiescent. Continue current therapy; one year.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "portal_message",
+          "start": "2021-11-29T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Study done + feeling run down",
+              "date": "2021-11-29T07:55",
+              "author": "patient",
+              "body": "Finished the blood pressure study last Tuesday (11/23), they took me off the study pills. They won't tell me which one I had until the whole study is over. Separate thing - I've been really wiped out for a couple of months, sweating at night and I've lost weight without trying. Can I get in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Study done + feeling run down",
+              "date": "2021-11-29T09:20",
+              "author": "RN",
+              "body": "Thanks for letting us know. The doctor wants to see you this week - you're booked Thursday 12/2 at 1:00. If you get a high fever, chest pain or feel faint before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-02a",
+          "kind": "office_visit",
+          "start": "2021-12-02T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weight loss, night sweats",
+          "vitals": {
+            "bp": [
+              151,
+              99
+            ],
+            "hr": 60,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 83.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-02T13:40",
+              "resulted": "2021-12-02T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 64.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 600
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-12-02T13:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2021-12-02T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-ref-2021",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "Marked leukocytosis with left shift, anemia, thrombocytosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-12-02T13:45",
+              "author": "PCP",
+              "body": "Three months of steadily worse fatigue. Wife told him he looks pale. Night sweats several nights a week, a few evenings of 99-100 F. Weight down about 6 kg since the physical without dieting. No cough, no urinary symptoms, no bleeding he's noticed, no chest pain. Off the study drug since 11/23.\nExam: pale. Weight 83 kg (89 in Sept). No lymphadenopathy in neck/axillae. Lungs clear. Heart regular. Abdomen soft, nontender, LUQ hard to assess with his body habitus. No rash or bruising.\nA/P: constitutional symptoms with pallor. CBC with smear review and CMP now, stat.\n\nAddendum 16:30: WBC 64.0 with a left shift - lab smear review shows metamyelocytes and promyelocytes. Hgb 8.5. Platelets 600. Called hematology on-call; urgent consult arranged for next week. Patient called (see phone note)."
+            }
+          ],
+          "state": {
+            "weight_kg": 83.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-12-02b",
+          "kind": "telephone",
+          "start": "2021-12-02T16:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Abnormal blood count",
+              "date": "2021-12-02T16:40",
+              "author": "PCP",
+              "body": "Called pt with CBC. Explained the white count is very high with immature cells, he is anemic and platelets high - this needs a blood specialist promptly; could be a bone marrow problem such as a leukemia, and they will sort out exactly what. Hematology/oncology appt Fri 12/10 at 10 am. ED precautions for fever over 101, bleeding, chest pain or fainting. He understood; wife on speaker."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-17a",
+          "kind": "outside_records",
+          "start": "2021-12-17T10:30",
+          "conditions": [
+            {
+              "label": "Chronic myeloid leukemia",
+              "action": "diagnosed",
+              "onset": "2021-12-10",
+              "note": "BCR-ABL1 positive, chronic phase"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "imatinib 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily with food and a full glass of water",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic myeloid leukemia (prescribed by hematology/oncology)"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-ref-2021",
+              "action": "done",
+              "date": "2021-12-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology/Oncology consultation",
+              "date": "2021-12-17T10:30",
+              "author": "hematology/oncology",
+              "body": "Outside hematology/oncology clinic. Date of service: 12/10/2021, with marrow results 12/14/2021.\n\nReferred for leukocytosis with left shift, anemia and thrombocytosis.\n\nHPI: 58-year-old man, three months of progressive fatigue, pallor, unintentional weight loss, night sweats and intermittent low-grade fevers.\n\nPMH: hypertension, CAD with LAD stent 2016, paroxysmal atrial fibrillation, essential tremor.\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, isosorbide mononitrate ER 30 mg daily.\nAllergies: no known drug allergies.\nFamily history: father with hypertension, essential tremor and MI at 62; mother with type 2 diabetes.\nSocial: office administrator; former smoker, quit 2013; 1-2 drinks weekly.\n\nExam: HR 104. Pale conjunctivae. Spleen palpable below the left costal margin. No lymphadenopathy. Heart: mild tachycardia, regular. Lungs clear.\n\nLabs: hemoglobin 8.5 g/dL; leukocytosis with left shift including metamyelocytes and promyelocytes; platelets 600,000/uL.\n\nBone marrow aspirate and biopsy (12/10/2021): hypercellular marrow with increased granulopoiesis; blasts not increased. BCR-ABL1 fusion detected by FISH and quantitative PCR.\n\nImpression: chronic myeloid leukemia, BCR-ABL1 positive, chronic phase.\n\nPlan: imatinib 400 mg daily started 12/14/2021 via our specialty pharmacy. CBC every 2 weeks initially, quantitative BCR-ABL1 every 3 months. Reviewed side effects (fluid retention, cramps, nausea, rash, cytopenias). Return in 4 weeks.\n\nOutside hematology/oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-21a",
+          "kind": "telehealth_visit",
+          "start": "2021-12-21T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hematology consult",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2021-12-21T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2021-12-21T12:30",
+              "author": "PCP",
+              "body": "Video visit, pt at home. Hematology confirmed CML, chronic phase; on imatinib 400 daily since 12/14. A little queasy if he takes it without food, otherwise fine. Still tired, sweats a bit less. Lots of questions - went over what chronic phase means and that hematology will follow counts and the BCR-ABL level.\nMed list updated with imatinib. Reminded him to run any new medicines or supplements past hematology because of interactions.\nVaccines: due for pneumococcal now that he's on cancer treatment - PCV20 at a nurse visit in January.\nHTN, CAD, pAF unchanged. Study finished.\nRTC 3 months, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "nurse_visit",
+          "start": "2022-01-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumococcal vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-01-11T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-01-11T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "PCV20",
+              "date": "2022-01-11T08:45",
+              "author": "RN",
+              "body": "PCV20 given L deltoid, single dose, no further pneumococcal doses needed. Pt says energy a little better, sweats gone. Tolerating imatinib with breakfast."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "outside_records",
+          "start": "2022-03-29T14:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology/Oncology follow-up",
+              "date": "2022-03-29T14:05",
+              "author": "hematology/oncology",
+              "body": "Outside hematology/oncology clinic. Date of service: 03/22/2022.\n\nCML, chronic phase, on imatinib 400 mg daily since 12/14/2021. Energy improving, night sweats resolved. Spleen no longer palpable.\n\nCBC today: hemoglobin 13.4, WBC 7.6, platelets 286, normal differential.\nQuantitative BCR-ABL1 (IS), 3 months: 7.1%.\n\nAssessment: complete hematologic response; early molecular response on track.\nPlan: continue imatinib 400 mg daily. CBC monthly, BCR-ABL1 every 3 months.\n\nOutside hematology/oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "office_visit",
+          "start": "2022-05-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood on toilet paper",
+          "vitals": {
+            "bp": [
+              139,
+              95
+            ],
+            "hr": 47,
+            "spo2": 97,
+            "weight_kg": 85.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-24T11:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-24T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-ref-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "3 months minimal rectal bleeding; never had colorectal screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-05-24T11:20",
+              "author": "PCP",
+              "body": "Since about February he's seen a little bright red blood on the paper after BMs, maybe once a week. No pain, no change in his bowel pattern, no blood in the bowl. Weight back up (86 kg). Feeling much better since starting imatinib; hematology says his counts are normal now.\nExam: BP above goal. Abdomen soft, nontender, no mass. Declined rectal exam today, prefers GI do it.\nA/P: minimal rectal bleeding, likely hemorrhoidal but he is 59 and has never been screened - GI referral for evaluation and colonoscopy. He agrees this time. BMP today for his BP meds. HTN otherwise unchanged."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-17a",
+          "kind": "outside_records",
+          "start": "2022-06-17T11:50",
+          "conditions": [
+            {
+              "label": "Hemorrhoids",
+              "action": "diagnosed",
+              "onset": "2022-06-13",
+              "note": "External hemorrhoids on GI exam"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-ref-2022",
+              "action": "done",
+              "date": "2022-06-17T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology consultation",
+              "date": "2022-06-17T11:50",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group. Date of service: 06/13/2022.\n\nReason: rectal bleeding.\n\nHPI: 59-year-old man with chronic myeloid leukemia on imatinib, referred for about three months of small amounts of bright red blood seen on the tissue after bowel movements. No significant pain, no change in bowel habit, no weight loss. Has never had a colonoscopy.\n\nPMH: hypertension, controlled per patient on lisinopril; CAD with LAD stent; paroxysmal atrial fibrillation; essential tremor; CML.\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg daily.\nAllergies: NKDA.\nFamily history: no colorectal cancer in the family.\nSocial: former smoker; occasional alcohol.\n\nExam: external hemorrhoids. Abdomen soft, nontender, no masses. Digital rectal exam: no blood on the examining finger; prostate nontender, normal size.\n\nImpression: minimal outlet-type bleeding with external hemorrhoids; colonoscopy indicated given his age, no prior screening and the bleeding.\nPlan: colonoscopy with split-dose prep, scheduled 6/28. Hold aspirin not required. Fiber supplement.\n\nOutside gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-30a",
+          "kind": "outside_records",
+          "start": "2022-06-30T15:20",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of colon",
+              "action": "diagnosed",
+              "onset": "2022-06-28",
+              "note": "Ascending colon adenocarcinoma, moderately differentiated"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-06-28T09:30",
+              "text": "SURGICAL PATHOLOGY. Specimen: ascending colon mass, cold forceps biopsies (6 fragments). Microscopic: invasive gland-forming adenocarcinoma with desmoplastic stroma, moderately differentiated.",
+              "conclusion": "Ascending colon, biopsy: invasive adenocarcinoma, moderately differentiated.",
+              "issued": "2022-06-30T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2022-06-28T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Colonoscopy report",
+              "date": "2022-06-30T15:20",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology endoscopy unit. Procedure date: 06/28/2022.\nIndication: rectal bleeding; no prior screening.\nSedation: monitored anesthesia care. Prep: good (BBPS 8).\nFindings: cecum reached, appendiceal orifice and ileocecal valve photographed. A friable, partly circumferential mass about 4 cm in the ascending colon, non-obstructing; biopsied and tattooed distally. Remainder of the colon normal. Retroflexion: small hemorrhoids.\nImpression: ascending colon mass, suspicious for malignancy. Hemorrhoids.\nPlan: await pathology; CT staging; surgical referral.\n\nAddendum 06/30/2022: pathology shows invasive adenocarcinoma. Patient informed by phone; CT chest/abdomen/pelvis and colorectal surgery consultation arranged.\n\nOutside gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "telephone",
+          "start": "2022-07-01T08:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Colon biopsy result",
+              "date": "2022-07-01T08:45",
+              "author": "PCP",
+              "body": "Called Brian after GI's report came in. He already knows it's cancer from GI yesterday. Shaken but has a plan: CT next week, surgeon visit after. Answered questions about how this fits with the CML - two separate problems; hematology already aware. Told him we're here and to message any time. Will see him after surgery."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-08a",
+          "kind": "outside_records",
+          "start": "2022-07-08T10:10",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2022-07-06T13:40",
+              "text": "CT CHEST WITH CONTRAST. Indication: staging, colon adenocarcinoma. Lungs clear without nodules or masses. No effusion. No mediastinal, hilar or axillary adenopathy. Heart normal in size; coronary stent.",
+              "conclusion": "No evidence of thoracic metastatic disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2022-07-06T13:40",
+              "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST. Focal circumferential wall thickening of the ascending colon at the site of the known mass, with a few subcentimeter adjacent mesenteric nodes. Two subcentimeter hypodensities in the liver, too small to characterize. Spleen normal in size. Kidneys, adrenals, pancreas unremarkable. No ascites. Bladder and prostate unremarkable.",
+              "conclusion": "Ascending colon mass. Two subcentimeter liver hypodensities, too small to characterize; MRI could be considered."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "CT staging reports received",
+              "date": "2022-07-08T10:10",
+              "author": "front desk",
+              "body": "CT chest and CT abdomen/pelvis reports from the outside imaging center (exam date 07/06/2022) received by fax, scanned, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "hospital_admission",
+          "start": "2022-07-21T06:30",
+          "end": "2022-07-24T11:00",
+          "service": "Colorectal Surgery",
+          "reason": "Laparoscopic right hemicolectomy for ascending colon adenocarcinoma",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-07-21T10:30",
+              "text": "SURGICAL PATHOLOGY. Specimen: right colon and terminal ileum, laparoscopic right hemicolectomy. Tumor: ascending colon, 4.2 cm, adenocarcinoma, moderately differentiated, invading through the muscularis propria into pericolonic tissue. Lymphovascular invasion not identified. Margins (proximal, distal, radial) negative. Lymph nodes: 2 of 18 positive for metastatic carcinoma.",
+              "conclusion": "Adenocarcinoma of the ascending colon, pT3 N1b, margins negative.",
+              "issued": "2022-07-26T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic right hemicolectomy with primary anastomosis",
+              "snomed": "50774009",
+              "performed": "2022-07-21T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2022-07-26T15:00",
+              "author": "colorectal surgery",
+              "body": "Outside regional hospital, colorectal surgery service. Admitted 07/21/2022, discharged 07/24/2022.\n\nDiagnosis: adenocarcinoma of the ascending colon.\nProcedure: laparoscopic right hemicolectomy with primary stapled ileocolic anastomosis, 07/21/2022. Uncomplicated.\n\nCourse: enhanced recovery pathway. Clear liquids day 0, diet advanced day 1, flatus day 2, bowel movement day 3. Pain controlled with acetaminophen and minimal opioid. Incisions clean. Ambulating independently. Aspirin continued; imatinib held 7/20 to 7/23 and resumed at discharge per hematology.\n\nPathology (final 07/26): pT3 N1b (2/18 nodes), margins negative.\n\nDischarge medications: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, isosorbide mononitrate ER 30 mg daily, imatinib 400 mg daily; acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: colorectal surgery 2 weeks; medical oncology referral placed; MRI liver to characterize the CT liver lesions.\n\nOutside colorectal surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-07-29a",
+          "kind": "office_visit",
+          "start": "2022-07-29T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after hemicolectomy",
+          "vitals": {
+            "bp": [
+              141,
+              96
+            ],
+            "hr": 59,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 82.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2022-07-29T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "date": "2022-07-29T14:55",
+              "author": "PCP",
+              "body": "Seen 5 days after discharge from laparoscopic R hemicolectomy (7/21). Eating normal meals, BMs daily and soft, incision soreness only. No fever. Walking a mile a day. Back on imatinib.\nPath: pT3 N1b, margins clear. Liver MRI 8/10 for the two small spots on CT, then oncology.\nExam: afebrile. BP above goal as usual. Port sites clean, dry, no erythema. Abdomen soft, appropriately tender near the extraction incision. No edema.\nMeds reconciled against the discharge list - unchanged plus acetaminophen prn.\nA/P: recovering well after hemicolectomy for colon adenocarcinoma. Oncology and MRI scheduled. CML on imatinib. HTN - continue. Spent time on what node-positive means and why the MRI matters. Message us with results."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "outside_records",
+          "start": "2022-08-26T09:30",
+          "conditions": [
+            {
+              "label": "Secondary malignant neoplasm of liver",
+              "action": "diagnosed",
+              "onset": "2022-08-10",
+              "note": "Three bilobar liver metastases, largest 1.4 cm; stage IV colon adenocarcinoma",
+              "icd10": "C78.7"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI liver with and without contrast",
+              "loinc": "105129-1",
+              "performed": "2022-08-10T11:00",
+              "text": "MRI ABDOMEN (LIVER) WITHOUT AND WITH IV CONTRAST. Indication: colon cancer, indeterminate liver lesions on CT. Three T2-hyperintense lesions with peripheral enhancement and restricted diffusion: segment 7 (1.4 cm), segment 4a (0.9 cm), segment 3 (0.7 cm). No biliary dilatation. Portal and hepatic veins patent. Spleen, pancreas and kidneys unremarkable. Postsurgical change of right hemicolectomy.",
+              "conclusion": "Three hepatic metastases in both lobes, largest 1.4 cm in segment 7."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Medical oncology consultation",
+              "date": "2022-08-26T09:30",
+              "author": "oncology",
+              "body": "Outside medical oncology clinic (same group as his hematology). Date of service: 08/24/2022.\n\n59-year-old man with chronic-phase CML on imatinib (BCR-ABL1 0.86% IS on 06/2022) and a newly diagnosed ascending colon adenocarcinoma, s/p laparoscopic right hemicolectomy 07/21/2022, pT3 N1b. MRI liver 08/10/2022 shows three bilobar liver metastases (largest 1.4 cm).\n\nStage IV (liver-only metastatic) colon adenocarcinoma.\n\nDiscussed with the liver surgery team at tumor board: not resectable at this point; reassess after systemic therapy.\n\nPlan: capecitabine 1500 mg by mouth twice daily on days 1-14 of each 21-day cycle, cycle 1 starting 09/06/2022. Continue imatinib 400 mg daily; hematology following. CBC and CMP each cycle, CEA, CT chest/abdomen/pelvis every 3-4 months. Hand-foot care and diarrhea instructions given.\n\nMedications reviewed: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg. NKDA.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T16:05",
+          "medications": [
+            {
+              "drug_text": "capecitabine 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (1500 mg) by mouth twice daily within 30 minutes after a meal on days 1-14 of each 21-day cycle",
+              "dose": {
+                "value": 1500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Stage IV colon adenocarcinoma (prescribed by oncology)"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Chemotherapy started",
+              "date": "2022-09-06T16:05",
+              "author": "RN",
+              "body": "Pt called to let us know he started capecitabine today, 3 tabs twice a day, two weeks on and one week off, from the oncology specialty pharmacy. Added to med list as prescribed by oncology. Reminded him to keep using the oncology triage line for side effects; call us for anything else."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "annual_physical",
+          "start": "2022-10-04T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              149,
+              93
+            ],
+            "hr": 72,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 84.7
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-04T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-04T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-10-04T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-04T09:10",
+              "author": "PCP",
+              "body": "Yearly exam. A lot this year: CML dx Dec 2021 on imatinib, colon adenocarcinoma found June, R hemicolectomy July, liver mets on MRI -> stage IV, now cycle 3 of capecitabine. Tolerating it without problems so far. Oncology does his CBC/CMP each cycle. Mood \"up and down\" but sleeping, working part-time from home, wife a big support. PHQ-2 1.\nMeds: lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81, imatinib 400 daily, capecitabine 1500 BID d1-14 q21d. NKDA.\nExam: BP above goal. Weight 84. Skin of palms normal. Lungs clear, heart regular, abdomen soft with healed port sites. No edema. Postural tremor unchanged.\nA/P\n- Stage IV colon ca on capecitabine, CML on imatinib: per oncology/hematology.\n- HTN: still above goal; he doesn't want to add anything during chemo. Recheck.\n- CAD, pAF: stable, cardiology later this month.\n- Lung screening: oncology chest CTs now cover this; stopping the separate LDCT.\n- Flu and bivalent COVID today. Lipids, A1c.\nRTC 3-4 mo."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "outside_records",
+          "start": "2022-10-25T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology follow-up letter",
+              "date": "2022-10-25T13:00",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 10/18/2022.\n\nEventful year for Mr. Goodwin: CML on imatinib since December, and stage IV colon cancer, hemicolectomy in July, now on capecitabine. From a cardiac standpoint he is stable - angina uncommon and unchanged, rare brief palpitations. BP 140/86, HR 66. Exam normal. ECG: sinus rhythm, normal intervals, unchanged.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg, imatinib 400 mg, capecitabine 1500 mg twice daily (2 weeks on, 1 off). NKDA.\n\nImpression: stable angina; paroxysmal AF in sinus rhythm. Asked him to report any new chest pain on capecitabine promptly. Continue current regimen; one year.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "office_visit",
+          "start": "2022-11-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Erectile difficulty",
+          "vitals": {
+            "bp": [
+              140,
+              89
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 84.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-08T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-ref-2022",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "Erectile dysfunction; on daily nitrate"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-11-08T16:05",
+              "author": "PCP",
+              "body": "Came in alone to talk about trouble with erections since early summer, harder to get and keep. It's become a source of tension at home. No pain, no curvature. Libido ok.\nHe asked about the little blue pill - explained it's off the table with his daily isosorbide, the combination can drop blood pressure dangerously.\nExam: BP above goal. No other exam today.\nA/P: erectile dysfunction, probably multifactorial (vascular, meds, a hard year). Referral to urology to go over options that are safe with his nitrate. He appreciated being able to talk about it."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "outside_records",
+          "start": "2022-12-13T10:45",
+          "conditions": [
+            {
+              "label": "Erectile dysfunction",
+              "action": "diagnosed",
+              "onset": "2022-06-01",
+              "note": "Urology 12/06/2022"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-ref-2022",
+              "action": "done",
+              "date": "2022-12-13T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology consultation",
+              "date": "2022-12-13T10:45",
+              "author": "urology",
+              "body": "Outside urology practice. Date of service: 12/06/2022.\n\nReason for referral: erectile dysfunction.\n\nHPI: 59-year-old with essential tremor, chronic myeloid leukemia and stage IV colon adenocarcinoma on capecitabine, with six months of erectile dysfunction that is putting real stress on his relationship. Takes isosorbide mononitrate daily for angina.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg, capecitabine 1500 mg twice daily (2 weeks on, 1 off).\nAllergies: none.\nFamily history: father hypertension, essential tremor, MI at 62; mother type 2 diabetes.\nSocial: office administrator; former smoker; 1-2 drinks weekly.\n\nExam: BP 135/85, pulse 78. Normal male genitalia, testes descended and normal in size, no plaques. Remainder of the exam unremarkable.\nLabs: recent renal and liver function normal (oncology labs).\n\nImpression: erectile dysfunction.\nPlan: PDE-5 inhibitors are contraindicated with his daily nitrate and were not offered. Non-medication options reviewed with him; he will think about them and discuss with his partner. Return as needed.\n\nOutside urology"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T16:30",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2022-12-12T12:30",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison MRI liver 08/10/2022 and CT 07/06/2022. Liver: the segment 7 metastasis measures 1.1 cm (previously 1.4 cm); the segment 4a and segment 3 lesions are smaller and faint. No new hepatic lesion. Postsurgical right hemicolectomy without local recurrence. No adenopathy or ascites. Chest: lungs clear, no nodules.",
+              "conclusion": "Partial response of hepatic metastases. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology/Hematology follow-up",
+              "date": "2022-12-20T16:30",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 12/19/2022.\n\nColon adenocarcinoma, stage IV (liver), on capecitabine since 09/06/2022, cycle 6. Tolerating treatment. CT 12/12: liver lesions smaller, largest 1.1 cm, no new disease.\nCML on imatinib 400 mg: quantitative BCR-ABL1 (IS) 0.07% - major molecular response.\nCBC and CMP within normal limits.\n\nPlan: continue capecitabine 1500 mg twice daily days 1-14 q21d and imatinib 400 mg daily. CT in 3-4 months. BCR-ABL1 every 3 months.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "pharmacy",
+          "start": "2023-01-17T10:22",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "New year refills",
+              "date": "2023-01-17T10:22",
+              "author": "RN",
+              "body": "Mail-order pharmacy requests new 90-day prescriptions under his new plan year: lisinopril 20, HCTZ 25, metoprolol succinate 50, isosorbide mononitrate ER 30. Sent, 90 days x 3. Imatinib and capecitabine come from the oncology specialty pharmacy, not us."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              155,
+              102
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-14T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-14T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-14T09:55",
+              "author": "PCP",
+              "body": "Follow-up. On capecitabine cycle 10ish, imatinib ongoing. December CT showed the liver spots shrinking, BCR-ABL in major molecular response - he's encouraged. Back to jogging short distances. Tremor same.\nHome BP 140s/90. No chest pain, palpitations rare.\nExam: BP above goal. Lungs clear, heart regular, no edema.\nA/P: HTN above goal on lisinopril/HCTZ - continue, BMP today. Cancer care per oncology. CAD/pAF stable. RTC 6 mo for physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "outside_records",
+          "start": "2023-04-18T11:15",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-04-10T10:00",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 12/12/2022. Liver: segment 7 lesion 1.1 cm, unchanged; segment 4a and 3 lesions faint and unchanged. No new liver lesion. Anastomosis unremarkable. No adenopathy, ascites or peritoneal nodularity. Chest: lungs clear.",
+              "conclusion": "Stable hepatic metastases. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology follow-up",
+              "date": "2023-04-18T11:15",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 04/14/2023.\n\nStage IV colon adenocarcinoma on capecitabine 1500 mg twice daily days 1-14 q21d. Feels well, working. CT 04/10/2023: stable liver disease, no new sites. CBC/CMP normal. CML on imatinib, last BCR-ABL1 0.07%.\nPlan: continue both agents. Next CT in 4 months.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "portal_message",
+          "start": "2023-06-06T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "My brother",
+              "date": "2023-06-06T21:14",
+              "author": "patient",
+              "body": "Wanted you to know - after everything with me my older brother finally got a colonoscopy and they found colon cancer too. He's 61. He's having surgery next month. Does this change anything for me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: My brother",
+              "date": "2023-06-07T07:45",
+              "author": "PCP",
+              "body": "I'm sorry to hear that, Brian. It doesn't change your own treatment, but it matters for the family history in your chart and for your relatives' screening. Our nurse will call to update your record."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T10:30",
+          "conditions": [
+            {
+              "label": "Family history of colon cancer",
+              "action": "diagnosed",
+              "onset": "2023-05-15",
+              "note": "Older brother, diagnosed at 61"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Family history update",
+              "date": "2023-06-13T10:30",
+              "author": "RN",
+              "body": "Spoke with pt. Older brother (61) diagnosed with colon cancer in May after a screening colonoscopy. Family history updated. Reviewed that this does not change his own care. Nothing else needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "outside_records",
+          "start": "2023-08-22T15:00",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-08-14T09:30",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 04/10/2023. Hepatic lesions unchanged in size and number, largest 1.1 cm in segment 7. No new lesion. No local recurrence at the anastomosis. No adenopathy. Lungs clear.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology follow-up",
+              "date": "2023-08-22T15:00",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 08/18/2023.\n\nContinues capecitabine without dose change. CT 08/14: stable. Counts and chemistry normal. Plan unchanged; CT 4 months.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              147,
+              96
+            ],
+            "hr": 70,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 84.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-26T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-26T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-26T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-26T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-26T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-26T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-26T09:10",
+              "author": "PCP",
+              "body": "60 yo, yearly exam. One year into capecitabine with stable liver disease on the last two CTs; CML in major molecular response on imatinib. Feels pretty normal day to day. Jogging 2 miles a few times a week. Brother had his surgery in July and is recovering.\nMeds: lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81, imatinib 400, capecitabine 1500 BID d1-14 q21. NKDA.\nFamily hx: father HTN/tremor/MI at 62; mother DM2; brother colon ca at 61.\nExam: BP above goal. Well. Lungs clear. Heart regular. Abdomen soft, healed incisions. No edema. Postural tremor both hands, mild.\nA/P\n- HTN above goal, unchanged regimen. BMP.\n- Colon ca stage IV, CML: per oncology/hematology.\n- CAD, pAF, essential tremor: stable.\n- ED: hasn't pursued urology's options, no new concerns.\n- Flu + updated COVID today. Lipids, A1c. PHQ-2 0.\nRTC 4-5 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T14:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology follow-up letter",
+              "date": "2023-10-24T14:20",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 10/17/2023.\n\nMr. Goodwin remains on capecitabine and imatinib without cardiac events. Exertional tightness rare and unchanged; he jogs. Occasional palpitations lasting minutes. BP 142/88, HR 64. ECG: sinus rhythm, normal QRS, no ischemic change.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg, imatinib 400 mg, capecitabine. NKDA.\n\nImpression: stable angina; paroxysmal AF, infrequent. No change. One year, sooner if palpitations increase.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "outside_records",
+          "start": "2023-12-19T09:55",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-12-11T13:15",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 08/14/2023. Liver metastases stable, largest 1.1 cm segment 7. No new hepatic or extrahepatic disease. Lungs clear. No adenopathy.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology/Hematology follow-up",
+              "date": "2023-12-19T09:55",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 12/15/2023.\n\nColon cancer stage IV: CT 12/11 stable. Continue capecitabine 1500 mg twice daily days 1-14 q21d.\nCML: BCR-ABL1 (IS) 0.03%, sustained major molecular response. Continue imatinib 400 mg daily; BCR-ABL1 now every 6 months.\nCBC and CMP normal.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              152,
+              95
+            ],
+            "hr": 58,
+            "spo2": 97,
+            "weight_kg": 84.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-20T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-20T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-20T14:30",
+              "author": "PCP",
+              "body": "Routine f/u. Doing well. Oncology Dec: stable CT, CML in deep response. No new symptoms. Palpitations maybe twice a month, a few minutes, no lightheadedness.\nBP above goal again. HR regular today. Lungs clear. No edema.\nA/P: HTN unchanged. BMP. Palpitations occasional, cardiology aware - mention again at his fall visit. RTC 4 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "outside_records",
+          "start": "2024-05-21T12:40",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-05-13T11:00",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 12/11/2023. Hepatic metastases unchanged. No new lesions in the chest, abdomen or pelvis.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology follow-up",
+              "date": "2024-05-21T12:40",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 05/17/2024.\n\nStable disease on capecitabine, CT 05/13. Labs normal. Continue. Next CT in 4 months.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-11b",
+          "kind": "telephone",
+          "start": "2024-06-11T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-06-11T11:05",
+              "author": "front desk",
+              "body": "Pt missed 10:20. Reached him - forgot, was at an oncology infusion-center lab draw across town. Rebooked 7/9 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "office_visit",
+          "start": "2024-07-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              158,
+              95
+            ],
+            "hr": 49,
+            "spo2": 98,
+            "weight_kg": 83.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-07-09T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-07-09T09:25",
+              "author": "PCP",
+              "body": "Rescheduled f/u. No changes since Feb. Oncology May: stable. Refills current.\nBP above goal. Heart regular. No edema.\nA/P: stable on current meds. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              146,
+              96
+            ],
+            "hr": 68,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 83.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-01T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-01T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-01T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-01T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-01T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-01T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-01T09:05",
+              "author": "PCP",
+              "body": "Yearly exam, 61. Two years of stable liver disease on capecitabine, CML in deep molecular response. Palpitation spells more frequent over the summer - several a week, up to half an hour. Seeing cardiology next month and will raise it.\nMeds unchanged. NKDA.\nExam: BP above goal. HR regular at rest today. Lungs clear. No edema. Tremor unchanged.\nA/P\n- Palpitations, known pAF: more frequent; cardiology 11/5. If a long episode or chest pain, go to the ED.\n- HTN above goal, unchanged.\n- Oncology issues per their team.\n- Flu, updated COVID. Lipids, A1c, BMP.\nRTC 4 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "outside_records",
+          "start": "2024-11-12T13:35",
+          "medications": [
+            {
+              "drug_text": "flecainide acetate 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Paroxysmal atrial fibrillation (prescribed by cardiology)"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-11-05T10:20",
+              "text": "12-lead ECG (outside cardiology). Atrial fibrillation, ventricular rate 92. QRS 94 ms, normal axis. No acute ST change.",
+              "conclusion": "Atrial fibrillation with controlled ventricular rate, normal QRS duration."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology visit letter",
+              "date": "2024-11-12T13:35",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 11/05/2024.\n\nMr. Goodwin reports more frequent palpitation spells since summer, several a week, some lasting up to 30 minutes. He was in atrial fibrillation at today's visit, rate 92, normal QRS duration. BP 140/86.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg, imatinib 400 mg, capecitabine. NKDA.\n\nImpression: paroxysmal atrial fibrillation, more symptomatic.\nPlan: start flecainide 100 mg twice daily for rhythm control; continue metoprolol succinate 50 mg. Call with any fainting or prolonged palpitations. Return in 6 months.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "portal_message",
+          "start": "2024-11-14T17:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New heart medicine",
+              "date": "2024-11-14T17:50",
+              "author": "patient",
+              "body": "Cardiology started me on flecainide twice a day. Wanted to make sure you have it on my list. Haven't noticed any spells since Saturday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New heart medicine",
+              "date": "2024-11-15T08:30",
+              "author": "RN",
+              "body": "Got it - the cardiology letter came in this week and flecainide 100 mg twice daily is on your list. Glad the spells have settled."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "outside_records",
+          "start": "2024-12-17T10:05",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-12-09T09:40",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 05/13/2024. Liver metastases stable, largest 1.1 cm. No new disease. Lungs clear.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology/Hematology follow-up",
+              "date": "2024-12-17T10:05",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 12/13/2024.\n\nColon cancer stage IV, liver: stable on CT 12/09. Continue capecitabine 1500 mg twice daily days 1-14 q21d.\nCML: BCR-ABL1 (IS) 0.02%. Continue imatinib 400 mg daily.\nNoted new flecainide from cardiology. CBC and CMP normal.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              153,
+              94
+            ],
+            "hr": 62,
+            "spo2": 98,
+            "weight_kg": 83.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-11T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-11T15:30",
+              "author": "PCP",
+              "body": "F/u. Started flecainide 100 BID in November from cardiology; palpitation spells nearly gone, one short one in January. Oncology Dec: stable, BCR-ABL 0.02%. Jogging again now that the spells settled.\nBP above goal. Heart regular. Lungs clear. No edema.\nA/P: pAF better on flecainide + metoprolol per cardiology. HTN unchanged, BMP. RTC 4-6 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "ed_visit",
+          "start": "2025-04-08T07:05",
+          "end": "2025-04-08T12:20",
+          "service": "Emergency Medicine",
+          "reason": "Palpitations and lightheadedness while jogging",
+          "conditions": [
+            {
+              "label": "Adverse effect of other antidysrhythmic drugs, initial encounter",
+              "action": "diagnosed",
+              "onset": "2025-04-08",
+              "note": "Flecainide: AF with rapid ventricular response and QRS widening on exertion",
+              "icd10": "T46.2X5A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-08T07:08",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 160,
+              "rr": 18,
+              "temp_c": 36.7,
+              "spo2": 97
+            },
+            {
+              "time": "2025-04-08T09:30",
+              "bp": [
+                128,
+                82
+              ],
+              "hr": 112,
+              "rr": 16,
+              "spo2": 98
+            },
+            {
+              "time": "2025-04-08T12:00",
+              "bp": [
+                136,
+                86
+              ],
+              "hr": 66,
+              "rr": 14,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-08T07:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T07:20",
+              "results": [
+                {
+                  "test": "Troponin I",
+                  "loinc": "10839-9",
+                  "unit": "ng/mL",
+                  "text": "<0.01"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-08T07:10",
+              "text": "12-lead ECG. Atrial fibrillation with rapid ventricular response, rate about 160. QRS widened to 138 ms, uniform morphology. Compared with prior tracings showing atrial fibrillation with normal QRS duration.",
+              "conclusion": "Atrial fibrillation with rapid ventricular response and new QRS widening."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-08T11:50",
+              "text": "12-lead ECG. Sinus rhythm, rate 66. PR 176 ms, QRS 100 ms. No acute ST-T change.",
+              "conclusion": "Sinus rhythm; QRS narrowed."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-08T07:05"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-04-08T07:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2025-04-09T08:30",
+              "author": "emergency medicine",
+              "body": "Outside regional hospital emergency department. Visit 04/08/2025, 07:05-12:20.\n\nCC: palpitations and lightheadedness.\nHPI: 62-year-old man with paroxysmal atrial fibrillation, poorly controlled hypertension, CAD with LAD stent, essential tremor, CML on imatinib and colon cancer on capecitabine, who felt sudden rapid heartbeat and lightheadedness about 20 minutes into a morning jog. No syncope, no chest pain. Takes flecainide 100 mg twice daily (cardiology, since 11/2024) and metoprolol.\nHome medications (per pharmacy list): lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg, capecitabine 1500 mg twice daily.\nAllergies: NKDA.\nFamily history: father HTN, essential tremor, MI at 62; mother type 2 diabetes; older brother colorectal cancer at 61.\nSocial: former smoker, quit 2013, 20 pack-years; 1-2 drinks a week; office administrator.\n\nExam on arrival: BP 130/85, HR 160 irregular, RR 18. Anxious, alert. Lungs clear. No edema. Neuro nonfocal.\nLabs: sodium 140 mEq/L, potassium 4.2 mEq/L, creatinine 1.0 mg/dL, troponin I <0.01 ng/mL.\nECG: atrial fibrillation with rapid ventricular response and a widened QRS. His earlier ECGs show atrial fibrillation with a normal QRS.\n\nMDM: exertional rapid AF with rate-related QRS widening on a class IC agent - consistent with flecainide adverse effect. Flecainide held. On continuous monitoring his rate slowed and he converted spontaneously to sinus rhythm at about 11:40 with a narrow QRS on repeat ECG. Asymptomatic afterward.\n\nDisposition: discharged home 12:20. Stop flecainide until seen by cardiology. Continue metoprolol. No jogging until cleared. Cardiology follow-up within 2 weeks; primary care within a week.\nDiagnoses: atrial fibrillation with rapid ventricular response; flecainide adverse effect.\n\nOutside emergency medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "office_visit",
+          "start": "2025-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, atrial fibrillation",
+          "medications": [
+            {
+              "drug_text": "flecainide acetate 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Adverse effect: AF with rapid ventricular response and QRS widening on exertion"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              158,
+              98
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 84.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-14T11:35",
+              "author": "PCP",
+              "body": "Seen after the ED visit 4/8: fast AF with a wide QRS while jogging on flecainide, converted on its own, flecainide held. No palpitations since. Has not run. Taking metoprolol.\nExam: BP above goal. HR regular. Lungs clear. No edema.\nA/P: flecainide adverse effect - flecainide off his list; he has not taken it since 4/8. Cardiology 4/24. Continue metoprolol succinate 50. Hold off on jogging until cardiology clears him. HTN, oncology care unchanged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "outside_records",
+          "start": "2025-04-29T15:45",
+          "conditions": [
+            {
+              "label": "Adverse effect of other antidysrhythmic drugs, initial encounter",
+              "action": "resolved",
+              "onset": "2025-04-08",
+              "note": "Flecainide permanently discontinued; sinus rhythm with normal QRS",
+              "icd10": "T46.2X5A"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-24T09:15",
+              "text": "12-lead ECG (outside cardiology). Sinus rhythm, rate 63. PR 170 ms, QRS 96 ms, QTc 420 ms. No ST-T abnormality.",
+              "conclusion": "Normal sinus rhythm, normal QRS."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology visit letter",
+              "date": "2025-04-29T15:45",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 04/24/2025.\n\nSeen after an ED visit on 04/08 for exertional atrial fibrillation with rapid ventricular response and QRS widening while on flecainide; spontaneous conversion. No recurrence off flecainide. BP 138/86. ECG today: sinus rhythm, normal QRS.\n\nImpression: flecainide adverse effect; paroxysmal atrial fibrillation.\nPlan: flecainide permanently discontinued. Rate control with metoprolol succinate 50 mg daily. May resume light exercise. Return in 6 months.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg, imatinib 400 mg, capecitabine. NKDA.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "outside_records",
+          "start": "2025-06-17T11:20",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-06-09T10:30",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 12/09/2024. Liver metastases stable. No new disease. Lungs clear.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology/Hematology follow-up",
+              "date": "2025-06-17T11:20",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 06/13/2025.\n\nStable on capecitabine (CT 06/09). CML remains in major molecular response on imatinib. Flecainide stopped in April by cardiology after an ED visit - noted. Labs normal today. Continue.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              141,
+              90
+            ],
+            "hr": 56,
+            "spo2": 98,
+            "weight_kg": 84.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-12T15:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-12T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-12T15:05",
+              "author": "PCP",
+              "body": "Summer f/u. No AF spells since April off flecainide. Walking, some light jogging. Oncology June stable.\nBP above goal. Heart regular. No edema.\nA/P: pAF quiet on metoprolol. HTN unchanged. BMP. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "outside_records",
+          "start": "2025-10-08T13:10",
+          "conditions": [
+            {
+              "label": "Antineoplastic chemotherapy induced pancytopenia",
+              "action": "diagnosed",
+              "onset": "2025-09-15",
+              "note": "On capecitabine; marrow 9/29/2025",
+              "icd10": "D61.810"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "capecitabine 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held by oncology for chemotherapy-induced pancytopenia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-29T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 1.9
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 64
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 42
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 40
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 12
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 6
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Bone marrow pathology report",
+              "loinc": "33721-2",
+              "performed": "2025-09-29T11:00",
+              "text": "BONE MARROW ASPIRATE AND CORE BIOPSY, posterior iliac crest. Clinical: CML on imatinib, colon adenocarcinoma on capecitabine, new pancytopenia. Core: hematopoietic precursors of all lineages show markedly increased apoptotic bodies. Immunohistochemistry: increased p53 and BAX expression in hematopoietic precursors. Blasts not increased (CD34 under 2%). No metastatic carcinoma. Aspirate: maturing trilineage elements with increased apoptotic forms; no dysplasia.",
+              "conclusion": "Marrow with markedly increased precursor apoptosis, consistent with cytotoxic therapy effect. No increase in blasts; no evidence of CML progression. No metastatic carcinoma.",
+              "issued": "2025-10-03T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Bone marrow biopsy",
+              "snomed": "56241004",
+              "performed": "2025-09-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology/Oncology visit and marrow report",
+              "date": "2025-10-08T13:10",
+              "author": "hematology/oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 09/29/2025; marrow final 10/03/2025.\n\nHPI: 62-year-old with stage IV colon adenocarcinoma on capecitabine since 09/2022 and chronic-phase CML on imatinib, with two weeks of profound fatigue. Routine cycle labs show pancytopenia.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg daily, capecitabine 1500 mg twice daily days 1-14 q21d.\nAllergies: NKDA.\nFamily history: father hypertension, essential tremor, MI at 62; mother type 2 diabetes; older brother colorectal cancer at 61.\nSocial: office administrator; former smoker (20 pack-years); 1-2 drinks weekly.\n\nLabs 09/29: WBC 1.9, ANC 0.8, hemoglobin 8.7, platelets 64.\nBone marrow biopsy 09/29: markedly increased apoptotic bodies in hematopoietic precursors with increased p53 and BAX by immunohistochemistry; blasts not increased.\n\nAssessment: chemotherapy-induced pancytopenia from capecitabine. No sign of CML progression.\nPlan: hold capecitabine. Continue imatinib 400 mg daily. CBC weekly; transfuse for hemoglobin under 7 or bleeding. Neutropenic precautions and fever instructions reviewed. Revisit in 4-6 weeks.\n\nOutside hematology/oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "office_visit",
+          "start": "2025-10-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue follow-up, low blood counts",
+          "vitals": {
+            "bp": [
+              147,
+              89
+            ],
+            "hr": 69,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 80.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-14T10:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 108
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-14T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-14T10:55",
+              "author": "PCP",
+              "body": "Seen after oncology found pancytopenia 9/29 (WBC 1.9, ANC 0.8, Hgb 8.7, plt 64). Marrow: lots of apoptosis from chemo, no CML progression. Capecitabine on hold, imatinib continues. Fatigue easing over the last week; no fevers, no bleeding or bruising.\nExam: afebrile. Weight 81. Mild pallor. No petechiae. Lungs clear. Heart regular. No edema.\nCBC today (drew here to save him a trip, results to oncology): WBC 2.9, Hgb 9.4, plt 108 - coming up.\nA/P: chemotherapy-induced pancytopenia, recovering. Off capecitabine per oncology. Fever 100.4+ = call oncology triage. Flu/COVID next week at a nurse visit (inactivated vaccines fine). HTN, pAF unchanged."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T08:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T08:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-10-21T08:25",
+              "author": "RN",
+              "body": "Flu (trivalent) L deltoid and 2025-26 COVID R deltoid. Oncology ok'd by message. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "outside_records",
+          "start": "2025-11-14T09:40",
+          "conditions": [
+            {
+              "label": "Antineoplastic chemotherapy induced pancytopenia",
+              "action": "resolved",
+              "onset": "2025-09-15",
+              "icd10": "D61.810"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "capecitabine 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (1000 mg) by mouth twice daily within 30 minutes after a meal on days 1-14 of each 21-day cycle",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Stage IV colon adenocarcinoma, reduced dose after pancytopenia (prescribed by oncology)"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-10T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 161
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 5
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology/Hematology follow-up",
+              "date": "2025-11-14T09:40",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 11/10/2025.\n\nPancytopenia has recovered off capecitabine: WBC 4.3, ANC 2.4, hemoglobin 11.3, platelets 161. Energy much better.\n\nPlan: restart capecitabine at a reduced dose, 1000 mg twice daily on days 1-14 of each 21-day cycle, starting 11/17/2025. Continue imatinib 400 mg daily. CBC every cycle. CT due December.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "outside_records",
+          "start": "2025-12-02T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology follow-up letter",
+              "date": "2025-12-02T14:00",
+              "author": "cardiology",
+              "body": "Outside cardiology group, office visit 11/25/2025.\n\nNo atrial fibrillation recurrence since April off flecainide. Angina rare and unchanged. Recovering from a chemotherapy-related drop in counts; capecitabine resumed at a lower dose. BP 144/88, HR 62. ECG: sinus rhythm, normal QRS.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg, imatinib 400 mg, capecitabine 1000 mg twice daily (2 weeks on, 1 off). NKDA.\n\nImpression: paroxysmal AF in sinus rhythm; stable angina. Continue. One year.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T08:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-01-13T08:02",
+              "author": "patient",
+              "body": "New insurance card this year, same company but new group number - photo attached. Can you send my blood pressure pills and the isosorbide to the mail order again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-01-13T11:40",
+              "author": "RN",
+              "body": "Card updated. Lisinopril, hydrochlorothiazide, metoprolol and isosorbide sent for 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "outside_records",
+          "start": "2026-02-24T10:30",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-02-16T09:00",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 06/09/2025. Liver metastases unchanged, largest 1.1 cm in segment 7. No new disease. Lungs clear.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology follow-up",
+              "date": "2026-02-24T10:30",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 02/20/2026.\n\nCapecitabine 1000 mg twice daily days 1-14 q21d since 11/17/2025, counts holding. CT 02/16/2026: stable. CML in major molecular response on imatinib. Continue; CT in 4 months.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              148,
+              85
+            ],
+            "hr": 58,
+            "spo2": 97,
+            "weight_kg": 83.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-03-10T14:10",
+              "author": "PCP",
+              "body": "F/u. Back on capecitabine at the lower dose since November; counts fine per oncology, CT Feb stable. Energy back, weight up to 83. No AF spells.\nMeds updated: capecitabine 1000 BID d1-14 q21d. Others unchanged. NKDA.\nBP above goal. Heart regular. Lungs clear. No edema.\nA/P: HTN unchanged, BMP. Oncology/hematology per their teams. Physical in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 83.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "annual_physical",
+          "start": "2026-06-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              158,
+              95
+            ],
+            "hr": 57,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 83.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-19T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-19T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-06-19T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-19T09:00",
+              "author": "PCP",
+              "body": "Yearly exam (delayed from last fall). 63 yo.\nInterval: chemotherapy-related pancytopenia last fall, recovered; capecitabine resumed at 1000 mg BID d1-14 q21d. Flecainide stopped April 2025 after the ED visit; no AF since. CT Feb stable; next CT this summer with oncology.\nFeels well. Working, walking and jogging easy miles. Tremor unchanged.\nMeds: lisinopril 20, HCTZ 25, metoprolol succinate 50, ISMN 30, ASA 81, imatinib 400 daily, capecitabine 1000 BID d1-14 q21d. NKDA.\nExam: BP above goal. Well appearing. HEENT normal. Lungs clear. Heart regular, no murmur. Abdomen soft, healed incisions, no mass. No edema. Skin without bruising. Mild postural tremor.\nA/P\n- HTN above goal on lisinopril/HCTZ. BMP.\n- Stage IV colon adenocarcinoma, CML: oncology/hematology.\n- CAD with stable angina, pAF: stable, cardiology yearly.\n- Essential tremor, ED: unchanged.\n- Lipids, A1c. PHQ-2 0. Flu/COVID in the fall.\nRTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-06-22T12:15",
+              "author": "PCP",
+              "body": "Hi Brian, your kidney function, potassium, cholesterol panel and A1c from Friday are all in the usual range for you. Nothing to change. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "outside_records",
+          "start": "2026-07-21T15:30",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-07-06T10:15",
+              "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison 02/16/2026. Hepatic metastases stable, largest 1.1 cm. No new disease. Lungs clear.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology follow-up",
+              "date": "2026-07-21T15:30",
+              "author": "oncology",
+              "body": "Outside oncology/hematology clinic. Date of service: 07/14/2026.\n\nStage IV colon adenocarcinoma, stable on CT 07/06/2026. Continue capecitabine 1000 mg twice daily days 1-14 q21d; counts satisfactory. CML: continue imatinib 400 mg daily, remains in major molecular response. Next CT in 4 months.\n\nOutside oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:35",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Metoprolol refill",
+              "date": "2026-08-11T09:35",
+              "author": "RN",
+              "body": "Mail-order request for metoprolol succinate 50 mg, 90 days. Seen 6/19, BMP fine. Approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Adverse effect of other antidysrhythmic drugs, initial encounter|T46.2X5A": {
+        "code": "T46.2X5A",
+        "display": "Adverse effect of other antidysrhythmic drugs, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Antineoplastic chemotherapy induced pancytopenia|D61.810": {
+        "code": "D61.810",
+        "display": "Antineoplastic chemotherapy induced pancytopenia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary malignant neoplasm of liver|C78.7": {
+        "code": "C78.7",
+        "display": "Secondary malignant neoplasm of liver and intrahepatic bile duct",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet": {
+        "code": "317110",
+        "display": "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet",
+        "ingredient": "hr",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "capecitabine 500 MG Oral Tablet": {
+        "code": "200328",
+        "display": "capecitabine 500 MG Oral Tablet",
+        "ingredient": "capecitabine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "flecainide acetate 100 MG Oral Tablet": {
+        "code": "886666",
+        "display": "flecainide acetate 100 MG Oral Tablet",
+        "ingredient": "flecainide",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "imatinib 400 MG Oral Tablet": {
+        "code": "403879",
+        "display": "imatinib 400 MG Oral Tablet",
+        "ingredient": "imatinib",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Troponin I": {
+        "code": "10839-9",
+        "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Bone marrow pathology report": {
+        "code": "33721-2",
+        "display": "Bone marrow Pathology biopsy report",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI liver with and without contrast": {
+        "code": "105129-1",
+        "display": "MR Liver and Biliary ducts and Pancreas W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Bone marrow biopsy": {
+        "code": "56241004",
+        "display": "Bone marrow biopsy, needle or trocar",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Laparoscopic right hemicolectomy with primary anastomosis": {
+        "code": "50774009",
+        "display": "Laparoscopic-assisted right colectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

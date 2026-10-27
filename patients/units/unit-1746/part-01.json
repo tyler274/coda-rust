@@ -1,0 +1,782 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001746",
+   "given": "Stephanie",
+   "family": "Fleming",
+   "birth_date": "1986-02-21",
+   "address_line": "112 Orchard Hill Lane",
+   "phone": "+1-646-555-0151",
+   "email": "stephanie.fleming@example.test",
+   "marital_status": "single",
+   "summary": "Marketing manager with Hashimoto thyroiditis and mild asthma who joined in 2020; relapsing-remitting MS diagnosed by neurology in 2021 with later relapses, depression on sertraline, trigeminal neuralgia in 2024, a sertraline-dose tremor in 2025 and a liver injury with unexplained bruising at an ED in 2026.",
+   "events": [
+    {
+     "id": "2020-09-08a",
+     "kind": "telephone",
+     "start": "2020-09-08T10:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2020-09-08T10:20",
+       "body": "Caller is looking for a new primary care doctor closer to home after moving out to Belchertown; her old office is over an hour each way now. Insurance BCBS PPO verified. Membership info emailed. New patient appt set for Mon 9/14 at 9:00. Asked her to sign a release so we can get records from her prior PCP; form sent through the portal."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-14a",
+     "kind": "establish_care",
+     "start": "2020-09-14T09:00",
+     "end": "2020-09-14T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Hashimoto thyroiditis",
+       "action": "history",
+       "onset": "2011-06-01",
+       "note": "diagnosed in her twenties at her prior practice; on levothyroxine since"
+      },
+      {
+       "label": "Mild intermittent asthma",
+       "action": "history",
+       "onset": "1994-01-01",
+       "note": "since childhood; uses albuterol a few times a year"
+      },
+      {
+       "label": "Personal history of (healed) traumatic fracture",
+       "icd10": "Z87.81",
+       "action": "history",
+       "onset": "2019-03-01",
+       "note": "pelvic fracture 2019, ORIF"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "levothyroxine sodium 0.1 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+       "dose": {
+        "value": 100,
+        "unit": "mcg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hashimoto thyroiditis"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 1-2 puffs every 4-6 hours as needed for wheeze or shortness of breath",
+       "dose": {
+        "value": 90,
+        "unit": "mcg"
+       },
+       "frequency": "Q4-6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "asthma"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Open reduction of fracture of pelvic bone with internal fixation",
+       "snomed": "608808003",
+       "performed": "2019-03-20T08:00"
+      },
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-14T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-14T09:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-09-14T09:55"
+      }
+     ],
+     "state": {
+      "weight_kg": 63.2,
+      "height_cm": 165.0,
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 2-3 drinks per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Marketing manager"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2020-09-14T09:50"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-14T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-14T09:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-14T09:55",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-14T09:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-14T09:55",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-14T09:55",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-14T10:40",
+       "body": "34 yo woman, new to us. Moved to Belchertown this summer and wants care closer to home.\n\nPMH\n- Hashimoto's, picked up in her 20s when she was tired all the time. On levothyroxine 100 mcg for years, never had the dose changed that she remembers. No palpitations, no heat or cold intolerance.\n- Asthma since grade school. Albuterol maybe 3-4 times a year, mostly with colds or cold air running. No ED visits or steroid bursts as an adult.\n- Pelvic fracture in 2019 after a fall down the stairs at home, ORIF at the hospital where she lived then. Healed, walks without limits.\n\nMeds: levothyroxine 100 mcg qAM, albuterol HFA prn.\nAllergies: no known drug allergies.\nFHx: mother with Hashimoto's, father treated for depression, a maternal aunt with MS.\nSocial: marketing manager, works hybrid. Never smoked. 2-3 drinks a week, social. Lives in town. Exercises some, likes walking the reservoir trails.\n\nROS otherwise negative. PHQ-9 3.\n\nExam: well appearing. Thyroid not enlarged, no nodules felt. Lungs clear, no wheeze. RRR, no murmur. Abdomen soft. Well-healed surgical scars over the pelvis. Gait normal. Neuro grossly nonfocal. Skin clear.\n\nA/P\n1. Hashimoto thyroiditis - continue levothyroxine 100 mcg; TSH today.\n2. Mild intermittent asthma - well controlled on prn albuterol, nothing to add.\n3. Health maintenance - Tdap given (last one she thinks was in college). HIV and hep C screening once, she agrees. CBC, CMP, lipids. Records from prior PCP requested, including last Pap.\n4. Hx pelvic ORIF - no issues.\nRTC for a physical next fall, sooner prn."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-16a",
+     "kind": "portal_message",
+     "start": "2020-09-16T16:05",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "New patient labs",
+       "author": "PCP",
+       "date": "2020-09-16T16:05",
+       "body": "Hi Stephanie, all of your labs came back fine: thyroid level right where it should be on the 100 mcg, blood counts, kidney and liver tests, cholesterol all normal, and the HIV and hepatitis C screens are negative. No changes. Good to meet you this week."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-28a",
+     "kind": "outside_records",
+     "start": "2020-09-28T13:30",
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2019-07-10T10:00",
+       "text": "Specimen adequate for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+       "conclusion": "NILM, HPV negative."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care",
+       "author": "front desk",
+       "date": "2020-09-28T13:30",
+       "body": "Records arrived by fax from her former primary care office, 41 pages. Includes problem list (hypothyroidism/Hashimoto's, asthma), med list matching ours, 2019 hospital discharge summary for pelvic fracture with ORIF, and a July 2019 Pap/HPV co-test, negative. Scanned to chart and routed to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside records review",
+       "author": "PCP",
+       "date": "2020-09-29T07:45",
+       "body": "Reviewed prior records. Nothing new: thyroid stable on the same dose for years, asthma mild. Pap/HPV co-test 7/2019 negative, so next due 2024. 2019 ortho discharge summary consistent with her account. Health maintenance updated."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-19a",
+     "kind": "nurse_visit",
+     "start": "2020-10-19T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-19T08:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-19T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2020-10-19T08:25",
+       "body": "In before work for her flu shot. Screening questions negative, no egg or vaccine reactions in the past. Quadrivalent given L deltoid, tolerated well, waited 15 min without issue."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-22a",
+     "kind": "pharmacy",
+     "start": "2021-03-22T11:10",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Albuterol refill",
+       "author": "MA",
+       "date": "2021-03-22T11:10",
+       "body": "E-refill request for albuterol HFA; last fill over a year ago. Per pt she used the last one up during a cold in February and is fine now. Sent 1 inhaler, 1 refill, per PCP standing order."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-12a",
+     "kind": "portal_message",
+     "start": "2021-04-12T19:40",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-18T15:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-08T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "COVID vaccine card",
+       "author": "patient",
+       "date": "2021-04-12T19:40",
+       "body": "Hi, I finished both Pfizer shots at the pharmacy (3/18 and 4/8). Attaching a picture of my card for my file. Second one knocked me out for a day but I'm fine now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: COVID vaccine card",
+       "author": "MA",
+       "date": "2021-04-13T09:05",
+       "body": "Thanks Stephanie, both doses are entered in your chart now. Glad you're feeling better."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-21a",
+     "kind": "office_visit",
+     "start": "2021-06-21T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Numbness left arm and leg, blurry vision",
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-06-21T15:30"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "mri-brain-2021",
+       "action": "placed",
+       "order": "MRI brain with and without contrast",
+       "category": "imaging",
+       "reason": "intermittent left-sided sensory symptoms, transient right monocular blurring"
+      },
+      {
+       "id": "neuro-ref-2021",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "intermittent left arm/leg paresthesias, episodes of right-eye blurring, brisk left-sided reflexes"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-06-21T16:20",
+       "body": "S: Comes in because for a few months she's had on-and-off numbness and pins and needles down the left arm and left leg. Comes and goes, sometimes for a day or two. Separately, twice this spring the vision in her right eye went blurry, like looking through a smudged lens, and it cleared on its own within a few days each time. No eye pain she remembers. She is worried, her aunt has MS and she has been reading. No headache, no weakness, no bladder change. No new meds.\n\nO: Vitals fine. Alert, a little anxious. CN II-XII grossly intact in the office, acuity not formally tested here. Strength 5/5 throughout. Reflexes brisker on the left arm and leg than the right. Sensation to light touch intact today. Gait normal.\n\nA/P: Episodic left-sided sensory symptoms plus transient monocular blurring with asymmetric reflexes. With the family history, demyelinating disease needs to be looked at. Ordering MRI brain with and without contrast and referring to neurology; she would like the first available. Discussed that we don't know anything yet. Call sooner for new weakness or vision loss."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-29a",
+     "kind": "imaging",
+     "start": "2021-07-29T07:30",
+     "orders": [
+      {
+       "id": "mri-brain-2021",
+       "action": "done",
+       "date": "2021-07-29T07:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24587-8",
+       "performed": "2021-07-29T07:30",
+       "text": "Indication: intermittent left-sided paresthesias, transient right visual blurring.\nTechnique: multiplanar multisequence MRI of the brain before and after IV gadolinium.\nFindings: Several T2/FLAIR hyperintense foci in the periventricular white matter. No enhancing lesion. No mass, hemorrhage or acute infarct on diffusion. Ventricles and sulci normal for age. Posterior fossa unremarkable. Orbits grossly normal. Major flow voids present.",
+       "conclusion": "Several periventricular white matter lesions. Not by themselves diagnostic of multiple sclerosis; correlate clinically."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "MRI brain with and without contrast",
+       "author": "radiology",
+       "date": "2021-07-29T14:10",
+       "body": "Outside imaging center report received electronically. Several periventricular white matter lesions, no enhancement; not diagnostic of MS on their own. See full report."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-30a",
+     "kind": "portal_message",
+     "start": "2021-07-30T12:15",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "MRI result",
+       "author": "PCP",
+       "date": "2021-07-30T12:15",
+       "body": "Stephanie, the MRI shows a few small spots in the white matter of the brain. On their own they don't make a diagnosis, and the neurologist is the right person to put them together with your symptoms. Your appointment on 8/11 is still on. Happy to talk by phone before then if you want; just reply here."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: MRI result",
+       "author": "patient",
+       "date": "2021-07-30T18:02",
+       "body": "Thank you for telling me straight. I'll wait for neuro. A little scared honestly."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-11a",
+     "kind": "specialist_visit",
+     "start": "2021-08-11T10:00",
+     "service": "Neurology",
+     "reason": "Left arm and leg paresthesias, right visual blurring",
+     "orders": [
+      {
+       "id": "neuro-ref-2021",
+       "action": "done",
+       "date": "2021-08-11T10:00"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Relapsing-remitting multiple sclerosis",
+       "action": "diagnosed",
+       "onset": "2021-03-01"
+      },
+      {
+       "label": "Right optic neuropathy",
+       "icd10": "H47.091",
+       "action": "diagnosed",
+       "onset": "2021-04-01",
+       "note": "after right optic neuritis; RAPD on exam"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-08-11T11:00",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.5
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-11T11:00",
+       "results": [
+        {
+         "test": "Glucose",
+         "loinc": "2345-7",
+         "unit": "mg/dL",
+         "value": 95
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-11T11:00",
+       "results": [
+        {
+         "test": "Vitamin B12",
+         "value": 400
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology consultation",
+       "author": "neurology",
+       "date": "2021-08-16T09:00",
+       "body": "OUTSIDE NEUROLOGY GROUP\nDate of visit: 08/11/2021\nReason for consult: left arm and leg paresthesias, right visual blurring. Referred by her primary care physician.\n\nThank you for asking me to see this 35-year-old woman. Over several months she has had intermittent numbness and tingling affecting the left arm and leg. She describes two separate episodes of blurred vision in the right eye, each clearing within a few days without treatment. She is understandably anxious and wants answers.\n\nPMH: Hashimoto thyroiditis, mild asthma, pelvic fracture with ORIF in 2019.\nMedications: levothyroxine 100 mcg daily; albuterol HFA 90 mcg 1-2 puffs q4-6h prn.\nAllergies: NKDA.\nFamily history: mother Hashimoto's; father depression; maternal aunt with MS.\nSocial: never smoker, social alcohol, marketing manager.\n\nExamination: Alert, fluent. Visual acuity normal in each eye. A right relative afferent pupillary defect is present. Fundi without obvious pallor on undilated view. Extraocular movements full. Face symmetric. Strength full. Reflexes increased in the left upper and lower limbs. Intention tremor of the left hand on finger-nose. Sensation and gait otherwise unremarkable.\n\nData: WBC 7.0, Hgb 13.5, platelets 250, glucose 95, B12 400. I reviewed the 7/29/21 MRI brain with and without contrast: several periventricular white matter lesions which, as the radiologist notes, would not be diagnostic in isolation.\n\nImpression: Two clinically distinct events - right optic neuritis, now with a residual right afferent defect, and left hemisensory symptoms with objective upper motor neuron signs on the left - together with periventricular lesions. I think this is relapsing-remitting multiple sclerosis. Right optic neuropathy from the earlier optic neuritis. B12 normal.\n\nPlan: We talked through the diagnosis at length; her aunt's course weighs on her. I will follow her in clinic and repeat imaging in the coming months. She should call us for any new vision loss, weakness or imbalance.\n\nCc: primary care"
+      }
+     ]
+    },
+    {
+     "id": "2021-08-25a",
+     "kind": "telehealth_visit",
+     "start": "2021-08-25T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after neurology",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2021-08-25T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit",
+       "author": "PCP",
+       "date": "2021-08-25T13:05",
+       "body": "Video from her office at lunch. Wanted to go over the neurology letter. Neurology has diagnosed relapsing-remitting MS and a right optic neuropathy from an earlier optic neuritis. She has read the letter twice. Mostly wants to know how we split things: neurology runs the MS, we handle everything else and help coordinate. Numbness is quieter this month. Sleeping okay. Eating okay. Says she is \"processing.\" Offered to see her in person any time.\n\nA/P: RRMS, newly diagnosed by neurology; right optic neuropathy. Problem list updated. Continue thyroid and asthma meds as is. Physical in October as planned."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-13a",
+     "kind": "annual_physical",
+     "start": "2021-10-13T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2021-10-13T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-13T09:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-10-13T09:20"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 14
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-13T09:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-13T09:15"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-10-13T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-10-13T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-10-13T09:20",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-ref-2021",
+       "action": "placed",
+       "order": "Psychiatry referral",
+       "category": "referral",
+       "to": "Psychiatry",
+       "reason": "low mood and anhedonia, PHQ-9 14"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-10-13T09:40",
+       "body": "35 yo here for her yearly visit.\n\nInterval: MS diagnosed by neurology in August. Since around then she has felt flat and down most days, about two months now. Lost interest in things she used to look forward to, including the trail walks; drags herself through work. Sleep broken. Appetite a bit lower. No thoughts of harming herself or of being better off dead, asked directly. No alcohol increase. Says the diagnosis hit hard but this feels like more than worry. Her father has been treated for depression and she recognizes it.\nPHQ-9 14.\n\nNeuro symptoms: occasional tingling, nothing new. Thyroid and asthma quiet.\n\nExam: tearful at times, otherwise well appearing. Neck supple, thyroid normal size. Lungs clear. Heart regular. Abdomen soft. No edema. Neuro unchanged from June. Skin normal.\n\nA/P\n1. Depressive symptoms, moderate by PHQ-9, no safety concerns. She would rather see psychiatry, partly because of the MS overlap with fatigue. Referral placed; crisis line numbers given. Will check in by portal in two weeks.\n2. RRMS - followed by neurology.\n3. Hashimoto - TSH today.\n4. Asthma - fine.\n5. HM - flu shot and COVID booster today. Pap not due until 2024."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-27a",
+     "kind": "portal_message",
+     "start": "2021-10-27T08:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Check-in",
+       "author": "PCP",
+       "date": "2021-10-27T08:50",
+       "body": "Hi Stephanie, checking in as promised. Labs from your physical were all normal including thyroid. How are you holding up, and did psychiatry get you scheduled?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Check-in",
+       "author": "patient",
+       "date": "2021-10-27T21:16",
+       "body": "Thanks for checking. Same, not worse. They have me on November 8th. I'm okay till then."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-08a",
+     "kind": "specialist_visit",
+     "start": "2021-11-08T14:00",
+     "service": "Psychiatry",
+     "reason": "Depression, fatigue",
+     "orders": [
+      {
+       "id": "psych-ref-2021",
+       "action": "done",
+       "date": "2021-11-08T14:00"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Major depressive disorder, single episode, moderate",
+       "action": "diagnosed",
+       "onset": "2021-08-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sertraline 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "major depressive disorder"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-11-08T15:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.0
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-08T15:00",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-08T15:00",
+       "results": [
+        {
+         "test": "Vitamin B12",
+         "value": 400
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-08T15:00",
+       "results": [
+        {
+         "test": "Rapid Plasma Reagin",
+         "text": "Non-reactive"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry consultation",
+       "author": "psychiatry",
+       "date": "2021-11-12T10:30",
+       "body": "OUTSIDE BEHAVIORAL HEALTH PRACTICE - PSYCHIATRIC EVALUATION\nVisit date: 11/08/2021\n\nIdentifying data: 35-year-old woman, marketing manager, referred by her PCP for low mood. Known relapsing-remitting MS (neurology dx August 2021), Hashimoto thyroiditis on replacement, asthma.\n\nHistory: About six months of intermittent numbness and tingling in the hands and feet, along with fatigue and some unsteadiness on her feet. Her right-eye blurring has come and gone, each spell clearing over a few weeks. For roughly three months she has felt down and lost interest in usual activities. Sleep broken, energy poor, concentration slipping at work. Denies suicidal ideation, plan or intent; no history of attempts. No mania or psychosis. No bowel or bladder incontinence. Father has had depression.\n\nMeds: levothyroxine; albuterol HFA prn. Allergies: NKDA. Never smoker; 2-3 drinks weekly.\n\nExam: Cooperative, constricted affect, linear thought, no SI. On brief neurological screen: nystagmus on lateral gaze, diminished vibration sense in the lower extremities, hyperreflexia.\n\nLabs today: Hgb 13.2, WBC 7.0, TSH 2.5, B12 400, RPR non-reactive. Reviewed her July brain MRI report (multiple periventricular white matter lesions).\n\nAssessment: Major depressive disorder, single episode, moderate, in the setting of a new MS diagnosis. Thyroid and B12 do not explain the picture. Fatigue likely mixed MS and mood.\n\nPlan: Start sertraline 50 mg daily. Reviewed common early side effects. Supportive therapy referral list given. Safety plan reviewed. Follow up in about 8 weeks.\n\ncc: PCP"
+      }
+     ]
+    },
+    {
+     "id": "2021-11-22a",
+     "kind": "portal_message",
+     "start": "2021-11-22T07:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "New medication",
+       "author": "patient",
+       "date": "2021-11-22T07:30",
+       "body": "Quick update since psychiatry started me on sertraline two weeks ago. Little queasy in the mornings the first week, taking it with breakfast fixed that. Nothing else to report, just wanted you to know."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: New medication",
+       "author": "PCP",
+       "date": "2021-11-22T12:45",
+       "body": "Thanks for the update, Stephanie. Taking it with food is exactly right. It often takes 4-6 weeks to feel the full effect, so hang in there and keep your psychiatry follow-up."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

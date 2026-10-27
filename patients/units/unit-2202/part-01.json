@@ -1,0 +1,739 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002202",
+   "given": "Leonard",
+   "family": "Archambault",
+   "birth_date": "1951-07-09",
+   "address_line": "212 Silver Maple Lane",
+   "phone": "+1-617-555-0178",
+   "email": "leonard.archambault@example.test",
+   "marital_status": "married",
+   "summary": "Retired accountant with hypertension, type 2 diabetes, hyperlipidemia and mild asthma who joins in 2017; over nine years he develops mild cognitive impairment, an ACE-inhibitor cough, BPH with retention, cervical myelopathy, heart failure, an inferior STEMI and two strokes, the last after his final practice visit. Outside records arrive late or not at all.",
+   "events": [
+    {
+     "id": "2017-04-11a",
+     "kind": "establish_care",
+     "start": "2017-04-11T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, transferring care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2002-01-01",
+       "note": "long-standing, diet only; never started on a drug at prior practice"
+      },
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "onset": "2004-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "onset": "2006-01-01"
+      },
+      {
+       "label": "Mild intermittent asthma",
+       "action": "diagnosed",
+       "onset": "1990-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug_text": "glyburide 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily with breakfast",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "Q4-6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "mild intermittent asthma"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       136,
+       84
+      ],
+      "weight_kg": 88.4,
+      "height_cm": 174.0,
+      "labs": {
+       "Hemoglobin A1c": 7.1,
+       "Low Density Lipoprotein": 141,
+       "High Density Lipoprotein": 38,
+       "Triglycerides": 185,
+       "Creatinine": 1.0,
+       "Microalbumin/Creatinine Ratio": 11,
+       "Glucose": 148
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2017-04-11T09:55",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-04-11T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2017-04-11T09:55",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2017-04-11T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-04-11T09:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Occasional, 1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired accountant"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2017-04-11T09:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "lab-2017-04",
+       "action": "placed",
+       "order": "Comprehensive Metabolic Panel (CMP)",
+       "category": "lab"
+      },
+      {
+       "id": "lab-2017-04",
+       "action": "done",
+       "date": "2017-04-11T09:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2017-04-11T10:30",
+       "body": "65 yo retired accountant transferring care; his old office is closing its Medicare panel. Wife at home, son lives nearby in town.\n\nPMH: type 2 diabetes for roughly 13 years, on metformin 1000 twice a day and glyburide 5 each morning. HTN for many years, always called borderline, kept to diet; never put on a pill. High cholesterol on atorvastatin 40. Asthma since his 30s, mild, uses albuterol a handful of times a year, mostly with colds. Aspirin 81 daily, was told years ago it was for the heart.\nPSH: none.\nAllergies: none to medicines.\nFH: father, heart attack at 61. Mother had type 2 diabetes. Brother had an ischemic stroke at 65.\nSH: never smoked. A drink or two a month. Married. Walks most mornings.\n\nROS: no chest pain, dyspnea, polyuria, foot numbness, vision change beyond needing new readers.\n\nExam: well appearing, pleasant. BP as charted, recheck similar. Heart regular, no murmur. Lungs clear. Abdomen soft. Feet: intact skin, pulses 2+, monofilament normal both feet.\n\nA/P\n1. T2DM: A1c, CMP, urine microalbumin today. Same regimen pending results.\n2. HTN: just over goal for a diabetic. He would rather keep working on salt and walking than add a pill. Recheck at each visit.\n3. Hyperlipidemia: lipid panel today, continue atorvastatin 40.\n4. Mild intermittent asthma: albuterol as needed, refills on file.\n5. Health maintenance: records release signed for his prior office (colonoscopy and vaccine history). PHQ-2 0.\nFollow up 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2017-04-13a",
+     "kind": "portal_message",
+     "start": "2017-04-13T16:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2017-04-13T16:10",
+       "body": "Mr. Archambault, your labs are back. A1c is about where your old office had it, kidney and liver tests are fine, blood count normal, no protein in the urine. Cholesterol numbers are similar to before on the atorvastatin. Nothing to change right now. See you in July."
+      }
+     ]
+    },
+    {
+     "id": "2017-05-03a",
+     "kind": "outside_records",
+     "start": "2017-05-03T11:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2017-05-03T11:00",
+       "body": "Records from former primary care office received by fax, 38 pages, scanned.\n\nHighlights abstracted for the PCP:\n- Screening colonoscopy 2015: normal to the cecum, no polyps. Repeat in 10 years was suggested.\n- PCV13 2016, PPSV23 2017 (February).\n- Hepatitis C antibody 2016: nonreactive.\n- Problem list matches what he gave us. Blood pressures over the past 3 years mostly 130s/80s, never treated.\n- Last A1c there 7.0."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2016-03-08T10:00"
+      },
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2017-02-14T10:00"
+      }
+     ]
+    },
+    {
+     "id": "2017-07-20a",
+     "kind": "office_visit",
+     "start": "2017-07-20T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2017-07-20T14:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2017-07-20T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2017-07-20T14:35",
+       "body": "S: Doing fine. Turned 66 this month, jokes he is now officially old. No lows on glyburide that he can tell, eats on time. Has been trying to cut back on bread. Uses albuterol rarely.\n\nO: vitals as charted. Feet look fine. Lungs clear.\n\nA/P: T2DM - point of care A1c sent, will message. HTN - similar to April, still prefers no drug, fair enough for now. Eye exam due, he will book with his optometrist. RTC 4 months for wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2017-08-29a",
+     "kind": "outside_records",
+     "start": "2017-08-29T09:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2017-08-29T09:30",
+       "body": "Diabetic eye examination, dilated. Date of exam 08/24/2017.\nVA with correction OD 20/50, OS 20/25.\nNo diabetic retinopathy either eye. Macula flat OU.\nLens: visually significant nuclear cataract right eye, mild left.\nPlan: refer to cataract surgeon for the right eye at patient's request. Repeat diabetic exam in 12 months."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Age-related cataract",
+       "action": "diagnosed",
+       "onset": "2017-08-24",
+       "note": "right eye, visually significant"
+      }
+     ]
+    },
+    {
+     "id": "2017-10-10a",
+     "kind": "nurse_visit",
+     "start": "2017-10-10T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2017-10-10T10:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2017-10-10T10:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2017-10-10T10:55",
+       "body": "High-dose flu vaccine given left deltoid. VIS provided. No prior reactions. Waited 15 min, fine."
+      }
+     ]
+    },
+    {
+     "id": "2017-11-16a",
+     "kind": "annual_physical",
+     "start": "2017-11-16T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Initial Medicare wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2017-11-16T09:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-11-16T09:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2017-11-16T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2017-11-16T09:30",
+       "body": "Initial AWV.\nFunctional: independent in all ADLs and IADLs, still does the household books. No falls. Hearing fine in quiet rooms. Vision blurry on the right, cataract surgery being arranged by his eye doctor.\nCognition: no concerns raised by patient or wife (she came along). Mini-Cog not done today.\nHome safety: lives in a two-story house, railings in place.\nPHQ-2 negative.\nPrevention: colonoscopy 2015 normal. Pneumococcal series complete. Flu done in October. Shingrix discussed - he wants to wait until after the eye surgery.\nAdvance directive: thinking about naming his wife and son, handed him the health care proxy form.\n\nChronic: T2DM and HTN stable. Labs today. Plan reviewed in writing."
+      }
+     ]
+    },
+    {
+     "id": "2017-12-12a",
+     "kind": "office_visit",
+     "start": "2017-12-12T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Pre-operative evaluation, right cataract surgery",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2017-12-12T15:35",
+       "text": "Sinus rhythm, rate 68. Normal axis. PR, QRS and QT intervals normal. No ST or T wave abnormality. No prior for comparison.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2017-12-12T15:20"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2017-12-12T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Pre-op Evaluation",
+       "author": "PCP",
+       "date": "2017-12-12T15:50",
+       "body": "Planned procedure: right cataract extraction with lens implant, outpatient, monitored anesthesia care. Date per surgeon late January.\n\nNo chest pain or dyspnea, climbs two flights without stopping. Asthma quiet. No bleeding problems.\nExam: heart regular, lungs clear.\nECG today normal sinus.\nLabs from November reviewed, fine.\n\nAssessment: low risk patient for low risk procedure. OK to proceed.\nMeds: hold metformin and glyburide the morning of surgery since he will be NPO, resume with first meal. Continue aspirin per the surgeon's usual practice. Bring albuterol.\nForm faxed to the surgery center."
+      }
+     ]
+    },
+    {
+     "id": "2018-01-30a",
+     "kind": "outside_records",
+     "start": "2018-01-30T13:15",
+     "procedures": [
+      {
+       "procedure": "Cataract extraction with intraocular lens",
+       "performed": "2018-01-23T08:00"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Age-related cataract",
+       "action": "resolved",
+       "note": "right eye operated 2018-01-23"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Operative note, eye surgery center",
+       "author": "ophthalmology",
+       "date": "2018-01-30T13:15",
+       "body": "Ambulatory eye surgery center. Date of surgery 01/23/2018.\nProcedure: phacoemulsification with posterior chamber intraocular lens, right eye.\nAnesthesia: topical and monitored anesthesia care.\nFindings: dense nuclear cataract OD.\nComplications: none. Estimated blood loss minimal.\nAllergies: NKDA.\nDisposition: home with spouse. Postop drops per instruction sheet. Day 1 check in clinic.\nPostop day 1: VA OD 20/40 uncorrected, IOP normal, wound sealed."
+      }
+     ]
+    },
+    {
+     "id": "2018-03-07a",
+     "kind": "pharmacy",
+     "start": "2018-03-07T11:05",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2018-03-07T11:05",
+       "body": "Electronic request from the patient's pharmacy for metformin 1000 mg and glyburide 5 mg, 90-day supplies. Last A1c November. Approved per standing protocol, 1 refill each."
+      }
+     ]
+    },
+    {
+     "id": "2018-04-18a",
+     "kind": "office_visit",
+     "start": "2018-04-18T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2018-04-18T10:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-04-18T10:25",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2018-04-18T10:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2018-04-18T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-04-18T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2018-04-18T10:45",
+       "body": "Right eye much brighter since January, reading without the magnifier now. No hypoglycemia. Wheezed once with a March cold, two days of albuterol, done.\nBP close to goal today. Feet intact.\nA/P: T2DM, HTN, HLD - same plan, labs today. Shingrix #1 given, second in 2 to 6 months. 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2018-06-21a",
+     "kind": "nurse_visit",
+     "start": "2018-06-21T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2018-06-21T13:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-06-21T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2018-06-21T13:45",
+       "body": "Second Shingrix given right deltoid. Says the first one made his arm ache and he felt run down for a day. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-05a",
+     "kind": "outside_records",
+     "start": "2018-09-05T09:10",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2018-09-05T09:10",
+       "body": "Dilated diabetic exam 08/30/2018. Pseudophakic OD, lens clear and centered. Mild nuclear sclerosis OS. No diabetic retinopathy OU. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-02a",
+     "kind": "nurse_visit",
+     "start": "2018-10-02T09:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2018-10-02T09:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-02T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "MA",
+       "date": "2018-10-02T09:30",
+       "body": "High-dose flu given L deltoid, tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-13a",
+     "kind": "annual_physical",
+     "start": "2018-11-13T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-11-13T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-11-13T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-11-13T08:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2018-11-13T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2018-11-13T09:20",
+       "body": "Subsequent AWV. Wife present.\nNo falls, no new limitations. Drives locally. Still does their taxes and two neighbors' returns for fun.\nPHQ-2 0. Hearing and vision adequate after the cataract surgery.\nVaccines: flu done, Shingrix complete, pneumococcal complete.\nHealth care proxy: wife primary, son alternate, copy scanned.\nChronic problems reviewed, labs today. BP still runs just above where I would like but he is steady on diet alone; we agreed to revisit in the summer.\nRTC 3 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

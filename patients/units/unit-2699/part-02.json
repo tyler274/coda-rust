@@ -1,0 +1,307 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002699",
+      "events": [
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T20:14",
+          "reason": "Back pain",
+          "documents": [
+            {"type": "Patient Message", "title": "Lower back", "author": "patient", "date": "2023-01-09T20:14", "body": "Hi, my lower back has been bothering me since last summer and it's not going away. It's a dull ache all the time, sometimes into my rear. Sitting through the staff meeting today was awful, walking around actually helps. No fall or anything. Could I get an appointment next week?"},
+            {"type": "Patient Message", "title": "RE: Lower back", "author": "front desk", "date": "2023-01-10T08:05", "body": "Hi Andrea, you're booked Tuesday 1/17 at 3:20. If you get numbness, weakness in a leg, or trouble with bladder or bowels before then, call us right away."}
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low back pain",
+          "conditions": [
+            {"label": "Chronic low back pain", "action": "diagnosed", "onset": "2022-07-15", "note": "mechanical; normal inflammatory markers"}
+          ],
+          "state": {"weight_kg": 87.2},
+          "vitals": {"weight_kg": 87.2},
+          "measure": ["bp", "hr", "spo2", "temp_c"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-17T16:00", "results": [{"test": "Hemoglobin", "value": 13.8}, {"test": "White Blood Cells", "value": 7.2}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-01-17T16:00", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 20}, {"test": "C Reactive Protein", "value": 8}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-17T15:20"}
+          ],
+          "orders": [
+            {"id": "pt-back", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "chronic mechanical low back pain"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: low back pain", "author": "PCP", "date": "2023-01-17T15:20", "body": "47F with HTN, here for low back pain.\n\nHPI: Started around July, so about six months. Steady dull ache across the low back, now and then into both buttocks, never past the knees. Sitting is the worst (long meetings, driving); walking eases it. No injury. No fevers, no weight loss, no night pain that wakes her, no bowel or bladder change, no numbness or weakness.\n\nMeds: HCTZ 25. NKDA.\n\nExam: BMI 32. Comfortable sitting but shifts often. Tender over the lumbar paraspinals both sides, no midline bony tenderness. SLR negative on both sides. Strength 5/5 in both legs, sensation intact to light touch, patellar and ankle reflexes 2+ and symmetric. Gait normal.\n\nLabs today: Hgb 13.8, WBC 7.2, ESR 20, CRP 0.8 mg/dL (reported as 8 mg/L).\n\nA/P: Chronic mechanical low back pain. No red flags, neuro exam normal, and the blood work doesn't point to anything inflammatory. No imaging needed. PT referral for core and hip strengthening. Asked her to walk daily, which she says already helps; also gets her moving on the weight. Stand up every 30 minutes at work. Heat as needed. Recheck if not better after PT."}
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "portal_message",
+          "start": "2023-01-19T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Back pain labs", "author": "PCP", "date": "2023-01-19T12:30", "body": "Your blood count and the inflammation markers came back normal, which fits the muscle-and-mechanics kind of back pain we talked about. PT should be calling you to set up the first visit."}
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "outside_records",
+          "start": "2023-02-14T15:50",
+          "reason": "Physical therapy evaluation",
+          "procedures": [
+            {"procedure": "Physical therapy evaluation, low complexity", "performed": "2023-02-08T16:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Physical therapy initial evaluation", "author": "physical therapy", "date": "2023-02-14T15:50", "body": "Outpatient physical therapy. Date of evaluation 2/8/2023.\nReferral: chronic mechanical low back pain.\nSubjective: 7 months of low back ache with occasional buttock spread; worse with prolonged sitting, eased by walking. Pain 4/10 today.\nObjective: lumbar range of motion full with end-range discomfort. Neuro screen negative. No directional preference.\nAssessment: mechanical low back pain, deconditioned core. Good prognosis.\nPlan: 2x weekly for 6 weeks: core stabilization, hip strengthening, sitting tolerance and ergonomic training, home exercise program."}
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "portal_message",
+          "start": "2023-03-20T21:02",
+          "reason": "Leg swelling",
+          "documents": [
+            {"type": "Patient Message", "title": "Swollen ankles", "author": "patient", "date": "2023-03-20T21:02", "body": "Back is a lot better with PT, thank you. New thing: both my ankles and lower legs have been puffing up, it's been building since around September. Fine in the morning, by the end of a shift at the register my socks leave deep marks. No chest pain or trouble breathing. Can I come in?"},
+            {"type": "Patient Message", "title": "RE: Swollen ankles", "author": "RN", "date": "2023-03-21T09:12", "body": "Thanks for letting us know. Since it's both legs and you feel well otherwise, a visit next week is fine. Booked Monday 3/27 at 4:00. If one leg suddenly gets more painful or swollen than the other, or you get short of breath, call us that day."}
+          ]
+        },
+        {
+          "id": "2023-03-27a",
+          "kind": "office_visit",
+          "start": "2023-03-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bilateral leg swelling",
+          "conditions": [
+            {"label": "Chronic venous insufficiency", "action": "diagnosed", "onset": "2022-09-15"}
+          ],
+          "state": {"weight_kg": 85.4},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "rr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-27T16:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-27T16:40", "results": [{"test": "Creatinine", "value": 0.9}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-03-27T16:40", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2023-03-27T16:40", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.1}]},
+            {"panel": "Urinalysis", "collected": "2023-03-27T16:45", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-27T16:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: leg swelling", "author": "PCP", "date": "2023-03-27T16:00", "body": "Seen two months ago for her back, which is much improved with PT.\n\nHPI: Six months of gradually increasing swelling in both lower legs. Minimal on waking, worse through the day, worst after long shifts standing at the register. No chest pain, dyspnea, orthopnea or recent travel. No new meds. Known varicose veins.\n\nExam: vitals within normal limits. Heart regular, no murmur, no JVD. Lungs clear. Abdomen soft, no masses. Legs: pitting edema both sides, most at the ankles, with brownish hyperpigmentation of the overlying skin; varicosities over both calves. Calves nontender, pedal pulses intact. Skin intact.\n\nLabs today: CBC normal, creatinine 0.9, UA negative for protein and blood, liver panel normal, TSH normal.\n\nA/P: Chronic venous insufficiency with varicose veins, made worse by standing all day. Kidney, liver and thyroid workup unremarkable, no sign of a heart cause on exam. Knee-high graduated compression stockings, 15-20 mmHg to start, on in the morning. Elevate legs in the evenings, calf pumps during shifts. Keep walking. HCTZ unchanged. Physical in June."}
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "portal_message",
+          "start": "2023-03-29T07:50",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Swelling workup", "author": "PCP", "date": "2023-03-29T07:50", "body": "Andrea, your kidney, liver and thyroid tests and the urine test were all normal, and the blood count was fine. This all fits the vein explanation. Give the compression stockings a few weeks and let me know how they feel."},
+            {"type": "Patient Message", "title": "RE: Swelling workup", "author": "patient", "date": "2023-03-29T19:31", "body": "Got them at the medical supply place. Not glamorous but my legs feel better at night already."}
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "outside_records",
+          "start": "2023-04-11T14:20",
+          "reason": "Physical therapy discharge",
+          "procedures": [
+            {"procedure": "Physical therapy, therapeutic exercise", "performed": "2023-03-29T16:30"}
+          ],
+          "orders": [
+            {"id": "pt-back", "action": "done", "date": "2023-04-11T14:20"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Physical therapy discharge summary", "author": "physical therapy", "date": "2023-04-11T14:20", "body": "Discharge from outpatient PT after 11 visits (2/8 to 3/29/2023). Low back pain now 1/10, intermittent. Sitting tolerance improved from 20 to over 60 minutes. Independent with home program; she is walking 30 to 40 minutes most days. Goals met. Discharged to home exercise."}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "annual_physical",
+          "start": "2023-06-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 82.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "rr"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [{"item": "Occupation", "value": "Retail cashier; starting as a high school science teacher in August"}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-06-27T10:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-27T10:45", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2023-06-27T10:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-06-27T10:00"}
+          ],
+          "orders": [
+            {"id": "gyn-2023", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "irregular, heavy menstrual bleeding"},
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-27T10:00", "body": "Annual, 47F.\n\nInterval: Back pain essentially gone after PT; she has kept up daily walks and is down about 5 kg since January without trying any diet program. Wearing compression stockings at work, ankles much better. Big news: she starts as a high school science teacher in late August, leaving the store this week.\n\nGYN: periods have been off since about April. Coming every two to three weeks, heavier than her usual, some lasting a week. Before that, regular monthly, 4-5 days. No bleeding after intercourse. Partner, condoms not always. Aunt had uterine cancer at 50 so she is worried.\n\nPHQ-9 3. Meds HCTZ 25. NKDA.\n\nExam: vitals as charted, BMI about 30. Heart, lungs normal. Breasts without masses. Abdomen soft, no palpable mass. Legs with trace ankle edema, varicosities, hyperpigmentation at the ankles, stockings on.\n\nA/P\n- Irregular heavy bleeding at 47 with family history of endometrial cancer: needs an endometrial evaluation. Gynecology referral placed, asked them to see her this summer.\n- HTN: controlled. BMP.\n- CVI: better with stockings, continue.\n- Back pain: resolved for practical purposes, keep exercises.\n- Weight: real progress with walking; encouraged.\n- Prevention: mammogram due, ordered. Lipids, A1c today. Pap/HPV 2022 normal. Colonoscopy 2021 normal. Flu and COVID in the fall."}
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "imaging",
+          "start": "2023-07-06T08:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-07-06T08:30", "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2021 and 2022. Heterogeneously dense tissue. No suspicious mass, calcification or distortion. No change.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "done", "date": "2023-07-06T08:30"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram 2023", "author": "PCP", "date": "2023-07-07T11:00", "body": "Negative. Portal letter sent."}
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "specialist_visit",
+          "start": "2023-07-31T13:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Abnormal uterine bleeding",
+          "conditions": [
+            {"label": "Abnormal uterine bleeding concerning for endometrial hyperplasia or malignancy", "icd10": "N93.9", "action": "diagnosed", "onset": "2023-04-15"}
+          ],
+          "state": {"bp": [132, 86], "weight_kg": 81.8},
+          "vitals": {"bp": [132, 86], "weight_kg": 81.8},
+          "measure": ["hr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-31T13:40", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Platelets", "value": 250}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2023-07-31T13:40", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}, {"test": "Choriogonadotropin beta subunit, serum", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "Negative (<5)"}]}
+          ],
+          "procedures": [
+            {"procedure": "Endometrial biopsy", "snomed": "386802000", "performed": "2023-07-31T14:20"}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2023-07-31T14:45", "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, mildly enlarged for age, homogeneous myometrium without a discrete mass. Endometrium 9 mm, uniform, no focal lesion or fluid. Right and left ovaries normal in size and appearance. No adnexal mass. No free fluid.", "conclusion": "Mildly enlarged uterus. Endometrium 9 mm without focal abnormality. Normal ovaries."}
+          ],
+          "orders": [
+            {"id": "gyn-2023", "action": "done", "date": "2023-07-31T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology consultation", "author": "gynecology", "date": "2023-08-02T09:15", "body": "Outside obstetrics and gynecology practice. Date of service 7/31/2023. Referred by her primary care physician.\n\nReason: irregular heavy menses x 3 months.\n\nHistory: 47-year-old G0. Cycles used to be regular, 4 to 5 days, moderate flow. Since spring, bleeding every 2 to 3 weeks and lasting as long as 7 days, heavier. She denies any change in weight, appetite or stress. Sexually active with one male partner, condoms inconsistently. Pap about a year ago normal. Medical: hypertension on hydrochlorothiazide, obesity, venous insufficiency, recent back pain. PSH: lap chole. NKDA. FHx: maternal aunt with endometrial cancer at 50. Never smoker.\n\nExam: BP 132/86, BMI 30. Abdomen benign. Speculum: normal cervix and vagina. Bimanual: uterus slightly enlarged, nontender, mobile; adnexa without mass or tenderness.\n\nLabs: Hgb 11.2, platelets 250K, TSH 2.5, serum beta-hCG negative.\n\nAssessment: abnormal uterine bleeding at 47 with obesity and a family history of endometrial cancer; endometrial hyperplasia or carcinoma must be excluded.\n\nProcedures today: office endometrial biopsy with Pipelle, two passes, adequate tissue, tolerated well. Pelvic ultrasound: endometrium 9 mm, no focal lesion, ovaries normal.\n\nPlan: pathology to follow. Bleeding diary. Return in about 3 months or sooner depending on the pathology."}
+          ]
+        },
+        {
+          "id": "2023-08-04a",
+          "kind": "outside_records",
+          "start": "2023-08-04T16:10",
+          "reason": "Endometrial biopsy pathology",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-07-31T14:20", "issued": "2023-08-04T11:30", "text": "Specimen: endometrium, office biopsy. Gross: multiple fragments of tan-red soft tissue and blood, 1.2 cc in aggregate, entirely submitted. Microscopic: proliferative-phase endometrium with tubular glands and cellular stroma. Glands evenly spaced; no crowding, no cytologic atypia. No hyperplasia. No malignancy identified.", "conclusion": "Benign proliferative endometrium. Negative for hyperplasia, atypia and malignancy."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology result note", "author": "gynecology", "date": "2023-08-04T16:10", "body": "Pathology reviewed with patient by phone. Benign proliferative endometrium, no hyperplasia or cancer. Together with a 9 mm endometrium and normal ovaries, the bleeding is most consistent with perimenopausal anovulatory cycles. Concern for hyperplasia or malignancy set aside. She prefers to watch for now rather than start hormonal treatment. Keep the bleeding diary, follow-up visit in about 3 months. Copy to PCP."}
+          ]
+        },
+        {
+          "id": "2023-08-07a",
+          "kind": "portal_message",
+          "start": "2023-08-07T12:05",
+          "reason": "Gynecology results",
+          "documents": [
+            {"type": "Patient Message", "title": "Biopsy result", "author": "PCP", "date": "2023-08-07T12:05", "body": "Hi Andrea, I got the gynecologist's note. The biopsy is benign, no precancer and no cancer. That's the answer we were hoping for, especially with your aunt's history. The irregular periods are most likely the hormonal shifts that come before menopause. Good luck with the new job this month!"},
+            {"type": "Patient Message", "title": "RE: Biopsy result", "author": "patient", "date": "2023-08-07T18:40", "body": "Huge relief. Thank you. Classroom setup starts in two weeks, nervous and excited."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:48"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-10T15:50"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T15:48"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "MA", "date": "2023-10-10T15:45", "body": "Came after school. Flu shot left arm, updated Moderna COVID right arm. No problems after 15 minutes. She mentioned she's been more tired than usual since starting teaching; advised to bring it up at her gyn follow-up next month or call us."}
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "specialist_visit",
+          "start": "2023-11-01T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Gynecology follow-up: no menses, fatigue",
+          "conditions": [
+            {"label": "Abnormal uterine bleeding concerning for endometrial hyperplasia or malignancy", "icd10": "N93.9", "action": "resolved"}
+          ],
+          "state": {"bp": [135, 85], "weight_kg": 82.0},
+          "vitals": {"bp": [135, 85], "weight_kg": 82.0},
+          "measure": ["hr"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2023-11-01T14:10", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}]},
+            {"panel": null, "collected": "2023-11-01T14:40", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}, {"test": "Fasting Glucose", "value": 98}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-01T14:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-11-01T14:40", "resulted": "2023-11-02T10:20", "results": [{"test": "Choriogonadotropin beta subunit, serum", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 48200}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology follow-up", "author": "gynecology", "date": "2023-11-01T14:00", "body": "Outside obstetrics and gynecology practice. Date of service 11/1/2023.\n\nThree-month follow-up after the July visit for abnormal bleeding (benign endometrial biopsy). Since early August she has had no bleeding at all; last episode started about 8/6. For roughly three months she has also been sleeping poorly, tired, and has gained a little weight. New teaching job this fall; she thinks it is stress and that menopause is starting. No hot flashes, no vaginal dryness, no mood swings.\n\nExam: BP 135/85, BMI 30. Breasts: no masses, no skin or nipple change, axillae clear. Pelvic: uterus enlarged and soft, no masses; adnexa normal.\n\nUA negative for protein and glucose. Fasting glucose 98, TSH 2.5, CBC normal. Serum hCG sent.\n\nAssessment: secondary amenorrhea with an enlarged, soft uterus. Pregnancy must be excluded before attributing this to perimenopause.\n\nPlan: will call with hCG. The abnormal bleeding has stopped and the biopsy was benign; that problem is closed."}
+          ]
+        },
+        {
+          "id": "2023-11-03a",
+          "kind": "specialist_visit",
+          "start": "2023-11-03T08:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Positive pregnancy test, dating ultrasound",
+          "conditions": [
+            {"label": "Supervision of elderly primigravida", "icd10": "O09.519", "action": "diagnosed", "onset": "2023-08-20", "note": "first pregnancy at 48; chronic hypertension; EDD 2024-05-12"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime until 36 weeks", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "preeclampsia prevention, chronic hypertension in pregnancy"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "reports": [
+            {"study": "Obstetric ultrasound, first trimester", "loinc": "11525-3", "performed": "2023-11-03T08:45", "text": "Transvaginal and transabdominal obstetric ultrasound. Single intrauterine gestation. Crown-rump length corresponds to 12 weeks 5 days, concordant with the last menstrual period of 8/6/2023. Cardiac activity present, fetal heart rate 158 bpm. Placenta forming posteriorly. Normal amniotic fluid. Ovaries unremarkable.", "conclusion": "Single live intrauterine pregnancy at 12 weeks 5 days. EDD 5/12/2024."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetric intake", "author": "obstetrics", "date": "2023-11-06T10:30", "body": "Outside obstetrics and gynecology practice. Date of service 11/3/2023.\n\nSerum quantitative hCG from 11/1 returned at 48,200 mIU/mL. Patient called and seen this morning for dating.\n\n48-year-old G1P0, spontaneous conception. Ultrasound: single live IUP, CRL 12w5d, FHR 158. EDD 5/12/2024. She is surprised and, after some time to talk with her partner, wants to continue the pregnancy.\n\nRisk factors: maternal age 48, chronic hypertension on hydrochlorothiazide (well controlled: 135/85 on 11/1), obesity.\n\nPlan:\n- Continue hydrochlorothiazide 25 mg daily, her long-standing agent with good control; home BP cuff, goal under 140/90.\n- Start low-dose aspirin 81 mg nightly now through 36 weeks for preeclampsia risk reduction.\n- Cell-free DNA screening offered and drawn today.\n- Anatomy survey at 20-22 weeks; early glucose screen deferred to 24-28 weeks.\n- Prenatal visits every 4 weeks. Copy to PCP."}
+          ]
+        },
+        {
+          "id": "2023-11-03b",
+          "kind": "portal_message",
+          "start": "2023-11-03T19:22",
+          "reason": "Pregnancy",
+          "documents": [
+            {"type": "Patient Message", "title": "Not menopause", "author": "patient", "date": "2023-11-03T19:22", "body": "So... not menopause. I'm 12 weeks pregnant. Still processing. The OB is keeping me on my blood pressure pill and added a baby aspirin. Do I need to see you for anything, or is it all them now?"},
+            {"type": "Patient Message", "title": "RE: Not menopause", "author": "PCP", "date": "2023-11-04T09:10", "body": "Andrea, what news. The OB team will run your prenatal care and your blood pressure during the pregnancy, and they'll copy me on their notes. You don't need anything extra from me right now. Keep your stockings on, the legs often swell more as pregnancy goes on, and reach out any time, about anything."}
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "outside_records",
+          "start": "2023-11-27T13:00",
+          "reason": "Prenatal screening result",
+          "documents": [
+            {"type": "Outside Records", "title": "Cell-free DNA screen", "author": "obstetrics", "date": "2023-11-27T13:00", "body": "Prenatal cell-free DNA screen, collected 11/3/2023, resulted 11/13/2023. Fetal fraction adequate. Low risk for trisomy 21, trisomy 18 and trisomy 13. Result discussed with patient by the obstetric nurse. Copy to PCP."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Note", "title": "HCTZ 90-day supply", "author": "RN", "date": "2023-12-05T09:40", "body": "Refill request for hydrochlorothiazide 25 mg. OB is continuing it in pregnancy per their 11/6 note. Renewed #90 x3."}
+          ]
+        }
+      ]
+    }
+  ]
+}

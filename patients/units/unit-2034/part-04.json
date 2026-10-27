@@ -1,0 +1,220 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002034",
+      "events": [
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "state": {"bp": [130, 80]},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-24T14:10", "results": [{"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-24T14:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-24T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-01-24T14:20", "body": "S: Doing well through the winter. Has been out ice fishing a couple of times, dressed warm. No cough, fevers. Back on SS TMP-SMX since November. Transplant visit in December fine per pt.\nMeds: tacrolimus 3 BID, mycophenolate 750 BID, prednisone 5, TMP-SMX SS, lithium 300 BID, amlodipine 10, HCTZ 25.\nO: Vitals as charted. Lungs clear. Heart regular. Graft nontender. No edema.\nA/P: s/p re-transplant with treated rejection and treated PJP, now well. HTN at goal. Bipolar stable. BMP/CBC today. RTC 4 months."}
+          ]
+        },
+        {
+          "id": "2023-01-25a",
+          "kind": "portal_message",
+          "start": "2023-01-25T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2023-01-25T12:30", "body": "Blood counts and kidney function look stable, right where they have been. Nothing new to do."}
+          ]
+        },
+        {
+          "id": "2023-02-28a",
+          "kind": "outside_records",
+          "start": "2023-02-28T09:20",
+          "service": "Outside records",
+          "reason": "psychiatry letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient psychiatry letter", "author": "psychiatry", "date": "2023-02-28T09:20", "body": "Outside psychiatry practice.\nSeen for routine review. Euthymic through a hard autumn with his pneumonia admission. No hypomanic or depressive symptoms, sleep regular. Lithium levels with transplant labs in range. Continue lithium carbonate 300 mg BID.\nDx: bipolar I disorder, in remission. Allergies: NKDA. Return 6 months."}
+          ]
+        },
+        {
+          "id": "2023-05-03a",
+          "kind": "outside_records",
+          "start": "2023-05-03T15:30",
+          "service": "Outside records",
+          "reason": "ED visit and admission, nocardiosis",
+          "conditions": [
+            {"label": "Other forms of nocardiosis", "icd10": "A43.8", "action": "diagnosed", "onset": "2023-04-07", "note": "pulmonary (right upper lobe cavity) and brain (frontal lobe lesion)"}
+          ],
+          "medications": [
+            {"drug_text": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet", "action": "stop", "reason": "replaced by treatment-dose course"},
+            {"drug_text": "cilastatin 500 MG / imipenem 500 MG Injection", "action": "historical", "sig": "500 mg IV every 6 hours (inpatient, 04/17-05/01/2023)", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H", "route": "Intravenous", "course": "short", "reason": "nocardiosis"},
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets by mouth twice daily; planned 12-month course (through 04/2024)", "dose": {"value": 2, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "nocardiosis"}
+          ],
+          "vitals": [
+            {"time": "2023-04-17T16:20", "temp_c": 38.4, "rr": 22, "bp": [128, 80], "hr": 96, "spo2": 95}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-17T16:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-17T16:45", "results": [{"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-04-17T18:00", "results": [{"test": "Sputum Gram stain", "loinc": "648-6", "text": "Branching, beaded gram-positive rods consistent with Nocardia"}]},
+            {"panel": null, "collected": "2023-04-17T18:00", "resulted": "2023-04-24T10:00", "results": [{"test": "Nocardia culture, sputum", "loinc": "43365-6", "text": "Nocardia species isolated"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-04-17T16:50", "text": "PA and lateral chest. Cavitary lesion in the right upper lobe. The remaining lungs are clear. No effusion. Heart size normal.", "conclusion": "Right upper lobe cavitary lesion."},
+            {"study": "MRI brain with and without contrast", "loinc": "24587-8", "performed": "2023-04-17T22:10", "text": "Multiplanar multisequence MRI of the brain before and after IV gadolinium. Solitary ring-enhancing lesion in the frontal lobe. No other enhancing lesion. Ventricles normal in size. No midline shift. No hemorrhage.", "conclusion": "Solitary ring-enhancing frontal lobe lesion."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2023-04-17T16:10"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2023-04-17T23:00"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2023-05-03T15:30", "body": "Regional hospital emergency department. Date of visit 04/17/2023.\n\nCC: ten days of cough that keeps getting worse, fevers, losing weight.\nHPI: 57-year-old kidney transplant recipient with Pneumocystis pneumonia last fall. Besides the cough he has had a dull headache for about a week and some trouble keeping his focus. No recent travel or sick contacts. Taking his immunosuppression as prescribed, tacrolimus and prednisone included.\nMeds: tacrolimus 3 mg BID, mycophenolate 750 mg BID, prednisone 5 mg, TMP-SMX SS daily, lithium 300 mg BID, amlodipine 10 mg, hydrochlorothiazide 25 mg.\nAllergies: NKDA.\nFamily: father hypertension and CKD; sister bipolar disorder; maternal uncle ESRD.\nSocial: does not smoke (quit years ago); no recent travel or known sick contacts.\n\nVitals: T 38.4 C (101.1 F), RR 22, HR 96, BP 128/80, SpO2 95% RA.\nExam: crackles over the right upper lobe. Neuro exam nonfocal.\n\nSputum Gram stain: branching gram-positive rods, Nocardia.\nCXR: cavitary right upper lobe lesion.\nMRI brain: single ring-enhancing lesion, frontal lobe.\n\nImpression: nocardiosis involving lung and brain. Admitted; ID and transplant consulted."},
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2023-05-03T15:35", "body": "Regional hospital, medicine service. Admitted 04/17/2023, discharged 05/01/2023.\n\nDiagnosis: nocardiosis, pulmonary and central nervous system.\nCourse: IV trimethoprim-sulfamethoxazole (high dose, renally adjusted) and IV imipenem started on admission. Sputum culture final 04/24: Nocardia species. Neurosurgery reviewed the MRI; with a sputum diagnosis and a small single lesion, medical treatment with serial imaging was chosen, no aspiration. Headache resolved by day 5, fevers by day 4. Creatinine and potassium watched daily, stable. Transplant continued tacrolimus 3 mg BID and mycophenolate.\nAfter 2 weeks of IV therapy transitioned to oral TMP-SMX DS 2 tablets twice daily, planned for 12 months total given brain involvement; this replaces his daily prophylactic tablet.\nDischarge medications: TMP-SMX DS 2 tabs BID; tacrolimus 3 mg BID; mycophenolate 750 mg BID; prednisone 5 mg daily; lithium 300 mg BID; amlodipine 10 mg; hydrochlorothiazide 25 mg.\nAllergies: NKDA.\nFollow-up: infectious disease 6 weeks with repeat brain MRI; primary care 1 week; weekly BMP and CBC for a month."}
+          ]
+        },
+        {
+          "id": "2023-05-05a",
+          "kind": "office_visit",
+          "start": "2023-05-05T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, nocardiosis",
+          "state": {"weight_kg": 81.0},
+          "vitals": {"weight_kg": 81.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-05T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-05T10:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2023-05-05T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2023-05-05T10:40", "body": "Discharged 5/1 after two weeks for nocardia in the lung and a small brain lesion.\nS: Headache gone, thinking clear, wife agrees he is himself. Cough mostly gone. Appetite coming back; down to 81 kg from 86. No fever. Taking TMP-SMX DS 2 tabs twice a day, plenty of water.\nO: Weight 81 kg. Vitals as charted, afebrile. Lungs: faint crackles R upper field. Neuro: alert, oriented, fluent, strength and gait normal.\nRecords reviewed and med list reconciled (SS prophylaxis replaced by the treatment course).\nA/P\n1. Nocardiosis, lung and brain: 12-month oral course, ID follow-up with MRI in June/July. Weekly BMP/CBC; drawn today.\n2. Weight loss from the illness: high-calorie foods, recheck weight next visit.\n3. Driving: hold until ID/neurosurgery say otherwise; he agreed, wife is driving.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "portal_message",
+          "start": "2023-06-07T20:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "question about antibiotic course",
+          "documents": [
+            {"type": "Patient Message", "title": "A whole year?", "author": "patient", "date": "2023-06-07T20:10", "body": "Is it right that I need to take these big antibiotic pills for a whole year? That seems like a lot. I feel fine now."},
+            {"type": "Patient Message", "title": "RE: A whole year?", "author": "PCP", "date": "2023-06-07T21:00", "body": "Yes, that is the standard length when nocardia has reached the brain, especially with a transplant, because it can come back if stopped early. Infectious disease will follow your MRI and decide the stop date. Keep your labs going so we can watch your kidney and potassium on the higher dose."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "outside_records",
+          "start": "2023-07-18T13:45",
+          "service": "Outside records",
+          "reason": "infectious disease letter",
+          "reports": [
+            {"study": "MRI brain with and without contrast", "loinc": "24587-8", "performed": "2023-07-11T10:00", "text": "Comparison 04/17/2023. The ring-enhancing frontal lobe lesion is smaller, with less surrounding signal change. No new lesion. Ventricles normal.", "conclusion": "Interval decrease of the frontal lobe lesion."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious disease clinic letter", "author": "infectious disease", "date": "2023-07-18T13:45", "body": "Outpatient infectious disease. Visit 07/14/2023.\nNocardiosis of lung and brain in a kidney recipient, on oral TMP-SMX DS 2 tablets twice daily since 05/01.\nFeels well, cough resolved, no headache. No rash. Labs from primary care and transplant reviewed: counts and potassium acceptable.\nRepeat brain MRI 07/11: frontal lesion smaller, nothing new.\nPlan: continue the same dose to complete 12 months (end of April 2024). Repeat MRI near the end of therapy. OK to resume driving.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "office_visit",
+          "start": "2023-08-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "state": {"weight_kg": 83.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-16T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-08-16T13:30", "body": "S: Feels good. Driving again since ID cleared him. Back on the water early mornings. Gaining weight back. Tolerating TMP-SMX DS 2 BID.\nO: Weight up, vitals as charted. Lungs clear. Neuro normal. No edema.\nPHQ-9: 3.\nA/P: nocardiosis improving on therapy (MRI smaller in July), HTN at goal, bipolar stable. Continue all. Flu/COVID vaccines this autumn. RTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "outside_records",
+          "start": "2023-11-02T16:00",
+          "service": "Outside records",
+          "reason": "ED, ICU and hospital admission, cryptococcal meningitis",
+          "conditions": [
+            {"label": "Cerebral cryptococcosis", "icd10": "B45.1", "action": "diagnosed", "onset": "2023-10-14", "note": "cryptococcal meningitis"}
+          ],
+          "medications": [
+            {"drug_text": "amphotericin B liposomal 50 MG Injection", "action": "historical", "sig": "IV daily for 14 days (inpatient induction, 10/15-10/28/2023)", "route": "Intravenous", "frequency": "DAILY", "course": "short", "reason": "cryptococcal meningitis"},
+            {"drug_text": "flucytosine 500 MG Oral Capsule", "action": "historical", "sig": "By mouth every 6 hours, renally dosed, for 14 days (inpatient induction)", "route": "Oral", "frequency": "Q6H", "course": "short", "reason": "cryptococcal meningitis"},
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (400 mg) by mouth daily for 8 weeks", "dose": {"value": 400, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cryptococcal meningitis, consolidation"},
+            {"drug_text": "tacrolimus 1 MG Oral Capsule", "action": "stop", "reason": "dose lowered for fluconazole interaction"},
+            {"drug_text": "tacrolimus 1 MG Oral Capsule", "action": "historical", "sig": "Take 2 capsules (2 mg) by mouth twice daily", "dose": {"value": 2, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "kidney transplant"}
+          ],
+          "vitals": [
+            {"time": "2023-10-15T09:40", "temp_c": 39.4, "bp": [126, 78], "hr": 108, "rr": 20, "spo2": 96}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-15T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-15T10:00", "results": [{"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-10-15T10:00", "results": [{"test": "Cryptococcal antigen, serum", "loinc": "40768-4", "text": "Positive"}]},
+            {"panel": null, "collected": "2023-10-15T12:30", "results": [{"test": "Cryptococcal antigen titer, CSF", "loinc": "32674-4", "text": "Positive, titer 1:640"}]},
+            {"panel": null, "collected": "2023-10-15T12:30", "resulted": "2023-10-19T09:00", "results": [{"test": "Fungal culture, CSF", "loinc": "569-4", "text": "Cryptococcus neoformans"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2023-10-15T09:30"},
+            {"procedure": "Lumbar puncture", "snomed": "277762005", "performed": "2023-10-15T12:20"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2023-10-15T15:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary (ICU and medicine)", "author": "critical care", "date": "2023-11-02T16:00", "body": "Regional hospital. Admitted via the emergency department to the medical ICU 10/15/2023; transferred to medicine 10/19; discharged 10/31/2023.\n\nPresentation: 58-year-old kidney recipient, history of Pneumocystis pneumonia (2022) and nocardiosis of lung and brain (04/2023, on oral TMP-SMX), brought in by his wife after one day of fever and neck pain. Temperature 103 F (39.4 C) on arrival, HR 108. Neck stiff and painful to flex.\nMeds on admission: tacrolimus 3 mg BID, mycophenolate 750 mg BID, prednisone 5 mg, TMP-SMX DS 2 tabs BID, lithium 300 mg BID, amlodipine 10 mg, hydrochlorothiazide 25 mg.\nAllergies: NKDA.\nFamily: father hypertension and CKD; sister bipolar disorder; maternal uncle ESRD.\nSocial: former smoker, quit about 7 years ago; no alcohol; retired postal worker.\n\nWorkup: lumbar puncture with opening pressure 31 cm H2O. CSF cryptococcal antigen positive, titer 1:640; CSF fungal culture grew Cryptococcus neoformans. Serum cryptococcal antigen positive.\n\nDiagnosis: cryptococcal meningitis.\nCourse: induction with liposomal amphotericin B and flucytosine for 14 days (completed 10/28), with daily creatinine and electrolytes; IV fluids with each amphotericin dose. Two further therapeutic lumbar punctures on days 2 and 4 for raised pressure; headache and neck pain settled. Fever resolved by day 5. ICU for the first four days for neuro checks, never intubated. Transplant service lowered tacrolimus to 2 mg BID ahead of fluconazole.\n\nDischarge medications: fluconazole 400 mg daily for 8 weeks (consolidation), then ID to set maintenance; tacrolimus 2 mg BID; mycophenolate 750 mg BID; prednisone 5 mg daily; TMP-SMX DS 2 tabs BID (nocardia course continues); lithium 300 mg BID; amlodipine 10 mg; hydrochlorothiazide 25 mg.\nFollow-up: ID 4-6 weeks, transplant 1 week with tacrolimus level, primary care 1 week."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "office_visit",
+          "start": "2023-11-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, cryptococcal meningitis",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-07T10:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2023-11-07T10:50", "results": [{"test": "Magnesium"}]}
+          ],
+          "state": {"labs": {"Magnesium": 1.9}},
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2023-11-07T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2023-11-07T11:00", "body": "Home since 10/31 after cryptococcal meningitis: ICU 4 days, two weeks of amphotericin and flucytosine.\nS: Tired but improving daily. No headache, neck pain gone, no fever. Wife giving him his pill box. Taking fluconazole 400 daily, tacrolimus now 2 mg BID (transplant drew a level yesterday), TMP-SMX DS 2 BID, rest unchanged.\nO: Vitals as charted, afebrile. Alert, oriented, conversation normal. Neck supple. Gait steady. No edema.\nDischarge summary reviewed, list reconciled (tacrolimus 2 BID, fluconazole added).\nA/P\n1. Cryptococcal meningitis, after induction: fluconazole consolidation 8 wk; ID follow-up booked.\n2. Nocardiosis: continues oral course.\n3. Electrolytes after amphotericin: BMP and magnesium today.\n4. Third opportunistic infection in a year; asked transplant whether his overall immunosuppression should be revisited, they will review.\nRTC 3 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "nurse_visit",
+          "start": "2023-11-21T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID-19 vaccines",
+          "measure": ["bp", "hr", "temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-11-21T14:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-11-21T14:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-11-21T14:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Vaccines", "author": "RN", "date": "2023-11-21T14:30", "body": "Three weeks out from hospital, feeling stronger, afebrile. ID said fine to vaccinate. Flu R deltoid, updated COVID L deltoid. No reaction."}
+          ]
+        },
+        {
+          "id": "2023-12-28a",
+          "kind": "outside_records",
+          "start": "2023-12-28T11:10",
+          "service": "Outside records",
+          "reason": "infectious disease letter",
+          "medications": [
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "stop", "reason": "consolidation complete; step down to maintenance"},
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (200 mg) by mouth daily for 12 months", "dose": {"value": 200, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cryptococcal meningitis, maintenance"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious disease clinic letter", "author": "infectious disease", "date": "2023-12-28T11:10", "body": "Outpatient infectious disease. Visit 12/22/2023.\nCryptococcal meningitis (10/2023) after induction and 8 weeks of fluconazole 400 mg; no headache, no fever, cognition back to baseline per wife. Nocardiosis: on TMP-SMX DS 2 tabs BID through April.\nPlan: fluconazole down to 200 mg daily from 12/25 as maintenance for 12 months. Transplant aware; tacrolimus stays at 2 mg BID while he is on fluconazole, levels per transplant.\nAllergies: NKDA. Return in 4 months with brain MRI."}
+          ]
+        }
+      ]
+    }
+  ]
+}

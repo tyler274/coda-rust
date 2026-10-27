@@ -1,0 +1,232 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002594",
+      "events": [
+        {
+          "id": "2025-03-22a",
+          "kind": "hospital_admission",
+          "start": "2025-03-22T13:40",
+          "end": "2025-03-25T11:15",
+          "service": "Emergency Medicine; General Surgery",
+          "reason": "upper abdominal pain and nausea after bicycle crash",
+          "conditions": [
+            {"label": "Traumatic pancreatic injury", "icd10": "S36.209A", "action": "diagnosed", "onset": "2025-03-17"},
+            {"label": "Blunt abdominal trauma", "icd10": "S39.91XA", "action": "diagnosed", "onset": "2025-03-17"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-22T14:05", "results": [{"test": "Hemoglobin", "value": 13.8}, {"test": "White Blood Cells", "value": 9.0}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-03-22T14:05", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": null, "collected": "2025-03-22T14:05", "results": [{"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 450}]},
+            {"panel": null, "collected": "2025-03-22T14:05", "results": [{"test": "Lipase", "value": 210}]}
+          ],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2025-03-22T15:30",
+             "text": "Indication: epigastric pain and nausea five days after blunt injury to the upper abdomen. Technique: real-time grayscale and color imaging of the abdomen. Findings: Liver normal in size and echotexture without focal lesion. Gallbladder without stones or wall thickening; common duct not dilated. Pancreas partly obscured by bowel gas; a small fluid collection is seen alongside the pancreas. Spleen and both kidneys normal in size, no hydronephrosis. Abdominal aorta normal caliber. No free fluid in the hepatorenal or splenorenal spaces or the pelvis.",
+             "conclusion": "Small peripancreatic fluid collection. Otherwise unremarkable abdominal ultrasound."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-03-22T13:40"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-03-22T19:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-03-25T11:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Provider Note (regional hospital)", "author": "emergency medicine", "date": "2025-04-22T10:05",
+             "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 03/22/2025\n\nCC: belly pain and queasiness x 2 days.\n\nHPI: 28 y/o male (DOB 6/29/1996) who went over the handlebars of his bike on 3/17 after a car pulled into him. He came down with the upper belly on the edge of a curb. People at the scene looked him over, he felt okay and went home without being seen. Since Thursday he has had steady upper abdominal aching and nausea that are not getting better, prompting today's visit. No vomiting of blood, no black stools, no fever.\n\nPMH none. Meds none. Allergies: NKDA. FHx: father HTN, mother hypothyroid, no bleeding disorders in the family. SHx: never smoker, rare alcohol, outside sales.\n\nVS within normal limits (see flowsheet).\nExam: uncomfortable but nontoxic. Abdomen soft, tender in the epigastrium, no rebound, no guarding. No bruising over the abdomen. Lungs clear, heart regular.\n\nLabs: Hgb 13.8, WBC 9.0. Amylase 450 (ref 30-110), lipase 210 (ref 0-160). LFTs normal.\nUS abdomen: small fluid collection next to the pancreas.\n\nMDM: delayed presentation after a handlebar-type blow to the upper abdomen with elevated pancreatic enzymes and peripancreatic fluid. Consistent with traumatic injury to the pancreas. Hemodynamically normal, no peritoneal signs. Discussed with general surgery, who will admit for nonoperative management.\n\nDispo: admitted to surgery."},
+            {"type": "Discharge Summary", "title": "Discharge Summary (regional hospital)", "author": "general surgery", "date": "2025-04-22T10:05",
+             "body": "REGIONAL HOSPITAL — GENERAL SURGERY DISCHARGE SUMMARY\nAdmitted 03/22/2025, discharged 03/25/2025.\n\nDiagnoses: traumatic pancreatic injury; blunt abdominal trauma (bicycle crash 03/17/2025).\n\nCourse: admitted from the ED for nonoperative care. Kept NPO with IV fluids the first day, serial abdominal exams remained benign, pain improved. Clear liquids started hospital day 2 and advanced to a regular low-fat diet, which he tolerated. Ambulating, pain controlled with acetaminophen. Stable for discharge home.\n\nDischarge meds: acetaminophen over the counter as needed.\nAllergies: NKDA.\n\nInstructions: low-fat diet for two weeks, no contact sports or cycling until cleared, return for worsening pain, vomiting or fever. Follow up with PCP in 1 week.\n\nRecords sent on request of the patient's primary care office."}
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "portal_message",
+          "start": "2025-03-26T08:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Was in the hospital", "author": "patient", "date": "2025-03-26T08:12",
+             "body": "Hi, just wanted to let you know I was in the hospital since Saturday. I had a bike crash last week and my stomach kept hurting so I went to the ER. They said I bruised my pancreas and kept me a few days. I got out yesterday. They told me to see my doctor in a week. Do you want to see me?"},
+            {"type": "Patient Message", "title": "RE: Was in the hospital", "author": "PCP", "date": "2025-03-26T12:40",
+             "body": "Sorry to hear it, glad you're home. Yes, I'd like to see you. The front desk will set you up early next week. We'll ask the hospital for the records. In the meantime keep the diet light, and if the pain gets worse, you vomit or run a fever, go back in."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2025-03-26T13:05",
+             "body": "Faxed request to regional hospital medical records for ED note, discharge summary, labs and imaging 3/22-3/25. Pt scheduled 3/31 9:00."}
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "office_visit",
+          "start": "2025-03-31T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pancreatic injury",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 2}],
+          "labs": [
+            {"panel": null, "collected": "2025-03-31T09:35", "results": [{"test": "Lipase", "value": 52}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-31T09:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-31T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-03-31T09:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2025-03-31T09:00",
+             "body": "Seen after a 3-night stay at the regional hospital. Hospital records requested, not here yet; history is his.\n\nBike vs car 3/17, went over the bars and hit his upper belly on a curb. Felt okay at first. Two days later started aching in the upper abdomen with nausea, went to the ER on 3/22. Told his pancreas enzymes were up and there was fluid near the pancreas on ultrasound. Admitted, no surgery, nothing by mouth then diet advanced, home 3/25.\n\nToday: aching is much better, 2/10, only after bigger meals. Nausea gone. Eating a low-fat diet. Normal BMs, no blood. No fever. Taking acetaminophen once a day or less. Bike is in the shop and he's not riding.\n\nExam: comfortable. Abdomen soft, mild tenderness high in the epigastrium, no guarding, no mass, normal bowel sounds. No bruising.\n\nA/P: traumatic pancreatic injury, managed without surgery, recovering.\n- Lipase and CBC today.\n- Stay on a lighter diet another week or two, acetaminophen as needed, skip ibuprofen for now.\n- No cycling until the soreness is fully gone.\n- Call if pain returns or worsens, fevers, vomiting.\n- Will review the hospital records when they come."},
+            {"type": "Result Note", "title": "Lipase result", "author": "PCP", "date": "2025-04-01T07:50",
+             "body": "Lipase 52, back to normal. Blood count normal. Sent him a note."}
+          ]
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "portal_message",
+          "start": "2025-04-01T07:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from Monday", "author": "PCP", "date": "2025-04-01T07:55",
+             "body": "Your pancreas enzyme is back in the normal range and your blood count looks good. Keep doing what you're doing. If the pain hasn't fully settled in a few weeks, let me know."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "outside_records",
+          "start": "2025-04-22T10:05",
+          "documents": [
+            {"type": "Outside Records", "title": "Hospital records received", "author": "front desk", "date": "2025-04-22T10:05",
+             "body": "Regional hospital records for 3/22-3/25 finally received after a second fax request. ED note, discharge summary, labs and ultrasound report attached to the admission. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "telephone",
+          "start": "2025-06-18T15:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancel physical", "author": "front desk", "date": "2025-06-18T15:30",
+             "body": "Pt left voicemail cancelling Friday's annual physical, has to cover an account two states over this week. Says he'll call back to reschedule once he has his travel calendar."}
+          ]
+        },
+        {
+          "id": "2025-06-20a",
+          "kind": "annual_physical",
+          "start": "2025-06-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu shot",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T17:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T17:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2025-10-14T17:10",
+             "body": "End-of-day slot. Well today. Flu vaccine given L deltoid, tolerated. Declined COVID booster this year, wants to wait. Reminded him he still owes us a physical; he'll book after the holidays."}
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "hospital_admission",
+          "start": "2025-11-07T17:25",
+          "end": "2025-11-12T10:40",
+          "service": "Emergency Medicine; Trauma Surgery",
+          "reason": "high-speed motor vehicle collision, abdominal pain",
+          "conditions": [
+            {"label": "Intra-abdominal hemorrhage requiring operative management", "icd10": "K66.1", "action": "diagnosed", "onset": "2025-11-07"}
+          ],
+          "vitals": [
+            {"time": "2025-11-07T17:30", "bp": [110, 70], "hr": 105, "rr": 22, "spo2": 97}
+          ],
+          "reports": [
+            {"study": "FAST examination", "loinc": "30704-1", "performed": "2025-11-07T17:40", "issued": "2025-11-07T18:05",
+             "text": "Focused assessment with sonography for trauma, performed at the bedside. Hepatorenal recess: free fluid present. Splenorenal recess: no free fluid. Pelvis: no free fluid. Pericardial view: no effusion.",
+             "conclusion": "Positive FAST: free fluid in the hepatorenal recess. No other abnormality."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-11-07T17:25"},
+            {"procedure": "Exploratory laparotomy", "snomed": "74770008", "performed": "2025-11-07T19:10"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-11-12T10:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Trauma Surgery Discharge Summary (regional hospital)", "author": "trauma surgery", "date": "2025-11-14T14:20",
+             "body": "REGIONAL HOSPITAL TRAUMA SERVICE — DISCHARGE SUMMARY\nAdmission 11/07/2025, discharge 11/12/2025.\nPatient: 29-year-old man.\n\nPrincipal diagnosis: intra-abdominal hemorrhage requiring operative management, after blunt abdominal trauma.\nOther: traumatic pancreatic injury earlier this year (managed nonoperatively, March 2025).\nAllergies: NKDA. Home meds: none.\n\nPresentation: restrained driver in a high-speed collision, airbags deployed. Arrived alert and anxious with diffuse abdominal pain. BP 110/70, HR 105, RR 22, SpO2 97% RA. Abdomen distended and tender in all four quadrants with a seatbelt mark across the lower abdomen; no rebound or guarding. FAST positive for free fluid in the hepatorenal recess, otherwise negative.\n\nCourse: taken emergently to the OR for exploratory laparotomy; hemoperitoneum evacuated and bleeding controlled. Recovered on the surgical floor, diet advanced, pain transitioned to oral agents, ambulating independently. Midline incision closed with staples, clean and dry at discharge.\n\nDischarge meds: oxycodone 5 mg every 6 hours as needed for severe pain (#20, no refills); acetaminophen 1000 mg every 8 hours as needed.\nActivity: no lifting over 15 lb, no driving while taking oxycodone.\nFollow-up: trauma surgery clinic in 1-2 weeks for staple removal; PCP within 1 week."}
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "pharmacy",
+          "start": "2025-11-12T15:05",
+          "medications": [
+            {"drug_text": "oxycodone hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain", "dose": {"value": 5, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "postoperative pain"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy call, new opioid fill", "author": "RN", "date": "2025-11-12T15:05",
+             "body": "Pharmacist called to confirm we are his PCP: filling oxycodone 5 mg #20 written by the regional hospital surgery team today. Nothing in our chart about a hospital stay.\n\nCalled pt. He was in a bad car accident last Friday, needed belly surgery for internal bleeding, discharged this morning. Pain okay, tolerating food, has not been driving. Hospital follow-up booked 11/18 with PCP. Discharge summary requested from the hospital. PCP aware."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up after laparotomy",
+          "state": {"weight_kg": 75.0, "labs": {"Hemoglobin": 11.9}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets by mouth every 8 hours as needed for pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "postoperative pain"}
+          ],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 3}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-18T11:05", "results": [{"test": "Hemoglobin", "value": 11.9}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-11-18T10:30"},
+            {"procedure": "Venipuncture", "performed": "2025-11-18T11:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2025-11-18T10:30",
+             "body": "29M seen 6 days after discharge. Discharge summary from the regional hospital arrived 11/14 and reviewed; no operative report came with it.\n\nRestrained driver, high-speed crash 11/7, airbags went off. Positive FAST, taken for exploratory laparotomy for intra-abdominal bleeding, bleeding controlled. Home 11/12. Second abdominal injury this year: pancreatic injury after the March bike crash, managed without surgery.\n\nNow: incision sore, 3/10, worse getting out of bed. Using oxycodone about twice a day, mostly at night, plus acetaminophen. Eating small meals, BMs back, passing gas. No fever, no wound drainage, no vomiting. Not driving. Lightheaded once on standing the first day home, none since. Down about 4 kg since spring.\n\nMeds: oxycodone 5 mg q6h prn (hospital), acetaminophen 1 g q8h prn. NKDA.\n\nExam: walking slowly but on his own. Vitals as charted. Midline abdominal incision with staples, edges together, no redness, no drainage. Abdomen soft, appropriately tender around the wound, not distended, bowel sounds present. Calves soft.\n\nA/P:\n1. S/p exploratory laparotomy for intra-abdominal hemorrhage after blunt abdominal trauma. Healing as expected. CBC today. Staples out at trauma clinic Friday.\n2. Postop pain. Taper oxycodone over the next week, acetaminophen first. No driving on it.\n3. Traumatic pancreatic injury, March, recovered.\n4. Work note given: off work through 12/5, then reassess.\nRTC 4 weeks."},
+            {"type": "Result Note", "title": "CBC result", "author": "PCP", "date": "2025-11-18T16:20",
+             "body": "Hgb 11.9 a week and a half after surgery for bleeding, as expected. Recheck at his next visit. Messaged pt."}
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "specialist_visit",
+          "start": "2025-11-21T13:00",
+          "service": "Trauma Surgery",
+          "reason": "postoperative check, staple removal",
+          "documents": [
+            {"type": "Consult Note", "title": "Trauma Surgery Clinic Letter", "author": "trauma surgery", "date": "2026-01-09T09:40",
+             "body": "REGIONAL HOSPITAL TRAUMA SURGERY CLINIC\nVisit date: 11/21/2025\nRe: Jacob Murphy, DOB 06/29/1996\n\nThank you for allowing us to share in his care. He returns two weeks after exploratory laparotomy for hemoperitoneum following a motor vehicle collision. Recovering well at home, appetite returning, pain improving.\n\nAllergies: NKDA. Meds: oxycodone as needed (tapering), acetaminophen.\n\nExam: afebrile. Midline wound healed without erythema or drainage. Staples removed. Abdomen soft, nondistended.\n\nPlan: no lifting over 15 pounds for six weeks from surgery, then advance activity as tolerated. Return to us as needed; no routine follow-up planned.\n\nTrauma Surgery"}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "office_visit",
+          "start": "2025-12-16T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after laparotomy",
+          "state": {"weight_kg": 76.4, "labs": {"Hemoglobin": 13.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Blunt abdominal trauma", "icd10": "S39.91XA", "action": "resolved"},
+            {"label": "Intra-abdominal hemorrhage requiring operative management", "icd10": "K66.1", "action": "resolved"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "GAD-7 total score", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-16T11:40", "results": [{"test": "Hemoglobin", "value": 13.4}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-12-16T11:15"},
+            {"procedure": "Venipuncture", "performed": "2025-12-16T11:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2025-12-16T11:15",
+             "body": "Six weeks out from laparotomy. Staples came out at the trauma clinic 11/21 per patient; their letter has not reached us.\n\nFeels close to normal. Finished the oxycodone the week after our last visit, uses acetaminophen rarely. Eating normally, weight coming back. Back at work since 12/8 doing phone and local accounts, not lifting sample cases yet. Driving again, a little tense in traffic at first, better now. Sleeping fine. No nightmares or flashbacks about the crash.\n\nPHQ-9 3, GAD-7 4.\n\nExam: well. Midline scar healed, no hernia with cough, nontender.\n\nA/P: recovered from exploratory laparotomy for traumatic intra-abdominal bleeding. Hgb rechecked today. Light duty until the six-week lifting limit is up in early January, then advance as tolerated. Off opioids. Resolving the acute injury problems on his list. Physical in the spring."},
+            {"type": "Result Note", "title": "CBC result", "author": "PCP", "date": "2025-12-17T08:10",
+             "body": "Hgb 13.4, recovering. Messaged him, no further checks needed before his physical."}
+          ]
+        }
+      ]
+    }
+  ]
+}

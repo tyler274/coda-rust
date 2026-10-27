@@ -1,0 +1,490 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001777",
+      "given": "Lauren",
+      "family": "Cote",
+      "birth_date": "1994-02-21",
+      "address_line": "47 Silver Birch Lane",
+      "phone": "+1-413-555-0162",
+      "email": "lauren.cote@example.test",
+      "marital_status": "partnered",
+      "summary": "Preschool teacher with type 1 diabetes since age 11 (outside endocrinology) and lifelong heavy periods who joins in 2019. Celiac disease with dermatitis herpetiformis surfaces in late 2022, bringing recurrent iron deficiency anemia needing IV iron and vitamin D deficiency; a right dacryocystitis in 2025; a first pregnancy ends in a planned cesarean for breech in June 2026.",
+      "events": [
+        {
+          "id": "2019-04-23a",
+          "kind": "telephone",
+          "start": "2019-04-23T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "author": "front desk",
+              "date": "2019-04-23T10:12",
+              "body": "Caller is a 25 y/o woman looking for a primary care doctor nearer to where she lives and works now; her old office was an hour away and she has not been back since she moved. Has type 1 diabetes, sees an endocrinologist who will stay her diabetes doctor. Insurance through her school employer, verified. Booked new patient visit 5/14 at 3:40 (after her teaching day). Sent records release for prior primary care office. Asked her to bring insulin pens and the name of her endocrinology group."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "establish_care",
+          "start": "2019-05-14T15:40",
+          "end": "2019-05-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2005-03-01",
+              "note": "Diagnosed at age 11; managed by outside endocrinology"
+            },
+            {
+              "label": "Heavy menstrual bleeding",
+              "action": "diagnosed",
+              "onset": "2008-01-01",
+              "note": "Heavy periods since adolescence; ibuprofen for cramps"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 24 units under the skin at bedtime",
+              "dose": {
+                "value": 24,
+                "unit": "U"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes; prescribed by endocrinology"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals per sliding scale",
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes; prescribed by endocrinology"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for menstrual cramps",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Menstrual cramps; over the counter"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 55.0,
+            "height_cm": 162.0,
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Microalbumin/Creatinine Ratio": 8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "rr",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare"
+            },
+            {
+              "item": "Occupation",
+              "value": "Preschool teacher"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-05-14T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-05-14T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2019-05-14T16:30",
+              "body": "NEW PATIENT, 25F, preschool teacher.\n\nHere to set up primary care after a move; last PCP visit maybe two years ago, records requested.\n\nT1DM since age 11. Followed by an outside endocrine group twice a year, uses pens, glargine 24 u at bedtime and lispro with meals by a correction scale. Checks fingersticks 4-5x/day. Last A1c she remembers was around 7. No severe lows, no DKA admissions as an adult. Has never been told of eye or kidney problems; gets a yearly eye exam.\n\nGYN: periods have always been heavy, since about 14. Regular monthly, 6-7 days, first 3 days soak through a pad every couple of hours. Cramps managed with OTC ibuprofen 400 every 6 h for a day or two. Not sexually active with anyone but her partner, not planning pregnancy right now. Last Pap last year, normal per her.\n\nMeds: glargine, lispro, ibuprofen prn. NKDA.\nPMH: T1DM. PSH: none.\nFH: father T1DM. Mother autoimmune thyroid disease. Maternal aunt with celiac.\nSH: lives with partner. Never smoker. Alcohol a glass of wine a few times a year. No drugs. Works with 4-year-olds, walks most evenings.\n\nROS negative except heavy menses.\n\nExam: well appearing, vitals per flowsheet. HEENT normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: injection sites on abdomen without lipohypertrophy. Feet: intact sensation to monofilament, pulses 2+.\n\nA/P\n1. T1DM - stays with endocrinology, will request their notes. Urine microalbumin, lipids, CMP today. Yearly eye exam continues.\n2. Heavy menses - longstanding, no anemia symptoms. CBC today. Ibuprofen as needed. Offered GYN eval, she declines for now, says it has always been this way.\n3. Health maintenance: HIV/HCV once today. Pap due 2021 if last year's is confirmed normal. PHQ-2 negative. Flu shot in the fall.\nRTC 1 yr for physical."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-21a",
+          "kind": "outside_records",
+          "start": "2019-05-21T09:05",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "front desk",
+              "date": "2019-05-21T09:05",
+              "body": "34 pages received by fax from her previous family medicine office, indexed.\n\nSummary of contents: well visits 2014-2018. Cervical cytology 06/2018 negative for intraepithelial lesion or malignancy. HPV vaccine 3-dose series completed in adolescence. Tdap 2016. Diabetes managed by endocrinology, copies of two consult letters. CBC 2017 normal. No hospitalizations. Allergies: none listed."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-23a",
+          "kind": "portal_message",
+          "start": "2019-05-23T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2019-05-23T12:20",
+              "body": "Hi Lauren, everything from Tuesday came back fine. Blood count is normal, so the heavy periods haven't run your iron down, kidney and liver tests are normal, cholesterol is good, thyroid is normal, and no protein in the urine. The HIV and hepatitis C screens are negative. Your old office sent your records and your Pap from last year was normal, so you're not due for another until 2021. See you next spring."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "outside_records",
+          "start": "2019-08-20T14:00",
+          "reason": "Endocrinology letter",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-08-13T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "author": "endocrinology",
+              "date": "2019-08-20T14:00",
+              "body": "Outside endocrinology group\nDate of visit: 08/13/2019\n\nDear Doctor,\nThank you for letting us share care of Ms. Cote, now 25, with type 1 diabetes since childhood. She is doing well on glargine 24 units at bedtime and lispro with meals using a correction scale. Meter download shows most readings in range, a few mild lows after afternoon recess duty that she treats herself. A1c today 7.1%. Feet normal. BP normal.\nMedications: insulin glargine, insulin lispro, ibuprofen as needed. Allergies: NKDA.\nPlan: no basal change; small snack before afternoon outdoor time. Return in 6 months.\nRegards,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T16:00",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T16:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2019-10-08T16:10",
+              "body": "Flu vaccine given L deltoid, lot recorded. No prior reactions. VIS given. Tolerated, waited 10 min, left without issue."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "outside_records",
+          "start": "2019-12-10T11:30",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2019-12-10T11:30",
+              "body": "Optometry report, exam 12/03/2019.\nDilated fundus exam both eyes: no diabetic retinopathy, no macular edema. Visual acuity 20/20 OU with correction. Mild myopia, glasses updated.\nRecommend repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "annual_physical",
+          "start": "2020-02-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "state": {
+            "weight_kg": 54.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-02-11T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-02-11T16:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-02-11T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-11T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2020-02-11T16:25",
+              "body": "Annual exam. 25F with T1DM.\n\nFeels well. Busy year at school. Endo every 6 months, last A1c 7.1. A couple of mild lows a month, always aware of them. Periods unchanged, still heavy the first few days, ibuprofen helps cramps. No fatigue, no dizziness. Diet varied, eats meat a couple of times a week.\nMeds/allergies reviewed, NKDA.\n\nExam: NAD. Weight stable. Skin clear. Thyroid normal. RRR without murmur. Lungs clear. Abdomen benign. Feet with normal sensation and pulses.\n\nA/P: Healthy visit. T1DM with endo, eye exam UTD with no retinopathy. Rechecking CBC given the heavy periods, and urine microalbumin. Pap next year. Flu done in the fall. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "portal_message",
+          "start": "2020-03-24T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrinology appointment",
+              "author": "patient",
+              "date": "2020-03-24T19:40",
+              "body": "Hi, my endocrinology office switched my spring visit to video and I have plenty of pens, but my pharmacy said I need a new prescription for pen needles by next month. Should that come from you or from them? School is closed so I can do a call any time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrinology appointment",
+              "author": "RN",
+              "date": "2020-03-25T08:55",
+              "body": "Hi Lauren, best to ask your endocrinology office since they write your insulin, so everything stays on one prescriber. If you have any trouble reaching them, let us know and we can bridge it. Stay well."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "outside_records",
+          "start": "2020-07-21T10:15",
+          "reason": "Endocrinology letter",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-07-08T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Telehealth Letter",
+              "author": "endocrinology",
+              "date": "2020-07-21T10:15",
+              "body": "Outside endocrinology group, video visit 07/14/2020.\nType 1 diabetes. Home from school since March, more snacking, readings a bit higher in the evening. Lab-only A1c 07/08 7.3%. No severe hypoglycemia.\nMeds: glargine 24 units at bedtime, lispro per scale. NKDA.\nPlan: reviewed carb counting for evening meal; keep basal the same. Pen needles renewed. Return in 6 months, in person if possible."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:50",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T15:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2020-10-13T16:00",
+              "body": "Screened at door, masked. Influenza vaccine R deltoid. Pt tolerated well. Asked about her physical, told her to call in January to book."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "outside_records",
+          "start": "2020-12-08T13:20",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2020-12-08T13:20",
+              "body": "Optometry, exam date 12/01/2020. Dilated exam OU: retina flat, no hemorrhages, exudates or neovascularization. No diabetic retinopathy. VA 20/20 OU corrected. Return 1 year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

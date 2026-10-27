@@ -1,0 +1,945 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002202",
+   "events": [
+    {
+     "id": "2021-01-19a",
+     "kind": "office_visit",
+     "start": "2021-01-19T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Low Density Lipoprotein": 130,
+       "High Density Lipoprotein": 45,
+       "Triglycerides": 150
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-01-19T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-01-19T09:15",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 156
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel with Direct LDL",
+       "collected": "2021-01-19T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 45
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        },
+        {
+         "test": "Low Density Lipoprotein, Direct",
+         "value": 130
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-01-19T09:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-01-19T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2021-01-19T09:40",
+       "body": "S: Diabetes check. Says he is fine, but his wife brings up that his legs have been stiff since summer and he has tripped on the stairs a few times, caught the railing each time. Also his fingers feel numb, buttons are harder, dropped a mug last week. No neck pain to speak of. No bladder change beyond the prostate symptoms he already has.\n\nO: BP at goal. Gait a bit stiff and wide. Grip seems weaker on both sides. Leg reflexes brisk. Did not go further today.\n\nA/P\n1. Leg stiffness, falls and hand numbness: new since his neurology visit and needs their exam. He has a yearly neurology follow-up next month anyway; called their office and they will add the gait and hand symptoms to the visit. Fall precautions reviewed, railings, night lights.\n2. T2DM: A1c and fasting glucose today. Glyburide noted with his age, but no lows, continue.\n3. HLD: lipids today on atorvastatin 40.\n4. HTN: continue amlodipine.\nRTC 3 months, sooner after neurology."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-21a",
+     "kind": "portal_message",
+     "start": "2021-01-21T19:45",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Neurology appointment",
+       "author": "patient",
+       "date": "2021-01-21T19:45",
+       "body": "Hi, this is Marc writing for my dad. Neurology called and has him on Feb 9. Do they need anything from you before then? Also are his blood tests back?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Neurology appointment",
+       "author": "PCP",
+       "date": "2021-01-22T08:30",
+       "body": "Hi Marc. I sent them my note from Tuesday, so they know about the walking and the hands. Labs: A1c 7.2, fasting sugar 156, LDL 130, HDL 45, triglycerides 150, kidney tests normal. Same ballpark as before. Neurology can see these too."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-05a",
+     "kind": "outside_records",
+     "start": "2021-02-05T13:10",
+     "reports": [
+      {
+       "study": "MRI cervical spine without contrast",
+       "loinc": "24935-9",
+       "performed": "2021-02-02T18:30",
+       "text": "Technique: sagittal and axial T1 and T2 sequences of the cervical spine without contrast.\nFindings: alignment maintained. Multilevel degenerative disc disease and uncovertebral and facet hypertrophy from C3 to C7. At C5-C6, disc osteophyte complex and ligamentous thickening narrow the spinal canal. Other levels without significant canal narrowing. Craniocervical junction normal. Paraspinal soft tissues unremarkable.",
+       "conclusion": "Multilevel cervical degenerative changes with spinal canal narrowing at C5-C6."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "MRI cervical spine report",
+       "author": "front desk",
+       "date": "2021-02-05T13:10",
+       "body": "MRI report ordered by neurology, copy faxed to PCP. Scanned."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-16a",
+     "kind": "outside_records",
+     "start": "2021-02-16T11:25",
+     "conditions": [
+      {
+       "label": "Other spondylosis with myelopathy, cervical region",
+       "icd10": "M47.12",
+       "action": "diagnosed",
+       "onset": "2020-08-01",
+       "note": "cervical spondylotic myelopathy, C5-C6 canal narrowing"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology follow-up",
+       "author": "neurology",
+       "date": "2021-02-16T11:25",
+       "body": "Outpatient neurology group. Date of service 02/09/2021.\n\nReturn visit for mild cognitive impairment, with new gait and hand complaints raised by his PCP.\nHPI: About 6 months of progressive trouble walking and numb hands. Legs feel stiff; he has tripped several times. Memory per son unchanged since 2019.\nPMH: hypertension, type 2 diabetes, hypercholesterolemia, mild asthma, BPH.\nMeds: metformin 1000 mg twice daily, glyburide 5 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, albuterol HFA as needed.\nAllergies: ACE inhibitors (cough).\n\nExam: grip strength reduced both hands with wasting of the intrinsic hand muscles. Upper limb reflexes diminished. Lower limb reflexes brisk. Babinski sign present on both sides. Gait spastic.\nRecent labs from PCP (01/19/2021): A1c 7.2%, fasting glucose 156, total cholesterol 210, LDL 130, HDL 45, triglycerides 150.\nMRI cervical spine (02/02/2021): multilevel degenerative change with canal narrowing at C5-C6.\n\nImpression: cervical spondylotic myelopathy at C5-C6. MCI stable.\nPlan: referral to spine surgery to discuss decompression. Fall precautions. Avoid neck manipulation. Return 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-19a",
+     "kind": "outside_records",
+     "start": "2021-03-19T10:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-24T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-17T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "COVID-19 vaccination record",
+       "author": "MA",
+       "date": "2021-03-19T10:00",
+       "body": "Son emailed a photo of the vaccination card from the regional mass vaccination clinic. Pfizer doses 02/24/2021 and 03/17/2021 entered into the immunization record."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-11a",
+     "kind": "office_visit",
+     "start": "2021-05-11T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after neurology and spine surgery",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-05-11T14:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pt-2021",
+       "action": "placed",
+       "order": "Physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "cervical myelopathy, gait and hand function, fall prevention"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2021-05-11T14:50",
+       "body": "With son. Saw the spine surgeon in April (we never got a letter; second request sent today). Per Leonard and Marc: the surgeon offered a neck decompression, explained the aim is to stop things getting worse. Leonard decided against surgery for now. Marc supports him, though worried. They would like therapy.\nNo new weakness since February by their account. No bowel or bladder change beyond his known BPH. One more stumble, no fall.\nExam: spastic gait, uses the rail for the exam step. Hand grip weak both sides. Unchanged from neurology's description.\nA/P\n1. Cervical myelopathy, nonoperative by his choice: PT referral for gait, balance and hand work. Return precautions given clearly to both: any rapid change in walking, hands or bladder, call the same day. Neurology following.\n2. Other problems stable. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-27a",
+     "kind": "outside_records",
+     "start": "2021-05-27T16:00",
+     "procedures": [
+      {
+       "procedure": "Physical therapy evaluation, moderate complexity",
+       "performed": "2021-05-25T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pt-2021",
+       "action": "done",
+       "date": "2021-05-27T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Physical therapy initial evaluation",
+       "author": "physical therapy",
+       "date": "2021-05-27T16:00",
+       "body": "Outpatient PT. Evaluation 05/25/2021.\nDx: cervical spondylotic myelopathy.\nSubjective: stiff legs, trips on stairs, clumsy hands. Goal: keep walking the neighborhood safely.\nObjective: spastic gait pattern, reduced stride length. Single-leg stance under 5 s each side. Timed Up and Go 14 s. Grip reduced bilaterally.\nPlan: 2x/week for 8 weeks; balance, gait training, lower extremity strengthening, fine motor work. Home program issued. Allergies: ACE inhibitors (cough)."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-19a",
+     "kind": "office_visit",
+     "start": "2021-08-19T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-08-19T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-08-19T11:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-08-19T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2021-08-19T11:10",
+       "body": "Finished 8 weeks of PT, feels steadier, keeps the exercises up 3 days a week. No falls since May. Hands the same.\nSpine surgery letter finally arrived? No, still not here. Not chasing a third time; the patient has given us what we need.\nBP fine. Feet intact. A1c sent.\nContinue all. RTC 3 months for the wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-21a",
+     "kind": "outside_records",
+     "start": "2021-09-21T08:50",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2021-09-21T08:50",
+       "body": "Exam 09/16/2021, dilated. No diabetic retinopathy either eye. Glasses Rx updated. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T13:25"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-05T13:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T13:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2021-10-05T13:50",
+       "body": "Flu high-dose L deltoid, Pfizer booster R deltoid. Both arms fine after 15 min observation. Son drove."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "annual_physical",
+     "start": "2021-11-16T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-11-16T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-16T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-16T08:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2021-11-16T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-11-16T09:15",
+       "body": "AWV, wife present.\nFunction: bathing and dressing on his own, slower with buttons. Wife does meds and money. Stopped driving at night.\nFalls: none this year after PT.\nPHQ-2 0.\nCognition: stable per family; neurology seeing him every 6 months now.\nPrevention: flu and COVID booster done in October. Colonoscopy 2015 normal; next one would be 2025 and we will decide then.\nAdvance care planning touched on: wants full treatment for now, proxy on file.\nLabs today. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-17a",
+     "kind": "office_visit",
+     "start": "2022-02-17T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-02-17T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-02-17T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2022-02-17T11:30",
+       "body": "Steady. Indoor bike most days. Urinary symptoms tolerable on his two prostate pills. No inhaler use this winter.\nVitals fine. Lungs clear. No edema.\nA1c drawn. Continue. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-20a",
+     "kind": "outside_records",
+     "start": "2022-04-20T10:45",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology follow-up",
+       "author": "neurology",
+       "date": "2022-04-20T10:45",
+       "body": "Outpatient neurology group. Visit 04/14/2022.\nMCI and cervical spondylotic myelopathy, nonoperative. Memory complaints stable per son. Gait spastic, unchanged; grip reduced both sides, unchanged; Babinski both sides.\nAllergies: ACE inhibitors (cough).\nPlan: continue home exercises, fall precautions. Return 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "office_visit",
+     "start": "2022-05-10T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "appointment": "cancelled",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancellation",
+       "author": "front desk",
+       "date": "2022-05-09T15:40",
+       "body": "Son called to cancel tomorrow, car in the shop. Rebooked 5/24."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-24a",
+     "kind": "office_visit",
+     "start": "2022-05-24T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-05-24T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2022-05-24T09:45",
+       "body": "Rescheduled visit. No complaints. Walking with care, no falls. Neurology in April: unchanged.\nBP at goal, heart regular, lungs clear, no edema.\nContinue current medicines. Refills sent. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-26a",
+     "kind": "office_visit",
+     "start": "2022-07-26T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shortness of breath and leg swelling",
+     "state": {
+      "weight_kg": 91.6,
+      "bp": [
+       142,
+       88
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-07-26T13:20",
+       "text": "Sinus rhythm, rate 86. Normal axis. Intervals normal. No acute ST elevation or depression. Compared with 2017, rate faster, otherwise no significant change.",
+       "conclusion": "Sinus rhythm without acute changes."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-07-26T13:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2022-07-26T13:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-2022",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "progressive exertional dyspnea and bilateral leg edema, urgent"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Dyspnea and Edema",
+       "author": "PCP",
+       "date": "2022-07-26T13:45",
+       "body": "S: Since about May, more winded with exertion: now stops halfway up the stairs, used to manage the hill on his street. Both ankles swell by evening. Denies chest pain, palpitations, fainting. Not wheezy, albuterol does nothing for it. Weight up a few pounds without eating more.\n\nO: BP and weight as charted. Heart regular. Lungs: I hear no wheeze. Ankle edema both sides.\nECG in office: sinus, no acute change.\n\nA/P: exertional dyspnea with edema in a 71 yo diabetic with hypertension: heart failure is the leading concern. Amlodipine can swell ankles but would not explain the breathlessness. Urgent cardiology referral, spoke with their scheduler for a slot in about 2 weeks. ED precautions given: chest pain, breathlessness at rest, unable to lie flat. Wife repeated them back."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-12a",
+     "kind": "outside_records",
+     "start": "2022-08-12T10:30",
+     "conditions": [
+      {
+       "label": "Heart failure, unspecified",
+       "icd10": "I50.9",
+       "action": "diagnosed",
+       "onset": "2022-05-01",
+       "note": "acute decompensated heart failure"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "heart failure"
+      },
+      {
+       "drug": "empagliflozin 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "heart failure and type 2 diabetes"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 1.2
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-08-10T11:10",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 138
+        },
+        {
+         "test": "Potassium",
+         "value": 4.5
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-08-10T11:10",
+       "results": [
+        {
+         "test": "B-type natriuretic peptide",
+         "loinc": "30934-4",
+         "unit": "pg/mL",
+         "value": 900
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2022-08-10T11:40",
+       "text": "PA and lateral. The cardiac silhouette is enlarged. Pulmonary vascular cephalization. No focal consolidation. No pneumothorax.",
+       "conclusion": "Cardiomegaly with cephalization of the pulmonary vasculature."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-2022",
+       "action": "done",
+       "date": "2022-08-12T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology consultation",
+       "author": "cardiology",
+       "date": "2022-08-12T10:30",
+       "body": "Outside cardiology group. Date of visit 08/10/2022.\n\nReferred for: exertional dyspnea and leg swelling.\nHPI: 71 yo man with hypertension, type 2 diabetes, a prior cough on lisinopril and cervical myelopathy. Three months of steadily worse breathlessness on exertion and swelling of both legs. No chest pain, palpitations or syncope.\nMeds: metformin, amlodipine, atorvastatin, glyburide 5 mg, lisinopril 20 mg, aspirin 81 mg, albuterol as needed.\nAllergies: ACE inhibitors (cough).\nSH: never smoker, rare alcohol, retired accountant.\nFH: father MI at 61.\n\nExam: BP 145/90, HR 88, RR 18. JVP elevated. Crackles at both bases. Pitting edema 2+ to the shins. PMI displaced laterally. S3 present. No murmur.\nLabs today: Na 138, K 4.5, creatinine 1.2, BNP 900 pg/mL.\nCXR today: enlarged cardiac silhouette, cephalization.\n\nImpression: acute decompensated heart failure, new.\nPlan:\n- Furosemide 40 mg every morning. Daily weights; call for a gain of 3 lb in a day or 5 in a week.\n- Empagliflozin 10 mg daily, for the heart failure and his diabetes.\n- Transthoracic echo next week.\n- Low salt diet, about 2 g sodium.\n- BMP in 1 to 2 weeks via PCP. Cardiology follow-up 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-15a",
+     "kind": "pharmacy",
+     "start": "2022-08-15T10:10",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Empagliflozin prior authorization",
+       "author": "MA",
+       "date": "2022-08-15T10:10",
+       "body": "Pharmacy says the Part D plan wants a PA for Jardiance 10 mg. Submitted with diagnoses of heart failure and type 2 diabetes and the cardiology note. Approved same afternoon, pharmacy notified, son picking it up."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-19a",
+     "kind": "outside_records",
+     "start": "2022-08-19T14:00",
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2022-08-17T09:00",
+       "text": "Left ventricle mildly dilated. LVEF 50% by biplane method. Grade II diastolic dysfunction. Normal wall thickness. Right ventricle normal size and function. Atria normal size. No significant valvular disease. No pericardial effusion. IVC not well seen.",
+       "conclusion": "Mildly dilated LV, LVEF 50%, grade II diastolic dysfunction, no significant valve disease."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Echocardiogram report",
+       "author": "front desk",
+       "date": "2022-08-19T14:00",
+       "body": "Echo report from cardiology, scanned for PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-30a",
+     "kind": "office_visit",
+     "start": "2022-08-30T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Heart failure follow-up",
+     "conditions": [
+      {
+       "label": "Heart failure, unspecified",
+       "icd10": "I50.9",
+       "action": "resolved",
+       "note": "acute decompensation treated"
+      },
+      {
+       "label": "Heart failure with preserved ejection fraction",
+       "action": "diagnosed",
+       "onset": "2022-05-01"
+      }
+     ],
+     "state": {
+      "weight_kg": 87.6,
+      "bp": [
+       128,
+       78
+      ],
+      "labs": {
+       "Creatinine": 1.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-08-30T10:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-08-30T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Heart Failure Follow-up",
+       "author": "PCP",
+       "date": "2022-08-30T10:55",
+       "body": "Seen cardiology 8/10 and echo 8/17, both reviewed.\nS: breathing much better, does the stairs again with one pause. Swelling mostly gone. Weighs himself each morning, his chart on the fridge shows a steady drop of about 4 kg. Peeing more in the mornings, as expected. No dizziness. No genital itching on Jardiance.\nO: weight down as charted. JVP not elevated. Lungs clear. Trace ankle edema.\nA/P\n1. Heart failure, LVEF 50%: now compensated; filing it as HFpEF. Continue furosemide 40, empagliflozin 10, amlodipine. BMP today per cardiology.\n2. T2DM: empagliflozin added; glyburide kept for now, watch for lows.\n3. Asthma: quiet.\nRTC 2 to 3 months, cardiology in October."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "outside_records",
+     "start": "2022-09-20T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2022-09-20T09:00",
+       "body": "Dilated diabetic exam 09/14/2022. No diabetic retinopathy either eye. Pseudophakia OD. Recall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-07a",
+     "kind": "outside_records",
+     "start": "2022-10-07T13:30",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up",
+       "author": "cardiology",
+       "date": "2022-10-07T13:30",
+       "body": "Outside cardiology group. Visit 10/04/2022.\nHeart failure, LVEF 50% on the August echo. Much improved on furosemide and empagliflozin: edema nearly gone, walks on level ground without stopping. BP 128/76, HR 72. JVP normal, lungs clear, trace ankle edema, no S3 today.\nBMP from PCP reviewed: stable.\nMeds: furosemide 40, empagliflozin 10, amlodipine 5, atorvastatin 40, aspirin 81, metformin, glyburide.\nAllergies: ACE inhibitors (cough).\nPlan: continue. Daily weights. Return 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-11T14:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T14:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2022-10-11T14:25",
+       "body": "Flu high-dose and bivalent Pfizer booster given, one each arm. Observed 15 min without issue. Reports cardiology visit last week went well, same pills."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-15a",
+     "kind": "annual_physical",
+     "start": "2022-11-15T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-11-15T09:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-11-15T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-11-15T09:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-11-15T09:00",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-11-15T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-11-15T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-11-15T09:30",
+       "body": "AWV. Wife and son both here.\nFunction: independent in self-care, slower. No falls. Uses a cane outdoors in winter.\nPHQ-2 0. Hearing: wife says TV is loud; he declines audiology for now.\nCognition: neurology stable.\nHeart failure stable, weight within his range, daily weights continuing.\nVaccines: flu and bivalent COVID done. RSV vaccine not yet available.\nLabs today. RTC 3 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

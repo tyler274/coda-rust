@@ -1,0 +1,377 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001761",
+      "events": [
+        {
+          "id": "2025-11-07a",
+          "kind": "hospital_admission",
+          "start": "2025-11-07T21:30",
+          "end": "2025-11-09T12:00",
+          "service": "Obstetrics",
+          "reason": "labor at term",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Normal delivery procedure",
+              "snomed": "177184002",
+              "performed": "2025-11-08T04:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-11-09T12:00",
+              "body": "REGIONAL MEDICAL CENTER, BIRTHING UNIT\nAdmit 11/7/2025 21:30. Discharge 11/9/2025.\n\n27 y/o G1P0 at 39w4d admitted in spontaneous active labor. Pregnancy notable for hyperemesis gravidarum in the first trimester with two ED visits, resolved by 20 weeks. Otherwise uncomplicated prenatal course. NKDA.\n\nDelivery 11/8/2025 04:52 at 39w5d: spontaneous vaginal delivery of a liveborn infant, vigorous at birth, routine newborn care. Placenta delivered intact. Estimated blood loss within normal range. No laceration requiring repair.\n\nPostpartum course uncomplicated. Ambulating, voiding, tolerating diet, pain controlled. Vital signs normal throughout.\n\nDischarge diagnosis: term spontaneous vaginal delivery.\nMeds at discharge: prenatal vitamin with iron daily.\nFollow-up: obstetrics postpartum visit in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "outside_records",
+          "start": "2025-11-12T10:05",
+          "reason": "delivery discharge summary received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Delivery discharge summary received",
+              "author": "MA",
+              "date": "2025-11-12T10:05",
+              "body": "Discharge summary from birthing unit, 11/7-11/9/2025, received via fax and scanned. Routed to PCP."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Congratulations",
+              "author": "PCP",
+              "date": "2025-11-12T17:30",
+              "body": "Leah, I just saw the hospital summary come through. Congratulations to you all. Rest up, and reach out if you need anything. Your OB will see you in about six weeks; after that, let's get you in here sometime this winter."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "outside_records",
+          "start": "2025-12-19T11:40",
+          "reason": "obstetrics postpartum letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics postpartum visit",
+              "author": "obstetrics",
+              "date": "2025-12-19T11:40",
+              "body": "OUTSIDE OBSTETRIC GROUP\nPostpartum visit, 12/17/2025\n\nSix weeks after a spontaneous vaginal delivery at 39w5d. Recovering well. Bleeding stopped. Mood good, sleeping in stretches. Pelvic exam normal, uterus involuted. BP normal.\nContinue prenatal vitamin while recovering. Return to us as needed; routine primary care with her PCP.\n\n--- Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T09:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Prenatal vitamin refill",
+              "author": "MA",
+              "date": "2026-01-20T09:30",
+              "body": "Pharmacy refill request, prenatal vitamin with iron daily #90. Last seen 9/5/25. Approved x1 per protocol; note to pt that she is due for a visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T20:14",
+          "reason": "pregnant again",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "News",
+              "author": "patient",
+              "date": "2026-03-09T20:14",
+              "body": "Hi, wanted to let you know I'm pregnant again! Earlier than we planned, but we're happy. LMP was February 2. I already saw my OB group and the early ultrasound looked good. So far no vomiting at all, fingers crossed. Still taking the prenatal vitamin. I know I owe you a visit, the baby has made it hard to get anywhere. Anything I should be doing?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: News",
+              "author": "PCP",
+              "date": "2026-03-10T07:40",
+              "body": "Congratulations, Leah. That puts you around 5 weeks, due early November. Keep the prenatal vitamin. Since you had hyperemesis last time, don't be a hero if it starts again: tell your OB early, the medicines work better before you're dehydrated. Come see me when life allows; no rush on our end."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-12a",
+          "kind": "ed_visit",
+          "start": "2026-04-12T02:15",
+          "end": "2026-04-12T09:20",
+          "service": "Emergency Medicine",
+          "reason": "right flank pain",
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 88
+          },
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2026",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "right ureteral stone in pregnancy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-04-12T02:40",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Moderate"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 26
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-12T02:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-12T02:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-12T02:40",
+              "resulted": "2026-04-14T08:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth at 48 hours"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2026-04-12T04:30",
+              "text": "Indication: right flank pain, pregnant, 9 weeks. Right kidney 11.2 cm, normal cortical thickness and echogenicity. Mild right hydronephrosis. A 5 mm echogenic shadowing stone at the right ureterovesical junction with twinkle artifact. Right ureteral jet not seen during the exam; left jet present. Left kidney 11.0 cm, normal, no hydronephrosis or stone. Bladder normal. Limited view of the uterus shows an intrauterine pregnancy with fetal cardiac activity.",
+              "conclusion": "5 mm right ureterovesical junction stone with mild right hydronephrosis. Normal left kidney. Intrauterine pregnancy with cardiac activity."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-04-12T02:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2026-04-12T09:20",
+              "body": "COMMUNITY EMERGENCY DEPARTMENT\n\nCC: right flank pain.\n\n27 y/o G2P1 at 9w6d (LMP 2/2/26). Sudden severe right flank pain starting around 8 PM, now 6 hours, moving down into the right groin. Nauseated, has not vomited. No fever, no burning, no frequency. Prenatal course so far has been uncomplicated, no hyperemesis this time. Last here a year ago with hyperemesis in her first pregnancy.\n\nPMH: hyperemesis gravidarum (prior pregnancy). PSH: tonsillectomy, wisdom teeth. Meds: prenatal vitamin. NKDA.\nFamily: maternal uncle with recurrent calcium oxalate stones; mother hyperemesis; paternal grandmother DM2.\nNever smoker, no alcohol (pregnant), teacher.\n\nVitals: afebrile, BP 125/78, HR 88.\nExam: uncomfortable, shifting on the stretcher. Right CVA tenderness. Abdomen soft, no peritoneal signs. No vaginal bleeding.\n\nUA: microscopic hematuria, nitrite and LE negative, rare WBC; no sign of infection. Culture sent.\nCBC, BMP unremarkable, Cr 0.6.\nRenal US (no CT in pregnancy): 5 mm right UVJ stone, mild right hydronephrosis, left kidney normal. Bedside view: IUP with cardiac activity.\n\nTreatment: acetaminophen 1 g PO, 1 L LR. Pain from 9/10 to 3/10.\n\nImpression: right ureterolithiasis, 5 mm distal stone, uncomplicated, in a 10-week pregnancy.\nPlan: home. Acetaminophen 500 mg, 2 tabs every 6 hours as needed. Oxycodone-acetaminophen 5/325, 1 tab every 6 h if pain is not controlled, #8, no refills. Strain urine, save the stone. Push fluids. Outpatient urology referral placed. OB notified. Return for fever, uncontrolled pain or vomiting, or bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "outside_records",
+          "start": "2026-04-13T08:55",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record 4/12/2026",
+              "author": "RN",
+              "date": "2026-04-13T08:55",
+              "body": "ED note from 4/12 received: right 5 mm UVJ stone at ~10 weeks pregnant, sent home with acetaminophen and a few oxycodone tabs, urology referral from the ED. Scanned, routed to PCP. Pt not seen here since 9/2025."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "author": "RN",
+              "date": "2026-04-13T09:05",
+              "body": "Hi Leah, we got your ER record from the weekend. How is the pain today? Let us know if you need help getting in with urology or if anything gets worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Checking in",
+              "author": "patient",
+              "date": "2026-04-13T12:22",
+              "body": "Thank you. Comes and goes, mostly a dull ache now. Urology called me already, I see them May 6."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T06:40",
+          "reason": "passed kidney stone",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stone",
+              "author": "patient",
+              "date": "2026-04-21T06:40",
+              "body": "Good news, I think I passed it last night! Caught it in the strainer. No pain at all this morning. Should I still go to urology?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stone",
+              "author": "PCP",
+              "date": "2026-04-21T11:50",
+              "body": "Great news. Yes, keep the urology visit and bring the stone with you. They'll want a quick ultrasound to make sure the kidney has drained, and they can talk about prevention given your uncle's history."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "specialist_visit",
+          "start": "2026-05-06T10:30",
+          "service": "Urology",
+          "reason": "right ureteral stone, passed",
+          "orders": [
+            {
+              "id": "uro-referral-2026",
+              "action": "done",
+              "date": "2026-05-06T10:30"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2026-05-06T10:00",
+              "text": "Comparison 4/12/2026. Right kidney 11.1 cm and left kidney 11.0 cm with normal cortical thickness and echogenicity. No hydronephrosis on either side. No renal or ureterovesical junction stones seen. Bilateral ureteral jets present. Bladder normal.",
+              "conclusion": "Normal kidneys. Interval resolution of right hydronephrosis; no stones."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Consultation",
+              "author": "urology",
+              "date": "2026-05-06T11:15",
+              "body": "OUTSIDE UROLOGY GROUP\nConsultation, 5/6/2026\nReferred from: emergency department. Copy to PCP.\n\n27 y/o currently about 13 weeks pregnant, seen in the ED 4/12 with a 5 mm right UVJ stone and mild hydronephrosis. Passed the stone 4/20 into a strainer and has been pain-free since. No fever, no urinary symptoms. First stone. Maternal uncle with recurrent calcium oxalate stones.\nMeds: prenatal vitamin. Allergies: NKDA.\n\nExam: well, no CVA tenderness.\nRenal ultrasound today: no hydronephrosis, no residual stones.\n\nAssessment: right distal ureteral stone, passed spontaneously; obstruction resolved.\nPlan:\n- Fluids 2.5 to 3 liters a day, enough that urine stays pale.\n- No routine imaging in pregnancy unless symptoms return.\n- With a family history of recurrent stones, a metabolic evaluation (24-hour urine) is reasonable once she is done with pregnancy and nursing; she can call us then.\n- Follow up as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-08a",
+          "kind": "outside_records",
+          "start": "2026-05-08T14:00",
+          "reason": "urology consult letter received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology letter received",
+              "author": "MA",
+              "date": "2026-05-08T14:00",
+              "body": "Urology consult 5/6/2026 received and scanned: stone passed, ultrasound clear, 24-hr urine after pregnancy. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "outside_records",
+          "start": "2026-06-26T10:25",
+          "reason": "obstetrics visit letter",
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, anatomy survey",
+              "loinc": "11525-3",
+              "performed": "2026-06-23T08:50",
+              "text": "Single live intrauterine gestation, cephalic at time of scan. Biometry consistent with 20 weeks 1 day, concordant with dating. Complete anatomy survey normal including brain, face, spine, heart with four chambers and outflow tracts, abdomen, kidneys, bladder and limbs. Anterior placenta, clear of the os. Normal amniotic fluid. Cervical length normal.",
+              "conclusion": "Normal second-trimester anatomy survey."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics 20-week visit",
+              "author": "obstetrics",
+              "date": "2026-06-26T10:25",
+              "body": "OUTSIDE OBSTETRIC GROUP\nProgress note 6/23/2026, G2P1 at 20w1d.\n\nDoing well. No nausea or vomiting this pregnancy. No flank pain since passing the stone in April. BP normal. Fetal heart tones normal. Anatomy scan normal today.\nContinue prenatal vitamin and good fluid intake. RTC 4 weeks.\n\n--- Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:10",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Prenatal vitamin refill",
+              "author": "MA",
+              "date": "2026-07-14T09:10",
+              "body": "eRx request prenatal vitamin with iron #90. Not seen since 9/2025; PCP okayed a 90-day fill given pregnancy. Portal note sent asking her to schedule when she can."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

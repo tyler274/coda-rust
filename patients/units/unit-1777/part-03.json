@@ -1,0 +1,629 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001777",
+      "events": [
+        {
+          "id": "2023-01-09a",
+          "kind": "office_visit",
+          "start": "2023-01-09T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, low blood count",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2022-09-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "state": {
+            "weight_kg": 49.5,
+            "labs": {
+              "Hemoglobin": 9.1,
+              "Mean Corpuscular Volume": 71,
+              "Red Cell Distribution Width": 17.5
+            }
+          },
+          "vitals": {
+            "hr": 104
+          },
+          "measure": [
+            "bp",
+            "temp_c",
+            "spo2",
+            "rr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-09T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 17.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-09T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-01-09T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-01-09T16:40",
+              "body": "S: 28F, T1DM, celiac by serology in November (EGD pending). Here about the low blood count GI found, and she is wiped out. Three months of getting steadily more tired, can't keep up on the playground the way she used to, gets lightheaded a lot, standing up or after recess, and is having a hard time focusing in the classroom by afternoon. Periods have been heavy since she was a teenager, nothing new there; still takes OTC ibuprofen for cramps. Admits she hasn't had a real check-up since early 2020. Eating has been whatever is fast: toast, tea, a can of soup most nights. Still eating gluten per GI. No black or bloody stools, no chest pain.\n\nMeds: glargine 24 u qhs, lispro per scale, ibuprofen 400 prn. NKDA.\n\nO: HR 104, rest of vitals as charted. Thin. Conjunctivae pale. Heart regular, a soft systolic flow murmur at the left sternal border, no gallop. Lungs clear. Abdomen soft, nontender. DRE with chaperone: brown stool, guaiac negative. Skin: elbow rash fading.\nCBC in office: Hgb 9.1, Hct 28, MCV 71, RDW elevated.\nGI iron studies 11/11 reviewed: iron 30, TIBC 450, ferritin 15.\n\nA/P\n1. Iron deficiency anemia, microcytic, symptomatic but stable. Causes: heavy menses plus celiac malabsorption, poor intake. Stool guaiac negative, no GI bleeding symptoms. Start ferrous sulfate 325 daily, with orange juice, away from tea and coffee. Mild resting tachycardia and flow murmur fit the anemia; ER precautions for chest pain, fainting.\n2. Heavy menstrual bleeding - longstanding, contributing. Ibuprofen ok for now.\n3. Celiac disease - EGD to be scheduled by GI.\n4. Overdue for physical and Pap: booking March, will recheck CBC then."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-11a",
+          "kind": "portal_message",
+          "start": "2023-01-11T18:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron pills",
+              "author": "patient",
+              "date": "2023-01-11T18:25",
+              "body": "Picked up the iron. Is it better at night or morning? I take my long-acting insulin at bedtime if that matters."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron pills",
+              "author": "RN",
+              "date": "2023-01-12T08:10",
+              "body": "Doesn't interact with your insulin. Morning on an empty stomach absorbs best, with some juice or vitamin C, but if it upsets your stomach it's fine with breakfast. Keep it two hours away from tea or coffee. It will turn your stool dark, that's expected."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "pharmacy",
+          "start": "2023-02-14T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2023-02-14T10:00",
+              "body": "Electronic request from pharmacy: ferrous sulfate 325 mg #30. Approved per PCP with 5 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "annual_physical",
+          "start": "2023-03-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical and Pap",
+          "state": {
+            "weight_kg": 49.8,
+            "labs": {
+              "Hemoglobin": 9.6,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 17.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-21T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-21T16:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-21T16:25",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-03-21T16:05",
+              "issued": "2023-03-24T10:00",
+              "text": "Specimen: ThinPrep cervical sample. Adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-03-21T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-21T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-03-21T16:35",
+              "body": "Physical, 29F.\n\nOn iron 10 weeks, taking it most days. A bit less lightheaded, still tired by the end of the week. Stools still loose a few times a day; EGD not booked yet, she wants to do it over the summer so she doesn't miss class. Periods unchanged. Endo following sugars, says they're harder since fall.\nMeds: glargine, lispro, ferrous sulfate, ibuprofen prn. NKDA. Never smoker, rare alcohol.\nPHQ-9 2.\n\nExam: thin, mild pallor. Thyroid normal. Heart RRR, soft flow murmur still present. Lungs clear. Abdomen soft, nontender. Breasts deferred per pt preference, no concerns. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin: elbows clear now.\n\nA/P\n1. IDA on oral iron, recheck CBC today.\n2. Celiac - encouraged her to get the EGD on the calendar now for July so that the diet can start.\n3. Heavy menses - unchanged.\n4. HM: Pap today. Lipids, BMP. Flu/COVID in fall. HIV/HCV done 2019.\nRTC after EGD or sooner."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-03-23T12:30",
+              "body": "Hgb 9.6, up a little from 9.1 in January but slow, as expected with ongoing malabsorption. Continue iron. Cholesterol and kidney function normal. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-24a",
+          "kind": "portal_message",
+          "start": "2023-03-24T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2023-03-24T13:15",
+              "body": "Your Pap smear is normal. Next one in 3 years. Your blood count went up a bit to 9.6, so the iron is helping, just slowly; it should pick up once the celiac is treated."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "portal_message",
+          "start": "2023-05-09T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endoscopy scheduled",
+              "author": "patient",
+              "date": "2023-05-09T19:50",
+              "body": "FYI GI got me in for the endoscopy and a visit on July 7, first week of summer break. My partner will drive me. Can I finally stop eating bread after that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endoscopy scheduled",
+              "author": "PCP",
+              "date": "2023-05-10T07:35",
+              "body": "Great, thank you for letting me know. Yes, once the biopsies are taken GI will start you on a gluten-free diet, and we'll get you set up with a dietitian. Hang in there until then."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "outside_records",
+          "start": "2023-06-13T11:20",
+          "reason": "Endocrinology letter",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-06T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "author": "endocrinology",
+              "date": "2023-06-13T11:20",
+              "body": "Outside endocrinology group, seen 06/06/2023.\nType 1 diabetes; celiac disease awaiting endoscopy in July; iron deficiency anemia on oral iron. A1c 7.3%; note the A1c may read differently while she is anemic, so we are relying on the meter download, which shows reasonable control with some post-meal variability. Glargine 24 units, lispro by scale.\nMedications: insulin glargine, insulin lispro, ferrous sulfate 325 mg daily, ibuprofen as needed. NKDA.\nUrine microalbumin normal, lipids normal.\nPlan: once gluten-free, expect absorption and insulin needs to shift; call us with patterns. Return 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-10a",
+          "kind": "outside_records",
+          "start": "2023-07-10T09:15",
+          "reason": "Gastroenterology visit and endoscopy",
+          "state": {
+            "weight_kg": 48.3,
+            "labs": {
+              "Hemoglobin": 10.8,
+              "Mean Corpuscular Volume": 74,
+              "Ferritin": 8,
+              "Iron": 28,
+              "Total Iron-Binding Capacity": 520
+            }
+          },
+          "vitals": [
+            {
+              "time": "2023-07-07T08:00",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 78,
+              "rr": 14,
+              "temp_c": 37.2,
+              "weight_kg": 48.3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-07T08:30",
+              "resulted": "2023-07-09T15:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing E. coli isolated"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova or parasites seen"
+                },
+                {
+                  "test": "Leukocytes [Presence] in Stool by Light microscopy",
+                  "loinc": "13655-6",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2023-07-07T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "author": "gastroenterology",
+              "date": "2023-07-10T09:15",
+              "body": "OUTSIDE GASTROENTEROLOGY ASSOCIATES\nFollow-up visit 07/07/2023, with upper endoscopy the same morning.\n\n29-year-old with type 1 diabetes, celiac disease on serology since November 2022 and iron deficiency anemia found in January 2023, back for persistent GI symptoms and the planned endoscopy. Symptoms have been going on for roughly a year and clearly worse since early spring. Four to six loose bowel movements a day, bulky and foul-smelling, often a couple of hours after eating. Bloating with pasta, bread, pastries and some breakfast cereals. Fatigue and trouble concentrating. No fevers, no night sweats, no recent travel. Cycles regular, though flow has been heavier for several months. On and off mouth sores this past year that she put down to stress. Occasional vague aching in her bones. Nails more brittle. She has kept her diet unchanged as we asked, though she sometimes skips meals because of the bloating. Probiotics and a fiber supplement did not help.\n\nROS: no rash currently; on questioning remembers an itchy rash on the elbows last year that went away on its own. No joint swelling, back pain or visual change. No urinary symptoms or leg swelling.\n\nMedications: insulin glargine 24 units at bedtime, insulin lispro with meals, ferrous sulfate 325 mg daily, ibuprofen 400 mg as needed. NKDA.\nFamily history: father type 1 diabetes; mother autoimmune thyroiditis; maternal aunt celiac. No inflammatory bowel disease or colon cancer in the family.\nSocial: preschool teacher, lives with her partner. No sick contacts, no hospital stays, no antibiotics in the past year. No pets. City water. Does not smoke; no alcohol or drugs.\n\nVitals: T 37.2 C, BP 108/66, P 78, RR 14. BMI 18.4.\nExam: alert, cooperative, thin. Mouth: one shallow, sharply bordered ulcer on the left buccal mucosa. Abdomen mildly distended, hyperactive bowel sounds, mild diffuse tenderness most in the upper abdomen; no organomegaly, no masses. No edema. Neuro nonfocal.\n\nLabs 07/07: Hgb 10.8, MCV 74, ferritin 8. Liver enzymes normal. TSH normal. Stool culture and ova/parasite exam negative. Fecal leukocytes positive.\n\nProcedure: EGD today, report attached. Scalloping of the duodenal folds; biopsies taken.\n\nImpression: celiac disease, clinically and endoscopically active, with iron deficiency from malabsorption. Final plan after pathology."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "author": "gastroenterology",
+              "date": "2023-07-10T09:15",
+              "body": "Procedure: esophagogastroduodenoscopy with biopsies, 07/07/2023.\nIndication: positive tissue transglutaminase IgA, diarrhea, iron deficiency anemia.\nSedation: monitored anesthesia care. ASA II.\nFindings: Esophagus normal. Stomach normal; no ulcers. Duodenum: scalloped appearance of the mucosal folds in the bulb and second portion. Four biopsies from the second portion and two from the bulb.\nComplications: none. Estimated blood loss minimal.\nImpression: duodenal scalloping, consistent with celiac disease. Await pathology."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-14a",
+          "kind": "outside_records",
+          "start": "2023-07-14T14:30",
+          "reason": "Pathology and gastroenterology letter",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-07-07T10:40",
+              "issued": "2023-07-12T16:00",
+              "text": "Specimen A: duodenum, second portion, biopsies (4). Specimen B: duodenal bulb, biopsies (2).\nMicroscopic: small bowel mucosa with villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes. No granulomas, no dysplasia, no organisms identified.",
+              "conclusion": "Duodenal biopsies with villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes, consistent with celiac disease in the appropriate serologic context."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology Letter After Biopsy",
+              "author": "gastroenterology",
+              "date": "2023-07-14T14:30",
+              "body": "Outside gastroenterology.\nBiopsies from 07/07 confirm celiac disease. Discussed with Ms. Cote by phone 07/13. Starting a strict lifelong gluten-free diet now. We strongly recommend a visit with a dietitian experienced in celiac disease; please place the referral if your system requires it. Continue iron. We will repeat tTG in about a year to gauge adherence. Follow-up in GI as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "telehealth_visit",
+          "start": "2023-07-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Celiac follow-up",
+          "orders": [
+            {
+              "id": "nutrition-referral",
+              "action": "placed",
+              "order": "Nutrition referral",
+              "category": "referral",
+              "to": "Nutrition",
+              "reason": "new celiac disease, gluten-free diet teaching"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-07-25T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2023-07-25T10:55",
+              "body": "Video visit from home.\nBiopsy-confirmed celiac now. Gluten-free 10 days. Already less bloating, stools down to twice a day. Overwhelmed by labels and worried about the classroom (playdough, snacks, art supplies). Sugars running lower after meals, endo aware and adjusting lispro.\nMeds unchanged. NKDA.\n\nA/P: Celiac disease, new diet started. Nutrition referral placed for celiac teaching. Discussed cross-contact at home and work in broad strokes; dietitian will go deeper. Continue ferrous sulfate; expect better absorption over months. CBC at a visit in the fall. Flu/COVID in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "outside_records",
+          "start": "2023-08-22T15:00",
+          "reason": "Dietitian letter",
+          "orders": [
+            {
+              "id": "nutrition-referral",
+              "action": "done",
+              "date": "2023-08-22T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Nutrition Consultation",
+              "author": "nutrition",
+              "date": "2023-08-22T15:00",
+              "body": "Registered dietitian consult, 08/17/2023.\nReason: newly diagnosed celiac disease. Reviewed hidden gluten sources (soups, sauces, oats not labeled gluten-free, shared toasters), label reading and certified gluten-free products, dining out. Discussed her work exposures: gluten-containing playdough and craft flour; suggested gloves and handwashing before eating. Carbohydrate counting for gluten-free substitutes reviewed with her insulin dosing. Iron-rich gluten-free foods and vitamin C pairing reviewed. She prefers not to eat much red meat; discussed poultry, beans, eggs and fortified gluten-free cereal.\nFollow-up as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:00",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T16:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2023-10-10T16:15",
+              "body": "Flu L deltoid, updated COVID R deltoid. No issues. She mentioned still being tired, scheduled her with PCP in November."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, anemia follow-up",
+          "state": {
+            "weight_kg": 50.5,
+            "labs": {
+              "Hemoglobin": 9.7,
+              "Ferritin": 9,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 18,
+              "Iron": 32,
+              "Total Iron-Binding Capacity": 510
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-14T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-11-14T16:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "iron deficiency anemia not responding to oral iron, celiac disease"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-14T15:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-14T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-11-14T16:45",
+              "body": "29F, celiac (gluten-free since July), T1DM, IDA on ferrous sulfate since January.\n\nGI side much better: one or two formed stools a day, bloating mostly gone, up about 2 kg. But still exhausted, short of breath on the stairs at school, dizzy when she stands quickly. Taking the iron daily, no GI side effects. Periods still heavy.\n\nExam: pale, conjunctival pallor. RRR, flow murmur. Lungs clear. Abdomen soft.\n\nLabs today: Hgb 9.7, ferritin 9. Essentially no response after 10 months of oral iron.\n\nA/P\n1. IDA refractory to oral iron - malabsorption from celiac plus ongoing menstrual loss. Referring to hematology for IV iron. Continue oral iron in the meantime.\n2. Celiac - improving on diet.\n3. Heavy menses - ongoing.\nHematology referral sent; she prefers a late afternoon or a vacation-week appointment."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "outside_records",
+          "start": "2023-12-04T10:40",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2023-12-04T10:40",
+              "body": "Optometry, exam 11/28/2023. Dilated fundus exam OU: no diabetic retinopathy, maculae normal. VA 20/20 OU with glasses. Next exam 1 year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
