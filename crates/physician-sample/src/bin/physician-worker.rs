@@ -3,7 +3,11 @@
 //! Postgres owns the turn. Pub/Sub only wakes this process. The push body
 //! carries a scope and an input id, never clinical text, and logs stay that way.
 //! A duplicate or settled delivery is acknowledged without calling the model.
+//! The worker loads the packaged skill catalog once at startup and offers
+//! chat turns the read-only `skill_view` tool (book: `physician-site.md`,
+//! "Skills in hosted chat").
 
+use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
@@ -15,6 +19,7 @@ use axum::http::StatusCode;
 use axum::routing::{get, post};
 use base64::Engine;
 use harness::engine::{Cancellation, Item, Limits, Provider, Request as ModelRequest, Turn};
+use local_product::physician_chat::{self, PhysicianSkills};
 use local_product::runtime::async_trait;
 use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
@@ -152,7 +157,8 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         authority: RuntimeAuthority {
             store: worker.store.clone(),
         },
-        instructions: local_product::codex::PHYSICIAN_CHAT_INSTRUCTIONS.to_owned(),
+        instructions: worker.instructions.to_string(),
+        skills: Some(worker.skills.clone()),
     };
     let cancel = Cancellation::default();
     // One provider per turn: concurrent pushes on this instance run side by
@@ -301,6 +307,25 @@ struct Worker {
     system: &'static str,
     model_name: String,
     adapter: &'static str,
+    /// The packaged catalog, loaded once at startup and shared by every turn.
+    skills: PhysicianSkills,
+    /// Versioned hosted instructions followed by that catalog's metadata.
+    instructions: Arc<str>,
+}
+
+/// The packaged skill catalog. Hosted startup requires `PHYSICIAN_SKILLS_DIR`
+/// (the image sets it); a local worker defaults to this workspace's
+/// `skills/`. A missing or invalid catalog stops startup: hosted chat never
+/// runs with an empty one.
+fn skills_dir(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<PathBuf, String> {
+    match configured(get, "PHYSICIAN_SKILLS_DIR") {
+        Some(dir) => Ok(PathBuf::from(dir)),
+        None if hosted => Err("hosted physician worker requires PHYSICIAN_SKILLS_DIR".into()),
+        None => Ok(PathBuf::from(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../skills"
+        ))),
+    }
 }
 
 impl Worker {
@@ -361,12 +386,31 @@ impl Worker {
                 "PHYSICIAN_WORKER_FIXED_FAIL_MARKER requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
             );
         }
+        // Non-hosted proof only: tool rounds the fixed provider requests
+        // before its text, so a test can drive skill reads through the real
+        // host and worker.
+        let rounds = configured(&get, "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS");
+        if hosted && rounds.is_some() {
+            return Err("PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS is refused in hosted execution".into());
+        }
+        if rounds.is_some() && fixed.is_none() {
+            return Err(
+                "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
+            );
+        }
+        let rounds = Arc::new(match rounds {
+            Some(script) => tool_rounds(&script)?,
+            None => Vec::new(),
+        });
         let execution = local_product::model_execution(
             configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
         )?;
         if hosted && execution != local_product::ModelExecution::Api {
             return Err("hosted physician worker requires CODA_LOCAL_MODEL_EXECUTION=api".into());
         }
+        // Before any connection: a worker without its catalog never serves.
+        let skills = PhysicianSkills::load(&skills_dir(&get, hosted)?)?;
+        let instructions: Arc<str> = skills.instructions(physician_chat::INSTRUCTIONS).into();
         let (model, system, model_name, adapter) = if let Some(text) = fixed {
             if failure_count > 0 {
                 tracing::info!(
@@ -386,6 +430,7 @@ impl Worker {
                     revision_failures: failure_count,
                     delay,
                     marker,
+                    rounds,
                 },
                 "fixed",
                 "fixed".to_owned(),
@@ -441,6 +486,8 @@ impl Worker {
             system,
             model_name,
             adapter,
+            skills,
+            instructions,
         })
     }
 }
@@ -508,17 +555,20 @@ fn identity_verifier(
 /// Bounds for one hosted chat attempt. The context bound matches the site's
 /// in-process chat (`harness::execution::Limits::default`), so a conversation
 /// that runs on the site also runs here. The reply bounds match Duet's chat.
-/// One model call and no tools: hosted chat has no mutation tools yet.
-/// `elapsed` stays inside the 540 s lease and the 600 s push deadline.
+/// The only tool is `skill_view`: up to eight model calls leave room for a
+/// skill, its supporting resources and an answer. A single result may be as
+/// large as the loader's largest budget (65536 bytes); four such results fill
+/// the attempt's allowance. `elapsed` stays inside the 540 s lease and the
+/// 600 s push deadline.
 fn limits() -> Limits {
     Limits {
-        model_calls: 1,
-        tool_calls: 0,
-        calls_per_turn: 1,
+        model_calls: 8,
+        tool_calls: 16,
+        calls_per_turn: 8,
         request_bytes: 1_048_576,
         response_bytes: 131_072,
-        tool_result_bytes: 4096,
-        total_tool_result_bytes: 4096,
+        tool_result_bytes: physician_chat::MAX_RESULT_BYTES as usize,
+        total_tool_result_bytes: 4 * physician_chat::MAX_RESULT_BYTES as usize,
         output_tokens: 8192,
         elapsed: Duration::from_secs(480),
     }
@@ -578,7 +628,47 @@ enum ModelSource {
         revision_failures: u32,
         delay: Duration,
         marker: bool,
+        rounds: Arc<Vec<ToolRound>>,
     },
+}
+
+/// One scripted provider turn: `(tool name, raw JSON arguments)` per call.
+type ToolRound = Vec<(String, String)>;
+
+/// Parses `PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS`: a JSON array of rounds, each
+/// an array of `{"name": ..., "arguments": ...}`. Object arguments are sent
+/// as their JSON; a string is sent as written, so a test can send bytes
+/// that are not JSON.
+fn tool_rounds(script: &str) -> Result<Vec<ToolRound>, String> {
+    let invalid = || "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS must be a JSON array of call arrays";
+    let rounds: Vec<Vec<Value>> = serde_json::from_str(script).map_err(|_| invalid())?;
+    rounds
+        .into_iter()
+        .map(|round| {
+            round
+                .into_iter()
+                .map(|call| {
+                    let name = call
+                        .get("name")
+                        .and_then(Value::as_str)
+                        .ok_or_else(invalid)?;
+                    let arguments = match call.get("arguments") {
+                        Some(Value::String(raw)) => raw.clone(),
+                        Some(value @ Value::Object(_)) => value.to_string(),
+                        _ => return Err(invalid().to_owned()),
+                    };
+                    Ok((name.to_owned(), arguments))
+                })
+                .collect::<Result<ToolRound, String>>()
+                .and_then(|round| {
+                    if round.is_empty() {
+                        Err(invalid().to_owned())
+                    } else {
+                        Ok(round)
+                    }
+                })
+        })
+        .collect()
 }
 
 impl ModelSource {
@@ -596,12 +686,14 @@ impl ModelSource {
                 failures_remaining,
                 delay,
                 marker,
+                rounds,
                 ..
             } => Ok(Model::Fixed {
                 text: text.clone(),
                 failures_remaining: failures_remaining.clone(),
                 delay: *delay,
                 marked_failure: *marker && marked_attempt_fails(earlier_attempts, input),
+                rounds: rounds.clone(),
             }),
         }
     }
@@ -644,7 +736,54 @@ enum Model {
         failures_remaining: Arc<std::sync::atomic::AtomicU32>,
         delay: Duration,
         marked_failure: bool,
+        rounds: Arc<Vec<ToolRound>>,
     },
+}
+
+/// The scripted turn for request `ordinal`: narration plus that round's
+/// calls. Every call of the earlier rounds must already have its result in
+/// this request, or the fixed provider fails the attempt.
+fn scripted_round(
+    rounds: &[ToolRound],
+    request: &ModelRequest<'_>,
+) -> Result<Option<Turn>, String> {
+    let ordinal = request.ordinal as usize;
+    let answered = |id: &str| {
+        request
+            .context
+            .items
+            .iter()
+            .any(|item| matches!(item, Item::Result { call_id, .. } if call_id == id))
+    };
+    for (round, calls) in rounds.iter().enumerate().take(ordinal - 1) {
+        for index in 0..calls.len() {
+            if !answered(&fixed_call_id(round + 1, index)) {
+                return Err("fixed tool result missing from the next request".into());
+            }
+        }
+    }
+    let Some(calls) = rounds.get(ordinal - 1) else {
+        return Ok(None);
+    };
+    let mut items = vec![Item::Message {
+        role: "assistant".into(),
+        text: format!("Fixed narration before tool round {ordinal}. "),
+    }];
+    items.extend(calls.iter().enumerate().map(|(index, (name, arguments))| {
+        Item::Call(harness::engine::Invocation {
+            id: fixed_call_id(ordinal, index),
+            name: name.clone(),
+            arguments: arguments.clone(),
+        })
+    }));
+    Ok(Some(Turn {
+        items,
+        receipt: json!({ "provider": "fixed", "round": ordinal }),
+    }))
+}
+
+fn fixed_call_id(round: usize, index: usize) -> String {
+    format!("fixed-{round}-{index}")
 }
 
 #[async_trait]
@@ -671,13 +810,16 @@ impl Provider for Model {
             Self::Fixed {
                 failures_remaining, ..
             } if take_one(failures_remaining) => Err("fixed physician reply failed".into()),
-            Self::Fixed { text, .. } => Ok(Turn {
-                items: vec![Item::Message {
-                    role: "assistant".into(),
-                    text: text.clone(),
-                }],
-                receipt: json!({ "provider": "fixed" }),
-            }),
+            Self::Fixed { text, rounds, .. } => match scripted_round(rounds, &request)? {
+                Some(turn) => Ok(turn),
+                None => Ok(Turn {
+                    items: vec![Item::Message {
+                        role: "assistant".into(),
+                        text: text.clone(),
+                    }],
+                    receipt: json!({ "provider": "fixed" }),
+                }),
+            },
         }
     }
 }
@@ -880,6 +1022,88 @@ mod tests {
         match block(Worker::from_env(marker_without_text)) {
             Err(error) => assert!(error.contains("requires PHYSICIAN_WORKER_FIXED_TEXT")),
             Ok(_) => panic!("a fail marker without fixed text must refuse to start"),
+        }
+    }
+
+    #[test]
+    fn startup_requires_a_complete_skill_catalog() {
+        // Hosted startup names the variable rather than using the source tree.
+        let hosted = |name: &str| match name {
+            "K_SERVICE" => Some("physician-worker".into()),
+            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
+            _ => None,
+        };
+        match block(Worker::from_env(hosted)) {
+            Err(error) => assert_eq!(
+                error,
+                "hosted physician worker requires PHYSICIAN_SKILLS_DIR"
+            ),
+            Ok(_) => panic!("a hosted worker without its catalog must refuse to start"),
+        }
+        // A configured directory without a catalog stops startup before any
+        // connection; there is no empty fallback.
+        let missing = std::env::temp_dir().join(format!(
+            "physician-worker-missing-skills-{}",
+            std::process::id()
+        ));
+        let missing_text = missing.display().to_string();
+        let local_missing = |name: &str| match name {
+            "PHYSICIAN_WORKER_FIXED_TEXT" => Some("Noted.".into()),
+            "PHYSICIAN_SKILLS_DIR" => Some(missing_text.clone()),
+            _ => None,
+        };
+        match block(Worker::from_env(local_missing)) {
+            Err(error) => {
+                assert!(error.starts_with("physician skill catalog at"), "{error}");
+                assert!(error.contains(&missing_text), "{error}");
+            }
+            Ok(_) => panic!("a missing catalog must refuse to start"),
+        }
+        // The workspace catalog loads and reaches the push-verification check.
+        let local = |name: &str| (name == "PHYSICIAN_WORKER_FIXED_TEXT").then(|| "Noted.".into());
+        match block(Worker::from_env(local)) {
+            Err(error) => assert!(error.contains("PUBSUB_EMULATOR_HOST"), "{error}"),
+            Ok(_) => panic!("a worker without push verification must refuse to start"),
+        }
+    }
+
+    #[test]
+    fn scripted_tool_rounds_are_proof_only_and_parse_strictly() {
+        let hosted = |name: &str| match name {
+            "K_SERVICE" => Some("physician-worker".into()),
+            "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS" => Some("[]".into()),
+            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
+            _ => None,
+        };
+        match block(Worker::from_env(hosted)) {
+            Err(error) => assert_eq!(
+                error,
+                "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS is refused in hosted execution"
+            ),
+            Ok(_) => panic!("hosted scripted rounds must refuse to start"),
+        }
+        let without_text =
+            |name: &str| (name == "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS").then(|| "[]".into());
+        match block(Worker::from_env(without_text)) {
+            Err(error) => assert!(error.contains("requires PHYSICIAN_WORKER_FIXED_TEXT")),
+            Ok(_) => panic!("scripted rounds without fixed text must refuse to start"),
+        }
+        let rounds = tool_rounds(
+            r#"[[{"name":"skill_view","arguments":{"name":"a","file_path":null,"max_result_bytes":4096}},
+                 {"name":"skill_view","arguments":"not json"}],
+                [{"name":"other","arguments":{}}]]"#,
+        )
+        .unwrap();
+        assert_eq!(rounds.len(), 2);
+        assert_eq!(rounds[0][1], ("skill_view".into(), "not json".into()));
+        assert_eq!(rounds[1][0], ("other".into(), "{}".into()));
+        for bad in [
+            "{}",
+            "[[]]",
+            r#"[[{"arguments":{}}]]"#,
+            r#"[[{"name":"x"}]]"#,
+        ] {
+            assert!(tool_rounds(bad).is_err(), "{bad}");
         }
     }
 

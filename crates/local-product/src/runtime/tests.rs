@@ -1252,3 +1252,99 @@ async fn migration_dates_existing_receipts_and_keeps_their_commands() {
         .await
         .unwrap();
 }
+
+fn event(sequence: u64, kind: engine::EventKind) -> Event {
+    Event {
+        attempt_id: "attempt".into(),
+        sequence,
+        kind,
+    }
+}
+
+fn said(text: &str) -> Item {
+    Item::Message {
+        role: "assistant".into(),
+        text: text.into(),
+    }
+}
+
+fn returned(items: Vec<Item>) -> engine::EventKind {
+    engine::EventKind::ProviderReturned(engine::Turn {
+        items,
+        receipt: serde_json::json!({}),
+    })
+}
+
+fn candidate(text: &str) -> engine::EventKind {
+    engine::EventKind::Candidate { text: text.into() }
+}
+
+#[test]
+fn the_published_answer_is_only_the_terminal_turns_text_in_order() {
+    let call = Item::Call(engine::Invocation {
+        id: "c".into(),
+        name: "skill_view".into(),
+        arguments: "{}".into(),
+    });
+    let events = [
+        event(1, returned(vec![said("Narration. "), call.clone()])),
+        event(
+            2,
+            engine::EventKind::ToolReturned {
+                call_id: "c".into(),
+                output: "{}".into(),
+                executed: true,
+            },
+        ),
+        event(
+            3,
+            returned(vec![
+                said("One. "),
+                Item::Opaque(serde_json::json!({"type": "reasoning"})),
+                said("Two."),
+            ]),
+        ),
+        event(4, candidate("Narration. One. Two.")),
+    ];
+    assert_eq!(terminal_answer(&events).unwrap(), "One. Two.");
+}
+
+#[test]
+fn a_blank_or_tool_calling_or_missing_terminal_turn_never_publishes() {
+    let call = Item::Call(engine::Invocation {
+        id: "c".into(),
+        name: "skill_view".into(),
+        arguments: "{}".into(),
+    });
+    let narrated = event(1, returned(vec![said("Narration."), call.clone()]));
+    for terminal in [
+        vec![],
+        vec![said("  \n")],
+        vec![Item::Opaque(serde_json::json!({}))],
+        vec![said("Answer"), call],
+    ] {
+        let events = [
+            narrated.clone(),
+            event(2, returned(terminal)),
+            event(3, candidate("Narration.")),
+        ];
+        assert!(terminal_answer(&events).is_err());
+    }
+    // The candidate must directly follow the turn that produced it.
+    assert!(terminal_answer(&[event(1, candidate("Narration."))]).is_err());
+    assert!(
+        terminal_answer(&[
+            event(1, returned(vec![said("Answer")])),
+            event(
+                2,
+                engine::EventKind::ToolReturned {
+                    call_id: "c".into(),
+                    output: "{}".into(),
+                    executed: false,
+                },
+            ),
+            event(3, candidate("Answer")),
+        ])
+        .is_err()
+    );
+}

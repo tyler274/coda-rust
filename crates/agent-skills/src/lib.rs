@@ -229,6 +229,61 @@ pub enum SkillView {
     },
 }
 
+impl SkillView {
+    /// The model-visible JSON result. An `available` view encodes exactly the
+    /// bytes [`view_skill`] measured against `max_result_bytes`, so a returned
+    /// view always fits the budget it was read under.
+    pub fn to_json(&self) -> String {
+        match self {
+            Self::Available {
+                name,
+                file_path,
+                version_id,
+                byte_length,
+                content,
+                resources,
+            } => serde_json::to_string(&AvailableView {
+                status: "available",
+                name,
+                file_path: file_path.as_deref(),
+                version_id,
+                byte_length: *byte_length,
+                content,
+                resources: resources.as_ref().map(|items| {
+                    items
+                        .iter()
+                        .map(|item| ResourceMetadata {
+                            file_path: &item.file_path,
+                            version_id: &item.version_id,
+                            byte_length: item.byte_length,
+                        })
+                        .collect()
+                }),
+            }),
+            Self::Unavailable { name, file_path } => serde_json::to_string(&UnavailableView {
+                status: "unavailable",
+                name,
+                file_path: file_path.as_deref(),
+            }),
+            Self::OverBudget {
+                name,
+                file_path,
+                version_id,
+                byte_length,
+                required_bytes,
+            } => serde_json::to_string(&OverBudgetView {
+                status: "over_budget",
+                name,
+                file_path: file_path.as_deref(),
+                version_id,
+                byte_length: *byte_length,
+                required_bytes: *required_bytes,
+            }),
+        }
+        .expect("skill view is json")
+    }
+}
+
 /// Resource identity published with a skill body. No file content.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct OwnedResourceMetadata {
@@ -272,6 +327,23 @@ struct AvailableView<'a> {
     content: &'a str,
     #[serde(skip_serializing_if = "Option::is_none")]
     resources: Option<Vec<ResourceMetadata<'a>>>,
+}
+
+#[derive(Serialize)]
+struct UnavailableView<'a> {
+    status: &'a str,
+    name: &'a str,
+    file_path: Option<&'a str>,
+}
+
+#[derive(Serialize)]
+struct OverBudgetView<'a> {
+    status: &'a str,
+    name: &'a str,
+    file_path: Option<&'a str>,
+    version_id: &'a str,
+    byte_length: usize,
+    required_bytes: usize,
 }
 
 impl<'a> From<&'a AgentSkill> for SkillMetadata<'a> {
@@ -512,6 +584,63 @@ mod tests {
             assert_eq!(skill.byte_length, bytes.len());
             assert!(!skill.description.is_empty());
         }
+    }
+
+    #[test]
+    fn view_json_is_the_measured_result_and_names_its_outcome() {
+        let skills = load_agent_skills(&catalog_root()).unwrap();
+        let body = view_skill(&skills, "pre-visit-preparation", None, 65536).unwrap();
+        let encoded = body.to_json();
+        let SkillView::Available { content, .. } = &body else {
+            panic!("expected the body, got {body:?}");
+        };
+        let value: serde_json::Value = serde_json::from_str(&encoded).unwrap();
+        assert_eq!(value["status"], "available");
+        assert_eq!(value["file_path"], serde_json::Value::Null);
+        assert_eq!(value["content"].as_str(), Some(content.as_str()));
+        assert!(value["resources"].is_array());
+        // The exact budget admits the body; one byte less does not.
+        let exact = u32::try_from(encoded.len()).unwrap();
+        assert!(matches!(
+            view_skill(&skills, "pre-visit-preparation", None, exact).unwrap(),
+            SkillView::Available { .. }
+        ));
+        match view_skill(&skills, "pre-visit-preparation", None, exact - 1).unwrap() {
+            SkillView::OverBudget { required_bytes, .. } => {
+                assert_eq!(required_bytes, encoded.len());
+            }
+            other => panic!("expected over_budget, got {other:?}"),
+        }
+        let resource = view_skill(
+            &skills,
+            "patient-memory-maintenance",
+            Some("references/authoring-guide.md"),
+            65536,
+        )
+        .unwrap()
+        .to_json();
+        let value: serde_json::Value = serde_json::from_str(&resource).unwrap();
+        assert_eq!(value["file_path"], "references/authoring-guide.md");
+        assert!(value.get("resources").is_none());
+        let missing: serde_json::Value = serde_json::from_str(
+            &view_skill(&skills, "pre-visit-preparation", Some("../SKILL.md"), 4096)
+                .unwrap()
+                .to_json(),
+        )
+        .unwrap();
+        assert_eq!(
+            missing,
+            serde_json::json!({"status":"unavailable","name":"pre-visit-preparation","file_path":"../SKILL.md"})
+        );
+        let over: serde_json::Value = serde_json::from_str(
+            &view_skill(&skills, "pre-visit-preparation", None, 4096)
+                .unwrap()
+                .to_json(),
+        )
+        .unwrap();
+        assert_eq!(over["status"], "over_budget");
+        assert!(over.get("content").is_none());
+        assert!(over["required_bytes"].as_u64().unwrap() > 4096);
     }
 
     #[test]

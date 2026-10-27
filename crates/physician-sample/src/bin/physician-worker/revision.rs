@@ -396,6 +396,7 @@ mod tests {
             revision_failures: failures,
             delay,
             marker,
+            rounds: Arc::new(Vec::new()),
         }
     }
 

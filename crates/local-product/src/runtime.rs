@@ -1,13 +1,18 @@
 //! Physician operational truth. Every mutation locks its conversation in Postgres.
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
-//! Hosted mutation tools remain unavailable until their product effect owners
-//! are ported; reply drafts and their revisions live in [`reply`]. No
-//! process-memory persistence fallback.
+//! Hosted chat's only tool is the read-only `skill_view`
+//! ([`crate::physician_chat`]); mutation tools remain unavailable until their
+//! product effect owners are ported. A commit publishes only the attempt's
+//! final model response, never narration from earlier tool rounds. Reply
+//! drafts and their revisions live in [`reply`]. No process-memory
+//! persistence fallback.
 
 /// Async callback implementation helper for product adapters.
 pub use async_trait::async_trait;
 use engine::{Admission, Candidate, Context, Event, Host, Invocation, Item, Usage};
+
+use crate::physician_chat::PhysicianSkills;
 /// Neutral execution types, reexported for the physician composition.
 pub use harness::engine;
 /// Existing API adapter; no second physician provider transport.
@@ -611,12 +616,13 @@ impl Store {
         {
             return Err(error("candidate lacks durable evidence"));
         }
+        let answer = terminal_answer(&attempt.events)?;
         attempt.status = "completed".into();
         state.status = "completed".into();
         state.last_activity_at = now;
         state.messages.push(Message {
             role: "assistant".into(),
-            text: candidate.text.clone(),
+            text: answer,
         });
         Self::save(tx, &claim.scope, &state).await
     }
@@ -855,6 +861,35 @@ impl Store {
     }
 }
 
+/// The physician-visible answer of a completed attempt: the assistant text of
+/// the recorded provider turn that ended it, in order. The candidate spans
+/// every round, including narration written before a tool call; that stays in
+/// the attempt's events and is never published. The ending turn must be the
+/// call-free `ProviderReturned` recorded just before the candidate, and its
+/// text must not be blank. Earlier prose is never substituted.
+fn terminal_answer(events: &[Event]) -> Result<String, DbErr> {
+    let terminal = events
+        .len()
+        .checked_sub(2)
+        .and_then(|index| events.get(index))
+        .map(|event| &event.kind);
+    let Some(engine::EventKind::ProviderReturned(turn)) = terminal else {
+        return Err(error("candidate lacks a recorded terminal turn"));
+    };
+    let mut answer = String::new();
+    for item in &turn.items {
+        match item {
+            Item::Call(_) => return Err(error("terminal turn requested a tool")),
+            Item::Message { role, text } if role == "assistant" => answer.push_str(text),
+            _ => {}
+        }
+    }
+    if answer.trim().is_empty() {
+        return Err(error("terminal turn has no authored answer"));
+    }
+    Ok(answer)
+}
+
 /// Product access is checked on every dispatch and again before publication.
 #[async_trait]
 pub trait Authority: Send {
@@ -875,8 +910,10 @@ pub trait Authority: Send {
 /// Transaction borrowed by the auth owner, never a separate connection.
 pub type PublicationTransaction = sea_orm::DatabaseTransaction;
 
-/// Physician Host for the one shared execution loop. Tools stay unavailable
-/// until their real product effect/read owners can be supplied, never fake success.
+/// Physician Host for the one shared execution loop. The only tool is
+/// `skill_view`, offered when `skills` is supplied; other tools stay
+/// unavailable until their real product effect/read owners exist, never fake
+/// success.
 pub struct PhysicianHost<A> {
     /// Durable owner.
     pub store: Store,
@@ -884,8 +921,11 @@ pub struct PhysicianHost<A> {
     pub claim: Claim,
     /// Current authorization owner.
     pub authority: A,
-    /// Product-selected versioned instructions/skills.
+    /// Product-selected versioned instructions, including the skill catalog
+    /// when `skills` is set (see [`PhysicianSkills::instructions`]).
     pub instructions: String,
+    /// The process's loaded skill catalog. `None` offers no tools.
+    pub skills: Option<PhysicianSkills>,
 }
 
 #[async_trait]
@@ -913,7 +953,11 @@ impl<A: Authority> Host for PhysicianHost<A> {
         Ok(Context {
             instructions: self.instructions.clone(),
             items,
-            tools: vec![],
+            tools: self
+                .skills
+                .as_ref()
+                .map(|_| vec![PhysicianSkills::tool()])
+                .unwrap_or_default(),
         })
     }
     async fn assert_current(&mut self) -> Result<(), String> {
@@ -929,13 +973,18 @@ impl<A: Authority> Host for PhysicianHost<A> {
             .await
             .map_err(|e| e.to_string())
     }
-    async fn admit(&mut self, _: &Invocation, _: &Value) -> Result<Admission, String> {
-        Ok(Admission::Deny(
-            "This hosted tool is not yet available".into(),
-        ))
+    async fn admit(&mut self, call: &Invocation, arguments: &Value) -> Result<Admission, String> {
+        // The engine has already rechecked currentness; reads change nothing.
+        Ok(match &self.skills {
+            Some(skills) => skills.admit(call, arguments),
+            None => Admission::Deny("This hosted tool is not yet available".into()),
+        })
     }
-    async fn execute(&mut self, _: &Invocation, _: Value) -> Result<String, String> {
-        Err("No hosted tool effect owner is configured".into())
+    async fn execute(&mut self, call: &Invocation, arguments: Value) -> Result<String, String> {
+        match &self.skills {
+            Some(skills) => Ok(skills.execute(call, &arguments)),
+            None => Err("No hosted tool effect owner is configured".into()),
+        }
     }
 }
 
