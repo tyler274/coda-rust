@@ -191,6 +191,154 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
     std::fs::remove_file(path.with_extension("lock")).unwrap();
 }
 
+/// A scripted inline revision model. Each exchange sees the request and
+/// returns the next call; the first records a lab, as if it arrived while
+/// the model was working.
+struct Scripted {
+    live: Arc<live::Live>,
+    lab: local_product::physician_sources::SourceRevision,
+    seen: Vec<harness::execution::Request>,
+}
+
+impl harness::execution::Provider for Scripted {
+    async fn exchange(
+        &mut self,
+        request: &harness::execution::Request,
+        _: &harness::execution::Cancellation,
+        _: &mut (dyn FnMut(harness::execution::StreamEvent) -> Result<(), String> + Send),
+    ) -> Result<ModelResponse, String> {
+        self.seen.push(request.clone());
+        let finish = harness::execution::Call {
+            id: format!("finish-{}", self.seen.len()),
+            name: "finish_reply_revision".into(),
+            arguments: json!({"text":"revised with the new lab","review_basis":"Read lab-new."}),
+        };
+        let call = match self.seen.len() {
+            1 => {
+                assert!(self.live.record_source(self.lab.clone()).unwrap());
+                finish
+            }
+            // Finishing without reading what changed is refused too.
+            2 => finish,
+            3 => harness::execution::Call {
+                id: "read-new".into(),
+                name: "read_patient_sources".into(),
+                arguments: json!({"references":["lab-new"],"max_result_bytes":4096}),
+            },
+            _ => finish,
+        };
+        Ok(ModelResponse {
+            text: String::new(),
+            calls: vec![call],
+            usage: Usage::default(),
+            provenance: json!({"mode":"scripted"}),
+        })
+    }
+}
+
+#[tokio::test]
+async fn inline_revision_reads_a_source_that_arrives_before_it_finishes() {
+    use harness::execution::{self, Item};
+    use local_product::physician_sources::SourceRevision;
+    let workspace = WORKSPACE_IDS[0];
+    let target = "inline-arrival-target";
+    let source = |id: &str, content: &str| SourceRevision {
+        workspace: workspace.into(),
+        candidate_id: id.into(),
+        revision: "immutable-1".into(),
+        content: content.into(),
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        provenance: json!({"synthetic": true}),
+    };
+    let original = source("lab-old", "Potassium 4.1 mmol/L");
+    let lab = source("lab-new", "Potassium 5.9 mmol/L");
+    let mut session = PhysicianSession::memory();
+    session
+        .save_draft(workspace, target, 0, "physician saved wording")
+        .unwrap();
+    let live = live::Live::on(
+        live::ChatModel::Fixed("unused".into()),
+        session,
+        vec![original.clone()],
+    )
+    .unwrap();
+    let (version, pinned) = live.observed_sources(workspace);
+    assert_eq!(pinned, vec![original.clone()]);
+    let work = {
+        let mut session = live.session.lock().unwrap();
+        let request = local_product::runtime::reply::request(
+            "scripted",
+            "low",
+            "physician saved wording",
+            "make concise",
+            "UTC",
+            &pinned,
+        );
+        let work = session
+            .revise("inline-arrival", workspace, target, 1, request)
+            .unwrap();
+        session.pin_sources(&work, version, pinned).unwrap()
+    };
+    let mut provider = Scripted {
+        live: live.clone(),
+        lab: lab.clone(),
+        seen: vec![],
+    };
+    let mut owner = live::LiveOwner {
+        live: live.clone(),
+        work: work.clone(),
+        auth_ctx: None,
+    };
+    execution::run(
+        &mut provider,
+        &mut owner,
+        work.request.clone(),
+        &mut execution::Progress::default(),
+        execution::Limits::default(),
+        &execution::Cancellation::default(),
+        &mut |_| Ok(()),
+    )
+    .await
+    .unwrap();
+
+    let outcome = |request: &harness::execution::Request| match request.items.last() {
+        Some(Item::Result { value, .. }) => value["outcome"].as_str().map(str::to_owned),
+        _ => None,
+    };
+    assert_eq!(provider.seen.len(), 4);
+    assert_eq!(
+        outcome(&provider.seen[1]).as_deref(),
+        Some("sources_changed")
+    );
+    assert_eq!(
+        outcome(&provider.seen[2]).as_deref(),
+        Some("sources_unread")
+    );
+    let read = |request: &harness::execution::Request| {
+        request.items.iter().any(|item| {
+            matches!(item, Item::Result { value, .. }
+                if value["results"][0]["content"] == lab.content.as_str())
+        })
+    };
+    assert!(!read(&provider.seen[2]));
+    assert!(
+        read(&provider.seen[3]),
+        "the lab was read before the finish"
+    );
+
+    let session = live.session.lock().unwrap();
+    let (revision, text, restore) = session.draft(workspace, target).unwrap();
+    assert_eq!(revision, 2);
+    assert_eq!(text, "revised with the new lab");
+    assert_eq!(restore.as_deref(), Some("physician saved wording"));
+    let settled = session.work(&work).unwrap();
+    assert_eq!(settled.sources, vec![original.clone(), lab.clone()]);
+    assert_eq!(settled.refreshes.len(), 1);
+    assert_eq!(settled.refreshes[0].from_version, version);
+    assert_eq!(settled.refreshes[0].added, vec![lab]);
+    assert_eq!(settled.sources_version, settled.refreshes[0].to_version);
+}
+
 #[tokio::test]
 async fn inline_workspace_lists_the_chat_a_physician_started() {
     let store = Arc::new(MemoryAuthStore::new());

@@ -8,6 +8,14 @@
 //! Publication replaces the draft text and keeps the replaced text for undo.
 //! Model output never creates reply work or sends a patient message.
 //!
+//! A revision in progress is still a draft, so it takes in sources that
+//! arrive before it finishes. Acceptance pins the workspace's source
+//! observation, each new attempt re-pins it, and publication compares the
+//! attempt's pinned version with the current one under the source version's
+//! shared lock. If sources moved, the commit publishes nothing: it records a
+//! [`SourceRefresh`] on the attempt and the model must read the changes and
+//! finish again within the same call budget.
+//!
 //! Draft scopes reuse [`Scope`]: its `chat` field names the reply work.
 use harness::execution::{Item, Record, Request, Response};
 use sea_orm::{
@@ -22,7 +30,7 @@ use super::delivery::{Delivery, DeliveryKind, DeliveryState, DispatchPage};
 use super::entities::{reply_draft, reply_revision};
 use super::receipt::{self, Receipt};
 use super::{Authority, MAX_FAILED_ATTEMPTS, Scope, Store, database_clock, error, keys, now};
-use crate::physician_sources::SourceRevision;
+use crate::physician_sources::{SourceRefresh, SourceRevision, caught_up};
 
 /// The terminal tool that ends a revision with the complete revised text.
 pub const FINISH_TOOL: &str = "finish_reply_revision";
@@ -53,6 +61,16 @@ pub struct RevisionAttempt {
     pub expires: i64,
     /// Ordered dispatch, observation, exchange and failure records.
     pub records: Vec<Record>,
+    /// Source version this attempt pinned when it was claimed.
+    #[serde(default)]
+    pub sources_version: u64,
+    /// Sources this attempt pinned when it was claimed.
+    #[serde(default)]
+    pub sources: Vec<SourceRevision>,
+    /// Each time a finish found the sources moved, in order. With
+    /// `sources`, this shows exactly what the attempt could read when.
+    #[serde(default)]
+    pub refreshes: Vec<SourceRefresh>,
 }
 
 /// An earlier accepted revision, kept with its execution evidence in
@@ -64,8 +82,11 @@ pub struct EarlierRevision {
     pub input: RevisionInput,
     /// Draft text that revision started from.
     pub base_text: String,
-    /// Source observation pinned for that revision.
+    /// Source observation that revision last pinned.
     pub sources: Vec<SourceRevision>,
+    /// Source version of that observation.
+    #[serde(default)]
+    pub sources_version: u64,
     /// Its final status: completed, failed, or superseded.
     pub status: String,
     /// Its unsuccessful attempts.
@@ -89,8 +110,12 @@ pub struct Draft {
     pub input: Option<RevisionInput>,
     /// Draft text the accepted revision starts from.
     pub base_text: String,
-    /// Exact source observation pinned when the revision was accepted.
+    /// Exact source observation the revision currently pins: from
+    /// acceptance, re-pinned by each attempt and by each refresh.
     pub sources: Vec<SourceRevision>,
+    /// Workspace source version of `sources`.
+    #[serde(default)]
+    pub sources_version: u64,
     /// Attempts on the latest accepted revision only.
     pub attempts: Vec<RevisionAttempt>,
     /// Accepted session reference, never the bearer secret.
@@ -111,6 +136,7 @@ impl Draft {
             input: None,
             base_text: String::new(),
             sources: vec![],
+            sources_version: 0,
             attempts: vec![],
             session_hash: None,
             dispatch_after: 0,
@@ -148,6 +174,25 @@ pub enum RevisionAccepted {
     Refused,
 }
 
+/// Outcome of a revision's finish.
+#[derive(Debug, Clone, PartialEq)]
+pub enum RevisionCommit {
+    /// The revised text is published.
+    Committed,
+    /// Sources changed since the attempt last pinned them. Nothing was
+    /// published; the attempt recorded the refresh and now pins `sources`
+    /// at `refresh.to_version`.
+    SourcesMoved {
+        /// What changed, as recorded on the attempt.
+        refresh: SourceRefresh,
+        /// The attempt's new pinned set.
+        sources: Vec<SourceRevision>,
+    },
+    /// Sources changed earlier in this attempt and these references were not
+    /// read at their current revision yet. Nothing was published or saved.
+    SourcesUnread(Vec<String>),
+}
+
 /// A fenced revision attempt and everything the worker needs to run it.
 #[derive(Clone, Debug)]
 pub struct RevisionClaim {
@@ -159,8 +204,10 @@ pub struct RevisionClaim {
     pub input: RevisionInput,
     /// Draft text the revision starts from.
     pub base_text: String,
-    /// Pinned source observation.
+    /// This attempt's pinned source observation; a refresh replaces it.
     pub sources: Vec<SourceRevision>,
+    /// Workspace source version of `sources`.
+    pub sources_version: u64,
     /// Attempts saved on this revision before this one.
     pub earlier_attempts: u32,
 }
@@ -427,16 +474,17 @@ impl Store {
         Ok(revision)
     }
 
-    /// Saves the receipt and the revision request with its pinned sources.
-    /// The same key and command answers `Duplicate`; the same key with a
-    /// different command is an idempotency collision. A refused command
-    /// leaves no receipt, so the physician may retry it once the draft allows.
+    /// Saves the receipt and the revision request, pinning the workspace's
+    /// current source observation in the same transaction. The same key and
+    /// command answers `Duplicate` and keeps the original pin; the same key
+    /// with a different command is an idempotency collision. A refused
+    /// command leaves no receipt, so the physician may retry it once the
+    /// draft allows.
     pub async fn accept_revision(
         &self,
         scope: &Scope,
         input: &RevisionInput,
         session_hash: Vec<u8>,
-        sources: Vec<SourceRevision>,
     ) -> Result<RevisionAccepted, DbErr> {
         nonempty(scope)?;
         if session_hash.len() != 32 {
@@ -447,13 +495,6 @@ impl Store {
             .any(|s| s.trim().is_empty())
         {
             return Err(error("empty command field"));
-        }
-        let mut ids = std::collections::HashSet::new();
-        for source in &sources {
-            source.validate().map_err(|e| error(&e))?;
-            if source.workspace != scope.workspace || !ids.insert(source.candidate_id.clone()) {
-                return Err(error("invalid source observation scope"));
-            }
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "revise": input});
@@ -486,6 +527,7 @@ impl Store {
                 input: previous,
                 base_text: std::mem::take(&mut state.base_text),
                 sources: std::mem::take(&mut state.sources),
+                sources_version: state.sources_version,
                 status: state.status.clone(),
                 failures: state.failures,
                 attempts: std::mem::take(&mut state.attempts),
@@ -519,10 +561,14 @@ impl Store {
             .exec_without_returning(&tx)
             .await?;
         }
+        // Draft row first, then the source version (shared), as on every
+        // path that pins; ingestion takes only the version row.
+        let observation = super::sources::observed(&tx, &scope.workspace).await?;
         state.status = "pending".into();
         state.base_text = state.text.clone();
         state.input = Some(input.clone());
-        state.sources = sources;
+        state.sources = observation.sources;
+        state.sources_version = observation.version;
         state.session_hash = Some(session_hash);
         state.dispatch_after = 0;
         state.failures = 0;
@@ -576,6 +622,10 @@ impl Store {
             return Ok(None);
         }
         let earlier_attempts = u32::try_from(state.attempts.len()).unwrap_or(u32::MAX);
+        // Every attempt, a retry included, starts from the newest sources.
+        let observation = super::sources::observed(&tx, &delivery.scope.workspace).await?;
+        state.sources = observation.sources;
+        state.sources_version = observation.version;
         let id = Uuid::new_v4().to_string();
         state.attempts.push(RevisionAttempt {
             id: id.clone(),
@@ -583,6 +633,9 @@ impl Store {
             status: "active".into(),
             expires: now + lease_seconds,
             records: vec![],
+            sources_version: state.sources_version,
+            sources: state.sources.clone(),
+            refreshes: vec![],
         });
         state.status = "active".into();
         let claim = RevisionClaim {
@@ -591,6 +644,7 @@ impl Store {
             input,
             base_text: state.base_text.clone(),
             sources: state.sources.clone(),
+            sources_version: state.sources_version,
             earlier_attempts,
         };
         Self::save_draft_row(tx, &delivery.scope, &state).await?;
@@ -671,14 +725,23 @@ impl Store {
     }
 
     /// Publishes the revised text only if this attempt is still current, its
-    /// last retained record is exactly `response`, and the auth owner's locks
-    /// for the accepted session hold in the same transaction.
+    /// last retained record is exactly `response`, the auth owner's locks for
+    /// the accepted session hold, and the attempt read the workspace's
+    /// current sources, all in one transaction.
+    ///
+    /// The source check runs under the version row's shared lock, taken
+    /// after the draft and authority locks, so a source recorded
+    /// concurrently is either seen here or waits until this commit ends.
+    /// When the sources moved, nothing is published: the attempt records a
+    /// [`SourceRefresh`], re-pins, and that alone is committed. A finish
+    /// after a refresh publishes only once a later model call has read every
+    /// added or corrected source at its current revision.
     pub async fn commit_revision(
         &self,
         claim: &RevisionClaim,
         response: &Response,
         authority: &mut dyn Authority,
-    ) -> Result<(), DbErr> {
+    ) -> Result<RevisionCommit, DbErr> {
         let text = revised_text(response).map_err(|e| error(&e))?;
         let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
         authority
@@ -689,16 +752,47 @@ impl Store {
         if !current(&state, claim, now) {
             return Err(error("stale revision completion"));
         }
+        let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        let pinned_version = state.sources_version;
+        let pinned = std::mem::take(&mut state.sources);
         let attempt = state.attempts.last_mut().unwrap();
         if !matches!(attempt.records.last(), Some(Record::Exchange { response: retained, .. }) if retained == response)
         {
             return Err(error("revision lacks durable evidence"));
         }
+        if observation.version != pinned_version {
+            let mut refresh = SourceRefresh::between(
+                pinned_version,
+                &pinned,
+                observation.version,
+                &observation.sources,
+            );
+            state.sources_version = observation.version;
+            state.sources = observation.sources;
+            // A change that cancelled itself out (recorded then withdrawn)
+            // leaves nothing new to read; only the pinned version moves.
+            if !refresh.is_empty() {
+                refresh.after_records = attempt.records.len();
+                attempt.refreshes.push(refresh.clone());
+                let sources = state.sources.clone();
+                Self::save_draft_row(tx, &claim.scope, &state).await?;
+                return Ok(RevisionCommit::SourcesMoved { refresh, sources });
+            }
+        } else {
+            state.sources = pinned;
+        }
+        let unread = caught_up(&attempt.records, &attempt.refreshes, &state.sources)
+            .map_err(|e| error(&e))?;
+        if !unread.is_empty() {
+            tx.commit().await?;
+            return Ok(RevisionCommit::SourcesUnread(unread));
+        }
         attempt.status = "completed".into();
         state.status = "completed".into();
         state.restore_text = Some(std::mem::replace(&mut state.text, text.into()));
         state.revision += 1;
-        Self::save_draft_row(tx, &claim.scope, &state).await
+        Self::save_draft_row(tx, &claim.scope, &state).await?;
+        Ok(RevisionCommit::Committed)
     }
 
     /// Releases this attempt for broker retry. The [`MAX_FAILED_ATTEMPTS`]th

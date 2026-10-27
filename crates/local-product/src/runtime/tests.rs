@@ -1,5 +1,7 @@
 #[path = "tests/reply.rs"]
 mod reply_tests;
+#[path = "tests/sources.rs"]
+mod source_tests;
 
 use super::delivery::{Delivery, DeliveryState};
 use super::*;
@@ -1128,7 +1130,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     assert_eq!(
         store
-            .accept_revision(&reply_scope, &revise, vec![9; 32], vec![])
+            .accept_revision(&reply_scope, &revise, vec![9; 32])
             .await
             .unwrap(),
         reply::RevisionAccepted::New
@@ -1152,7 +1154,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     }
     assert_eq!(
         store
-            .accept_revision(&reply_scope, &revise, vec![9; 32], vec![])
+            .accept_revision(&reply_scope, &revise, vec![9; 32])
             .await
             .unwrap(),
         reply::RevisionAccepted::Duplicate
@@ -1163,7 +1165,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     assert!(
         store
-            .accept_revision(&reply_scope, &collision, vec![9; 32], vec![])
+            .accept_revision(&reply_scope, &collision, vec![9; 32])
             .await
             .is_err()
     );

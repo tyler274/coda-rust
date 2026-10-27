@@ -52,9 +52,11 @@ cargo test --locked -p physician-sample --test try_again -- --test-threads=1
 # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
 # ownership, without a worker. The runtime draft-fence proof runs above.
 cargo test --locked -p physician-sample --test chat_draft -- --test-threads=1
-# Hosted reply revisions: duplicate acceptance, pinned retries, cross-site reads,
-# physician-save fencing, missing/foreign draft isolation, earlier revisions'
-# evidence kept in their own history table, and a failed revision visible over HTTP.
+# Hosted reply revisions: duplicate acceptance, retries re-pinning the newest
+# sources, a source arriving mid-revision read before publishing, a chart that
+# keeps changing exhausting the call bound, cross-site reads, physician-save
+# fencing, missing/foreign draft isolation, earlier revisions' evidence kept in
+# their own history table, and a failed revision visible over HTTP.
 # Receipt compaction and the pre-accepted_at upgrade proof run with runtime::tests above.
 cargo test --locked -p physician-sample --test reply_revision -- --test-threads=1
 # A site instance that dies before its publish lands: another instance's sweep

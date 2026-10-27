@@ -521,6 +521,12 @@ async fn site_from_env(
         let store = local_product::runtime::Store::connect(&database)
             .await
             .map_err(|_| "physician runtime store unavailable".to_string())?;
+        // The retained snapshot is the stand-in source owner's only import
+        // path. Importing it again changes nothing, so every instance can.
+        store
+            .import_sources(&live::source_snapshot()?)
+            .await
+            .map_err(|_| "physician source import failed".to_string())?;
         let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
         let queue = queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted).await?;
         let chat =

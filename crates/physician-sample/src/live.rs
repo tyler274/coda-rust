@@ -62,7 +62,10 @@ pub(crate) struct Live {
     pub(crate) binding: ModelBinding,
     pub(crate) session: Mutex<PhysicianSession>,
     pub(crate) bus: Arc<dyn Bus>,
-    pub(crate) sources: Vec<local_product::physician_sources::SourceRevision>,
+    /// Inline path's versioned source observation, seeded from the retained
+    /// snapshot. Hosted sites import the snapshot into the runtime store
+    /// instead and leave this empty.
+    pub(crate) sources: Mutex<local_product::physician_sources::Observation>,
     turns: AtomicU64,
     /// Set only when both the physician database and chat topic are configured.
     /// The site accepts and snapshots; the worker runs the model.
@@ -78,9 +81,7 @@ impl Live {
         session: PhysicianSession,
         sources: Vec<local_product::physician_sources::SourceRevision>,
     ) -> Result<Arc<Self>, String> {
-        for source in &sources {
-            source.validate()?;
-        }
+        let sources = local_product::physician_sources::Observation::seeded(sources)?;
         let binding = match &model {
             #[cfg(test)]
             ChatModel::Fixed(_) => ModelBinding {
@@ -97,7 +98,7 @@ impl Live {
             binding,
             session: Mutex::new(session),
             bus: Arc::new(LocalBus::new(64)),
-            sources,
+            sources: Mutex::new(sources),
             turns: AtomicU64::new(0),
             durable: None,
             synthetic_reply: false.into(),
@@ -137,8 +138,36 @@ impl Live {
             turns: AtomicU64::new(0),
             durable: None,
             synthetic_reply: synthetic_reply_from_env().into(),
-            sources: source_snapshot().expect("load physician source-owner snapshot"),
+            sources: Mutex::new(
+                source_snapshot()
+                    .and_then(local_product::physician_sources::Observation::seeded)
+                    .expect("load physician source-owner snapshot"),
+            ),
         })
+    }
+
+    /// Records a source on the inline observation: the stand-in source
+    /// owner's entry point, used by tests. Returns whether it changed.
+    #[cfg(test)]
+    pub(crate) fn record_source(
+        &self,
+        source: local_product::physician_sources::SourceRevision,
+    ) -> Result<bool, String> {
+        self.sources
+            .lock()
+            .expect("physician sources")
+            .record(source)
+    }
+
+    /// The inline observation's version and one workspace's sources.
+    pub(crate) fn observed_sources(
+        &self,
+        workspace: &str,
+    ) -> (u64, Vec<local_product::physician_sources::SourceRevision>) {
+        self.sources
+            .lock()
+            .expect("physician sources")
+            .workspace(workspace)
     }
 
     /// Accepts and reads Postgres chat without opening a local session or calling a model.
@@ -168,7 +197,8 @@ impl Live {
             binding,
             session: Mutex::new(PhysicianSession::memory()),
             bus,
-            sources: source_snapshot()?,
+            // The runtime store owns hosted sources; see `import_sources`.
+            sources: Mutex::new(Default::default()),
             turns: AtomicU64::new(0),
             durable: Some(chat),
             synthetic_reply: synthetic_reply_from_env().into(),
@@ -285,8 +315,10 @@ fn synthetic_reply_from_env() -> bool {
 }
 
 /// Load only source-owner observations; an absent snapshot means no sources,
-/// never fabricated patient evidence. Both local and hosted acceptance pin it.
-fn source_snapshot() -> Result<Vec<local_product::physician_sources::SourceRevision>, String> {
+/// never fabricated patient evidence. It seeds the inline observation, and a
+/// hosted site imports it into the runtime source store at startup.
+pub(crate) fn source_snapshot()
+-> Result<Vec<local_product::physician_sources::SourceRevision>, String> {
     let Some(path) = std::env::var_os("CODA_PHYSICIAN_SOURCE_SNAPSHOT") else {
         return Ok(Vec::new());
     };
@@ -798,10 +830,10 @@ fn rejected_submit() -> Response {
     .into_response()
 }
 
-struct LiveOwner {
-    live: Arc<Live>,
-    work: Work,
-    auth_ctx: Option<AuthContext>,
+pub(crate) struct LiveOwner {
+    pub(crate) live: Arc<Live>,
+    pub(crate) work: Work,
+    pub(crate) auth_ctx: Option<AuthContext>,
 }
 impl Owner for LiveOwner {
     fn terminal(&self, response: &execution::Response) -> bool {
@@ -857,12 +889,29 @@ impl Owner for LiveOwner {
         Ok(json!({"error": "tool_not_authorized", "name": call.name}))
     }
     async fn complete(&mut self, response: &execution::Response) -> Result<(), String> {
+        match self.finish(response).await? {
+            execution::Finish::Committed => Ok(()),
+            execution::Finish::Continue(_) => Err("physician sources changed".into()),
+        }
+    }
+    /// A reply revision publishes only on the current source observation.
+    /// Under the publication guard and the auth owner's locks, a moved
+    /// observation re-pins the work and returns what changed to the model
+    /// instead of publishing; so does a finish that has not yet read every
+    /// changed source. Chat turns read no patient sources and commit as
+    /// before.
+    async fn finish(
+        &mut self,
+        response: &execution::Response,
+    ) -> Result<execution::Finish, String> {
+        use local_product::physician_sources as sources;
         let ctx = self.auth_ctx.clone();
         let _guard = match &ctx {
             Some(ctx) => Some(ctx.auth.publication.lock().await),
             None => None,
         };
-        let text = if self.work.surface == local_product::execution::Surface::ReplyRevision {
+        let revision = self.work.surface == local_product::execution::Surface::ReplyRevision;
+        let text = if revision {
             let [call] = response.calls.as_slice() else {
                 return Err("revision requires one terminal call".into());
             };
@@ -881,17 +930,49 @@ impl Owner for LiveOwner {
         } else {
             &response.text
         };
+        let mut outcome = execution::Finish::Committed;
         let mut publish = || {
-            self.live
+            // Source observation, then session: the only order either is
+            // taken together, and `record_source` takes only the first.
+            let observation =
+                revision.then(|| self.live.sources.lock().expect("physician sources"));
+            let mut session = self.live.session.lock().expect("chat session");
+            if let Some(observation) = &observation {
+                let (version, current) = observation.workspace(&self.work.workspace);
+                if let Some(refresh) = session.refresh_sources(&self.work, version, current)? {
+                    let work = session.work(&self.work).ok_or("missing accepted work")?;
+                    outcome = execution::Finish::Continue(refresh.result(&work.sources));
+                    return Ok(());
+                }
+                let work = session.work(&self.work).ok_or("missing accepted work")?;
+                let unread = sources::caught_up(&work.records, &work.refreshes, &work.sources)?;
+                if !unread.is_empty() {
+                    outcome = execution::Finish::Continue(sources::unread_result(&unread));
+                    return Ok(());
+                }
+            }
+            outcome = execution::Finish::Committed;
+            session.complete(&self.work, text)
+        };
+        match &ctx {
+            Some(ctx) => {
+                crate::publication::publish(ctx, &self.work.workspace, &mut publish).await?
+            }
+            None => publish()?,
+        }
+        if let execution::Finish::Continue(_) = outcome
+            && let Some(work) = self
+                .live
                 .session
                 .lock()
                 .expect("chat session")
-                .complete(&self.work, text)
-        };
-        match &ctx {
-            Some(ctx) => crate::publication::publish(ctx, &self.work.workspace, &mut publish).await,
-            None => publish(),
+                .work(&self.work)
+        {
+            // Reads answer from the refreshed pin.
+            self.work.sources = work.sources.clone();
+            self.work.sources_version = work.sources_version;
         }
+        Ok(outcome)
     }
 }
 struct LiveProvider<'a>(&'a ChatModel);
