@@ -27,9 +27,11 @@ Linear, then the settled docs, then mockups.
 - **A concern always comes with its explanation (2026-10-26, from the care-team
   contract's visibility table).** Coda raises or revises a concern only in work
   that writes the physician a communication explaining it, and the concern
-  opens that work. A quiet finish may only close concerns. The link from each
-  concern revision to its communication is a data promise for a linked proof,
-  not graph state.
+  opens that work. A quiet finish may only close concerns. The graph holds this
+  as two outcomes of every kind of work: a finish with an update for you, the
+  only one that raises or revises a concern, and a quiet finish. Which
+  communication explains which concern revision is a data promise for a linked
+  proof, not graph state.
 - **Behavior, not presentation (2026-10-26).** Layout, open and close, hover
   and paging belong to the surface map and the app, not the graph, as in
   Duet's. The graph keeps what the physician can do, what Coda does, and what

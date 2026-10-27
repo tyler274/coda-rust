@@ -46,7 +46,9 @@ stateDiagram-v2
 %% event Coda decides to take something on | by Coda | Coda judges something worth doing for the patient and takes it on (charter: Coda may).
 %% event Coda starts the {work} | by Coda | needs WOwed@{key} | reason: only the work's own state makes its events possible | Coda begins the {work} from the latest evidence it may read.
 %% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} couldn't finish after whatever recovery the runtime does on its own; it shows Couldn't finish with Try again, and machinery never alerts you (CT:95).
-%% event Coda finishes the {work} | by Coda | needs WRun@{key}, NwNone@{key}, MLFree | reason: only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% event Coda finishes the {work} with an update for you | by Coda | needs WRun@{key}, NwNone@{key}, MLFree | reason: only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% event Coda finishes the {work} quietly | by Coda | needs WRun@{key}, NwNone@{key}, MLFree | reason: only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% events Coda finishes the {work} = Coda finishes the {work} with an update for you | Coda finishes the {work} quietly
 %% event Coda waits on the {work} for missing information | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | Coda keeps the {work} for information that will arrive anyway; the patient page shows Waiting with the reason and Try again, never Today.
 %% event Coda can't restart the {work} | by Coda's runtime | needs WOwed@{key}, WFail@{key} | reason: only the work's own state makes its events possible | The {work} can't run again; anything left goes to Today with Done, otherwise Updates logs it. It never blocks later work.
 %% event try the {work} again | by you | command on the {work}: Try again, clicked while SIn | needs AClin, WFail@{key}, WWait@{key} | reason: only stalled work offers Try again | You retry the {work}; it reads the latest records and stays in its episode.
@@ -58,7 +60,8 @@ stateDiagram-v2
 %% event update the {fresh} with the newer records | by you | command on the {fresh}: Update, clicked while SIn | needs AClin, WDoneStale@{key} | reason: only an answer with newer records since offers Update | One tap answers again on the newer records (Dev 2026-10-26).
 %%
 %% Outcomes. Every kind of work ends with one event; what it produces is each owner's "may".
-%% events Coda finishes any work = Coda finishes the {work}
+%% events Coda finishes any work = Coda finishes the {work} with an update for you | Coda finishes the {work} quietly
+%% events Coda finishes any work with an update for you = Coda finishes the {work} with an update for you
 %% event open the concern | by you | needs SIn, AClin | reason: commands need an active session and clinical access | You read the concern; opening is yours alone and never clears it.
 %% event another physician opens the concern | by another physician | Someone else read it; it stays new to you.
 %% event mark the concern done | by you | command on the concern: Done, clicked while SIn | needs AClin, CNeeds | reason: Done needs clinical access and a concern that needs attention | Done clears this exact concern for every physician (Dev 2026-10-22).
@@ -71,7 +74,7 @@ stateDiagram-v2
 %% event resume the follow-up | by you | command on the follow-up: Resume, clicked while SIn | needs AClin, FHeld | reason: only a held follow-up resumes | Resume reviews the current version of the follow-up (M1).
 %% event cancel the follow-up | by you | command on the follow-up: Cancel, clicked while SIn | needs AClin, FActive, FHeld | reason: only an active or held follow-up is cancelled | You end the follow-up; Coda respects the cancel unless new information arrives (A5).
 %% event complete the follow-up | by you | command on the follow-up: Complete, clicked while SIn | needs AClin, FActive, FHeld | reason: only an active or held follow-up is completed | You mark it complete, offered with new date or cancel when Coda can't restart its review (A4).
-%% events Coda finishes other work = Coda finishes the initial understanding | Coda finishes the patient review | Coda finishes the weekly review | Coda finishes the visit preparation | Coda finishes the asked reply | Coda finishes the proactive work | Coda finishes the answer | Coda finishes the reply revision
+%% events Coda finishes other work = Coda finishes the initial understanding with an update for you | Coda finishes the initial understanding quietly | Coda finishes the patient review with an update for you | Coda finishes the patient review quietly | Coda finishes the weekly review with an update for you | Coda finishes the weekly review quietly | Coda finishes the visit preparation with an update for you | Coda finishes the visit preparation quietly | Coda finishes the asked reply with an update for you | Coda finishes the asked reply quietly | Coda finishes the proactive work with an update for you | Coda finishes the proactive work quietly | Coda finishes the answer with an update for you | Coda finishes the answer quietly | Coda finishes the reply revision with an update for you | Coda finishes the reply revision quietly
 %% event a visit is scheduled | by the practice schedule | needs VNone, VOver, VCancel | reason: one visit is modeled at a time | A new visit for the patient is on the schedule.
 %% event the visit ends | by the clock | needs VAhead, VCancelled | reason: only a visit still ahead can pass | The visit's recorded time passes; a running preparation finishes, anything owed or failed ends.
 %% event the visit is cancelled | by the practice schedule | needs VAhead | reason: only a visit still ahead can be cancelled | Everything unfinished for that visit ends at once; a finished briefing stays as history.
@@ -1096,11 +1099,11 @@ stateDiagram-v2
           CUnopened --> COpened : the concern is shown
           COtherOpened --> COpened : the concern is shown
           CUnopened --> COtherOpened : another physician opens the concern
-          COtherOpened --> CUnopened : Coda finishes any work / may revise the concern
-          COpened --> CUnopened : Coda finishes any work / may revise the concern
-          COtherOpened --> CUnopened : Coda finishes any work [not already now] / may raise the urgency
+          COtherOpened --> CUnopened : Coda finishes any work with an update for you / may revise the concern
+          COpened --> CUnopened : Coda finishes any work with an update for you / may revise the concern
+          COtherOpened --> CUnopened : Coda finishes any work with an update for you [not already now] / may raise the urgency
           %% when UrgToday, UrgLowered | reason: a raise to now makes the concern new to everyone (RP:286)
-          COpened --> CUnopened : Coda finishes any work [not already now] / may raise the urgency
+          COpened --> CUnopened : Coda finishes any work with an update for you [not already now] / may raise the urgency
           %% when UrgToday, UrgLowered | reason: a raise to now makes the concern new to everyone (RP:286)
         }
         --
@@ -1109,11 +1112,11 @@ stateDiagram-v2
           state "For today" as UrgToday
           state "Needs you now" as UrgNow
           state "For today, lowered from now before anyone opened it" as UrgLowered
-          UrgToday --> UrgNow : Coda finishes any work / may raise the urgency
-          UrgLowered --> UrgNow : Coda finishes any work / may raise the urgency
-          UrgNow --> UrgToday : Coda finishes any work [opened since marked now] / may lower the urgency
+          UrgToday --> UrgNow : Coda finishes any work with an update for you / may raise the urgency
+          UrgLowered --> UrgNow : Coda finishes any work with an update for you / may raise the urgency
+          UrgNow --> UrgToday : Coda finishes any work with an update for you [opened since marked now] / may lower the urgency
           %% when COpened, COtherOpened | reason: a demotion keeps the now mark until a physician opens it (RP:286-289)
-          UrgNow --> UrgLowered : Coda finishes any work [nobody opened it at now] / may lower the urgency
+          UrgNow --> UrgLowered : Coda finishes any work with an update for you [nobody opened it at now] / may lower the urgency
           %% when CUnopened | reason: a demotion keeps the now mark until a physician opens it (RP:286-289)
           UrgLowered --> UrgToday : the concern is shown
           UrgLowered --> UrgToday : another physician opens the concern
@@ -1125,9 +1128,9 @@ stateDiagram-v2
           state "Tied to the upcoming visit" as NgVisit
           state "Its visit passed while it was marked now and unopened; ends when anyone opens it" as NgPassed
           state "About a patient message; stays with its message" as NgMsg
-          NgMsg --> NgNo : Coda finishes the patient review [the message is no longer linked] / re-authors the concern from the patient's own record
+          NgMsg --> NgNo : Coda finishes the patient review with an update for you [the message is no longer linked] / re-authors the concern from the patient's own record
           %% when not MLLinked | reason: a message no longer linked to this patient, whether moved, marked not a patient or being matched again, is not its evidence, so the re-review decides its concern (N2)
-          NgNo --> NgVisit : Coda finishes any work [a visit ahead] / may tie the concern to the upcoming visit
+          NgNo --> NgVisit : Coda finishes any work with an update for you [a visit ahead] / may tie the concern to the upcoming visit
           %% when VAhead | reason: only a visit still ahead can be linked to (A7)
           NgVisit --> NgPassed : the visit ends [unopened and marked now]
           %% when CUnopened, UrgNow, UrgLowered | reason: Coda never retires a now mark nobody opened (RP-289)
@@ -1135,13 +1138,13 @@ stateDiagram-v2
           %% when CUnopened, UrgNow, UrgLowered | reason: Coda never retires a now mark nobody opened (RP-289)
         }
       }
-      CRest --> CNeeds : Coda finishes any work / may raise a concern
-      CRest --> UrgNow : Coda finishes any work / may raise an urgent concern
-      CRest --> NgVisit : Coda finishes any work [a visit ahead] / may raise a nudge for the upcoming visit
+      CRest --> CNeeds : Coda finishes any work with an update for you / may raise a concern
+      CRest --> UrgNow : Coda finishes any work with an update for you / may raise an urgent concern
+      CRest --> NgVisit : Coda finishes any work with an update for you [a visit ahead] / may raise a nudge for the upcoming visit
       %% when VAhead | reason: only a visit still ahead can be linked to (A7)
-      CRest --> NgMsg : Coda finishes the patient review [a linked message] / may raise a concern about the message
+      CRest --> NgMsg : Coda finishes the patient review with an update for you [a linked message] / may raise a concern about the message
       %% when MLLinked | reason: only a message linked to this patient is this patient's evidence (PM-500)
-      CRest --> NgMsg : Coda finishes the asked reply [a linked message] / may raise a concern about the message
+      CRest --> NgMsg : Coda finishes the asked reply with an update for you [a linked message] / may raise a concern about the message
       %% when MLLinked | reason: only a message linked to this patient is this patient's evidence (PM-500)
       NgVisit --> CClosed : the visit ends [opened]
       %% when COpened, COtherOpened | reason: an opened visit nudge ends with its visit
@@ -1151,8 +1154,10 @@ stateDiagram-v2
       %% when COpened, COtherOpened | reason: an opened visit nudge ends with its visit
       NgVisit --> CClosed : the visit is cancelled [unopened, for today]
       %% when CUnopened, UrgToday | reason: an unopened nudge for today ends with its visit; one marked now waits to be opened (RP-289)
-      NgMsg --> CClosed : Coda finishes the patient review [the message is no longer linked] / may close the concern
+      NgMsg --> CClosed : Coda finishes the patient review with an update for you [the message is no longer linked] / may close the concern
       %% when not MLLinked | reason: a message no longer linked to this patient, whether moved, marked not a patient or being matched again, is not its evidence, so the re-review decides its concern (N2)
+      NgMsg --> CClosed : Coda finishes the patient review quietly [the message is no longer linked] / closes the concern
+      %% when not MLLinked | reason: a re-review that writes nothing can't re-author a concern, so it closes one whose message is no longer this patient's evidence (N2)
       NgPassed --> CClosed : the concern is shown
       NgPassed --> CClosed : another physician opens the concern
       CNeeds --> CDone : mark the concern done
@@ -1380,8 +1385,8 @@ stateDiagram-v2
       state "Nothing written to you today" as UpNone
       state "Written to you, new" as UpNew
       state "Opened by you" as UpOpened
-      UpNone --> UpNew : Coda finishes any work / may write you an update
-      UpOpened --> UpNew : Coda finishes any work / may write you an update
+      UpNone --> UpNew : Coda finishes any work with an update for you
+      UpOpened --> UpNew : Coda finishes any work with an update for you
       UpNew --> UpOpened : open an update
       UpNew --> UpNone : midnight passes
       UpOpened --> UpNone : midnight passes

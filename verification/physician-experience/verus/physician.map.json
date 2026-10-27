@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "59304540d7f2d9dc5925cf8118db4b4f4028c91e58023f3d422679c302bfbf83",
-  "generated_sha256": "e6ecc0285c65d4b690fc869dd687ce7a3c34a349e6e89f0936c24a9b98429e5a",
-  "steps_sha256": "2deee70219b9497f8fa97e72b61a68546155672ae305c34bfde9c88f4b185fbe",
+  "chart_sha256": "94709cf268d2c659044941be7293727cc306fad029ead96fde0ff4f901fdf0e3",
+  "generated_sha256": "b2045015f4a8e8b1e6db9ebfee4983206062d514fe644d2de3fcdb93ab8ff45d",
+  "steps_sha256": "cb3bc2fa399107ffb9dc3127434af1eb1a778854d48936e68641f3f2f0bb044f",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -25743,10 +25743,10 @@
       ]
     },
     {
-      "label": "Coda finishes the initial understanding",
-      "function": "event_coda_finishes_the_initial_understanding",
+      "label": "Coda finishes the initial understanding with an update for you",
+      "function": "event_coda_finishes_the_initial_understanding_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The initial understanding ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The initial understanding ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -25768,7 +25768,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -26147,17 +26147,168 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the initial understanding quietly",
+      "function": "event_coda_finishes_the_initial_understanding_quietly",
+      "cause": "Coda",
+      "intent": "The initial understanding ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: initial understanding/initial understanding: lifecycle": [
+            "initial understanding in hand.initial understanding active.Coda is working on the initial understanding"
+          ],
+          "Coda's work: initial understanding/initial understanding: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Initial understanding",
+          "from": "Initial understanding not finished",
+          "to": "Initial understanding finished",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding in hand.initial understanding active.Coda is working on the initial understanding",
+          "to": "initial understanding not in hand.No initial understanding owed",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         }
       ]
     },
@@ -27499,10 +27650,10 @@
       ]
     },
     {
-      "label": "Coda finishes the patient review",
-      "function": "event_coda_finishes_the_patient_review",
+      "label": "Coda finishes the patient review with an update for you",
+      "function": "event_coda_finishes_the_patient_review_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The patient review ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The patient review ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -27524,7 +27675,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may propose a reply",
         "may close the reply as answered",
@@ -28216,17 +28367,508 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        },
+        {
+          "region": "What relied on a moved message",
+          "from": "What relied on the moved message is withheld until Coda re-reviews",
+          "to": "Nothing withheld",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "No open reply.No reply work",
+          "to": "Reply work open",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ]
+            },
+            "reason": "only a message linked to this patient is this patient's evidence (PM-500)"
+          },
+          "enter": {
+            "Patient message: reply/Reply work open/Reply status": [
+              "Reply ready.Ready to send or copy"
+            ]
+          },
+          "optional": true,
+          "intent": "may propose a reply"
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "Reply work open",
+          "to": "No open reply.Closed, the practice answered in the channel",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ]
+            },
+            "reason": "a reply closes as answered only after a practice message in that conversation (RP-392)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Patient message: reply/Reply work open/Reply status": [
+                  "Reply ready.Couldn't send, your text kept",
+                  "Reply ready.Ready to send or copy"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "Reply work open",
+          "to": "No open reply.Closed, the practice answered in the channel",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ]
+            },
+            "reason": "a reply closes as answered only after a practice message in that conversation (RP-392)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Patient message: reply/Reply work open/Reply status": [
+                  "Reviewing a new message"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Reply status",
+          "from": "Reviewing a new message",
+          "to": "Reply ready.Ready to send or copy",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may propose a newer reply"
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Your reply text",
+          "from": "Your edited reply",
+          "to": "Your reply, with Coda's update offered",
+          "guard": null,
+          "optional": true,
+          "intent": "may offer Coda's update"
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Who has opened the reply",
+          "from": "Opened by you, unchanged since",
+          "to": "New to you",
+          "guard": null,
+          "optional": true,
+          "intent": "may propose a newer reply"
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the patient review quietly",
+      "function": "event_coda_finishes_the_patient_review_quietly",
+      "cause": "Coda",
+      "intent": "The patient review ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: patient review/patient review: lifecycle": [
+            "patient review in hand.patient review active.Coda is working on the patient review"
+          ],
+          "Coda's work: patient review/patient review: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "shared_effects": [
+        "may propose a reply",
+        "may close the reply as answered",
+        "may propose a newer reply"
+      ],
+      "transitions": [
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review active.Coda is working on the patient review",
+          "to": "patient review not in hand.No patient review owed",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: patient review/patient review: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.New to you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: patient review/patient review: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.Opened by you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: lifecycle",
+          "from": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
+          "to": "asked reply not in hand.No asked reply owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ],
+              "Patient message: reply": [
+                "No open reply.No reply work"
+              ]
+            },
+            "reason": "a reply the review proposes first answers the ask (px.md:167)"
+          },
+          "optional": true,
+          "intent": "may propose a reply"
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: lifecycle",
+          "from": "asked reply in hand.asked reply active.Coda is working on the asked reply",
+          "to": "asked reply not in hand.No asked reply owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ],
+              "Patient message: reply": [
+                "No open reply.No reply work"
+              ]
+            },
+            "reason": "a reply the review proposes first answers the ask (px.md:167)"
+          },
+          "optional": true,
+          "intent": "may propose a reply"
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: lifecycle",
+          "from": "asked reply in hand.asked reply stalled.asked reply waiting for the next opportunity, with Try again",
+          "to": "asked reply not in hand.No asked reply owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ],
+              "Patient message: reply": [
+                "No open reply.No reply work"
+              ]
+            },
+            "reason": "a reply the review proposes first answers the ask (px.md:167)"
+          },
+          "optional": true,
+          "intent": "may propose a reply"
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: lifecycle",
+          "from": "asked reply in hand.asked reply stalled.asked reply couldn't finish, with Try again",
+          "to": "asked reply not in hand.No asked reply owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ],
+              "Patient message: reply": [
+                "No open reply.No reply work"
+              ]
+            },
+            "reason": "a reply the review proposes first answers the ask (px.md:167)"
+          },
+          "optional": true,
+          "intent": "may propose a reply"
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: held by you",
+          "from": "Held with Resume",
+          "to": "Not held",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ],
+              "Patient message: reply": [
+                "No open reply.No reply work"
+              ]
+            },
+            "reason": "a reply the review proposes first answers the ask (px.md:167)"
+          },
+          "optional": true,
+          "intent": "may propose a reply"
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: lifecycle",
+          "from": "reply revision in hand.reply revision active.reply revision owed, waiting to start",
+          "to": "reply revision not in hand.No reply revision owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ],
+              "Patient message: reply/Reply work open/Reply status": [
+                "Reply ready.Couldn't send, your text kept",
+                "Reply ready.Ready to send or copy",
+                "Reviewing a new message"
+              ]
+            },
+            "reason": "the reply closes as answered only while open and after the practice replied"
+          },
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: lifecycle",
+          "from": "reply revision in hand.reply revision active.Coda is working on the reply revision",
+          "to": "reply revision not in hand.No reply revision owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ],
+              "Patient message: reply/Reply work open/Reply status": [
+                "Reply ready.Couldn't send, your text kept",
+                "Reply ready.Ready to send or copy",
+                "Reviewing a new message"
+              ]
+            },
+            "reason": "the reply closes as answered only while open and after the practice replied"
+          },
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: lifecycle",
+          "from": "reply revision in hand.reply revision stalled.reply revision waiting for the next opportunity, with Try again",
+          "to": "reply revision not in hand.No reply revision owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ],
+              "Patient message: reply/Reply work open/Reply status": [
+                "Reply ready.Couldn't send, your text kept",
+                "Reply ready.Ready to send or copy",
+                "Reviewing a new message"
+              ]
+            },
+            "reason": "the reply closes as answered only while open and after the practice replied"
+          },
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: lifecycle",
+          "from": "reply revision in hand.reply revision stalled.reply revision couldn't finish, with Try again",
+          "to": "reply revision not in hand.No reply revision owed",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ],
+              "Patient message: reply/Reply work open/Reply status": [
+                "Reply ready.Couldn't send, your text kept",
+                "Reply ready.Ready to send or copy",
+                "Reviewing a new message"
+              ]
+            },
+            "reason": "the reply closes as answered only while open and after the practice replied"
+          },
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: held by you",
+          "from": "Held with Resume",
+          "to": "Not held",
+          "guard": {
+            "not": false,
+            "states": {
+              "Practice reply in the channel": [
+                "The practice replied in the channel"
+              ],
+              "Patient message: reply/Reply work open/Reply status": [
+                "Reply ready.Couldn't send, your text kept",
+                "Reply ready.Ready to send or copy",
+                "Reviewing a new message"
+              ]
+            },
+            "reason": "the reply closes as answered only while open and after the practice replied"
+          },
+          "optional": true,
+          "intent": "may close the reply as answered"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": true,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ]
+            },
+            "reason": "a re-review that writes nothing can't re-author a concern, so it closes one whose message is no longer this patient's evidence (N2)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Visit link": [
+                  "About a patient message; stays with its message"
+                ]
+              }
+            }
+          ],
+          "intent": "closes the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         },
         {
           "region": "What relied on a moved message",
@@ -28522,10 +29164,10 @@
       ]
     },
     {
-      "label": "Coda finishes the follow-up review",
-      "function": "event_coda_finishes_the_follow_up_review",
+      "label": "Coda finishes the follow-up review with an update for you",
+      "function": "event_coda_finishes_the_follow_up_review_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The follow-up review ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The follow-up review ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -28547,7 +29189,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -28935,17 +29577,177 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the follow-up review quietly",
+      "function": "event_coda_finishes_the_follow_up_review_quietly",
+      "cause": "Coda",
+      "intent": "The follow-up review ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: follow-up review/follow-up review: lifecycle": [
+            "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+          ],
+          "Coda's work: follow-up review/follow-up review: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: follow-up review/follow-up review: lifecycle",
+          "from": "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+          "to": "follow-up review not in hand.No follow-up review owed",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: follow-up review/follow-up review: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.New to you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: follow-up review/follow-up review: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.Opened by you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "intent": "disposes of it with the next check"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": null,
+          "intent": "disposes of it by completing it"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Completed",
+          "guard": null,
+          "optional": true,
+          "intent": "may complete the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
         }
       ]
     },
@@ -29166,10 +29968,10 @@
       ]
     },
     {
-      "label": "Coda finishes the weekly review",
-      "function": "event_coda_finishes_the_weekly_review",
+      "label": "Coda finishes the weekly review with an update for you",
+      "function": "event_coda_finishes_the_weekly_review_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The weekly review ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The weekly review ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -29191,7 +29993,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -29564,17 +30366,162 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the weekly review quietly",
+      "function": "event_coda_finishes_the_weekly_review_quietly",
+      "cause": "Coda",
+      "intent": "The weekly review ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: weekly review/weekly review: lifecycle": [
+            "weekly review in hand.weekly review active.Coda is working on the weekly review"
+          ],
+          "Coda's work: weekly review/weekly review: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: weekly review/weekly review: lifecycle",
+          "from": "weekly review in hand.weekly review active.Coda is working on the weekly review",
+          "to": "weekly review not in hand.No weekly review owed",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         }
       ]
     },
@@ -29786,10 +30733,10 @@
       ]
     },
     {
-      "label": "Coda finishes the visit preparation",
-      "function": "event_coda_finishes_the_visit_preparation",
+      "label": "Coda finishes the visit preparation with an update for you",
+      "function": "event_coda_finishes_the_visit_preparation_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The visit preparation ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The visit preparation ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -29811,7 +30758,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -30271,17 +31218,249 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the visit preparation quietly",
+      "function": "event_coda_finishes_the_visit_preparation_quietly",
+      "cause": "Coda",
+      "intent": "The visit preparation ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: visit preparation/visit preparation: lifecycle": [
+            "visit preparation in hand.visit preparation active.Coda is working on the visit preparation"
+          ],
+          "Coda's work: visit preparation/visit preparation: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: visit preparation/visit preparation: lifecycle",
+          "from": "visit preparation in hand.visit preparation active.Coda is working on the visit preparation",
+          "to": "visit preparation not in hand.No visit preparation owed",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: visit preparation/visit preparation: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.New to you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: visit preparation/visit preparation: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.Opened by you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
+        },
+        {
+          "region": "Briefing",
+          "from": "No briefing",
+          "to": "Briefing ready for the upcoming visit",
+          "guard": {
+            "not": false,
+            "states": {
+              "Visit": [
+                "Visit ahead.Scheduled, not yet in preparation range",
+                "Visit ahead.Upcoming, in preparation range"
+              ]
+            },
+            "reason": "a briefing belongs to a visit still ahead (A7)"
+          }
+        },
+        {
+          "region": "Briefing",
+          "from": "Earlier briefing, kept as history",
+          "to": "Briefing ready for the upcoming visit",
+          "guard": {
+            "not": false,
+            "states": {
+              "Visit": [
+                "Visit ahead.Scheduled, not yet in preparation range",
+                "Visit ahead.Upcoming, in preparation range"
+              ]
+            },
+            "reason": "a briefing belongs to a visit still ahead (A7)"
+          }
+        },
+        {
+          "region": "Briefing",
+          "from": "Briefing ready for the upcoming visit",
+          "to": "Briefing ready for the upcoming visit",
+          "guard": {
+            "not": false,
+            "states": {
+              "Visit": [
+                "Visit ahead.Scheduled, not yet in preparation range",
+                "Visit ahead.Upcoming, in preparation range"
+              ]
+            },
+            "reason": "a briefing belongs to a visit still ahead (A7)"
+          }
+        },
+        {
+          "region": "Briefing",
+          "from": "No briefing",
+          "to": "Earlier briefing, kept as history",
+          "guard": {
+            "not": true,
+            "states": {
+              "Visit": [
+                "Visit ahead.Scheduled, not yet in preparation range",
+                "Visit ahead.Upcoming, in preparation range"
+              ]
+            },
+            "reason": "with no visit ahead, a briefing is kept only as history"
+          }
+        },
+        {
+          "region": "Briefing",
+          "from": "Briefing ready for the upcoming visit",
+          "to": "Earlier briefing, kept as history",
+          "guard": {
+            "not": true,
+            "states": {
+              "Visit": [
+                "Visit ahead.Scheduled, not yet in preparation range",
+                "Visit ahead.Upcoming, in preparation range"
+              ]
+            },
+            "reason": "with no visit ahead, a briefing is kept only as history"
+          }
         }
       ]
     },
@@ -30883,10 +32062,10 @@
       ]
     },
     {
-      "label": "Coda finishes the asked reply",
-      "function": "event_coda_finishes_the_asked_reply",
+      "label": "Coda finishes the asked reply with an update for you",
+      "function": "event_coda_finishes_the_asked_reply_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The asked reply ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The asked reply ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -30908,7 +32087,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -31356,17 +32535,274 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "No open reply.No reply work",
+          "to": "Reply work open",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ]
+            },
+            "reason": "only a message linked to this patient is this patient's evidence (PM-500)"
+          },
+          "enter": {
+            "Patient message: reply/Reply work open/Reply status": [
+              "Reply ready.Ready to send or copy"
+            ]
+          }
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "No open reply.Closed, no reply needed",
+          "to": "Reply work open",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ]
+            },
+            "reason": "only a message linked to this patient is this patient's evidence (PM-500)"
+          },
+          "enter": {
+            "Patient message: reply/Reply work open/Reply status": [
+              "Reply ready.Ready to send or copy"
+            ]
+          }
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "No open reply.Closed, the practice answered in the channel",
+          "to": "Reply work open",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ]
+            },
+            "reason": "only a message linked to this patient is this patient's evidence (PM-500)"
+          },
+          "enter": {
+            "Patient message: reply/Reply work open/Reply status": [
+              "Reply ready.Ready to send or copy"
+            ]
+          }
+        },
+        {
+          "region": "Patient message: reply",
+          "from": "No open reply.Closed, sent by Coda for you",
+          "to": "Reply work open",
+          "guard": {
+            "not": false,
+            "states": {
+              "Patient message: match": [
+                "No correction waiting on Undo.Linked to the patient"
+              ]
+            },
+            "reason": "only a message linked to this patient is this patient's evidence (PM-500)"
+          },
+          "enter": {
+            "Patient message: reply/Reply work open/Reply status": [
+              "Reply ready.Ready to send or copy"
+            ]
+          }
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Reply status",
+          "from": "Reviewing a new message",
+          "to": "Reply ready.Ready to send or copy",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Reply status",
+          "from": "Closed, no reply needed, Undo shown",
+          "to": "Reply ready.Ready to send or copy",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Your reply text",
+          "from": "Your edited reply",
+          "to": "Your reply, with Coda's update offered",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Who has opened the reply",
+          "from": "Opened by you, unchanged since",
+          "to": "New to you",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the asked reply quietly",
+      "function": "event_coda_finishes_the_asked_reply_quietly",
+      "cause": "Coda",
+      "intent": "The asked reply ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: asked reply/asked reply: lifecycle": [
+            "asked reply in hand.asked reply active.Coda is working on the asked reply"
+          ],
+          "Coda's work: asked reply/asked reply: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: asked reply/asked reply: lifecycle",
+          "from": "asked reply in hand.asked reply active.Coda is working on the asked reply",
+          "to": "asked reply not in hand.No asked reply owed",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.New to you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: left for you",
+          "from": "Coda couldn't restart; what's left is on Today with Done.Opened by you",
+          "to": "Nothing left for you",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         },
         {
           "region": "Patient message: reply",
@@ -31796,10 +33232,10 @@
       ]
     },
     {
-      "label": "Coda finishes the proactive work",
-      "function": "event_coda_finishes_the_proactive_work",
+      "label": "Coda finishes the proactive work with an update for you",
+      "function": "event_coda_finishes_the_proactive_work_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The proactive work ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The proactive work ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -31821,7 +33257,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -32194,17 +33630,162 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the proactive work quietly",
+      "function": "event_coda_finishes_the_proactive_work_quietly",
+      "cause": "Coda",
+      "intent": "The proactive work ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: proactive work/proactive work: lifecycle": [
+            "proactive work in hand.proactive work active.Coda is working on the proactive work"
+          ],
+          "Coda's work: proactive work/proactive work: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: proactive work/proactive work: lifecycle",
+          "from": "proactive work in hand.proactive work active.Coda is working on the proactive work",
+          "to": "proactive work not in hand.No proactive work owed",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         }
       ]
     },
@@ -32372,10 +33953,10 @@
       ]
     },
     {
-      "label": "Coda finishes the answer",
-      "function": "event_coda_finishes_the_answer",
+      "label": "Coda finishes the answer with an update for you",
+      "function": "event_coda_finishes_the_answer_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The answer ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The answer ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -32397,7 +33978,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -32770,17 +34351,162 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the answer quietly",
+      "function": "event_coda_finishes_the_answer_quietly",
+      "cause": "Coda",
+      "intent": "The answer ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: answer/answer: lifecycle": [
+            "answer in hand.answer active.Coda is working on the answer"
+          ],
+          "Coda's work: answer/answer: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer in hand.answer active.Coda is working on the answer",
+          "to": "answer not in hand.answer given",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         }
       ]
     },
@@ -32984,10 +34710,10 @@
       ]
     },
     {
-      "label": "Coda finishes the reply revision",
-      "function": "event_coda_finishes_the_reply_revision",
+      "label": "Coda finishes the reply revision with an update for you",
+      "function": "event_coda_finishes_the_reply_revision_with_an_update_for_you",
       "cause": "Coda",
-      "intent": "The reply revision ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "intent": "The reply revision ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
       "needs": {
         "not": false,
         "states": {
@@ -33009,7 +34735,7 @@
         },
         "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
-      "family": "Coda finishes the {work}",
+      "family": "Coda finishes the {work} with an update for you",
       "shared_effects": [
         "may raise the urgency"
       ],
@@ -33382,17 +35108,192 @@
           "region": "This patient's update today",
           "from": "Nothing written to you today",
           "to": "Written to you, new",
-          "guard": null,
-          "optional": true,
-          "intent": "may write you an update"
+          "guard": null
         },
         {
           "region": "This patient's update today",
           "from": "Opened by you",
           "to": "Written to you, new",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Your reply text",
+          "from": "Untouched, shows Coda's newest text",
+          "to": "Coda's text replaced yours, Restore available",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Your reply text",
+          "from": "Your edited reply",
+          "to": "Coda's text replaced yours, Restore available",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Your reply text",
+          "from": "Your reply, with Coda's update offered",
+          "to": "Coda's text replaced yours, Restore available",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Your reply text",
+          "from": "Coda's text replaced yours, Restore available",
+          "to": "Coda's text replaced yours, Restore available",
+          "guard": null
+        },
+        {
+          "region": "Patient message: reply/Reply work open/Who has opened the reply",
+          "from": "Opened by you, unchanged since",
+          "to": "New to you",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda finishes the reply revision quietly",
+      "function": "event_coda_finishes_the_reply_revision_quietly",
+      "cause": "Coda",
+      "intent": "The reply revision ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: reply revision/reply revision: lifecycle": [
+            "reply revision in hand.reply revision active.Coda is working on the reply revision"
+          ],
+          "Coda's work: reply revision/reply revision: news while working": [
+            "Nothing new since it started"
+          ],
+          "Patient message: match": [
+            "No correction waiting on Undo.Another patient's message",
+            "No correction waiting on Undo.Coda is matching the message",
+            "No correction waiting on Undo.Linked to the patient",
+            "No correction waiting on Undo.Message to match.Waiting to be matched",
+            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
+            "No correction waiting on Undo.No message yet",
+            "No correction waiting on Undo.Not a patient, until the sender writes again"
+          ]
+        },
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
+      },
+      "family": "Coda finishes the {work} quietly",
+      "transitions": [
+        {
+          "region": "Coda's work: reply revision/reply revision: lifecycle",
+          "from": "reply revision in hand.reply revision active.Coda is working on the reply revision",
+          "to": "reply revision not in hand.No reply revision owed",
+          "guard": null
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": null,
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Seen by another physician, still new to you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Concern",
+          "from": "Needs attention",
+          "to": "No concern needs you.Closed by Coda",
+          "guard": {
+            "not": false,
+            "states": {
+              "Concern/Needs attention/Urgency": [
+                "For today"
+              ]
+            },
+            "reason": "Coda never retires an urgent concern nobody has opened (RP-289)"
+          },
+          "within": [
+            {
+              "not": false,
+              "states": {
+                "Concern/Needs attention/Who has opened it": [
+                  "Not yet opened by you"
+                ]
+              }
+            }
+          ],
+          "optional": true,
+          "intent": "may close the concern"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, new information since",
+          "to": "Active follow-up.Not yet due",
           "guard": null,
           "optional": true,
-          "intent": "may write you an update"
+          "intent": "may create a follow-up again on new information"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Not yet due",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may revise the follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "No follow-up",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Completed",
+          "to": "Active follow-up.Not yet due",
+          "guard": null,
+          "optional": true,
+          "intent": "may create a follow-up"
+        },
+        {
+          "region": "Follow-up",
+          "from": "Active follow-up.Due, its review owed",
+          "to": "Completed",
+          "guard": {
+            "not": true,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review",
+                "follow-up review in hand.follow-up review active.follow-up review owed, waiting to start",
+                "follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again",
+                "follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again"
+              ]
+            },
+            "reason": "a due follow-up stays due until its own review disposes of it (RP-830, X1)"
+          },
+          "optional": true,
+          "intent": "may complete the follow-up"
         },
         {
           "region": "Patient message: reply/Reply work open/Your reply text",

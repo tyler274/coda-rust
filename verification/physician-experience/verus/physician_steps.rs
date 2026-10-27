@@ -1483,8 +1483,11 @@ pub proof fn preserves_event_the_patient_sends_for_my_doctor(s: State, t: State)
 pub proof fn preserves_event_the_practice_s_visit_reaches_the_patient_s_duet(s: State, t: State)
     requires inductive(s), ensures event_the_practice_s_visit_reaches_the_patient_s_duet(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_initial_understanding(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_initial_understanding(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_initial_understanding_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_initial_understanding_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_initial_understanding_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_initial_understanding_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_coda_starts_the_initial_understanding(s: State, t: State)
     requires inductive(s), ensures event_coda_starts_the_initial_understanding(s, t) ==> inductive(t),
@@ -1525,8 +1528,11 @@ pub proof fn preserves_event_coda_waits_on_the_patient_review_for_missing_inform
 pub proof fn preserves_event_coda_can_t_restart_the_patient_review(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_patient_review(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_patient_review(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_patient_review(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_patient_review_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_patient_review_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_patient_review_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_patient_review_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_coda_takes_in_what_arrived_in_the_patient_review(s: State, t: State)
     requires inductive(s), ensures event_coda_takes_in_what_arrived_in_the_patient_review(s, t) ==> inductive(t),
@@ -1546,8 +1552,11 @@ pub proof fn preserves_event_coda_waits_on_the_follow_up_review_for_missing_info
 pub proof fn preserves_event_coda_can_t_restart_the_follow_up_review(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_follow_up_review(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_follow_up_review(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_follow_up_review(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_follow_up_review_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_follow_up_review_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_follow_up_review_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_follow_up_review_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_the_follow_up_comes_due(s: State, t: State)
     requires inductive(s), ensures event_the_follow_up_comes_due(s, t) ==> inductive(t),
@@ -1570,8 +1579,11 @@ pub proof fn preserves_event_coda_waits_on_the_weekly_review_for_missing_informa
 pub proof fn preserves_event_coda_can_t_restart_the_weekly_review(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_weekly_review(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_weekly_review(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_weekly_review(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_weekly_review_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_weekly_review_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_weekly_review_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_weekly_review_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_the_weekly_cycle_comes_round(s: State, t: State)
     requires inductive(s), ensures event_the_weekly_cycle_comes_round(s, t) ==> inductive(t),
@@ -1591,8 +1603,11 @@ pub proof fn preserves_event_coda_waits_on_the_visit_preparation_for_missing_inf
 pub proof fn preserves_event_coda_can_t_restart_the_visit_preparation(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_visit_preparation(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_visit_preparation(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_visit_preparation(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_visit_preparation_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_visit_preparation_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_visit_preparation_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_visit_preparation_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_the_visit_ends(s: State, t: State)
     requires inductive(s), ensures event_the_visit_ends(s, t) ==> inductive(t),
@@ -1624,8 +1639,11 @@ pub proof fn preserves_event_coda_waits_on_the_asked_reply_for_missing_informati
 pub proof fn preserves_event_coda_can_t_restart_the_asked_reply(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_asked_reply(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_asked_reply(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_asked_reply(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_asked_reply_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_asked_reply_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_asked_reply_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_asked_reply_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_the_disconnect_completes(s: State, t: State)
     requires inductive(s), ensures event_the_disconnect_completes(s, t) ==> inductive(t),
@@ -1648,8 +1666,11 @@ pub proof fn preserves_event_coda_waits_on_the_proactive_work_for_missing_inform
 pub proof fn preserves_event_coda_can_t_restart_the_proactive_work(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_proactive_work(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_proactive_work(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_proactive_work(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_proactive_work_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_proactive_work_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_proactive_work_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_proactive_work_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_coda_decides_to_take_something_on(s: State, t: State)
     requires inductive(s), ensures event_coda_decides_to_take_something_on(s, t) ==> inductive(t),
@@ -1669,8 +1690,11 @@ pub proof fn preserves_event_coda_waits_on_the_answer_for_missing_information(s:
 pub proof fn preserves_event_coda_can_t_restart_the_answer(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_answer(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_answer(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_answer(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_answer_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_answer_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_answer_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_answer_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_the_queued_message_starts(s: State, t: State)
     requires inductive(s), ensures event_the_queued_message_starts(s, t) ==> inductive(t),
@@ -1690,8 +1714,11 @@ pub proof fn preserves_event_coda_waits_on_the_reply_revision_for_missing_inform
 pub proof fn preserves_event_coda_can_t_restart_the_reply_revision(s: State, t: State)
     requires inductive(s), ensures event_coda_can_t_restart_the_reply_revision(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_coda_finishes_the_reply_revision(s: State, t: State)
-    requires inductive(s), ensures event_coda_finishes_the_reply_revision(s, t) ==> inductive(t),
+pub proof fn preserves_event_coda_finishes_the_reply_revision_with_an_update_for_you(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_reply_revision_with_an_update_for_you(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_coda_finishes_the_reply_revision_quietly(s: State, t: State)
+    requires inductive(s), ensures event_coda_finishes_the_reply_revision_quietly(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_coda_takes_in_what_arrived_in_the_reply_revision(s: State, t: State)
     requires inductive(s), ensures event_coda_takes_in_what_arrived_in_the_reply_revision(s, t) ==> inductive(t),
@@ -2270,7 +2297,8 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_a_shared_duet_record_arrives(s, t);
     preserves_event_the_patient_sends_for_my_doctor(s, t);
     preserves_event_the_practice_s_visit_reaches_the_patient_s_duet(s, t);
-    preserves_event_coda_finishes_the_initial_understanding(s, t);
+    preserves_event_coda_finishes_the_initial_understanding_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_initial_understanding_quietly(s, t);
     preserves_event_coda_starts_the_initial_understanding(s, t);
     preserves_event_the_initial_understanding_fails(s, t);
     preserves_event_coda_waits_on_the_initial_understanding_for_missing_information(s, t);
@@ -2284,14 +2312,16 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_patient_review_fails(s, t);
     preserves_event_coda_waits_on_the_patient_review_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_patient_review(s, t);
-    preserves_event_coda_finishes_the_patient_review(s, t);
+    preserves_event_coda_finishes_the_patient_review_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_patient_review_quietly(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_patient_review(s, t);
     preserves_event_open_the_patient_review_that_couldn_t_restart(s, t);
     preserves_event_coda_starts_the_follow_up_review(s, t);
     preserves_event_the_follow_up_review_fails(s, t);
     preserves_event_coda_waits_on_the_follow_up_review_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_follow_up_review(s, t);
-    preserves_event_coda_finishes_the_follow_up_review(s, t);
+    preserves_event_coda_finishes_the_follow_up_review_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_follow_up_review_quietly(s, t);
     preserves_event_the_follow_up_comes_due(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_follow_up_review(s, t);
     preserves_event_open_the_follow_up_review_that_couldn_t_restart(s, t);
@@ -2299,14 +2329,16 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_weekly_review_fails(s, t);
     preserves_event_coda_waits_on_the_weekly_review_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_weekly_review(s, t);
-    preserves_event_coda_finishes_the_weekly_review(s, t);
+    preserves_event_coda_finishes_the_weekly_review_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_weekly_review_quietly(s, t);
     preserves_event_the_weekly_cycle_comes_round(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_weekly_review(s, t);
     preserves_event_coda_starts_the_visit_preparation(s, t);
     preserves_event_the_visit_preparation_fails(s, t);
     preserves_event_coda_waits_on_the_visit_preparation_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_visit_preparation(s, t);
-    preserves_event_coda_finishes_the_visit_preparation(s, t);
+    preserves_event_coda_finishes_the_visit_preparation_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_visit_preparation_quietly(s, t);
     preserves_event_the_visit_ends(s, t);
     preserves_event_the_visit_comes_into_preparation_range(s, t);
     preserves_event_the_visit_is_cancelled(s, t);
@@ -2317,7 +2349,8 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_asked_reply_fails(s, t);
     preserves_event_coda_waits_on_the_asked_reply_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_asked_reply(s, t);
-    preserves_event_coda_finishes_the_asked_reply(s, t);
+    preserves_event_coda_finishes_the_asked_reply_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_asked_reply_quietly(s, t);
     preserves_event_the_disconnect_completes(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_asked_reply(s, t);
     preserves_event_open_the_asked_reply_that_couldn_t_restart(s, t);
@@ -2325,21 +2358,24 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_proactive_work_fails(s, t);
     preserves_event_coda_waits_on_the_proactive_work_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_proactive_work(s, t);
-    preserves_event_coda_finishes_the_proactive_work(s, t);
+    preserves_event_coda_finishes_the_proactive_work_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_proactive_work_quietly(s, t);
     preserves_event_coda_decides_to_take_something_on(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_proactive_work(s, t);
     preserves_event_coda_starts_the_answer(s, t);
     preserves_event_the_answer_fails(s, t);
     preserves_event_coda_waits_on_the_answer_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_answer(s, t);
-    preserves_event_coda_finishes_the_answer(s, t);
+    preserves_event_coda_finishes_the_answer_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_answer_quietly(s, t);
     preserves_event_the_queued_message_starts(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_answer(s, t);
     preserves_event_coda_starts_the_reply_revision(s, t);
     preserves_event_the_reply_revision_fails(s, t);
     preserves_event_coda_waits_on_the_reply_revision_for_missing_information(s, t);
     preserves_event_coda_can_t_restart_the_reply_revision(s, t);
-    preserves_event_coda_finishes_the_reply_revision(s, t);
+    preserves_event_coda_finishes_the_reply_revision_with_an_update_for_you(s, t);
+    preserves_event_coda_finishes_the_reply_revision_quietly(s, t);
     preserves_event_coda_takes_in_what_arrived_in_the_reply_revision(s, t);
     preserves_event_another_physician_opens_the_concern(s, t);
     preserves_event_another_physician_marks_the_concern_done(s, t);
