@@ -35,7 +35,11 @@ pub(super) mod command {
         pub physician: String,
         #[sea_orm(primary_key, auto_increment = false)]
         pub key: String,
+        /// The full command for 90 days, then only `{"salt", "sha256"}`.
         pub command: Json,
+        /// Database-clock seconds the command was accepted. Added by the
+        /// store's migration; rows older than that column carry its run time.
+        pub accepted_at: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

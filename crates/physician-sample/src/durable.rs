@@ -8,6 +8,13 @@ use local_product::runtime::{
 };
 use std::sync::Arc;
 
+/// Receipts reduced per compaction transaction.
+const RECEIPT_BATCH: u64 = 100;
+/// Compaction transactions per sweep, so one sweep stays bounded.
+const RECEIPT_BATCHES: usize = 20;
+/// Recovery ticks (10 s each) between compaction sweeps: one hour.
+const COMPACTION_TICKS: u64 = 360;
+
 /// Hosted chat owner used by the authenticated HTTP composition.
 #[derive(Clone)]
 pub struct DurableChat {
@@ -165,15 +172,51 @@ impl DurableChat {
         Ok(page.next)
     }
 
+    /// Reduces command receipts older than 90 days to their salted digest,
+    /// in batches of [`RECEIPT_BATCH`], at most [`RECEIPT_BATCHES`] per call.
+    /// Returns how many it reduced. Nothing is deleted.
+    pub async fn compact_receipts(&self) -> Result<u64, String> {
+        let mut total = 0;
+        for _ in 0..RECEIPT_BATCHES {
+            let reduced = self
+                .store
+                .compact_receipts(
+                    local_product::runtime::receipt::RECEIPT_FULL_SECONDS,
+                    RECEIPT_BATCH,
+                )
+                .await
+                .map_err(|e| e.to_string())?;
+            total += reduced;
+            if reduced < RECEIPT_BATCH {
+                break;
+            }
+        }
+        Ok(total)
+    }
+
     /// Explicitly starts recovery on the site's always-allocated CPU. Keep and
     /// abort the task on graceful shutdown. Construction never starts execution.
+    /// Receipt compaction runs on the first tick and then hourly.
     pub fn start_recovery(self: Arc<Self>) -> tokio::task::JoinHandle<()> {
         tokio::spawn(async move {
             let mut after = None;
             let mut revision_after = None;
             let mut ticks = tokio::time::interval(std::time::Duration::from_secs(10));
+            let mut tick: u64 = 0;
             loop {
                 ticks.tick().await;
+                if tick.is_multiple_of(COMPACTION_TICKS) {
+                    match self.compact_receipts().await {
+                        Ok(0) => {}
+                        Ok(reduced) => {
+                            tracing::info!(reduced, "physician command receipts reduced to digests")
+                        }
+                        Err(_) => {
+                            tracing::warn!("physician receipt compaction database unavailable")
+                        }
+                    }
+                }
+                tick = tick.wrapping_add(1);
                 match self.recover_page(after.as_ref()).await {
                     Ok(next) => after = next,
                     Err(_) => tracing::warn!("physician queue recovery database unavailable"),
