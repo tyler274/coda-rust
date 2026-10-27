@@ -284,7 +284,8 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
     // A stated calculated test fixes one of its open inputs: the one its level
     // moves, else the last. Plan which before anything is filled, so that input is
     // solved from the stated test, not read from its own level.
-    // Only a number solves; a text answer ("not calculated") is left as written.
+    // Only a number solves; a formula with an input answered in text ("not
+    // calculated") cannot, so it holds back none of its inputs.
     let mut numbers: Vec<&str> = (lab.results.iter())
         .filter(|r| r.value.is_some())
         .map(|r| r.test.as_str())
@@ -295,17 +296,19 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
         .collect();
     let mut plan: Vec<(&Identity, usize)> = Vec::new();
     for id in IDENTITIES.iter().rev() {
-        if !numbers.contains(&id.test) || id.inputs.iter().any(|t| at(t).is_none()) {
+        if !numbers.contains(&id.test)
+            || (id.inputs.iter()).any(|t| at(t).is_none() || answered.contains(t))
+        {
             continue;
         }
         let unknown: Vec<usize> = (0..id.inputs.len())
-            .filter(|&k| !numbers.contains(&id.inputs[k]) && !answered.contains(&id.inputs[k]))
+            .filter(|&k| !numbers.contains(&id.inputs[k]))
             .collect();
         let Some(&last) = unknown.last() else {
             continue;
         };
         plan.push((id, id.moves.filter(|m| unknown.contains(m)).unwrap_or(last)));
-        numbers.extend(id.inputs.iter().filter(|t| !answered.contains(t)));
+        numbers.extend(id.inputs);
     }
     let solved: Vec<&str> = plan.iter().map(|(id, k)| id.inputs[*k]).collect();
     let diff_open: Vec<&str> = DIFFERENTIAL

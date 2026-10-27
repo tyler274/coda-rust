@@ -851,19 +851,24 @@ fn a_stated_calculated_test_fixes_its_open_input_and_every_lab_formula_holds() {
     assert!(!disagrees(140), "TG/f with f = 8 is Martin-Hopkins");
     assert!(disagrees(60), "no lab's formula puts LDL 60 here");
 
-    // a result answered in text stays text: no number is solved into it
+    // a result answered in text stays text: no number is solved into it, and the
+    // formula it blocks holds back none of the other members
     let withheld = lipids(json!([{"test": "Total Cholesterol", "value": 260},
-        {"test": "High Density Lipoprotein", "value": 38},
         {"test": "Triglycerides", "value": 640},
         {"test": "Low Density Lipoprotein", "text": "Not calculated (triglycerides >400 mg/dL)"}]));
     let (p, errors) = measure::apply(&seed(), &withheld, &catalog());
     assert!(errors.is_empty(), "{errors:?}");
-    let ldl = p.events[0].labs[0]
-        .results
-        .iter()
-        .find(|r| r.test == "Low Density Lipoprotein")
-        .expect("ldl");
+    let result = |test: &str| {
+        p.events[0].labs[0]
+            .results
+            .iter()
+            .find(|r| r.test == test)
+            .unwrap_or_else(|| panic!("{test} left out"))
+    };
+    let ldl = result("Low Density Lipoprotein");
     assert!(ldl.value.is_none() && ldl.text.is_some(), "{ldl:?}");
+    assert!(result("High Density Lipoprotein").value.is_some());
+    assert!(result("Non-HDL Cholesterol").value.is_some());
 }
 
 #[test]
