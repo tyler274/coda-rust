@@ -49,6 +49,10 @@ cargo test --locked -p physician-sample --test worker -- --test-threads=1
 # shows "couldn't finish" and Try again (work.resume) gets the reply.
 cargo test --locked -p physician-sample --test recovery -- --test-threads=1
 cargo test --locked -p physician-sample --test try_again -- --test-threads=1
+# Hosted reply revisions: duplicate acceptance, pinned retries, cross-site reads,
+# physician-save fencing, missing/foreign draft isolation, earlier revisions'
+# evidence kept in their own history table, and a failed revision visible over HTTP.
+cargo test --locked -p physician-sample --test reply_revision -- --test-threads=1
 # A site instance that dies before its publish lands: another instance's sweep
 # finishes the turn. Exhausted worker leases fail the turn, announce it and
 # dead-letter its wakeup.

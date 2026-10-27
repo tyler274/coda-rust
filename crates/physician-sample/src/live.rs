@@ -66,7 +66,7 @@ pub(crate) struct Live {
     turns: AtomicU64,
     /// Set only when both the physician database and chat topic are configured.
     /// The site accepts and snapshots; the worker runs the model.
-    durable: Option<Arc<crate::durable::DurableChat>>,
+    pub(crate) durable: Option<Arc<crate::durable::DurableChat>>,
 }
 
 impl Live {
@@ -133,20 +133,7 @@ impl Live {
             bus,
             turns: AtomicU64::new(0),
             durable: None,
-            sources: match std::env::var_os("CODA_PHYSICIAN_SOURCE_SNAPSHOT") {
-                Some(path) => {
-                    let sources: Vec<local_product::physician_sources::SourceRevision> =
-                        serde_json::from_slice(
-                            &std::fs::read(path).expect("read physician source-owner snapshot"),
-                        )
-                        .expect("decode physician source-owner snapshot");
-                    for source in &sources {
-                        source.validate().expect("verify physician source revision");
-                    }
-                    sources
-                }
-                None => Vec::new(),
-            },
+            sources: source_snapshot().expect("load physician source-owner snapshot"),
         })
     }
 
@@ -177,7 +164,7 @@ impl Live {
             binding,
             session: Mutex::new(PhysicianSession::memory()),
             bus,
-            sources: Vec::new(),
+            sources: source_snapshot()?,
             turns: AtomicU64::new(0),
             durable: Some(chat),
         }))
@@ -271,6 +258,21 @@ fn chat_owner(ctx: Option<&AuthContext>) -> Option<ChatOwner> {
         practice: ctx.identity.practice_id.clone(),
         physician: ctx.identity.physician_id.clone(),
     })
+}
+
+/// Load only source-owner observations; an absent snapshot means no sources,
+/// never fabricated patient evidence. Both local and hosted acceptance pin it.
+fn source_snapshot() -> Result<Vec<local_product::physician_sources::SourceRevision>, String> {
+    let Some(path) = std::env::var_os("CODA_PHYSICIAN_SOURCE_SNAPSHOT") else {
+        return Ok(Vec::new());
+    };
+    let bytes = std::fs::read(path).map_err(|_| "read physician source-owner snapshot")?;
+    let sources: Vec<local_product::physician_sources::SourceRevision> =
+        serde_json::from_slice(&bytes).map_err(|_| "decode physician source-owner snapshot")?;
+    for source in &sources {
+        source.validate()?;
+    }
+    Ok(sources)
 }
 
 /// Chat titles until the model names chats: the first physician message on
@@ -461,16 +463,6 @@ pub(crate) async fn submit(
 }
 
 async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
-    if live.durable.is_some() {
-        return (
-            StatusCode::SERVICE_UNAVAILABLE,
-            Json(json!({
-                "outcome": "rejected",
-                "message": "Hosted reply revision is unavailable.",
-            })),
-        )
-            .into_response();
-    }
     let Some(ctx) = ctx else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
@@ -480,6 +472,9 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
     let Some(payload) = body.payload else {
         return rejected_submit();
     };
+    if live.durable.is_some() {
+        return crate::reply::accept_durable(&live, &ctx, &id, payload).await;
+    }
     // Text-only legacy cassettes cannot pretend to execute a structured reply
     // revision. API/structured replay are the supported revision transports.
     if matches!(live.model, ChatModel::Codex { .. }) {
