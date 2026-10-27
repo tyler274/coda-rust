@@ -14,9 +14,8 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 
 Where a change belongs, and how the dev shell, Doppler, and CI fit, is [AGENTS.md](AGENTS.md).
 
-The [personal engineering workstation recipe](infra/engineering-workstation/README.md)
-captures the Ubuntu/GCP desktop setup, private access, native scheduled tasks and
-the boundary between host packages, the Nix toolchain and account sign-in.
+Agent VM and sandbox recipes live in [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/e57a4a552ef14daa730589cdc14ff68a38a2dac1/deploy).
+This repository owns the Coda toolchain and the repository setup hook described below.
 
 ## Start
 
@@ -61,6 +60,29 @@ cargo run -p physician-sample
 `CODA_LOCAL_MODEL_EXECUTION=api` still calls OpenAI Responses and requires `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
 
 A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the sample server and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
+
+### Open-Inspect sandbox setup
+
+`nix develop .#agent` uses the same locked repository toolchain as the workstation,
+without Cursor or automatic Doppler credential discovery/loading. The desktop
+profile retains its existing behavior. Open-Inspect continues to own its sandbox
+runtime, Codex/Claude CLI pins, browser/terminal services and subscription delivery;
+this repository owns the Coda build/test environment.
+
+[`.openinspect/setup.sh`](.openinspect/setup.sh) is Open-Inspect's existing
+repository hook. It installs the checksum-pinned single-user Nix bootstrap when
+needed and materializes `.#agent`. The dev container uses that same bootstrap.
+Run this through Open-Inspect's prepared repository image workflow, then select
+the verified image. The runtime already preserves the sandbox filesystem on
+pause/resume; this adds no lifecycle or scheduling mechanism.
+
+Use `nix develop .#agent --command <command>` for Coda work in a sandbox. The hook
+warms the store; it does not replace the agent's process environment. No desktop
+login, Codex automation database, keyring, cloud identity or Doppler login is copied.
+Fresh-image toolchain/browser/database proof remains necessary before treating
+that image as qualified. A setup failure is fatal to an Open-Inspect image build;
+on an ordinary fresh session upstream reports a warning and continues, so a
+session alone is not evidence that the Coda toolchain was installed.
 
 ### Dev container
 
