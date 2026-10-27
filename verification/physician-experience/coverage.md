@@ -154,7 +154,6 @@ check prints the current counts.
 | Showing the Updates day | built | UpdatesSurface (physician-app lib.rs) | yes | Row list or the empty copy; rows themselves are thin (see Updates list). |
 | Showing the Updates day, with one quiet line and Retry | built | UpdatesSurface, use_read_view, ReadNotice (physician-app lib.rs) | yes | A failed refresh keeps the last list under a quiet line with Try again; a part-loaded day isn't distinguished. |
 | Couldn't load the Updates day, with Retry | built | UpdatesSurface, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t load Updates. with Try again, which re-reads all of the shell's reads. |
-| Showing the Updates day, loading more | missing |  | no | No paging or Show more; UpdatesResponse has no cursor or more flag. |
 
 ## Physician session/Signed in/Updates panel/Updates open/Which day
 
@@ -198,7 +197,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | Search closed | built | PhysicianShell sidebar Find patient item (physician-app lib.rs) | yes | With the ⌘ K hint. |
 | Search open.Search read.Loading the search | built | SearchDialog, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Searching… shows until the query being asked answers; an earlier query's rows or No patients match. never stand in. |
-| Search open.Search read.Showing the search | partial | SearchDialog (physician-app lib.rs) | no | Results with name and DOB, and No patients match. when empty, but no 50-at-a-time paging; PatientSearchResponse has no cursor. |
+| Search open.Search read.Showing the search | partial | SearchDialog (physician-app lib.rs) | no | Results with name and DOB, and No patients match. when empty, PatientSearchResponse has no cursor, so reaching every roster patient rests on the server returning every match. |
 | Search open.Search read.Showing the search, with one quiet line and Retry | missing |  | yes | A failed search drops to the couldn't-search error instead of keeping the results under a quiet line. |
 | Search open.Search read.Couldn't load the search, with Retry | built | SearchDialog, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t search patients. with Try again. |
 | Search open.Search read.Type to search | built | SearchDialog (physician-app lib.rs) | yes | An empty query shows no rows; the placeholder is the only prompt. |

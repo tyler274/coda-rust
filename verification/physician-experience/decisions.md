@@ -21,8 +21,10 @@ Linear, then the settled docs, then mockups.
 - **Behavior, not presentation (2026-10-26).** Layout, open and close, hover
   and paging belong to the surface map and the app, not the graph, as in
   Duet's. The graph keeps what the physician can do, what Coda does, and what
-  is guaranteed; a guarantee that lived in a screen detail stays as a plain
-  rule:
+  is guaranteed. It keeps what is open only when a read, an access limit or a
+  guarantee depends on it (the reader, Updates, Find patient, a source pane
+  and its load); how things open is the app's. A guarantee that lived in a
+  screen detail stays as a plain rule:
   - Opening an update is one event wherever the app offers it; previewing one
     never navigates or clears attention, only opening it does. Collapsing Coda
     to the orb is presentation.
@@ -35,7 +37,10 @@ Linear, then the settled docs, then mockups.
     (ENG-160); the step line is the surface's. The graph keeps that the work
     is running.
   - Find patient searches the whole roster on the server, and every roster
-    patient stays reachable; page size is the surface's.
+    patient stays reachable; Updates keeps every update of the day reachable.
+    How results and the day page in is the surface's.
+  - A source pane belongs to the surface that opened it and closes with it;
+    how many show at once is the surface's.
   - A draft is kept quietly; how it saves is the app's. When it can't be kept,
     it says Not saved with Retry, and nothing typed is lost (N3).
 - **Ideal state, not infrastructure (2026-10-24).** The graph is the ideal
@@ -94,7 +99,7 @@ Linear, then the settled docs, then mockups.
 12. A new message supersedes a stopped answer. The stopped answer stays in the
     transcript marked stopped, and Resume exists only until the physician sends
     something else.
-13. Coverage: reader navigation, Updates paging and earlier days, the orb, Find
+13. Coverage: reader navigation, every update of the day and earlier days, the orb, Find
     patient's read and failure, unavailable citations, and thumbs on briefings and
     reviews.
 14. Session expiry is not sign-out. A sign-in prompt covers the screen and hides

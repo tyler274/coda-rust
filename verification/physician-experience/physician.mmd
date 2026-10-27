@@ -29,8 +29,6 @@ stateDiagram-v2
 %% event open find patient | by you | needs SIn | reason: commands need an active session | You open the roster search.
 %% event close find patient | by you | needs SIn | reason: commands need an active session | You close the search.
 %% event type in find patient | by you | needs SIn | reason: commands need an active session | Each change searches the whole roster on the server.
-%% event more results load | by the practice system | More results append.
-%% event more results fail to load | by the practice system | What loaded stays, with a quiet line and Retry.
 %%
 %% Coda's work: one lifecycle for every kind (rewrite-worklist "Ideal behavior: Coda's work").
 %% Causes are other owners' events; they make work owed. Starting waits for what the work needs.
@@ -97,20 +95,17 @@ stateDiagram-v2
 %% event open an update | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | You read one update, from the Updates list or wherever the app offers it; opening records it seen and never removes it. Previewing one never navigates or clears attention; only opening it does (PX).
 %% event back to Updates | by you | You return to the list where you were.
 %% event close Updates | by you | You close the panel.
-%% event show more from this day | by you | needs SIn | reason: commands need an active session | The next page of the day appends.
 %% event {read} shows a saved copy | by the app | needs RdLoading@{key} | reason: only a read in progress shows a saved copy | What you saw last appears at once and refreshes quietly; loading shows only when nothing can.
 %% event {read} loads | by the practice system | A first read shows; a refresh updates what is shown in place, and an empty answer never replaces it (px.md:990).
 %% event {read} loads in part | by the practice system | What loaded shows with one quiet line and Retry; never read as empty (RP-217).
 %% event {read} fails to load | by the practice system | What was shown stays with one quiet line and Retry; with nothing shown, it says it couldn't load, with Retry (px.md:440).
 %% event retry {read} | by you | needs SIn, RdKept@{key}, RdFailed@{key} | reason: only a read that shows a problem offers Retry | You read it again; what is shown stays.
-%% event the next page loads | by the practice system | needs UdMore@day | reason: only a requested page arrives | More rows append.
-%% event the next page fails | by the practice system | needs UdMore@day | reason: only a requested page fails | The rows already shown stay, with Retry for the next page.
-%% event go to an earlier day | by you | needs SIn, RdShown@day, RdKept@day, UdMore@day | reason: Earlier comes from a read that named an earlier day (runtime-protocol.md:418) | You step back to the latest earlier day with rows you may see (PX-437).
+%% event go to an earlier day | by you | needs SIn, RdShown@day, RdKept@day | reason: Earlier comes from a read that named an earlier day (runtime-protocol.md:418) | You step back to the latest earlier day with rows you may see (PX-437).
 %% event return to today's updates | by you | needs SIn, UwEarlier | reason: Today shows only on an earlier day | You come back to today.
 %% event go to the next update | by you | needs SIn, AClin, UReading | reason: an update about a patient is clinical content | The reader steps to the next update, passing over conversation rows (px.md:432).
 %% event go to the previous update | by you | needs SIn, AClin, UReading | reason: an update about a patient is clinical content | The reader steps to the previous update, passing over conversation rows (px.md:432).
 %% event the practice connects a calendar | by the practice | needs ScOff@schedule | reason: only a practice without a calendar connects one | The schedule rail appears beside the list.
-%% event the schedule finds no calendar | by the practice system | There is no schedule area and the list takes the width (px.md:613).
+%% event the schedule finds no calendar | by the practice system | There is no schedule to show (px.md:613).
 %% event midnight passes | by the practice clock | The practice day turns over: Today, Updates on today and the schedule refresh in place, a read that failed tries again, and each patient's update for today starts over (runtime-protocol.md:174-182).
 %%
 %% The conversation. Coda's answer is one more kind of work above. Send while Coda answers steers
@@ -269,7 +264,7 @@ stateDiagram-v2
           state "Today" as PToday
           state "Patient page" as PPatient {
             %% The source pane, written once: it belongs to the surface that opened it and closes with it.
-            %% One pane at a time: a citation elsewhere closes this one; another citation here changes only it.
+            %% Another citation on that surface changes only it; how many panes show at once is the app's.
             state "Source pane" as SourceShape {
               %% shape source
               [*] --> EClosed
@@ -295,8 +290,6 @@ stateDiagram-v2
               EOpen --> EOpen : open a citation in the patient summary
               EClosed --> EOpen : go to a source from Sources
               EOpen --> EOpen : go to a source from Sources
-              EOpen --> EClosed : open a citation in the reader
-              EOpen --> EClosed : open a citation in Updates
             }
             [*] --> EPg
           }
@@ -305,8 +298,6 @@ stateDiagram-v2
               %% use source as conversation: where = in the conversation
               EClosed --> EOpen : open a citation in the conversation
               EOpen --> EOpen : open a citation in the conversation
-              EOpen --> EClosed : open a citation in the reader
-              EOpen --> EClosed : open a citation in Updates
             }
             [*] --> ECv
           }
@@ -399,10 +390,6 @@ stateDiagram-v2
               %% use source as reader: where = in the reader
               EClosed --> EOpen : open a citation in the reader
               EOpen --> EOpen : open a citation in the reader
-              EOpen --> EClosed : open a citation in Updates
-              EOpen --> EClosed : open a citation in the patient summary
-              EOpen --> EClosed : go to a source from Sources
-              EOpen --> EClosed : open a citation in the conversation
             }
             --
             state "Reading load" as RLoad {
@@ -439,11 +426,6 @@ stateDiagram-v2
           ROpen --> RNone : open the patient
           ROpen --> RNone : access to the patient narrows
           RLink --> RNone : access to the patient narrows
-          %% never OnePaneRdUp: Source open in the reader & Source open in Updates -- The shell shows one source pane at a time.
-          %% never OnePaneRdPg: Source open in the reader & Patient page.Source pane on the patient page.Source open on the patient page -- The shell shows one source pane at a time.
-          %% never OnePaneRdCv: Source open in the reader & Conversation.Source pane in the conversation.Source open in the conversation -- The shell shows one source pane at a time.
-          %% never OnePaneUpPg: Source open in Updates & Patient page.Source pane on the patient page.Source open on the patient page -- The shell shows one source pane at a time.
-          %% never OnePaneUpCv: Source open in Updates & Conversation.Source pane in the conversation.Source open in the conversation -- The shell shows one source pane at a time.
           %% never ClinicalReaderNeedsAccess: Reader open & Identity only -- Clinical content never shows without clinical access.
           %% never ClinicalReaderNeedsAnyAccess: Reader open & Cannot see the patient -- Clinical content never shows without access to the patient.
         }
@@ -474,24 +456,14 @@ stateDiagram-v2
               %% use source as updates: where = in Updates
               EClosed --> EOpen : open a citation in Updates
               EOpen --> EOpen : open a citation in Updates
-              EOpen --> EClosed : open a citation in the reader
-              EOpen --> EClosed : open a citation in the patient summary
-              EOpen --> EClosed : go to a source from Sources
-              EOpen --> EClosed : open a citation in the conversation
               EOpen --> EClosed : back to Updates
               EOpen --> EClosed : access to the patient narrows
             }
             --
             state "Updates day read" as UDay {
               %% use read as day: read = the Updates day
-              state "Showing the Updates day, loading more" as UdMore
-              RdShown --> UdMore : show more from this day
-              RdKept --> UdMore : show more from this day
-              UdMore --> RdShown : the next page loads
-              UdMore --> RdKept : the next page fails
               RdShown --> RdLoading : you change the Updates day
               RdKept --> RdLoading : you change the Updates day
-              UdMore --> RdLoading : you change the Updates day
               RdFailed --> RdLoading : return to today's updates
               RdFailed --> RdLoading : midnight passes [showing today]
               %% when UwToday | reason: an earlier day stays as you chose it
@@ -575,7 +547,7 @@ stateDiagram-v2
         }
         --
         %% PX "Find patient": one server-side roster search; every roster patient stays
-        %% reachable; a failed page keeps what loaded (PX-89, Dev 2026-10-23).
+        %% reachable (PX-89, Dev 2026-10-23). How results page is the app's.
         state "Find patient" as Search {
           [*] --> FClosed
           state "Search closed" as FClosed
@@ -589,8 +561,6 @@ stateDiagram-v2
               RdShown --> RdLoading : type in find patient
               RdKept --> RdLoading : type in find patient
               RdFailed --> RdLoading : type in find patient
-              RdShown --> RdShown : more results load
-              RdShown --> RdKept : more results fail to load
             }
           }
           FClosed --> FOpen : open find patient

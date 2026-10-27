@@ -58,12 +58,6 @@ pub proof fn preserves_event_open_a_citation_in_the_patient_summary(s: State, t:
 pub proof fn preserves_event_go_to_a_source_from_sources(s: State, t: State)
     requires inductive(s), ensures event_go_to_a_source_from_sources(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_open_a_citation_in_the_reader(s: State, t: State)
-    requires inductive(s), ensures event_open_a_citation_in_the_reader(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_open_a_citation_in_updates(s: State, t: State)
-    requires inductive(s), ensures event_open_a_citation_in_updates(s, t) ==> inductive(t),
-{}
 pub proof fn preserves_event_open_a_citation_in_the_conversation(s: State, t: State)
     requires inductive(s), ensures event_open_a_citation_in_the_conversation(s, t) ==> inductive(t),
 {}
@@ -160,6 +154,9 @@ pub proof fn preserves_event_open_past_work_from_the_follow_up(s: State, t: Stat
 pub proof fn preserves_event_open_the_work_that_raised_the_concern(s: State, t: State)
     requires inductive(s), ensures event_open_the_work_that_raised_the_concern(s, t) ==> inductive(t),
 {}
+pub proof fn preserves_event_open_a_citation_in_the_reader(s: State, t: State)
+    requires inductive(s), ensures event_open_a_citation_in_the_reader(s, t) ==> inductive(t),
+{}
 pub proof fn preserves_event_the_reading_shows_a_saved_copy(s: State, t: State)
     requires inductive(s), ensures event_the_reading_shows_a_saved_copy(s, t) ==> inductive(t),
 {}
@@ -211,6 +208,9 @@ pub proof fn preserves_event_go_to_the_previous_update(s: State, t: State)
 pub proof fn preserves_event_back_to_updates(s: State, t: State)
     requires inductive(s), ensures event_back_to_updates(s, t) ==> inductive(t),
 {}
+pub proof fn preserves_event_open_a_citation_in_updates(s: State, t: State)
+    requires inductive(s), ensures event_open_a_citation_in_updates(s, t) ==> inductive(t),
+{}
 pub proof fn preserves_event_the_updates_day_shows_a_saved_copy(s: State, t: State)
     requires inductive(s), ensures event_the_updates_day_shows_a_saved_copy(s, t) ==> inductive(t),
 {}
@@ -225,15 +225,6 @@ pub proof fn preserves_event_the_updates_day_fails_to_load(s: State, t: State)
 {}
 pub proof fn preserves_event_retry_the_updates_day(s: State, t: State)
     requires inductive(s), ensures event_retry_the_updates_day(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_show_more_from_this_day(s: State, t: State)
-    requires inductive(s), ensures event_show_more_from_this_day(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_the_next_page_loads(s: State, t: State)
-    requires inductive(s), ensures event_the_next_page_loads(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_the_next_page_fails(s: State, t: State)
-    requires inductive(s), ensures event_the_next_page_fails(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_go_to_an_earlier_day(s: State, t: State)
     requires inductive(s), ensures event_go_to_an_earlier_day(s, t) ==> inductive(t),
@@ -312,12 +303,6 @@ pub proof fn preserves_event_retry_the_search(s: State, t: State)
 {}
 pub proof fn preserves_event_type_in_find_patient(s: State, t: State)
     requires inductive(s), ensures event_type_in_find_patient(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_more_results_load(s: State, t: State)
-    requires inductive(s), ensures event_more_results_load(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_more_results_fail_to_load(s: State, t: State)
-    requires inductive(s), ensures event_more_results_fail_to_load(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_open_find_patient(s: State, t: State)
     requires inductive(s), ensures event_open_find_patient(s, t) ==> inductive(t),
@@ -1810,8 +1795,6 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_close_the_source(s, t);
     preserves_event_open_a_citation_in_the_patient_summary(s, t);
     preserves_event_go_to_a_source_from_sources(s, t);
-    preserves_event_open_a_citation_in_the_reader(s, t);
-    preserves_event_open_a_citation_in_updates(s, t);
     preserves_event_open_a_citation_in_the_conversation(s, t);
     preserves_event_open_the_patient(s, t);
     preserves_event_follow_a_link(s, t);
@@ -1844,6 +1827,7 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_close_the_reader(s, t);
     preserves_event_open_past_work_from_the_follow_up(s, t);
     preserves_event_open_the_work_that_raised_the_concern(s, t);
+    preserves_event_open_a_citation_in_the_reader(s, t);
     preserves_event_the_reading_shows_a_saved_copy(s, t);
     preserves_event_the_reading_loads(s, t);
     preserves_event_the_reading_loads_in_part(s, t);
@@ -1861,14 +1845,12 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_go_to_the_next_update(s, t);
     preserves_event_go_to_the_previous_update(s, t);
     preserves_event_back_to_updates(s, t);
+    preserves_event_open_a_citation_in_updates(s, t);
     preserves_event_the_updates_day_shows_a_saved_copy(s, t);
     preserves_event_the_updates_day_loads(s, t);
     preserves_event_the_updates_day_loads_in_part(s, t);
     preserves_event_the_updates_day_fails_to_load(s, t);
     preserves_event_retry_the_updates_day(s, t);
-    preserves_event_show_more_from_this_day(s, t);
-    preserves_event_the_next_page_loads(s, t);
-    preserves_event_the_next_page_fails(s, t);
     preserves_event_go_to_an_earlier_day(s, t);
     preserves_event_return_to_today_s_updates(s, t);
     preserves_event_midnight_passes(s, t);
@@ -1895,8 +1877,6 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_search_fails_to_load(s, t);
     preserves_event_retry_the_search(s, t);
     preserves_event_type_in_find_patient(s, t);
-    preserves_event_more_results_load(s, t);
-    preserves_event_more_results_fail_to_load(s, t);
     preserves_event_open_find_patient(s, t);
     preserves_event_close_find_patient(s, t);
     preserves_event_try_the_initial_understanding_again(s, t);
