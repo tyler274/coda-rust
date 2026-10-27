@@ -7,6 +7,7 @@ use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
 use harness::execution::{Item, Record, Request};
+use local_product::physician_sources::SourceRevision;
 use local_product::runtime::delivery::Delivery;
 use local_product::runtime::reply::{Draft, RevisionAttempt};
 use local_product::runtime::{MAX_FAILED_ATTEMPTS, Scope, Store};
@@ -22,6 +23,29 @@ mod support;
 const ORIGINAL: &str = "Thank you for your update. Please keep your appointment.";
 const SAVED: &str = "Physician's newer saved wording.";
 const INSTRUCTION: &str = "Make this reply shorter without changing the plan.";
+const SNAPSHOT_SOURCE: &str = "source-snapshot";
+const SNAPSHOT_CONTENT: &str = "Synthetic source observation from the retained snapshot.";
+
+/// A synthetic source revision in the seeded workspace.
+fn source(id: &str, revision: &str, content: &str) -> SourceRevision {
+    SourceRevision {
+        workspace: physician_sample::WORKSPACE_IDS[0].into(),
+        candidate_id: id.into(),
+        revision: revision.into(),
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        content: content.into(),
+        provenance: json!({"synthetic": true, "native_record": id}),
+    }
+}
+
+/// The source references named in a dispatched revision context.
+fn references(request: &Request) -> Value {
+    let Item::Message { text, .. } = &request.items[0] else {
+        panic!("revision context must be a message")
+    };
+    serde_json::from_str::<Value>(text).expect("revision request context")["source_references"]
+        .clone()
+}
 
 struct Running {
     database: support::Database,
@@ -106,17 +130,9 @@ impl Running {
         for (index, host) in hosts.iter_mut().enumerate() {
             let port = support::free_port();
             *host = format!("127.0.0.1:{port}");
-            // Different snapshots on A and B prove that a duplicate accepted
-            // on B cannot replace the exact observation originally pinned on A.
-            let content = format!("Synthetic source observation from site {index}.");
-            let sources = vec![local_product::physician_sources::SourceRevision {
-                workspace: physician_sample::WORKSPACE_IDS[0].into(),
-                candidate_id: format!("source-site-{index}"),
-                revision: format!("immutable-site-{index}"),
-                sha256: local_product::sha256_hex(content.as_bytes()),
-                content,
-                provenance: json!({"synthetic": true, "site": index}),
-            }];
+            // Both sites import the same retained snapshot into the shared
+            // runtime source store; the second import changes nothing.
+            let sources = vec![source(SNAPSHOT_SOURCE, "immutable-1", SNAPSHOT_CONTENT)];
             let snapshot = home.join(format!("sources-{index}.json"));
             std::fs::write(&snapshot, serde_json::to_vec(&sources).unwrap()).unwrap();
             let switch = if synthetic { "1" } else { "0" };
@@ -275,7 +291,6 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     let key = format!("revision-{}", uuid::Uuid::new_v4().simple());
     let command = revise(&scope, &key, 1);
     running.command(0, &command, "accepted").await;
-    running.command(1, &command, "accepted").await;
     let accepted = running.store.draft(&scope).await.unwrap().unwrap();
     let input = accepted.input.clone().expect("accepted input");
     assert_eq!(input.key, key);
@@ -283,27 +298,32 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     assert_eq!(input.instruction, INSTRUCTION);
     assert_eq!(input.timezone, "America/New_York");
     assert_eq!(accepted.base_text, ORIGINAL);
-    assert_eq!(accepted.sources.len(), 1);
-    assert_eq!(accepted.sources[0].candidate_id, "source-site-0");
     assert_eq!(
-        accepted.sources[0].content,
-        "Synthetic source observation from site 0."
+        accepted.sources,
+        vec![source(SNAPSHOT_SOURCE, "immutable-1", SNAPSHOT_CONTENT)],
+        "both sites imported one snapshot into one store"
     );
-    assert!(
-        accepted
-            .sources
-            .iter()
-            .all(|source| source.workspace == scope.workspace)
-    );
+    // The first attempt dispatches on the accepted pin, then fails.
+    let first = running
+        .wait_draft(&scope, |draft| !dispatches(draft).is_empty())
+        .await;
+    assert_eq!(first.attempts[0].sources, accepted.sources);
+    // A lab arrives, then a duplicate is accepted on the other site. The
+    // duplicate answers from its receipt and does not re-pin.
+    let lab = source("lab-arrived", "immutable-1", "Creatinine 2.4 mg/dL (high).");
+    running.store.record_source(&lab).await.unwrap();
+    running.command(1, &command, "accepted").await;
+    let duplicate = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(duplicate.input.as_ref(), Some(&input));
+    if duplicate.attempts.len() == 1 {
+        assert_eq!(duplicate.sources_version, first.sources_version);
+        assert_eq!(duplicate.sources, accepted.sources);
+    }
 
     let complete = running
         .wait_draft(&scope, |draft| draft.status == "completed")
         .await;
     assert_eq!(complete.input.as_ref(), Some(&input));
-    assert_eq!(
-        serde_json::to_value(&complete.sources).unwrap(),
-        serde_json::to_value(&accepted.sources).unwrap()
-    );
     assert_eq!(
         complete
             .attempts
@@ -318,30 +338,29 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
             .iter()
             .all(|attempt| attempt.input_id == input.key)
     );
+    // The retry ran on the newest sources, not the original pin.
+    let mut newest = accepted.sources.clone();
+    newest.push(lab.clone());
+    newest.sort_by(|a, b| a.candidate_id.cmp(&b.candidate_id));
+    assert_eq!(complete.attempts[0].sources, accepted.sources);
+    assert_eq!(complete.attempts[1].sources, newest);
+    assert_eq!(complete.sources, newest);
+    assert!(complete.attempts.iter().all(|a| a.refreshes.is_empty()));
     assert_eq!(complete.revision, 2);
     assert_eq!(complete.text, support::FIXED_TEXT);
     assert_eq!(complete.restore_text.as_deref(), Some(ORIGINAL));
     let requests = dispatches(&complete);
     assert_eq!(requests.len(), 2, "one provider call on each delivery");
-    assert_eq!(
-        requests[0], requests[1],
-        "retry must dispatch the exact same input and pinned source references"
-    );
     let Item::Message { text, .. } = &requests[0].items[0] else {
         panic!("revision context must be a message")
     };
     let context: Value = serde_json::from_str(text).expect("revision request context");
     assert_eq!(context["saved_draft"], ORIGINAL);
     assert_eq!(context["instruction"], INSTRUCTION);
+    assert_eq!(references(requests[0]), json!([SNAPSHOT_SOURCE]));
     assert_eq!(
-        context["source_references"],
-        json!(
-            accepted
-                .sources
-                .iter()
-                .map(|source| &source.candidate_id)
-                .collect::<Vec<_>>()
-        )
+        references(requests[1]),
+        json!(newest.iter().map(|s| &s.candidate_id).collect::<Vec<_>>())
     );
 
     let (status, read) = running.read(1, &scope).await;
@@ -376,6 +395,138 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
         running.store.read(&scope).await.unwrap().is_none(),
         "revision must not create chat work"
     );
+}
+
+/// Whether any item in `request` is a terminal result with `outcome`.
+fn has_outcome(request: &Request, outcome: &str) -> bool {
+    request
+        .items
+        .iter()
+        .any(|item| matches!(item, Item::Result { value, .. } if value["outcome"] == outcome))
+}
+
+/// Whether `request` carries an exact read of `source` at its revision.
+fn has_read(request: &Request, source: &SourceRevision) -> bool {
+    request.items.iter().any(|item| match item {
+        Item::Result { value, .. } => value["results"].as_array().is_some_and(|results| {
+            results.iter().any(|r| {
+                r["reference"] == source.candidate_id.as_str()
+                    && r["revision"] == source.revision.as_str()
+                    && r["content"] == source.content.as_str()
+            })
+        }),
+        _ => false,
+    })
+}
+
+#[tokio::test]
+async fn a_source_arriving_mid_revision_is_read_before_the_revision_publishes() {
+    let Some(running) = Running::start("reply_arrival", 0, 1500).await else {
+        return;
+    };
+    let scope = running.seed().await;
+    running
+        .command(0, &revise(&scope, "revision-arrival", 1), "accepted")
+        .await;
+    let accepted = running.store.draft(&scope).await.unwrap().unwrap();
+    // The model is working on the accepted pin when a lab arrives.
+    running
+        .wait_draft(&scope, |draft| !dispatches(draft).is_empty())
+        .await;
+    let lab = source("lab-arrived", "immutable-1", "Potassium 5.9 mmol/L (high).");
+    running.store.record_source(&lab).await.unwrap();
+
+    // The finish on the older reading publishes nothing; the attempt records
+    // the refresh while revision 1 is still the saved draft.
+    let refreshed = running
+        .wait_draft(&scope, |draft| {
+            draft.attempts.iter().any(|a| !a.refreshes.is_empty())
+        })
+        .await;
+    assert_eq!(
+        refreshed.revision, 1,
+        "nothing published on the older reading"
+    );
+    assert_eq!(refreshed.text, ORIGINAL);
+
+    let complete = running
+        .wait_draft(&scope, |draft| draft.status == "completed")
+        .await;
+    assert_eq!(complete.attempts.len(), 1, "a catch-up is not a failure");
+    assert_eq!(complete.failures, 0);
+    let attempt = &complete.attempts[0];
+    assert_eq!(attempt.refreshes.len(), 1);
+    let refresh = &attempt.refreshes[0];
+    assert_eq!(refresh.from_version, accepted.sources_version);
+    assert_eq!(refresh.added, vec![lab.clone()]);
+    assert!(refresh.corrected.is_empty() && refresh.withdrawn.is_empty());
+    // The attempt keeps what it claimed; the refresh records what came after.
+    assert_eq!(attempt.sources, accepted.sources);
+    assert!(!attempt.sources.contains(&lab));
+    assert!(complete.sources.contains(&lab));
+    assert_eq!(complete.sources_version, refresh.to_version);
+
+    // First call: finish on the accepted set. Second: sees sources_changed
+    // and reads the lab. Third: holds that exact read, then finishes.
+    let requests = dispatches(&complete);
+    assert_eq!(requests.len(), 3, "{requests:#?}");
+    assert!(!has_outcome(requests[0], "sources_changed"));
+    assert!(has_outcome(requests[1], "sources_changed"));
+    assert!(!has_read(requests[1], &lab));
+    assert!(has_read(requests[2], &lab));
+    assert_eq!(complete.revision, 2);
+    assert_eq!(complete.text, support::FIXED_TEXT);
+    let (status, read) = running.read(1, &scope).await;
+    assert_eq!(status, 200, "{read}");
+    assert_eq!(read["revision"], 2);
+    assert_eq!(read["text"], support::FIXED_TEXT);
+}
+
+#[tokio::test]
+async fn a_chart_that_keeps_changing_fails_the_revision_and_keeps_the_draft() {
+    let Some(running) = Running::start("reply_churn", 0, 300).await else {
+        return;
+    };
+    let scope = running.seed().await;
+    running
+        .command(0, &revise(&scope, "revision-churn", 1), "accepted")
+        .await;
+    // Sources keep arriving faster than any model call returns.
+    let mut arrivals = 0u32;
+    let failed = loop {
+        let draft = running.store.draft(&scope).await.unwrap().unwrap();
+        if draft.status == "failed" {
+            break draft;
+        }
+        assert_ne!(draft.status, "completed", "published on an older reading");
+        arrivals += 1;
+        let lab = source(
+            &format!("lab-churn-{arrivals}"),
+            "immutable-1",
+            &format!("Synthetic churn observation {arrivals}."),
+        );
+        running.store.record_source(&lab).await.unwrap();
+        assert!(arrivals < 2000, "revision never ended: {draft:?}");
+        tokio::time::sleep(Duration::from_millis(60)).await;
+    };
+    assert_eq!(failed.revision, 1);
+    assert_eq!(failed.text, ORIGINAL);
+    let refreshes: usize = failed.attempts.iter().map(|a| a.refreshes.len()).sum();
+    assert!(refreshes > 0, "{failed:?}");
+    // Catch-ups spent the revision's one call budget; no attempt got a
+    // fresh one, and no attempt completed.
+    assert_eq!(dispatches(&failed).len(), 8);
+    assert!(failed.attempts.iter().all(|a| a.status != "completed"));
+    for site in 0..2 {
+        let (status, read) = running.read(site, &scope).await;
+        assert_eq!(status, 200, "{read}");
+        assert_eq!(read["revision"], 1);
+        assert_eq!(read["text"], ORIGINAL);
+        assert_eq!(
+            read["revision_run"],
+            json!({"run_id": "revision-churn", "status": "failed"})
+        );
+    }
 }
 
 #[tokio::test]

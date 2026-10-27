@@ -68,7 +68,7 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     let first = input("first", 1);
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32], vec![])
+            .accept_revision(&scope, &first, vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::Refused
@@ -80,14 +80,14 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32], vec![])
+            .accept_revision(&scope, &first, vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::New
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32], vec![])
+            .accept_revision(&scope, &first, vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::Duplicate
@@ -96,13 +96,13 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     collision.instruction = "Different".into();
     assert!(
         store
-            .accept_revision(&scope, &collision, vec![7; 32], vec![])
+            .accept_revision(&scope, &collision, vec![7; 32])
             .await
             .is_err()
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &input("busy", 1), vec![7; 32], vec![])
+            .accept_revision(&scope, &input("busy", 1), vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::Refused
@@ -138,7 +138,7 @@ async fn reply_publication_requires_evidence_authority_and_current_revision() {
     let (store, scope) = setup().await;
     store.open_draft(&scope, "Original").await.unwrap();
     store
-        .accept_revision(&scope, &input("first", 1), vec![7; 32], vec![])
+        .accept_revision(&scope, &input("first", 1), vec![7; 32])
         .await
         .unwrap();
     let claim = store
@@ -221,7 +221,7 @@ async fn reply_history_keeps_completed_attempts_append_only() {
     let mut completed = Vec::new();
     for (index, key) in ["first", "second", "third"].iter().enumerate() {
         store
-            .accept_revision(&scope, &input(key, index as u64 + 1), vec![7; 32], vec![])
+            .accept_revision(&scope, &input(key, index as u64 + 1), vec![7; 32])
             .await
             .unwrap();
         let claim = store
@@ -272,7 +272,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
     store.open_draft(&scope, "Original").await.unwrap();
     let first = input("first", 1);
     store
-        .accept_revision(&scope, &first, vec![7; 32], vec![])
+        .accept_revision(&scope, &first, vec![7; 32])
         .await
         .unwrap();
     let late = store
@@ -301,7 +301,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
         .await
         .unwrap();
     store
-        .accept_revision(&scope, &input("second", 2), vec![7; 32], vec![])
+        .accept_revision(&scope, &input("second", 2), vec![7; 32])
         .await
         .unwrap();
     let second = store
@@ -397,7 +397,7 @@ async fn earlier_revisions_read_in_archive_order_not_key_order() {
     for (index, key) in keys.iter().enumerate() {
         let revision = index as u64 + 1;
         store
-            .accept_revision(&scope, &input(key, revision), vec![7; 32], vec![])
+            .accept_revision(&scope, &input(key, revision), vec![7; 32])
             .await
             .unwrap();
         store
@@ -434,7 +434,7 @@ async fn earlier_revisions_read_in_archive_order_not_key_order() {
     for (index, key) in ["other-1", "other-2"].iter().enumerate() {
         let revision = index as u64 + 1;
         store
-            .accept_revision(&other, &input(key, revision), vec![7; 32], vec![])
+            .accept_revision(&other, &input(key, revision), vec![7; 32])
             .await
             .unwrap();
         store
@@ -524,7 +524,7 @@ async fn authorized_opening_is_idempotent_scoped_and_fenced_by_authority() {
     assert_eq!(saved, 2);
     assert_eq!(
         store
-            .accept_revision(&scope, &input("kept", 2), vec![7; 32], vec![])
+            .accept_revision(&scope, &input("kept", 2), vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::New
