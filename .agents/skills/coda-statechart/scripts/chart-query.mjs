@@ -57,7 +57,7 @@ function describe(t, g, event) {
     const kind = w.cause ? `${w.owner ? "the event's" : "this step's"} cause, ${w.cause}, always needs` : w.owner ? "the event's own needs" : "part condition";
     parts.push(`${kind}: ${guardWords(w)}`);
   }
-  for (const c of t.unless ?? []) parts.push(`blocked while ${c.map(guardWords).join(" and ")}`);
+  for (const c of t.unless ?? []) parts.push(c.length ? `blocked while ${c.map(guardWords).join(" and ")}` : "never: its command needs nothing that can fail");
   if (e) {
     parts.push(`cause: ${e.cause}`);
     if (e.needs) parts.push(`needs: ${limitWords(e.needs)}`);

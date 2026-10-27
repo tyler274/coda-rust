@@ -243,7 +243,7 @@ function expandCommands(root, names, catalog, limitOf) {
       // when any of it fails.
       declare(through, { cause: "the system", accepts: click, needs: inFlight(sending, needs),
         intent: `Accepted while the command is still allowed, directly or after the same request is resent; only now does ${item} change.` }, values, limits);
-      declare(refused, { cause: "the system", needs: inFlight(sending), ...(needs ? { refuses: needs } : {}), ...(limits.length ? { refuseLimits: limits } : {}),
+      declare(refused, { cause: "the system", needs: inFlight(sending), refusal: true, ...(needs ? { refuses: needs } : {}), ...(limits.length ? { refuseLimits: limits } : {}),
         intent: `${item[0].toUpperCase()}${item.slice(1)} no longer allows it when it arrives; nothing changes, and the view refreshes and says why.` }, values);
       declare(lost, { cause: "the client", needs: inFlight(sending), intent: "The same request was resent and still has no answer; you are asked, with Check again." }, values);
       declare(again, { cause: "you", needs: inFlight(stuck, null, "Check again shows only when an answer couldn't be confirmed"), intent: "The same request is resent; it can never be applied twice." }, values);
@@ -251,7 +251,7 @@ function expandCommands(root, names, catalog, limitOf) {
       transitions.push(
         step(idle, sending, click, { ...(needs ? { needsIds: needs } : {}), ...(client ? { when: client } : {}) }),
         step(sending, idle, through, needs ? { needsIds: needs } : {}),
-        step(sending, idle, refused, { ...(needs ? { refuseIds: needs } : {}), ...(limits.length ? { refuseLimits: limits } : {}) }),
+        step(sending, idle, refused, { refusal: true, ...(needs ? { refuseIds: needs } : {}), ...(limits.length ? { refuseLimits: limits } : {}) }),
         step(sending, stuck, lost),
         step(stuck, sending, again));
       accepted.set(click, { through, sending, inFlight });

@@ -214,7 +214,7 @@ state and, per command, *sending* and *couldn't confirm*. The click moves only t
 receipt, so ITEM's other commands wait while one is in flight. Every other edge drawn
 on the click reacts to `your VERB on ITEM goes through` instead (needs as the click),
 so ITEM changes only on acceptance. `your VERB on ITEM is refused` fires exactly while
-the needs fail and changes nothing else. `your VERB on ITEM can't be confirmed` moves
+the needs fail and changes nothing else; a command that needs nothing is never refused. `your VERB on ITEM can't be confirmed` moves
 sending to couldn't confirm, and `check your VERB on ITEM again` moves it back; a
 resent request is the same request, so a lost answer stays *sending*. Every outcome
 needs its command in flight (*sending*, or *couldn't confirm* for Check again), so no

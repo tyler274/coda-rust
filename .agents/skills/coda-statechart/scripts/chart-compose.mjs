@@ -144,8 +144,8 @@ export function compose(text, options = {}) {
         ...(g.reason ? { reason: g.reason } : {}), ...(g.cause ? { cause: g.cause } : {}) });
       const all = [decl.needs, ...limits].filter(Boolean).map(prefixed);
       if (all.length) ownerNeeds.set(l, all);
-      if (decl.refuses || decl.refuseLimits)
-        ownerRefuses.set(l, { ...(decl.refuses ? { refuseIds: prefixed(decl.refuses) } : {}),
+      if (decl.refusal)
+        ownerRefuses.set(l, { refusal: true, ...(decl.refuses ? { refuseIds: prefixed(decl.refuses) } : {}),
           ...(decl.refuseLimits ? { refuseLimits: decl.refuseLimits.map(prefixed) } : {}) });
     }
   for (const { key, x } of expanded) {
@@ -178,7 +178,7 @@ export function compose(text, options = {}) {
           const s = t.label && followed(key, t.label);
           if (!s) return [{ ...t, label: label(t.label), text: t.label ? t.text.replace(t.label, label(t.label)) : t.text }];
           return s.owners.map((o) => {
-            if ((t.refuseIds || t.refuseLimits) && ownerRefuses.has(o.label))
+            if (t.refusal && ownerRefuses.has(o.label))
               throw new Error(`${key}'s refusal "${t.label}" can't be shared onto the refusal "${o.label}"; share it onto an event that is not a refusal`);
             return { ...t, label: o.label, text: t.text.replace(t.label, o.label), shared: true,
               ...(ownerNeeds.has(o.label) ? { ownerIds: ownerNeeds.get(o.label) } : {}),

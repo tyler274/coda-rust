@@ -767,6 +767,18 @@ test("a cause's limit holds for every event it causes, as its own condition noth
   refused(limited.replace("  %% events declared\n", "  %% events declared\n  %% cause the courier | needs Gone\n"), /the cause "the courier" is declared twice/);
 });
 
+test("a command that needs nothing is never refused: nothing it needs can fail", () => {
+  const idle = "No command on the item in flight", sending = "Close on the item: sending; other commands on it wait";
+  const f = generated(office.replace("command on the item: Close, clicked while In | needs Open | reason: only a signed-in physician closes an open item |", "command on the item: Close |"));
+  const { state: s, event: e } = names(f);
+  addProof(f, `
+    assert forall|a: State, x: State| !${e("your Close on the item is refused")}(a, x) by {};
+    assert forall|x: State| ${e("your Close on the item goes through")}(${s("Out", "Open", sending)}, x) == (x == ${s("Out", "Closed", idle)}) by {};
+  `);
+  verify(f);
+  assert.match(cmd("query", f.input, "--event", "your Close on the item is refused").stdout, /never: its command needs nothing that can fail/);
+});
+
 test("a command is accepted only while its click's limits still hold, and refused when they fail", () => {
   const f = generated(office.replace("%% events declared\n", "%% events declared\n%% cause the physician | needs In | reason: only a signed-in physician acts\n")
     .replace("%% event close the item | by you | command on the item: Close, clicked while In |", "%% event close the item | by the physician | command on the item: Close |"));

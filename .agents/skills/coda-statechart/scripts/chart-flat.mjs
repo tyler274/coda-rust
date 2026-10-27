@@ -173,6 +173,7 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
             ...(t.causeIds ? { causeIds: t.causeIds } : {}),
             ...(within.length ? { within } : {}),
             ...(blockers ? { unless: blockers } : {}),
+            ...(t.refusal ? { refusal: true } : {}),
             ...(t.refuseIds ? { refuseIds: t.refuseIds } : {}),
             ...(t.refuseLimits ? { refuseLimits: t.refuseLimits } : {}),
             ...(enter ? { enter } : {}),
@@ -180,8 +181,8 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
             ...(t.intent ? { intent: t.intent } : {}),
           });
         const own = t.shared ? { needsIds: t.needsIds, ownerIds: t.ownerIds, causeIds: t.causeIds } : {};
-        if (t.label && (t.when || own.needsIds || own.ownerIds || own.causeIds || t.refuseIds || t.refuseLimits))
-          pendingUnless.push([key, { within: source, when: t.when, ...own, refuseIds: t.refuseIds, refuseLimits: t.refuseLimits }]);
+        if (t.label && (t.when || own.needsIds || own.ownerIds || own.causeIds || t.refusal))
+          pendingUnless.push([key, { within: source, when: t.when, ...own, refusal: t.refusal, refuseIds: t.refuseIds, refuseLimits: t.refuseLimits }]);
         else if (t.label && source) pendingNegated.push([key, { ...source, not: true }]);
         else if (t.label) pending.push(key);
       }
@@ -305,21 +306,21 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
         ...(c.refuseLimits ?? []).map((l) => standing(l, t.label))];
       // A shallower step yields to each deeper one exactly while that one is enabled: its part,
       // guard, needs and limits hold, and a refusal's command fails somewhere (one blocker per
-      // region of each condition it needs).
+      // region of each condition it needs; none when it needs nothing, since nothing can fail).
       if (t.unless) t.unless = t.unless.flatMap((c) => {
         const all = [...(c.within ? [c.within] : []),
           ...(c.when ? [guard(c.when, name)] : []),
           ...(c.needsIds ? [needs(c.needsIds, t.label)] : []),
           ...(c.causeIds ?? []).map((l) => standing(l, t.label)),
           ...(c.ownerIds ?? []).map((o) => ({ ...(o.cause ? standing(o, t.label) : needs(o, t.label)), owner: true }))];
-        const failing = refusing(c);
-        if (!failing.length) return [all];
-        return failing.flatMap((g) => Object.entries(g.states)
+        if (!c.refusal) return [all];
+        return refusing(c).flatMap((g) => Object.entries(g.states)
           .map(([region, states]) => [...all, { not: !g.not, states: { [region]: states } }]));
       });
-      // A command is refused exactly while what it needs fails.
-      if (t.refuseIds || t.refuseLimits) {
+      // A command is refused exactly while what it needs fails; needing nothing, it never is.
+      if (t.refusal) {
         t.unless = [...(t.unless ?? []), refusing(t)];
+        delete t.refusal;
         delete t.refuseIds;
         delete t.refuseLimits;
       }
