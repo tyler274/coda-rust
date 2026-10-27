@@ -5,7 +5,7 @@ graph ([duet.mmd](duet.mmd)) owns the behavior and cites these by source and
 date. A later decision supersedes an earlier one only where it says so.
 
 Sources, in precedence order: Dev in session, then Linear (the Duet and
-Connected care projects, ENG-n), then the settled coda-app docs at 5a1dc47b
+Connected care projects), then the settled coda-app docs at 5a1dc47b
 (north-star.md, behaviour-contract.md as A1-G2, ui-surface-map.md), then
 mockups. The coda-app docs describe the iPhone app before the Rust migration;
 where Linear has since changed a decision (sign-in methods, Android, the web),
@@ -53,8 +53,8 @@ Linear wins.
 
 - One account per person whatever the sign-in method: Apple or email on iPhone,
   Google or email on Android, email on the web and for practice invitations;
-  joining from an invitation links to the account you already have (ENG-161,
-  ENG-111, Dev 2026-10-20). This supersedes north-star.md's Apple-only sign-in.
+  joining from an invitation links to the account you already have (Dev
+  2026-10-20). This supersedes north-star.md's Apple-only sign-in.
 - Setup order: Terms, a display name only when the sign-in brought none, then
   the AI choice (north-star.md, Identity and setup, steps 1-4). Newer Terms
   published during setup send you back to agree to them. The one optional
@@ -81,11 +81,11 @@ Linear wins.
   follow-through).
 - Sign out on this device leaves other devices and sharing alone; sign out
   everywhere ends every session and reports done only once they have ended
-  (north-star.md sign-out; ENG-161).
+  (north-star.md sign-out).
 - Deletion removes everything, stops all sharing including with a practice,
   finishes if interrupted, and is never brought back by old work or a restored
-  backup (ENG-161, F2).
-- Export (ENG-161, journey D5): you ask for everything Duet keeps about you,
+  backup (F2).
+- Export (journey D5): you ask for everything Duet keeps about you,
   each item with its source and date (north-star.md, Source access, export and
   deletion lists what it covers); deleting your account ends it.
   Assumed, not yet decided by Dev: one export is prepared at a time; it ends
@@ -133,26 +133,26 @@ Linear wins.
 - Modeling note: "Your latest message" tracks the newest message on its way, on
   the account;
   each earlier message keeps its own state the same way. Person-to-person
-  Shared is removed (ENG-141, Dev 2026-10-21), so "sharing" in the graph means
+  Shared is removed (Dev 2026-10-21), so "sharing" in the graph means
   a practice connection.
-- Conflict for Tyler, not the graph: ENG-191 refuses a new message while a
-  model command is in flight for the account. The graph never refuses: a
-  message sent while Duet writes steers the reply.
+- A message sent while Duet writes steers the reply. The runtime must preserve
+  this when limiting concurrent model work; see
+  [One reply at a time, steered](infrastructure-gaps.md#one-reply-at-a-time-steered).
 
 ## Follow-through (step 3)
 
 - Duet saves a Plan, Reminder or Check-in only from your current message or a
-  proposal you accepted; a goal alone creates no schedule (Dev 2026-09-25;
-  ENG-34).
+  proposal you accepted; a goal alone creates no schedule (Dev 2026-09-25).
 - Reading a record or a provider's note adds no step: what you asked for in
   your own message is saved and runs, and nothing Duet read can ask for more
-  than you did (ENG-34; Dev 2026-10-25, replacing the earlier rule from D11 and
+  than you did (Dev 2026-10-25, replacing the earlier rule from D11 and
   Dev 2026-09-25 that such follow-through waits for your Start).
 - You edit, pause, resume and cancel follow-through, directly or in
   conversation; an edit, pause or cancel ends a run in progress for good
   (backend-architecture.md, Accepted follow-through: the person's edit, pause
-  or cancel "remains permanent for the old assignment"; ENG-34). In conversation, Duet's AI changes, pauses, cancels or deletes only
-  as your message asked, and never resumes or starts anything; only you do.
+  or cancel "remains permanent for the old assignment"). In conversation,
+  Duet's AI changes, pauses, cancels or deletes only as your message asked,
+  and never resumes or starts anything; only you do.
 - A Reminder delivers your agreed words with no new AI; a Check-in uses Duet's
   AI. Both need your consent, the AI switch and current Terms, and pause with
   proactive work; both continue through inactivity (D10; north-star.md).
@@ -173,7 +173,7 @@ Linear wins.
 - Your own edit, pause, resume or cancel of a Reminder or Check-in makes a reply
   already writing look again, so it never overwrites your change (D9;
   behaviour-contract rule 16), as your Plan edits already do. Today, not the companion's card, is where
-  Plans, Reminders and Check-ins live (ENG-34, ENG-168).
+  Plans, Reminders and Check-ins live.
 - Modeling note: one item per kind stands for each saved item of that kind.
 
 ## Duet's reviews and Today (step 4)
@@ -187,13 +187,13 @@ Linear wins.
 - A running review looks again from a fresh snapshot, without being used up,
   when what it read changes: new records, a corrected record, your doctor's
   plan, your follow-through, a Plan (yours or one Duet saves as you asked), a
-  Not accurate mark, or a message that Duet's AI judges corrects it (ENG-34). A
+  Not accurate mark, or a message that Duet's AI judges corrects it. A
   running Check-in and a proposed update for your doctor do the same for
   corrections, your doctor's plan, Plans and Not accurate marks; a reply being
   written hears the ones you or your sources make, since Duet's own Plan saves
   happen inside it. Edits to For my doctor and your appointment restart
   nothing; see For my doctor.
-- A corrected record is its own event, not an arrival (ENG-34, ENG-162; Dev
+- A corrected record is its own event, not an arrival (Dev
   2026-10-25): unfinished work must not publish from information that was
   corrected. The reply being written reads the new version before it finishes,
   a running Check-in or review looks again, the new-records review becomes due,
@@ -218,14 +218,14 @@ Linear wins.
 
 - One continuing workspace, useful without an appointment, that helps any
   clinician understand what matters, what changed, what you tried and what
-  you need next (ENG-169, Dev 2026-10-24). This supersedes north-star.md's
+  you need next (Dev 2026-10-24). This supersedes north-star.md's
   fixed one-page PDF; there is no PDF, and sharing outside Coda is later.
 - It is yours: editing, saving and Start fresh work with AI off. Duet proposes
   whenever it judges an update useful, in conversation or after a review (a
   "may"; Dev 2026-10-25: the graph never limits Duet's judgment, and a proposal
   changes nothing until you review it). A proposal never saves by itself. Only
   your own exact question saves without review (north-star.md, For my doctor).
-- Stale work never overwrites your newer edits (ENG-169). Your edits to For my
+- Stale work never overwrites your newer edits. Your edits to For my
   doctor or your appointment (yours or the practice's) don't restart work that
   is running: a review or reply notes them, and an update it proposes
   afterwards, or one already waiting, must be reviewed again against your
@@ -246,15 +246,16 @@ Linear wins.
 - One live practice connection in the MVP: a practice invites, you join and
   consent once, and connected means sharing, with no stop or resume; it ends
   when you leave, the practice discharges you (with a dated notice), or your
-  account is deleted. Your Duet stays yours either way (ENG-70, Dev
+  account is deleted. Your Duet stays yours either way (Dev
   2026-10-22).
 - The connection is live: what you connected in Duet flows to the practice
   continuously, for its physician agents to read
-  (Dev 2026-10-25; ENG-39). Duet's AI never shares anything, and its private
+  (Dev 2026-10-25). Duet's AI never shares anything, and its private
   notes never cross. Your answers to Check-ins about your doctor's plan also
   flow, into the practice's next review rather than as alerts; the practice's
-  agents judge whether anything needs a physician (ENG-45). Phone readings, notes and medications you entered, and
-  notes from conversation join the feed as their regions are written.
+  agents judge whether anything needs a physician. Phone readings, notes and
+  medications you entered, and notes from conversation join the feed as their
+  regions are written.
 - Joining shares what you already have: your connected records reach the
   practice with the join (For my doctor only when you send it), on a first join and on joining
   again, and the practice's agents start on them (Dev 2026-10-25). How the
@@ -273,22 +274,22 @@ Linear wins.
 
 ## Back from the practice (step 7)
 
-- Your doctor's plan (ENG-45): documented care decisions and open items reach
+- Your doctor's plan: documented care decisions and open items reach
   Duet only through the live connection, read-only, with source, author, date
   and status. Duet calls it "your doctor's plan", explains it faithfully and
   never invents or amends it; an undecided suggestion stays unconfirmed until
-  the source records a decision (ENG-43). Physicians don't approve Duet's
+  the source records a decision. Physicians don't approve Duet's
   wording (Dev 2026-10-21). When the connection ends, the last plan stays,
   marked no longer updated; joining again brings it current.
 - A change to your doctor's plan reaches work that read it, as a corrected
   record does: a reply being written looks again, a running Check-in or review
   starts over from the current plan before it publishes, and a proposed update
-  for your doctor waits for you to review it again (ENG-34, ENG-45).
+  for your doctor waits for you to review it again.
 - Your answer to a Check-in about your doctor's plan reaches the practice with
-  what you share, for its next review, never as an alert on its own (ENG-45;
-  Dev 2026-10-25: "Carry on with the doctor's plan, Check-in answers and
+  what you share, for its next review, never as an alert on its own (Dev
+  2026-10-25: "Carry on with the doctor's plan, Check-in answers and
   appointments"). In connected-care it is part of the live feed.
-- Your practice's appointment (ENG-169, ENG-31): while connected, the
+- Your practice's appointment: while connected, the
   practice's schedule shows beside any date you gave yourself; both stay
   visible when they conflict, and neither blocks preparation. A visit already
   ahead on the practice's schedule shows once you join. Duet never shows a practice appointment
@@ -299,7 +300,7 @@ Linear wins.
 
 ## Your health sources (step 8)
 
-- Two kinds of source (ENG-162; north-star.md, Connect your health): your
+- Two kinds of source (north-star.md, Connect your health): your
   phone's health data (Apple Health on iPhone, Health Connect on Android; Dev
   2026-10-11) and Doctors & hospitals, one search over the portals Duet can
   authorize end to end (Epic MyChart, Oracle Health and healow). Each
@@ -315,7 +316,7 @@ Linear wins.
 - Records are kept exactly as sent; a record missing from a later import is
   never deleted (B3, B4). A correction or a deletion at the source arrives as a
   correction: the old version stays for existing citations, and unfinished work
-  looks again (A4, E5, ENG-34). A deletion in the phone's health app works the
+  looks again (A4, E5). A deletion in the phone's health app works the
   same way; lost access or an empty read is never a deletion (A4).
 - Phone readings arrive one by one with their time and time zone (A2, A3) and
   reach the next review rather than starting one (Dev 2026-10-06). Portal
@@ -337,7 +338,7 @@ Linear wins.
   source's history. Disconnecting is always yours, even before newer Terms, as
   leaving your practice is (Dev 2026-10-26).
 - While you're connected to a practice, phone readings, Apple Health clinical
-  records and their changes join the live feed with your records (ENG-39).
+  records and their changes join the live feed with your records.
 
 ## Open, to add later
 

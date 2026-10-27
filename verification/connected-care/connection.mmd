@@ -2,7 +2,7 @@ stateDiagram-v2
 %% Connected care: how Duet and the physician web app meet (Dev 2026-10-25). Each graph owns its
 %% side of one patient's connection to one practice; they share events, never states. The
 %% connection is live: what the patient connected in Duet flows to the practice for its physician
-%% agents to read, until it ends (ENG-70, ENG-39). For my doctor goes only when the patient sends it.
+%% agents to read, until it ends. For my doctor goes only when the patient sends it.
 %% compose duet: ../duet-experience/duet.mmd
 %% compose physician: ../physician-experience/physician.mmd
 %%
@@ -27,15 +27,15 @@ stateDiagram-v2
 %% shared physician: the patient sends For my doctor = duet: your Send to my practice on For my doctor goes through
 %% outside physician: by the patient through Duet
 %%
-%% Duet and the practice always show the same connection (ENG-39: "Don't repeat").
-%% never DuetConnectedPracticeNot: duet: Connected to your practice, sharing & physician: Not connected -- Duet and the practice show one connection status (ENG-39).
-%% never DuetConnectedPracticeInviting: duet: Connected to your practice, sharing & physician: Invited -- Duet and the practice show one connection status (ENG-39).
-%% never DuetConnectedPracticeEnded: duet: Connected to your practice, sharing & physician: Connection ended -- Duet and the practice show one connection status (ENG-39).
-%% never PracticeConnectedDuetNot: physician: Connected & duet: No practice connection -- Duet and the practice show one connection status (ENG-39).
-%% never PracticeConnectedDuetInvited: physician: Connected & duet: A practice's invitation waits for you -- Duet and the practice show one connection status (ENG-39).
-%% never PracticeConnectedDuetEnded: physician: Connected & duet: Connection ended -- Duet and the practice show one connection status (ENG-39).
-%% never InvitationWithoutPractice: duet: A practice's invitation waits for you & physician: Not connected -- An invitation waits in Duet only while the practice holds it open (ENG-70).
-%% never InvitationAfterEnd: duet: A practice's invitation waits for you & physician: Connection ended -- An invitation waits in Duet only while the practice holds it open (ENG-70).
-%% never DuetAppointmentWithoutVisit: duet: Appointment from your practice & physician: No visit scheduled -- Duet shows a practice appointment only while the practice's schedule has that visit ahead (ENG-169).
-%% never DuetAppointmentAfterVisit: duet: Appointment from your practice & physician: Visit over -- Duet shows a practice appointment only while the practice's schedule has that visit ahead (ENG-169).
-%% never DuetAppointmentAfterCancel: duet: Appointment from your practice & physician: Visit cancelled -- Duet shows a practice appointment only while the practice's schedule has that visit ahead (ENG-169).
+%% Duet and the practice always show the same connection.
+%% never DuetConnectedPracticeNot: duet: Connected to your practice, sharing & physician: Not connected -- Duet and the practice show one connection status.
+%% never DuetConnectedPracticeInviting: duet: Connected to your practice, sharing & physician: Invited -- Duet and the practice show one connection status.
+%% never DuetConnectedPracticeEnded: duet: Connected to your practice, sharing & physician: Connection ended -- Duet and the practice show one connection status.
+%% never PracticeConnectedDuetNot: physician: Connected & duet: No practice connection -- Duet and the practice show one connection status.
+%% never PracticeConnectedDuetInvited: physician: Connected & duet: A practice's invitation waits for you -- Duet and the practice show one connection status.
+%% never PracticeConnectedDuetEnded: physician: Connected & duet: Connection ended -- Duet and the practice show one connection status.
+%% never InvitationWithoutPractice: duet: A practice's invitation waits for you & physician: Not connected -- An invitation waits in Duet only while the practice holds it open.
+%% never InvitationAfterEnd: duet: A practice's invitation waits for you & physician: Connection ended -- An invitation waits in Duet only while the practice holds it open.
+%% never DuetAppointmentWithoutVisit: duet: Appointment from your practice & physician: No visit scheduled -- Duet shows a practice appointment only while the practice's schedule has that visit ahead.
+%% never DuetAppointmentAfterVisit: duet: Appointment from your practice & physician: Visit over -- Duet shows a practice appointment only while the practice's schedule has that visit ahead.
+%% never DuetAppointmentAfterCancel: duet: Appointment from your practice & physician: Visit cancelled -- Duet shows a practice appointment only while the practice's schedule has that visit ahead.

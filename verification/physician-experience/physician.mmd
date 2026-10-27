@@ -56,11 +56,11 @@ stateDiagram-v2
 %% event a patient message arrives | by the messaging channel | needs ChLive | reason: only a live channel delivers messages | A message from an unknown sender reaches the practice; Coda suggests a patient, and a person confirms before it becomes evidence (PM-500).
 %% event the follow-up comes due | by the follow-up's date | needs FWaiting | reason: only an active follow-up comes due | A follow-up's date arrives, so Coda reviews what it was for.
 %% event the weekly cycle comes round | by the practice calendar | The weekly look across the patient comes due.
-%% event the visit comes into preparation range | by the practice schedule | needs VLater, VmMapped | reason: only a scheduled visit linked to the patient is prepared | An upcoming visit is close enough to prepare for (how far ahead is practice policy, ENG-31).
+%% event the visit comes into preparation range | by the practice schedule | needs VLater, VmMapped | reason: only a scheduled visit linked to the patient is prepared | An upcoming visit is close enough to prepare for (how far ahead is practice policy).
 %% event ask Coda to reply | by you | command on the reply: Ask Coda to reply, clicked while SIn | needs AClin, MLLinked, ChAccount, MRRest | reason: only a linked conversation on a connected channel with no reply open can ask for one (X4, px.md:167) | You ask Coda to draft a reply; it waits behind a patient review already running, and a reply that review proposes first answers the ask (px.md:167; Dev 2026-10-24).
 %% event Coda decides to take something on | by Coda | Coda judges something worth doing for the patient and takes it on (charter: Coda may).
 %% event Coda starts the {work} | by Coda | needs WOwed@{key} | reason: only the work's own state makes its events possible | Coda begins the {work} from the latest evidence it may read.
-%% event a tool call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} shows its current step, only from a real tool call (ENG-160).
+%% event a tool call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} shows its current step, only from a real tool call.
 %% event the next model call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The step line clears while Coda thinks.
 %% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} couldn't finish after whatever recovery the runtime does on its own; it shows Couldn't finish with Try again, and machinery never alerts you (CT:95).
 %% event Coda finishes the {work} | by Coda | needs WRun@{key}, {normal}@{key}, MLFree | reason: only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
@@ -93,7 +93,7 @@ stateDiagram-v2
 %% event the visit ends | by the clock | needs VAhead, VCancelled | reason: only a visit still ahead can pass | The visit's recorded time passes; a running preparation finishes, anything owed or failed ends.
 %% event the visit is cancelled | by the practice schedule | needs VAhead | reason: only a visit still ahead can be cancelled | Everything unfinished for that visit ends at once; a finished briefing stays as history.
 %% event the visit is moved | by the practice schedule | needs VAhead | reason: only a visit still ahead can move | Everything unfinished for the old time ends; the new time is prepared fresh.
-%% event the practice's visit reaches the patient's Duet | by the practice schedule | needs PcConnected, VAhead | reason: the schedule reaches only a connected patient's Duet, and only for a visit still ahead (ENG-169) | A visit already on the schedule when the patient joins shows in their Duet; nothing changes here.
+%% event the practice's visit reaches the patient's Duet | by the practice schedule | needs PcConnected, VAhead | reason: the schedule reaches only a connected patient's Duet, and only for a visit still ahead | A visit already on the schedule when the patient joins shows in their Duet; nothing changes here.
 %% event the link opens the concern | by the app | needs AClin | reason: clinical content needs clinical access | The link lands on the concern, read in the reader over the patient page.
 %% event the link opens the briefing | by the app | needs AClin | reason: clinical content needs clinical access | The link lands on the briefing.
 %% event the link opens the follow-up | by the app | needs AClin | reason: clinical content needs clinical access | The link lands on the follow-up.
@@ -195,7 +195,7 @@ stateDiagram-v2
 %% event the source is reconnected | by the records source | needs SrcGoneKept, SrcGoneEmpty, PsUp | reason: only an unavailable source reconnects, and not while the practice's whole source is down | The source is back; a check runs at once.
 %% event the practice's records source goes down | by the records source | The whole source is down for the practice: one line on Today for the practice, never a row per patient; every patient's records read as unavailable and Coda keeps working from the last good records.
 %% event the practice's records source comes back | by the records source | The Today line goes away and every patient's records are checked at once.
-%% event invite the patient | by you | command on the patient's connection: Invite, clicked while SIn | needs PcNone, PcEnded | reason: only a patient not connected or invited can be invited | Any practice member invites a roster patient to connect through Duet, by text with email as backup (ENG-70).
+%% event invite the patient | by you | command on the patient's connection: Invite, clicked while SIn | needs PcNone, PcEnded | reason: only a patient not connected or invited can be invited | Any practice member invites a roster patient to connect through Duet, by text with email as backup.
 %% event the invitation is delivered | by the messaging provider | needs PcSending | reason: only a sending invitation is delivered | The patient has the invitation.
 %% event the invitation can't be delivered | by the messaging provider | needs PcSending | reason: only a sending invitation can fail | The roster shows it couldn't be delivered, with Resend.
 %% event resend the invitation | by you | command on the patient's connection: Resend, clicked while SIn | needs PcSent, PcUndelivered | reason: only a sent or undelivered invitation is resent | A resend replaces the earlier invitation.
@@ -207,7 +207,7 @@ stateDiagram-v2
 %% event discharge the patient | by you | command on the patient's connection: Discharge, clicked while SIn | needs PcConnected | reason: only a live connection can end | Any practice member ends the connection; what was received stays, dated.
 %% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once.
 %%
-%% Patient messaging (PM, ENG-8). Coda never sends on its own: you copy a reply and send it in Gmail or
+%% Patient messaging (PM). Coda never sends on its own: you copy a reply and send it in Gmail or
 %% Spruce, or Send has Coda send exactly your approved words for you, shown as sent by Coda for you
 %% (Dev 2026-10-24; PM:160). Accepted, sent, delivered and read are distinct (PM:161).
 %% event connect the channel | by you | needs SIn, ChOff | reason: commands need an active session; only an unconnected channel connects | You connect Gmail or Spruce; whoever connects it manages it until practice roles exist (PM-519).
@@ -217,7 +217,7 @@ stateDiagram-v2
 %% event the provider revokes access or an administrator blocks it | by the messaging provider | needs ChLive | reason: only a live channel loses its grant | Only this needs Reconnect (PM-1275).
 %% event reconnect the channel | by you | needs SIn, MgrYes, ChProblem | reason: the manager reconnects a channel that needs it | You reconnect it.
 %% event disconnect the channel | by you | needs SIn, MgrYes | reason: only the messaging manager disconnects (PM-519) | Access and in-flight work stop.
-%% event the disconnect completes | by the messaging provider | needs ChDisconnecting, MLFree | reason: only a disconnecting channel completes, and it waits out a correction's Undo like everything else touching the conversation (PM:552-559) | Messages never accepted into a record and open reply drafts are deleted; accepted evidence stays under the record's policy (ENG-8).
+%% event the disconnect completes | by the messaging provider | needs ChDisconnecting, MLFree | reason: only a disconnecting channel completes, and it waits out a correction's Undo like everything else touching the conversation (PM:552-559) | Messages never accepted into a record and open reply drafts are deleted; accepted evidence stays under the record's policy.
 %% event a message arrives from a known sender | by the messaging channel | needs ChLive, MLNone | reason: only a live channel delivers; known-sender rules link on arrival (PM-190) | The message links to the patient at once.
 %% event Coda suggests a patient or is unsure | by Coda | needs MLDeciding | reason: only a message being matched | Matching always ends here when Coda can't tell, so a person decides; how long the runtime tries is not the graph's (Dev 2026-10-24). The message waits to be matched; who sees it on Today is a projection.
 %% event Coda finds it is not a patient message | by Coda | needs MLDeciding, MLWaiting | reason: only an unmatched message | It stays out of patient work until the sender writes again.
@@ -247,7 +247,7 @@ stateDiagram-v2
 %% event ask Coda to revise the reply | by you | command on the reply: Ask Coda to revise, clicked while SIn | needs AClin, MRReady, MRNewMsg, MLLinked | reason: only an open reply on the linked message | "Tell Coda what to change": Coda revises your saved reply in place; Copy waits while it runs.
   state "Physician web app" as App {
 
-    %% Practice membership is an input from the practice; roles are not modeled yet (ENG-19/57).
+    %% Practice membership is an input from the practice; roles are not modeled yet.
     state "Practice membership" as Member {
       [*] --> MYes
       [*] --> MNo
@@ -854,7 +854,7 @@ stateDiagram-v2
       %% never NoCurrentRecordsWhileDown: Practice source down, one line on Today & Records kept -- While the practice's whole source is down, no patient's records read as current.
     }
     --
-    %% ENG-70 (Dev 2026-10-22/23), practice side only: one owner for the patient's connection,
+    %% Connection lifecycle (Dev 2026-10-22/23), practice side only: one owner for the patient's connection,
     %% invitation included. The roster shows status without notifications. Connected means sharing;
     %% there is no pause (Dev 2026-10-23). An ended connection can be invited again; consent wording is
     %% fixed for the MVP, so there is no re-consent state.
@@ -1143,13 +1143,13 @@ stateDiagram-v2
         HYes --> HNo : send a queued message now
         %% only answer
         HNo --> HYes : clinical access reduced [work in hand]
-        %% when WHand | reason: losing access stops what this physician started (ENG-19)
+        %% when WHand | reason: losing access stops what this physician started
         %% only asked, answer, revision
         HNo --> HYes : patient access removed [work in hand]
-        %% when WHand | reason: losing access stops what this physician started (ENG-19)
+        %% when WHand | reason: losing access stops what this physician started
         %% only asked, answer, revision
         HNo --> HYes : practice access removed [work in hand]
-        %% when WHand | reason: losing access stops what this physician started (ENG-19)
+        %% when WHand | reason: losing access stops what this physician started
         %% only asked, answer, revision
         HYes --> HNo : the correction's Undo ends
         %% only asked, revision
@@ -1296,7 +1296,7 @@ stateDiagram-v2
     }
     --
     %% CT unified follow-up contract: the one forward-looking responsibility. You create, change, stop,
-    %% resume and cancel it directly (ENG-14). Any work may create or revise one (A5); a cancel is
+    %% resume and cancel it directly. Any work may create or revise one (A5); a cancel is
     %% respected until new information arrives. A due follow-up stays due until its own review
     %% disposes of it (RP-830), so other work completes it only while that review is not active (X1).
     %% One Stop holds the follow-up and its review together; Resume reviews the current version (M1).
@@ -1342,7 +1342,7 @@ stateDiagram-v2
       %% never NoReviewWhenCancelled: follow-up review in hand & Cancelled -- A cancelled follow-up never has its review in hand.
     }
     --
-    %% ENG-31: one visit at a time, owned by the practice schedule. Which visits are prepared and how
+    %% Visit preparation: one visit at a time, owned by the practice schedule. Which visits are prepared and how
     %% far ahead is practice policy; it arrives as an event.
     state "Visit" as Visit {
       [*] --> VNone
@@ -1378,7 +1378,7 @@ stateDiagram-v2
       state "Preparation unavailable, no patient mapping" as VmUnmapped
     }
     --
-    %% PX and ENG-31: a finished preparation always leaves a readable briefing; it is not acceptance
+    %% PX: a finished preparation always leaves a readable briefing; it is not acceptance
     %% of its recommendations, and it reaches you as a nudge only when Coda judges something new
     %% (a concern tied to the visit). A cancelled, moved or ended visit keeps it as history.
     state "Briefing" as Briefing {
@@ -1407,7 +1407,7 @@ stateDiagram-v2
     --
     %% PX persistence: one private draft per physician and conversation, saved quietly; Not saved
     %% stays visible with Retry; Discard is explicit. Text a queue gives back comes
-    %% here, including when access is lost (ENG-19) or the session ends; nothing typed is lost (N3).
+    %% here, including when access is lost or the session ends; nothing typed is lost (N3).
     state "Your draft" as Draft {
       [*] --> DEmpty
       state "Composer empty" as DEmpty
@@ -1436,17 +1436,17 @@ stateDiagram-v2
       DEmpty --> DSaving : remove a queued message
       DText --> DSaving : remove a queued message
       DEmpty --> DSaving : clinical access reduced [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
       DText --> DSaving : clinical access reduced [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
       DEmpty --> DSaving : patient access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
       DText --> DSaving : patient access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
       DEmpty --> DSaving : practice access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
       DText --> DSaving : practice access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
     }
     --
     %% Several messages may wait, each editable; all attach to the next answer (RP-1542). How many is
@@ -1547,7 +1547,7 @@ stateDiagram-v2
       %% never NotAPatientConcernWithheld: About a patient message; stays with its message & No correction waiting on Undo.Not a patient, until the sender writes again & Nothing withheld -- A concern about a message marked not a patient shows only after the re-review decides it.
     }
     --
-    %% PM section 8 and ENG-8: only a revoked grant or an administrator's block needs Reconnect
+    %% PM section 8: only a revoked grant or an administrator's block needs Reconnect
     %% (PM-1275). Catching up and temporary sync failures are the channel's own and never shown, so the
     %% graph has none (Dev 2026-10-24); reconnect catches up without duplicates.
     state "Messaging channel" as Channel {
@@ -1637,7 +1637,7 @@ stateDiagram-v2
       MLUnlinked --> MLNone : the disconnect completes
     }
     --
-    %% PM-367 and ENG-8: a message Coda couldn't read is never held out of sight; it puts the patient
+    %% PM-367: a message Coda couldn't read is never held out of sight; it puts the patient
     %% on Today until Coda reads it or you mark it Done.
     state "Patient message: read" as MsgRead {
       [*] --> MrOk
@@ -1666,7 +1666,7 @@ stateDiagram-v2
       PrShown --> PrNone : the disconnect completes
     }
     --
-    %% PM reply card and ENG-8: one reply work item per conversation. Only a patient review or an
+    %% PM reply card: one reply work item per conversation. Only a patient review or an
     %% asked reply drafts a reply (RP-2233). No reply needed has a brief Undo that reopens it exactly.
     %% Closing a reply because the practice answered is Coda's call and never a quiet finish (RP-392).
     %% A newer message's proposed reply wins over a No reply needed still showing Undo (RP-973). Your
