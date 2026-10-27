@@ -34,9 +34,12 @@ exchange; it does not start a second loop. Provisional text and late provider
 usage remain separate from permission to commit. Duet still owns routine
 idempotency, visible-prose finalization and its completion transaction; physician
 terminal-tool continuation does not impose physician saving policy on Duet.
-Cancellation allows a bounded one-second settlement window for available
-provider evidence, not continued presentation or effects. A callback that does
-not acknowledge within that window leaves its write uncertain; the product
+Cancellation allows a bounded one-second transport settlement window, followed
+by at most one additional second for final evidence acknowledgments. The latter
+window is shared by the final records, not restarted for each write; it permits
+asynchronous database retention after a noncooperative transport times out.
+Neither window permits continued presentation or effects. A callback that does
+not acknowledge within its window leaves its write uncertain; the product
 must reconcile it rather than treating cancellation as rollback. Recovery
 validates retained call IDs against the original dispatched context before
 executing any sibling, and partial usage snapshots preserve earlier known

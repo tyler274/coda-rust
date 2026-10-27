@@ -77,9 +77,10 @@ pub(super) async fn acknowledged(exchange: &mut Acknowledged<'_, '_>) -> Result<
 
 const SETTLEMENT_EXPIRED: &str = "provider cancellation settlement deadline exceeded";
 
-/// One cancellation window spans transport, owner callbacks, drain and final
-/// retention. Normal durable writes have no timeout. Once cancelled, dropping a
-/// callback at the deadline leaves its write uncertain, never safe to retry.
+/// One cancellation window per phase: transport/callback/drain settlement,
+/// followed by final evidence retention with its own single one-second grace.
+/// Normal durable writes have no timeout. Dropping a callback at its deadline
+/// leaves its write uncertain, never safe to retry.
 #[derive(Default)]
 struct Settlement {
     deadline: Option<Instant>,
@@ -249,8 +250,17 @@ impl<P: legacy::Provider, O: legacy::Owner> Exchange for Observed<'_, P, O> {
         // A failed durable acknowledgment stops immediately; it is not a
         // transport failure and must not cause another write to the failed owner.
         if self.evidence_failed {
+            // Available evidence still counts even when its write was refused
+            // or timed out. Do not retry the uncertain write to obtain an ack.
+            account(self.progress, &self.usage);
             return result;
         }
+        // Transport settlement may have consumed its entire cancellation
+        // window. Give final evidence one bounded grace period, shared by all
+        // records below, so a responsive async durable owner can actually ack.
+        // This is a phase transition, never a per-record timeout reset.
+        let mut retention = Settlement::default();
+        retention.observe(self.cancel);
         let sequence = self.progress.calls;
         let response = match result {
             Ok(mut response) => {
@@ -262,7 +272,7 @@ impl<P: legacy::Provider, O: legacy::Owner> Exchange for Observed<'_, P, O> {
             }
             Err(reason) => {
                 account(self.progress, &self.usage);
-                self.settlement
+                retention
                     .wait(
                         self.cancel,
                         self.owner.record(Record::Observation {
@@ -272,7 +282,7 @@ impl<P: legacy::Provider, O: legacy::Owner> Exchange for Observed<'_, P, O> {
                         }),
                     )
                     .await?;
-                self.settlement
+                retention
                     .wait(
                         self.cancel,
                         self.owner.record(Record::Failure {
@@ -284,7 +294,10 @@ impl<P: legacy::Provider, O: legacy::Owner> Exchange for Observed<'_, P, O> {
                 return Err(reason);
             }
         };
-        self.settlement
+        // Live counters retain available usage even if final acknowledgment
+        // fails. Recovery still reconstructs durable truth from owner records.
+        account(self.progress, &response.usage);
+        retention
             .wait(
                 self.cancel,
                 self.owner.record(Record::Exchange {
@@ -293,7 +306,6 @@ impl<P: legacy::Provider, O: legacy::Owner> Exchange for Observed<'_, P, O> {
                 }),
             )
             .await?;
-        account(self.progress, &response.usage);
         Ok(response)
     }
 }

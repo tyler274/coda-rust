@@ -338,6 +338,142 @@ async fn noncooperative_cancelled_provider_settles_with_observed_evidence() {
 }
 
 #[tokio::test]
+async fn expired_transport_settlement_allows_bounded_async_final_retention() {
+    struct NeverReturns(usize);
+    impl Provider for NeverReturns {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            cancel: &Cancellation,
+            emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
+        ) -> Result<Response, String> {
+            self.0 += 1;
+            emit(StreamEvent::ProviderIdentity(
+                json!({"response_id":"async-retention"}),
+            ))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(10),
+                output_tokens: Some(5),
+            }))?;
+            cancel.cancel();
+            std::future::pending().await
+        }
+    }
+    struct AsyncEvidence {
+        records: Vec<Record>,
+        failure_attempts: usize,
+        stall_failure: bool,
+    }
+    impl Owner for AsyncEvidence {
+        async fn check(&mut self) -> Result<(), String> {
+            Ok(())
+        }
+        async fn record(&mut self, record: Record) -> Result<(), String> {
+            if matches!(record, Record::Failure { .. }) {
+                self.failure_attempts += 1;
+                if self.stall_failure {
+                    // A never-acknowledged final write remains uncertain; the
+                    // loop must not retry it or wait forever in the new grace.
+                    return std::future::pending().await;
+                }
+            }
+            // A real asynchronous DB acknowledgment yields. Merely accepting
+            // immediately-ready futures after the transport deadline is not enough.
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+            self.records.push(record);
+            Ok(())
+        }
+        async fn dispatch(&mut self, _: &Call, _: &Cancellation) -> Result<Value, String> {
+            panic!("cancelled transport cannot authorize effects")
+        }
+        async fn complete(&mut self, _: &Response) -> Result<(), String> {
+            panic!("cancelled transport cannot authorize publication")
+        }
+    }
+    for stall_failure in [false, true] {
+        let mut provider = NeverReturns(0);
+        let mut owner = AsyncEvidence {
+            records: vec![],
+            failure_attempts: 0,
+            stall_failure,
+        };
+        let mut progress = Progress::default();
+        let cancel = Cancellation::default();
+        let error = tokio::time::timeout(
+            std::time::Duration::from_secs(3),
+            run(
+                &mut provider,
+                &mut owner,
+                request(),
+                &mut progress,
+                Limits::default(),
+                &cancel,
+                &mut |_| Ok(()),
+            ),
+        )
+        .await
+        .expect("transport plus final retention must finish within three seconds")
+        .expect_err("cancelled transport cannot complete");
+        assert!(cancel.is_cancelled());
+        assert_eq!(provider.0, 1);
+        assert_eq!(
+            owner.failure_attempts, 1,
+            "final failure retention is attempted exactly once"
+        );
+        assert_eq!(
+            progress,
+            Progress {
+                calls: 1,
+                known_tokens: 15,
+                unknown_usage: 0
+            }
+        );
+        assert_eq!(Progress::from_records(&owner.records), progress);
+        let observations: Vec<_> = owner
+            .records
+            .iter()
+            .filter_map(|record| match record {
+                Record::Observation {
+                    sequence: 1,
+                    usage,
+                    provenance,
+                } => Some((usage, provenance)),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(
+            observations.len(),
+            3,
+            "both streamed snapshots and final post-timeout observation must acknowledge asynchronously"
+        );
+        let (usage, identity) = observations.last().unwrap();
+        assert_eq!(
+            **usage,
+            Usage {
+                input_tokens: Some(10),
+                output_tokens: Some(5)
+            }
+        );
+        assert_eq!(identity["response_id"], "async-retention");
+        assert!(
+            !owner
+                .records
+                .iter()
+                .any(|record| matches!(record, Record::Exchange { .. }))
+        );
+        if !stall_failure {
+            assert!(
+                matches!(owner.records.last(), Some(Record::Failure { sequence: 1, reason })
+                if reason == &error),
+                "the asynchronous final failure acknowledgment must finish"
+            );
+        }
+        // No assertion that a pending failure write rolled back: its owner
+        // reconciles that uncertainty. We assert only boundedness and no retry.
+    }
+}
+
+#[tokio::test]
 async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback() {
     #[derive(Clone, Copy, Debug)]
     enum Boundary {
