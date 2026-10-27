@@ -91,11 +91,10 @@ stateDiagram-v2
 %% event open the work that raised the concern | by you | needs SIn, AClin, RConcern | reason: commands need an active session and clinical access | From a concern you open the work that raised it.
 %% event close the reader | by you | You close the reader and are exactly where you were.
 %% event open Updates | by you | needs SIn | reason: commands need an active session | You open the day's log of everything Coda did.
-%% event open an update from the orb | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | From the orb you open one update; Coda opens on it. Previewing updates there never navigates or clears attention; only opening one does (PX).
 %% event open the reply | by you | needs SIn, AClin, MROpen | reason: replies are clinical content; only open reply work has a card | You open the reply card from Today, Updates or Past work (Review reply, patient-messaging.md:1128); opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).
 %% event open the {row} that couldn't restart | by you | needs SIn, AClin, LShown@{key} | reason: clinical content; only a row on Today opens | You open the row; it stays on Today with Done; opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).
 %% event discuss what you're reading | by you | needs SIn, AClin, ROpen | reason: Discuss belongs to the item open in the reader, which is clinical content | The reader's one primary action opens or returns to that item's exact anchored conversation in this patient, keeping other drafts (px.md:514, 695).
-%% event open an update row | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | You read one update; opening records it seen and never removes it.
+%% event open an update | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | You read one update, from the Updates list or wherever the app offers it; opening records it seen and never removes it. Previewing one never navigates or clears attention; only opening it does (PX).
 %% event back to Updates | by you | You return to the list where you were.
 %% event close Updates | by you | You close the panel.
 %% event show more from this day | by you | needs SIn | reason: commands need an active session | The next page of the day appends.
@@ -134,7 +133,7 @@ stateDiagram-v2
 %% events you stop the follow-up = stop the follow-up | stop and discuss the follow-up
 %% events you stop the {held} = stop the {held} | stop and discuss the {held}
 %% events you change the Updates day = go to an earlier day | return to today's updates
-%% events another update opens = go to the next update | go to the previous update | open an update from the orb
+%% events another update opens = go to the next update | go to the previous update | open an update
 %% events you write to Coda = send | send to steer the answer | send next | send a queued message now
 %% events access to the patient narrows = clinical access reduced | patient access removed
 %% events you open a conversation = open a conversation | discuss what you're reading | stop and discuss the {held} | stop and discuss the follow-up
@@ -465,7 +464,7 @@ stateDiagram-v2
                   %% use read as update: read = the update
                 }
               }
-              UList --> UReading : open an update row
+              UList --> UReading : open an update
               UReading --> UReading : another update opens
               UReading --> UList : back to Updates
               UReading --> UList : access to the patient narrows
@@ -510,7 +509,7 @@ stateDiagram-v2
           }
           UClosed --> UOpen : open Updates
           UClosed --> UOpen : open all updates
-          UClosed --> UReading : open an update from the orb
+          UClosed --> UReading : open an update
           UOpen --> UClosed : close Updates
           %% never NoUpdateReadWithoutAccess: Reading an update & Cannot see the patient -- An update about a patient never shows without access to that patient.
           %% never NoUpdateReadWithIdentityOnly: Reading an update & Identity only -- An update's clinical content never shows with identity access only.
@@ -1451,8 +1450,7 @@ stateDiagram-v2
       state "Opened by you" as UpOpened
       UpNone --> UpNew : Coda finishes any work / may write you an update
       UpOpened --> UpNew : Coda finishes any work / may write you an update
-      UpNew --> UpOpened : open an update row
-      UpNew --> UpOpened : open an update from the orb
+      UpNew --> UpOpened : open an update
       UpNew --> UpNone : midnight passes
       UpOpened --> UpNone : midnight passes
     }

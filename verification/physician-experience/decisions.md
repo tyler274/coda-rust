@@ -23,8 +23,9 @@ Linear, then the settled docs, then mockups.
   Duet's. The graph keeps what the physician can do, what Coda does, and what
   is guaranteed; a guarantee that lived in a screen detail stays as a plain
   rule:
-  - Previewing updates from the orb never navigates or clears attention; only
-    opening one does. Collapsing Coda to the orb is presentation.
+  - Opening an update is one event wherever the app offers it; previewing one
+    never navigates or clears attention, only opening it does. Collapsing Coda
+    to the orb is presentation.
   - The patient page shows what the summary rests on and its limits (Basis)
     and the sources Coda read (Sources); a Sources row opens that source's
     citation. Opening and closing them is presentation.
