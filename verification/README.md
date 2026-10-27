@@ -81,6 +81,7 @@ manual data refinements and implementation connections separately.
 | Folder | Spec |
 | --- | --- |
 | [physician-experience](physician-experience/README.md) | The physician web app's ideal behavior as one statechart, with its Verus model and proof. |
+| [duet-experience](duet-experience/README.md) | The Duet app's ideal behavior as one statechart. |
 | [connected-care](connected-care/README.md) | How Duet and the physician web app meet: one composition of both graphs through shared events, with the rules that span them. |
 
 ## How the skills fit

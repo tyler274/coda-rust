@@ -67,6 +67,16 @@ Linear, then the settled docs, then mockups.
   Updates is the day's record of everything Coda did, which the physician never
   maintains.
 
+## 2026-10-22
+
+- **Done is shared.** Done on a concern clears that exact concern for every
+  physician; another physician's Done clears it for you too.
+- **One owner for the patient's connection.** The practice side keeps one
+  connection lifecycle, the invitation included. The roster shows its status
+  without notifications. An ended connection can be invited again, and consent
+  wording is fixed for the MVP, so there is no re-consent state (with the
+  2026-10-23 decisions below).
+
 ## Tie-out decisions (2026-10-23)
 
 1. Work that ends with nothing left to do adds no Today row; Updates logs it with
@@ -208,10 +218,10 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
   connection ended. The patient's For my doctor arrives only when they send it,
   like a message from them (Dev, 2026-10-26).
 
-## Audit findings the graph cites
+## Audit findings
 
-The graph also cites findings from the 2026-10-23 audits that settled a behavior
-from the sources:
+The graph, the standing rules and infrastructure-gaps.md cite these findings
+from the 2026-10-23 audits, each of which settled a behavior from the sources:
 
 | Id | Behavior | Source |
 | --- | --- | --- |
