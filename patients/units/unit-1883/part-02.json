@@ -1,0 +1,377 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001883",
+      "events": [
+        {
+          "id": "2025-01-27a",
+          "kind": "specialist_visit",
+          "start": "2025-01-27T15:30",
+          "service": "Gynecology",
+          "reason": "Amenorrhea",
+          "labs": [
+            {"panel": null, "collected": "2025-01-27T15:40", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": null, "collected": "2025-01-27T16:20", "resulted": "2025-01-29T10:00", "results": [{"test": "Follicle Stimulating Hormone", "text": "Elevated"}]},
+            {"panel": null, "collected": "2025-01-27T16:20", "resulted": "2025-01-29T10:00", "results": [{"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "text": "Low"}]}
+          ],
+          "orders": [{"id": "gyn-ref-2024", "action": "done", "date": "2025-01-27T15:30"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Office Note",
+              "author": "gynecology",
+              "date": "2025-04-22T10:05",
+              "body": "GYNECOLOGY NEW PATIENT NOTE\nDate of visit: 01/27/2025\nReferred by: primary care, for amenorrhea\n\n31-year-old G0 with autoimmune primary adrenal insufficiency, diagnosed by endocrinology in December 2023, on hydrocortisone and fludrocortisone. Her cycles were regular for years, then ran short in late 2023, and she has now gone nine months without a period. Nothing changed around that time: same routine, same weight, no new stress, no new medication, no heavy exercise or dieting. Over the last few months she has noticed occasional drenching nights and some dryness with intercourse. She and her husband use no contraception and have been hoping for a pregnancy without success.\n\nPMH: as above. PSH: none. Allergies: none known.\nSocial: teacher; never smoker; does not drink.\nFamily: no relatives with early menopause. Her younger sister was diagnosed with autoimmune adrenal insufficiency this past fall.\n\nExam: BMI 23. Normal breast and hair development. No nipple discharge on expression. Visual fields full to confrontation. External genitalia normal; cervix normal in appearance; vaginal mucosa mildly pale. Bimanual unremarkable.\n\nUrine pregnancy test in clinic negative. Serum FSH (resulted 1/29) elevated, estradiol low.\n\nAssessment: primary ovarian insufficiency, very likely part of her autoimmune endocrine picture.\n\nPlan:\n- Estradiol 1 mg by mouth daily\n- Medroxyprogesterone 10 mg by mouth on days 1 to 12 of every month for endometrial protection\n- Discussed what this means for fertility: spontaneous conception is uncommon but not impossible; options including donor-egg treatment were reviewed in general terms. She will talk it over with her husband before deciding on anything further.\n- Return in 6 months.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Toe pain",
+          "conditions": [
+            {"label": "Primary ovarian insufficiency", "action": "diagnosed", "onset": "2025-01-27", "note": "per gynecology, per patient report; note not yet received"},
+            {"label": "Gout", "action": "diagnosed", "onset": "2025-01-29", "note": "acute gouty arthritis, right first MTP"}
+          ],
+          "medications": [
+            {"drug_text": "estradiol 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "primary ovarian insufficiency"},
+            {"drug_text": "medroxyprogesterone acetate 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily on days 1 through 12 of each month", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "primary ovarian insufficiency"},
+            {"drug": "colchicine 0.6 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets now and 1 tablet one hour later, then 1 tablet twice daily until the flare settles", "dose": {"value": 0.6, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "acute gout"}
+          ],
+          "state": {"weight_kg": 62.6},
+          "vitals": {"weight_kg": 62.6},
+          "measure": ["bp", "hr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2025-01-30T16:25", "results": [{"test": "Uric Acid", "value": 7.4}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-30T15:50"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "author": "PCP",
+              "date": "2025-01-30T16:40",
+              "body": "Texted this morning; worked her in after school.\n\nWoke at 2 AM with a throbbing right big toe. By morning the joint was swollen and red and she could barely tolerate the sheet on it. Taught all day in a slipper. No injury, no prior episodes, no fever or chills. Had not taken extra hydrocortisone.\n\nAlso: saw gynecology Monday. Told she has premature ovarian failure; started estradiol 1 mg daily and medroxyprogesterone 10 mg for the first 12 days of the month. Brought both bottles. We have no note from them yet.\n\nExam: afebrile. Wt 62.6 kg. Right 1st MTP warm, swollen, erythematous, exquisitely tender; ankle and other joints normal. No skin break, no streaking.\n\nA/P\n1. Acute gouty arthritis, right first MTP, clinical diagnosis. Uric acid today 7.4. Unusual at her age; her new estrogen deficiency may have nudged the urate up. Colchicine 1.2 mg now, 0.6 mg an hour later, then 0.6 mg twice a day until settled. No NSAID while dehydration risk and steroids are in play. Will not start long-term urate lowering after one flare. If fever or worsening redness, needs same day recheck to look at the joint.\n2. Primary ovarian insufficiency (gynecology 1/27). Added to list with her estradiol and medroxyprogesterone. Will request their note.\n3. Adrenal insufficiency: stable, no dose change. Reminded to double the hydrocortisone if she gets febrile."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-06a",
+          "kind": "portal_message",
+          "start": "2025-02-06T18:30",
+          "conditions": [
+            {"label": "Gout", "action": "resolved", "onset": "2025-01-29"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Toe",
+              "author": "patient",
+              "date": "2025-02-06T18:30",
+              "body": "Toe is totally back to normal, wearing real shoes again. Stopped the colchicine on Monday. Thank you for squeezing me in!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Toe",
+              "author": "PCP",
+              "date": "2025-02-07T07:35",
+              "body": "Great news. If it ever flares again, message me the same day and we will treat it early and talk about whether anything longer term makes sense."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "telephone",
+          "start": "2025-03-12T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2025-03-12T11:10",
+              "body": "Gynecology visit note from 1/27 never came. Called their office and refaxed our request with the signed release. They will send once the note is signed."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "pharmacy",
+          "start": "2025-06-18T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill routed",
+              "author": "MA",
+              "date": "2025-06-18T08:50",
+              "body": "Pharmacy request came to us for estradiol 1 mg. Prescriber of record is gynecology. Called pt; she has her follow-up with them in July and only needs enough to bridge. PCP approved 30 days with no refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "portal_message",
+          "start": "2025-07-09T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Specialist check-ins",
+              "author": "patient",
+              "date": "2025-07-09T13:40",
+              "body": "Quick update for my file: saw endocrine in June and gyn yesterday. No changes to any of my medications from either. Endo said my numbers were fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Specialist check-ins",
+              "author": "RN",
+              "date": "2025-07-10T08:15",
+              "body": "Noted in your chart, thank you. Neither office has sent us a note so far."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-08T07:55"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-08T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-08T07:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-08T07:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-10-08T07:50", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2025-10-08T07:35", "resulted": "2025-10-10T11:00", "results": [{"test": "High-risk HPV DNA", "text": "Not detected"}]},
+            {"panel": null, "collected": "2025-10-08T07:35", "resulted": "2025-10-10T11:00", "results": [{"test": "Cervical cytology", "loinc": "10524-7", "text": "Negative for intraepithelial lesion or malignancy"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-10-08T07:15"},
+            {"procedure": "Immunization administration", "performed": "2025-10-08T07:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-08T08:40",
+              "body": "Annual, before first bell.\n\nDoing well. Adrenal insufficiency steady on hydrocortisone 15 mg AM / 10 mg afternoon and fludrocortisone 0.1 mg; endocrinology June, unchanged. On estradiol 1 mg daily with medroxyprogesterone days 1 to 12; monthly withdrawal bleeds, night sweats gone. She and her husband are still deciding about fertility treatment and are in no rush. No further toe trouble since January. Younger sister doing well on similar treatment.\n\nPHQ-2 0. Never smoker, no alcohol.\n\nExam: well, BMI about 23. Thyroid normal. Heart and lungs clear. Abdomen soft. Breasts symmetric without masses. Speculum: normal cervix, Pap with HPV co-test collected. Skin with only faint residual darkening on the knuckles.\n\nA/P\n1. Preventive: Pap/HPV sent. Flu vaccine today; plans updated COVID at the pharmacy. CMP, CBC, lipids, TSH.\n2. Primary adrenal insufficiency: stable.\n3. Primary ovarian insufficiency: on replacement per gynecology.\n4. Gout: single episode Jan 2025, none since.\nReturn for a check in the new year, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "portal_message",
+          "start": "2025-10-10T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2025-10-10T16:20",
+              "body": "Your Pap was normal and HPV was not detected, so the next one is not due for five years. Blood counts, chemistry, thyroid and cholesterol all normal."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "pharmacy",
+          "start": "2025-12-03T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Emergency kit renewal",
+              "author": "RN",
+              "date": "2025-12-03T10:05",
+              "body": "Pt called; her hydrocortisone injection vial expires next month and endocrine has not answered their refill line in a week. PCP sent a new vial of hydrocortisone sodium succinate 100 mg to her pharmacy, no change. Reminded her to keep the old one until the new one is in hand."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-28a",
+          "kind": "ed_visit",
+          "start": "2026-03-28T09:40",
+          "end": "2026-03-28T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue and lightheadedness",
+          "state": {"labs": {"Sodium": 129, "Potassium": 5.4}},
+          "vitals": [
+            {"time": "2026-03-28T09:48", "temp_c": 36.7, "bp": [96, 62], "hr": 84},
+            {"time": "2026-03-28T09:52", "bp": [80, 54], "hr": 102}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-28T10:05", "results": [{"test": "Sodium", "value": 129}, {"test": "Potassium", "value": 5.4}, {"test": "Glucose", "value": 66}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-03-28T09:40"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-04-02T09:30",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD (received by fax)\nVisit: 03/28/2026\n\nCC: increasingly tired, dizzy when standing.\n\nHPI: 32-year-old woman with autoimmune adrenal insufficiency and premature ovarian insufficiency. Several weeks of growing fatigue. Each morning she feels faint as she gets out of bed. Salt cravings are back, and she has lost weight while eating normally. Taking hydrocortisone 15 mg mornings and 10 mg afternoons and fludrocortisone 0.1 mg daily as prescribed; no missed doses. Denies fever, cough, chest pain, vomiting, diarrhea or abdominal pain.\n\nPMH: primary adrenal insufficiency; primary ovarian insufficiency; history of gout.\nMeds: hydrocortisone, fludrocortisone, estradiol 1 mg daily, medroxyprogesterone 10 mg days 1-12, hydrocortisone injection kit.\nAllergies: NKDA.\nSocial: nonsmoker, no alcohol.\nFamily: mother thyroid autoimmunity; maternal aunt type 1 diabetes; paternal grandmother rheumatoid arthritis.\n\nExam: T 36.7 C. Supine BP 96/62, HR 84. Standing BP 80/54, HR 102. Tired but alert, oriented. Mucous membranes dry. Darkened palmar creases and patchy pigment on the buccal mucosa. Heart regular, tachycardic on standing, no murmur. Lungs clear. Abdomen soft, nontender. No focal neuro deficit.\n\nResults: Na 129, K 5.4, glucose 66.\n\nED course: 2 L normal saline IV. Hydrocortisone 100 mg IV. Juice and a meal for the low glucose. Reassessed at 15:30: no longer lightheaded on standing, eating, walking steadily.\n\nImpression: primary adrenal insufficiency with inadequate replacement; orthostatic hypotension, hyponatremia, hyperkalemia, mild hypoglycemia. No infection identified.\n\nDisposition: home with husband. Double oral hydrocortisone for 3 days, then resume usual dose. Endocrinology within 1 week; primary care in the next few days. Return for vomiting, confusion or fainting; use the injection kit if unable to keep pills down.\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "portal_message",
+          "start": "2026-03-30T06:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER Saturday",
+              "author": "patient",
+              "date": "2026-03-30T06:52",
+              "body": "I ended up in the ER Saturday morning. I'd been so dizzy getting out of bed for a couple weeks and finally almost passed out in the bathroom. They gave me fluids and IV hydrocortisone and sent me home on double doses for 3 days. They said to see you this week and endo. I'm taking today off. Can I get in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER Saturday",
+              "author": "RN",
+              "date": "2026-03-30T07:40",
+              "body": "So sorry, Amy. You're booked Wednesday 4/1 at 3:45 with the doctor. If the dizziness comes back or you start vomiting before then, use your shot and go back to the ED. Please call endocrine this morning for the soonest slot."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-01a",
+          "kind": "office_visit",
+          "start": "2026-04-01T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "state": {"weight_kg": 59.2, "labs": {"Sodium": 133, "Potassium": 5.2}},
+          "vitals": {"bp": [104, 68], "weight_kg": 59.2},
+          "measure": ["hr", "spo2", "temp_c"],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-18T10:30"}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-01T16:20", "results": [{"test": "Sodium", "value": 133}, {"test": "Potassium", "value": 5.2}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-01T15:45"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-04-01T16:50",
+              "body": "Seen after ED visit 3/28 (ED record not yet received; history from patient and her discharge paperwork). Her January check here was cancelled and never rebooked.\n\nShe finished three days of doubled hydrocortisone yesterday and is back to 15/10 with fludrocortisone 0.1. Much less dizzy, still tired, appetite fine. Swears she has not missed doses. No fever, no GI illness preceding this.\n\nBP 104/68 seated, no symptoms on standing. Wt 59.2 kg, down about 3 kg since fall. Pigment on palmar creases a bit more obvious than at the physical.\n\nA/P\n1. Primary adrenal insufficiency with under-replacement, recent ED visit. Salt craving, orthostasis and the high potassium point toward the mineralocorticoid side. BMP today. Endocrine appointment 4/21 confirmed by her. Not changing doses myself in the meantime; reviewed doubling rules if symptoms return.\n2. POI on HRT, no change.\nUpdated COVID shot from the pharmacy last October added to record."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-04-02T12:15",
+              "body": "Sodium 133 and potassium 5.2: better than in the ED but not back to normal. I've sent these to endocrinology ahead of your visit on the 21st. Keep salting your food freely until then."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T08:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "labs": [
+            {"panel": null, "collected": "2026-04-21T08:30", "resulted": "2026-04-24T14:00", "results": [{"test": "Plasma Renin Activity", "text": "Elevated"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2026-06-03T14:40",
+              "body": "ENDOCRINOLOGY FOLLOW-UP\nVisit date: 04/21/2026\n\nSeen after an ED visit on 3/28 for orthostatic symptoms with hyponatremia (129), hyperkalemia (5.4) and glucose 66 on hydrocortisone 15/10 mg and fludrocortisone 0.1 mg. Improved after IV hydrocortisone and saline. Outpatient BMP 4/1 with Na 133, K 5.2. Still has mild morning lightheadedness and craves salt.\n\nAllergies: no known drug allergies.\n\nRenin (resulted 4/24): plasma renin activity elevated, consistent with mineralocorticoid under-replacement.\n\nPlan: increase fludrocortisone to 0.15 mg daily (1.5 of the 0.1 mg tablets). Hydrocortisone unchanged at 15 mg on waking and 10 mg mid-afternoon. Sick-day rules and injection reviewed again. BMP in 2 to 3 months via primary care; return here in 6 months.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "pharmacy",
+          "start": "2026-05-11T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Fludrocortisone fill question",
+              "author": "MA",
+              "date": "2026-05-11T09:25",
+              "body": "Pharmacist called: pt is asking for an early fludrocortisone fill. Endocrinology changed the directions on 4/21 to 1.5 tablets daily and the old supply ran short. Our list still shows 0.1 mg daily; no endo note received. Pharmacy has the new prescription from endo and will fill it. FYI to PCP; will update list at her next visit once the letter arrives."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "office_visit",
+          "start": "2026-07-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up adrenal insufficiency",
+          "medications": [
+            {"drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet", "action": "stop", "reason": "dose increased by endocrinology"},
+            {"drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet", "action": "historical", "sig": "Take 1.5 tablets (0.15 mg) by mouth daily", "dose": {"value": 0.15, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "primary adrenal insufficiency"}
+          ],
+          "state": {"weight_kg": 61.5, "labs": {"Sodium": 138, "Potassium": 4.3}},
+          "vitals": {"bp": [112, 72], "weight_kg": 61.5},
+          "measure": ["hr", "spo2", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-10T11:05", "results": [{"test": "Sodium", "value": 138}, {"test": "Potassium", "value": 4.3}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-10T10:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-07-10T11:20",
+              "body": "Summer follow-up. Endocrinology letter from 4/21 received in June and reviewed: renin was high and fludrocortisone went up to 0.15 mg daily, hydrocortisone the same.\n\nSince the change she feels back to her baseline. No morning dizziness for over a month, salt cravings gone, regained most of the weight. Finished the school year without missing days. Still on estradiol and the 12-day medroxyprogesterone; gyn visit this month.\n\nBP 112/72. Wt 61.5 kg. Pigment fading again. Heart regular. No edema.\n\nA/P\n1. Primary adrenal insufficiency: now on fludrocortisone 0.15 mg daily per endocrinology; med list updated. Hydrocortisone 15 mg AM / 10 mg PM unchanged. BMP today, as endo asked. Watch BP and for swelling on the higher dose.\n2. POI on estradiol/medroxyprogesterone, followed by gynecology.\n3. Gout: no recurrence.\nAnnual physical in October; flu shot then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "portal_message",
+          "start": "2026-07-13T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-07-13T08:10",
+              "body": "Sodium 138 and potassium 4.3, both normal on the new fludrocortisone dose. I've copied endocrinology. Enjoy the rest of the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2026-08-12T14:30",
+              "body": "Electronic request for hydrocortisone 10 mg tabs, #75. Endocrine is prescriber but pt asked us to send a 90-day supply before the school year starts. PCP approved, same sig. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-14a",
+          "kind": "annual_physical",
+          "start": "2026-10-14T07:15",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

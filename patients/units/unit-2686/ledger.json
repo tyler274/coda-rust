@@ -1,0 +1,1416 @@
+{
+  "unit": "unit-2686",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002686/2026-06-23a: referral to \"Hospital Medicine\" names no catalog specialty"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002686",
+      "given": "Glenn",
+      "family": "Upton",
+      "birth_date": "1991-01-01",
+      "address_line": "214 Station Road",
+      "phone": "+1-413-555-0176",
+      "email": "glenn.upton@example.test",
+      "marital_status": "single",
+      "summary": "Healthy construction foreman who joined in August 2024. Trichinellosis after eating campfire-grilled game meat in July 2025 (ED, albendazole, resolved), then a new infection from undercooked fair pork in June 2026 needing a short admission; records from outside care arrive late.",
+      "events": [
+        {
+          "id": "2024-07-30a",
+          "kind": "telephone",
+          "start": "2024-07-30T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-07-30T10:12",
+              "author": "front desk",
+              "body": "Caller would like to move his primary care to us. Age 33, works as a foreman for a construction outfit, says he hasn't had a real checkup in a few years. Employer PPO, card info entered. Reviewed membership and how to reach the doctor by text. New patient physical booked 8/20 at 8:00 so he can get to the site after. Release signed over the phone for records from his previous primary care office; request faxed today."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "outside_records",
+          "start": "2024-08-14T14:40",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2024-08-14T14:40",
+              "author": "outside primary care",
+              "body": "Records received by fax, 11 pages, covering 2016 through 2021.\n\nPatient last seen there for a physical in 2021. No chronic problems on their list. Past surgical: tonsillectomy in childhood. Medications: none. Allergies: NKDA.\nImmunizations on file: childhood series documented; Td 2012. Influenza vaccines in some years.\nLabs from 2021: CBC and metabolic panel unremarkable; lipids within normal range.\n\nScanned to chart. No action items."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T08:00",
+          "end": "2024-08-20T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              82
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 86.2,
+            "height_cm": 179.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 3-4 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction foreman"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-08-20T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-20T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-08-20T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2024-08-20T08:55",
+              "author": "PCP",
+              "body": "33M here to set up primary care. Last physical about three years ago at his old office, records reviewed. Feels well. No complaints today. Runs crews for a commercial builder, on his feet all day, sleeps ok, gets the usual sore back on long pour days but nothing persistent.\n\nPMH: none.\nPSH: tonsils out as a kid (about age 8).\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: dad with type 2 DM. Mom on thyroid replacement for hypothyroidism. One sibling, healthy.\nSocial: never smoked. Beer on weekends, 3-4 a week. No drugs. Single, lives in town.\n\nROS negative across the board.\n\nExam: vitals in flowsheet. Well appearing, muscular. HEENT normal, oropharynx clear, tonsils absent. Neck supple, no thyromegaly or nodes. Heart regular, no murmur. Lungs clear. Abd soft, nontender, no organomegaly. Skin without rashes, no concerning moles. Ext no edema, full ROM. Neuro grossly normal. PHQ-2 0.\n\nA/P: healthy adult, preventive visit.\n- Labs: CBC, CMP, lipids. A1c given dad's diabetes. One-time HCV and HIV screens, he agrees.\n- Last tetanus was 2012 per old records, Tdap given today (he works around rebar and nails).\n- Flu and covid shots when they come in this fall.\n- Sunscreen at work, hearing protection around equipment.\nRTC one year."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.2,
+            "height_cm": 180.3,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T16:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-08-22T16:20",
+              "author": "PCP",
+              "body": "Hi Glenn, everything from Tuesday came back fine. Blood counts, kidney and liver tests normal, cholesterol in a good range, A1c normal so no sign of diabetes, and the hepatitis C and HIV screens were negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T07:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-08T07:40",
+              "author": "RN",
+              "body": "In before work for flu and covid. Denies fever or illness today, no prior vaccine reactions. Flu vaccine L deltoid, covid R deltoid. Waited 15 minutes in the lobby, no issues, left for his job site."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T19:05",
+          "reason": "immunization record",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shot record for work",
+              "date": "2025-03-11T19:05",
+              "author": "patient",
+              "body": "New general contractor on our current job wants proof of tetanus for everybody on site. Can you send me something showing the one I got in August?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shot record for work",
+              "date": "2025-03-12T09:20",
+              "author": "front desk",
+              "body": "Hi Glenn, your immunization record is attached in the portal under Documents. It shows the Tdap from 8/20/2024 along with your fall flu and covid vaccines. Let us know if they need it on a specific form."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-02a",
+          "kind": "ed_visit",
+          "start": "2025-07-02T18:40",
+          "end": "2025-07-02T23:10",
+          "service": "Emergency Medicine",
+          "reason": "fever, muscle aches, facial swelling",
+          "conditions": [
+            {
+              "label": "Trichinellosis",
+              "action": "diagnosed",
+              "onset": "2025-06-27",
+              "icd10": "B75"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "albendazole 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (400 mg) by mouth twice daily with food for 10 days",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Trichinellosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 92,
+            "rr": 17,
+            "temp_c": 38.3,
+            "spo2": 97
+          },
+          "measure": [
+            "spo2",
+            "rr"
+          ]
+        },
+        {
+          "id": "2025-07-03a",
+          "kind": "portal_message",
+          "start": "2025-07-03T06:52",
+          "reason": "ED visit last night",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the ER",
+              "date": "2025-07-03T06:52",
+              "author": "patient",
+              "body": "Ended up in the ER last night. Been achy all over with fevers for about 5 days and my eyes swelled up. They think it's a worm/parasite from the meat we cooked on the hunting trip a couple weeks ago. Gave me a pill to take twice a day for 10 days. Do you want to see me? I'm off site till Monday anyway."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the ER",
+              "date": "2025-07-03T07:40",
+              "author": "PCP",
+              "body": "Glad you went in. That fits with trichinella, which comes from undercooked game. Finish every dose of the albendazole and take it with food. Fluids, rest, Tylenol for the aches is fine. Come in Tuesday morning and we'll check blood work and see how the swelling is doing. If you get short of breath, chest pain, or the weakness gets worse, go back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, trichinellosis",
+          "vitals": {
+            "bp": [
+              117,
+              77
+            ],
+            "hr": 77,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 85.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-08T08:45",
+              "resulted": "2025-07-09T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 10.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 13
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 55
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-08T08:45",
+              "resulted": "2025-07-09T11:30",
+              "results": [
+                {
+                  "test": "Eosinophils [#/volume] in Blood",
+                  "loinc": "711-2",
+                  "unit": "10*3/uL",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-08T08:45",
+              "resulted": "2025-07-09T11:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 310
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-08T08:45",
+              "resulted": "2025-07-10T13:15",
+              "results": [
+                {
+                  "test": "Trichinella spiralis Ab [Presence] in Serum",
+                  "loinc": "22595-3",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-08T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-08T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-07-08T08:50",
+              "author": "PCP",
+              "body": "ED f/u. Seen in a regional ED 7/2 for 5 days of fever, myalgias and periorbital swelling. Back from an out-of-state hunting trip about two weeks before that; the group cooked game over a campfire and some of it was underdone by his account. Felt ok for a few days after getting home, then low fevers and a vague crampy belly, then the muscle aches and puffy eyes. ED told him presumed trichinella and started albendazole 400 bid x10 days. We do not have the ED record yet, requested today.\n\nNow day 6 of albendazole, taking with food, no GI upset. No fever since Saturday. Thighs and shoulders still sore climbing ladders but better each day. Eye swelling mostly gone in the mornings. No SOB, chest pain, palpitations, rash or trouble swallowing.\n\nExam: afebrile, vitals reviewed. Mild puffiness of both lower lids. Conjunctivae clear. Heart RRR no murmur, lungs clear. Mild tenderness of both anterior thighs, strength 5/5 throughout. No rash. Nails normal.\n\nA/P: trichinellosis, improving on treatment.\n- CBC with diff, CK, and trichinella antibody to confirm.\n- finish albendazole.\n- light duty this week if he can, note given.\n- recheck in about a month with repeat CBC/CK.\n- counseled: game meat and pork cooked through, freezing doesn't reliably kill the wild-game strains."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "portal_message",
+          "start": "2025-07-10T15:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Tuesday",
+              "date": "2025-07-10T15:05",
+              "author": "PCP",
+              "body": "Glenn, the trichinella antibody came back positive, so that confirms what the ER thought. Your eosinophils (the white cells that react to parasites) are still up at 1.4 and the muscle enzyme CK is 310, a bit above normal. Both are what I'd expect a week into treatment and should drift down. Finish the pills, and let's recheck in about a month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Tuesday",
+              "date": "2025-07-10T18:31",
+              "author": "patient",
+              "body": "Thanks doc. Feeling a lot better already. Will book for August."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "outside_records",
+          "start": "2025-07-24T11:10",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency Department Record, regional hospital, visit 07/02/2025",
+              "date": "2025-07-24T11:10",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 07/02/2025\n\nCC: myalgias, fevers and swelling around both eyes x5 days.\n\nHPI: 34 yo male, healthy. Returned about two weeks ago from an out-of-state hunting trip where he ate game meat grilled over an open fire. Asymptomatic initially. About 3 days after returning developed low-grade fevers and mild nonspecific abdominal discomfort, followed over the last several days by progressive diffuse muscle aching, fatigue and periorbital puffiness. Denies cough, sore throat, sick contacts.\n\nPMH: none. PSH: tonsillectomy age 8. Meds: none. Allergies: NKDA.\nFH: father T2DM, mother hypothyroidism, sibling healthy.\nSH: never smoker; 3-4 drinks/week socially; construction foreman.\n\nTriage: T 38.3 C (101 F), BP 118/72, HR 92.\n\nExam: nontoxic. Bilateral periorbital edema. Thighs and upper arms tender to palpation. Lungs clear, heart regular. Abdomen soft, nontender. No rash.\n\nLabs: CBC with leukocytosis and eosinophilia. CK mildly elevated.\n\nMDM: fever, myositis picture, periorbital edema and eosinophilia after undercooked wild game; presumed trichinellosis.\n\nDisposition: discharged home. Albendazole 400 mg PO BID x10 days. Antipyretics as needed. Follow up with PCP within 1 week; return for chest pain, dyspnea or weakness.\n\nFiled 7/24. PCP note: already seen 7/8, antibody confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "trichinellosis recheck",
+          "conditions": [
+            {
+              "label": "Trichinellosis",
+              "action": "resolved",
+              "onset": "2025-06-27",
+              "icd10": "B75"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 63,
+            "temp_c": 37.0,
+            "weight_kg": 86.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-12T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-12T08:05",
+              "results": [
+                {
+                  "test": "Eosinophils [#/volume] in Blood",
+                  "loinc": "711-2",
+                  "unit": "10*3/uL",
+                  "value": 0.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-12T08:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 140
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-12T07:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-12T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-08-12T08:10",
+              "author": "PCP",
+              "body": "Recheck after trichinella in July. Finished all 10 days of albendazole. Back to full duty for 3 weeks, no aches, no fevers, eyes back to normal. Appetite fine.\n\nExam: well. No periorbital edema. No muscle tenderness, strength full. Heart and lungs normal. Skin clear.\n\nCBC with diff and CK drawn this morning, resulted before he left: WBC 7.2, eos 4% (0.3), CK 140. All normal now.\n\nA/P: trichinellosis, resolved. Taking it off the active list. Talked again about cooking any wild game and pork all the way through, he says the hunting group has already heard about it from him. No further labs needed. See him for his physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T07:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T07:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T07:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2025-10-07T07:32",
+              "author": "RN",
+              "body": "Flu and covid for this season. Feeling well, no fever. Last year's shots gave him a sore arm only. Flu L arm, covid R arm, lot numbers in the immunization record. Observed 15 min without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "telephone",
+          "start": "2025-10-20T16:45",
+          "reason": "reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "date": "2025-10-20T16:45",
+              "author": "front desk",
+              "body": "Pt can't make 10/21 at 7:30, concrete delivery moved up. Moved to Tues 11/4 at 7:30. Reminded him to come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "annual_physical",
+          "start": "2025-11-04T07:30",
+          "end": "2025-11-04T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              75
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 86.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-04T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-04T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-04T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-04T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-04T08:15",
+              "author": "PCP",
+              "body": "34M for yearly physical. Feeling good. Busy season wrapping up, a couple of 60-hour weeks in September, now easing. No lingering muscle problems since the trichinella in July, which resolved. No new symptoms.\n\nMeds: none. Allergies: NKDA.\nSocial: unchanged. Never smoker, a few beers a week.\nFH unchanged (dad DM2, mom hypothyroid).\n\nROS: negative.\n\nExam: well, vitals reviewed. HEENT normal. No thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin with no rashes or worrisome lesions, some sun on forearms. Muscles nontender, strength normal. No edema. PHQ-2: 1.\n\nA/P: well adult.\n- CBC and CMP today. Lipids and A1c were fine last year, will repeat A1c next year given his dad.\n- Flu and covid done 10/7. Tdap current (2024).\n- Back next fall, or text me sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T12:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2025-11-06T12:40",
+              "author": "PCP",
+              "body": "All normal, Glenn. Blood counts, kidneys, liver and sugar all where they should be. See you next year."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T20:14",
+          "reason": "swollen eyes, aches, rash",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "It's back I think",
+              "date": "2026-06-22T20:14",
+              "author": "patient",
+              "body": "Doc, my eyes are puffy again like last summer and I'm sore all over, worse every day this week. Now I've got a rash too. Haven't been hunting. Can you see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: It's back I think",
+              "date": "2026-06-22T20:31",
+              "author": "PCP",
+              "body": "Yes. Come in at 7:30 tomorrow, I'll fit you in before my first patient. If you get short of breath or chest pain tonight, go to the ER instead."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "office_visit",
+          "start": "2026-06-23T07:30",
+          "end": "2026-06-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "periorbital swelling, myalgias, rash, fever",
+          "conditions": [
+            {
+              "label": "Trichinellosis",
+              "action": "diagnosed",
+              "onset": "2026-06-02",
+              "note": "new infection, undercooked pork",
+              "icd10": "B75"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 57,
+            "temp_c": 38.3,
+            "spo2": 98,
+            "weight_kg": 86.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-06-23T07:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "direct-admit-2026",
+              "action": "placed",
+              "order": "Direct admission, hospital medicine",
+              "category": "referral",
+              "to": "Hospital Medicine",
+              "reason": "trichinellosis with fever, rash and splinter hemorrhages"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "date": "2026-06-23T08:20",
+              "author": "PCP",
+              "body": "Seen urgently. Had trichinella last July from hunting-trip game, treated and cleared with normal labs in August.\n\nNow: about three weeks ago had a couple of days of belly pain with nausea and vomiting that passed on its own, he chalked it up to a bug. Over the past week progressively sore muscles, legs and arms, eyes swelling again, and a rash that spread over the trunk and limbs in the last few days. Fevers at home. No travel this year, no hunting. When asked about food, he ate a pulled pork sandwich at a fair about two weeks before the stomach trouble and remembers it being pink in the middle. No SOB, chest pain or palpitations. Taking nothing but Tylenol.\n\nExam: T 38.3, other vitals in flowsheet. Looks tired. Bilateral periorbital edema. Diffuse rash over trunk and extremities. Splinter hemorrhages under several fingernails. Tender to palpation over thighs, calves and upper arms. Heart regular, no murmur heard. Lungs clear.\n\nA/P: picture is trichinellosis again, a new infection from the fair pork, not a relapse of last year's. More systemic this time with the rash and nail findings, and febrile. Splinter hemorrhages fit trichinella but with fever I want cultures before calling it. Talked with the hospitalist at the regional hospital, accepted for direct admission today: labs, cultures, start treatment and steroids per them. A friend from his crew is driving him straight over.\nI'll follow along."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-23b",
+          "kind": "hospital_admission",
+          "start": "2026-06-23T10:05",
+          "end": "2026-06-26T11:30",
+          "service": "Internal Medicine",
+          "reason": "trichinellosis",
+          "medications": [
+            {
+              "drug_text": "albendazole 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (400 mg) by mouth twice daily with food for 14 days",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Trichinellosis"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (40 mg) by mouth once daily for 7 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Trichinellosis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-23T10:15",
+              "temp_c": 38.3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-23T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 16
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 52
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T10:40",
+              "results": [
+                {
+                  "test": "Eosinophils [#/volume] in Blood",
+                  "loinc": "711-2",
+                  "unit": "10*3/uL",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T10:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 600
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-23T10:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T10:45",
+              "resulted": "2026-06-28T10:45",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T10:50",
+              "resulted": "2026-06-28T10:50",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2026-06-27a",
+          "kind": "pharmacy",
+          "start": "2026-06-27T09:10",
+          "reason": "fill notification",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside fill notification",
+              "date": "2026-06-27T09:10",
+              "author": "MA",
+              "body": "Fill history feed shows two new fills on 6/26 from a hospital prescriber: albendazole 200 mg tabs, 2 tabs twice daily x14 days (#56), and prednisone 20 mg tabs, 2 tabs daily x7 days (#14). Looks like discharge meds. No discharge paperwork here yet. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "portal_message",
+          "start": "2026-07-01T17:22",
+          "reason": "home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home",
+              "date": "2026-07-01T17:22",
+              "author": "patient",
+              "body": "Got out Friday. Fever's gone, eyes better, rash fading. Still sore. They gave me the same worm pills for 2 weeks and steroids for a week. Back at work light duty Monday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home",
+              "date": "2026-07-01T18:05",
+              "author": "PCP",
+              "body": "Good to hear. Finish both prescriptions. Once the albendazole is done, book a visit with me so we can recheck your blood counts and muscle enzyme and look at those fingernails. Front desk can set it up, or text me a day that works with your schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home",
+              "date": "2026-07-02T06:10",
+              "author": "patient",
+              "body": "Will do once things calm down on the job."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T10:30",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records request",
+              "date": "2026-07-14T10:30",
+              "author": "RN",
+              "body": "Still no discharge summary from the 6/23-6/26 admission. Called the hospital's medical records line, request for discharge summary and labs faxed with the release on file. They quoted 2-3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "outside_records",
+          "start": "2026-08-11T13:55",
+          "reason": "hospital discharge summary",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, regional hospital, admitted 06/23/2026",
+              "date": "2026-08-11T13:55",
+              "author": "hospital medicine",
+              "body": "REGIONAL HOSPITAL - MEDICINE SERVICE\nAdmission: 06/23/2026   Discharge: 06/26/2026\nReferred by: primary care, direct admission.\n\nPrincipal diagnosis: Trichinellosis (new infection; prior episode 2025 from wild game, treated).\n\nHistory: 35 yo male, sent in by his PCP. Roughly three weeks of illness beginning with abdominal pain, nausea and vomiting that settled without treatment, then one week of progressive myalgias, periorbital swelling and a diffuse rash. No recent travel. Ate undercooked pork at a local fair about two weeks before the GI symptoms began. No home medications. NKDA. PSH tonsillectomy age 8. FH father DM2, mother hypothyroidism, sibling healthy. Never smoker, 3-4 drinks/week, construction foreman.\n\nOn admission: T 38.3 C. Periorbital edema; muscles tender on palpation; subungual splinter hemorrhages; diffuse rash.\n\nAdmission labs: WBC 12,000/mm3; Hgb 14 g/dL; eosinophils 2,000/mm3 (16%); CK 600 U/L (ref 38-174); ALT 45 U/L (ref 7-56); AST 50 U/L (ref 8-48). Blood cultures x2: no growth at 5 days.\n\nHospital course: started albendazole 400 mg twice daily and prednisone 40 mg daily. Defervesced by hospital day 2, myalgias and eyelid swelling improving, tolerating diet, ambulating independently. Discharged home on hospital day 4.\n\nDischarge medications:\n- albendazole 400 mg PO BID, to complete 14 days\n- prednisone 40 mg PO daily, to complete 7 days\n\nFollow-up: PCP in 2-3 weeks with CBC with differential and CK. Return for chest pain, shortness of breath, palpitations or worsening weakness.\n\nReceived by fax 8/11. Filed to chart."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Trichinellosis|B75": {
+        "code": "B75",
+        "display": "Trichinellosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "albendazole 200 MG Oral Tablet": {
+        "code": "199672",
+        "display": "albendazole 200 MG Oral Tablet",
+        "ingredient": "albendazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Eosinophils [#/volume] in Blood": {
+        "code": "711-2",
+        "display": "Eosinophils [#/volume] in Blood by Automated count",
+        "unit": "10*3/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Trichinella spiralis Ab [Presence] in Serum": {
+        "code": "22595-3",
+        "display": "Trichinella spiralis Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

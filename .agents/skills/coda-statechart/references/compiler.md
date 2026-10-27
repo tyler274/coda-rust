@@ -183,6 +183,13 @@ group: an edge labeled NAME stands for one edge per member. A NAME with
 `{placeholders}` is one group per instance that binds them, its members bound the same way. `%% events declared`
 makes the chart strict: every labeled edge must carry a declared event, and
 unlabeled steps are refused.
+`%% cause CAUSE | needs [not] Ids | reason: TEXT` is a cause's standing limit, written
+once for everything that cause does: every concrete event it causes, including those a
+command generates and each template instance, needs it beside its own needs. It stays a
+separate condition, so an event's needs can't widen it. A command's acceptance also keeps
+its click's limits, and its refusal fires when any of them fails, as with its needs. A
+composed follower's step keeps its own cause's limit and waits for the owner's. A cause no
+event has is refused.
 
 ```mermaid
 %% event the courier fills locker {key} | by the courier | needs Empty@{key}, Empty@{other} | The courier fills an empty locker while the other one is empty.
@@ -207,7 +214,7 @@ state and, per command, *sending* and *couldn't confirm*. The click moves only t
 receipt, so ITEM's other commands wait while one is in flight. Every other edge drawn
 on the click reacts to `your VERB on ITEM goes through` instead (needs as the click),
 so ITEM changes only on acceptance. `your VERB on ITEM is refused` fires exactly while
-the needs fail and changes nothing else. `your VERB on ITEM can't be confirmed` moves
+the needs fail and changes nothing else; a command that needs nothing is never refused. `your VERB on ITEM can't be confirmed` moves
 sending to couldn't confirm, and `check your VERB on ITEM again` moves it back; a
 resent request is the same request, so a lost answer stays *sending*. Every outcome
 needs its command in flight (*sending*, or *couldn't confirm* for Check again), so no

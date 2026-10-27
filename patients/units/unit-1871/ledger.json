@@ -2,8 +2,10 @@
   "unit": "unit-1871",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001871/2021-09-08a: allergen \"Dust mites\" not in catalog (text only)",
-    "MRN00001871/2021-09-08a: allergen \"Pollen\" not in catalog (text only)"
+    "MRN00001871/2022-06-20a: referral to \"Maternal-Fetal Medicine\" names no catalog specialty",
+    "MRN00001871/2023-02-09a: lab order \"Sputum AFB smear, M. tuberculosis NAAT and mycobacterial culture x3\" names no one catalog lab, panel, study or procedure",
+    "MRN00001871/2023-02-09a: referral to \"Public health TB clinic\" names no catalog specialty",
+    "MRN00001871/2026-02-10a: imaging order \"Chest X-ray, 2 views, in 6 weeks\" names no one catalog lab, panel, study or procedure"
   ],
   "patients": [
     {
@@ -62,6 +64,8 @@
           "allergies": [
             {
               "substance": "Dust mites",
+              "snomed": "260147004",
+              "category": "environment",
               "reaction": "Itching",
               "severity": "mild",
               "criticality": "low",
@@ -69,6 +73,8 @@
             },
             {
               "substance": "Pollen",
+              "snomed": "256259004",
+              "category": "environment",
               "reaction": "Itching",
               "severity": "mild",
               "criticality": "low",
@@ -3156,6 +3162,18 @@
         "code": "36952-0",
         "display": "CT Abdomen and Pelvis WO contrast",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Dust mites": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Pollen": {
+        "code": "256259004",
+        "display": "Pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

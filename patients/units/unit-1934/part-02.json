@@ -1,0 +1,290 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001934",
+      "events": [
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T19:30",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New insurance card",
+              "author": "patient",
+              "date": "2026-03-10T19:30",
+              "body": "Our firm switched carriers for the PPO this year, new card attached front and back. Same plan type. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New insurance card",
+              "author": "front desk",
+              "date": "2026-03-11T08:47",
+              "body": "Got it, your coverage is updated in our system. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "ed_visit",
+          "start": "2026-07-01T14:20",
+          "end": "2026-07-01T20:10",
+          "service": "Emergency Medicine",
+          "reason": "Jaundice, confusion and abdominal pain after acetaminophen overuse",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-01T14:45",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 5.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 3.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 2500
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2300
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-01T14:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 20.6
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-01T14:45",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "text": "Undetectable"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-07-07T10:15",
+              "body": "REGIONAL HOSPITAL - EMERGENCY DEPARTMENT\nDate of service: 07/01/2026\n\nCC: yellow skin, confused, belly pain x 2 days\n\nHPI: 32F brought in by her sister. For two days she has been yellow, intermittently confused and complaining of upper abdominal pain. History is partly from the patient and partly from the sister. She has longstanding tension-type headaches, seen by outpatient psychiatry about them along with stress in the past, and has been taking acetaminophen off and on for them, frequently more than the label allows. Exact amounts and timing are unclear. Denies intent to harm herself. No regular medications. No alcohol, no drug use.\n\nAllergies: NKDA\nPMH: chronic tension-type headache\nFH: mother GAD, father migraine, younger sister depression (lives with pt)\n\nExam: Disoriented to date and place. Jaundiced skin, scleral icterus. Abdomen soft, tender in the RUQ, no rebound, no guarding. Asterixis present. No focal deficits otherwise.\n\nLabs: T bili 5.2, direct 3.1, AST 2500, ALT 2300, alk phos 120, INR 1.8 (PT 20.6). Acetaminophen level undetectable.\n\nMDM: Markedly elevated transaminases with coagulopathy and encephalopathy after repeated supratherapeutic acetaminophen use; undetectable level consistent with staggered ingestion. Acute liver failure. Acetylcysteine started in the ED per protocol. Hepatology and ICU contacted.\n\nDx: Acetaminophen overdose, repeated supratherapeutic ingestion, with acute liver failure.\nDispo: admitted to ICU.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01b",
+          "kind": "hospital_admission",
+          "start": "2026-07-01T20:10",
+          "end": "2026-07-06T14:00",
+          "service": "Hospital Medicine",
+          "reason": "Acute liver failure from acetaminophen",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-07-01T21:30",
+              "text": "Liver normal in size with homogeneous echotexture; no focal lesion. No intrahepatic or extrahepatic biliary dilation; common bile duct normal caliber. Portal vein patent with hepatopetal flow; hepatic veins patent. Gallbladder normal without stones or wall thickening. No ascites. Right kidney unremarkable.",
+              "conclusion": "Normal right upper quadrant ultrasound. Patent hepatic vasculature."
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-06T05:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 186
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 712
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 104
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-06T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.9
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2026-07-09T14:05",
+              "body": "DISCHARGE SUMMARY\nAdmitted 07/01/2026, discharged 07/06/2026\n\nPrincipal diagnosis: Acute liver failure due to acetaminophen overdose (repeated supratherapeutic ingestion, unintentional)\n\nHospital course: Admitted to the ICU from the ED with jaundice, encephalopathy and an INR of 1.8 after repeated over-the-label acetaminophen use for chronic tension-type headaches; level undetectable on arrival. Treated with continuous IV acetylcysteine. Hepatology followed; transplant evaluation was discussed with the patient and family but was not pursued as she improved steadily. INR did not rise above the admission value. RUQ ultrasound normal with patent vessels. Mental status cleared by hospital day 3 and asterixis resolved. Transferred to the floor on day 3. Acetylcysteine stopped once transaminases were falling and INR under 1.5. Tolerating diet, ambulating.\n\nPsychiatry consulted (see separate note): unintentional overuse, no suicidal intent.\n\nDischarge labs 07/06: AST 186, ALT 712, alk phos 104, T bili 2.6, direct 1.4, PT 13.9, INR 1.2.\n\nDischarge medications: none.\nAllergies: NKDA.\n\nInstructions: Do NOT take acetaminophen (Tylenol or any combination product containing it). No alcohol. Return for yellowing, confusion, vomiting or bleeding.\nFollow-up: hepatology clinic in about 3 weeks; primary care physician for headache management.\n\nHospital Medicine"
+            },
+            {
+              "type": "Consult Note",
+              "title": "Inpatient Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2026-07-09T14:06",
+              "body": "INPATIENT PSYCHIATRY CONSULT - 07/03/2026\nAsked to assess for intentional ingestion.\n\n32 y/o attorney admitted with acetaminophen-related liver failure, now oriented. She explains that over recent weeks she took acetaminophen several times a day on bad headache days and did not think of the totals; she did not know repeated doses could cause this. Consistently denies wanting to hurt herself, now or ever. No history of self-harm. Was seen once in outpatient psychiatry about 18 months ago for stress and irritability and has done counseling since. Supportive sister at bedside.\n\nMSE: calm, cooperative, mildly anxious about her liver, linear, no SI/HI, no psychosis, good insight.\n\nImpression: Unintentional repeated supratherapeutic acetaminophen use for headache. No current suicide risk factors beyond family history; low acute risk. No psychiatric admission indicated, no new psychiatric diagnosis.\nRecommendations: continue outpatient counseling; education on analgesic limits provided; follow up with PCP for headache plan. Psychiatry will sign off.\n\nConsultation-Liaison Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "portal_message",
+          "start": "2026-07-08T16:22",
+          "reason": "Recent hospitalization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I was in the hospital",
+              "author": "patient",
+              "date": "2026-07-08T16:22",
+              "body": "Wanted to let you know I was admitted last week, my liver got hurt from taking too much Tylenol for my headaches. I didn't realize. I'm home since Monday and feel ok, tired. They said to see liver doctors in a few weeks and you about the headaches. Do you need anything from me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I was in the hospital",
+              "author": "PCP",
+              "date": "2026-07-09T07:35",
+              "body": "Kimberly, I'm so sorry, and glad you are home. We have the ER record and are requesting the full discharge paperwork. Please keep the hepatology appointment, avoid all acetaminophen-containing products and alcohol, and call us or go to the ER for any yellowing, confusion or vomiting. Let's set up a visit after you see hepatology to talk about the headaches; the front desk will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "specialist_visit",
+          "start": "2026-07-29T10:30",
+          "service": "Hepatology",
+          "reason": "Follow-up after acetaminophen-induced acute liver failure",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-29T10:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-29T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.6
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Clinic Follow-up",
+              "author": "hepatology",
+              "date": "2026-08-04T12:40",
+              "body": "HEPATOLOGY CLINIC\nVisit 07/29/2026\n\nDear colleague,\n\nI saw Ms. Russo in follow-up after her July admission for acute liver failure from repeated supratherapeutic acetaminophen use, treated with IV acetylcysteine. She feels well; energy returning, no jaundice, confusion, itching, abdominal pain or bleeding. She has taken no acetaminophen since discharge and does not drink.\n\nExam: anicteric, alert and oriented, no asterixis, abdomen soft and nontender, no hepatosplenomegaly or ascites.\n\nLabs today: AST 31, ALT 47, alk phos 88, total bilirubin 0.8, direct 0.2, PT 12.6, INR 1.1.\n\nAssessment: recovered acute liver injury; synthetic function normal.\n\nPlan:\n- Continue to avoid acetaminophen for now; we will revisit at her next visit.\n- Repeat hepatic panel here in three months.\n- I have asked her to see you about headache management.\n\nAllergies: NKDA. Medications: none.\n\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "telephone",
+          "start": "2026-08-05T09:20",
+          "reason": "Schedule hospital follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling call",
+              "author": "front desk",
+              "date": "2026-08-05T09:20",
+              "body": "Hepatology letter in. Called pt to book follow-up with Dr. about hospital stay and headaches. She is in trial prep through end of August, first date that works is Thu 9/3 at 12:20. Booked. Told her to call sooner if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-03a",
+          "kind": "office_visit",
+          "start": "2026-09-03T12:20",
+          "appointment": "booked",
+          "reason": "Hospital follow-up, headaches"
+        }
+      ]
+    }
+  ]
+}

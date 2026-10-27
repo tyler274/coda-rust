@@ -1,0 +1,199 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001697",
+      "given": "Susan",
+      "family": "Farrell",
+      "birth_date": "1995-12-06",
+      "address_line": "58 Pomeroy Terrace",
+      "phone": "+1-518-555-0137",
+      "email": "susan.farrell@example.test",
+      "summary": "HR coordinator who joined mid-way through her second pregnancy, then delivered at 32 weeks by emergent repeat cesarean for fetal distress; her son had a NICU course with IVH and anemia of prematurity. Quiet primary-care years followed until a 2026 complete hydatidiform mole with severe preeclampsia, evacuated by suction curettage, now under gynecology hCG surveillance.",
+      "events": [
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2023-06-13T10:20",
+             "body": "Caller wants to establish with Dr. as PCP. Membership info emailed and she signed up online while on the phone. Mentions she is about 20 wks pregnant and has an OB already, wants a regular doctor for everything else. Booked new pt 6/20 at 8:40. Asked her to bring med bottles and the name of her old primary office so we can send for records."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "establish_care",
+          "start": "2023-06-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit",
+          "conditions": [
+            {"label": "History of cesarean section", "icd10": "Z98.891", "action": "history", "onset": "2021-06-01", "note": "Low transverse cesarean, first pregnancy, term"},
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2023-01-22", "note": "Second pregnancy, prenatal care with outside OB"}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Prescribed by OB during pregnancy"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 72.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Human resources coordinator"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, low MDM", "performed": "2023-06-20T08:40"}
+          ],
+          "orders": [
+            {"id": "prior-pcp-records", "action": "placed", "order": "Records request, prior primary care office", "category": "procedure", "reason": "Establishing care"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-06-20T09:30",
+             "body": "27 yo here to set up primary care. Currently pregnant, about 21 weeks by LMP (~1/22/23), seeing an outside OB group for prenatal care; she says everything has gone smoothly so far. No bleeding, no leaking, no headaches or vision change.\n\nOB hx: this is her second pregnancy. First was in 2021, carried to term, delivered by low transverse C-section, healthy baby.\n\nPMH: nothing chronic. PSH: C-section as above.\nMeds: ferrous sulfate 325 mg daily, started by her OB this pregnancy.\nAllergies: NKDA.\nFH: her mother had preeclampsia with a pregnancy. A maternal aunt was treated for gestational trophoblastic disease.\nSH: works in HR as a coordinator. Never smoker. Drinks rarely, a drink or two a month before pregnancy, none now.\n\nROS otherwise negative.\n\nExam: well, gravid. Ht 165 cm. Heart regular, no murmur. Lungs clear. Abdomen gravid, low transverse scar well healed. No leg swelling. Mood and affect normal.\n\nA/P\n1. Pregnancy, ~21 wks, followed by OB. Uncomplicated so far. We will stay out of the prenatal lane; she knows to call OB first for anything pregnancy-related. Asked her to have OB copy us on major notes.\n2. Health maintenance: will get records from her old primary office (form signed). Vaccines in pregnancy per OB, she expects Tdap there in the third trimester.\n3. Iron per OB, continue.\n\nRTC after delivery or sooner as needed."}
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "outside_records",
+          "start": "2023-07-06T14:05",
+          "orders": [
+            {"id": "prior-pcp-records", "action": "done", "date": "2023-07-06T14:05"}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-04-19T10:00", "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2023-07-06T14:05",
+             "body": "38 pages received from her previous primary care office, covering 2016-2022. Mostly annual visits and a couple of sick visits. Pap with HPV co-test 4/2022 normal (report abstracted). Immunization record shows childhood series complete, HPV series complete, MMR x2, varicella immune, Tdap 2021 during first pregnancy. Surgical hx lists C-section 2021. No chronic problems listed. Routed to PCP to review."},
+            {"type": "Progress Notes", "title": "Outside records review", "author": "PCP", "date": "2023-07-07T07:50",
+             "body": "Reviewed old primary records. Nothing chronic. Last cervical screen 4/2022 co-test negative, next due 2027. Vaccines current apart from the pregnancy Tdap she'll get at OB."}
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "portal_message",
+          "start": "2023-08-17T19:42",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-08-15T11:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Tdap at OB", "author": "patient", "date": "2023-08-17T19:42",
+             "body": "Hi, just so you have it, I got the whooping cough booster at my OB appt on Tuesday 8/15. Left arm. All good otherwise!"},
+            {"type": "Telephone Encounter", "title": "Immunization entered", "author": "MA", "date": "2023-08-18T08:15",
+             "body": "Tdap 8/15/23 given at outside OB entered into immunization history per patient report."}
+          ]
+        },
+        {
+          "id": "2023-09-10a",
+          "kind": "hospital_admission",
+          "start": "2023-09-10T04:30",
+          "end": "2023-09-14T12:00",
+          "service": "Obstetrics",
+          "reason": "Rupture of membranes at 32 weeks",
+          "conditions": [
+            {"label": "Acute fetal distress requiring emergent delivery", "icd10": "O76", "action": "diagnosed", "onset": "2023-09-10"}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "portal_message",
+          "start": "2023-09-12T21:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Baby came early", "author": "patient", "date": "2023-09-12T21:10",
+             "body": "Wanted to let you know the baby came Sunday at 32 weeks. My water broke early that morning and his heart rate kept dropping on the monitor so they did an emergency C-section. I'm sore but ok. He's in the NICU. Yesterday the nurses saw him turn blue a few times while he was sleeping, maybe 20 seconds each, he goes floppy and then comes back on his own. They say his oxygen is fine in between and it's not with feeding. They're watching him closely. Not really sure what I'm asking, I guess just keeping you in the loop. I'm still in the hospital until Thursday."},
+            {"type": "Patient Message", "title": "Re: Baby came early", "author": "PCP", "date": "2023-09-13T07:35",
+             "body": "Susan, thank you for letting me know, and congratulations on your son. That's a lot to happen in one weekend. The NICU team is the right place for him and they will walk you through what they're seeing. For you: rest, take the pain medicine the OB team sends you home with, and call your OB for fever, heavy bleeding or wound redness. I'd like to see you in about a month to check in on how you're recovering. Front desk will reach out. Thinking of you all."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "telephone",
+          "start": "2023-09-19T11:00",
+          "orders": [
+            {"id": "delivery-records", "action": "placed", "order": "Records request, hospital discharge summary", "category": "procedure", "reason": "Delivery admission 9/10-9/14"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2023-09-19T11:00",
+             "body": "Requested discharge summary from the hospital L&D unit for admission 9/10-9/14/23 (signed release on file). Told 5-7 business days."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T15:20",
+          "orders": [
+            {"id": "delivery-records", "action": "done", "date": "2023-09-26T15:20"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric discharge summary", "author": "obstetrics", "date": "2023-09-26T15:20",
+             "body": "OBSTETRIC DISCHARGE SUMMARY (outside hospital)\nAdmitted 09/10/2023, discharged 09/14/2023.\n\nG2P1 at 32 weeks with a prior low transverse cesarean presented with a sudden gush of clear fluid and irregular contractions roughly every 10 minutes. No bleeding, no significant pain. Prenatal course uncomplicated with adequate care. Vitals stable on arrival. Sterile speculum exam confirmed ROM; cervix 3 cm, vertex. Continuous monitoring showed abrupt decelerations from a baseline of 140 to 90 bpm with quick recovery, variable in relation to contractions. Given recurrent decelerations, proceeded to emergent repeat low transverse cesarean for fetal distress. Liveborn male, admitted to NICU.\n\nPostoperative course unremarkable; incision clean and dry at discharge, ambulating, tolerating diet.\n\nAllergies: NKDA.\nDischarge medications: ferrous sulfate 325 mg daily (continue).\nFollow-up: OB postpartum visit; routine wound care."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2023-09-27T08:05",
+             "body": "Discharge summary reviewed. Preterm ROM at 32 wks, decels, emergent repeat LTCS. Follow up postpartum next month."}
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "portal_message",
+          "start": "2023-10-04T13:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Update and appointment", "author": "patient", "date": "2023-10-04T13:25",
+             "body": "Hi. Update on the baby since you asked. He's still on CPAP for his breathing (respiratory distress syndrome they call it) and yesterday he had more spells where he stops breathing and his heart rate drops. They did a head ultrasound and found a bleed in his brain, an intraventricular hemorrhage. His soft spot was a little sunken. They said no seizures and his neuro exam was ok. He also has anemia of prematurity. His scores at birth were 8 and 9 so they were hopeful at first. It's a lot. Could I move my appointment with you to later in the month? I'm at the NICU most days."},
+            {"type": "Patient Message", "title": "Re: Update and appointment", "author": "PCP", "date": "2023-10-04T17:50",
+             "body": "Thank you for telling me, Susan. I'm sorry this has been so hard. Of course we can move it. The front desk will offer you 10/17, first slot of the morning so you can get to the NICU after. Please reach out sooner if you're not sleeping, not eating, or feeling hopeless, any time."},
+            {"type": "Telephone Encounter", "title": "Appointment rescheduled", "author": "front desk", "date": "2023-10-05T09:10",
+             "body": "Moved f/u to 10/17 at 8:00 per Dr. Pt confirmed."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "office_visit",
+          "start": "2023-10-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "conditions": [
+            {"label": "History of preterm birth (32 weeks gestation)", "icd10": "Z87.51", "action": "history", "onset": "2023-09-10"},
+            {"label": "Acute fetal distress requiring emergent delivery", "icd10": "O76", "action": "resolved", "onset": "2023-09-10"},
+            {"label": "Supervision of normal pregnancy", "action": "resolved", "onset": "2023-01-22"}
+          ],
+          "state": {"weight_kg": 68.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 8}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-17T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T08:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T08:32"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-17T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-10-17T08:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-10-17T09:05",
+             "body": "S: Five weeks out from emergent repeat C-section at 32 wks (9/10). Incision sore early on, now barely notices it. Bleeding tapered to spotting. Son still inpatient: on CPAP, had apnea/bradycardia spells, head US showed an IVH, and he has anemia of prematurity. She is at the NICU most days. Sleeping in pieces. Feels anxious and teary at times, mostly around his ups and downs; no thoughts of self-harm. Eating ok. Has her OB postpartum visit at the end of the month.\nMeds: ferrous sulfate 325 daily.\n\nO: Looks tired but engaged, good eye contact. Heart RRR. Lungs clear. Abd soft, LTCS incision healed, no erythema or drainage. No calf tenderness or leg swelling. PHQ-9: 8.\n\nA/P\n1. S/p preterm delivery at 32 wks for fetal distress. Recovering well. Added history of preterm birth to her list; fetal distress problem closed.\n2. Mood: PHQ-9 8 with a lot of situational strain. Not depression by history at this point. Talked about the NICU social worker and parent support group, sleep in shifts where she can. Told her to message me if it gets heavier; will re-screen at the next visit.\n3. Iron: on ferrous sulfate. CBC today.\n4. Flu and updated COVID given today.\n\nRTC for physical in the spring."}
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "portal_message",
+          "start": "2023-10-18T12:40",
+          "documents": [
+            {"type": "Result Note", "title": "CBC result", "author": "PCP", "date": "2023-10-18T12:40",
+             "body": "Hi Susan, your blood count from yesterday is normal, no anemia. Keep doing what you're doing. Hope the week is going ok."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "RN", "date": "2023-12-05T09:30",
+             "body": "Electronic request from pharmacy: ferrous sulfate 325 mg, #90, original Rx from OB. Pt is on it per our med list. Sent 90-day supply with 1 refill per PCP."}
+          ]
+        }
+      ]
+    }
+  ]
+}

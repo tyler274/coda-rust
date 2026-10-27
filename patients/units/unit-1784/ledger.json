@@ -1,0 +1,3154 @@
+{
+  "unit": "unit-1784",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001784/2022-06-08a: procedure order \"Records request, prior primary care\" names no one catalog lab, panel, study or procedure",
+    "left text-only (not verified): drug \"prenatal vitamin with folic acid 4 MG Oral Tablet\"",
+    "left text-only (not verified): lab \"Bile acids, total\" LOINC 14628-3 not found; closest real codes: 108430-0 Bile acid [Measurement] in Urine; 43877-0 Bile acid [Presence] in Serum; 49254-6 Bile acid pattern [Interpretation] in Urine Narrative; 1967-9 Bile acid [Mass/volume] in Serum; 104027-8 Bile acid malabsorption panel"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001784",
+      "given": "Shannon",
+      "family": "Wagner",
+      "birth_date": "1993-08-06",
+      "address_line": "27 Laurel Park Ave",
+      "phone": "+1-518-555-0185",
+      "email": "shannon.wagner@example.test",
+      "marital_status": "married",
+      "summary": "Retail store manager with PCOS on metformin, iron deficiency anemia and generalized anxiety who joined in early pregnancy in 2022. That pregnancy carried a fetal gastroschisis; a second in 2025 carried a fetal myelomeningocele, late virilizing ovarian enlargement and acute fatty liver of pregnancy found at a 37-week cesarean admission, with full recovery by her last visit.",
+      "events": [
+        {
+          "id": "2022-06-01a",
+          "kind": "telephone",
+          "start": "2022-06-01T10:20",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2022-06-01T10:20",
+              "author": "front desk",
+              "body": "Caller wants to establish primary care here, moving her care over from a practice she has not seen in over a year. Currently pregnant, about 10 weeks, and already has an OB group lined up for the pregnancy. Takes metformin and an iron pill. Booked new patient visit 6/8 at 8:40. Sent the membership packet and records release form by email. Asked her to bring med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "establish_care",
+          "start": "2022-06-08T08:40",
+          "end": "2022-06-08T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Polycystic ovary syndrome",
+              "action": "history",
+              "onset": "2015-05-01"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history",
+              "onset": "2019-09-01"
+            },
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history",
+              "onset": "2016-03-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Polycystic ovary syndrome"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (65 mg elemental iron) by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            },
+            {
+              "drug_text": "prenatal vitamin with folic acid 4 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Latex",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              77
+            ],
+            "hr": 63,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 76.6,
+            "height_cm": 165.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Platelets",
+                  "value": 325
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 19
+                },
+                {
+                  "test": "Iron",
+                  "value": 71
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 24
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 292
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-08T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail store manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-06-08T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "continuity of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-06-08T09:40",
+              "author": "PCP",
+              "body": "28 y/o woman here to set up primary care. She is pregnant, roughly 10.5 weeks by an LMP of 3/25/22, and already has a first appointment with an outside OB group, which will manage the pregnancy. One prior pregnancy, no problems, healthy term baby.\n\nPCOS: diagnosed years ago for irregular cycles. On metformin 500 twice a day, tolerating it. OB knows she is on it.\nIron deficiency anemia: has been on ferrous sulfate daily for a few years, tolerating it. No bleeding history beyond periods.\nAnxiety (GAD): long-standing worry, sleep fine most nights. Never been on medication for it, not in counseling now. Feels it is manageable.\nAlso taking a prescription prenatal with 4 mg folate.\n\nPSH: tonsils out at 12. Laparoscopic R ovarian cystectomy at 24 for a bleeding corpus luteum cyst.\nAllergies: latex (hives, type I) and sulfa (rash).\nFamily: mother with T2DM, father with hypertension, a paternal aunt with lupus, and a cousin on her mother's side born with myelomeningocele.\nSocial: manages a retail store, long days on her feet. Married. Has never smoked, no alcohol, no drugs.\n\nExam: well appearing, pleasant. Vitals as recorded. Thyroid normal size. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin without rash.\n\nGAD-7 6, PHQ-9 3.\n\nA/P\n1. PCOS - continue metformin 500 BID for now, defer to OB on whether to continue through pregnancy. A1c with labs.\n2. Iron deficiency anemia - continue ferrous sulfate. CBC, iron studies today.\n3. GAD - mild by score. Talked through what helps her; recheck at future visits.\n4. Early pregnancy - prenatal care with OB. Continue the high-dose folate prenatal.\n5. Health maintenance - hep C and HIV screening with today's blood work. Records release signed for her old office.\nRTC 3 months or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0,
+            "height_cm": 164.0,
+            "labs": {
+              "Ferritin": 19,
+              "Hemoglobin": 11.6,
+              "Hemoglobin A1c": 5.4,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-06-10a",
+          "kind": "portal_message",
+          "start": "2022-06-10T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-06-10T16:05",
+              "author": "PCP",
+              "body": "Hi Shannon, your labs are back. Hemoglobin is a little low at 11.6 and your iron stores (ferritin 19) are on the low side, so please keep taking the iron every day. Kidney, liver and thyroid tests are normal, A1c is normal at 5.4, and the hepatitis C and HIV screens are negative. Nothing else to do for now. Let me know if the iron is bothering your stomach."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "outside_records",
+          "start": "2022-06-24T11:00",
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "done",
+              "date": "2022-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2022-06-24T11:00",
+              "author": "front desk",
+              "body": "Prior practice records received, 31 pages, indexed under outside records.\nSummary for PCP: problem list PCOS, iron deficiency anemia, generalized anxiety. Meds metformin 500 BID, ferrous sulfate daily. Allergies latex, sulfa. Last cervical cytology 2020: negative for intraepithelial lesion or malignancy. Last office visit early 2021. Immunizations: childhood series documented, Tdap in her prior pregnancy, influenza 2020."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-15a",
+          "kind": "specialist_visit",
+          "start": "2022-07-15T10:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 16 weeks",
+          "conditions": [
+            {
+              "label": "Gastroschisis",
+              "action": "diagnosed",
+              "onset": "2022-07-15",
+              "note": "fetal anterior abdominal wall defect on anatomy ultrasound",
+              "icd10": "O35.8XX0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-08T09:00",
+              "resulted": "2022-07-13T14:00",
+              "results": [
+                {
+                  "test": "Alpha-fetoprotein MoM, maternal serum",
+                  "loinc": "20450-3",
+                  "unit": "{MoM}",
+                  "value": 3.9
+                },
+                {
+                  "test": "Choriogonadotropin, maternal serum",
+                  "loinc": "19080-1",
+                  "text": "Within normal limits"
+                },
+                {
+                  "test": "Unconjugated estriol, maternal serum",
+                  "loinc": "2250-9",
+                  "text": "Within normal limits"
+                },
+                {
+                  "test": "Inhibin A, maternal serum",
+                  "loinc": "23883-2",
+                  "text": "Within normal limits"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Fetal anatomy ultrasound",
+              "loinc": "11525-3",
+              "performed": "2022-07-15T10:45",
+              "text": "Transabdominal obstetric ultrasound. Single live intrauterine pregnancy, biometry consistent with 16 weeks. Fetal heart activity present. Amniotic fluid volume normal. Placenta posterior, no previa. Intracranial anatomy and spine visualized without evidence of a neural tube defect. Anterior abdominal wall defect to the right of a normally inserted umbilical cord with free-floating loops of bowel outside the abdomen, no covering membrane. Stomach and bladder seen. Limbs present.",
+              "conclusion": "Single fetus with gastroschisis. Normal amniotic fluid. No neural tube defect."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit letter",
+              "date": "2022-07-20T13:30",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 7/15/2022\nRe: Shannon Wagner, G2P1001, 16w0d by LMP\n\nThank you for allowing us to share her care. She feels well today without complaint. BP 120/78, HR 72. Fundal size appropriate for 16 weeks.\n\nHer second trimester quad screen returned with a markedly raised AFP at 3.9 MoM; hCG, unconjugated estriol and inhibin A were within normal limits. We performed a detailed ultrasound today: single fetus, normal fluid, no sign of an open neural tube defect, but there is a full-thickness abdominal wall defect with herniated bowel, consistent with gastroschisis.\n\nWe reviewed the finding with her at length. Plan: serial growth scans, antenatal testing in the third trimester, consultation with pediatric surgery, and delivery planned at a center with neonatal surgical capability. Continue prenatal vitamin with folate, iron and metformin.\n\nAllergies: latex, sulfa.\nObstetrics, maternal-fetal medicine consult to follow."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "telephone",
+          "start": "2022-07-21T12:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call after OB letter",
+              "date": "2022-07-21T12:40",
+              "author": "PCP",
+              "body": "Called her after reading the OB letter about the abdominal wall defect on the scan. She has had a few rough nights but says the OB team explained things well and the surgery plan for the baby made her feel better. Husband is with her on all the appointments. Sleeping ok most nights. Offered a visit sooner if the worry gets ahead of her; she will reach out. Next visit with me in Sept as planned."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-05a",
+          "kind": "specialist_visit",
+          "start": "2022-08-05T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 19 weeks",
+          "conditions": [
+            {
+              "label": "Pregnancy (second trimester)",
+              "action": "diagnosed",
+              "onset": "2022-08-05",
+              "icd10": "Z33.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-05T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-05T09:50",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 131
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-04T07:00",
+              "results": [
+                {
+                  "test": "Protein, 24 hour urine",
+                  "loinc": "2889-4",
+                  "unit": "mg/(24.h)",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit letter",
+              "date": "2022-08-11T15:10",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 8/5/2022\nRe: Shannon Wagner, 19w0d, known fetal gastroschisis\n\nRoutine visit. She feels well and has no concerns. Aside from the fetal finding, the maternal course has been smooth. BP 120/75, pulse 78. Exam unremarkable, no swelling of the legs.\n\nLabs: Hgb 11.2, Hct 33%. BUN 8, creatinine 0.5. 24-hour urine protein 150 mg, within the normal range for pregnancy and useful as a baseline.\n\nPlan: continue iron and prenatal vitamin. Growth ultrasound in 4 weeks. Pediatric surgery prenatal consult is being arranged.\nAllergies: latex, sulfa."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "specialist_visit",
+          "start": "2022-08-24T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Right lower abdominal pain, itching",
+          "conditions": [
+            {
+              "label": "Physiologic pruritus gravidarum",
+              "action": "diagnosed",
+              "onset": "2022-08-15",
+              "icd10": "O26.892"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-08-24T14:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-24T14:40",
+              "resulted": "2022-08-26T11:00",
+              "results": [
+                {
+                  "test": "Bile acids, total",
+                  "loinc": "14628-3",
+                  "unit": "umol/L",
+                  "value": 3.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics problem visit letter",
+              "date": "2022-08-30T10:05",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 8/24/2022\nRe: Shannon Wagner, 29 y/o, 21w5d, pregnancy with fetal gastroschisis\n\nShe came in with five days of sharp, on-and-off pain low on the right side of the abdomen and pelvis. It catches her when she moves quickly or rolls over in bed and at times shoots into the right groin and labia. No bleeding, no tightening or contractions, no burning or frequency with urination.\n\nShe also mentioned itching all over for about the last week and a half, worse at night, without any rash.\n\nExam: abdomen soft, mild discomfort only with deep pressure in the right lower quadrant. Fundus at the umbilicus, appropriate for dates. Cervix long and closed. Skin with no rash and no excoriations.\n\nLiver panel normal. Total bile acids 3.8 umol/L (normal).\n\nAssessment:\n1. Round ligament pain from the growing uterus. Reassured; position changes slowly, warm compresses, a support belt if helpful.\n2. Itching of pregnancy without rash, normal liver tests and bile acids: physiologic pruritus gravidarum. Emollients, cool showers. Call if it worsens or concentrates on the palms and soles.\nAllergies: latex, sulfa."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "office_visit",
+          "start": "2022-09-21T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety and anemia",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 82.5
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-21T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-09-21T16:50",
+              "author": "PCP",
+              "body": "S: Here for the 3 month check. Now about 25-26 weeks. OB following closely for the baby's gastroschisis, growth scans so far ok per her. Had the round ligament pain episode in August, now gone. Itching has calmed down with lotion. Anxiety a bit higher since the diagnosis, mostly at night, still working full time. Taking iron, prenatal and metformin daily.\n\nO: Vitals reviewed, weight up as expected for dates. Looks well. Heart and lungs normal. No edema.\nGAD-7 8.\nOB labs from August reviewed: Hgb 11.2.\n\nA/P:\n1. GAD - modestly higher in the setting of a stressful pregnancy. Talked about sleep, limiting late-night searching online, leaning on her husband. She prefers to keep going as is.\n2. Iron deficiency anemia - stable for pregnancy. Continue iron.\n3. PCOS - metformin continuing per OB.\nFlu shot next month. RTC after delivery."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T08:22"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-10-12T08:30",
+              "author": "RN",
+              "body": "Pt in for flu and bivalent COVID booster, 29 weeks pregnant, cleared by OB. Latex-free gloves and bandage used. Flu given L deltoid, COVID R deltoid. Lot numbers in immunization record. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "pharmacy",
+          "start": "2022-11-09T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-11-09T09:05",
+              "author": "MA",
+              "body": "Electronic request from pt's pharmacy for metformin 500 mg BID, 90 day supply. Last visit 9/21. Approved by PCP, sent with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "hospital_admission",
+          "start": "2022-12-09T06:30",
+          "end": "2022-12-11T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Planned induction of labor at 37 weeks, fetal gastroschisis",
+          "conditions": [
+            {
+              "label": "Gastroschisis",
+              "action": "resolved",
+              "onset": "2022-07-15",
+              "note": "delivered",
+              "icd10": "O35.8XX0"
+            },
+            {
+              "label": "Pregnancy (second trimester)",
+              "action": "resolved",
+              "onset": "2022-08-05",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Physiologic pruritus gravidarum",
+              "action": "resolved",
+              "onset": "2022-08-15",
+              "icd10": "O26.892"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              79
+            ],
+            "hr": 64,
+            "temp_c": 37.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-09T07:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 310
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-10T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2022-12-16T09:40",
+              "author": "obstetrics",
+              "body": "Regional hospital, labor and delivery service.\nAdmitted: 12/9/2022  Discharged: 12/11/2022\nPatient: Shannon Wagner, 29 y/o G2P1001 at 37w0d\n\nIndication: scheduled induction at 37 weeks for known fetal gastroschisis, delivery at a center with neonatal surgery.\n\nCourse: induction of labor. Uncomplicated spontaneous vaginal delivery the same evening. Estimated blood loss within normal range. Infant taken to the NICU by the neonatal and pediatric surgery teams for abdominal wall repair. Mother recovered without complication; afebrile, ambulating, voiding, pain well controlled.\n\nAllergies: latex (latex-free precautions throughout), sulfa.\nDischarge meds: continue prenatal vitamin, ferrous sulfate, metformin 500 mg twice daily.\nFollow-up: postpartum visit with obstetrics in 6 weeks; primary care as scheduled.\nNow G2P2002."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "office_visit",
+          "start": "2023-01-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 83,
+            "spo2": 97,
+            "weight_kg": 81.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-18T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-01-18T16:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                },
+                {
+                  "test": "Iron",
+                  "value": 92
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 331
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 28
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-18T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-18T16:15",
+              "author": "PCP",
+              "body": "Subjective: About 6 weeks out from a vaginal delivery on 12/9 (induced at 37 wks for the baby's gastroschisis, summary in chart). Saw OB for the postpartum check last week, told she is healing fine. Baby had the repair in the NICU. She is tired, sleep broken, but says mood is ok and she is coping. Some worry but less than in the fall. Back on her usual routine with iron, prenatal and metformin. Planning to go back to work next month.\n\nObjective: Vitals reviewed. Looks tired but bright. Lungs clear, heart regular. Abdomen soft. No calf tenderness.\nPHQ-9 5, GAD-7 7.\n\nAssessment/Plan:\n1. Postpartum, mood screen reassuring. Reviewed warning signs of postpartum depression; she knows to message.\n2. Iron deficiency anemia - CBC and iron studies today, continue ferrous sulfate.\n3. PCOS - continue metformin.\n4. GAD - stable.\nPhysical in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.1,
+            "labs": {
+              "Ferritin": 15,
+              "Hemoglobin": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "portal_message",
+          "start": "2023-01-20T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-01-20T12:15",
+              "author": "PCP",
+              "body": "Your hemoglobin is 11.4 and ferritin 15, both a little lower than in June, which is common after a delivery. Keep up the iron every day. We will check again at your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2023-01-20T19:48",
+              "author": "patient",
+              "body": "Thanks! Will do. Is it ok to take it with my coffee in the morning or should I switch?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2023-01-21T08:30",
+              "author": "PCP",
+              "body": "Better away from coffee or tea, which block absorption. With a little orange juice or on an empty stomach works best if your stomach tolerates it."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "pharmacy",
+          "start": "2023-03-22T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2023-03-22T10:40",
+              "author": "MA",
+              "body": "Pharmacy refill request ferrous sulfate 325 mg daily #90. Approved per PCP, sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "annual_physical",
+          "start": "2023-06-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 71,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 80.3,
+            "height_cm": 163.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-14T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 330
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-06-14T08:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 24
+                },
+                {
+                  "test": "Iron",
+                  "value": 77
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 27
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 283
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-14T08:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-14T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-14T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-06-14T08:35",
+              "text": "ThinPrep specimen. Satisfactory for evaluation, transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2023-06-21T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-06-14T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-14T09:05",
+              "author": "PCP",
+              "body": "29F for her yearly physical. Six months postpartum and back at the store full time. Feels like herself again. Periods have not returned in a regular pattern yet, which is typical for her with PCOS. Anxiety calmer, sleeping better now the baby sleeps longer stretches. Takes metformin, iron, prenatal.\n\nROS otherwise negative.\nMeds/allergies reviewed. Latex, sulfa.\n\nExam: Vitals reviewed. NAD. HEENT normal. Thyroid not enlarged. Lungs clear. RRR, no murmur. Abdomen soft, nontender, well-healed laparoscopy scars. Pelvic: normal external genitalia, cervix without lesion, Pap collected. Extremities without edema. Skin without notable lesions. Mood bright.\nPHQ-9 2, GAD-7 5.\n\nA/P:\n1. Health maintenance - Pap today (last 2020, normal). Fasting labs drawn. Hep C/HIV already done 2022. Flu shot in the fall.\n2. PCOS - metformin, A1c today.\n3. Iron deficiency anemia - recheck CBC and iron.\n4. GAD - mild, stable.\nReturn in about 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.3,
+            "labs": {
+              "Ferritin": 24,
+              "Hemoglobin": 12.1,
+              "Hemoglobin A1c": 5.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "portal_message",
+          "start": "2023-06-19T13:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2023-06-19T13:30",
+              "author": "PCP",
+              "body": "Results to pt via portal: Hgb up to 12.1, ferritin 24 - iron working, keep going. A1c 5.5, cholesterol panel and chemistries normal. Pap pending, will forward."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2023-06-22T08:15",
+              "author": "PCP",
+              "body": "Your Pap smear came back normal. The next one is due in 3 years."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "office_visit",
+          "start": "2023-09-13T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-09-13T17:25",
+              "author": "front desk",
+              "body": "Did not arrive for 5 pm follow-up. Left voicemail to reschedule. Pt texted back that inventory week at work ran late, will book in a couple months."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T07:57"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T07:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-11T08:05",
+              "author": "RN",
+              "body": "Seasonal flu and 2023-24 COVID vaccines given, one each arm. Latex allergy noted, non-latex supplies used. Tolerated well, left after 15 min observation."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "office_visit",
+          "start": "2023-12-06T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "PCOS, anemia, anxiety follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              86
+            ],
+            "hr": 56,
+            "spo2": 99,
+            "weight_kg": 79.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-06T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.02
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 306
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.7
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-12-06T08:45",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 27
+                },
+                {
+                  "test": "Iron",
+                  "value": 85
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 310
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 27
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-06T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-12-06T08:50",
+              "author": "PCP",
+              "body": "Rescheduled from Sept. Busy season at the store, says she is tired at the end of the day but no more than usual for December. Cycles still irregular, every 6 to 10 weeks. Anxiety steady, GAD-7 6. Taking metformin twice daily, iron most days.\nExam: vitals reviewed, weight down a little. Heart and lungs normal. No pallor.\nPlan: CBC and ferritin. Continue current meds. Physical in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.6,
+            "labs": {
+              "Ferritin": 27,
+              "Hemoglobin": 12.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-14a",
+          "kind": "portal_message",
+          "start": "2024-02-14T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2024-02-14T21:10",
+              "author": "patient",
+              "body": "Hi, I need refills on the metformin and the prenatal vitamins, same pharmacy. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2024-02-15T09:20",
+              "author": "MA",
+              "body": "Both sent to your pharmacy, 90 days with refills. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "annual_physical",
+          "start": "2024-06-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 81.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-06-19T08:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 22
+                },
+                {
+                  "test": "Iron",
+                  "value": 87
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 28
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 307
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-19T08:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-19T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-06-19T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-06-19T09:00",
+              "author": "PCP",
+              "body": "Physical, age 30. Store was short-staffed this spring and she has been covering extra shifts; more worry and trouble switching off at night. No panic episodes. Not interested in changing anything right now, wants to see if it eases as staffing improves. Kids keep her busy.\nMeds: metformin 500 bid, ferrous sulfate, prenatal. Allergies latex, sulfa.\n\nExam: vitals reviewed. Well appearing. Thyroid normal. Lungs clear, heart regular. Abdomen benign. No edema.\nPHQ-9 4, GAD-7 9.\n\nA/P\n1. GAD - score up a few points with work stress. Discussed sleep routine and protected time off. Recheck in 6 months, sooner if needed.\n2. PCOS - stable on metformin. A1c, lipids today.\n3. Iron deficiency anemia - CBC, iron studies.\n4. HM - Pap current (2023). Flu vaccine this fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.8,
+            "labs": {
+              "Ferritin": 22,
+              "Hemoglobin": 12.2,
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-21a",
+          "kind": "portal_message",
+          "start": "2024-06-21T11:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2024-06-21T11:45",
+              "author": "PCP",
+              "body": "Hi Shannon - blood count normal at 12.2, iron stores fine at 22, A1c 5.4, cholesterol normal, kidney tests normal. Keep the iron going at the same dose. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "nurse_visit",
+          "start": "2024-10-16T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-16T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2024-10-16T12:20",
+              "author": "RN",
+              "body": "Came in on lunch break for flu vaccine. Given L deltoid, non-latex bandage. Declined COVID today, may get it at her pharmacy later. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "pharmacy",
+          "start": "2024-12-11T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-12-11T14:00",
+              "author": "MA",
+              "body": "eRx renewal request, metformin 500 mg tab, 1 BID #180. Seen 6/2024, labs fine. Renewed per standing order, PCP cosign."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-22T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety and PCOS check-in",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-01-22T12:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-01-22T12:55",
+              "author": "PCP",
+              "body": "Video visit from her car at work, consented to telehealth, two identifiers confirmed.\nFollow-up on anxiety from the summer. Staffing sorted out in the fall and she feels steadier, sleeping better. GAD-7 7, PHQ-9 3. Cycles remain irregular, longest gap about 3 months. Taking metformin and iron. No new concerns.\nAssessment: GAD mild and improved. PCOS stable. Iron deficiency anemia on replacement, labs at the June physical.\nPlan: no changes. Physical in June."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "portal_message",
+          "start": "2025-05-16T07:05",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "new pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant?!",
+              "date": "2025-05-16T07:05",
+              "author": "patient",
+              "body": "Well, surprise. Took a home test after feeling off for a couple of weeks and it's positive, and a second one too. My periods are all over the place so I honestly didn't think about it. I have no idea how far along I am. What should I do first? Keep taking the metformin?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant?!",
+              "date": "2025-05-16T11:40",
+              "author": "PCP",
+              "body": "Congratulations, and thanks for letting me know. Please keep taking your prenatal with the 4 mg folate every day, plus the iron. Keep the metformin for now and confirm with OB at your first visit, as they did last time. I've placed a referral back to your OB group; given the irregular cycles they will want a dating ultrasound. Call us or them if you have bleeding or significant pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "telephone",
+          "start": "2025-05-20T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "OB referral follow-up",
+              "date": "2025-05-20T14:15",
+              "author": "front desk",
+              "body": "Called OB office re referral. Received. They will contact pt directly for the new OB intake; pt reports first appointment they offered is mid-July due to provider leave, she accepted and is on their cancellation list. PCP informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "specialist_visit",
+          "start": "2025-07-14T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "First prenatal visit, 18 weeks",
+          "conditions": [
+            {
+              "label": "Pregnancy (second trimester)",
+              "action": "diagnosed",
+              "onset": "2025-07-14",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Myelomeningocele with Chiari II malformation and hydrocephalus",
+              "action": "diagnosed",
+              "onset": "2025-07-14",
+              "note": "fetal, on anatomy ultrasound",
+              "icd10": "O35.08X0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Fetal anatomy ultrasound",
+              "loinc": "11525-3",
+              "performed": "2025-07-14T10:10",
+              "text": "Transabdominal obstetric ultrasound. Single live intrauterine pregnancy, biometry consistent with 18 weeks. Fetal heart activity present. Amniotic fluid normal. Placenta anterior, clear of the cervix. Abdominal wall intact with normal cord insertion. Open posterior spinal defect in the lower spine with a protruding fluid-filled sac. Intracranial views show the posterior fossa changes of a Chiari II malformation with enlarged lateral ventricles. Limbs present; feet appear normally positioned.",
+              "conclusion": "Open spinal dysraphism with sac (myelomeningocele) with associated Chiari II malformation and ventriculomegaly."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-07-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics new prenatal visit letter",
+              "date": "2025-07-18T14:20",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 7/14/2025\nRe: Shannon Wagner, 31 y/o G3P2002, 18w0d by today's ultrasound\n\nShe comes for her initial prenatal visit. She learned of the pregnancy about two months ago; irregular cycles from PCOS. Her last pregnancy, delivered here in 2022, was complicated by fetal gastroschisis. Continues prenatal vitamin with 4 mg folate, ferrous sulfate and metformin 500 mg twice daily.\n\nUltrasound today shows a lower spinal defect with a sac, along with the intracranial changes that accompany it: a Chiari II malformation and enlarged ventricles. This is a fetal myelomeningocele.\n\nWe spent a long time with her and her husband. Plan: detailed counseling with maternal-fetal medicine and pediatric neurosurgery, serial ultrasound for ventricular size and growth, and a planned cesarean delivery at a center with neonatal neurosurgery. Routine prenatal labs sent.\nAllergies: latex, sulfa. Latex precautions are especially noted for delivery planning."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "telephone",
+          "start": "2025-07-23T17:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP check-in",
+              "date": "2025-07-23T17:35",
+              "author": "PCP",
+              "body": "Spoke with Shannon after the OB letter came in about the baby's spine. She is shaken but organized; has appointments lined up with MFM and the neurosurgery team. Husband taking time off for the visits. Not sleeping well this week. Booked her in with me in a few weeks to check in properly."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "office_visit",
+          "start": "2025-08-13T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up in pregnancy",
+          "vitals": {
+            "bp": [
+              116,
+              76
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 86.0
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-13T17:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-13T17:10",
+              "author": "PCP",
+              "body": "S: About 22 weeks. Met with MFM and pediatric neurosurgery; plan is cesarean at 37 weeks at the regional center with neurosurgery for the baby after birth. Says having a plan has helped. Worry is constant in the background, sleep better than in July. Working reduced hours. No thoughts of self-harm. Taking prenatal, iron, metformin.\n\nO: BP and HR normal. Weight appropriate for dates. Tearful briefly talking about the scans, otherwise composed. Heart and lungs normal. No edema.\nGAD-7 9, PHQ-9 6.\n\nA/P:\n1. GAD in a high-stress pregnancy - supportive visit. She feels her support at home is good. Recheck after delivery or sooner by message.\n2. Iron deficiency anemia - OB checking counts.\n3. PCOS - metformin per OB.\nFlu and updated COVID in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "specialist_visit",
+          "start": "2025-09-17T13:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Shortness of breath, 27 weeks",
+          "conditions": [
+            {
+              "label": "Physiologic dyspnea of pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-09-03",
+              "icd10": "O26.892"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "rr": 18,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-17T13:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.82
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-09-17T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit letter",
+              "date": "2025-09-22T11:00",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 9/17/2025\nRe: Shannon Wagner, 27w2d, fetal myelomeningocele\n\nRoutine follow-up. For two weeks she has noticed being short of breath, more when lying flat and eased by sitting up. No chest pain, no cough, no wheezing. Maternal course otherwise smooth.\n\nRR 18, HR 88, BP 120/75, SpO2 98% on room air. Lungs clear both sides. Heart sounds normal without murmur, rub or gallop. No leg swelling.\nHgb 11.5, Hct 34%, platelets 220K.\n\nAssessment: physiologic dyspnea of pregnancy; normal oxygenation, clear exam and stable blood count. Reviewed reasons to call (chest pain, one-sided leg swelling, breathlessness at rest). Tdap given today.\nAllergies: latex, sulfa."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T08:17"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T08:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-08T08:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-08T08:25",
+              "author": "RN",
+              "body": "30 wks pregnant, here for flu and 2025-26 COVID vaccines. Tdap already given by OB in Sept, entered from their letter. Non-latex supplies. Both given, tolerated, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "specialist_visit",
+          "start": "2025-11-14T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Facial hair, voice change, acne in pregnancy",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-14T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-14T11:00",
+              "resulted": "2025-11-17T15:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Testosterone, Total",
+                  "value": 150
+                },
+                {
+                  "test": "Dehydroepiandrosterone sulfate",
+                  "loinc": "2191-5",
+                  "unit": "ug/dL",
+                  "value": 180
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-11-14T11:30",
+              "text": "Transabdominal pelvic ultrasound with views of the adnexa. Both ovaries are enlarged with multiple thin-walled cysts: right ovary 3 cm, left ovary 4 cm. No solid component and no free fluid. Single live intrauterine pregnancy in cephalic position, amniotic fluid normal. No new fetal findings beyond the known spinal defect; fetal status reassuring.",
+              "conclusion": "Bilateral multicystic ovarian enlargement, right 3 cm, left 4 cm. Reassuring fetal status."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit letter",
+              "date": "2025-11-19T16:30",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 11/14/2025\nRe: Shannon Wagner, 32 y/o, 35w4d, fetal myelomeningocele, PCOS\n\nSeen with her husband, who is worried about changes in how she looks. Over about two months she has had much more facial hair, a lower voice and new acne. She denies headache, vision changes or abdominal pain.\n\nBP 120/78, HR 72. Appears well. Facial hirsutism and temporal hair thinning noted.\n\nLabs: Hgb 12.5, platelets 250K, fasting glucose 88. Total testosterone 150 ng/dL (non-pregnant female range 15-70). DHEA-S 180 ug/dL (non-pregnant female range 35-430).\nPelvic ultrasound: both ovaries enlarged with multiple cysts, 3 cm right and 4 cm left, no solid features. Baby without new findings.\n\nAssessment: androgen excess in late pregnancy with bilateral multicystic ovarian enlargement and a normal DHEA-S, pointing to an ovarian rather than adrenal source. The appearance is benign and this pattern is expected to regress after delivery. Expectant management. We will repeat the pelvic ultrasound and testosterone at her postpartum visit. Planned cesarean at 37 weeks is unchanged.\nAllergies: latex, sulfa."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T20:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question",
+              "date": "2025-11-18T20:50",
+              "author": "patient",
+              "body": "OB said my testosterone is high and there are cysts on my ovaries and it should go away after the baby. Is this from my PCOS? I hate the hair and my voice sounds weird on the phone at work."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question",
+              "date": "2025-11-19T07:45",
+              "author": "PCP",
+              "body": "Hi Shannon, I saw the OB note. Pregnancy hormones can stimulate the ovaries this way late in pregnancy, and it usually settles over the weeks after delivery. They plan to recheck the ultrasound and the testosterone after the baby comes, which is the right next step. I know it is upsetting. Hang in there for the next couple of weeks, and let's get together after you are home."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "hospital_admission",
+          "start": "2025-11-24T06:00",
+          "end": "2025-11-29T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Planned cesarean at 37 weeks, fetal myelomeningocele",
+          "conditions": [
+            {
+              "label": "Acute fatty liver of pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-11-24",
+              "icd10": "O26.613"
+            },
+            {
+              "label": "Myelomeningocele with Chiari II malformation and hydrocephalus",
+              "action": "resolved",
+              "onset": "2025-07-14",
+              "note": "delivered",
+              "icd10": "O35.08X0"
+            },
+            {
+              "label": "Pregnancy (second trimester)",
+              "action": "resolved",
+              "onset": "2025-07-14",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Physiologic dyspnea of pregnancy",
+              "action": "resolved",
+              "onset": "2025-09-03",
+              "icd10": "O26.892"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, no more than 4 tablets a day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pain after cesarean delivery"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-24T06:20",
+              "bp": [
+                118,
+                76
+              ],
+              "hr": 88
+            },
+            {
+              "time": "2025-11-25T08:00"
+            },
+            {
+              "time": "2025-11-29T08:00"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-24T06:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 286
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 241
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-24T06:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 61
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 62
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-24T06:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 168
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-24T06:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 17.1
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-24T06:40",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.9
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.31
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.7
+                },
+                {
+                  "test": "Thyroxine (T4), total",
+                  "loinc": "3026-2",
+                  "unit": "ug/dL",
+                  "value": 15.6
+                },
+                {
+                  "test": "Choriogonadotropin, serum",
+                  "loinc": "19080-1",
+                  "text": "Elevated for gestational age"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-25T05:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 198
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 176
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.0
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 2.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 96
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-25T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 15.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-29T05:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 105
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-29T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-29T05:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2025-12-01T10:15",
+              "author": "obstetrics",
+              "body": "Regional hospital, obstetrics service.\nAdmitted 11/24/2025, discharged 11/29/2025.\nPatient: Shannon Wagner, 32 y/o G3P2002 at 37w0d.\nAllergies: LATEX (type I), sulfa.\n\nReason for admission: scheduled cesarean for fetal myelomeningocele with Chiari II malformation and ventriculomegaly.\n\nOn arrival she reported feeling generally fine apart from malaise and occasional palpitations with more sweating, which she put down to late pregnancy. BP 118/76, HR 88. Clinically euthyroid: thyroid of normal size, nontender, no nodules; reflexes normal; no tremor.\n\nAdmission labs: AST 286, ALT 241, total bilirubin 2.6 (direct 1.9), glucose 61, PT 17.1 / INR 1.5, uric acid 8.9, creatinine 1.2, WBC 14.6, platelets 168K. Thyroid: TSH 0.31 (low), free T4 1.7 (at the upper limit), total T4 15.6 (high); hCG elevated for gestational age.\n\nAssessment: acute fatty liver of pregnancy, diagnosed on admission labs. Thyroid pattern attributed to hCG stimulation and the pregnancy rise in binding protein; no treatment.\n\nCourse: dextrose infusion for glucose, plasma for the coagulopathy, and cesarean delivery the same morning in a latex-free room. Infant to the NICU with the neurosurgery team. Postoperative monitoring in the high-risk obstetric unit. Day 2: AST 198, ALT 176, bilirubin 3.0, INR 1.3. Glucose stable off dextrose by day 2. Day 5: AST 92, ALT 105, bilirubin 1.8, INR 1.1, glucose and creatinine normal. Incision clean.\n\nDischarge medications: acetaminophen 500 mg every 6 hours as needed, maximum 2 g per day while the liver recovers. Continue prenatal vitamin, ferrous sulfate, metformin 500 mg twice daily.\nFollow-up: primary care within the week for liver tests and INR; obstetrics postpartum visit with repeat pelvic ultrasound and testosterone in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "office_visit",
+          "start": "2025-12-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, acute fatty liver of pregnancy",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 84.0
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-03T10:35",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 54
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-12-03T10:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-12-03T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-12-03T10:45",
+              "author": "PCP",
+              "body": "Hospital follow-up. Discharge summary reviewed: cesarean at 37 wks on 11/24, acute fatty liver of pregnancy picked up on admission labs, delivered the same day, liver numbers falling by discharge.\n\nS: Home 4 days. Incision sore, using acetaminophen once or twice a day. Appetite back, no nausea, no yellowing, urine normal color. Palpitations and sweating gone. Baby still in the NICU; she and her husband are there most of the day. Tired. Mood ok under the circumstances.\n\nO: Vitals reviewed, afebrile. Not jaundiced. Abdomen soft, incision clean and dry, no erythema. No edema.\nPHQ-9 5, GAD-7 8.\n\nA/P:\n1. Acute fatty liver of pregnancy - improving. Hepatic panel and INR today. Acetaminophen ok at no more than 2 g a day for now.\n2. Post-cesarean - healing well.\n3. GAD/postpartum mood - screens mild, close follow-up given the NICU stay.\n4. PCOS/iron - continue metformin, iron, prenatal.\nRecheck in 4 weeks with labs, including thyroid tests since they were off in the hospital."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "portal_message",
+          "start": "2025-12-05T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests",
+              "date": "2025-12-05T09:10",
+              "author": "PCP",
+              "body": "Good news: AST 54 and ALT 61, down from the hundreds, bilirubin 1.1 and clotting time back to normal. Your liver is recovering the way we hoped. We'll repeat everything at the visit on the 29th."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "office_visit",
+          "start": "2025-12-29T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver tests, postpartum",
+          "conditions": [
+            {
+              "label": "Acute fatty liver of pregnancy",
+              "action": "resolved",
+              "onset": "2025-11-24",
+              "icd10": "O26.613"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              73
+            ],
+            "hr": 55,
+            "spo2": 97,
+            "weight_kg": 84.3
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-29T09:50",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-29T09:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.62
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-29T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Platelets",
+                  "value": 329
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-12-29T09:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 16
+                },
+                {
+                  "test": "Iron",
+                  "value": 62
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 20
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 309
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-29T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-29T09:55",
+              "author": "PCP",
+              "body": "5 weeks post cesarean. She is sleeping in short stretches but feels physically much better. No abdominal pain, no jaundice, eating normally. Stopped the acetaminophen a week ago. Facial hair and acne starting to ease per her. OB postpartum visit 1/9.\nMeds: metformin 500 bid, ferrous sulfate, prenatal.\n\nExam: vitals reviewed. Well appearing. Sclerae anicteric. Incision healed. Abdomen soft, nontender. Heart and lungs normal.\nPHQ-9 4, GAD-7 7.\n\nA/P\n1. Acute fatty liver of pregnancy - clinically resolved, closing it on the problem list. Hepatic panel today to confirm.\n2. Abnormal thyroid tests during pregnancy - TSH and free T4 today to make sure they have normalized.\n3. Iron deficiency anemia - CBC and iron studies, continue iron.\n4. PCOS - continue metformin. OB to recheck ovaries and testosterone 1/9.\n5. GAD/postpartum mood - mild, stable. She will message if this slips.\nFollow up in spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 83.2,
+            "labs": {
+              "Ferritin": 16,
+              "Hemoglobin": 11.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-31a",
+          "kind": "portal_message",
+          "start": "2025-12-31T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2025-12-31T10:30",
+              "author": "PCP",
+              "body": "All of your liver tests are normal now (AST 24, ALT 27, bilirubin 0.6), so the fatty liver of pregnancy has fully resolved. Thyroid tests are normal too (TSH 1.62, free T4 1.1), so those changes were from the pregnancy. Hemoglobin 11.8 and ferritin 16, a bit low after delivery; please keep up the iron daily. Happy new year."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "specialist_visit",
+          "start": "2026-01-09T13:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 69,
+            "weight_kg": 83.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-09T14:10",
+              "resulted": "2026-01-12T12:00",
+              "results": [
+                {
+                  "test": "Testosterone, Total",
+                  "value": 52
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-01-09T14:30",
+              "text": "Transabdominal and transvaginal pelvic ultrasound. Postpartum uterus, involuting, no retained products. Right and left ovaries normal in size; the previously seen cysts are no longer present. No adnexal mass, no free fluid.",
+              "conclusion": "Normal-sized ovaries with resolution of the previously seen bilateral ovarian cysts."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics postpartum visit letter",
+              "date": "2026-01-14T09:30",
+              "author": "obstetrics",
+              "body": "Outside obstetrics group, letter to primary care.\nDate of visit: 1/9/2026\nRe: Shannon Wagner, postpartum after cesarean on 11/24/2025 complicated by acute fatty liver of pregnancy\n\nFeels well. Incision healed. Facial hair and acne are fading. Your office's liver tests from 12/29 reviewed, normal.\n\nPelvic ultrasound today: ovaries normal in size, the bilateral cysts seen in November have resolved. Total testosterone 52 ng/dL, back in the normal range.\n\nThe androgen excess and ovarian enlargement of late pregnancy have resolved as expected. Continue metformin for PCOS, prenatal vitamin and iron. Routine gynecologic care going forward; Pap due 2026.\nAllergies: latex, sulfa."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "pharmacy",
+          "start": "2026-02-18T11:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-02-18T11:25",
+              "author": "MA",
+              "body": "Pharmacy requesting renewal metformin 500 mg 1 tab BID #180. Last OV 12/29/25. Sent per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "portal_message",
+          "start": "2026-05-06T22:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2026-05-06T22:15",
+              "author": "patient",
+              "body": "Hi, I was supposed to come back in the spring. Things are nuts with two little ones' appointments plus work. Can I push my checkup to later in the summer? I'll call when I know my schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2026-05-07T09:05",
+              "author": "front desk",
+              "body": "Of course. Call or message us whenever you're ready and we'll find a time that works. Your physical would be due any time after June."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "pharmacy",
+          "start": "2026-06-17T15:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-06-17T15:40",
+              "author": "MA",
+              "body": "Refill request ferrous sulfate 325 mg daily #90 and prenatal vitamin #90. Sent. Pt overdue for follow-up, reminder attached to the refill notification."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute fatty liver of pregnancy|O26.613": {
+        "code": "O26.613",
+        "display": "Liver and biliary tract disorders in pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Gastroschisis|O35.8XX0": {
+        "code": "O35.8XX0",
+        "display": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Myelomeningocele with Chiari II malformation and hydrocephalus|O35.08X0": {
+        "code": "O35.08X0",
+        "display": "Maternal care for (suspected) central nervous system malformation or damage in fetus, spina bifida, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Physiologic dyspnea of pregnancy|O26.892": {
+        "code": "O26.892",
+        "display": "Other specified pregnancy related conditions, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Physiologic pruritus gravidarum|O26.892": {
+        "code": "O26.892",
+        "display": "Other specified pregnancy related conditions, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnancy (second trimester)|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Alpha-fetoprotein MoM, maternal serum": {
+        "code": "20450-3",
+        "display": "Alpha-1-Fetoprotein [Multiple of the median] in Serum or Plasma",
+        "unit": "{MoM}",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Choriogonadotropin, maternal serum": {
+        "code": "19080-1",
+        "display": "Choriogonadotropin [Units/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Choriogonadotropin, serum": {
+        "code": "19080-1",
+        "display": "Choriogonadotropin [Units/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Dehydroepiandrosterone sulfate": {
+        "code": "2191-5",
+        "display": "Dehydroepiandrosterone sulfate (DHEA-S) [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Inhibin A, maternal serum": {
+        "code": "23883-2",
+        "display": "Inhibin A [Mass/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein, 24 hour urine": {
+        "code": "2889-4",
+        "display": "Protein [Mass/time] in 24 hour Urine",
+        "unit": "mg/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Thyroxine (T4), total": {
+        "code": "3026-2",
+        "display": "Thyroxine (T4) [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Unconjugated estriol, maternal serum": {
+        "code": "2250-9",
+        "display": "Estriol (E3).unconjugated [Mass/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Fetal anatomy ultrasound": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal vitamin with folic acid 4 MG Oral Tablet\"",
+      "lab \"Bile acids, total\" LOINC 14628-3 not found; closest real codes: 108430-0 Bile acid [Measurement] in Urine; 43877-0 Bile acid [Presence] in Serum; 49254-6 Bile acid pattern [Interpretation] in Urine Narrative; 1967-9 Bile acid [Mass/volume] in Serum; 104027-8 Bile acid malabsorption panel"
+    ]
+  }
+}

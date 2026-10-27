@@ -1,0 +1,331 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002319",
+      "given": "Andrew",
+      "family": "Marino",
+      "birth_date": "1961-03-08",
+      "address_line": "41 Ingleside Terrace",
+      "phone": "+1-802-555-0135",
+      "email": "andrew.marino@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction supervisor and former heavy smoker who joined in 2022 with treated hypertension. Screening found a stage I lung adenocarcinoma (lobectomy 2023), then a testicular germ cell tumor treated with BEP that left bleomycin pulmonary fibrosis and cisplatin-related CKD 3b, then a clear cell renal cancer that has spread to the lungs; he is on a treatment break and thinking about his goals.",
+      "events": [
+        {
+          "id": "2022-04-26a",
+          "kind": "telephone",
+          "start": "2022-04-26T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2022-04-26T10:12", "body": "Mr. Marino called about joining. His previous doctor retired last year and he has been getting refills through an urgent care. Explained membership and that he keeps his insurance for labs and specialists. Booked new patient visit 5/10 at 8:40. Release signed over the phone for records from the prior office, faxed today."}
+          ]
+        },
+        {
+          "id": "2022-05-06a",
+          "kind": "outside_records",
+          "start": "2022-05-06T14:30",
+          "reason": "prior primary care records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2022-05-06T14:30", "body": "38 pages received by fax from the patient's previous internal medicine office, covering 2014 to 2021. Summary for the chart:\n- Hypertension, on lisinopril 5 mg daily for several years, last office BP 134/82.\n- Allergies: IV contrast (hives), sulfa antibiotics (rash).\n- Screening colonoscopy 2019: normal, repeat in 10 years.\n- Tobacco: current smoker, counseled at several visits.\nScanned under Media. Flagged for the new patient visit."}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "establish_care",
+          "start": "2022-05-10T08:40",
+          "end": "2022-05-10T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2012-06-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "1980-01-01"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"}
+          ],
+          "allergies": [
+            {"substance": "Iodinated contrast media", "reaction": "Hives", "severity": "moderate", "criticality": "high", "type": "allergy"},
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "vitals": {"bp": [136, 84]},
+          "state": {"bp": [136, 84], "weight_kg": 88.0, "height_cm": 178.0, "labs": {"Creatinine": 1.15, "Hemoglobin A1c": 5.6}},
+          "measure": ["hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "Occupation", "value": "Retired construction supervisor"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per week"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-05-10T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-10T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-05-10T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-05-10T09:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-05-10T09:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-05-10T09:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": "Urinalysis", "collected": "2022-05-10T09:50", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-05-10T09:35"},
+            {"vaccine": "Tdap", "date": "2022-05-10T09:36"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-05-10T09:37"}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year current smoker, age 61"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-05-10T08:40"},
+            {"procedure": "Immunization administration", "performed": "2022-05-10T09:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-05-10T08:40", "body": "61 y/o man establishing care. Prior PCP retired; records from that office reviewed.\n\nHTN for about ten years, on lisinopril 5 mg daily, no side effects. Doesn't check BP at home. No chest pain, no breathing complaints beyond the usual morning smoker's throat clearing, no leg swelling.\n\nTobacco: about a pack a day since his late teens, roughly 40 pack-years. Has tried to quit twice, longest about four months. Says he is \"thinking about it seriously\" now that he is retired and his wife is after him about it.\nAlcohol: a beer or two on weekends. No other substances.\nRetired from construction (site supervisor, commercial jobs). Married, lives with his wife.\n\nPMH: hypertension. PSH: none.\nFH: father died of lung cancer at 67. Paternal uncle had kidney cancer in his 70s. Mother, 83, has high blood pressure.\nAllergies: IV contrast dye - hives. Sulfa antibiotics - rash.\nMeds: lisinopril 5 mg daily.\nPrevention: colonoscopy 2019 normal per old records. No pneumonia or shingles vaccines on file; last tetanus unknown.\n\nExam: BP 136/84. Well-appearing, smells of smoke. Lungs clear, no wheeze, normal effort. Heart regular, no murmur. Abdomen soft, nontender. No edema. Skin fine.\n\nA/P\n1. HTN - near goal on lisinopril 5, continue. CMP, UA.\n2. Tobacco use, 40 pack-years - spent a good while on this. He wants to try cold turkey first; we talked about patch and medicines if that fails and he'll let me know. Qualifies for annual lung cancer screening; low-dose CT ordered, explained what it can find and the chance of a false alarm.\n3. Health maintenance: CBC, lipids, A1c, hep C and HIV screen today. PCV20, Tdap and first Shingrix given. Shingrix #2 in 2-6 months. Colonoscopy due 2029.\nRTC 6 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "portal_message",
+          "start": "2022-05-12T16:05",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-05-12T16:05", "body": "Hi Andrew, your labs from Tuesday look good. Kidney function, blood counts, sugar and cholesterol are all fine, and the hepatitis C and HIV screens are negative. The CT scheduler should call you this week. Let me know how the quitting is going."}
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "portal_message",
+          "start": "2022-08-09T19:40",
+          "reason": "quit smoking",
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "resolved", "onset": "1980-01-01"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2022-08-01"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Smoking", "author": "patient", "date": "2022-08-09T19:40", "body": "Doc - figured you'd want to know I've been off cigarettes since the 1st. Nine days. Chewing a lot of gum. Also never heard from anyone about that CT scan, can you check on it?"},
+            {"type": "Patient Message", "title": "RE: Smoking", "author": "PCP", "date": "2022-08-10T08:20", "body": "That is great news, Andrew. The first few weeks are the hardest, and if cravings get bad the patch is still an option, just tell me. I asked our staff to chase the CT; the order was there but the imaging center lost the referral. They will call you to schedule."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "nurse_visit",
+          "start": "2022-08-16T10:00",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-08-16T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-08-16T10:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2022-08-16T10:00", "body": "Second Shingrix given L deltoid, lot recorded. Tolerated. Pt reports 15 days smoke free. Low-dose CT scheduled for 9/6."}
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "imaging",
+          "start": "2022-09-06T13:20",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-09-06T13:20", "text": "Indication: Annual lung cancer screening, 40 pack-years, quit 08/2022.\nTechnique: Low-dose helical CT of the chest without contrast.\nComparison: None.\nFindings: Solid nodule in the left upper lobe, apicoposterior segment, measuring 19 mm in mean diameter, with lobulated margins. No other pulmonary nodules. No consolidation or pleural effusion. No mediastinal or hilar adenopathy by size. Heart size normal. Visualized upper abdomen unremarkable.\nLung-RADS category: 4B.", "conclusion": "19 mm solid left upper lobe nodule, Lung-RADS 4B, suspicious. PET-CT and/or tissue sampling recommended."}
+          ],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-09-06T13:20"}]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "telephone",
+          "start": "2022-09-08T12:15",
+          "reason": "CT result",
+          "orders": [
+            {"id": "pet-2022", "action": "placed", "order": "PET-CT skull base to mid-thigh", "category": "imaging", "reason": "Lung-RADS 4B left upper lobe nodule"},
+            {"id": "pulm-referral-2022", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "suspicious LUL nodule"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Low-dose CT result", "author": "PCP", "date": "2022-09-08T12:15", "body": "Called pt with the screening CT. 19 mm LUL nodule, Lung-RADS 4B. Told him plainly this needs to be worked up for cancer, and that if it is cancer, finding it this size is the reason we screen. He was quiet, asked good questions. Wife on speaker. PET-CT ordered and urgent pulmonology referral placed. Will call him when PET is back."}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "imaging",
+          "start": "2022-09-27T07:45",
+          "reason": "PET-CT for lung nodule",
+          "reports": [
+            {"study": "PET-CT, skull base to mid-thigh", "loinc": "81554-8", "performed": "2022-09-27T07:45", "text": "Indication: 19 mm left upper lobe nodule.\nTechnique: F-18 FDG PET with low-dose non-contrast CT for attenuation correction.\nFindings: The left upper lobe nodule is FDG-avid, SUVmax 6.2. No FDG-avid mediastinal, hilar or supraclavicular lymph nodes. No other pulmonary uptake. No abnormal uptake in the liver, adrenals or skeleton. Physiologic activity elsewhere.", "conclusion": "Hypermetabolic left upper lobe nodule (SUVmax 6.2) concerning for primary lung malignancy. No nodal or distant metastatic disease."}
+          ],
+          "orders": [{"id": "pet-2022", "action": "done", "date": "2022-09-27T07:45"}]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "specialist_visit",
+          "start": "2022-10-18T11:00",
+          "service": "Pulmonology",
+          "reason": "LUL nodule, bronchoscopic biopsy",
+          "conditions": [
+            {"label": "Malignant neoplasm of lung", "action": "diagnosed", "onset": "2022-10-18", "note": "LUL adenocarcinoma, non-small cell"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-10-18T09:30", "issued": "2022-10-21T15:00", "text": "Specimen: Left upper lobe nodule, navigational bronchoscopic transbronchial biopsy and brushings.\nGross: Multiple tan tissue fragments, aggregate 0.6 cm.\nMicroscopic: Fragments of lung parenchyma infiltrated by malignant glandular epithelium with acinar architecture. Immunostains: TTF-1 positive, napsin A positive, p40 negative.", "conclusion": "Adenocarcinoma of the lung (non-small cell carcinoma), left upper lobe."}
+          ],
+          "orders": [{"id": "pulm-referral-2022", "action": "done", "date": "2022-10-18T11:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Consultation and Bronchoscopy", "author": "pulmonology", "date": "2022-10-21T16:00", "body": "Re: Andrew Marino, DOB 03/08/1961\n\nThank you for referring Mr. Marino, a 61-year-old former smoker (40 pack-years, quit 08/2022) with a 19 mm left upper lobe nodule found on screening low-dose CT. PET-CT showed avidity in the nodule (SUVmax 6.2) without nodal or distant uptake.\n\nHe has no cough, hemoptysis or weight loss. Exercise tolerance is good; he walks a mile with his wife most days.\nAllergies: iodinated contrast (hives), sulfonamide antibiotics (rash).\nMedications: lisinopril 5 mg daily.\n\nExam: SpO2 97% on room air. Lungs clear bilaterally. No lymphadenopathy.\n\nProcedure 10/18: Navigational bronchoscopy with radial EBUS confirmation; transbronchial biopsies and brushings of the LUL lesion. Moderate sedation. No pneumothorax on post-procedure film. Tolerated well.\n\nPathology (final 10/21): adenocarcinoma, TTF-1 and napsin A positive.\n\nImpression: Clinical stage I non-small cell lung cancer, left upper lobe adenocarcinoma. Spirometry in clinic adequate for lobectomy.\nPlan: Referred to thoracic surgery for resection. I discussed the diagnosis with him and his wife today.\n\nPulmonary Medicine"}
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "nurse_visit",
+          "start": "2022-10-25T09:20",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-25T09:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-25T09:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-25T09:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2022-10-25T09:20", "body": "Flu (R deltoid) and bivalent COVID booster (L deltoid) given. No reactions during 15 min wait. Pt mentions he sees the chest surgeon 11/8 and is still not smoking."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "specialist_visit",
+          "start": "2022-11-08T14:00",
+          "service": "Thoracic Surgery",
+          "reason": "LUL adenocarcinoma, surgical consult",
+          "documents": [
+            {"type": "Consult Note", "title": "Thoracic Surgery Consultation", "author": "thoracic surgery", "date": "2022-11-09T09:00", "body": "Patient: Andrew Marino\nReason for consult: left upper lobe adenocarcinoma, clinical stage I\n\nMr. Marino is a 61-year-old retired construction supervisor referred by pulmonology after bronchoscopic biopsy confirmed adenocarcinoma in a 19 mm LUL nodule. PET staging negative for nodal or distant disease. He stopped smoking in August.\n\nPMH: hypertension. No prior surgery.\nMeds: lisinopril 5 mg daily.\nAllergies: IV contrast (hives); sulfa antibiotics (rash).\n\nExam: Fit-appearing. Lungs clear. Heart regular.\n\nAssessment: Clinical stage I NSCLC, LUL. Good functional status; spirometry acceptable.\nPlan: Robotic-assisted left upper lobectomy with mediastinal lymph node dissection, scheduled for 01/10/2023. Pre-operative evaluation by his primary care physician requested. Risks, benefits and recovery discussed with him and his wife; consent signed.\n\nThoracic Surgery"}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-13T11:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-13T11:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2022-12-13T10:45", "text": "Sinus rhythm, rate 72. Normal axis. Normal intervals. No ST or T wave abnormality.", "conclusion": "Normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T10:20"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-12-13T10:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Pre-operative Evaluation", "author": "PCP", "date": "2022-12-13T10:20", "body": "Pre-op eval for robotic L upper lobectomy 1/10/23 (thoracic surgery).\n\nS: Feels well. Still not smoking, four months now, proud of it. Climbs two flights without stopping, no chest pain, no syncope, no orthopnea. No bleeding history. Never had anesthesia. No family anesthesia problems.\nMeds: lisinopril 5 mg.\nAllergies: contrast dye (hives), sulfa abx (rash).\n\nO: BP and vitals as recorded. Lungs clear. Heart RRR, no murmur. No edema.\nECG: NSR, normal.\n\nA/P: Intermediate-risk surgery, functional capacity >4 METs, no active cardiac conditions. RCRI 1 (intrathoracic surgery). OK to proceed from a medical standpoint.\n- Hold lisinopril the morning of surgery, resume when eating and BP allows.\n- BMP, CBC today.\n- Contrast allergy flagged for the hospital.\nNote faxed to thoracic surgery."}
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "hospital_admission",
+          "start": "2023-01-10T06:30",
+          "end": "2023-01-13T12:00",
+          "service": "Thoracic Surgery",
+          "reason": "left upper lobectomy for lung adenocarcinoma",
+          "medications": [
+            {"drug_text": "acetaminophen 325 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (650 mg) by mouth every 6 hours as needed for pain", "dose": {"value": 650, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "pain"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-01-10T09:15", "issued": "2023-01-16T14:00", "text": "Specimen A: Left upper lobe, lobectomy. Specimen B-F: Mediastinal and hilar lymph nodes, stations 5, 6, 7, 10L, 11L.\nTumor: Invasive adenocarcinoma, acinar predominant. Size 2.0 cm. Visceral pleural invasion not identified. Lymphovascular invasion not identified. Bronchial, vascular and parenchymal margins negative.\nLymph nodes: 0 of 9 involved.\nPathologic stage: pT1b N0.", "conclusion": "Invasive adenocarcinoma, left upper lobe, 2.0 cm, margins negative, 0/9 nodes; pT1b N0, stage IA."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary - Thoracic Surgery", "author": "thoracic surgery", "date": "2023-01-13T12:00", "body": "Admit 01/10/2023  Discharge 01/13/2023\nProcedure: Robotic-assisted left upper lobectomy with mediastinal lymph node dissection (01/10).\nDiagnosis: Left upper lobe adenocarcinoma.\n\nHospital course: Uncomplicated. Chest tube removed POD 2 after air leak resolved. Ambulating independently, on room air, SpO2 94-96%. Pain controlled with acetaminophen.\nFinal pathology pending at discharge.\nAllergies: iodinated contrast (urticaria), sulfonamide antibiotics (rash).\n\nDischarge medications:\n- Lisinopril 5 mg daily (resumed)\n- Acetaminophen 650 mg every 6 hours as needed for pain\nNo NSAIDs for now.\n\nFollow-up: thoracic surgery clinic 2 weeks; PCP within 1-2 weeks. Walk daily, no lifting over 10 lb for 4 weeks, no driving while sore."}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after lobectomy",
+          "conditions": [
+            {"label": "Malignant neoplasm of lung", "action": "resolved", "onset": "2022-10-18"},
+            {"label": "History of stage I non-small cell lung cancer (status post left upper lobectomy)", "icd10": "Z85.118", "action": "diagnosed", "onset": "2023-01-10"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2023-01-24T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2023-01-24T09:00", "body": "Seen 11 days after robotic LUL lobectomy (1/10-1/13). Final path came through last week: 2.0 cm adenocarcinoma, margins clear, 0/9 nodes, pT1b N0 - stage IA. Thoracic surgery told him no chemo or radiation needed, surveillance CTs.\n\nS: Sore along the left side when he twists, sleeping in the recliner a few nights. Using acetaminophen 650 two or three times a day, nothing stronger. Walking around the block twice daily. No fever, breathing about like before, no leg swelling. Not smoking.\nMeds reconciled: lisinopril 5 daily, acetaminophen 650 q6h prn.\n\nO: Incisions clean and dry, healing. Lungs: slightly diminished at left apex, otherwise clear. Heart regular. Calves soft.\n\nA/P\n1. Stage I NSCLC s/p LUL lobectomy - recovering well. Surveillance per thoracic surgery (CT ~6 months). Updated problem list.\n2. Post-op pain - acetaminophen as needed is fine; avoid ibuprofen for now.\n3. HTN - fine, continue lisinopril.\n4. Former smoker - 6 months quit; reinforced.\nRTC for annual physical in spring."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-16T08:55", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-16T08:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-05-16T08:55", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-05-16T08:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-05-16T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-05-16T08:20", "body": "Annual exam.\n\nInterval: L upper lobectomy in January for stage IA adenocarcinoma, recovered. Side twinge with lifting now and then, takes acetaminophen maybe once a week. Back to walking 2 miles. Still smoke-free since last August.\nROS: no cough, no hemoptysis, no chest pain, no urinary symptoms, no weight loss.\nMeds: lisinopril 5 mg daily; acetaminophen 650 mg prn.\nAllergies: IV contrast, sulfa abx.\nSocial: retired, does odd jobs on the house, wife well.\n\nExam: BP as charted, near goal. Well. HEENT normal. Lungs clear, healed port sites left chest. Heart RRR. Abdomen benign. GU deferred by pt. Skin no concerning lesions. No edema.\n\nA/P\n- HTN: at goal, continue.\n- Hx NSCLC: surveillance CT in July with thoracic surgery.\n- Labs: CMP, CBC, lipids, A1c.\n- Vaccines: PCV20, Tdap, Shingrix done 2022. Flu and COVID in October.\n- Colonoscopy next 2029.\nOne year, or sooner."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "specialist_visit",
+          "start": "2023-07-18T13:30",
+          "service": "Thoracic Surgery",
+          "reason": "6-month surveillance after lobectomy",
+          "reports": [
+            {"study": "CT chest", "performed": "2023-07-11T10:10", "text": "Indication: Surveillance, s/p left upper lobectomy 01/2023 for adenocarcinoma.\nTechnique: Helical CT of the chest without IV contrast (contrast allergy).\nComparison: PET-CT 09/27/2022.\nFindings: Postsurgical changes of left upper lobectomy with staple line intact. Expected volume loss on the left. No new or enlarging pulmonary nodules. No pleural effusion. No adenopathy within the limits of a non-contrast study. Visualized upper abdomen unremarkable.", "conclusion": "Expected post-lobectomy changes. No evidence of recurrence."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Thoracic Surgery Follow-up", "author": "thoracic surgery", "date": "2023-07-18T15:00", "body": "Mr. Marino returns 6 months after robotic left upper lobectomy for pT1b N0 adenocarcinoma. Feels well, active, no cough, no chest wall pain at rest. Remains off cigarettes.\nCT chest 7/11 without contrast: postsurgical changes only, no recurrence.\nExam: incisions well healed, lungs clear.\nPlan: CT chest every 6 months for 2 years, then yearly. Next 01/2024. Copy to PCP.\n\nThoracic Surgery"}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure check",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T09:10",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T09:14"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T09:16"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T09:14"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "MA", "date": "2023-10-17T09:10", "body": "Flu and 2023-24 COVID given, tolerated. Pt had cancelled his August BP check (out of town); rescheduled with PCP in December."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lump on left testicle",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "scrotal-us-2023", "action": "placed", "order": "Scrotal ultrasound", "category": "imaging", "reason": "left testicular mass"},
+            {"id": "uro-referral-2023", "action": "placed", "order": "Urology referral, urgent", "category": "referral", "to": "Urology", "reason": "left testicular mass"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-12T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-12-12T11:00", "body": "Came in originally for the postponed BP check but says the real reason is a lump on the left testicle he noticed in the shower about 3 weeks ago. Not painful, hasn't grown that he can tell. No trauma, no urinary symptoms, no fever. No back pain, no cough, no breast tenderness.\n\nExam: Firm, nontender, irregular mass in the lower pole of the left testis, about 2-3 cm, does not transilluminate. Epididymis separate and normal. Right testis normal. No inguinal nodes. No gynecomastia. Abdomen soft. BP fine.\n\nA/P\n1. Left testicular mass - solid intratesticular mass in a man is cancer until shown otherwise; unusual at 62 but must be treated that way. Scrotal ultrasound Thursday. Urgent urology referral placed, called their office directly for a slot in the next 1-2 weeks; they will draw tumor markers.\n2. HTN - at goal on lisinopril 5.\nDiscussed honestly with him. He laughed that he 'just finished with the last one'. Will call with the ultrasound."}
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "imaging",
+          "start": "2023-12-14T08:30",
+          "reason": "left testicular mass",
+          "reports": [
+            {"study": "Scrotal ultrasound", "loinc": "25002-7", "performed": "2023-12-14T08:30", "text": "Indication: Palpable left testicular mass.\nFindings: Right testis 4.4 x 2.6 x 2.9 cm, homogeneous, normal flow. Left testis contains a 2.8 cm heterogeneous solid intratesticular mass in the lower pole with internal vascularity. Both epididymides normal. No hydrocele. No varicocele.", "conclusion": "2.8 cm solid vascular intratesticular mass, left testis, highly suspicious for testicular neoplasm. Right testis normal."}
+          ],
+          "orders": [{"id": "scrotal-us-2023", "action": "done", "date": "2023-12-14T08:30"}]
+        }
+      ]
+    }
+  ]
+}

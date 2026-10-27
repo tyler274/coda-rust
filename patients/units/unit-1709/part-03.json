@@ -1,0 +1,486 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001709",
+      "events": [
+        {
+          "id": "2025-03-18a",
+          "kind": "annual_physical",
+          "start": "2025-03-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "state": {
+            "weight_kg": 74.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-03-18T16:05",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM; HPV negative. Routine screening interval."
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-18T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-03-18T15:45",
+              "body": "Yearly exam, also due for cervical screening. Baby is six months and thriving; she went back to teaching in January.\nFeels well. No headaches or swelling. No UTIs. Periods back, regular.\nMeds: nitrofurantoin 100 mg qhs, prenatal vitamin. NKDA. Never smoker, no alcohol.\nFH: mother preeclampsia and fibroids, father hypertension.\n\nExam: BP normal. Weight drifting back down. HEENT, neck unremarkable. Heart RRR without murmur. Lungs clear. Breasts symmetric, no masses. Abdomen soft, healed scars. Pelvic: normal external genitalia; speculum exam with normal-appearing cervix; Pap with HPV collected. Bimanual: uterus mildly enlarged and irregular, consistent with known fibroids; nontender. Skin clear. No edema.\nPHQ-2 0.\n\nA/P\n- Cervical screening: Pap/HPV sent.\n- History of preeclampsia: cardiovascular risk check today with lipids, A1c and CMP; BP normal.\n- Diverticulum on nitrofurantoin; fibroids; classical cesarean history: no change.\n- Wants to keep taking the prenatal vitamin; fine.\nNext physical in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-21a",
+          "kind": "portal_message",
+          "start": "2025-03-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2025-03-21T13:30",
+              "body": "Hi Tiana — cholesterol, sugar (A1c) and kidney tests are normal. Your Pap was normal and HPV negative, so the next one isn't due for five years. Nice work getting all this done."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "pharmacy",
+          "start": "2025-05-13T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Nitrofurantoin renewal",
+              "author": "RN",
+              "date": "2025-05-13T08:45",
+              "body": "E-request from pharmacy: nitrofurantoin 100 mg capsule nightly, out of refills. Seen in March. Approved #90 x3 per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "portal_message",
+          "start": "2025-07-18T08:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Another surprise",
+              "author": "patient",
+              "date": "2025-07-18T08:14",
+              "body": "So... positive test again this morning. LMP was June 15. A little nervous after last year. Same OB again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Another surprise",
+              "author": "PCP",
+              "date": "2025-07-18T11:50",
+              "body": "Understandable to feel nervous. Yes, same group — they know your history. Our nurse will call you Monday to set up the referral and go over meds."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "telephone",
+          "start": "2025-07-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy referral",
+          "orders": [
+            {
+              "id": "obgyn-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics and gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "Pregnancy; prior classical cesarean, severe preeclampsia 2024"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral call",
+              "author": "RN",
+              "date": "2025-07-22T09:30",
+              "body": "Spoke with pt. About 5 weeks by LMP 6/15. No bleeding or pain, some queasiness. Taking prenatal vitamin and nitrofurantoin. Referral sent to the women's health group, marked for early appointment given prior classical incision and last year's preeclampsia. She will ask them about restarting aspirin. Follow-up with PCP in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T13:05",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal intake letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal intake",
+              "author": "obstetrics",
+              "date": "2025-08-20T13:05",
+              "body": "Women's health group — new OB intake\nVisit 08/12/2025, 8w3d by LMP 06/15/2025; dating ultrasound concordant, single live intrauterine pregnancy.\nG5P4. 2024 delivery at 34 weeks by repeat cesarean for severe preeclampsia with HELLP-pattern labs, after a complete previa that bled at 31 weeks. Two prior cesareans, the first classical. Fibroids. Urethral diverticulum on nightly nitrofurantoin.\nPlan: aspirin 81 mg daily starting at 12 weeks; baseline preeclampsia labs; home BP cuff; planned cesarean, timing to be set. High-risk follow-up in our clinic."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-12a",
+          "kind": "office_visit",
+          "start": "2025-09-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, early pregnancy",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preeclampsia prevention in pregnancy"
+            }
+          ],
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-12T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-12T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-12T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "obgyn-referral-2025",
+              "action": "done",
+              "date": "2025-09-12T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-09-12T15:30",
+              "body": "Check-in early in pregnancy #5, ~12w5d by LMP 6/15/25. Had her OB intake in August; dating scan matched. OB started aspirin 81 mg on Monday (12 weeks). Nausea easing. No bleeding, cramping or urinary symptoms.\nBack in the classroom this week.\nMeds: aspirin 81 mg daily, prenatal vitamin, nitrofurantoin 100 mg qhs. NKDA.\n\nExam: BP normal. Weight up a little. Lungs clear, heart regular. Abdomen soft, nontender. No edema.\n\nA/P\n- Pregnancy, ~13 wks, high risk given classical scar and severe preeclampsia with HELLP-pattern labs last year: followed by OB. Reviewed warning signs again — headache, vision change, upper belly pain, vomiting — go straight to L&D.\n- Aspirin added to list.\n- Nitrofurantoin suppression continues; OB aware.\n- Flu vaccine today.\nFollow up after delivery, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T20:11",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID shot?",
+              "author": "patient",
+              "date": "2025-10-21T20:11",
+              "body": "Should I get this year's COVID shot while pregnant or wait? OB said ask you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID shot?",
+              "author": "PCP",
+              "date": "2025-10-21T21:02",
+              "body": "It's considered safe in pregnancy and protects the baby too. Any pharmacy can give it, or the OB office. Just let us know the date so we can update your record."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Nitrofurantoin refill",
+              "author": "RN",
+              "date": "2025-12-09T08:30",
+              "body": "Refill request for nitrofurantoin 100 mg nightly. Last seen 9/12. Approved x3 per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "outside_records",
+          "start": "2026-02-12T14:40",
+          "service": "Emergency Medicine",
+          "reason": "Emergency department record",
+          "vitals": [
+            {
+              "time": "2026-02-08T10:25",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 102
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-08T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 85
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-08T10:50",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 250
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 230
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Glucose",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-08T10:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-08T11:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2026-02-12T14:40",
+              "body": "Area hospital emergency department\nDate of service 02/08/2026, arrived 10:15\n\nCC: nausea and vomiting x2 days, right upper abdominal pain.\nHPI: 38 y/o, 34w0d, history of severe preeclampsia with delivery in 2024, classical cesarean scar, fibroids, urethral diverticulum on nitrofurantoin suppression. Two days of nausea and vomiting she can't keep up with, plus constant RUQ pain that goes to her back. Says this feels like last time. No known gallstones, does not drink. Pregnancy had been going fine until this.\nMeds: aspirin 81 mg, prenatal vitamin, nitrofurantoin 100 mg qhs. NKDA.\n\nVitals: BP 135/85, HR 102, afebrile.\nExam: no jaundice, sclerae white. RUQ tender, no rebound, no guarding. Fetal heart tones normal.\nLabs: Hgb 11.2, plt 85K, AST 250, ALT 230, bilirubin 1.2, alk phos 120, PT 16 sec (control 12), glucose 45. UA unremarkable, protein negative.\n\nAssessment: hypoglycemia, coagulopathy and transaminitis at 34 weeks with normal BP range and no proteinuria; picture favors acute fatty liver of pregnancy over recurrent preeclampsia.\nPlan: IV dextrose; obstetrics consulted and at bedside; admitted to OB."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-17T10:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Hospital discharge summary, delivery",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "author": "obstetrics",
+              "date": "2026-02-17T10:10",
+              "body": "Area hospital — Maternity unit\nAdmitted 02/08/2026, discharged 02/13/2026\n\nAdmitted from the ED at 34w0d with vomiting, RUQ pain, glucose 45, PT 16 and AST/ALT 250/230. Diagnosis: acute fatty liver of pregnancy.\nGlucose supported with IV dextrose. Repeat cesarean delivery 02/08/2026 once stabilized; liveborn infant in stable condition, cared for by the pediatric team. Aspirin discontinued.\nPostpartum she was monitored closely for glucose, clotting and liver function; all improved steadily. Day of discharge: AST 52, ALT 64, glucose 88, PT 12.6.\n\nDischarge diagnoses: acute fatty liver of pregnancy; preterm delivery by repeat cesarean; history of severe preeclampsia; history of classical cesarean; uterine leiomyomas; urethral diverticulum.\nDischarge medications: prenatal vitamin, nitrofurantoin 100 mg nightly.\nFollow-up: OB postpartum visit; PCP visit for repeat liver tests."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "portal_message",
+          "start": "2026-02-19T22:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home",
+              "author": "patient",
+              "date": "2026-02-19T22:40",
+              "body": "We're home. Different problem this time, my liver. Everyone is ok. I'll book something with you once things calm down a bit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home",
+              "author": "PCP",
+              "date": "2026-02-20T07:35",
+              "body": "So glad you're both home. I have the hospital paperwork. Whenever you're ready, book a visit and we'll recheck your liver tests — sooner if you feel unwell."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "pharmacy",
+          "start": "2026-05-27T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Nitrofurantoin refill",
+              "author": "RN",
+              "date": "2026-05-27T09:10",
+              "body": "Pharmacy request for nitrofurantoin 100 mg nightly. Last office visit 9/12/25. Approved x1; message sent asking her to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Overdue visit reminder",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Recall call",
+              "author": "front desk",
+              "date": "2026-07-14T11:20",
+              "body": "Called re: overdue follow-up and annual. Pt said summer is hectic with all the kids home, will call back to book once she sees her August schedule."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

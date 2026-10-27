@@ -1,0 +1,3136 @@
+{
+  "unit": "unit-1816",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001816/2022-09-14a: procedure order \"Records request, prior primary care office\" names no one catalog lab, panel, study or procedure",
+    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001816",
+      "given": "Susan",
+      "family": "Mensah",
+      "birth_date": "1990-02-14",
+      "address_line": "41 Lily Pond Road",
+      "phone": "+1-646-555-0193",
+      "email": "susan.mensah@example.test",
+      "marital_status": "married",
+      "summary": "Teacher in her thirties with childhood-onset type 1 diabetes on a pump, HbSS sickle cell disease and mild retinopathy who joins in 2022, develops Graves hyperthyroidism that settles on methimazole, and after her last practice visit in October 2025 becomes pregnant; outside OB records show diabetic nephropathy, fetal growth restriction with oligohydramnios and an ED visit for decreased fetal movement.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T15:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-08-30T15:40",
+              "author": "front desk",
+              "body": "Caller would like to establish with us. Teaches at an elementary school, wants a doctor she can reach without a two-week wait. Has type 1 diabetes (pump, sees her own endocrinologist) and sickle cell disease (sees hematology once a year). Booked new-patient visit 9/14 at 8:20, before school. Asked her to bring pump settings and a med list. Release form for her old office emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T08:20",
+          "end": "2022-09-14T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, bilateral",
+              "action": "diagnosed",
+              "onset": "1997-05-01",
+              "note": "Type 1 since age 7; insulin pump; endocrinology outside",
+              "icd10": "E10.3293"
+            },
+            {
+              "label": "Sickle-cell disease without crisis",
+              "action": "diagnosed",
+              "onset": "1990-02-14",
+              "note": "HbSS; outside adult hematology yearly"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2016-05-01",
+              "note": "Laparoscopic cholecystectomy at 26"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "insulin aspart 100 UNT/ML Injectable Solution",
+              "action": "historical",
+              "sig": "Via insulin pump: basal 1.1 units/hr; meal boluses per carbohydrate ratio",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Folate with sickle cell disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Penicillin",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              76
+            ],
+            "hr": 75,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 63.4,
+            "height_cm": 166.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.85
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 10
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 128
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 10
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-14T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-14T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-14T09:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-14T09:12"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-pcp-records",
+              "action": "placed",
+              "order": "Records request, prior primary care office",
+              "category": "procedure",
+              "reason": "Transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-14T09:15",
+              "author": "PCP",
+              "body": "NEW PATIENT\n32F teacher, transferring care for proximity. Brought pump settings and her own list.\n\nT1DM: dx age 7. Pump x many years, aspart, basal 1.1 u/h, boluses by carb ratio. Her endocrine group runs the pump and A1c; she sees them about twice a year. Last A1c she remembers 'mid-7s.' Rare lows, none needing help. Mild background retinopathy both eyes per her retina doctor, seen yearly.\nHbSS: hematology clinic once a year. Pain episodes in adulthood are few and she rides them out at home with fluids and rest. No crisis admissions recently. Takes a prenatal vitamin daily for the folic acid, has for years.\nPSH: lap chole at 26.\nAllergies: sulfa drugs - hives. Penicillin - rash.\nFH: mom T2DM and HTN. Dad carries sickle trait. Older sister has sickle cell disease. Maternal aunt Hashimoto.\nSH: 3rd grade classroom. Never smoked, no alcohol.\n\nROS negative except as above.\nExam: well appearing, NAD. Conjunctivae mildly pale, sclerae anicteric. Thyroid normal size, no nodules. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed port scars. No edema. Feet: intact skin, pulses 2+, monofilament intact bilaterally. Pump site L abdomen clean.\n\nA/P\n1. T1DM with mild NPDR - endocrine manages; A1c and UACR today so we have our own baseline. Retina letter to be requested.\n2. HbSS - hematology yearly; CBC today for her baseline. Functional asplenia: PCV20 today; will check old records for meningococcal and Hib history.\n3. Health maintenance: flu shot today. HIV/HCV once. Pap - she thinks 2021 was normal, records pending.\nRTC 3 months or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Creatinine": 0.65,
+              "Free Thyroxine": 1.0,
+              "Hematocrit": 25.6,
+              "Hemoglobin": 8.7,
+              "Hemoglobin A1c": 7.4,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-09-16T12:05",
+              "author": "PCP",
+              "body": "Hi Susan - your labs are back. Hemoglobin is in the 8s, which you told me is your usual range with sickle cell, and I'll use this as your baseline. Kidney, liver, cholesterol, thyroid and urine protein all look good. HIV and hepatitis C screens negative. A1c is 7.4, about where your endocrinologist has had you. No changes from my end."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-05T10:30",
+          "orders": [
+            {
+              "id": "prior-pcp-records",
+              "action": "done",
+              "date": "2022-10-05T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-10-05T10:30",
+              "author": "MA",
+              "body": "64 pages received from her previous internist. Summary for the chart: Pap/HPV co-test 2021 normal. Meningococcal conjugate and Hib given in childhood/young adulthood per old immunization page; meningococcal B not documented. Old problem list matches ours. Cholecystectomy op note 2016 included. Filed under media, flagged to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "pharmacy",
+          "start": "2022-10-24T17:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine report",
+              "date": "2022-10-24T17:10",
+              "author": "MA",
+              "body": "State registry shows bivalent COVID booster given at a retail pharmacy 10/22/22. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "outside_records",
+          "start": "2022-11-07T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Retina examination letter",
+              "date": "2022-11-07T09:00",
+              "author": "ophthalmology",
+              "body": "Thank you for allowing us to share in the care of Ms. Mensah, seen 10/27/2022 for annual diabetic retinal examination.\nVisual acuity 20/20 OD, 20/25 OS. Pressures normal. Dilated fundus examination: scattered microaneurysms and a few dot hemorrhages in both eyes, consistent with mild non-proliferative diabetic retinopathy. No macular edema on exam or OCT. No neovascularization. Peripheral retina without proliferative changes.\nImpression: mild NPDR OU, stable from prior.\nPlan: return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "office_visit",
+          "start": "2022-12-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety, tremor, weight loss",
+          "vitals": {
+            "bp": [
+              109,
+              67
+            ],
+            "hr": 104,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 60.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-12T16:05",
+              "resulted": "2022-12-13T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 3.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-12T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-12T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Suppressed TSH, elevated free T4"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-12T16:20",
+              "author": "PCP",
+              "body": "S: Came after school. ~2 wks of feeling keyed up and anxious, lying awake, hands shaky at the whiteboard. Eating more than usual yet clothes looser. Feels her heart going fast at rest. No fever or sore throat, no new meds or supplements. Sugars a little more variable, no lows.\nO: HR 104 regular. Weight 60.8 kg, down from 63.5 in Sept. Fine tremor of outstretched hands. Thyroid feels mildly and evenly enlarged, nontender. Eyes look prominent to me compared with Sept. Skin warm and moist. Lungs clear. No edema.\nA: Hyperthyroid picture.\nP: TSH and free T4 now. If confirmed, she'll go to her own endocrine group, who already know her - I'll call to get her in quickly. Return precautions for chest pain or fainting."
+            }
+          ],
+          "measure": [
+            "bp",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "telephone",
+          "start": "2022-12-13T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Thyroid results",
+              "date": "2022-12-13T12:10",
+              "author": "PCP",
+              "body": "Reached pt at lunch. TSH undetectable, free T4 3.1 - overactive thyroid. Spoke with her endocrinology office; they will see her 12/26. She'd rather wait for them than start anything from me. Advised to call if palpitations worsen, chest pain, or dizziness."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-26a",
+          "kind": "specialist_visit",
+          "start": "2022-12-26T10:20",
+          "service": "Endocrinology",
+          "reason": "Hyperthyroidism",
+          "conditions": [
+            {
+              "label": "Graves disease",
+              "action": "diagnosed",
+              "onset": "2022-11-25",
+              "note": "Uncontrolled hyperthyroidism at diagnosis; RAIU 61% diffuse"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "vitals": {
+            "hr": 108
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-26T10:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 3.4
+                },
+                {
+                  "test": "Free Triiodothyronine",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-12-26T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2023-02-21T14:00",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of service: 12/26/2022, uptake completed 12/27-12/28/2022\nReason: hyperthyroidism, referred by her primary care physician\n\nMs. Mensah is a 32-year-old teacher we follow for type 1 diabetes on pump therapy. Over the past month she has had anxiety, poor sleep, weight loss in spite of a larger appetite, and tremor of the hands. She describes a racing heartbeat. No intercurrent illness, no new medications.\nPMH: T1DM since age 7 (pump), HbSS sickle cell disease, mild NPDR. Lap chole age 26.\nMeds: insulin aspart via pump (basal 1.1 u/h, carb-ratio boluses); prenatal vitamin daily.\nAllergies: sulfonamides (hives), penicillin (rash).\nFamily: mother T2DM and hypertension; father sickle trait; sister sickle cell disease; maternal aunt with Hashimoto thyroiditis.\nSocial: never smoker, no alcohol.\n\nExam: resting pulse 108. Fine tremor with arms extended. Gland not visibly enlarged; on palpation it is diffusely, symmetrically enlarged and nontender, no discrete nodule. Reflexes brisk throughout. Eyes: lid retraction with a staring appearance, bilateral proptosis.\n\nLabs: TSH <0.01, free T4 3.4, free T3 9.6.\nRadioactive iodine uptake: 24-hour uptake 61%, uniform homogeneous distribution throughout both lobes.\n\nImpression: Graves disease with uncontrolled hyperthyroidism.\nPlan: methimazole 10 mg daily started. Recheck thyroid function in 6-8 weeks (may be drawn at primary care). Follow up here in 5 months, with pump review.\n\n[Received by fax 2/21/23 after records request; filed for PCP review.]"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid update",
+              "date": "2023-01-09T19:42",
+              "author": "patient",
+              "body": "Hi, just letting you know the endocrinologist says it is Graves and I'm on methimazole 10mg every day since right after Christmas. The shaking is already a bit better. Did you get their note? Should I get bloodwork with you or them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid update",
+              "date": "2023-01-10T08:55",
+              "author": "RN",
+              "body": "Thanks for the update, Susan. We haven't received their consult note yet - I've faxed a request today. Dr. wants to see you mid-March and we can draw the thyroid recheck then and send it to endocrine too. If you get a rash, fever or sore throat on methimazole, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "office_visit",
+          "start": "2023-03-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 74,
+            "spo2": 98,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-13T16:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.04
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-13T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-03-13T16:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-03-13T16:25",
+              "author": "PCP",
+              "body": "Graves f/u. Endo consult (rec'd 2/21) reviewed: uptake 61% diffuse, started methimazole 10 daily 12/26.\nShe feels like herself again - sleeping, tremor gone, appetite normal. Taking it every morning, no rash, no sore throats. Sugars steadier.\nExam: pulse normal today, weight 62.4, up from 60.8 in Dec. No tremor. Gland still a little full. Eyes still somewhat prominent, no redness or double vision.\nPlan: TSH/FT4, CBC w diff and LFTs for methimazole. Results to endocrine. Continue methimazole 10 mg. Next routine visit in the fall with physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-03-15a",
+          "kind": "portal_message",
+          "start": "2023-03-15T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid recheck",
+              "date": "2023-03-15T07:50",
+              "author": "PCP",
+              "body": "Good news - free T4 is back to normal at 1.5. TSH is still low (0.04), which is expected; it lags behind by a few months. White count and liver tests fine on the methimazole. Copy sent to your endocrinologist."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "specialist_visit",
+          "start": "2023-05-22T13:00",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-22T13:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.2
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "date": "2023-06-02T11:15",
+              "author": "endocrinology",
+              "body": "Dear colleague,\nMs. Mensah returned 5/22/2023. Feeling well on methimazole 10 mg daily; no adverse effects. Exam: pulse normal, no tremor, mild proptosis unchanged, gland mildly enlarged.\nTSH 1.2, free T4 1.1 - euthyroid. A1c as attached. Pump download reviewed: time in range acceptable, no changes to basal 1.1 u/h or ratios.\nPlan: continue methimazole 10 mg. Thyroid function every 3-4 months. Return in 6 months.\nSincerely, Endocrinology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Hemoglobin A1c": 7.3,
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          }
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T09:30",
+          "service": "Hematology",
+          "reason": "Sickle cell disease annual visit",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-12T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Adult sickle cell clinic annual visit",
+              "date": "2023-06-20T10:00",
+              "author": "hematology",
+              "body": "Adult Sickle Cell Program - annual visit 6/12/2023\nPatient: Susan Mensah, HbSS.\nInterval: two brief pain episodes this year, both managed at home with fluids and rest; no ED visits or admissions for crisis. New Graves disease since last visit, on methimazole via endocrinology.\nExam unremarkable apart from mild scleral pallor. Hemoglobin 8.6, her usual.\nPlan: continue daily folate (she uses a prenatal vitamin). Vaccines for functional asplenia: PCV20 done 9/2022 per PCP; recommend MenACWY booster and the meningococcal B series - can be given at primary care. Annual retinal exam continues. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-10a",
+          "kind": "nurse_visit",
+          "start": "2023-07-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              117,
+              69
+            ],
+            "hr": 86
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-07-10T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-07-10T10:10"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-07-10T10:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-07-10T10:20",
+              "author": "RN",
+              "body": "Summer break, came in per hematology recs. MenACWY L deltoid, MenB #1 R deltoid. Tolerated well, waited 15 min. Second MenB dose due in at least one month - scheduled 8/14."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "nurse_visit",
+          "start": "2023-08-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine",
+          "vitals": {
+            "bp": [
+              108,
+              65
+            ],
+            "hr": 75
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-14T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-08-14T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - MenB #2",
+              "date": "2023-08-14T09:45",
+              "author": "RN",
+              "body": "MenB dose 2 given L deltoid. Series complete. Pt reports sore arm for a day after the first one, nothing else. Next MenACWY booster due in 5 yrs - reminder set."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-09-11a",
+          "kind": "annual_physical",
+          "start": "2023-09-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              102,
+              66
+            ],
+            "hr": 77,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 62.5,
+            "height_cm": 164.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 131
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-11T08:10",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2023-09-18T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-11T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-11T08:35",
+              "author": "PCP",
+              "body": "Annual exam, first week of classes for her.\nFeels well. Graves quiet on methimazole 10 per endo (euthyroid in May). Pump going fine, endo visit due Dec. Sickle cell: hematology saw her in June, Hgb 8.6, two minor pain days at home over the year. Meningococcal vaccines done this summer. Retina last Oct - mild NPDR, due again.\nMeds: aspart pump, methimazole 10, prenatal vitamin.\nPHQ-9 2, GAD-7 3.\nExam: BP and pulse normal. Mild pallor. Thyroid mildly full, no nodules. Mild proptosis, EOMs full. Heart and lungs normal. Breasts without masses. Pelvic: normal external genitalia, cervix normal, Pap with HPV obtained. Feet: skin intact, pulses good, sensation intact.\nA/P: T1DM w mild NPDR, Graves on methimazole, HbSS - all stable, managed with specialists. Labs: CBC, CMP, lipids, A1c, UACR, TFTs. Reminded about retina visit. Flu/COVID at a nurse visit in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.2,
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "portal_message",
+          "start": "2023-09-19T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2023-09-19T07:30",
+              "author": "PCP",
+              "body": "Hi Susan, everything from your physical is back. Pap normal and HPV negative, so next cervical screen in 5 years. Thyroid still normal on the methimazole. Hemoglobin at your baseline. Kidney function, urine protein and cholesterol normal. A1c 7.5 - your endocrinologist will look at this in December."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-10-16T15:35",
+              "author": "MA",
+              "body": "Afebrile. Flu vaccine R deltoid, 2023-24 COVID vaccine L deltoid. No reactions during observation. VIS given."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "outside_records",
+          "start": "2023-11-06T11:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Retina examination letter",
+              "date": "2023-11-06T11:20",
+              "author": "ophthalmology",
+              "body": "Diabetic eye examination, 10/30/2023.\nAcuity 20/20 each eye. Dilated exam: a handful of microaneurysms and dot-blot hemorrhages in both posterior poles, unchanged in number. OCT: normal foveal contour, no edema. No neovascularization; periphery without sickle-related proliferative changes. Mild proptosis noted, no exposure keratopathy.\nAssessment: mild non-proliferative diabetic retinopathy both eyes, stable.\nReturn 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "specialist_visit",
+          "start": "2023-12-04T14:15",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-04T14:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "date": "2023-12-14T09:40",
+              "author": "endocrinology",
+              "body": "Follow-up 12/4/2023 for Graves disease and type 1 diabetes.\nRemains clinically euthyroid on methimazole 10 mg; thyroid tests normal today. Pump data reviewed, overnight basal holding well; no setting changes. A1c attached.\nWe discussed that methimazole is typically continued 12-18 months before considering a trial off; we will revisit next visit.\nReturn 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          }
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "pharmacy",
+          "start": "2024-01-22T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request - prenatal vitamin",
+              "date": "2024-01-22T10:05",
+              "author": "MA",
+              "body": "Pharmacy e-request for prenatal multivitamin, 90 day supply. Prior prescriber was her old office. Routed to PCP."
+            },
+            {
+              "type": "Refill Request",
+              "title": "RE: Refill request - prenatal vitamin",
+              "date": "2024-01-22T12:40",
+              "author": "PCP",
+              "body": "Approved, 90 days x 3 refills. She takes it for folate with HbSS."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "office_visit",
+          "start": "2024-02-26T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2024-02-26T11:15",
+              "author": "front desk",
+              "body": "Pt cancelled this afternoon's visit, roads bad up in the hilltowns after the storm and school let out early. Rebooked 3/11 at 3:40."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              73
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 63.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-11T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-11T16:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-03-11T16:20",
+              "author": "PCP",
+              "body": "Interval check, rescheduled from the snow day.\nNo concerns. Endo in Dec: thyroid normal, stays on methimazole 10 for now, pump unchanged. Winter was quiet for sickle cell - no pain days. Sleeping fine, energy ok with her usual anemia.\nVitals reviewed, normal. Thin, mild pallor. Thyroid slightly full. Lungs clear, RRR. No edema. Pump site clean.\nPlan: CBC and BMP. Continue current meds. Hematology in June, endo in June. Physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "portal_message",
+          "start": "2024-03-13T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-03-13T12:20",
+              "author": "PCP",
+              "body": "Quick note - blood count at your usual level and kidney chemistry normal. See you at the physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T09:00",
+          "service": "Hematology",
+          "reason": "Sickle cell disease annual visit",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-06-10T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Adult sickle cell clinic annual visit",
+              "date": "2024-06-18T13:30",
+              "author": "hematology",
+              "body": "Annual review 6/10/2024 - HbSS.\nOne mild pain day in the past year, at home. No acute chest, no transfusions, no hospital care. Thyroid controlled on methimazole per endocrinology.\nHgb 8.9 (baseline). Exam: mild pallor, no hepatosplenomegaly palpable, no leg ulcers.\nMeningococcal ACWY and B series completed 2023; pneumococcal up to date.\nContinue folate. Hydration and heat precautions reviewed for summer. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "specialist_visit",
+          "start": "2024-06-17T13:40",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-17T14:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.3
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "date": "2024-06-26T08:50",
+              "author": "endocrinology",
+              "body": "Seen 6/17/2024.\nGraves: euthyroid on methimazole 10 mg daily, tolerating it. Eye findings unchanged. She prefers to stay on the current dose through the school year rather than test a taper; continue 10 mg.\nType 1 diabetes: A1c improved, see attached. Pump settings unchanged, basal 1.1 u/h.\nReturn December."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1,
+              "Thyroid Stimulating Hormone": 2.2
+            }
+          }
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "telephone",
+          "start": "2024-08-05T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - pump supplies",
+              "date": "2024-08-05T09:10",
+              "author": "MA",
+              "body": "Insurer sent a renewal form for insulin pump supplies (infusion sets, reservoirs). Endocrinology is the prescriber - called their office, they will complete it. Pt aware."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Prior authorization - pump supplies",
+              "date": "2024-08-09T14:30",
+              "author": "MA",
+              "body": "Endo confirms renewal approved through 8/2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              65
+            ],
+            "hr": 75,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 62.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-16T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-16T08:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Glucose",
+                  "value": 101
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-16T08:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T08:15",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 16
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-16T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-16T08:20",
+              "author": "PCP",
+              "body": "Yearly exam. 34 now. New class this fall, 22 kids.\nT1DM: endo 6/24, A1c 7.1, pump unchanged. Retina due next month.\nGraves: still methimazole 10; thyroid normal.\nHbSS: hematology 6/24, Hgb 8.9, one pain day in the year.\nNo hospital or ED care since last physical. No new meds.\nExam: comfortable. Vitals normal. HEENT: mild proptosis, pale conjunctivae. Neck: thyroid mildly full, nontender. Cardiac and lung exams normal. Abdomen soft, nontender. Extremities warm without swelling, no leg ulcers. Feet: sensation intact to monofilament, pulses palpable.\nScreening: Pap 2023 normal/HPV neg - next 2028. PHQ-2 0.\nPlan: CBC, CMP, lipids, UACR, TSH. Flu and COVID at nurse visit. See in spring."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 0.7,
+              "Microalbumin/Creatinine Ratio": 14
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T18:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-18T18:20",
+              "author": "PCP",
+              "body": "Susan - your yearly labs look stable. Kidney numbers and urine protein normal, thyroid normal, cholesterol fine, blood count at your usual. Nothing to change."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-09-18T20:02",
+              "author": "patient",
+              "body": "Thank you! I'll book the flu shot for after school one day in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "nurse_visit",
+          "start": "2024-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-07T15:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-07T15:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-07T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2024-10-07T15:45",
+              "author": "MA",
+              "body": "Flu (trivalent) L deltoid and 2024-25 COVID R deltoid. Afebrile, no acute complaints. Observed 15 min without issue."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "outside_records",
+          "start": "2024-11-18T09:40",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Retina examination letter",
+              "date": "2024-11-18T09:40",
+              "author": "ophthalmology",
+              "body": "Annual diabetic retinal exam 11/7/2024.\nVA 20/20 OD, 20/20 OS. IOP normal. Dilated: few scattered microaneurysms both eyes, unchanged from 2023. OCT macula normal both eyes. No proliferative disease, no sickle peripheral changes.\nImpression: mild NPDR OU without macular edema, stable. See in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T14:00",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-09T14:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "date": "2025-02-10T15:10",
+              "author": "endocrinology",
+              "body": "Office visit 12/9/2024 - Graves disease, type 1 diabetes.\nWell. Euthyroid, methimazole 10 mg daily continued. A1c a little higher with the holidays approaching; reviewed bolus timing. No pump changes. Labs attached.\nNext visit June.\n[Faxed 2/10/25 in response to records request 2/3/25.]"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4
+            }
+          }
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "portal_message",
+          "start": "2025-01-06T18:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School health plan",
+              "date": "2025-01-06T18:40",
+              "author": "patient",
+              "body": "The school nurse is updating my health plan for the classroom. Could you write a short letter saying I have type 1 diabetes with a pump and sickle cell, and that I may need to step out to check sugar, eat, or drink water? Thanks so much."
+            },
+            {
+              "type": "Letter",
+              "title": "Letter for school",
+              "date": "2025-01-07T12:15",
+              "author": "PCP",
+              "body": "To the school health office: Ms. Susan Mensah is my patient. She has type 1 diabetes managed with an insulin pump and sickle cell disease. She may need brief breaks to check her glucose, treat a low with food or juice, and keep well hydrated, and should have water available in the classroom. Please contact our office with questions."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "telephone",
+          "start": "2025-02-03T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-02-03T09:25",
+              "author": "MA",
+              "body": "No note yet from endocrinology for December visit. Called their office; they will fax. Request logged."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "office_visit",
+          "start": "2025-03-10T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              116,
+              72
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 63.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-10T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-10T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-10T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-03-10T16:30",
+              "author": "PCP",
+              "body": "6-month check-in.\nDoing well. Endo Dec note finally came (A1c 7.4, no changes, methimazole 10 continued). No sickle pain days this winter. Retina Nov stable.\nMeds: insulin aspart pump, methimazole 10 mg, prenatal vitamin.\nExam: vitals normal. Mild pallor. Thyroid slightly full. CV/resp normal. No swelling.\nPlan: CBC, BMP. Specialists in June. Annual in fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-03-12T07:55",
+              "author": "PCP",
+              "body": "Labs from Monday look good - hemoglobin steady at your usual and kidney function normal."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "specialist_visit",
+          "start": "2025-06-09T09:15",
+          "service": "Hematology",
+          "reason": "Sickle cell disease annual visit",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-09T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Adult sickle cell clinic annual visit",
+              "date": "2025-06-16T10:45",
+              "author": "hematology",
+              "body": "Sickle Cell Program annual note, visit 6/9/2025.\nHbSS, clinically quiet. No pain episodes needing medical care this year. No transfusion history in adulthood.\nHgb 8.5, within her range.\nExam: mild scleral pallor, no adenopathy, no leg ulcers.\nContinue folate supplement. Vaccines current for asplenia. Return one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "specialist_visit",
+          "start": "2025-06-23T13:20",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-23T13:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "date": "2025-07-01T11:30",
+              "author": "endocrinology",
+              "body": "Follow-up 6/23/2025.\nGraves disease: euthyroid; methimazole 10 mg daily, unchanged.\nType 1 diabetes: A1c up a bit; long school year, more evening snacking without boluses. Reviewed. Pump settings unchanged.\nReturn 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          }
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2025-07-14T11:20",
+              "author": "front desk",
+              "body": "Pt did not join video visit. Called x1, voicemail. Left message to rebook if she still wants it; otherwise see her at the fall physical."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "annual_physical",
+          "start": "2025-10-03T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 75,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 63.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-03T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-03T08:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-03T08:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-03T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 14
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-03T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-03T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-03T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-03T08:25",
+              "author": "PCP",
+              "body": "Physical, early slot before school.\nMissed the July video check (forgot, camp week). Feels fine.\nDM1: endo June, A1c 7.6, working on evening boluses. Pump same. Retina due Nov.\nGraves: methimazole 10, euthyroid in June.\nSickle cell: hematology June, Hgb 8.5, quiet year.\nMeds: aspart via pump, methimazole 10 mg daily, prenatal vitamin daily. Allergies sulfa (hives), PCN (rash).\nPHQ-2 0, GAD-7 2.\nExam: NAD. Vitals ok. Pale conjunctivae. Mild proptosis, no lid lag. Thyroid mildly enlarged, smooth. Lungs clear, heart regular without murmur. Abdomen benign. Legs without swelling. Monofilament normal both feet.\nA/P: chronic conditions stable with specialists. Annual labs: CBC, CMP, lipids, A1c, UACR, TSH. Flu shot given today. Next visit spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "portal_message",
+          "start": "2025-10-06T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-10-06T07:45",
+              "author": "PCP",
+              "body": "Hi Susan - labs from Friday are in. Blood count, thyroid, cholesterol and urine protein are all fine. A1c 7.5, about the same as June. Nothing new to do. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "outside_records",
+          "start": "2025-11-17T10:10",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Retina examination letter",
+              "date": "2025-11-17T10:10",
+              "author": "ophthalmology",
+              "body": "Diabetic eye exam 11/10/2025. VA 20/20 both eyes. Dilated fundus: scattered microaneurysms OU, unchanged. Macula dry on OCT. No neovascularization, periphery flat without sickle changes.\nMild NPDR OU, stable. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "pharmacy",
+          "start": "2025-12-08T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request - prenatal vitamin",
+              "date": "2025-12-08T09:30",
+              "author": "MA",
+              "body": "Pharmacy requesting renewal, prenatal vitamin daily, 90 day supply. Last seen 10/3/25."
+            },
+            {
+              "type": "Refill Request",
+              "title": "RE: Refill request - prenatal vitamin",
+              "date": "2025-12-08T13:05",
+              "author": "PCP",
+              "body": "Renewed x 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "specialist_visit",
+          "start": "2026-01-20T10:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "First prenatal visit, 10 weeks",
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-20T11:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal intake visit",
+              "date": "2026-03-24T09:15",
+              "author": "obstetrics",
+              "body": "HIGH-RISK OBSTETRICS - INITIAL PRENATAL VISIT\nDate of visit: 01/20/2026\nGA 10w1d by LMP 11/10/2025, EDD 08/17/2026.\n\n35-year-old woman with type 1 diabetes since childhood on an insulin pump, HbSS sickle cell disease, and Graves disease evaluated by endocrinology in late 2022 and treated since. She has stayed on her insulin plan and reports good glucose control.\nMeds: insulin aspart via pump (basal 1.1 u/hr, carbohydrate-ratio boluses), methimazole 10 mg daily, prenatal vitamin with folic acid daily.\nAllergies: sulfonamides - hives; penicillin - rash.\nPSH: laparoscopic cholecystectomy at 26.\nFamily: no kidney disease in the family.\nSocial: elementary school teacher; no tobacco, no alcohol.\n\nBP 128/82. General, cardiac, lung, abdominal and extremity exams unremarkable.\nUrinalysis: protein negative, glucose negative.\n\nAssessment: intrauterine pregnancy at 10 weeks complicated by pre-existing type 1 diabetes.\nPlan: baseline kidney function testing ordered. Continue current regimen. Return 4 weeks.\n\n[Received with 18-week visit records 3/24/26; filed for PCP.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "portal_message",
+          "start": "2026-02-02T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnancy news",
+              "date": "2026-02-02T20:14",
+              "author": "patient",
+              "body": "Hi! Wanted you to know I'm pregnant - about 12 weeks now. I'm being seen at the high-risk OB clinic because of the diabetes and sickle cell. They asked for my records from you, can you send my labs and notes? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnancy news",
+              "date": "2026-02-03T08:30",
+              "author": "RN",
+              "body": "Congratulations, Susan! Your last notes and the October labs were faxed to the OB clinic this morning. Ask them to send us their visit notes so we stay in the loop."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "specialist_visit",
+          "start": "2026-03-17T09:50",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 18 weeks",
+          "vitals": {
+            "bp": [
+              145,
+              95
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-17T10:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-17T10:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-17T10:20",
+              "results": [
+                {
+                  "test": "Protein/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "2890-2",
+                  "unit": "mg/mg",
+                  "value": 3.5
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-17T10:20",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.82
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-17T10:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit, 18 weeks",
+              "date": "2026-03-24T09:20",
+              "author": "obstetrics",
+              "body": "HIGH-RISK OBSTETRICS - RETURN PRENATAL VISIT\nDate of visit: 03/17/2026, GA 18w1d\n\nReturns after her 10-week intake. Adherent with insulin; checks glucose four times daily. For the last two weeks her legs have been more swollen and she has had headaches now and then. No visual change, no abdominal pain.\nMeds unchanged: pump insulin aspart, methimazole 10 mg, prenatal vitamin.\nAllergies: sulfonamides, penicillin.\n\nBP 145/95. Dipstick protein 3+.\nLabs: creatinine 1.8 mg/dL (1.0 on her primary care draw roughly six months ago); urine protein/creatinine ratio 3.5 g/g; A1c 7.2%; platelets 210,000; hepatic panel normal.\n\nAssessment: diabetic nephropathy in pregnancy with new nephrotic-range proteinuria and a rise in creatinine.\nPlan: continue current care; close surveillance.\n\ncc: primary care physician\n[Received by fax 3/24/26 with the 1/20 intake note.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB records filed",
+              "date": "2026-03-24T09:30",
+              "author": "MA",
+              "body": "Two OB notes received by fax (1/20 intake and 3/17 visit). Indexed to outside records and routed to PCP inbox. Pt last seen here 10/3/25."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "specialist_visit",
+          "start": "2026-06-22T13:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 32 weeks",
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ]
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound with umbilical artery Doppler",
+              "loinc": "11525-3",
+              "performed": "2026-06-22T14:00",
+              "text": "Single live intrauterine pregnancy, cephalic. Gestational age by dates 32w0d. Fetal biometry: estimated fetal weight below the 10th percentile for gestational age. Amniotic fluid index 4 cm. Placenta posterior, no previa. Fetal cardiac activity present at a normal rate. Umbilical artery Doppler: normal waveform with forward end-diastolic flow; indices within normal limits for gestational age.",
+              "conclusion": "Fetal growth restriction (EFW <10th percentile) with oligohydramnios (AFI 4 cm). Normal umbilical artery Doppler.",
+              "issued": "2026-06-22T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit, 32 weeks",
+              "date": "2026-07-06T11:00",
+              "author": "obstetrics",
+              "body": "HIGH-RISK OBSTETRICS - PRENATAL VISIT\nDate of visit: 06/22/2026, GA 32w0d\n\nHere for routine visit. Taking insulin as directed; no lows and no ketoacidosis. Glucose has been harder to keep in range as the pregnancy goes on and her pump doses have needed frequent changes.\nBackground: type 1 diabetes with nephropathy diagnosed this pregnancy; HbSS; Graves disease on methimazole.\n\nBP 128/82. Fundal height 28 cm, small for dates. Fetal heart tones normal.\nUltrasound today: EFW below 10th percentile, AFI 4 cm. Umbilical artery Doppler done: normal (report attached).\n\nAssessment: fetal growth restriction with oligohydramnios.\nPlan: increased fetal surveillance per MFM.\n\n[Received 7/6/26 with ultrasound report.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "outside_records",
+          "start": "2026-07-06T11:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB records filed",
+              "date": "2026-07-06T11:10",
+              "author": "MA",
+              "body": "OB visit note 6/22 plus ultrasound report received by fax. Indexed and sent to PCP inbox. Pt last seen here 10/3/25."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "ed_visit",
+          "start": "2026-08-06T14:05",
+          "end": "2026-08-06T16:40",
+          "service": "Emergency Medicine",
+          "reason": "Decreased fetal movement",
+          "vitals": [
+            {
+              "time": "2026-08-06T14:12",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "temp_c": 37.2
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-08-20T10:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 08/06/2026 14:05\n\nCC: baby moving less for 2 days.\nHPI: 36-year-old woman at 38w3d with type 1 diabetes, HbSS sickle cell disease and Graves disease, recently diagnosed with fetal growth restriction and low amniotic fluid, now with two days of reduced fetal movement. No pain crises recently. This pregnancy has included two hospital stays for pyelonephritis treated with antibiotics.\nMeds: insulin aspart pump, methimazole 10 mg daily, prenatal vitamin.\nAllergies: sulfonamides (hives), penicillin (rash).\nSocial: teacher, never smoker, no alcohol.\n\nVitals: BP 120/78, HR 88, T 37.2 C (99.0 F).\nExam: alert, no distress. Abdomen: gravid uterus appropriate for dates, nontender. Fetal heart tones 110/min.\nBedside ultrasound: amniotic fluid index 3 cm.\n\nImpression: decreased fetal movement at term in a pregnancy with growth restriction and oligohydramnios; fetal heart rate 110.\nDisposition: OB notified; transferred to labor and delivery for evaluation.\n\n[ED record received 8/20/26, filed to chart.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "telephone",
+          "start": "2026-08-24T10:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment request",
+              "date": "2026-08-24T10:50",
+              "author": "front desk",
+              "body": "Pt called to book a visit with PCP for diabetes, thyroid and kidney follow-up. First available that works for her: 9/14 at 10:20. Asked her to bring any hospital paperwork."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up of diabetes, thyroid and kidney function",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, bilateral|E10.3293": {
+        "code": "E10.3293",
+        "display": "Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, bilateral",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "insulin aspart 100 UNT/ML Injectable Solution": {
+        "code": "311040",
+        "display": "insulin aspart, human 100 UNT/ML Injectable Solution",
+        "ingredient": "insulin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "methimazole 10 MG Oral Tablet": {
+        "code": "197941",
+        "display": "methimazole 10 MG Oral Tablet",
+        "ingredient": "methimazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Protein/Creatinine [Mass Ratio] in Urine": {
+        "code": "2890-2",
+        "display": "Protein/Creatinine [Mass Ratio] in Urine",
+        "unit": "mg/mg",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound with umbilical artery Doppler": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"Prenatal Vitamins Oral Tablet\""
+    ]
+  }
+}

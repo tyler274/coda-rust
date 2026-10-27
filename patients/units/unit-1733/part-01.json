@@ -1,0 +1,197 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001733",
+      "given": "Kelly",
+      "family": "Sousa",
+      "birth_date": "1989-07-27",
+      "address_line": "27 Ferry Landing Rd, Apt 2",
+      "phone": "+1-413-555-0129",
+      "email": "kelly.sousa@example.test",
+      "marital_status": "single",
+      "summary": "Woman in her thirties on Medicaid with a history of injection drug use and repeated sexually transmitted infections, who joined in 2018. Her chart runs through an HSIL Pap found before a pregnancy, ITP treated with prednisone, genital herpes, trichomoniasis, chancroid with chlamydia, a tubo-ovarian abscess admission and, after her last visit, acute transverse myelitis.",
+      "events": [
+        {
+          "id": "2018-09-27a",
+          "kind": "telephone",
+          "start": "2018-09-27T10:40",
+          "reason": "New patient intake",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2018-09-27T10:40",
+             "body": "Caller wants a primary care doctor closer to home; her old office is a two-bus trip away. MassHealth card read back and eligibility checked, active. Demographics entered. Offered first new-patient slot, Thurs 10/4 at 9:20. Asked her to bring any pill bottles and the name of the old office so we can request records. Release form mailed."}
+          ]
+        },
+        {
+          "id": "2018-10-04a",
+          "kind": "establish_care",
+          "start": "2018-10-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "History of recurrent chlamydia infection", "icd10": "Z86.19", "action": "history", "note": "more than one episode in her twenties, treated elsewhere"},
+            {"label": "History of recurrent urinary tract infections", "icd10": "Z87.440", "action": "history"},
+            {"label": "History of intravenous drug use", "icd10": "Z87.898", "action": "history", "note": "none at joining by her account"},
+            {"label": "High risk sexual behavior", "icd10": "Z72.51", "action": "diagnosed", "onset": "2018-10-04"},
+            {"label": "Tobacco use", "action": "diagnosed", "onset": "2018-10-04"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 63.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Unemployed"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2018-10-04T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2018-10-04T10:05",
+             "body": "29F here to set up care. Last seen at another office 'a few years back.' No complaints today.\n\nPMH: chlamydia more than once in her 20s, treated each time at the other office or a clinic. Several bladder infections over the years, nothing recent. Used IV drugs in the past; tells me she has not injected in years and does not want to go into it further today. I let it rest and told her the door is open.\nPSH: none.\nMeds: none. Allergies: NKDA.\nFH: mother with high blood pressure, father with type 2 diabetes. Nobody with a bleeding problem.\nSH: lives in town, not working. Smokes about 5 cigs/day. Drinks maybe once or twice a month. More than one partner, condoms 'sometimes.'\nGyn: last Pap at the old office, she doesn't know when exactly or what it showed.\n\nExam: well appearing, in no distress. Heart regular, lungs clear. Abdomen soft. Skin without track marks or rashes. Gyn exam deferred to the physical.\n\nA/P\n1. Establishing care. Records request to prior office.\n2. Tobacco: advised to quit, she is 'thinking about it.' Not ready for a quit date.\n3. Sexual health: talked through condoms every time and testing with new partners. She'll do a Pap and testing at the physical.\n4. Prior IV drug use: no current injecting per pt. Revisit.\nSchedule a physical in the spring."},
+            {"type": "Administrative Note", "title": "Records request", "author": "front desk", "date": "2018-10-04T10:30",
+             "body": "Signed release on file. Request for last 5 years of notes, labs, Pap results faxed to patient's former primary care office."}
+          ]
+        },
+        {
+          "id": "2018-11-08a",
+          "kind": "outside_records",
+          "start": "2018-11-08T14:10",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from former primary care office", "author": "outside primary care", "date": "2018-11-08T14:10",
+             "body": "Packet of 22 pages from the former practice, visits 2013 through 2016. Acute visits for urinary symptoms treated with short antibiotic courses; two chlamydia treatments noted in medication history. Routine labs from 2015 (CBC and chemistry panel) within normal limits. No cervical cytology report in the packet. Allergies: none known.\n\n[Reviewed by PCP 11/9: nothing to act on. Pap still needed - due at physical.]"}
+          ]
+        },
+        {
+          "id": "2019-06-12a",
+          "kind": "annual_physical",
+          "start": "2019-06-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-06-13a",
+          "kind": "telephone",
+          "start": "2019-06-13T11:15",
+          "reason": "Missed physical",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment outreach", "author": "front desk", "date": "2019-06-13T11:15",
+             "body": "Pt missed yesterday's 8:40 physical. Voicemail box full on first try; second try left message to call back and rebook. Reminder letter sent."}
+          ]
+        },
+        {
+          "id": "2019-10-17a",
+          "kind": "nurse_visit",
+          "start": "2019-10-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "measure": ["temp_c"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-17T13:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-17T13:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2019-10-17T13:40",
+             "body": "Walked in for flu vaccine. Afebrile, feels well, no prior vaccine reactions. VIS given. Quadrivalent flu 0.5 mL IM L deltoid, tolerated. Reminded her she still needs to rebook the physical she missed in June - she says after the holidays."}
+          ]
+        },
+        {
+          "id": "2020-05-14a",
+          "kind": "annual_physical",
+          "start": "2020-05-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [{"item": "Tobacco smoking status", "value": "Every day smoker"}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2020-05-14T10:30", "issued": "2020-05-19T08:50",
+             "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: epithelial cell abnormality, squamous: high-grade squamous intraepithelial lesion (HSIL). Organisms: Actinomyces-like organisms present.",
+             "conclusion": "HSIL. Actinomyces-like organisms. Colposcopy recommended."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-05-14T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-05-14T11:10",
+             "body": "30F for her physical, first one with us. Masked, screened at the door. Nothing bothering her today.\n\nHx: chlamydia x several in her 20s, recurrent UTIs, past IV drug use (none now per pt). No surgeries. No meds. NKDA.\nFH: mom HTN, dad T2DM, no bleeding disorders.\nSH: ~5 cig/day, social alcohol a couple times a month. Not working. Multiple partners, condom use inconsistent.\nGyn: had a Pap at the old office years ago, has no idea of the result. Never got the HPV shots. Discussed that she is past the routine age and that it is a shared decision at 30 - she'd rather not today.\n\nROS negative.\nVitals normal.\nGen: well. HEENT normal. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abd soft, NT. Breasts without masses. Pelvic: normal external genitalia, cervix without visible lesion, no discharge, no adnexal tenderness. Skin clear. Extremities without edema.\n\nA/P\n- Health maintenance: Pap sent today. Declines HPV vaccine.\n- Tobacco: brief counseling again. Not ready.\n- Sexual health: condoms, testing with new partners. Offered STI panel; she'll think about it.\n- Return in a year."}
+          ]
+        },
+        {
+          "id": "2020-05-19a",
+          "kind": "telephone",
+          "start": "2020-05-19T12:20",
+          "reason": "Abnormal Pap result",
+          "conditions": [
+            {"label": "Abnormal cervical Papanicolaou smear", "action": "diagnosed", "onset": "2020-05-14", "note": "HSIL"},
+            {"label": "Asymptomatic Actinomyces colonization of genital tract", "icd10": "Z22.8", "action": "diagnosed", "onset": "2020-05-14", "note": "Actinomyces-like organisms on Pap; no IUD"}
+          ],
+          "orders": [{"id": "colpo-referral", "action": "placed", "order": "Gynecology referral for colposcopy", "category": "referral", "to": "Gynecology", "reason": "HSIL on cervical cytology"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pap result discussed", "author": "PCP", "date": "2020-05-19T12:20",
+             "body": "Called pt with Pap: HSIL. Explained this is a high-grade change on the screening test, not cancer, but needs a closer look (colposcopy) with gyn. Also mentioned the report saw organisms that look like Actinomyces - she has no IUD and no symptoms, so nothing to treat. She was quiet but asked good questions. Referral to gyn placed; she knows they will call. Asked her to tell us if she hasn't heard in 2 weeks."},
+            {"type": "Referral", "title": "Referral to Gynecology", "author": "PCP", "date": "2020-05-19T12:35",
+             "body": "Reason: colposcopy for HSIL on cervical cytology 5/14/20. Also Actinomyces-like organisms on the same specimen; asymptomatic, no IUD. Hx recurrent chlamydia, multiple partners. NKDA. No meds. Pap report attached."}
+          ]
+        },
+        {
+          "id": "2020-06-30a",
+          "kind": "outside_records",
+          "start": "2020-06-30T09:15",
+          "reason": "Gynecology colposcopy letter",
+          "conditions": [{"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2020-05-20", "note": "LMP 2020-05-06"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2020-06-25T14:00", "issued": "2020-06-29T16:00",
+             "text": "Specimen: cervix, 6 o'clock, colposcopic biopsy. Sections show squamous mucosa with full-thickness loss of maturation in the lower two-thirds and mitotic figures above the basal layer. No invasion seen.",
+             "conclusion": "High-grade squamous intraepithelial lesion (CIN 2). Negative for invasive carcinoma."}
+          ],
+          "orders": [{"id": "colpo-referral", "action": "done", "date": "2020-06-30T09:15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology colposcopy letter", "author": "gynecology", "date": "2020-06-30T09:15",
+             "body": "Dear Doctor,\n\nThank you for sending Ms. Sousa for colposcopy after HSIL cytology. Date of visit 6/25/2020.\n\nRoutine urine hCG before the procedure was positive. LMP 5/6/20, so about 7 weeks. She was surprised; we talked about options and she plans to continue the pregnancy and start prenatal care with our group.\n\nColposcopy adequate, squamocolumnar junction fully seen. Acetowhite change with fine mosaicism at 6 o'clock; one biopsy taken. No endocervical curettage given the pregnancy. Pathology returned CIN 2, no invasion.\n\nPlan: no excision during pregnancy. We'll repeat colposcopy about 6-8 weeks postpartum. The Actinomyces-like organisms on her Pap need no treatment without symptoms or an IUD.\n\nMedications: none (prenatal vitamin advised). Allergies: NKDA.\n\nOB/GYN"}
+          ]
+        },
+        {
+          "id": "2020-07-02a",
+          "kind": "portal_message",
+          "start": "2020-07-02T20:45",
+          "reason": "Question about care during pregnancy",
+          "documents": [
+            {"type": "Patient Message", "title": "do i still see you", "author": "patient", "date": "2020-07-02T20:45",
+             "body": "hi so I guess you heard im pregnant. do I still come to you or just the OB now? I dont want to lose my spot"},
+            {"type": "Patient Message", "title": "RE: do i still see you", "author": "PCP", "date": "2020-07-03T08:30",
+             "body": "Congratulations, and you aren't losing anything. The OB team will handle your pregnancy care and your cervix follow-up. We stay your doctor for everything else - message or call any time. Once the baby is here we'll get you back in for a check-up."}
+          ]
+        },
+        {
+          "id": "2020-09-11a",
+          "kind": "outside_records",
+          "start": "2020-09-11T10:20",
+          "reason": "OB prenatal visit letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Prenatal visit summary, 18 weeks", "author": "obstetrics", "date": "2020-09-11T10:20",
+             "body": "Prenatal visit 9/9/2020, 18w0d by LMP.\n\nDoing well, no bleeding, cramping or leaking. This pregnancy has been uncomplicated to date. She has had one cat for years and just brought home a second from a shelter, and she wanted to know what she should be careful about.\n\nVitals normal. Fundal height and fetal heart tones appropriate for dates. No lymphadenopathy. Skin without lesions.\n\nPrenatal labs earlier this pregnancy were normal: blood type O positive, antibody screen negative.\n\nPlan: given the cat exposure we sent toxoplasma IgG and IgM. Someone else should scoop the litter if possible, otherwise gloves and hand-washing; avoid undercooked meat. Anatomy ultrasound at 20 weeks.\n\nPast history: chlamydia more than once, urinary infections, past injection drug use. Cervical CIN 2 in follow-up after delivery. Allergies: NKDA. Smoking about 5/day; cessation discussed.\n\nOB/GYN"}
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "outside_records",
+          "start": "2020-09-14T15:40",
+          "reason": "OB addendum, toxoplasma serology",
+          "documents": [
+            {"type": "Consult Note", "title": "Addendum: toxoplasma serology", "author": "obstetrics", "date": "2020-09-14T15:40",
+             "body": "Addendum to 9/9/20 visit. Toxoplasma gondii IgG POSITIVE, IgM NEGATIVE. Consistent with infection in the past, before this pregnancy; no risk to the fetus from this result and no treatment needed. Patient informed by phone; litter and food precautions reviewed again. Allergies: NKDA.\n\nOB/GYN"}
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "portal_message",
+          "start": "2020-09-15T07:55",
+          "reason": "Question about cat result",
+          "documents": [
+            {"type": "Patient Message", "title": "cat test", "author": "patient", "date": "2020-09-15T07:55",
+             "body": "The OB said my toxo came back positive but its old?? Do I have to give up the cats. My shelter cat is literally a baby"},
+            {"type": "Patient Message", "title": "RE: cat test", "author": "PCP", "date": "2020-09-15T12:10",
+             "body": "No need to give up the cats. That pattern means you caught it at some point in the past, before you got pregnant, so it doesn't put the baby at risk. Keep doing what the OB said: someone else on litter duty if you can, gloves and hand-washing if not."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002300",
+      "given": "Darnell",
+      "family": "Robinson",
+      "birth_date": "1940-01-02",
+      "address_line": "27 Pomeroy Meadow Road",
+      "phone": "+1-508-555-0124",
+      "email": "darnell.robinson@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired postal worker in his 80s with hypertension, CKD 3b, hyperlipidemia, BPH and a remote stroke who joins in 2020. Course brings volume overload, a febrile rash illness with negative HIV testing, gout flares, E. coli prostatitis, syncope from severe aortic stenosis (he declines TAVR) and Listeria meningitis in 2026.",
+      "events": [
+        {
+          "id": "2020-07-28a",
+          "kind": "telephone",
+          "start": "2020-07-28T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2020-07-28T10:20", "body": "Mr. Robinson phoned about moving his primary care to us. His previous doctor is cutting back hours and he wants someone he can reach by phone. Medicare plus MassHealth on file. Signed release faxed to his former office for the last five years of notes, labs and med list. New patient slot held for Tue 8/11 at 9:00. Reminded him to bring all pill bottles."}
+          ]
+        },
+        {
+          "id": "2020-08-06a",
+          "kind": "outside_records",
+          "start": "2020-08-06T14:05",
+          "reason": "prior primary care records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from previous primary care office", "author": "front desk", "date": "2020-08-06T14:05", "body": "Received by fax, 46 pages, from the patient's former primary care office (care there 2013 through July 2020).\n\nSummary of contents:\n- Problem list: hypertension; chronic kidney disease stage 3b; hyperlipidemia; benign prostatic hyperplasia; ischemic stroke years ago with full recovery, no residual deficit.\n- Medications: lisinopril 20 mg daily, amlodipine 5 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\n- Allergies: none known.\n- Screening: colonoscopy at age 71 was normal; no further colon screening advised given age. Tdap documented 2016.\n- Last creatinine in the file around 1.8.\n\nFiled to chart for PCP review before the new patient visit."}
+          ]
+        },
+        {
+          "id": "2020-08-11a",
+          "kind": "establish_care",
+          "start": "2020-08-11T09:00",
+          "end": "2020-08-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2000-01-01"},
+            {"label": "Chronic kidney disease, stage 3b", "action": "history", "onset": "2017-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2005-01-01"},
+            {"label": "Benign prostatic hyperplasia without lower urinary tract symptoms", "icd10": "N40.0", "action": "history", "onset": "2012-01-01"},
+            {"label": "History of stroke without residual deficits", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hyperlipidemia"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "secondary stroke prevention"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [136, 78], "weight_kg": 81.5, "height_cm": 175.0, "labs": {"Creatinine": 1.8, "Hemoglobin": 12.2, "Blood Urea Nitrogen": 30, "Low Density Lipoprotein": 76}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Retired postal worker"},
+            {"item": "Housing status", "value": "Lives in own home"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-11T10:05", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-11T10:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2020-08-11T10:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Urinalysis", "collected": "2020-08-11T10:05", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-08-11T09:00"},
+            {"procedure": "Venipuncture", "performed": "2020-08-11T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-08-11T09:00", "body": "80 y/o man here to set up primary care. Retired from the postal service after a long career carrying mail. Lives in his own home in Southampton; his daughter is nearby and drove him today.\n\nPMH (per patient and faxed records): HTN for decades; CKD stage 3b followed by his old PCP; hyperlipidemia; BPH, no troublesome urinary symptoms and never took a prostate pill; ischemic stroke years back, made a full recovery, no weakness or speech problems left over.\nPSH: none.\nMeds: lisinopril 20, amlodipine 5, HCTZ 25, atorvastatin 40, aspirin 81. Brought bottles, all match. Takes them with breakfast except the statin at night.\nAllergies: NKDA.\nFH: father had coronary disease; mother had high blood pressure and a stroke; a brother has type 2 diabetes.\nSH: never smoked, no alcohol. Walks his street most days.\n\nROS: feels well. Denies chest pain, SOB, leg swelling, urinary trouble, new weakness.\n\nExam: Pleasant, sharp historian. Vitals in flowsheet. HEENT unremarkable. Neck supple. Heart regular, normal S1/S2. Lungs clear. Abdomen soft, nontender. Ext without edema. Neuro: strength and gait normal, speech fluent.\n\nA/P:\n1. HTN: reasonable today on three agents. Continue.\n2. CKD 3b: last Cr in old records ~1.8. Repeat CMP, UA. Avoid NSAIDs, reviewed.\n3. Hyperlipidemia / prior stroke: continue atorvastatin 40 and aspirin. Lipids today.\n4. BPH: asymptomatic, no treatment.\n5. Health maintenance: colonoscopy done at 71, normal, not repeating at his age. Tdap 2016. Flu shot when available in the fall. Will talk shingles and pneumonia vaccines next visit.\n\nRTC 4 months, sooner prn. Can reach us by phone or portal any time."}
+          ]
+        },
+        {
+          "id": "2020-08-12a",
+          "kind": "portal_message",
+          "start": "2020-08-12T16:40",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2020-08-12T16:40", "body": "Mr. Robinson, your labs from yesterday are back. Kidney function is right where your old office had it, potassium is fine, and your cholesterol is well controlled on the atorvastatin. Blood count is a touch low, which is common with kidney disease, and matches your prior numbers. No changes needed. Talk soon."}
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-13T11:05"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2020-10-13T11:05"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2020-10-13T11:05", "body": "High-dose flu vaccine given L deltoid, lot recorded. Screening questions negative. Observed 15 min, tolerated without issue. VIS given."}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and kidney follow-up",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-12-08T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-12-08T14:00", "body": "Video, daughter set up the tablet for him. Staying close to home with the pandemic. Home cuff readings he read off his notebook run mostly 130s/70s. No dizziness, no swelling, no chest symptoms. Taking all meds.\n\nAssessment: HTN at goal by home log. CKD 3b stable on August labs.\nPlan: no changes. In-person visit in March with a BMP. Call if readings top 160 repeatedly."}
+          ]
+        },
+        {
+          "id": "2021-02-04a",
+          "kind": "pharmacy",
+          "start": "2021-02-04T13:00",
+          "reason": "outside immunization",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-04T13:00"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "COVID-19 vaccine dose 1 reported", "author": "MA", "date": "2021-02-05T09:30", "body": "State registry shows first Pfizer COVID dose given 2/4/21 at a community vaccination clinic. Added to immunization history."}
+          ]
+        },
+        {
+          "id": "2021-02-25a",
+          "kind": "pharmacy",
+          "start": "2021-02-25T13:30",
+          "reason": "outside immunization",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-25T13:30"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "COVID-19 vaccine dose 2 reported", "author": "MA", "date": "2021-02-26T10:10", "body": "Second Pfizer dose 2/25/21 per registry. Primary series complete. Updated."}
+          ]
+        },
+        {
+          "id": "2021-03-11a",
+          "kind": "office_visit",
+          "start": "2021-03-11T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension and CKD follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-03-11T11:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2021-03-11T10:30"},
+            {"procedure": "Venipuncture", "performed": "2021-03-11T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2021-03-11T10:30", "body": "S: Both COVID shots done, relieved. Feels fine. Getting out more now. No CP, SOB, edema, lightheadedness. Urinating ok.\nO: see vitals. Heart regular. Lungs clear. No edema.\nA/P: HTN controlled, continue lisinopril/amlodipine/HCTZ. CKD 3b, BMP today. Lipids due summer. Wellness visit in June. RTC 3-4 mo."},
+            {"type": "Result Note", "title": "BMP reviewed", "author": "PCP", "date": "2021-03-12T08:15", "body": "Cr and K stable vs August. No action. Pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "pharmacy",
+          "start": "2021-05-18T09:10",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Note", "title": "90-day refills", "author": "MA", "date": "2021-05-18T09:10", "body": "Pharmacy requested 90-day supplies of lisinopril 20, amlodipine 5, HCTZ 25 and atorvastatin 40. Last BMP 3/2021 ok. Sent per protocol with 3 refills each."}
+          ]
+        },
+        {
+          "id": "2021-06-16a",
+          "kind": "annual_physical",
+          "start": "2021-06-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-16T10:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-16T10:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2021-06-16T10:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Urinalysis", "collected": "2021-06-16T10:20", "results": [{"test": "Urine Protein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2021-06-16T09:30"},
+            {"procedure": "Venipuncture", "performed": "2021-06-16T10:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2021-06-16T09:30", "body": "Initial Medicare wellness visit.\n\nFunctional: independent in all ADLs and IADLs. Still does his own shopping and yard. No falls in the past year. Hearing adequate for conversation; vision fine with readers.\nMood: PHQ-2 0.\nCognition: three-word recall 3/3, clock drawing normal.\nHome safety: lives alone in a one-floor home with a basement; railings on stairs. Daughter checks in most days.\nMeds reviewed, no changes, no OTC NSAIDs.\n\nExam: BMI ~26. Heart regular. Lungs clear. Abdomen benign. No edema. Gait steady, stands from chair without arms.\n\nPrevention: flu each fall. Shingles series and pneumococcal vaccine discussed; he would prefer to get shingles at his pharmacy. Colon screening no longer indicated. Labs today.\n\nAdvance directive: not yet; daughter is who he'd want. Gave forms.\nPlan: personalized prevention plan printed. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "office_visit",
+          "start": "2021-09-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-21T15:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2021-09-21T15:00"},
+            {"procedure": "Venipuncture", "performed": "2021-09-21T15:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-09-21T15:00", "body": "Doing well over the summer. Garden did well. No new symptoms. Meds taken daily, uses a weekly box.\nExam: heart RRR, lungs clear, no LE edema.\nA/P: HTN fine today. CKD 3b, BMP. Flu shot at nurse visit next month; COVID booster now available for his age group, he'll go to the pharmacy and do shingles #1 at the same time. RTC 4-6 mo."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-12T10:45"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-12T10:45"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu shot", "author": "RN", "date": "2021-10-12T10:45", "body": "Fluzone high-dose R deltoid. No prior reactions. Tolerated. Pt plans booster + Shingrix at pharmacy next week."}
+          ]
+        },
+        {
+          "id": "2021-10-20a",
+          "kind": "pharmacy",
+          "start": "2021-10-20T11:15",
+          "reason": "outside immunizations",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-20T11:15"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-10-20T11:20"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy vaccines reported", "author": "MA", "date": "2021-10-22T09:00", "body": "Community pharmacy notification: Pfizer COVID booster and Shingrix dose 1 on 10/20/21. Entered. Shingrix #2 due in 2 to 6 months."}
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "office_visit",
+          "start": "2021-12-06T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "left foot pain and swelling",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Gout", "action": "diagnosed", "onset": "2021-12-04"}
+          ],
+          "medications": [
+            {"drug": "colchicine 0.6 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth once daily until the flare settles, up to 7 days", "dose": {"value": 0.6, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "gout flare"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-06T11:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-day Visit", "author": "PCP", "date": "2021-12-06T11:40", "body": "Called this morning, seen same day. Two days of pain at the base of the L big toe. Woke him Saturday night, now can barely get a sock on. No injury. No fever. Never had this before.\n\nExam: L 1st MTP red, warm, swollen, exquisitely tender, ROM limited by pain. Rest of foot fine, no skin break, no lymphangitic streaking.\n\nA/P: Acute monoarticular podagra in a man on HCTZ with CKD. Clinical gout flare.\n- Colchicine 0.6 mg once daily until it settles, max a week. Kept low given his kidneys. No NSAIDs (CKD).\n- Ice, elevate.\n- Message me in a few days; if not clearly better, will tap the joint.\n- Talked about what gout is and things that can set it off."}
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "portal_message",
+          "start": "2021-12-13T08:55",
+          "reason": "toe update",
+          "documents": [
+            {"type": "Patient Message", "title": "RE: toe", "author": "patient", "date": "2021-12-13T08:55", "body": "Doc, the toe is pretty much back to normal. Swelling went down by Thursday and I stopped the pills Friday like you said. Thank you. Darnell"},
+            {"type": "Patient Message", "title": "RE: toe", "author": "PCP", "date": "2021-12-13T12:30", "body": "Great news. Keep the leftover colchicine; call me right away if it flares again so we can look at it while it's active."}
+          ]
+        }
+      ]
+    }
+  ]
+}

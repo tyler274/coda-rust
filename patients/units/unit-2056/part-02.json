@@ -1,0 +1,680 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002056",
+   "events": [
+    {
+     "id": "2020-02-11a",
+     "kind": "office_visit",
+     "start": "2020-02-11T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flank pain, headaches",
+     "state": {
+      "bp": [
+       152,
+       94
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-02-11T15:55",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.8
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 29
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2020-02-11T15:55",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "renal-us-2020",
+       "action": "placed",
+       "order": "Renal ultrasound",
+       "category": "imaging",
+       "reason": "flank pain, family history of kidney disease"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-02-11T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Flank pain",
+       "author": "PCP",
+       "date": "2020-02-11T16:10",
+       "body": "45M. About six months of on-and-off aching in both flanks, sometimes one side more than the other, lasts hours to a day, no clear trigger. Thought it was his back from long drives between sites. No dysuria, no visible blood in urine, no fever, no stones in the past. Over the last few weeks also headaches, a few a week, frontal pressure, gone with rest or sleep. No vision change, no weakness.\nReminded me his father had a kidney transplant; still doesn't know what the disease was.\nMeds lisinopril 20, HCTZ 25.\n\nExam: BP 160/88, rechecked 154/90. Afebrile. Abdomen soft; fullness in both flanks on deep palpation, mild tenderness, no CVA tenderness to percussion. Neuro nonfocal. Fundi grossly ok.\n\nA/P\n1. Bilateral flank pain with flank fullness and a father with kidney failure: renal ultrasound, BMP, UA today.\n2. Headaches - tension pattern by description; BP is up too. Avoid NSAIDs for now.\n3. HTN above goal. Will revisit once the kidney picture is clear."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-13a",
+     "kind": "telephone",
+     "start": "2020-02-13T12:35",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab call",
+       "author": "PCP",
+       "date": "2020-02-13T12:35",
+       "body": "Called pt: creatinine 1.8, BUN 29 - well above his old 1.0-1.1. UA clean, no protein or blood. Asked him to avoid NSAIDs. Ultrasound booked for 2/20; will decide on nephrology with that result. He's understandably worried, answered questions."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-20a",
+     "kind": "imaging",
+     "start": "2020-02-20T10:00",
+     "reason": "bilateral flank pain",
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2020-02-20T10:00",
+       "text": "Indication: bilateral flank pain, rising creatinine, family history of kidney disease.\nTechnique: grayscale and color Doppler imaging of both kidneys and the bladder.\nRight kidney: 15.8 cm in length, enlarged. Multiple simple-appearing cysts of varying sizes throughout the cortex and medulla, the largest in the lower pole. No hydronephrosis. No shadowing calculi.\nLeft kidney: 16.4 cm in length, enlarged. Multiple cysts of varying sizes replacing much of the parenchyma. No hydronephrosis. No shadowing calculi.\nBladder: partially distended, unremarkable.",
+       "conclusion": "Bilaterally enlarged kidneys with multiple bilateral cysts of varying size, in keeping with polycystic kidney disease. No hydronephrosis or stones."
+      }
+     ],
+     "orders": [
+      {
+       "id": "renal-us-2020",
+       "action": "done",
+       "date": "2020-02-20T10:00"
+      }
+     ]
+    },
+    {
+     "id": "2020-02-21a",
+     "kind": "telephone",
+     "start": "2020-02-21T08:15",
+     "reason": "ultrasound result, nephrology referral",
+     "orders": [
+      {
+       "id": "nephro-ref-2020",
+       "action": "placed",
+       "order": "Nephrology referral",
+       "category": "referral",
+       "to": "Nephrology",
+       "reason": "bilateral renal cysts, creatinine 1.8"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Ultrasound result",
+       "author": "PCP",
+       "date": "2020-02-21T08:15",
+       "body": "Discussed ultrasound: both kidneys enlarged with many cysts, pattern of polycystic kidney disease; likely explains the flank pain and probably what his father had. Referring to nephrology for diagnosis and plan; staff to push for an early slot. He'll ask his father's side about the diagnosis."
+      },
+      {
+       "type": "Referral",
+       "title": "Referral to nephrology",
+       "author": "PCP",
+       "date": "2020-02-21T08:30",
+       "body": "Referral: Nephrology. 45M with HTN on lisinopril 20/HCTZ 25, six months of bilateral flank pain, recent headaches. Creatinine 1.8, BUN 29 (2/11/20), prior creatinine 1.0-1.15. UA negative for protein and blood. Renal US 2/20/20: bilaterally enlarged kidneys with multiple cysts. Father had kidney failure with transplant, diagnosis unknown to patient. Question polycystic kidney disease; please evaluate and advise. NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-18a",
+     "kind": "specialist_visit",
+     "start": "2020-03-18T13:30",
+     "service": "Nephrology",
+     "reason": "intermittent flank pain and headaches",
+     "vitals": {
+      "bp": [
+       155,
+       95
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Polycystic kidney, adult type",
+       "action": "diagnosed",
+       "onset": "2020-02-20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "nephro-ref-2020",
+       "action": "done",
+       "date": "2020-03-18T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology consultation",
+       "author": "nephrology",
+       "date": "2020-03-24T09:00",
+       "body": "Outside Nephrology Group - Consultation\nDate of service: 03/18/2020\nRe: Glenn Cabral, DOB 08/31/1974\nReferred by primary care for bilateral renal cysts.\n\nThank you for sending Mr. Cabral, a 45-year-old man, seen for half a year of intermittent bilateral flank discomfort and headaches that started more recently. He has had hypertension for several years, treated with lisinopril 20 mg daily and hydrochlorothiazide 25 mg daily. No known drug allergies. He believes his father had a kidney transplant but cannot say what the underlying disease was. Never smoker, drinks socially, works as a senior operations manager.\n\nExam: BP 155/95. Both flanks have palpable masses consistent with enlarged kidneys. Remainder of the exam is unremarkable.\n\nData reviewed: creatinine 1.8 mg/dL and BUN 29 mg/dL (02/11/2020), urinalysis without protein or blood. Renal ultrasound 02/20/2020 with multiple bilateral cysts of varying sizes in both enlarged kidneys.\n\nImpression: autosomal dominant polycystic kidney disease, with hypertension above target. The creatinine of 1.8 sits higher than I would expect from these images and his prior values, so I would like it repeated in about six weeks before we stage his kidney function.\n\nRecommendations:\n1. Repeat BMP in roughly 6 weeks; please forward.\n2. Blood pressure target below 130/80; continue lisinopril and hydrochlorothiazide for now.\n3. Generous fluid intake, limit NSAIDs.\n4. Return to nephrology in about a year.\n\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-25a",
+     "kind": "portal_message",
+     "start": "2020-03-25T19:48",
+     "reason": "question after nephrology visit",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Kidney doctor",
+       "author": "patient",
+       "date": "2020-03-25T19:48",
+       "body": "Saw the kidney doctor last week, he says it's polycystic kidney disease. Probably what my dad has too. He wants another blood test in a few weeks - can I do it at your office with everything going on with covid?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Kidney doctor",
+       "author": "RN",
+       "date": "2020-03-26T09:10",
+       "body": "Hi Glenn, yes, our lab is open with distancing. The order is in; early May is perfect. Please wear a mask and come straight to the lab door."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-05a",
+     "kind": "lab_only",
+     "start": "2020-05-05T08:10",
+     "reason": "repeat BMP per nephrology",
+     "state": {
+      "labs": {
+       "Creatinine": 1.2,
+       "Blood Urea Nitrogen": 17
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-05-05T08:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Repeat kidney function",
+       "author": "PCP",
+       "date": "2020-05-06T13:00",
+       "body": "Creatinine 1.2, much better than February. Forwarded to nephrology. Glenn, this is reassuring - continue your current medicines and keep fluids up."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-28a",
+     "kind": "office_visit",
+     "start": "2020-09-28T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hypertension follow-up, asks about a hypertension study",
+     "state": {
+      "bp": [
+       146,
+       92
+      ]
+     },
+     "measure": [
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-09-28T11:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-09-28T10:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-28T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "HTN follow-up / research study question",
+       "author": "PCP",
+       "date": "2020-09-28T11:20",
+       "body": "Masked visit. In for BP and to ask about joining a new hypertension study he saw advertised for people with kidney disease; wants to know whether it's worth doing.\n\nFlank aches less frequent since spring. Headaches occasional. Taking lisinopril 20 and HCTZ 25 daily.\n\nFamily history now clarified with his family: father has autosomal dominant polycystic kidney disease, reached end-stage kidney disease at 62 and later had a transplant. Paternal grandfather died at 58 of a ruptured brain aneurysm. Mother: hypertension and high cholesterol.\n\nExam: BP 146/92, repeat 144/90. HR 72. Heart regular, no murmur. Lungs clear. Flanks full bilaterally, nontender. No edema.\n\nA/P\n1. Hypertension with ADPKD, above the nephrology target. Continue lisinopril/HCTZ; home log for 2 weeks.\n2. Research study: went through what joining would mean - eligibility screening, possible randomization, extra visits and labs, he can stop at any time, and his usual care continues regardless. Gave him the study coordinator's contact sheet. He'll read it and decide.\n3. ADPKD - nephrology yearly; creatinine 1.2 in May.\n4. Flu vaccine today.\nRTC 6 mo."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "Visit summary",
+       "author": "PCP",
+       "date": "2020-09-28T11:25",
+       "body": "Flu vaccine given today. Blood pressure 146/92 - still above the kidney doctor's goal of under 130/80. Please send two weeks of home readings. Study information sheet attached; you can contact the coordinator directly, and your care here stays the same whatever you decide."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       146,
+       92
+      ],
+      "hr": 72
+     }
+    },
+    {
+     "id": "2021-02-09a",
+     "kind": "pharmacy",
+     "start": "2021-02-09T09:40",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill: lisinopril and HCTZ",
+       "author": "MA",
+       "date": "2021-02-09T09:40",
+       "body": "90-day refills of lisinopril 20 mg and hydrochlorothiazide 25 mg sent. Due for BP visit - message sent to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-13a",
+     "kind": "pharmacy",
+     "start": "2021-04-13T15:20",
+     "reason": "COVID-19 vaccine dose 1 at pharmacy",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-13T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "COVID-19 vaccine dose 1",
+       "author": "MA",
+       "date": "2021-04-15T11:00",
+       "body": "State registry shows Pfizer COVID-19 dose 1 on 4/13/2021 at a retail pharmacy. Added to record."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-28a",
+     "kind": "specialist_visit",
+     "start": "2021-04-28T09:00",
+     "service": "Nephrology",
+     "reason": "ADPKD follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-04-28T08:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2021-05-04T10:15",
+       "body": "Nephrology follow-up, 04/28/2021.\nMr. Cabral returns for ADPKD. Flank discomfort is now infrequent and mild. No hematuria or urinary infections. Takes lisinopril 20 mg and hydrochlorothiazide 25 mg daily. NKDA.\nBP today above target. Creatinine 1.26 today, in line with 1.22 last May, so the earlier 1.8 was not his baseline.\nAssessment: ADPKD with preserved function. Blood pressure remains above the under-130/80 goal; I have asked him to share home readings with his primary care physician so his regimen can be adjusted there.\nPlan: continue current medicines, fluids, avoid NSAIDs, return in one to two years with labs."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-04a",
+     "kind": "pharmacy",
+     "start": "2021-05-04T15:30",
+     "reason": "COVID-19 vaccine dose 2 at pharmacy",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-05-04T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "COVID-19 vaccine dose 2",
+       "author": "MA",
+       "date": "2021-05-06T11:20",
+       "body": "Pfizer dose 2 5/4/2021 per state registry. Primary series complete."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-27a",
+     "kind": "annual_physical",
+     "start": "2021-07-27T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "state": {
+      "bp": [
+       136,
+       86
+      ],
+      "weight_kg": 87.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "orders": [
+      {
+       "id": "fasting-labs-2021",
+       "action": "placed",
+       "order": "Fasting glucose, lipid panel, AM total testosterone",
+       "category": "lab",
+       "reason": "erectile difficulty, annual labs"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-07-27T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-07-27T08:40",
+       "body": "46M annual, first in-person physical since covid.\n\nAt the end of the visit raised trouble keeping an erection for the last few months; getting to be a source of friction at home. Wanted to know if it was his BP pills. No chest pain, no claudication, no urinary symptoms.\n\nHTN/ADPKD: home BP 128-138/80-88. Nephrology in April, creatinine 1.2. Flank aches rare.\nCOVID vaccines done in spring.\nMeds: lisinopril 20, HCTZ 25. NKDA.\n\nExam: BP 128/87, HR 64. Normal general exam. Heart RRR, no murmur. Lungs clear. Abdomen: flanks full, nontender. Genital exam deferred to urology per pt preference. No edema. Pulses normal.\n\nA/P\n1. ED, few months: thiazide can contribute but this sounds situational from his account. Fasting glucose, lipids and an early-morning testosterone first; then urology.\n2. HTN - systolic better, diastolic still high. Continue, home log.\n3. ADPKD - nephrology following.\n4. Colon cancer screening: now eligible at 46; referral to GI for colonoscopy.\n5. Flu in fall, covid booster when recommended."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-03a",
+     "kind": "lab_only",
+     "start": "2021-08-03T07:40",
+     "reason": "fasting labs, morning testosterone",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-08-03T07:40",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 96
+        },
+        {
+         "test": "Testosterone, Total",
+         "value": 550
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-03T07:40",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 45
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 120
+        },
+        {
+         "test": "Triglycerides",
+         "value": 250
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fasting-labs-2021",
+       "action": "done",
+       "date": "2021-08-03T07:40"
+      }
+     ]
+    },
+    {
+     "id": "2021-08-05a",
+     "kind": "portal_message",
+     "start": "2021-08-05T17:30",
+     "reason": "lab results, urology referral",
+     "orders": [
+      {
+       "id": "urology-ref-2021",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "erectile dysfunction"
+      },
+      {
+       "id": "gi-colonoscopy-2021",
+       "action": "placed",
+       "order": "Screening colonoscopy",
+       "category": "procedure",
+       "to": "Gastroenterology",
+       "reason": "colorectal cancer screening, average risk"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Your fasting labs",
+       "author": "PCP",
+       "date": "2021-08-05T17:30",
+       "body": "Glenn - fasting sugar 96 and testosterone 550, both normal, so neither explains the erection problem. Triglycerides 250 and LDL 120 (measured directly because of the triglycerides), not much different from before. I've placed the urology referral we talked about and the GI referral for colonoscopy; both offices will call you."
+      },
+      {
+       "type": "Referral",
+       "title": "Referral to urology",
+       "author": "PCP",
+       "date": "2021-08-05T17:40",
+       "body": "Referral: Urology. 46M with ADPKD and HTN (lisinopril 20, HCTZ 25), several months of difficulty maintaining erections. Fasting glucose 96, AM testosterone 550, lipids TC 190/HDL 45/LDL 120/TG 250 (8/3/21). Please evaluate. NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-16a",
+     "kind": "specialist_visit",
+     "start": "2021-09-16T14:00",
+     "service": "Urology",
+     "reason": "difficulty maintaining erections",
+     "conditions": [
+      {
+       "label": "Psychogenic erectile dysfunction",
+       "icd10": "F52.21",
+       "action": "diagnosed",
+       "onset": "2021-03-01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "urology-ref-2021",
+       "action": "done",
+       "date": "2021-09-16T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology consultation",
+       "author": "urology",
+       "date": "2021-09-24T08:30",
+       "body": "Outside urology group - New Patient Consultation\nVisit 09/16/2021\n\nHPI: 47-year-old man with ADPKD and hypertension, followed by nephrology and by his internist for blood pressure, referred for erectile difficulty. For about six months he has had trouble sustaining erections. He describes this as a real strain on his marriage. Desire is unchanged. On direct questioning he still gets erections during sleep and sometimes on waking.\n\nMedications: lisinopril 20 mg daily. Allergies: none known.\nSocial: nonsmoker, social alcohol.\n\nExam: genitourinary and general examination unremarkable.\n\nLabs reviewed from primary care (08/03/2021): fasting glucose 96, total cholesterol 190, HDL 45, LDL 120, triglycerides 250, total testosterone 550.\n\nAssessment: erectile dysfunction, psychogenic. Preserved nocturnal and morning erections, intact libido, normal testosterone and glucose, and a clear relationship stressor point away from a vascular or hormonal cause.\n\nPlan: recommended counseling with a sex therapist or couples counselor; list of local therapists provided. No medication started today. Follow up with us as needed."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-21a",
+     "kind": "nurse_visit",
+     "start": "2021-10-21T08:00",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-21T08:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-21T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu shot",
+       "author": "MA",
+       "date": "2021-10-21T08:10",
+       "body": "Flu vaccine IM L deltoid. Tolerated. Pt plans covid booster at pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-18a",
+     "kind": "procedure_visit",
+     "start": "2021-11-18T08:30",
+     "service": "Gastroenterology",
+     "reason": "screening colonoscopy",
+     "procedures": [
+      {
+       "procedure": "Colonoscopy, screening, average risk",
+       "performed": "2021-11-18T08:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-colonoscopy-2021",
+       "action": "done",
+       "date": "2021-11-18T08:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Colonoscopy report",
+       "author": "gastroenterology",
+       "date": "2021-11-22T14:00",
+       "body": "Outpatient endoscopy center - Colonoscopy\nDate: 11/18/2021\nIndication: average-risk colorectal cancer screening, age 47.\nSedation: monitored anesthesia care.\nPrep: good; entire colon visualized.\nFindings: scope advanced to the cecum with landmarks photographed. Normal mucosa throughout. No polyps, no masses. Small internal hemorrhoids on retroflexion.\nImpression: normal screening colonoscopy.\nRecommendation: next screening colonoscopy in 10 years.\nAllergies: NKDA."
+      },
+      {
+       "type": "Result Note",
+       "title": "Colonoscopy reviewed",
+       "author": "PCP",
+       "date": "2021-11-23T08:10",
+       "body": "Normal screening colonoscopy, no polyps. Next due 2031. Health maintenance updated."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-02a",
+     "kind": "pharmacy",
+     "start": "2021-12-02T17:45",
+     "reason": "COVID-19 booster at pharmacy",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-12-02T17:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "COVID-19 booster",
+       "author": "MA",
+       "date": "2021-12-06T09:30",
+       "body": "Pfizer booster 12/2/2021 per registry, entered."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

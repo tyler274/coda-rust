@@ -73,6 +73,9 @@ hydrochlorothiazide 25 mg, atorvastatin 40 mg, aspirin 81 mg, olodaterol (S).
 
 - **R7.** The source has no cardiology contact between the 2019 MI and 2023. Resolution:
   silence. No note claims a follow-up happened or failed to happen.
+- **R8.** The January 2020 panel's TC 180 exceeds LDL 70 + HDL 45 + any calculated share of
+  TG 150. Resolution: that panel reports LDL by direct assay (lipid panel with direct LDL),
+  which is why its total runs above the parts, as the result message says.
 
 ## Additions (A): physician to confirm
 

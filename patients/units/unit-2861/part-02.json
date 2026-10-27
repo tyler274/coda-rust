@@ -1,0 +1,276 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002861",
+      "events": [
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-24T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-01-24T14:50", "body": "Interval: continues treatment at the cancer center every few weeks. Daughter drives. Pain mostly in the right hip now, worse late in the day. Uses IR morphine once or twice daily on top of the ER. Bowels ok. Tired on treatment weeks. Eating maybe half of what she used to, mostly rice and soup.\nNo falls. No new back pain, no leg weakness.\n\nExam: thin, NAD. Lungs clear, heart regular. Port site clean. Right hip tender laterally, ROM limited by pain. Walks with cane.\n\nA/P\n- Metastatic breast cancer, bone - on oncology's regimen.\n- Cancer pain - acceptable per her; plan and refills with oncology.\n- Poor intake, weight drifting down - asked her to mention it to oncology; they may want to add something for appetite. Daughter will bring a 3-day food log next time.\nRTC 3 months, annual wellness visit."}
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "pharmacy",
+          "start": "2023-03-13T09:40",
+          "reason": "fill notification",
+          "medications": [
+            {"drug": "mirtazapine 15 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 15, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "appetite; prescribed by oncology"}
+          ],
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Fill history update", "author": "MA", "date": "2023-03-13T09:40", "body": "Pharmacy fill report shows new Rx: mirtazapine 15 mg, 1 tab at bedtime, #30, filled 3/9, prescriber oncology. No letter from oncology. Called daughter: yes, oncologist started it for appetite and sleep. Added to med list as outside med. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "Reviewed", "author": "PCP", "date": "2023-03-13T12:10", "body": "Seen. Reasonable choice. No interacting meds on our list. Will review at April visit."}
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "annual_physical",
+          "start": "2023-04-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "conditions": [
+            {"label": "Cachexia", "icd10": "R64", "action": "diagnosed", "onset": "2023-03-01", "note": "cancer anorexia-cachexia syndrome"}
+          ],
+          "state": {"weight_kg": 43.0, "labs": {"Hemoglobin": 10.4, "Albumin": 3.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-18T09:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-18T09:55", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-04-18T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-04-18T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-04-18T11:20", "body": "AWV, with daughter.\nWeight continues down, 4 kg since October. Oncology started mirtazapine 15 mg at night in March for appetite; she thinks she sleeps better, appetite a little better, not much. Food log: rice, instant noodles, tea, some fruit. Little protein. Rarely outside now beyond appointments.\nFunction: needs help with shopping and cleaning now, still bathes and dresses herself. No falls. Husband home with her.\nPHQ-2 1. Says she is sad sometimes about the cancer but not depressed.\nCognition: clock and recall normal.\nHealth care proxy: daughter, form on file.\n\nExam: cachectic, temporal wasting. Lungs clear. Heart regular. Abdomen soft. Right hip tender. Uses cane.\n\nA/P\n1. Cancer anorexia-cachexia - added to problem list. On mirtazapine per oncology. Protein with every meal, oral supplement drinks between meals; daughter to stock them.\n2. Metastatic breast ca to bone, cancer pain, opioid constipation - unchanged, oncology managing.\n3. Labs today.\nVaccines current. Screening deferred given active metastatic disease. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, bone aches, weakness",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "orders": [
+            {"id": "endo-referral", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "proximal weakness and diffuse bone pain, question of metabolic bone disease"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-20T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - fatigue and weakness", "author": "PCP", "date": "2023-06-20T14:30", "body": "CC: tired, aching all over, can't get out of a chair.\nS: Over 6-8 weeks, more fatigue and a deep ache in the shins and arms, different from her hip pain. Last few weeks needs to push off with both hands to stand from a chair and pull on the rail for stairs. No new focal back pain. Bowels ok. Oncology says her treatment is going about as expected.\n\nO: Thin. Hip flexors and deltoids 4/5 bilaterally, distal strength normal. Rises from chair only with arms. Bones of the lower legs and forearms tender to pressure. Reflexes symmetric. Sensation intact.\n\nA/P: Proximal weakness with diffuse bone tenderness away from her known metastatic sites. Could be disease, but the pattern and her diet and limited time outdoors make a metabolic bone problem worth looking for. Referral to endocrinology; asked them to see her soon. Let oncology know. Return sooner if new back pain, leg numbness or trouble with bladder/bowel."}
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "specialist_visit",
+          "start": "2023-07-17T10:00",
+          "service": "Endocrinology",
+          "reason": "fatigue, bone discomfort, proximal weakness",
+          "conditions": [
+            {"label": "Vitamin D deficiency", "action": "diagnosed", "onset": "2023-07-17", "note": "severe, 25-OH D 6 ng/mL"},
+            {"label": "Adult osteomalacia, unspecified", "icd10": "M83.9", "action": "diagnosed", "onset": "2023-07-17"},
+            {"label": "Hypocalcemia", "icd10": "E83.51", "action": "diagnosed", "onset": "2023-07-17"},
+            {"label": "Sarcopenia", "icd10": "M62.84", "action": "diagnosed", "onset": "2023-07-17", "note": "secondary to malignancy and vitamin D deficiency"}
+          ],
+          "medications": [
+            {"drug_text": "cholecalciferol 1.25 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule (50,000 units) by mouth once weekly", "dose": {"value": 50000, "unit": "[iU]"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "severe vitamin D deficiency; prescribed by endocrinology"},
+            {"drug_text": "calcium carbonate 600 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily with meals", "dose": {"value": 600, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "hypocalcemia, osteomalacia; prescribed by endocrinology"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-07-17T10:50", "results": [{"test": "Calcium", "value": 7.3}, {"test": "Alkaline Phosphatase", "value": 230}]},
+            {"panel": null, "collected": "2023-07-17T10:50", "results": [
+              {"test": "Phosphorus", "value": 1.9},
+              {"test": "25-hydroxy Vitamin D", "value": 6},
+              {"test": "1,25-Dihydroxyvitamin D", "loinc": "1649-3", "unit": "pg/mL", "text": "Undetectable"}
+            ]}
+          ],
+          "orders": [
+            {"id": "endo-referral", "action": "done", "date": "2023-07-17T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology consultation", "author": "endocrinology", "date": "2023-07-25T08:30", "body": "ENDOCRINOLOGY CONSULTATION\nDate of visit: 07/17/2023\nReason: fatigue, generalized bone discomfort, difficulty standing from seated. Referred by primary care.\n\nHPI: 66-year-old woman with stage IV right breast IDC metastatic to bone, on palliative therapy with her oncologist, seen for fatigue, aching bones and new trouble getting up from a chair over the past two months. Her diet is mostly rice and instant noodles and she seldom gets outdoors.\n\nMedications: morphine ER 30 mg q12h, morphine IR 15 mg q4h prn, senna 8.6 mg bid, docusate 100 mg bid, prochlorperazine 10 mg q6h prn, mirtazapine 15 mg qhs.\nAllergies: sulfa (urticaria), iodinated contrast (anaphylaxis).\nFamily history: mother breast cancer at 55 (deceased); maternal aunt ovarian cancer; father hypertension.\nSocial: retired textile worker, never smoker, no alcohol.\n\nExam: thin woman. Weakness of the proximal muscles in arms and legs. Both tibias and both forearms are tender when pressed. Gait is wide-based. Mild kyphosis.\n\nLabs today: calcium 7.3 mg/dL, phosphate 1.9 mg/dL, alkaline phosphatase 230 U/L, 25-hydroxyvitamin D 6 ng/mL, 1,25-dihydroxyvitamin D undetectable.\nDXA: bone mineral density decreased, pattern consistent with osteomalacia.\n\nImpression:\n1. Severe vitamin D deficiency with osteomalacia.\n2. Hypocalcemia from the above; phosphate also low.\n3. Sarcopenia, from her malignancy and vitamin D deficiency together.\n\nPlan:\n- Cholecalciferol 50,000 units by mouth once weekly.\n- Calcium carbonate 600 mg by mouth three times daily with meals.\n- Dietary counseling given: dairy or fortified soy, fish, eggs; daylight exposure as able.\n- Recheck calcium, phosphorus and 25-hydroxyvitamin D in about 3 months; primary care may draw.\n- Will copy oncology.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "office_visit",
+          "start": "2023-08-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after endocrinology",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "orders": [
+            {"id": "vitd-recheck", "action": "placed", "order": "Calcium, phosphorus, 25-hydroxyvitamin D", "category": "lab", "reason": "3-month recheck on vitamin D and calcium"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-08-08T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-08-08T11:45", "body": "F/u after endo. Read their letter: vitamin D 6, calcium 7.3, phos 1.9, ALP 230, osteomalacia on DXA. Now on cholecalciferol 50,000 units weekly and calcium carbonate 600 mg with each meal. Taking both; daughter set up a pill box. The calcium tablets are large, she cuts them in half.\nSays the shin aching is a little less already. Still pushes up from chairs.\n\nExam: vitals ok. Proximal weakness unchanged. No Chvostek. Lungs clear.\n\nA/P\n- Vitamin D deficiency with osteomalacia, hypocalcemia, sarcopenia: added to list, endo plan in place. Recheck Ca/phos/vit D late October, I'll draw here.\n- Calcium is better tolerated split with meals; ok to keep cutting tablets.\n- Flu/COVID in September.\nRTC after the October labs."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "nurse_visit",
+          "start": "2023-09-26T10:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-09-26T10:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T10:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-09-26T10:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2023-09-26T10:55", "body": "High-dose influenza and 2023-24 COVID vaccine, left deltoid, between treatment cycles. Pt in wheelchair from the car today for the long hallway, walks short distances with cane. No reactions."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "lab_only",
+          "start": "2023-10-24T08:15",
+          "reason": "vitamin D and calcium recheck",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-24T08:15", "results": [{"test": "Calcium", "value": 8.7}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2023-10-24T08:15", "results": [{"test": "Phosphorus", "value": 2.9}, {"test": "25-hydroxy Vitamin D", "value": 22}]}
+          ],
+          "orders": [
+            {"id": "vitd-recheck", "action": "done", "date": "2023-10-24T08:15"}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-10-24T08:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Lab draw", "author": "MA", "date": "2023-10-24T08:25", "body": "Venipuncture left arm (no right arm draws). Tolerated."}
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "portal_message",
+          "start": "2023-10-26T13:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Vitamin D and calcium results", "author": "PCP", "date": "2023-10-26T13:10", "body": "Good news: vitamin D is up from 6 to 22, calcium from 7.3 to 8.7 and phosphorus from 1.9 to 2.9. Moving the right way. Keep taking the weekly vitamin D and the calcium with meals. I'm sending a copy to endocrinology."},
+            {"type": "Patient Message", "title": "RE: Vitamin D and calcium results", "author": "patient", "date": "2023-10-26T18:44", "body": "(daughter) Thank you! She says her legs ache less. Should she keep the same dose forever?"},
+            {"type": "Patient Message", "title": "RE: Vitamin D and calcium results", "author": "PCP", "date": "2023-10-27T08:05", "body": "For now yes, same doses. We'll recheck at her spring physical and go from there."}
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {"label": "Hypocalcemia", "icd10": "E83.51", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 41.0, "labs": {"Calcium": 9.4, "Alkaline Phosphatase": 210}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-23T11:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-01-23T11:20", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-23T10:40"},
+            {"procedure": "Venipuncture", "performed": "2024-01-23T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-01-23T11:35", "body": "Winter check. Daughter here. Treatment continues at the cancer center; per pt oncologist pleased enough. Hip pain stable on the morphine. Bone aching in the legs much less since vitamin D. Still weak getting up but better than summer. Weight down another 2 kg. Eats more with the mirtazapine than before, still small portions.\n\nExam: cachectic. Lungs clear, heart regular. Proximal strength 4/5, rises with arm push. Right hip tender. Port ok.\n\nA/P\n1. Hypocalcemia - resolved on October labs; removing from list. Recheck CMP today.\n2. Vitamin D deficiency/osteomalacia - continue current doses, vitamin D level at April AWV.\n3. Cachexia/sarcopenia - continue supplements and mirtazapine. Offered home PT; prefers to wait.\n4. Metastatic breast cancer - per oncology.\nRTC April AWV."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "annual_physical",
+          "start": "2024-04-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": null, "collected": "2024-04-16T10:10", "results": [{"test": "25-hydroxy Vitamin D", "value": 31}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-04-16T09:20"},
+            {"procedure": "Venipuncture", "performed": "2024-04-16T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-04-16T10:45", "body": "AWV.\nHealth risk review with pt and daughter. Needs help with shopping, cooking and cleaning; husband and daughter share these. Bathes with a shower chair. No falls since last year. Uses cane indoors, wheelchair for longer distances.\nPHQ-2 1. Cognition intact on screen. Hearing/vision ok.\nAdvance care: proxy is daughter. Talked briefly about what matters most to her; she wants to be home and to see her family's events. Not ready yet for a full goals-of-care conversation, would like to come back to it.\n\nExam: cachectic, alert. Lungs clear. Heart regular. Right hip tender. Proximal weakness unchanged.\n\nPlan:\n- Vitamin D level today.\n- Personalized plan given: protein intake, supplements, home exercise sheet for sit-to-stand.\n- RSV vaccine in the fall with flu and COVID.\n- Routine cancer screening not indicated given metastatic disease.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "portal_message",
+          "start": "2024-04-18T09:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Vitamin D result", "author": "PCP", "date": "2024-04-18T09:00", "body": "Vitamin D is 31 now, in the normal range. Keep going as you are."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2024-06-10T16:30", "body": "Daughter called to cancel 6/11, mother has an infusion that day that was moved. Will call back to reschedule after her July oncology visit."}
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "specialist_visit",
+          "start": "2024-07-29T13:00",
+          "service": "Medical Oncology",
+          "reason": "follow-up, metastatic breast cancer",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-29T12:15", "results": [{"test": "Hemoglobin", "value": 9.2}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-29T12:15", "results": [{"test": "Calcium", "value": 10.5}, {"test": "Albumin", "value": 3.0}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Medical oncology follow-up, July 2024", "author": "oncology", "date": "2024-10-21T14:05", "body": "MEDICAL ONCOLOGY - FOLLOW-UP\nDate of service: 07/29/2024\n\nInterval history: Ms. Zhang, 67, with stage IV invasive ductal carcinoma of the right breast metastatic to bone, continues palliative systemic therapy. Since her last visit she has more fatigue and is finding it harder to keep up with daily tasks. Her granddaughter graduates at an outdoor ceremony in about three months and she very much wants to be there; she worries she will not have the stamina. She feels well supported at home. Endocrinology saw her last summer for weakness and bone aches.\n\nMedications: morphine sulfate ER 30 mg q12h; morphine sulfate IR 15 mg q4h prn breakthrough pain; cholecalciferol 50,000 units weekly; calcium carbonate 600 mg tid with meals; senna 8.6 mg bid; docusate 100 mg bid; prochlorperazine 10 mg q6h prn nausea; mirtazapine 15 mg qhs.\nAllergies: sulfa (urticaria); iodinated contrast (anaphylaxis).\n\nVitals stable. Exam: cachectic. Diffuse tenderness over bone.\n\nLabs: hemoglobin 9.2 g/dL, calcium 10.5 mg/dL, albumin 3.0 g/dL.\n\nAssessment/Plan: Metastatic breast cancer to bone on palliative therapy, with fatigue and declining function. Continue current treatment. Discussed pacing and rest before the graduation; wheelchair for the event. No medication changes. Return in 6-8 weeks.\n\n(Sent at the request of the primary care office.)"}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-08-13T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-08-13T14:30", "body": "Rescheduled from June. Saw oncology 7/29. Per pt and daughter: more tired, treatment continues, \"blood a little low\", no med changes. Her goal is her granddaughter's graduation this fall, outdoors; wants to be well enough to sit through it.\nTired most afternoons. Pain about the same. Eating small amounts. Bowels ok.\n\nExam: cachectic, in wheelchair today. Lungs clear. Heart regular. Diffuse bony tenderness, worst right hip.\n\nA/P\n- Metastatic breast ca/bone, fatigue - per oncology. We do not have the July note; front desk to request it.\n- Graduation planning: pace the day, rest beforehand, IR morphine before leaving the house, wheelchair, shade and water. She liked that plan.\n- Vit D/calcium - continue.\nRTC after flu shots / early winter."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "telephone",
+          "start": "2024-09-10T10:05",
+          "reason": "records request follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2024-09-10T10:05", "body": "Second request to the cancer center for the 7/29 oncology note (first request faxed 8/13). They have no record of the fax. Re-faxed with signed release. Was told 2-3 weeks."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T11:00",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T11:07"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-10-08T11:09"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T11:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2024-10-08T11:30", "body": "Flu (high dose), 2024-25 COVID and RSV given, left arm x2 and left thigh. Pt in wheelchair. Daughter says the graduation is in 2 weeks and they have a plan. No reactions."}
+          ]
+        }
+      ]
+    }
+  ]
+}

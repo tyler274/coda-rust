@@ -1,0 +1,601 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002614",
+      "events": [
+        {
+          "id": "2023-05-02a",
+          "kind": "telephone",
+          "start": "2023-05-02T09:12",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2023-05-02T09:12",
+              "body": "Pt cancelling the 5/16 physical, got put on the schedule at work that morning. Will call back with a new date."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T15:40",
+          "end": "2023-06-20T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hand stiffness, can't let go of grip",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-20T16:15",
+              "resulted": "2023-06-21T09:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 284,
+                  "unit": "U/L"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "grip myotonia, weakness, family history of muscle disease"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-20T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-20T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-06-20T16:20",
+              "body": "S: Several months of his hands \"sticking.\" Started golfing with coworkers this spring and after a swing he can't open his hand off the club right away. Same thing shaking hands with customers and with doorknobs. Takes a few seconds to let go. Also more tired than usual and feels his hands and lower legs are weaker. Over the last few weeks a little harder to get up from a low chair, feels clumsy walking on uneven ground. No numbness, no pain, no rash.\nFamily: dad's muscle disease started in his early 30s and pt says this sounds like what dad describes.\n\nO: Thin, well. After a tight fist he is slow to open his fingers, improves with repeating it. Strength grossly 5-/5 in hand grip and ankle dorsiflexion, otherwise 5/5. Reflexes symmetric. Gait normal on flat floor. Heart regular.\n\nA/P: Grip release delay with mild distal weakness and a father with a similar muscle disease. Concerned for an inherited myotonic disorder. CK today. Referral to neurology, asked them to see him this summer. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "portal_message",
+          "start": "2023-06-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CK result",
+              "author": "PCP",
+              "date": "2023-06-21T12:40",
+              "body": "Zachary, your CK (a muscle enzyme) came back at 284, a bit above the normal range. That fits with what we talked about and I've sent it along with the referral. Neurology should call you to schedule; let me know if you haven't heard from them in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "portal_message",
+          "start": "2023-08-21T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology visit",
+              "author": "patient",
+              "date": "2023-08-21T20:15",
+              "body": "Saw neurology last Monday. She said it is probably myotonic dystrophy, the same thing my dad has, and they sent a genetic test. Did you get her notes? She said my legs are a little weak at the ankles too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurology visit",
+              "author": "PCP",
+              "date": "2023-08-22T08:05",
+              "body": "Thanks for letting me know. We have not received the note yet. I'm asking our staff to request it today, along with the genetic test result when it is back. Let's meet once I have it."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2023-08-22T09:30",
+              "body": "Called the neurology office, spoke with their records clerk. Requested 8/14 consult note and pending genetic testing. Faxed our request form and signed release. They said 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, second attempt",
+              "author": "front desk",
+              "date": "2023-09-12T14:05",
+              "body": "Neurology note from 8/14 still not here. Called their office again; clerk says the note was waiting on the genetic result to be added. Will send both once signed. Re-faxed release."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:20",
+          "conditions": [
+            {
+              "label": "Myotonic dystrophy type 1",
+              "icd10": "G71.11",
+              "action": "diagnosed",
+              "onset": "2023-08-14"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-09-26T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation (visit 08/14/2023)",
+              "author": "neurology",
+              "date": "2023-09-26T11:20",
+              "body": "NEUROMUSCULAR CLINIC: CONSULTATION\nDate of service: 08/14/2023\nReferred by: primary care, for difficulty releasing grip\n\nHistory: 25-year-old right-handed man. The problem first showed itself on the golf course: after swinging he could not unclench from the club. He has the same trouble disengaging from a handshake and from doorknobs. For several months he has felt more fatigued, with mild weakness he localizes to the hands and the lower legs. More recently he struggles to stand from a chair and feels unsteady on uneven ground. His father developed a muscle disorder in his early thirties with complaints much like these.\n\nPMH: bilateral cataracts removed at 20 with lens implants. No medications. NKDA. Never smoker, no alcohol. Part-time retail sales associate.\n\nExamination: Grip myotonia, with delayed relaxation after sustained handgrip. Mild foot drop on both sides. Receding hairline with early frontal balding. No skin rash and no joint deformity. Remainder of the neurologic examination without focal deficit.\n\nData: Creatine kinase from his primary care office 284 U/L, mildly elevated.\n\nImpression: Grip myotonia with distal-predominant weakness, early frontal balding, cataracts at a young age and an affected father. Clinical picture is myotonic dystrophy type 1.\n\nPlan: DMPK repeat analysis sent. Discussed autosomal dominant inheritance. Follow up in the neuromuscular clinic.\n\nADDENDUM 09/08/2023: DMPK testing shows an expanded CTG repeat on one allele, estimated at about 420 repeats. This confirms myotonic dystrophy type 1. Result reviewed with the patient by phone.\n\nAllergies: NKDA. Copy to primary care."
+            },
+            {
+              "type": "Result Note",
+              "title": "Neurology letter reviewed",
+              "author": "PCP",
+              "date": "2023-09-26T17:05",
+              "body": "Neuro consult and DMPK addendum reviewed. DM1 confirmed, ~420 CTG repeats. Added to problem list. Pt already has a follow-up with me 10/10."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "office_visit",
+          "start": "2023-10-10T16:00",
+          "end": "2023-10-10T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, myotonic dystrophy; fertility question",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-10T16:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-10T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-10T16:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:38"
+            }
+          ],
+          "orders": [
+            {
+              "id": "genetics-referral",
+              "action": "placed",
+              "order": "Medical genetics referral",
+              "category": "referral",
+              "to": "Medical Genetics",
+              "reason": "myotonic dystrophy type 1, family planning, 5 months trying to conceive"
+            },
+            {
+              "id": "semen-analysis",
+              "action": "placed",
+              "order": "Semen analysis",
+              "category": "lab",
+              "reason": "trying to conceive without success"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-10T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-10T16:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-10-10T16:40",
+              "body": "F/u after neurology. DM1 confirmed by gene test (~420 repeats). He took it in stride; his father has the same diagnosis and pt has watched it for years. Hands about the same. Still working.\n\nNew question: he and his girlfriend have been trying for a baby since around May without a pregnancy. Wants to know if his diagnosis changes anything for having kids.\n\nNo meds. NKDA.\nExam: hand grip release slow, unchanged. Mild bilateral ankle dorsiflexion weakness. Heart regular. Lungs clear.\n\nA/P\n1. Myotonic dystrophy type 1. Neuromuscular clinic following. Basic labs today (CMP, A1c, TSH) for a baseline.\n2. Trying to conceive, ~5 months. Discussed that DM1 can pass to a child and that genetics can go over family planning options with both of them. Referral to medical genetics. Semen analysis ordered as a first step; instructions given (2-5 days abstinence, sample to lab within an hour).\n3. Flu shot today.\nRTC after genetics."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 5.2,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          }
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "lab_only",
+          "start": "2023-11-08T08:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-08T08:15",
+              "resulted": "2023-11-08T14:00",
+              "results": [
+                {
+                  "test": "Semen volume",
+                  "loinc": "3160-9",
+                  "value": 2.6,
+                  "unit": "mL"
+                },
+                {
+                  "test": "Spermatozoa, motile",
+                  "loinc": "13942-8",
+                  "text": "Absent. No spermatozoa of any kind seen, including on examination of the centrifuged pellet."
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "semen-analysis",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-10a",
+          "kind": "portal_message",
+          "start": "2023-11-10T10:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Semen analysis result",
+              "author": "PCP",
+              "date": "2023-11-10T10:25",
+              "body": "Hi Zachary, the lab did not find any sperm in the sample, including when they spun it down to look more carefully. This is called azoospermia. It has several possible causes, and it is exactly the kind of thing the genetics team should look at. I've sent the result to them ahead of your February appointment. Happy to talk by phone before then if you want."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Semen analysis result",
+              "author": "patient",
+              "date": "2023-11-10T21:48",
+              "body": "Ok. Kind of a lot to take in. We'll wait for the genetics appt. Thanks for sending it over."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "outside_records",
+          "start": "2024-02-20T10:05",
+          "conditions": [
+            {
+              "label": "Klinefelter syndrome",
+              "action": "diagnosed",
+              "onset": "2024-02-06"
+            },
+            {
+              "label": "Male infertility",
+              "action": "diagnosed",
+              "onset": "2024-02-06"
+            }
+          ],
+          "orders": [
+            {
+              "id": "genetics-referral",
+              "action": "done",
+              "date": "2024-02-20T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical genetics consultation (visit 02/06/2024)",
+              "author": "medical genetics",
+              "date": "2024-02-20T10:05",
+              "body": "MEDICAL GENETICS CONSULTATION\nDate of visit: 02/06/2024\nReason: myotonic dystrophy type 1; infertility\n\nHistory: 25-year-old man seen roughly six months after his neuromuscular diagnosis of DM1 (DMPK expansion, about 420 CTG repeats). He and his partner have been trying for a pregnancy for about nine months. He has never fathered a pregnancy. He describes erections and libido as normal. Recent semen analysis from his primary care office showed azoospermia. His parents remember a growth spurt in adolescence; he has always been tall and lean, which the family put down to genetics. Right-handed. Had trouble learning to read and calls it mild dyslexia. Otherwise healthy apart from cataract surgery in both eyes at 20. Takes no medications. NKDA.\n\nFamily history: father with DM1 and early cataracts; paternal grandfather with weakness and grip myotonia, never diagnosed; mother healthy; no known genetic conditions on the maternal side.\n\nSocial: works part-time in retail and lives on his own. Did not play team sports growing up and remembers feeling somewhat awkward next to classmates.\n\nExamination: Height 6 ft 2 in, with legs long in proportion to the trunk. Pleasant and cooperative, a little reserved. Little facial or chest hair, sparse axillary hair. Gynecomastia present. Testes palpable on both sides, small and firm. Neurologic examination normal.\n\nStudies: Scrotal ultrasound, no structural abnormality of either testis or of the vasa deferentia. Buccal smear: a dense, darkly staining chromatin body at the nuclear margin in many somatic cells, consistent with an extra X chromosome. Testicular biopsy not performed.\n\nAssessment:\n1. Klinefelter syndrome, suspected on exam and buccal smear; peripheral blood karyotype sent for confirmation.\n2. Male infertility with azoospermia, explained by #1.\n3. Myotonic dystrophy type 1: counseled that each child of his would have a 50% chance of inheriting the expansion, with possible lengthening of the repeat when passed on.\n\nPlan: karyotype; fertility options to be discussed further if the couple wishes to pursue them; return as needed.\n\nCopy to primary care."
+            },
+            {
+              "type": "Result Note",
+              "title": "Genetics letter reviewed",
+              "author": "PCP",
+              "date": "2024-02-20T17:30",
+              "body": "Genetics letter reviewed. Klinefelter suspected on exam and buccal smear, karyotype pending. Azoospermia attributed. Added Klinefelter and male infertility to problems; family hx updated (father DM1, early cataracts; PGF undiagnosed weakness/myotonia). F/u with pt 3/12."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "outside_records",
+          "start": "2024-03-07T14:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-06T11:30",
+              "resulted": "2024-02-28T15:00",
+              "results": [
+                {
+                  "test": "Karyotype",
+                  "loinc": "29770-5",
+                  "text": "47,XXY in all 20 metaphase cells examined"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Genetics addendum: karyotype",
+              "author": "medical genetics",
+              "date": "2024-03-07T14:40",
+              "body": "ADDENDUM to consultation of 02/06/2024\nPeripheral blood chromosome analysis: 47,XXY in all 20 cells counted. Confirms Klinefelter syndrome. Discussed with the patient by telephone 03/01/2024."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T16:20",
+          "end": "2024-03-12T16:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after genetics",
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-12T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-03-12T16:50",
+              "body": "Here to go over genetics. Karyotype 47,XXY, so Klinefelter, and that explains the azoospermia. He says it was strange to learn this at 25 but a lot of things about growing up make more sense now. He and his partner are taking a break from trying for now and may go back to genetics about options later. Mood ok, sleeping fine, working.\n\nHands unchanged. No new weakness.\nExam: BP and HR fine. Wt 78. Grip release slow. Heart regular.\n\nA/P\n1. Klinefelter syndrome, 47,XXY. Male infertility, azoospermia.\n2. Myotonic dystrophy type 1, neuromuscular clinic following.\nPhysical in the fall."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 78.0
+          }
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "portal_message",
+          "start": "2024-09-17T18:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling physical",
+              "author": "patient",
+              "date": "2024-09-17T18:40",
+              "body": "Can I get my physical in October? Tuesdays before 10 work best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling physical",
+              "author": "front desk",
+              "date": "2024-09-18T09:02",
+              "body": "You're set for Tuesday 10/22 at 8:30. Labs will be drawn at the visit, so nothing to eat after midnight except water."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:30",
+          "end": "2024-10-22T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T09:08"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T09:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-22T09:15",
+              "body": "Annual. Working the same hours. Grip trouble about the same as spring, gets by at work. Not trying for a pregnancy right now.\n\nProblems: DM1 (DMPK ~420 repeats), Klinefelter 47,XXY with azoospermia, s/p bilateral cataract surgery with IOLs.\nMeds: none. NKDA. Never smoker, no alcohol.\n\nExam: Tall, lean. Early frontal balding. Sparse body hair. HEENT: IOLs. Heart regular, no murmur. Lungs clear. Abdomen soft. Slow grip release, mild ankle dorsiflexion weakness both sides, otherwise strength full.\n\nA/P: Health maintenance. CBC, CMP, lipids, A1c, TSH. Flu and updated COVID given. PHQ-9 3. Next physical one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-10-24T13:50",
+              "body": "Blood work from your physical is all in the normal range, including sugar (A1c), thyroid and cholesterol. See you next year, sooner if anything changes."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

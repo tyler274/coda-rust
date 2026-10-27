@@ -124,6 +124,9 @@ stateDiagram-v2
       }
       SignedIn --> Covered : the session expires
       Covered --> SignedIn : verification succeeds
+      %% A refusal in any tab reaches the covered one too: the workspace underneath closes.
+      Covered --> NoAccess : verification refuses access
+      Covered --> NoAccess : verification refuses access holding a patient link
       Covered --> Email : sign out
       Covered --> Email : reopen without a valid session [no valid session]
       %% when not Valid

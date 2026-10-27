@@ -1,0 +1,363 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002205",
+      "events": [
+        {
+          "id": "2024-03-25a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-25T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure check-in",
+          "orders": [
+            {"id": "labs-2024-03", "action": "placed", "order": "Hemoglobin A1c and basic metabolic panel", "category": "lab", "reason": "Type 2 diabetes monitoring"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-03-25T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2024-03-25T11:55",
+              "body": "Video from his kitchen; roads were bad and he asked not to drive in. Identity verified by birth date.\nNo complaints. Meds from the organizer daily, refills current. Drinking: about the same, six or so most nights. Right hand unchanged by his account. Has not checked his own pressure, has no cuff.\nNo exam beyond appearance: comfortable, speech normal.\nA/P: T2DM, HTN, HLD stable by history. A1c and BMP ordered, he'll stop at the lab this week. AUD: counseled. AWV in June."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "lab_only",
+          "start": "2024-03-28T08:10",
+          "state": {"labs": {"Hemoglobin A1c": 7.2}},
+          "labs": [
+            {"panel": null, "collected": "2024-03-28T08:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-28T08:10", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "orders": [
+            {"id": "labs-2024-03", "action": "done", "date": "2024-03-28T08:10"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Result Note",
+              "author": "PCP",
+              "date": "2024-03-28T17:20",
+              "body": "A1c 7.0, BMP fine. Message sent to pt: no changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "annual_physical",
+          "start": "2024-06-24T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.0, "Low Density Lipoprotein": 93, "High Density Lipoprotein": 47, "Triglycerides": 180, "Microalbumin/Creatinine Ratio": 15}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-24T09:00", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-24T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-24T09:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-06-24T09:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 11}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-06-24T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-06-24T10:05",
+              "body": "AWV, 70 y/o.\nHRA: independent, no falls, no memory complaints, driving. PHQ-2 0. AUDIT-C 11.\nProxy form: not done; reviewed again why it matters.\nMeds: metformin 1000 BID, lisinopril 10 daily, atorvastatin 40 daily. No OTCs.\nExam: vitals per flowsheet. Alert, conversational. Heart regular. Lungs clear. Abdomen benign. Right palm with the known cords; left palm soft today. Feet normal on monofilament, pulses present.\nPrevention: colonoscopy 2027. Flu/COVID this fall. Pneumococcal and shingles complete.\nAlcohol: counseled; again prefers no medicine and no referral.\nPlan: labs. Eye exam overdue since 2022, he promises to book it. Diabetes visit in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "outside_records",
+          "start": "2024-07-30T14:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2024-07-30T14:10",
+              "body": "Comprehensive dilated exam, 07/23/2024, for diabetes.\nAcuity with correction good both eyes. IOP normal. Lids, conjunctiva and cornea normal. Lens clear for age. Fundus each eye: sharp discs, normal vessels, macula flat, no hemorrhage or exudate.\nAssessment: type 2 diabetes without retinopathy.\nReturn one year.\nAllergies: no known drug allergies."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-09T10:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-09T10:27"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-09T10:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunizations",
+              "author": "RN",
+              "date": "2024-10-09T10:40",
+              "body": "High-dose flu and this season's COVID given, one in each arm. Afebrile, no acute complaints. Observed without incident. Diabetes visit booked for November."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "office_visit",
+          "start": "2024-11-18T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; left hand stiffness",
+          "state": {"labs": {"Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-11-18T13:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "RSV, unspecified", "date": "2024-09-17T12:00"}
+          ],
+          "orders": [
+            {"id": "hand-referral", "action": "placed", "order": "Hand surgery referral", "category": "referral", "to": "Hand Surgery", "reason": "Dupuytren contracture; left hand now losing extension"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-18T13:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-11-18T14:20",
+              "body": "Diabetes visit; new issue with the left hand.\nLeft hand has been doing what the right did: stiffer over a long stretch, now several fingers will not go straight, and it gets in his way with buttons, jars and tools. No injury, no numbness. Right hand about the same as before, still a nuisance.\nState registry pull shows an RSV vaccine at a community pharmacy in September that he forgot to mention; entered.\nMeds daily via the organizer. Drinking the same.\n\nExam: vitals OK. Heart, lungs normal. Left palm now with firm cords and fingers short of full extension; right palm unchanged. Sensation intact both hands; radial pulses normal.\nA1c 7.3.\n\nA/P\n1. Dupuytren contracture, now involving the left hand and affecting daily tasks. Ortho had suggested hand surgery if things progressed: referral placed to hand surgery.\n2. T2DM: A1c 7.3, continue metformin.\n3. HTN, HLD: continue lisinopril 10, atorvastatin 40.\n4. AUD: counseled.\nRTC 4 to 5 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T18:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand Doctor",
+              "author": "patient",
+              "date": "2025-01-21T18:44",
+              "body": "Saw the hand surgeon Dec 11. Same thing in both hands now he says. He went over a needle procedure, a shot, or an operation. I said I'd wait and see. Did you get his note?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Hand Doctor",
+              "author": "PCP",
+              "date": "2025-01-22T07:55",
+              "body": "Thanks for the update, Francis. Nothing has come from their office yet. Waiting is a reasonable choice, and you can go back to them whenever the hands bother you more. We'll talk about it at your April visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "pharmacy",
+          "start": "2025-03-04T09:25",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Metformin Renewal",
+              "author": "MA",
+              "date": "2025-03-04T09:25",
+              "body": "Pharmacy renewal request for metformin 1000 mg #180. Seen November, A1c 7.3, visit on the books for April. PCP approved 90 days."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "office_visit",
+          "start": "2025-04-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.2, "Low Density Lipoprotein": 95, "High Density Lipoprotein": 45, "Triglycerides": 200, "Microalbumin/Creatinine Ratio": 13}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-04-14T08:45", "resulted": "2025-04-15T07:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-14T08:45", "resulted": "2025-04-15T07:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Lipid Panel", "collected": "2025-04-14T08:45", "resulted": "2025-04-15T07:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-14T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2025-04-14T09:45",
+              "body": "S: 71 y/o for diabetes and BP. Saw hand surgery on 12/11 for the left hand; per him they found the same condition in both hands and went over options (needle release, injection, open surgery). He chose to hold off. Hands are a bother with fine work but he manages. Still no letter from them.\nMeds: metformin 1000 BID, lisinopril 10 qAM, atorvastatin 40, all in the organizer, no misses he knows of. Alcohol about the same; not ready for medicine or counseling.\nNo chest pain, no dyspnea, no foot sores, no low-sugar spells.\n\nO: BP 141/83, otherwise vitals per flowsheet. Heart regular, lungs clear, no edema. Both palms with cords; neither hand lies flat on the table. Sensation intact. Feet: intact skin, monofilament normal, pulses present.\n\nA/P\n1. Dupuytren contracture, now both hands per hand surgery (patient report); problem updated. Records request sent to hand surgery for the 12/11 note. He knows he can go back to them when ready.\n2. T2DM: A1c, BMP, urine albumin and lipids drawn this morning; will message.\n3. HTN: a little high today after readings at goal at prior visits; no change, recheck at the June visit.\n4. HLD: atorvastatin 40.\n5. Medication adherence: steady with the organizer.\n6. AUD: counseled, declines treatment.\nAWV due June; RTC then."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "portal_message",
+          "start": "2025-04-15T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2025-04-15T12:10",
+              "body": "Francis, yesterday's labs: A1c 7.0, in the same range as the last two years. Kidney function normal, no protein in the urine. Cholesterol about where it has been. No medication changes. Please book your wellness visit for June."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T15:30",
+          "orders": [
+            {"id": "hand-referral", "action": "done", "date": "2025-05-20T15:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Consultation",
+              "author": "hand surgery",
+              "date": "2025-05-20T15:30",
+              "body": "Outside hand surgery consultation. Visit date: 12/11/2024. Released on request of the patient's primary physician.\n\nReferral reason: left hand contracture.\n\nHistory: 70-year-old man with type 2 diabetes and hypertension, retired from construction. Over the past several years the left hand has stiffened and several fingers no longer extend fully, now getting in the way of daily tasks. He compares it to the right hand, which orthopedics diagnosed as Dupuytren disease in December 2022. No trauma, no infection, no numbness or tingling.\n\nMedications: metformin, lisinopril, atorvastatin.\nAllergies: NKDA.\nFamily history: father diabetes, mother hypertension, paternal grandfather MI at 72.\nSocial: retired. Daily heavy alcohol use for many years, which is his strongest risk factor for this disease. Never smoker.\n\nExam: left palm with palpable longitudinal cords and incomplete active and passive extension of several fingers; right palm with established cords. Skin intact. Sensation intact to light touch throughout both hands. Radial pulses palpable, brisk capillary refill.\n\nImpression: Dupuytren contracture, bilateral, left newly symptomatic.\n\nPlan: reviewed percutaneous needle aponeurotomy, collagenase injection and open fasciectomy, with recurrence and recovery for each. He prefers to wait. Return when function worsens or for a decision on treatment. Encouraged to cut down on alcohol."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside Note Filed",
+              "author": "PCP",
+              "date": "2025-05-21T08:05",
+              "body": "Hand surgery note from 12/11/2024 received and reviewed. Bilateral Dupuytren, he chose observation. Nothing further for us."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "pharmacy",
+          "start": "2025-08-12T10:50",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Lisinopril Renewal",
+              "author": "MA",
+              "date": "2025-08-12T10:50",
+              "body": "Renewal request for lisinopril 10 mg. Last seen 4/14; AWV not booked. PCP approved 90 days. Left voicemail asking him to schedule his wellness and diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Overdue Visit",
+              "author": "front desk",
+              "date": "2025-10-21T09:15",
+              "body": "Hello Mr. Sawyer, our records show you are due for your annual wellness visit and diabetes check, and your fall vaccines. Reply here or call and we'll find a time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Overdue Visit",
+              "author": "patient",
+              "date": "2025-10-22T20:31",
+              "body": "Will call after the holidays. Got my flu shot at the drugstore already."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T17:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand Procedure",
+              "author": "patient",
+              "date": "2026-02-10T17:02",
+              "body": "Right hand finally got so I couldn't hold a coffee cup right so I went back to the hand doctor before Christmas. They did the needle thing on the right palm in January. Fingers go straight a lot better now. Wear a splint at night. Did they send you anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Hand Procedure",
+              "author": "MA",
+              "date": "2026-02-11T08:40",
+              "body": "Glad it helped, Francis. We have not received anything from them. I've sent a request for the visit and procedure notes. Also a reminder that you are overdue for a visit with the doctor; reply with a good day and we'll book it."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "outside_records",
+          "start": "2026-03-09T14:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Follow-up",
+              "author": "hand surgery",
+              "date": "2026-03-09T14:45",
+              "body": "Outside hand surgery follow-up. Visit date: 12/22/2025.\n\nHistory: 71-year-old man returning for the right hand. Dupuytren disease of the right hand was first diagnosed by orthopedics in 2022 and the left hand was evaluated here in 2024. Over the past several years the right hand has grown stiffer and some fingers will not straighten; this now interferes with daily activities such as holding a cup and gripping tools. No recent injury, redness or acute pain.\n\nMedications: metformin, lisinopril, atorvastatin.\nAllergies: NKDA.\nSocial: long history of heavy alcohol use; retired from construction.\n\nExam: right palm with a firm palpable cord and loss of full finger extension; tabletop test positive. Left palm cords unchanged. Sensation intact, radial pulses palpable both sides.\n\nAssessment: progressive Dupuytren contracture, right hand, now functionally limiting.\n\nPlan: options reviewed again. He chose percutaneous needle aponeurotomy of the right palmar cord, scheduled in clinic for January. Left hand to be revisited later."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Needle Aponeurotomy, Right Palm",
+              "author": "hand surgery",
+              "date": "2026-03-09T14:46",
+              "body": "Outside office procedure. Date: 01/26/2026.\n\nProcedure: percutaneous needle aponeurotomy, right palmar cord.\nIndication: Dupuytren contracture, right hand, limiting function.\nAnesthesia: local infiltration.\nAllergies: NKDA.\n\nAfter consent and sterile prep, the cord was divided at several palmar portals with a small-gauge needle, followed by gentle manipulation into extension. Finger extension markedly improved on the table. Skin intact without tears. Sensation and capillary refill intact at the end. Small dressings applied.\n\nComplications: none.\nPlan: night extension splint for several months, home stretching, follow-up in hand clinic in 6 weeks."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside Notes Filed",
+              "author": "PCP",
+              "date": "2026-03-10T08:15",
+              "body": "Hand surgery notes from 12/22/2025 and 1/26/2026 received and read: needle release of the right palm, went well. He is still overdue to be seen here; front desk to reach out."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T11:35",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Atorvastatin Renewal",
+              "author": "MA",
+              "date": "2026-05-19T11:35",
+              "body": "Electronic renewal request for atorvastatin 40 mg. Last office visit 4/14/2025, last labs then. PCP approved a 30-day supply only; needs a visit and labs before more refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach Call",
+              "author": "front desk",
+              "date": "2026-07-14T15:20",
+              "body": "Called to set up the overdue diabetes visit and wellness exam; no answer, voicemail left with our number. Second attempt this month. Portal reminder sent as well."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

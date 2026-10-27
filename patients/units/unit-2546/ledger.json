@@ -2,11 +2,8 @@
   "unit": "unit-2546",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002546/2018-09-11a: allergen \"Tree pollen\" not in catalog (text only)",
     "MRN00002546/2018-09-11a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
-    "MRN00002546/2018-09-11a: allergen \"Grass pollen\" not in catalog (text only)",
     "MRN00002546/2018-09-11a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
-    "MRN00002546/2020-06-23a: allergen \"Weed pollen\" not in catalog (text only)",
     "MRN00002546/2020-06-23a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
     "left text-only (not verified): drug \"allergenic extract, grass, tree and weed pollen mix, injectable solution\"",
     "left text-only (not verified): drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
@@ -91,6 +88,8 @@
           "allergies": [
             {
               "substance": "Tree pollen",
+              "snomed": "782576004",
+              "category": "environment",
               "reaction": "Rhinoconjunctivitis",
               "severity": "mild",
               "criticality": "low",
@@ -98,6 +97,8 @@
             },
             {
               "substance": "Grass pollen",
+              "snomed": "256277009",
+              "category": "environment",
               "reaction": "Rhinoconjunctivitis",
               "severity": "mild",
               "criticality": "low",
@@ -782,6 +783,8 @@
           "allergies": [
             {
               "substance": "Weed pollen",
+              "snomed": "419604006",
+              "category": "environment",
               "reaction": "Rhinoconjunctivitis",
               "severity": "mild",
               "criticality": "low",
@@ -3461,6 +3464,23 @@
         "code": "G71.3",
         "display": "Mitochondrial myopathy, not elsewhere classified",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "allergens": {
+      "Grass pollen": {
+        "code": "256277009",
+        "display": "Grass pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Tree pollen": {
+        "code": "782576004",
+        "display": "Tree pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Weed pollen": {
+        "code": "419604006",
+        "display": "Weed pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

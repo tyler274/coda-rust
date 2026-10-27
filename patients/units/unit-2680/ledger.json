@@ -1,10 +1,7 @@
 {
   "unit": "unit-2680",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002680/2025-09-10a: allergen \"Tree and grass pollens (seasonal)\" not in catalog (text only)",
-    "MRN00002680/2025-09-10a: allergen \"Dust mites\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002680",
@@ -78,12 +75,16 @@
           "allergies": [
             {
               "substance": "Tree and grass pollens (seasonal)",
+              "snomed": "256259004",
+              "category": "environment",
               "severity": "mild",
               "criticality": "low",
               "type": "allergy"
             },
             {
               "substance": "Dust mites",
+              "snomed": "260147004",
+              "category": "environment",
               "severity": "mild",
               "criticality": "low",
               "type": "allergy"
@@ -435,5 +436,18 @@
       ]
     }
   ],
-  "terms": {}
+  "terms": {
+    "allergens": {
+      "Dust mites": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Tree and grass pollens (seasonal)": {
+        "code": "256259004",
+        "display": "Pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
 }

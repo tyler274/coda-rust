@@ -2,11 +2,10 @@
   "unit": "unit-2753",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002753/2020-07-14a: allergen \"NSAIDs\" not in catalog (text only)",
     "MRN00002753/2020-07-14a: reaction \"GI intolerance; ineffective\" not in catalog (text only)",
-    "MRN00002753/2020-07-14a: allergen \"Gabapentin\" not in catalog (text only)",
     "MRN00002753/2020-07-14a: reaction \"Ineffective\" not in catalog (text only)",
-    "MRN00002753/2023-10-29a: procedure \"Arthroscopy of right knee\" not in catalog (text only, no CPT)",
+    "MRN00002753/2021-04-20a: referral to \"Pain Management\" names no catalog specialty",
+    "MRN00002753/2023-10-29a: procedure \"Arthroscopy of right knee\" not in catalog and has no snomed (text only)",
     "left text-only (not verified): drug \"multivitamin Oral Tablet\"",
     "left text-only (not verified): drug \"parenteral nutrition\""
   ],
@@ -182,6 +181,8 @@
           "allergies": [
             {
               "substance": "NSAIDs",
+              "snomed": "372665008",
+              "category": "medication",
               "reaction": "GI intolerance; ineffective",
               "severity": "mild",
               "criticality": "low",
@@ -189,6 +190,8 @@
             },
             {
               "substance": "Gabapentin",
+              "snomed": "386845007",
+              "category": "medication",
               "reaction": "Ineffective",
               "severity": "mild",
               "criticality": "low",
@@ -5788,6 +5791,18 @@
         "code": "11523-8",
         "display": "EEG study",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Gabapentin": {
+        "code": "386845007",
+        "display": "Gabapentin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "NSAIDs": {
+        "code": "372665008",
+        "display": "Non-steroidal anti-inflammatory agent",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

@@ -1,0 +1,2722 @@
+{
+  "unit": "unit-2205",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002205/2024-03-25a: lab order \"Hemoglobin A1c and basic metabolic panel\" names no one catalog lab, panel, study or procedure",
+    "MRN00002205/2024-11-18a: referral to \"Hand Surgery\" names no catalog specialty"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002205",
+      "given": "Francis",
+      "family": "Sawyer",
+      "birth_date": "1954-01-19",
+      "address_line": "27 Damon Pond Rd",
+      "phone": "+1-978-555-0177",
+      "email": "francis.sawyer@example.test",
+      "marital_status": "single",
+      "summary": "Retired construction worker with type 2 diabetes, hypertension, hyperlipidemia and decades of heavy drinking who joined in 2020. A confusing lisinopril renewal in 2021 leads to a noncompliance label, and Dupuytren contracture appears in the right hand in 2022 and the left in 2024; last seen April 2025.",
+      "events": [
+        {
+          "id": "2020-08-03a",
+          "kind": "telephone",
+          "start": "2020-08-03T11:05",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2020-08-03T11:05",
+              "author": "front desk",
+              "body": "Mr. Sawyer phoned about moving his primary care here; previous office is in another town and he wants someone closer to Chesterfield. Medicare, no secondary. Reviewed membership terms, he is fine with them. Takes three daily pills for sugar, pressure and cholesterol. First appointment set for Mon 8/24 at 9:00, asked him to come fasting and bring all bottles. Release of records signed by email and sent to the prior primary office today."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "establish_care",
+          "start": "2020-08-24T09:00",
+          "end": "2020-08-24T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; diabetes, hypertension, cholesterol",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history"
+            },
+            {
+              "label": "Alcohol use disorder, chronic",
+              "action": "history",
+              "icd10": "F10.20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 66,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 93.8,
+            "height_cm": 180.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-24T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-24T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 176
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-24T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-24T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Heavy daily use for decades, about 6 to 8 drinks per day"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction worker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-08-24T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-08-24T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "date": "2020-08-24T10:05",
+              "author": "PCP",
+              "body": "66 y/o man transferring care from a primary office about forty minutes away. Retired from construction (framing, then site work) a few years ago, mostly home now.\n\nCarries type 2 diabetes, hypertension and high cholesterol, all managed by the previous office for years; he could not say when the sugar was first found. Brought his bottles: metformin 1000 mg twice a day, lisinopril 10 mg daily, atorvastatin 40 mg daily. Says he rarely misses. No home glucose meter in use. No chest pain, shortness of breath, leg pain on walking, foot sores or vision change.\n\nAlcohol: he is straightforward about it. Drinks every day and has for decades, usually six to eight beers or mixed drinks across the afternoon and evening. Does not think it causes him trouble, never had withdrawal he can name, no DUIs. Never smoked. No other substances.\n\nPSH: none. Allergies: no known drug allergies.\nFamily: father had type 2 diabetes, mother had high blood pressure, paternal grandfather had a heart attack at 72.\n\nExam: well appearing, talkative. BP at goal today, see vitals. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, no hepatomegaly, nontender. Extremities warm, no edema. Feet: skin intact, no calluses or ulcers, monofilament sensation intact both feet, DP and PT pulses 2+. Hands unremarkable.\n\nA/P\n1. Type 2 diabetes, on metformin alone. A1c, CMP and urine albumin/creatinine today. Will get prior office records including last eye exam.\n2. Hypertension, controlled on lisinopril 10.\n3. Hyperlipidemia on atorvastatin 40. Lipids today.\n4. Alcohol use disorder, long standing, heavy daily use. AUDIT-C 12. Talked plainly about what that amount does to sugar, pressure, liver and falls. Offered naltrexone and a referral to an outpatient counselor; he would rather not right now, says he'll think about cutting back on weekdays. Door left open.\n5. Health maintenance: hep C and HIV screening today (one-time). Flu shot in October. Colonoscopy history pending prior records.\n\nFollow up 3 to 4 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              130,
+              78
+            ],
+            "weight_kg": 93.2,
+            "height_cm": 180.0,
+            "labs": {
+              "Glucose": 140,
+              "Hemoglobin A1c": 7.0,
+              "High Density Lipoprotein": 50,
+              "Low Density Lipoprotein": 92,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Triglycerides": 170
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "portal_message",
+          "start": "2020-08-26T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2020-08-26T16:40",
+              "author": "PCP",
+              "body": "Hi Mr. Sawyer, your labs from Monday are back. A1c is 7.2, which is close to where we want it for you. Kidney and liver tests are normal, blood counts normal, no protein in the urine. Cholesterol numbers are reasonable on the atorvastatin. Hepatitis C and HIV screens were negative. No changes for now. See you in the winter."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-10a",
+          "kind": "outside_records",
+          "start": "2020-09-10T13:20",
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2019-05-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2020-09-10T13:20",
+              "author": "front desk",
+              "body": "Received from patient's prior primary practice: 46 pages, covering 2014 to July 2020. Abstracted for the chart:\n- Problems carried there: type 2 diabetes, hypertension, hyperlipidemia, alcohol use.\n- Medications: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg daily. No allergies listed.\n- Colonoscopy 2017: normal, no polyps, ten-year interval recommended.\n- Pneumococcal conjugate (PCV13) given May 2019.\n- Optometry diabetic eye exam June 2019: no diabetic retinopathy..\nFiled to media. PCP notified."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              114,
+              83
+            ],
+            "hr": 78
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T14:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-06T14:40"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2020-10-06T14:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2020-10-06T14:50",
+              "author": "RN",
+              "body": "In for vaccines. No fever or illness today. High-dose flu to L deltoid, PPSV23 to R deltoid (PCV13 was given at his last office in 2019 per records, so this completes the pneumococcal series). VIS given. Waited 15 min, no reaction. Left the office walking without difficulty."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T10:15",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Metformin Renewal",
+              "date": "2020-12-08T10:15",
+              "author": "MA",
+              "body": "Pharmacy sent renewal request for metformin 1000 mg, last filled by prior office. Seen here 8/24, A1c 7.2. Routed to PCP, approved 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "office_visit",
+          "start": "2021-02-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              137,
+              82
+            ],
+            "hr": 78,
+            "spo2": 97,
+            "weight_kg": 93.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-02-22T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-02-22T10:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 136
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-02-22T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2021-02-22T11:10",
+              "author": "PCP",
+              "body": "Diabetes and BP recheck.\nWinter has been quiet, mostly indoors. Takes his three pills, keeps them on the kitchen counter. Got his first COVID shot at the regional vaccine site last month, second dose this week. Drinking unchanged, maybe a bit more with being cooped up; still not interested in medication or counseling for it.\nNo polyuria, no foot numbness, no chest pain.\n\nExam: NAD. Heart RRR. Lungs clear. No edema. Feet intact.\n\nA1c 7.5 today; BMP otherwise unremarkable.\n\nA/P: T2DM: A1c 7.5, up from the fall, likely the housebound winter; no change yet, recheck with summer labs. HTN at goal on lisinopril 10. Lipids due in summer. AUD: brief counseling again, he heard it. Return about 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-03a",
+          "kind": "portal_message",
+          "start": "2021-03-03T19:22",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-01-27T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-02-24T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine Card",
+              "date": "2021-03-03T19:22",
+              "author": "patient",
+              "body": "Nurse asked me to send the card. Picture attached, both Moderna shots done, Jan 27 and Feb 24. Second one knocked me flat for a day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Vaccine Card",
+              "date": "2021-03-04T08:50",
+              "author": "MA",
+              "body": "Thanks Francis, both doses are now in your record. A rough day after the second one is common. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "office_visit",
+          "start": "2021-06-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 93.6
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-06-21T08:05",
+              "resulted": "2021-06-21T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-21T08:05",
+              "resulted": "2021-06-21T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "value": 138
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-21T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2021-06-21T11:00",
+              "author": "PCP",
+              "body": "S: Here for his regular check. Nothing new; feels the same as always. Says he has not missed his metformin, lisinopril or atorvastatin. He read something online about heart attacks in diabetics and wants to know if there is anything more he should be doing to protect his heart, given his grandfather's MI.\n\nO: BP 132/78. Remainder of vitals in flowsheet. Comfortable. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Feet without lesions.\nFasting labs drawn this morning: A1c 6.8%, fasting glucose 138. Total cholesterol 190, LDL 90, HDL 55, triglycerides 150.\n\nA/P\n1. Cardiovascular risk: went through his picture with him. Pressure is where we want it, LDL is 90 on atorvastatin, sugar is in range. The thing most within his reach is the alcohol; six to eight drinks a day pushes up pressure and triglycerides and adds calories. Also talked about a walk most days and less takeout. He wanted a pill answer and was a little disappointed, but agreed to try cutting back. No medication changes today.\n2. T2DM: A1c 6.8, continue metformin 1000 BID.\n3. HTN: controlled, lisinopril 10 daily.\n4. HLD: atorvastatin 40 daily.\n5. AUD: as above. Still declines naltrexone or counseling.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              78
+            ],
+            "labs": {
+              "Fasting Glucose": 138,
+              "Hemoglobin A1c": 6.8,
+              "High Density Lipoprotein": 55,
+              "Low Density Lipoprotein": 90,
+              "Total Cholesterol": 190,
+              "Triglycerides": 150
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-07a",
+          "kind": "telephone",
+          "start": "2021-09-07T16:10",
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Reordered to new pharmacy"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take as directed",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication Renewal, Covering",
+              "date": "2021-09-07T16:10",
+              "author": "covering physician",
+              "body": "Pt texted the on-call line over the holiday weekend: switched pharmacies, out of his blood pressure pill. Covering for PCP. Lisinopril 10 mg sent to the new pharmacy, 90 tabs. PCP visit already on the books next Monday."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-13a",
+          "kind": "office_visit",
+          "start": "2021-09-13T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "conditions": [
+            {
+              "label": "Medication noncompliance",
+              "action": "diagnosed",
+              "onset": "2021-09-13",
+              "icd10": "Z91.148"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Order rewritten with explicit sig"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily in the morning",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              158,
+              92
+            ],
+            "hr": 82,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 93.4
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-13T08:15",
+              "resulted": "2021-09-13T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-09-13T08:15",
+              "resulted": "2021-09-13T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-13T08:15",
+              "resulted": "2021-09-13T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-13T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-13T10:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-09-13T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2021-09-13T10:30",
+              "author": "PCP",
+              "body": "S: 67 y/o here for his three-month check. Tells me he is taking everything. Then, when we got to the pressure pill, he admitted he is mixed up: last week someone other than me sent a new blood pressure prescription to his new pharmacy, the label just says take as directed, and the tablets look nothing like his old ones. He can't remember what he was told about how often. He thinks some days he took one of each bottle and other days neither. Denies chest pain, palpitations or lightheadedness.\n\nO: BP 158/92, rechecked similar. Other vitals normal. Exam unremarkable: heart regular, lungs clear, no edema.\nLabs this morning: A1c 7.2%. Creatinine 1.1. TC 190, LDL 100, HDL 40, TG 250.\n\nA/P\n1. Medication noncompliance: not intentional, a labeling and bottle mix-up. The new bottle is the same drug and dose he has always taken, lisinopril 10 mg. Order rewritten with a plain once-a-morning sig and the old bottle is to come off the counter. Wrote out his three medicines on a card. Weekly pill organizer suggested and he'll buy one.\n2. HTN: today's number goes with the missed and doubled doses. No change in dose. Nurse BP check in 4 weeks.\n3. T2DM: A1c up a little from 6.8; HDL down and triglycerides up since June. Likely the irregular month and the drinking. Continue metformin.\n4. HLD: continue atorvastatin 40.\n5. AUD: no change in intake. Counseled.\n6. High-dose flu vaccine today.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              92
+            ],
+            "labs": {
+              "Creatinine": 1.1,
+              "Hemoglobin A1c": 7.2,
+              "High Density Lipoprotein": 40,
+              "Low Density Lipoprotein": 100,
+              "Total Cholesterol": 190,
+              "Triglycerides": 250
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "portal_message",
+          "start": "2021-09-14T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pill Bottles",
+              "date": "2021-09-14T08:12",
+              "author": "patient",
+              "body": "Old lisinopril bottle is in the trash. New one only, one in the morning. Bought the box with the days on it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Pill Bottles",
+              "date": "2021-09-14T09:30",
+              "author": "RN",
+              "body": "Perfect. Bring the organizer to your BP check on Oct 12 and we'll look at it together."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure recheck",
+          "vitals": {
+            "bp": [
+              133,
+              80
+            ],
+            "hr": 80
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T14:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-10-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: BP Check",
+              "date": "2021-10-12T14:10",
+              "author": "RN",
+              "body": "BP recheck after the lisinopril label mix-up. Brought his organizer, all compartments empty through yesterday, one tablet in each. Pressure at goal on two readings (see flowsheet). No dizziness. Shingrix dose 1 given R deltoid, dose 2 due in 2 to 6 months. Routed to PCP, who agrees no change."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2021-11-19a",
+          "kind": "pharmacy",
+          "start": "2021-11-19T12:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-11-17T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Vaccine Notification",
+              "date": "2021-11-19T12:30",
+              "author": "MA",
+              "body": "Community pharmacy notified us of a Moderna COVID booster given 11/17. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "pharmacy",
+          "start": "2022-01-18T09:05",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Atorvastatin Renewal",
+              "date": "2022-01-18T09:05",
+              "author": "MA",
+              "body": "Electronic renewal for atorvastatin 40 mg from his current pharmacy. Last lipids September. Approved by PCP for 90 days x3."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "office_visit",
+          "start": "2022-03-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              83
+            ],
+            "hr": 88,
+            "spo2": 97,
+            "weight_kg": 92.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-14T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-14T10:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 138
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-14T11:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-14T11:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-14T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2022-03-14T11:40",
+              "author": "PCP",
+              "body": "Diabetes / BP f/u. Missed the December slot (snowed in), rebooked today.\nUsing the pill box every day since the fall, no more confusion about the lisinopril. Drinking about the same, he says maybe a few fewer on weekdays. No hypoglycemia symptoms, no foot problems.\nExam: pleasant, NAD. RRR, lungs clear, no edema. Feet: intact skin, sensation intact.\nA1c 7.2 today; BMP otherwise normal.\nA/P: T2DM stable on metformin. HTN controlled since the label fix. Med adherence: working with the organizer, keep it on the problem list for now. AUD: counseled, declines treatment. Shingrix #2 today, series complete. Wellness visit in June with fasting labs."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-22a",
+          "kind": "annual_physical",
+          "start": "2022-06-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              134,
+              75
+            ],
+            "hr": 76,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 93.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-22T08:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 135
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.13
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-22T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 200
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 136
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-22T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-22T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2022-06-22T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-06-22T09:30",
+              "author": "PCP",
+              "body": "Medicare AWV.\nHealth risk assessment reviewed with him. Independent in all ADLs and IADLs, drives, at home in Chesterfield. No falls this year. Hearing and vision adequate by his report. Mood fine; PHQ-2 negative. AUDIT-C 12. Uses a seatbelt; smoke detectors in the house.\nAdvance directive: none; he wants to think about who would be his health care proxy. Form given.\n\nMeds reviewed bottle by bottle: metformin 1000 BID, lisinopril 10 daily, atorvastatin 40 daily. All in the organizer.\n\nExam: BP and weight in flowsheet. Alert, oriented. Heart regular. Lungs clear. Abdomen soft, liver not enlarged. Skin unremarkable. Feet: monofilament intact, pulses palpable. Gait steady.\n\nScreening: colonoscopy 2017 normal, next 2027. Hep C and HIV done 2020. Pneumococcal series complete. Shingrix complete. Flu and COVID in the fall.\n\nAlcohol: still 6 to 8 a day. Asked again about naltrexone, explained it can blunt the urge and is taken once a day; he says not yet. Offered a counseling referral, also not yet.\n\nPlan: fasting labs drawn. Eye exam with his optometrist this summer, send the report. Return in about 5 months for diabetes."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1,
+              "High Density Lipoprotein": 46,
+              "Low Density Lipoprotein": 96,
+              "Microalbumin/Creatinine Ratio": 14,
+              "Triglycerides": 190
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-23a",
+          "kind": "portal_message",
+          "start": "2022-06-23T15:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results From Your Wellness Visit",
+              "date": "2022-06-23T15:05",
+              "author": "PCP",
+              "body": "Francis, your bloodwork looks steady. A1c 6.9. Liver and kidney numbers normal, blood counts normal, urine protein normal. Cholesterol about where it was. Same medicines, same doses."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-27a",
+          "kind": "outside_records",
+          "start": "2022-07-27T10:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2022-07-27T10:40",
+              "author": "optometry",
+              "body": "Dilated eye examination, performed 07/19/2022.\nPatient: Francis Sawyer. History: type 2 diabetes.\nCorrected visual acuity good each eye. Pupils equal and reactive. Anterior segment normal. Dilated fundus: clear media, healthy optic nerves, no hemorrhages, exudates or neovascularization either eye.\nImpression: no diabetic retinopathy.\nRecommend repeat in 12 months.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              134,
+              80
+            ],
+            "hr": 84
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T15:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-11T15:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T15:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2022-10-11T15:30",
+              "author": "RN",
+              "body": "High-dose flu L arm and bivalent COVID R arm. Feels well, afebrile. Observed 15 minutes, fine. Reminded him of his diabetes visit next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-11-28a",
+          "kind": "office_visit",
+          "start": "2022-11-28T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; right hand stiffness",
+          "vitals": {
+            "bp": [
+              144,
+              87
+            ],
+            "hr": 88,
+            "spo2": 97,
+            "weight_kg": 93.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-11-28T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-28T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "Progressive right hand stiffness, cannot straighten fingers"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2022-11-28T15:00",
+              "author": "PCP",
+              "body": "Diabetes check, plus a new complaint.\nRight hand: for a few years has been getting stiffer, and now some fingers will not straighten all the way. Hard to grip a hammer or get his hand into a glove. No injury he remembers. No pain to speak of, no numbness.\nOtherwise steady. Taking his meds from the organizer. Drinking unchanged.\n\nExam: vitals in flowsheet. Heart and lungs normal. Right hand: firm thickening across the palm, fingers lack full extension. Grip reasonable. Sensation intact in all fingertips, radial pulse normal.\n\nA1c 7.2.\n\nA/P\n1. Right hand: looks like a palmar fascia problem rather than a tendon or nerve issue. Orthopedics referral placed.\n2. T2DM: A1c 7.2, continue metformin.\n3. HTN, HLD: continue.\n4. AUD: counseled briefly.\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "telephone",
+          "start": "2023-01-10T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request: Orthopedics",
+              "date": "2023-01-10T10:30",
+              "author": "front desk",
+              "body": "Pt called to update a phone number on file and mentioned he saw the orthopedic doctor right before Christmas. He says they told him what it was and to keep an eye on it. No consult letter here yet. Request faxed to the orthopedic office."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "outside_records",
+          "start": "2023-02-13T11:50",
+          "conditions": [
+            {
+              "label": "Dupuytren contracture",
+              "action": "diagnosed",
+              "onset": "2022-12-23",
+              "note": "Right hand, orthopedics 12/23/2022",
+              "icd10": "M72.0"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2023-02-13T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics Consultation",
+              "date": "2023-02-13T11:50",
+              "author": "orthopedics",
+              "body": "Outside orthopedics consultation. Date of service: 12/23/2022. Sent on request.\n\nReason for referral: right hand stiffness.\n\nHPI: 68-year-old man, retired from construction, referred by his primary physician. He was seen there for diabetes care and for a period of mixed-up blood pressure dosing. Over several years the right hand has grown steadily stiffer and some fingers no longer straighten, so gripping tools and everyday jobs have become harder. Describes the hand as tight. Once a finger curls down it stays down; no catching or popping, and the stiffness does not come and go. No injury, redness or acute pain. No numbness or tingling.\n\nPMH: type 2 diabetes, hypertension, hyperlipidemia, long-standing heavy alcohol use.\nMedications: metformin 1000 mg twice daily, lisinopril 10 mg daily, atorvastatin 40 mg daily.\nAllergies: NKDA.\nSocial: retired, mostly at home. Never smoker.\nFamily: father diabetes, mother hypertension, paternal grandfather MI at 72.\n\nExam, right hand: palpable longitudinal cords in the palm; fingers cannot be brought fully straight. No triggering. No skin breakdown. Sensation intact to light touch in all digits. Radial pulse palpable, capillary refill brisk.\n\nAssessment: Dupuytren contracture, right hand.\n\nPlan: discussed the nature of the condition, that it tends to progress slowly and is linked with diabetes and alcohol. No intervention now. He can check at home by trying to lay the hand flat on a table; if it no longer lies flat or function worsens, referral to hand surgery for treatment options. Follow up as needed.\n\nCopy to primary care physician."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside Letter Reviewed",
+              "date": "2023-02-14T08:20",
+              "author": "PCP",
+              "body": "Ortho letter reviewed. Dupuytren contracture of the right hand, observation for now. Added to problem list. Will check the tabletop test at visits."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "office_visit",
+          "start": "2023-03-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              79
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 94.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-20T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-20T09:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 142
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.09
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-20T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2023-03-20T09:55",
+              "author": "PCP",
+              "body": "F/u T2DM, HTN.\nOrtho told him the same as their letter: Dupuytren's, watch it. Right hand about the same as November. Can still get the palm nearly flat on the desk here.\nTaking meds daily. A few more drinks over the winter than he'd like.\nExam: vitals OK. Heart, lungs normal. R palm cords as before. Feet fine.\nA1c 7.1, BMP otherwise normal.\nA/P: T2DM A1c 7.1, about the same; no med change, recheck at AWV. HTN controlled. Dupuytren R hand, observe. AUD: counseled again. RTC June for AWV."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-26a",
+          "kind": "annual_physical",
+          "start": "2023-06-26T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              130,
+              74
+            ],
+            "hr": 80,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 93.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-26T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.11
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-26T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 41
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 215
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 139
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-26T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-26T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-06-26T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-06-26T09:35",
+              "author": "PCP",
+              "body": "Subsequent AWV.\nHRA reviewed: independent, no falls, drives. PHQ-2 negative. AUDIT-C 11, slightly down; says he has stopped drinking before noon. Never smoker.\nHealth care proxy form: still not filled out; he is still deciding whom to name.\nMeds: metformin 1000 BID, lisinopril 10, atorvastatin 40. Organizer in use.\nExam: flowsheet vitals. Alert. Heart regular without murmur. Lungs clear. Abdomen soft, no liver edge. Right palm cords unchanged. Feet: sensation and pulses normal.\nPrevention: colonoscopy due 2027. Vaccines up to date except fall flu/COVID.\nAlcohol: acknowledged the small step; naltrexone offered again, declined.\nPlan: labs today. Optometry exam due, he has not booked it yet; reminded. Diabetes visit in September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1,
+              "High Density Lipoprotein": 44,
+              "Low Density Lipoprotein": 98,
+              "Microalbumin/Creatinine Ratio": 12,
+              "Triglycerides": 210
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "office_visit",
+          "start": "2023-09-18T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              134,
+              79
+            ],
+            "hr": 91
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-04T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-04T13:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-04T13:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2023-10-04T13:50",
+              "author": "RN",
+              "body": "Flu (high dose) and 2023-24 COVID given. He apologized for missing his September appointment, forgot it was a Monday. Rebooked with PCP for 10/23. No reaction after 15 min."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-10-23a",
+          "kind": "office_visit",
+          "start": "2023-10-23T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 77,
+            "spo2": 99,
+            "weight_kg": 93.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-23T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-10-23T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2023-10-23T15:30",
+              "author": "PCP",
+              "body": "Rescheduled diabetes visit.\nFeels fine. Organizer in use. Still drinking most evenings. Never got to the eye doctor this summer; says he will call them.\nR hand: no real change; can just about flatten it on the table.\nExam: vitals fine. Heart, lungs clear. No edema.\nA1c 7.1.\nA/P: T2DM controlled, metformin unchanged. HTN controlled. HLD on atorvastatin. Dupuytren R, observe. AUD counseled. Eye exam reminder. RTC 4 to 5 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-25a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-25T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-03-25T11:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2024-03",
+              "action": "placed",
+              "order": "Hemoglobin A1c and basic metabolic panel",
+              "category": "lab",
+              "reason": "Type 2 diabetes monitoring"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-03-25T11:55",
+              "author": "PCP",
+              "body": "Video from his kitchen; roads were bad and he asked not to drive in. Identity verified by birth date.\nNo complaints. Meds from the organizer daily, refills current. Drinking: about the same, six or so most nights. Right hand unchanged by his account. Has not checked his own pressure, has no cuff.\nNo exam beyond appearance: comfortable, speech normal.\nA/P: T2DM, HTN, HLD stable by history. A1c and BMP ordered, he'll stop at the lab this week. AUD: counseled. AWV in June."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "lab_only",
+          "start": "2024-03-28T08:10",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-28T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-28T08:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 138
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2024-03",
+              "action": "done",
+              "date": "2024-03-28T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Result Note",
+              "date": "2024-03-28T17:20",
+              "author": "PCP",
+              "body": "A1c 7.0, BMP fine. Message sent to pt: no changes."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          }
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "annual_physical",
+          "start": "2024-06-24T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              136,
+              77
+            ],
+            "hr": 86,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 92.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-24T09:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 143
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.09
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-24T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 177
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-24T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-24T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-06-24T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-06-24T10:05",
+              "author": "PCP",
+              "body": "AWV, 70 y/o.\nHRA: independent, no falls, no memory complaints, driving. PHQ-2 0. AUDIT-C 11.\nProxy form: not done; reviewed again why it matters.\nMeds: metformin 1000 BID, lisinopril 10 daily, atorvastatin 40 daily. No OTCs.\nExam: vitals per flowsheet. Alert, conversational. Heart regular. Lungs clear. Abdomen benign. Right palm with the known cords; left palm soft today. Feet normal on monofilament, pulses present.\nPrevention: colonoscopy 2027. Flu/COVID this fall. Pneumococcal and shingles complete.\nAlcohol: counseled; again prefers no medicine and no referral.\nPlan: labs. Eye exam overdue since 2022, he promises to book it. Diabetes visit in the fall."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "High Density Lipoprotein": 47,
+              "Low Density Lipoprotein": 93,
+              "Microalbumin/Creatinine Ratio": 15,
+              "Triglycerides": 180
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "outside_records",
+          "start": "2024-07-30T14:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2024-07-30T14:10",
+              "author": "optometry",
+              "body": "Comprehensive dilated exam, 07/23/2024, for diabetes.\nAcuity with correction good both eyes. IOP normal. Lids, conjunctiva and cornea normal. Lens clear for age. Fundus each eye: sharp discs, normal vessels, macula flat, no hemorrhage or exudate.\nAssessment: type 2 diabetes without retinopathy.\nReturn one year.\nAllergies: no known drug allergies."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              143,
+              75
+            ],
+            "hr": 64
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T10:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-09T10:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T10:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2024-10-09T10:40",
+              "author": "RN",
+              "body": "High-dose flu and this season's COVID given, one in each arm. Afebrile, no acute complaints. Observed without incident. Diabetes visit booked for November."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "office_visit",
+          "start": "2024-11-18T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; left hand stiffness",
+          "vitals": {
+            "bp": [
+              134,
+              87
+            ],
+            "hr": 89,
+            "spo2": 98,
+            "weight_kg": 93.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-18T13:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-18T13:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "RSV, unspecified",
+              "date": "2024-09-17T12:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hand-referral",
+              "action": "placed",
+              "order": "Hand surgery referral",
+              "category": "referral",
+              "to": "Hand Surgery",
+              "reason": "Dupuytren contracture; left hand now losing extension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2024-11-18T14:20",
+              "author": "PCP",
+              "body": "Diabetes visit; new issue with the left hand.\nLeft hand has been doing what the right did: stiffer over a long stretch, now several fingers will not go straight, and it gets in his way with buttons, jars and tools. No injury, no numbness. Right hand about the same as before, still a nuisance.\nState registry pull shows an RSV vaccine at a community pharmacy in September that he forgot to mention; entered.\nMeds daily via the organizer. Drinking the same.\n\nExam: vitals OK. Heart, lungs normal. Left palm now with firm cords and fingers short of full extension; right palm unchanged. Sensation intact both hands; radial pulses normal.\nA1c 7.3.\n\nA/P\n1. Dupuytren contracture, now involving the left hand and affecting daily tasks. Ortho had suggested hand surgery if things progressed: referral placed to hand surgery.\n2. T2DM: A1c 7.3, continue metformin.\n3. HTN, HLD: continue lisinopril 10, atorvastatin 40.\n4. AUD: counseled.\nRTC 4 to 5 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T18:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand Doctor",
+              "date": "2025-01-21T18:44",
+              "author": "patient",
+              "body": "Saw the hand surgeon Dec 11. Same thing in both hands now he says. He went over a needle procedure, a shot, or an operation. I said I'd wait and see. Did you get his note?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Hand Doctor",
+              "date": "2025-01-22T07:55",
+              "author": "PCP",
+              "body": "Thanks for the update, Francis. Nothing has come from their office yet. Waiting is a reasonable choice, and you can go back to them whenever the hands bother you more. We'll talk about it at your April visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "pharmacy",
+          "start": "2025-03-04T09:25",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Metformin Renewal",
+              "date": "2025-03-04T09:25",
+              "author": "MA",
+              "body": "Pharmacy renewal request for metformin 1000 mg #180. Seen November, A1c 7.3, visit on the books for April. PCP approved 90 days."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "office_visit",
+          "start": "2025-04-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              141,
+              83
+            ],
+            "hr": 71,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 93.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-14T08:45",
+              "resulted": "2025-04-15T07:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-14T08:45",
+              "resulted": "2025-04-15T07:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 136
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.16
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 67
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-14T08:45",
+              "resulted": "2025-04-15T07:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 43
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 200
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2025-04-14T09:45",
+              "author": "PCP",
+              "body": "S: 71 y/o for diabetes and BP. Saw hand surgery on 12/11 for the left hand; per him they found the same condition in both hands and went over options (needle release, injection, open surgery). He chose to hold off. Hands are a bother with fine work but he manages. Still no letter from them.\nMeds: metformin 1000 BID, lisinopril 10 qAM, atorvastatin 40, all in the organizer, no misses he knows of. Alcohol about the same; not ready for medicine or counseling.\nNo chest pain, no dyspnea, no foot sores, no low-sugar spells.\n\nO: BP 141/83, otherwise vitals per flowsheet. Heart regular, lungs clear, no edema. Both palms with cords; neither hand lies flat on the table. Sensation intact. Feet: intact skin, monofilament normal, pulses present.\n\nA/P\n1. Dupuytren contracture, now both hands per hand surgery (patient report); problem updated. Records request sent to hand surgery for the 12/11 note. He knows he can go back to them when ready.\n2. T2DM: A1c, BMP, urine albumin and lipids drawn this morning; will message.\n3. HTN: a little high today after readings at goal at prior visits; no change, recheck at the June visit.\n4. HLD: atorvastatin 40.\n5. Medication adherence: steady with the organizer.\n6. AUD: counseled, declines treatment.\nAWV due June; RTC then."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2,
+              "High Density Lipoprotein": 45,
+              "Low Density Lipoprotein": 95,
+              "Microalbumin/Creatinine Ratio": 13,
+              "Triglycerides": 200
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "portal_message",
+          "start": "2025-04-15T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2025-04-15T12:10",
+              "author": "PCP",
+              "body": "Francis, yesterday's labs: A1c 7.0, in the same range as the last two years. Kidney function normal, no protein in the urine. Cholesterol about where it has been. No medication changes. Please book your wellness visit for June."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T15:30",
+          "orders": [
+            {
+              "id": "hand-referral",
+              "action": "done",
+              "date": "2025-05-20T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Consultation",
+              "date": "2025-05-20T15:30",
+              "author": "hand surgery",
+              "body": "Outside hand surgery consultation. Visit date: 12/11/2024. Released on request of the patient's primary physician.\n\nReferral reason: left hand contracture.\n\nHistory: 70-year-old man with type 2 diabetes and hypertension, retired from construction. Over the past several years the left hand has stiffened and several fingers no longer extend fully, now getting in the way of daily tasks. He compares it to the right hand, which orthopedics diagnosed as Dupuytren disease in December 2022. No trauma, no infection, no numbness or tingling.\n\nMedications: metformin, lisinopril, atorvastatin.\nAllergies: NKDA.\nFamily history: father diabetes, mother hypertension, paternal grandfather MI at 72.\nSocial: retired. Daily heavy alcohol use for many years, which is his strongest risk factor for this disease. Never smoker.\n\nExam: left palm with palpable longitudinal cords and incomplete active and passive extension of several fingers; right palm with established cords. Skin intact. Sensation intact to light touch throughout both hands. Radial pulses palpable, brisk capillary refill.\n\nImpression: Dupuytren contracture, bilateral, left newly symptomatic.\n\nPlan: reviewed percutaneous needle aponeurotomy, collagenase injection and open fasciectomy, with recurrence and recovery for each. He prefers to wait. Return when function worsens or for a decision on treatment. Encouraged to cut down on alcohol."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside Note Filed",
+              "date": "2025-05-21T08:05",
+              "author": "PCP",
+              "body": "Hand surgery note from 12/11/2024 received and reviewed. Bilateral Dupuytren, he chose observation. Nothing further for us."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "pharmacy",
+          "start": "2025-08-12T10:50",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Lisinopril Renewal",
+              "date": "2025-08-12T10:50",
+              "author": "MA",
+              "body": "Renewal request for lisinopril 10 mg. Last seen 4/14; AWV not booked. PCP approved 90 days. Left voicemail asking him to schedule his wellness and diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Overdue Visit",
+              "date": "2025-10-21T09:15",
+              "author": "front desk",
+              "body": "Hello Mr. Sawyer, our records show you are due for your annual wellness visit and diabetes check, and your fall vaccines. Reply here or call and we'll find a time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Overdue Visit",
+              "date": "2025-10-22T20:31",
+              "author": "patient",
+              "body": "Will call after the holidays. Got my flu shot at the drugstore already."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T17:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand Procedure",
+              "date": "2026-02-10T17:02",
+              "author": "patient",
+              "body": "Right hand finally got so I couldn't hold a coffee cup right so I went back to the hand doctor before Christmas. They did the needle thing on the right palm in January. Fingers go straight a lot better now. Wear a splint at night. Did they send you anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Hand Procedure",
+              "date": "2026-02-11T08:40",
+              "author": "MA",
+              "body": "Glad it helped, Francis. We have not received anything from them. I've sent a request for the visit and procedure notes. Also a reminder that you are overdue for a visit with the doctor; reply with a good day and we'll book it."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "outside_records",
+          "start": "2026-03-09T14:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Follow-up",
+              "date": "2026-03-09T14:45",
+              "author": "hand surgery",
+              "body": "Outside hand surgery follow-up. Visit date: 12/22/2025.\n\nHistory: 71-year-old man returning for the right hand. Dupuytren disease of the right hand was first diagnosed by orthopedics in 2022 and the left hand was evaluated here in 2024. Over the past several years the right hand has grown stiffer and some fingers will not straighten; this now interferes with daily activities such as holding a cup and gripping tools. No recent injury, redness or acute pain.\n\nMedications: metformin, lisinopril, atorvastatin.\nAllergies: NKDA.\nSocial: long history of heavy alcohol use; retired from construction.\n\nExam: right palm with a firm palpable cord and loss of full finger extension; tabletop test positive. Left palm cords unchanged. Sensation intact, radial pulses palpable both sides.\n\nAssessment: progressive Dupuytren contracture, right hand, now functionally limiting.\n\nPlan: options reviewed again. He chose percutaneous needle aponeurotomy of the right palmar cord, scheduled in clinic for January. Left hand to be revisited later."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Needle Aponeurotomy, Right Palm",
+              "date": "2026-03-09T14:46",
+              "author": "hand surgery",
+              "body": "Outside office procedure. Date: 01/26/2026.\n\nProcedure: percutaneous needle aponeurotomy, right palmar cord.\nIndication: Dupuytren contracture, right hand, limiting function.\nAnesthesia: local infiltration.\nAllergies: NKDA.\n\nAfter consent and sterile prep, the cord was divided at several palmar portals with a small-gauge needle, followed by gentle manipulation into extension. Finger extension markedly improved on the table. Skin intact without tears. Sensation and capillary refill intact at the end. Small dressings applied.\n\nComplications: none.\nPlan: night extension splint for several months, home stretching, follow-up in hand clinic in 6 weeks."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside Notes Filed",
+              "date": "2026-03-10T08:15",
+              "author": "PCP",
+              "body": "Hand surgery notes from 12/22/2025 and 1/26/2026 received and read: needle release of the right palm, went well. He is still overdue to be seen here; front desk to reach out."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T11:35",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Atorvastatin Renewal",
+              "date": "2026-05-19T11:35",
+              "author": "MA",
+              "body": "Electronic renewal request for atorvastatin 40 mg. Last office visit 4/14/2025, last labs then. PCP approved a 30-day supply only; needs a visit and labs before more refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach Call",
+              "date": "2026-07-14T15:20",
+              "author": "front desk",
+              "body": "Called to set up the overdue diabetes visit and wellness exam; no answer, voicemail left with our number. Second attempt this month. Portal reminder sent as well."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Alcohol use disorder, chronic|F10.20": {
+        "code": "F10.20",
+        "display": "Alcohol dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dupuytren contracture|M72.0": {
+        "code": "M72.0",
+        "display": "Palmar fascial fibromatosis [Dupuytren]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Medication noncompliance|Z91.148": {
+        "code": "Z91.148",
+        "display": "Patient's other noncompliance with medication regimen for other reason",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

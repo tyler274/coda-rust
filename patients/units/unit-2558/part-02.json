@@ -1,0 +1,511 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002558",
+      "events": [
+        {
+          "id": "2025-01-12a",
+          "kind": "hospital_admission",
+          "start": "2025-01-12T16:35",
+          "end": "2025-01-15T11:20",
+          "service": "Trauma Surgery",
+          "reason": "right shoulder pain and shortness of breath after bicycle crash",
+          "conditions": [
+            {
+              "label": "Fracture of right clavicle",
+              "icd10": "S42.001A",
+              "action": "diagnosed",
+              "onset": "2025-01-12"
+            },
+            {
+              "label": "Traumatic pneumothorax, right",
+              "icd10": "S27.0XXA",
+              "action": "diagnosed",
+              "onset": "2025-01-12"
+            },
+            {
+              "label": "Injury of right subclavian artery",
+              "icd10": "S25.101A",
+              "action": "diagnosed",
+              "onset": "2025-01-12"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "clavicle fracture pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-12T17:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-12T17:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-13T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-01-12T16:58",
+              "text": "Portable AP chest. Fracture through the midshaft of the right clavicle. Small right apical pneumothorax without mediastinal shift. No rib fracture identified. No pleural fluid to suggest hemothorax. Left lung clear. Heart size normal.",
+              "conclusion": "Right clavicle fracture. Small right pneumothorax. No rib fracture or hemothorax."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2025-01-12T20:40",
+              "text": "CT angiogram of the chest with IV contrast, arterial phase, obtained for new right supraclavicular swelling and bruising. Focal intimal irregularity of the right subclavian artery with a small surrounding supraclavicular hematoma. No active contrast extravasation. No occlusion; flow continues normally into the axillary artery. Aortic arch and great vessel origins otherwise normal. Displaced midshaft right clavicle fracture. Small right apical pneumothorax, unchanged. Lungs otherwise clear. No rib fractures.",
+              "conclusion": "Minimal right subclavian artery intimal injury with small supraclavicular hematoma, no extravasation or occlusion. Right clavicle fracture and small right pneumothorax."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-01-14T07:15",
+              "text": "Follow-up AP chest. No visible pneumothorax. Right clavicle fracture again seen. Lungs clear. No effusion.",
+              "conclusion": "Right pneumothorax resolved."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary - Trauma Surgery",
+              "author": "trauma surgery",
+              "date": "2025-01-16T09:30",
+              "body": "Regional hospital, trauma surgery service\nAdmitted 01/12/2025, discharged 01/15/2025\n\nReason for admission: 28 year old male cyclist who came off his bicycle and landed on his right side, hitting the right shoulder on the curb. Helmeted. No loss of consciousness. Complained of right shoulder pain and trouble catching his breath.\n\nArrival: hemodynamically stable. Point tenderness over the right clavicle, breath sounds reduced on the right. Portable chest film showed a right clavicle fracture and a small right pneumothorax, no rib fractures, no hemothorax.\n\nHospital course: Admitted to trauma for observation of the pneumothorax. Several hours after arrival he developed swelling and bruising above the right clavicle. CT angiogram of the chest showed a focal intimal injury of the right subclavian artery with a small hematoma, no extravasation, no occlusion, distal flow intact. Vascular surgery consulted: nonoperative management, hourly then q4h right arm pulse and neuro checks, all stable through the stay. Hematoma did not expand. Pneumothorax managed with supplemental oxygen, weaned off on hospital day 2; repeat film 01/14 showed resolution. Pain controlled with oral analgesics. Arm in sling. Patient is a Jehovah's Witness; no transfusion was needed.\n\nDischarge diagnoses:\n- Right clavicle fracture, closed, nonoperative\n- Small right traumatic pneumothorax, resolved\n- Right subclavian artery intimal injury with supraclavicular hematoma, nonoperative\n\nDischarge medications: oxycodone-acetaminophen 5/325 mg, 1 tab q6h prn severe pain, #16, no refills. May use plain acetaminophen for milder pain, not to exceed 3 g/day total.\nAllergies: NKDA.\n\nFollow-up: orthopedics in 3 weeks with x-ray. Vascular surgery in 6 weeks with repeat CT angiogram. PCP within 1 week. Sling for comfort, no lifting with right arm, no cycling or driving until cleared. Return for increasing neck or shoulder swelling, arm numbness, coldness or color change, or worse shortness of breath."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "telephone",
+          "start": "2025-01-17T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-01-17T10:20",
+              "body": "Called pt after hospital discharge 1/15 (bike crash, R clavicle fx, small PTX, subclavian artery injury on CT). Says shoulder hurts but manageable, using the oxycodone mostly at night and Tylenol during the day. Breathing normal. Swelling above collarbone about the same or smaller, no arm numbness, hand warm, normal color. In sling. Has ortho and vascular appointments. Booked with PCP Tues 1/21. Reviewed return precautions."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after bicycle crash",
+          "conditions": [
+            {
+              "label": "Traumatic pneumothorax, right",
+              "icd10": "S27.0XXA",
+              "action": "resolved",
+              "onset": "2025-01-12"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-01-21T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-01-21T14:40",
+              "body": "Seen 6 days after a bicycle crash. Discharge summary reviewed: right clavicle fracture, small right pneumothorax that resolved on oxygen, and a minimal intimal injury of the right subclavian artery on CT angiogram with a small hematoma, managed without surgery.\n\nHe is sore but better each day. Pain 4/10. Takes 1 oxycodone-acetaminophen at bedtime, plain acetaminophen otherwise. No shortness of breath. Hand feels normal. Not working for now.\n\nExam: uncomfortable moving the right arm, in sling. Yellow-green bruising above the right clavicle, soft, no pulsatile mass, no bruit. Tender over midclavicle with step-off. Right radial and brachial pulses 2+, equal to left. Hand warm, cap refill brisk, sensation and grip intact. Lungs clear, equal breath sounds both sides.\n\nA/P:\n1. Right clavicle fracture: nonoperative, sling, ortho visit set.\n2. Right pneumothorax: resolved, clear lungs. Removing from active list.\n3. Right subclavian artery injury: exam reassuring today. Keep vascular appointment and repeat CTA. Reviewed warning signs.\n4. Pain: taper off the oxycodone this week; acetaminophen scheduled is fine. Avoid ibuprofen until vascular sees him.\nNo driving or riding until ortho clears him."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T09:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Note For Work",
+              "author": "patient",
+              "date": "2025-01-27T09:31",
+              "body": "Two of the delivery platforms want something saying I'm off for medical reasons so my account doesn't get flagged for inactivity. Can you write something simple? Doesn't need details."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Status Letter",
+              "author": "PCP",
+              "date": "2025-01-27T14:10",
+              "body": "To whom it may concern: Brandon Hastings is under my care after an injury and is unable to perform delivery work until cleared by his treating specialist, expected in roughly two months. Please contact our office with questions."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "specialist_visit",
+          "start": "2025-02-05T09:40",
+          "service": "Orthopedic Surgery",
+          "reason": "right clavicle fracture follow-up",
+          "reports": [
+            {
+              "study": "Shoulder X-ray",
+              "performed": "2025-02-05T09:25",
+              "text": "Right shoulder and clavicle, 2 views. Midshaft right clavicle fracture with mild displacement, alignment acceptable. Early callus formation. Acromioclavicular and glenohumeral joints normal.",
+              "conclusion": "Healing midshaft right clavicle fracture, acceptable alignment, early callus."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics Clinic Letter",
+              "author": "orthopedics",
+              "date": "2025-02-06T15:10",
+              "body": "Outside orthopedic group, clinic visit 02/05/2025\n\nThank you for sharing the care of Mr. Hastings, 28, seen 3 weeks after a closed right midshaft clavicle fracture from a bicycle crash. Pain much improved, now mostly with reaching. Sling on most of the day.\n\nExam: mild tenderness at the fracture, skin intact, no tenting. Neurovascularly intact right arm.\n\nX-ray today: acceptable alignment with early callus.\n\nPlan: continue nonoperative treatment. Wean out of the sling over the next week. Pendulums and gentle range of motion, no lifting over 5 lb. Recheck with x-ray in 6 weeks. Not cleared for cycling yet.\n\nMedications: none regularly. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "specialist_visit",
+          "start": "2025-02-26T13:15",
+          "service": "Vascular Surgery",
+          "reason": "right subclavian artery injury follow-up",
+          "conditions": [
+            {
+              "label": "Injury of right subclavian artery",
+              "icd10": "S25.101A",
+              "action": "resolved",
+              "onset": "2025-01-12"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-02-26T11:50",
+              "text": "CT angiogram of the chest with IV contrast. Comparison 01/12/2025. The right subclavian artery is of normal caliber with a smooth wall; the previously seen intimal irregularity is no longer evident. No pseudoaneurysm, dissection flap or stenosis. The supraclavicular hematoma has resolved. Healing right clavicle fracture. Lungs clear, no pneumothorax.",
+              "conclusion": "Healed right subclavian artery injury; hematoma resolved; no pseudoaneurysm."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Vascular Surgery Clinic Letter",
+              "author": "vascular surgery",
+              "date": "2025-02-27T10:00",
+              "body": "Vascular surgery clinic, 02/26/2025\n\nRe: Brandon Hastings, DOB 06/19/1996\n\nI saw him for follow-up of the right subclavian artery intimal injury identified during his January trauma admission and treated without intervention. He has had no arm pain with use, no numbness, coolness or color change of the hand.\n\nExam: supraclavicular area flat, no mass, no bruit. Radial pulses 2+ and symmetric. Arm blood pressures symmetric.\n\nRepeat CT angiogram today shows a normal-caliber artery with smooth wall and resolution of the hematoma, no pseudoaneurysm.\n\nImpression: healed minimal right subclavian artery injury. No further vascular imaging or follow-up needed. He may return to full activity from our standpoint once orthopedics clears the clavicle.\n\nAllergies: NKDA. Medications: none."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "specialist_visit",
+          "start": "2025-03-20T10:30",
+          "service": "Orthopedic Surgery",
+          "reason": "right clavicle fracture follow-up",
+          "conditions": [
+            {
+              "label": "Fracture of right clavicle",
+              "icd10": "S42.001A",
+              "action": "resolved",
+              "onset": "2025-01-12"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Shoulder X-ray",
+              "performed": "2025-03-20T10:10",
+              "text": "Right shoulder and clavicle, 2 views. Comparison 02/05/2025. Bridging callus across the midshaft clavicle fracture. Alignment unchanged. Joints normal.",
+              "conclusion": "Healed right clavicle fracture."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics Clinic Letter",
+              "author": "orthopedics",
+              "date": "2025-03-21T14:45",
+              "body": "Outside orthopedic group, clinic visit 03/20/2025\n\nMr. Hastings returns 9 weeks out from his right clavicle fracture. Pain free. Full overhead reach.\n\nExam: nontender, small palpable callus. Full and symmetric shoulder motion, strength 5/5.\n\nX-ray: bridging callus, fracture healed.\n\nPlan: released to full activity, including riding and lifting as tolerated. Follow up with us as needed. Discussed that the small bump over the collarbone may persist."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "portal_message",
+          "start": "2025-03-24T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back On The Bike",
+              "author": "patient",
+              "date": "2025-03-24T07:48",
+              "body": "Just letting you know ortho cleared me and the vascular doctor said the artery healed. Back on deliveries this week. Thanks for checking on me after the hospital."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back On The Bike",
+              "author": "PCP",
+              "date": "2025-03-24T12:30",
+              "body": "Great news, I saw both letters. Ease back in, and keep that helmet on."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-12a",
+          "kind": "hospital_admission",
+          "start": "2025-10-12T21:15",
+          "end": "2025-10-16T13:00",
+          "service": "Critical Care Medicine",
+          "reason": "severe respiratory distress and hypotension after motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Traumatic tension pneumothorax, left",
+              "icd10": "S27.0XXA",
+              "action": "diagnosed",
+              "onset": "2025-10-12"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "chest tube site pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-12T21:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-12T21:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-10-12T21:55",
+              "text": "Portable AP chest after left needle decompression and left tube thoracostomy. Left chest tube in place, tip at the apex. The left lung has re-expanded with no residual pneumothorax. Mediastinum midline. No effusion. Right lung clear.",
+              "conclusion": "Left lung re-expanded after chest tube placement."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-10-15T08:20",
+              "text": "AP chest after removal of the left chest tube. No pneumothorax. Lungs clear. Mediastinum midline.",
+              "conclusion": "No residual pneumothorax after tube removal."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary - Critical Care",
+              "author": "critical care",
+              "date": "2025-10-17T08:45",
+              "body": "Regional hospital, medical-surgical ICU\nAdmission 10/12/2025, discharge 10/16/2025\n\nHistory: 29 year old man brought in after a motor vehicle collision. Known prior right subclavian artery injury from a bicycle crash in January of this year. On arrival he was hypotensive and tachycardic in marked respiratory distress.\n\nFindings: no breath sounds over the left chest with hyperresonance to percussion, distended neck veins, trachea shifted toward the right. Clinical diagnosis of left tension pneumothorax.\n\nCourse: needle decompression of the left chest at once with a rush of air, followed by rapid improvement in blood pressure and heart rate. Left tube thoracostomy placed in the trauma bay. Post-procedure film: left lung re-expanded. Admitted to the ICU for monitoring. When able, he told the team he is a Jehovah's Witness and does not consent to blood products; his counts were stable and none were needed. No air leak after the first day. Tube removed on hospital day 3, follow-up film without pneumothorax. Transferred out of the ICU day 3, discharged home day 4.\n\nDischarge diagnosis: left tension pneumothorax after MVC, treated with decompression and chest tube, resolved.\nHistory: right subclavian artery injury (January 2025).\n\nMedications at discharge: acetaminophen 1000 mg every 6 hours as needed. NKDA.\n\nInstructions: keep chest tube site covered 48 h. No flying for 2 weeks. No heavy lifting for 2 weeks. See PCP within a week with a chest x-ray. Return for shortness of breath or chest pain."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Chest Tube Placement",
+              "author": "trauma surgery",
+              "date": "2025-10-17T08:50",
+              "body": "Procedure: left tube thoracostomy, 10/12/2025, trauma bay.\nIndication: left tension pneumothorax, already needle decompressed at the left second intercostal space, midclavicular line.\nConsent: emergent.\nTechnique: left lateral chest prepped and draped. Local anesthetic. Incision over the fifth intercostal space at the anterior axillary line, blunt dissection over the rib into the pleural space, finger sweep, tube directed apically and posteriorly, secured with suture and occlusive dressing. Connected to suction with immediate air return and fogging.\nComplications: none. Minimal blood loss.\nPost-procedure film: tube in good position, lung re-expanded."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "telephone",
+          "start": "2025-10-14T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital Call",
+              "author": "front desk",
+              "date": "2025-10-14T09:25",
+              "body": "Case manager from the regional hospital called: our patient admitted Sunday after a car accident, in the ICU but improving. Confirmed we are his PCP and asked for med list and allergies. Faxed last physical note and med/allergy list (none / NKDA). PCP made aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "telephone",
+          "start": "2025-10-17T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-10-17T11:05",
+              "body": "Spoke with Brandon, home since yesterday after ICU stay for collapsed L lung (tension PTX) after car accident. Breathing comfortably, mild soreness at tube site, dressing dry. Taking Tylenol. No fever. Not driving this week. Appt Mon 10/20 with PCP, CXR same day. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "office_visit",
+          "start": "2025-10-20T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after tension pneumothorax",
+          "conditions": [
+            {
+              "label": "Traumatic tension pneumothorax, left",
+              "icd10": "S27.0XXA",
+              "action": "resolved",
+              "onset": "2025-10-12"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-10-20T09:45",
+              "text": "PA and lateral chest. Comparison 10/15/2025. Lungs fully expanded. No pneumothorax. No effusion or consolidation. Heart and mediastinum normal. Healed right clavicle fracture.",
+              "conclusion": "No pneumothorax. Normal chest."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-20T10:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-10-20T10:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-10-20T10:55",
+              "body": "S: Second trauma admission this year. Car crash on 10/12, arrived in shock from a left tension pneumothorax, needle decompressed then chest tube, ICU, home on 10/16. Summary reviewed. Today he says his breathing is back to baseline, can do stairs without trouble. Small ache at the tube site. Off acetaminophen since Saturday. Sleeping fine.\n\nO: Comfortable, talking in full sentences. Tube site on left lateral chest healing, no drainage, no redness. Trachea midline. Breath sounds equal and clear, percussion normal both sides. Heart regular.\nCXR this morning (PA/lat): lungs fully expanded, no pneumothorax.\n\nA/P:\n1. Left tension pneumothorax after MVC - resolved. Off active list. No air travel until the 2 weeks is up (he has none planned).\n2. Prior R subclavian artery injury - healed per vascular in Feb.\n3. Flu vaccine today.\nCall me if any chest pain or sudden shortness of breath. Reschedule physical for winter."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "annual_physical",
+          "start": "2025-12-09T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2025-12-08T16:30",
+              "body": "Pt cancelled his 12/9 physical, picked up a holiday rush shift. Rebooked for February."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

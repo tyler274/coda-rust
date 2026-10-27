@@ -16,6 +16,14 @@ starting list for the UI program.
 the state needs (yes), need a server or wire change first (no), or don't apply
 (n/a). **Where in the app** names the owner by component, not line number.
 
+Presentation is the app's, not the graph's (decisions.md, Behavior, not
+presentation), so it has no rows here. Its known gaps: the orb has no hover or
+pinned preview and updates carry no content to preview; the patient page has no
+Basis, since PatientWorkspaceResponse has no basis or limitations field; and it
+has no Sources list, since ConnectedSource carries no source names; and running
+work has no step line, since AutomationRun carries no current step. Sidebar and
+schedule collapse are built and remembered per physician (M8, panels.rs).
+
 Sign-in's page states are in [sign-in.mmd](sign-in.mmd), which is connected to
 the graph by its own map; this file covers the graph's states.
 
@@ -58,7 +66,12 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Today | built | TodaySurface, TodayRows (physician-app lib.rs) | yes | Heading with need-you count, rows with a Needs you now mark for urgency now, and the quiet copy when empty. |
-| Patient page | built | PatientSurface, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Opening the patient… shows whenever the patient being opened hasn't answered yet; the last patient's page never stands in for the next. |
+| Patient page.Source pane on the patient page.No source open on the patient page | built | PatientSurface Patient summary, CitationChip (physician-app lib.rs) | yes | Summary prose with numbered citation chips and no pane open. Opening the patient… shows whenever the patient being opened hasn't answered yet; the last patient's page never stands in for the next. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page | built | CitationChip, ReaderDialog, source_reading (physician-app lib.rs); citation_inspection (physician-app shell.rs) | yes | Shown as a modal sharing the reader's single slot, so it replaces any open reading, and it has no Expand. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page | missing |  | no | No Expand and no source fetch; the client has no source endpoint. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page | missing |  | no | No qualified source text, only the preview on the citation segment. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry | missing |  | no | No source load, so no failure or Retry. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text | partial | citation_inspection (physician-app shell.rs), ReaderDialog (physician-app lib.rs) | no | Every preview is preview-only but nothing says so; SOURCE_UNAVAILABLE shows only when the preview prose itself is empty. |
 | Conversation.Source pane in the conversation.No source open in the conversation | partial | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs) | no | The conversation is a section of the patient page, not its own screen, and its answers carry no citations, so no source can open. |
 | Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
 | Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
@@ -67,31 +80,6 @@ check prints the current counts.
 | Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
 | Patient identity only | built | PatientSurface clinic-demographic card (physician-app lib.rs) | yes | Driven by clinic_demographic membership, since the wire has no separate access level; admins get Assign to panel. |
 | That patient is not available | built | PatientSurface gone branch, workspace resource 404 handling (physician-app lib.rs) | yes | Shows That patient is not available. with Go to Today on any 404, but an open reader for that patient is not closed. |
-
-## Physician session/Signed in/Screen/Patient page/Basis and limitations
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| Basis closed | missing |  | no | No Basis control; PatientWorkspaceResponse has no basis or limitations field. |
-| Basis open | missing |  | no | No Basis control; PatientWorkspaceResponse has no basis or limitations field. |
-
-## Physician session/Signed in/Screen/Patient page/Sources list
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| Sources closed | missing |  | no | No Sources control; only a Records as of line in the summary meta. |
-| Sources open | missing |  | no | No list of sources read; ConnectedSource carries only pull state and times, no source names. |
-
-## Physician session/Signed in/Screen/Patient page/Source pane on the patient page
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| No source open on the patient page | built | PatientSurface Patient summary, CitationChip (physician-app lib.rs) | yes | Summary prose with numbered citation chips and no pane open. |
-| Source open on the patient page.Citation preview on the patient page | built | CitationChip, ReaderDialog, source_reading (physician-app lib.rs); citation_inspection (physician-app shell.rs) | yes | Shown as a modal sharing the reader's single slot, so it replaces any open reading, and it has no Expand. |
-| Source open on the patient page.Loading the source on the patient page | missing |  | no | No Expand and no source fetch; the client has no source endpoint. |
-| Source open on the patient page.Source text shown on the patient page | missing |  | no | No qualified source text, only the preview on the citation segment. |
-| Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry | missing |  | no | No source load, so no failure or Retry. |
-| Source open on the patient page.Preview only on the patient page, no qualified source text | partial | citation_inspection (physician-app shell.rs), ReaderDialog (physician-app lib.rs) | no | Every preview is preview-only but nothing says so; SOURCE_UNAVAILABLE shows only when the preview prose itself is empty. |
 
 ## Physician session/Signed in/Reader
 
@@ -166,7 +154,6 @@ check prints the current counts.
 | Showing the Updates day | built | UpdatesSurface (physician-app lib.rs) | yes | Row list or the empty copy; rows themselves are thin (see Updates list). |
 | Showing the Updates day, with one quiet line and Retry | built | UpdatesSurface, use_read_view, ReadNotice (physician-app lib.rs) | yes | A failed refresh keeps the last list under a quiet line with Try again; a part-loaded day isn't distinguished. |
 | Couldn't load the Updates day, with Retry | built | UpdatesSurface, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t load Updates. with Try again, which re-reads all of the shell's reads. |
-| Showing the Updates day, loading more | missing |  | no | No paging or Show more; UpdatesResponse has no cursor or more flag. |
 
 ## Physician session/Signed in/Updates panel/Updates open/Which day
 
@@ -204,22 +191,13 @@ check prints the current counts.
 | Couldn't load the schedule, with Retry | built | TodaySurface and PatientSurface ScheduleRail, ReadNotice (physician-app lib.rs) | yes | A failed first read shows the rail with Coda couldn’t load the schedule. and Try again. |
 | No calendar, no schedule area | built | TodaySurface (physician-app lib.rs); shows_today_schedule (physician-app shell.rs) | yes | No rail when the calendar state is unavailable or absent, though unavailable conflates a down calendar with none. |
 
-## Physician session/Signed in/Coda window
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| Coda open | built | PhysicianShell glass-app shell, Collapse Coda button (physician-app lib.rs) | yes |  |
-| Collapsed to the orb.Orb only | built | PhysicianShell coda-restore button (physician-app lib.rs) | yes | Orb with the logo; the shell stays mounted but hidden. |
-| Collapsed to the orb.Orb preview shown | missing |  | no | No hover or focus preview on the orb, and updates carry no content to preview. |
-| Collapsed to the orb.Orb preview pinned | missing |  | no | No pinned preview or opening an update from the orb. |
-
 ## Physician session/Signed in/Find patient
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Search closed | built | PhysicianShell sidebar Find patient item (physician-app lib.rs) | yes | With the ⌘ K hint. |
 | Search open.Search read.Loading the search | built | SearchDialog, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Searching… shows until the query being asked answers; an earlier query's rows or No patients match. never stand in. |
-| Search open.Search read.Showing the search | partial | SearchDialog (physician-app lib.rs) | no | Results with name and DOB, and No patients match. when empty, but no 50-at-a-time paging; PatientSearchResponse has no cursor. |
+| Search open.Search read.Showing the search | partial | SearchDialog (physician-app lib.rs) | no | Results with name and DOB, and No patients match. when empty, PatientSearchResponse has no cursor, so reaching every roster patient rests on the server returning every match. |
 | Search open.Search read.Showing the search, with one quiet line and Retry | missing |  | yes | A failed search drops to the couldn't-search error instead of keeping the results under a quiet line. |
 | Search open.Search read.Couldn't load the search, with Retry | built | SearchDialog, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t search patients. with Try again. |
 | Search open.Search read.Type to search | built | SearchDialog (physician-app lib.rs) | yes | An empty query shows no rows; the placeholder is the only prompt. |
@@ -301,8 +279,6 @@ check prints the current counts.
 | Couldn't confirm Resume on the asked reply, with Check again | missing |  | no | Resume is not offered; the wire's AutomationRun has no running, held or left-for-you state to offer it on. |
 | Done on what's left on the asked reply: sending; other commands on it wait | missing |  | no | Done on what's left is not offered; the wire's AutomationRun has no running, held or left-for-you state to offer it on. |
 | Couldn't confirm Done on what's left on the asked reply, with Check again | missing |  | no | Done on what's left is not offered; the wire's AutomationRun has no running, held or left-for-you state to offer it on. |
-| Update on the asked reply: sending; other commands on it wait | missing |  | no | Update is not offered; the wire's AutomationRun has no running, held or left-for-you state to offer it on. |
-| Couldn't confirm Update on the asked reply, with Check again | missing |  | no | Update is not offered; the wire's AutomationRun has no running, held or left-for-you state to offer it on. |
 
 ## Physician session/Signed in/Your command on the proactive work
 
@@ -522,8 +498,8 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | Connecting the source | missing |  | yes | records_as_of ignores any state but usable/refreshing/failed, so nothing says Coda is connecting the source. |
 | Records kept.Records current | built | summary_times, records_as_of (shell.rs); PatientSurface Patient summary meta (physician-app lib.rs) | yes | "Records as of …" shows only inside the Patient summary section, so a patient without a summary shows no records time. |
-| Records kept.Checking for new records | built | records_as_of (shell.rs) | yes | A refreshing source keeps "Records as of …"; the graph wants no distinct indicator. |
-| Records kept.Records couldn't be updated, retrying | partial | records_as_of (shell.rs) | yes | A failed source keeps the last good "Records as of …" but never says "Records couldn't be updated". |
+| Records kept.Records couldn't be updated | partial | records_as_of (shell.rs) | yes | A failed source keeps the last good "Records as of …" but never says "Records couldn't be updated". |
+| Records kept.Source back, records as of the last good update | partial | records_as_of (shell.rs) | yes | Shows the last good "Records as of …"; the wire does not tell a reconnected source apart from a current one. |
 | Source unavailable, last good records kept | partial | records_as_of (shell.rs) | yes | Only a "failed" source with a usable_snapshot shows a bare time; an unavailable one shows nothing, and "couldn't update" never appears. |
 | Source unavailable, no records yet | missing |  | yes | Nothing renders for a down source with no records. |
 
@@ -561,8 +537,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | initial understanding not in hand.No initial understanding owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | initial understanding in hand.initial understanding active.initial understanding owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| initial understanding in hand.initial understanding active.Coda is working on the initial understanding | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | initial understanding in hand.initial understanding stalled.initial understanding waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | initial understanding in hand.initial understanding stalled.initial understanding couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own; Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -579,8 +554,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | patient review not in hand.No patient review owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | patient review in hand.patient review active.patient review owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| patient review in hand.patient review active.Coda is working on the patient review.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| patient review in hand.patient review active.Coda is working on the patient review.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| patient review in hand.patient review active.Coda is working on the patient review | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | patient review in hand.patient review stalled.patient review waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | patient review in hand.patient review stalled.patient review couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own; Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -612,10 +586,16 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | follow-up review not in hand.No follow-up review owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | follow-up review in hand.follow-up review active.follow-up review owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| follow-up review in hand.follow-up review active.Coda is working on the follow-up review.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| follow-up review in hand.follow-up review active.Coda is working on the follow-up review.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| follow-up review in hand.follow-up review active.Coda is working on the follow-up review | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
+
+## Coda's work: follow-up review/follow-up review: news while working
+
+| State | Status | Where in the app | Server data | Note |
+| --- | --- | --- | --- | --- |
+| Nothing new since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
+| Something new arrived since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
 
 ## Coda's work: follow-up review/follow-up review: left for you
 
@@ -631,10 +611,16 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | weekly review not in hand.No weekly review owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | weekly review in hand.weekly review active.weekly review owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| weekly review in hand.weekly review active.Coda is working on the weekly review.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| weekly review in hand.weekly review active.Coda is working on the weekly review.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| weekly review in hand.weekly review active.Coda is working on the weekly review | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | weekly review in hand.weekly review stalled.weekly review waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | weekly review in hand.weekly review stalled.weekly review couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
+
+## Coda's work: weekly review/weekly review: news while working
+
+| State | Status | Where in the app | Server data | Note |
+| --- | --- | --- | --- | --- |
+| Nothing new since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
+| Something new arrived since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
 
 ## Coda's work: weekly review/weekly review: held by you
 
@@ -649,8 +635,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | visit preparation not in hand.No visit preparation owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | visit preparation in hand.visit preparation active.visit preparation owed, waiting to start | partial | PatientSurface Upcoming visits rail and reader, preparation_sentence; Current work, work_heading (physician-app lib.rs, shell.rs) | yes | Only the reader sentence "This visit has not been prepared." says so; the rail shows no cue and Current work looks the same as running. |
-| visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Working, no step shown | built | PatientSurface Upcoming visits rail (ScheduleRail cue), preparation_cue; Current work, work_heading (physician-app lib.rs, shell.rs) | yes | "Preparing visit" shows on the patient-page rail and the run headline under Current work; the Today rail hides cues. |
-| visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| visit preparation in hand.visit preparation active.Coda is working on the visit preparation | built | PatientSurface Upcoming visits rail (ScheduleRail cue), preparation_cue; Current work, work_heading (physician-app lib.rs, shell.rs) | yes | "Preparing visit" shows on the patient-page rail and the run headline under Current work; the Today rail hides cues. |
 | visit preparation in hand.visit preparation stalled.visit preparation waiting for the next opportunity, with Try again | partial | PatientSurface Upcoming visits rail, preparation_cue, preparation_sentence (physician-app lib.rs, shell.rs) | no | Closest is "Preparation interrupted"; no waiting reason and no Try again on the visit or the patient page. |
 | visit preparation in hand.visit preparation stalled.visit preparation couldn't finish, with Try again | partial | PatientSurface Upcoming visits rail cue (preparation_cue), PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Preparation failed" and "Visit preparation couldn’t finish" show; Try again comes only from a failed_review Today row, never Current work or the visit. |
 
@@ -681,10 +666,8 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | asked reply not in hand.No asked reply owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
-| asked reply not in hand.asked reply finished on older records, with Update | missing |  | no | No Update control and no wire field saying the finished work read older records. |
 | asked reply in hand.asked reply active.asked reply owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| asked reply in hand.asked reply active.Coda is working on the asked reply.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| asked reply in hand.asked reply active.Coda is working on the asked reply.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| asked reply in hand.asked reply active.Coda is working on the asked reply | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | asked reply in hand.asked reply stalled.asked reply waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | asked reply in hand.asked reply stalled.asked reply couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -716,10 +699,16 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | proactive work not in hand.No proactive work owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | proactive work in hand.proactive work active.proactive work owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| proactive work in hand.proactive work active.Coda is working on the proactive work.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| proactive work in hand.proactive work active.Coda is working on the proactive work.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| proactive work in hand.proactive work active.Coda is working on the proactive work | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | proactive work in hand.proactive work stalled.proactive work waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | proactive work in hand.proactive work stalled.proactive work couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
+
+## Coda's work: proactive work/proactive work: news while working
+
+| State | Status | Where in the app | Server data | Note |
+| --- | --- | --- | --- | --- |
+| Nothing new since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
+| Something new arrived since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
 
 ## Coda's work: proactive work/proactive work: held by you
 
@@ -733,10 +722,10 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | answer not in hand.No answer owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
-| answer not in hand.answer finished on older records, with Update | missing |  | no | No Update control and no wire field saying the finished work read older records. |
+| answer not in hand.answer given | built | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs) | yes | The answer shows in the conversation. |
+| answer not in hand.answer given, newer records since, with Update | missing |  | no | No Update control and no wire field saying newer records arrived after the answer. |
 | answer in hand.answer active.answer owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| answer in hand.answer active.Coda is working on the answer.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| answer in hand.answer active.Coda is working on the answer.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| answer in hand.answer active.Coda is working on the answer | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | answer in hand.answer stalled.answer waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | answer in hand.answer stalled.answer couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own; Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -760,10 +749,16 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | reply revision not in hand.No reply revision owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | reply revision in hand.reply revision active.reply revision owed, waiting to start | built | ReplyReviewCard revision status, reply_revision_words (physician-app lib.rs, shell.rs) | yes | The reply card says "Coda will revise this reply shortly." while the revision run is pending. The Current work headline still doesn't tell owed from running. |
-| reply revision in hand.reply revision active.Coda is working on the reply revision.Working, no step shown | built | ReplyReviewCard revision status, reply_revision_words (physician-app lib.rs, shell.rs) | yes | The reply card says "Coda is revising this reply." while the hosted worker runs it, and rereads when the worker announces the workspace changed or the page resyncs after a missed notice. |
-| reply revision in hand.reply revision active.Coda is working on the reply revision.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| reply revision in hand.reply revision active.Coda is working on the reply revision | built | ReplyReviewCard revision status, reply_revision_words (physician-app lib.rs, shell.rs) | yes | The reply card says "Coda is revising this reply." while the hosted worker runs it, and rereads when the worker announces the workspace changed or the page resyncs after a missed notice. |
 | reply revision in hand.reply revision stalled.reply revision waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | reply revision in hand.reply revision stalled.reply revision couldn't finish, with Try again | partial | ReplyReviewCard revision status (physician-app lib.rs); PatientSurface Current work, work_end_reason (physician-app lib.rs, shell.rs) | yes | The reply card says Coda couldn't revise the reply and the saved draft is unchanged; asking again starts a new revision from the shown revision, but there is no Try again on the failed run, and the sample server rejects work.resume. A revision overtaken by a newer saved edit reads as not applied. |
+
+## Coda's work: reply revision/reply revision: news while working
+
+| State | Status | Where in the app | Server data | Note |
+| --- | --- | --- | --- | --- |
+| Nothing new since it started | not shown |  | n/a | Bookkeeping; the graph shows nothing for it while the work runs. |
+| Something new arrived since it started | not shown | revision.rs read_patient_sources (physician-worker) | no | Not shown on screen, as intended, but the hosted revision never takes news in: acceptance pins the workspace's source revisions (Store::accept_revision), and read_patient_sources answers only from them, so a record that arrives mid-revision is never read before it finishes. The graph keeps the pinned set as the record of what was read and needs what arrives added to it before finishing (Dev 2026-10-26). |
 
 ## Coda's work: reply revision/reply revision: held by you
 
@@ -849,10 +844,8 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Composer empty | built | PatientWorkspace composer textarea; Composer::loaded and sent (physician-app lib.rs, composer.rs) | yes | Opening a chat reads its saved draft unless this tab holds newer typing; a late read never replaces typing, and a failed read keeps any same-tab recovery rather than assuming an empty draft. An accepted Send removes only the submitted text, so typing after Send stays, and clears the saved draft behind any running save. A newer revision saved by another tab is never cleared automatically. |
-| Draft written.Saving quietly | built | autosave_after, AUTOSAVE_DEBOUNCE_MS; Composer::begin and finish (physician-app lib.rs, composer.rs) | yes | Typing saves itself about 800 ms after the physician pauses, and on blur; there is no Save button. One save per chat runs at a time and typing during a slow save gets a trailing save. Each result is fenced to its chat and edit generation, so a late save never marks another chat or replaces newer typing. "Saving…" shows while it runs. |
-| Draft written.Saved | built | Composer::finish (physician-app composer.rs); chat_draft.rs, site.rs (physician-sample) | yes | "Saved" shows beside that chat's composer until the next edit; opening another chat clears the mark. The live sample stores the draft per physician, patient and chat: in Postgres on hosted sites and in the session inline. Unsent text also survives a reload of the same tab through sessionStorage, scoped to backend, practice, physician, workspace, chat and tab, and cleared on sign-out; closing the tab or browser loses it, and storage that is denied or full shows a warning. The recorded and simulation projections are read-only and still answer 409. |
+| Draft written.Draft kept quietly | built | autosave_after, AUTOSAVE_DEBOUNCE_MS; Composer::begin and finish (physician-app lib.rs, composer.rs); chat_draft.rs, site.rs (physician-sample) | yes | Typing saves itself about 800 ms after the physician pauses, and on blur; there is no Save button. One save per chat runs at a time and typing during a slow save gets a trailing save. Each result is fenced to its chat and edit generation, so a late save never marks another chat or replaces newer typing. "Saving…" then "Saved" shows beside that chat's composer until the next edit; opening another chat clears the mark. The live sample stores the draft per physician, patient and chat: in Postgres on hosted sites and in the session inline. Unsent text also survives a reload of the same tab through sessionStorage, scoped to backend, practice, physician, workspace, chat and tab, and cleared on sign-out; closing the tab or browser loses it, and storage that is denied or full shows a warning. The recorded and simulation projections are read-only and still answer 409. |
 | Draft written.Not saved, with Retry | built | Composer::finish, retry, take_newer; composer conflict notice (physician-app lib.rs, composer.rs) | yes | A failed save shows "Not saved" and tries again on a growing delay, never in a tight loop. A genuine conflict (a 409 naming the current revision and text) pauses autosave and offers Retry, which replaces the saved draft with this tab's text over exactly the revision shown (another conflict if it moved again), and Use newer text, which discards this tab's edit. A bare or malformed 409 is a failure, never permission to overwrite. |
-
 ## Queued messages
 
 | State | Status | Where in the app | Server data | Note |
@@ -986,17 +979,3 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | New to you | missing |  | no | The Today row's live-dot shows on every row, and the wire has no seen state. |
 | Opened by you, unchanged since | missing |  | no | No seen state, and opening isn't recorded. |
-
-## sidebar preference
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| sidebar expanded | built | PhysicianShell sidebar collapse buttons (physician-app lib.rs); panels.rs | yes | Remembered per physician in this browser's localStorage. |
-| sidebar collapsed | built | PhysicianShell has-collapsed-sidebar (physician-app lib.rs); panels.rs | yes | Remembered per physician in this browser's localStorage. |
-
-## schedule preference
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| schedule expanded | built | ScheduleRail (physician-app lib.rs); panels.rs | yes | Remembered per physician and shared by Today and the patient page. |
-| schedule collapsed | built | ScheduleRail collapsed tile (physician-app lib.rs); panels.rs | yes | Remembered per physician and shared by Today and the patient page. |

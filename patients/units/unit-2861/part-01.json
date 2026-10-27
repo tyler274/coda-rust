@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002861",
+      "given": "Mei",
+      "family": "Zhang",
+      "birth_date": "1957-03-29",
+      "address_line": "36 Hendrick Street, Easthampton, MA 01027",
+      "phone": "+1-603-555-0191",
+      "email": "mei.zhang@example.test",
+      "marital_status": "married",
+      "summary": "Retired textile worker treated for right breast IDC in 2018 who joined the practice in 2021, had a bone-metastatic recurrence in 2022, then severe vitamin D deficiency with osteomalacia, cachexia and progressive disease, and moved to home hospice after a 2026 family meeting.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2021-08-30T10:20", "body": "Daughter phoned on behalf of her mother, Mei Zhang, 64. Mother has had no regular doctor for several years, only her cancer doctors. Explained membership, fees and that insurance still covers labs and specialists. Daughter will help with paperwork. New patient slot given for 9/8 at 9:30, 60 min. Asked them to bring all pill bottles and any cancer treatment paperwork they have at home."}
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "establish_care",
+          "start": "2021-09-08T09:30",
+          "end": "2021-09-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "History of breast cancer", "action": "history", "onset": "2018-03-01", "note": "right breast invasive ductal carcinoma, treated 2018"},
+            {"label": "Acquired absence of right breast and nipple", "icd10": "Z90.11", "action": "history", "onset": "2018-04-01"},
+            {"label": "Family history of breast cancer", "action": "history", "note": "mother, diagnosed at 55"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"},
+            {"substance": "Iodinated contrast media", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Retired textile factory worker"}
+          ],
+          "state": {"weight_kg": 50.0, "height_cm": 152.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-08T10:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-08T10:35", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-08T10:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-08T10:35", "results": [{"test": "Hemoglobin A1c", "value": 5.5}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-09-08T09:30"},
+            {"procedure": "Venipuncture", "performed": "2021-09-08T10:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-08T11:40", "body": "NEW PATIENT\n64F here with her daughter to set up primary care. Says she has not had a family doctor in several years; her care since 2018 has all been at the cancer center.\n\nONCOLOGIC HX: Invasive ductal carcinoma, right breast, diagnosed 2018. Right modified radical mastectomy with axillary node dissection 2018. Adjuvant chemo through a right subclavian port, then radiation to the right chest wall. Port still in. Finished treatment, now seen in surveillance by her oncologist. She does not know her stage or tumor markers; daughter thinks the paperwork is at the cancer center. Will request a summary.\n\nPMH: as above, otherwise nothing she knows of.\nPSH: R MRM with ALND; port placement.\nMEDS: none.\nALLERGIES: sulfa (hives), iodinated contrast (anaphylaxis).\nFHx: mother had breast cancer after menopause, found at 55, has since died. Maternal aunt with ovarian cancer. Father with high blood pressure.\nSOCIAL: Retired, worked many years in a textile mill. Married, lives with husband in Easthampton. Daughter close by and helps with appointments. Never smoked. No alcohol.\n\nROS: no weight change she has noticed, no bone pain, no cough, appetite ok.\n\nEXAM: small, thin woman, pleasant, English fluent. Vitals as charted. HEENT normal. Neck no nodes. Lungs clear. Heart regular, no murmur. Right chest: healed mastectomy scar, no nodularity along the scar or chest wall, port site clean. Left breast without mass, no axillary or supraclavicular adenopathy. Abdomen soft, no liver edge. Spine nontender. No edema.\n\nA/P\n1. Hx R breast cancer, treated 2018, in surveillance. Request oncology summary. Oncology owns surveillance imaging.\n2. Family hx breast/ovarian cancer. Asked whether genetics was ever done; she is not sure. Will look in the oncology records.\n3. Health maintenance: CBC, CMP, lipids, A1c today. Hep C and HIV screen once, ok with her. FIT kit given. Flu shot when the vaccine arrives, nurse visit. Medicare starts next spring, will do the welcome visit then.\nRTC spring, sooner prn."}
+          ]
+        },
+        {
+          "id": "2021-09-10a",
+          "kind": "portal_message",
+          "start": "2021-09-10T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-09-10T16:05", "body": "Hello Mrs. Zhang, your blood counts, kidney and liver tests, sugar and cholesterol all came back normal. Hepatitis C and HIV screens are negative. Nothing to change. Please drop off the stool kit when you can. Best, your primary care physician"}
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "outside_records",
+          "start": "2021-09-21T11:00",
+          "reason": "oncology records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology treatment summary (outside oncology group)", "author": "oncology", "date": "2021-09-21T11:00", "body": "TREATMENT SUMMARY - MEDICAL ONCOLOGY\nPatient: Mei Zhang  DOB 03/29/1957\nPrepared at request of primary care.\n\nDiagnosis: invasive ductal carcinoma, right breast, 2018.\nSurgery: right modified radical mastectomy with axillary lymph node dissection, 2018.\nVascular access: right subclavian implanted port, placed 2018, maintained with periodic flushes.\nSystemic therapy: adjuvant chemotherapy, completed 2018.\nRadiation: adjuvant radiation to the right chest wall, completed 2018.\nCurrent status: no evidence of disease at last surveillance visit. Surveillance visits every 6 months with yearly imaging of the left breast.\nAllergies: sulfa drugs (urticaria), iodinated contrast (anaphylaxis) - avoid IV contrast or premedicate per radiology.\nMedications: none.\n\nPlease contact our office with questions."},
+            {"type": "Telephone Encounter", "title": "Records review", "author": "PCP", "date": "2021-09-22T08:15", "body": "Reviewed oncology summary. No stage, receptor or genetics information included. Fine for now; she is followed there."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T14:00",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T14:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-12T14:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2021-10-12T14:15", "body": "Screening questions negative. Influenza vaccine IM left deltoid (no injections or BP on the right arm per mastectomy). Tolerated, observed 15 min. She states COVID primary series done at a pharmacy this spring; card not with her, will bring next time."}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "lab_only",
+          "start": "2021-11-09T09:00",
+          "reason": "FIT",
+          "labs": [
+            {"panel": null, "collected": "2021-11-08T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "PCP", "date": "2021-11-09T15:30", "body": "FIT negative. Repeat in a year. Letter to pt."}
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "outside_records",
+          "start": "2021-12-06T10:30",
+          "reason": "mammogram report received",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2021-11-30T13:00", "text": "LEFT MAMMOGRAM, SURVEILLANCE. History: right mastectomy 2018 for invasive ductal carcinoma. Technique: standard CC and MLO views of the left breast. Comparison: prior study from last year. Breast composition: scattered areas of fibroglandular density. There is no suspicious mass, architectural distortion or suspicious calcification. Skin and nipple unremarkable. No axillary adenopathy in the imaged field.", "conclusion": "No mammographic evidence of malignancy, left breast. BI-RADS 1, negative. Continue annual surveillance."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Left breast surveillance mammogram", "author": "radiology", "date": "2021-12-06T10:30", "body": "Report received by fax from the cancer center's breast imaging service. Study date 11/30/2021. Negative, BI-RADS 1. Reviewed by PCP."}
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "annual_physical",
+          "start": "2022-04-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "initial preventive visit, Medicare",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-04-05T10:50"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-04-05T10:52"}
+          ],
+          "procedures": [
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2022-04-05T10:00"},
+            {"procedure": "Immunization administration", "performed": "2022-04-05T10:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Welcome to Medicare Visit", "author": "PCP", "date": "2022-04-05T12:10", "body": "IPPE. Turned 65 last week, Medicare now primary with a supplement.\nFeels well. Walks to the corner store, does her own cooking. Last oncology visit in winter was fine per pt.\nFunctional screen: independent in ADLs and IADLs, husband drives. No falls. Hearing and vision fine with readers. Home safe, one-floor living.\nPHQ-2 0.\nMeds: none. Allergies: sulfa, iodinated contrast.\n\nExam: vitals as charted. Lungs clear, heart regular. Chest wall unchanged, port site clean. No adenopathy. Spine and hips nontender. Gait steady.\n\nPlan:\n- PCV20 and first Shingrix today, left arm. Second Shingrix in 2-6 months.\n- Colon: FIT negative 11/2021, repeat this fall.\n- Breast: left side imaging per oncology, last one negative.\n- Bone density: will raise with oncology whether they want a DXA.\n- Advance directive: gave her the health care proxy form; she wants her daughter as proxy. Will bring it back.\nFollow up 6 months."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "office_visit",
+          "start": "2022-05-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "back and hip pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-17T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - back and hip pain", "author": "PCP", "date": "2022-05-17T17:05", "body": "S: About 3-4 weeks of aching between the shoulder blades and in the right hip. Worse at night, not better lying down. No fall or lifting injury. No leg weakness, numbness, bladder or bowel change. No fever.\nPMH right breast IDC 2018, s/p MRM, chemo, chest wall radiation.\n\nO: Vitals as charted. Tender to percussion over the mid thoracic spine. Right hip with discomfort at end range internal rotation, no deformity, bears weight. Strength 5/5 legs, reflexes symmetric, sensation intact. Gait normal.\n\nA/P: New night-predominant thoracic spine and right hip pain in a breast cancer survivor. Recurrence in bone has to be excluded first. Neuro intact today.\n- Called her oncologist's office while she was here; they will bring her in this week and arrange restaging imaging (they know about the contrast allergy).\n- Return precautions reviewed with her and daughter: any leg weakness, numbness or trouble with urine or stool means the ED today.\n- Will touch base after oncology sees her."}
+          ]
+        },
+        {
+          "id": "2022-06-06a",
+          "kind": "portal_message",
+          "start": "2022-06-06T19:42",
+          "conditions": [
+            {"label": "History of breast cancer", "action": "resolved"},
+            {"label": "Malignant neoplasm of breast", "action": "diagnosed", "onset": "2022-06-01", "note": "right breast invasive ductal carcinoma, metastatic recurrence, stage IV, widespread osseous metastases"},
+            {"label": "Secondary malignant neoplasm of bone", "icd10": "C79.51", "action": "diagnosed", "onset": "2022-06-01", "note": "widespread, from right breast IDC"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Results from cancer center", "author": "patient", "date": "2022-06-06T19:42", "body": "(written by daughter) Hi doctor, wanted you to know the scans and the biopsy at the cancer center show the breast cancer came back and is in many of her bones, including her back and the right hip. They called it stage 4. She will start radiation to her back next week and then a new treatment. They gave her stronger pain pills. We are all pretty shaken. Thank you for calling them so fast."},
+            {"type": "Patient Message", "title": "RE: Results from cancer center", "author": "PCP", "date": "2022-06-07T07:55", "body": "I am so sorry to hear this, and thank you for letting me know. I've updated her chart. Her oncology team will lead the cancer treatment; I'm here for everything else, including help with side effects, and for all of you. I'll call in a few weeks to see how radiation is going. Please send me the names and doses of the new pain medicines when you have them."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "telephone",
+          "start": "2022-07-12T12:30",
+          "reason": "check-in after recurrence",
+          "conditions": [
+            {"label": "Neoplasm related pain", "icd10": "G89.3", "action": "diagnosed", "onset": "2022-06-01", "note": "chronic, bone metastases"},
+            {"label": "Drug induced constipation", "icd10": "K59.03", "action": "diagnosed", "onset": "2022-06-15", "note": "opioid-induced"}
+          ],
+          "medications": [
+            {"drug_text": "12 HR morphine sulfate 30 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 12 hours", "dose": {"value": 30, "unit": "mg"}, "frequency": "Q12H", "route": "Oral", "course": "chronic", "reason": "cancer pain; prescribed by oncology"},
+            {"drug_text": "morphine sulfate 15 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 4 hours as needed for breakthrough pain", "dose": {"value": 15, "unit": "mg"}, "frequency": "Q4H PRN", "route": "Oral", "course": "chronic", "reason": "breakthrough pain; prescribed by oncology"},
+            {"drug_text": "sennosides 8.6 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 8.6, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "opioid-induced constipation"},
+            {"drug_text": "docusate sodium 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "opioid-induced constipation"},
+            {"drug_text": "prochlorperazine maleate 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for nausea", "dose": {"value": 10, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "nausea; prescribed by oncology"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Check-in call", "author": "PCP", "date": "2022-07-12T12:55", "body": "Spoke with pt and daughter (speakerphone). Radiation to the thoracic spine finished last week, back pain noticeably better. Started a new IV treatment at the cancer center through her port. Hip still aches with walking.\nDaughter read me the bottles, all from oncology: morphine ER 30 mg q12h, morphine IR 15 mg q4h prn (using 1-2 a day), senna 8.6 mg bid, docusate 100 mg bid, prochlorperazine 10 mg q6h prn nausea. Bowels were stuck the first week on morphine, better since the senna and docusate. Nausea mild, on treatment days.\nNo leg weakness or numbness. Eating less but ok.\nMed list updated. Reminded her not to stop the bowel regimen while on morphine. Office visit in the fall, sooner if needed. Asked oncology to fax their notes."}
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "outside_records",
+          "start": "2022-08-23T09:10",
+          "reason": "oncology letter received",
+          "documents": [
+            {"type": "Outside Records", "title": "Medical oncology consultation letter, June 2022", "author": "oncology", "date": "2022-08-23T09:10", "body": "MEDICAL ONCOLOGY - OUTPATIENT NOTE\nDate of service: 06/02/2022\nReferring: primary care\n\nMs. Zhang is a 65-year-old woman with a history of right breast invasive ductal carcinoma treated in 2018 with mastectomy and axillary dissection, adjuvant chemotherapy and chest wall radiation, who was sent back to us by her primary care physician for new thoracic back and right hip pain.\n\nRestaging imaging (done without iodinated contrast given her allergy) shows widespread osseous metastases, including the thoracic spine and the right hip. Bone biopsy confirms metastatic carcinoma consistent with her breast primary.\n\nImpression: Stage IV invasive ductal carcinoma of the right breast with widespread osseous metastases. No cord compression.\n\nPlan:\n- Palliative radiation to the thoracic spine, arranged with radiation oncology.\n- Begin palliative systemic therapy here; regimen and schedule discussed with patient and daughter.\n- Pain: morphine sulfate ER 30 mg every 12 hours; morphine sulfate IR 15 mg every 4 hours as needed for breakthrough pain.\n- Bowel regimen: senna 8.6 mg twice daily, docusate 100 mg twice daily.\n- Prochlorperazine 10 mg every 6 hours as needed for nausea.\n- Follow-up in clinic with labs before each cycle.\n\nAllergies: sulfa drugs (urticaria), iodinated contrast (anaphylaxis).\n\ncc: primary care physician"},
+            {"type": "Telephone Encounter", "title": "Letter reviewed", "author": "PCP", "date": "2022-08-23T12:40", "body": "June oncology letter finally arrived. Matches what the family told me in June and July. Problem and med lists already reflect it. Filed."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "nurse_visit",
+          "start": "2022-09-20T11:15",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-09-20T11:20"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-09-20T11:22"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-20T11:24"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-09-20T11:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-09-20T11:45", "body": "Timed between treatment cycles; oncology ok'd. High-dose flu, Shingrix #2 and bivalent COVID booster, all left arm. No reactions during observation. Shingrix series now complete."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "office_visit",
+          "start": "2022-10-04T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, metastatic breast cancer",
+          "state": {"weight_kg": 47.0, "labs": {"Hemoglobin": 11.0, "Alkaline Phosphatase": 170}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 3}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-04T11:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-04T11:00", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-10-04T10:20"},
+            {"procedure": "Venipuncture", "performed": "2022-10-04T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-10-04T12:00", "body": "Here with daughter. Four months into treatment for the bone recurrence. Back pain much better since radiation; right hip still sore with walking, uses a cane outside now. Takes the ER morphine twice a day and 1 IR most days. Bowels every 1-2 days on senna/docusate. Some nausea the day after treatment, prochlorperazine helps. Appetite down, has lost about 3 kg since spring.\n\nExam: thin, tired-appearing. Lungs clear. Heart regular. Port site clean. Mild tenderness over the right hip. No spinal tenderness today. Neuro grossly intact. No edema.\n\nA/P\n1. Stage IV R breast IDC with bone mets - per oncology, on palliative systemic therapy.\n2. Cancer pain - controlled on oncology's morphine regimen. Oncology prescribes; we won't co-prescribe.\n3. Opioid-induced constipation - controlled.\n4. Weight loss - on treatment; encouraged small frequent meals, protein with each meal. Recheck weight next visit.\nCBC/CMP today since she's here (oncology draws too). Flu, COVID and Shingrix done last month. FIT not repeated given active metastatic disease. RTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "portal_message",
+          "start": "2022-10-06T08:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-10-06T08:30", "body": "Hi Mrs. Zhang, your blood count is a little low, which is common during treatment. Kidney function is normal. The alkaline phosphatase, a bone enzyme, is up a bit, which goes with the bone involvement your oncologist is treating. I've forwarded the results to them. Nothing new for you to do."}
+          ]
+        }
+      ]
+    }
+  ]
+}

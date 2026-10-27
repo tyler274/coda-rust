@@ -1,0 +1,149 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001887",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "telephone",
+          "start": "2024-01-09T15:40",
+          "orders": [
+            {"id": "ob-referral-2023", "action": "done", "date": "2024-01-09T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Follow-up",
+              "author": "RN",
+              "date": "2024-01-09T15:40",
+              "body": "Called pt to check that the OB referral went through. She had her first OB appointment last week, ultrasound matched her dates, due early August. Feeling queasy in the afternoons but eating and drinking ok. Taking the prenatal vitamin. Referral closed."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-17a",
+          "kind": "portal_message",
+          "start": "2024-04-17T20:14",
+          "medications": [
+            {"drug_text": "calcium carbonate 500 MG Chewable Tablet", "action": "historical", "sig": "Chew 1 tablet twice daily as needed for heartburn", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "heartburn in pregnancy"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heartburn Question",
+              "author": "patient",
+              "date": "2024-04-17T20:14",
+              "body": "Hi, quick one. I've had heartburn most nights the last couple weeks (24 weeks now!). My OB said I can take calcium carbonate chewables, 500 mg up to twice a day when I need it. Just wanted you to have it on my list. Otherwise all good, baby is kicking a lot."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heartburn Question",
+              "author": "MA",
+              "date": "2024-04-18T09:02",
+              "body": "Thanks Jada, added to your medication list as an as-needed med. Dr. reviewed, no concerns. Smaller dinners and not lying down right after eating can help too."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-02a",
+          "kind": "hospital_admission",
+          "start": "2024-08-02T05:50",
+          "end": "2024-08-04T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "labor at term",
+          "vitals": [
+            {"time": "2024-08-02T06:05", "bp": [120, 78], "hr": 88, "temp_c": 37.2}
+          ],
+          "conditions": [
+            {"label": "Uncertain fetal presentation in active labor", "icd10": "O32.9XX0", "action": "diagnosed", "onset": "2024-08-02", "note": "bedside ultrasound showed cephalic presentation; spontaneous vaginal delivery"}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "portal_message",
+          "start": "2024-08-06T13:27",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby News",
+              "author": "patient",
+              "date": "2024-08-06T13:27",
+              "body": "She's here! Our daughter was born Friday the 2nd, right on her due date. Contractions started early that morning and when they checked me they couldn't tell if she was head down or breech, which was scary for a bit. They did an ultrasound and she was head down, so I delivered normally that afternoon. We came home Sunday. Both of us doing well, nursing is going ok. Just wanted to let you know!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby News",
+              "author": "PCP",
+              "date": "2024-08-06T16:48",
+              "body": "Congratulations to you both! So glad everyone is well. Keep up the prenatal vitamin while you're nursing. Once you've had your postpartum OB check, let's get you in for your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "outside_records",
+          "start": "2024-08-27T10:05",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Delivery Summary",
+              "author": "obstetrics",
+              "date": "2024-08-27T10:05",
+              "body": "REGIONAL HOSPITAL, LABOR AND DELIVERY — DELIVERY SUMMARY (copy to primary care)\nAdmitted: 08/02/2024. Discharged: 08/04/2024.\n\n28 y/o G1 at 40w0d by early ultrasound, seen for regular contractions about 5 min apart over 2 hours, moderately painful and getting stronger. Prenatal care with our office, no complications this pregnancy. Medications: prenatal vitamin with DHA daily; calcium carbonate 500 mg BID prn heartburn. NKDA.\n\nOn arrival BP 120/78, HR 88, T 37.2 C. Fundus appropriate for dates, FHR 140 heard low on the abdomen. Cervix 3/80; presenting part could not be clearly identified on exam, cephalic vs breech unclear. Bedside ultrasound: cephalic, vertex.\n\nCourse: labor progressed without augmentation. Spontaneous vaginal delivery, viable female infant, uncomplicated. Postpartum course routine; BPs normal throughout stay.\n\nDischarge diagnoses: term pregnancy, delivered; fetal presentation uncertain in labor, cephalic on ultrasound.\nDischarge meds: continue prenatal vitamin.\nFollow-up: postpartum visit with obstetrics in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "annual_physical",
+          "start": "2024-09-23T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, postpartum",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "resolved"},
+            {"label": "Uncertain fetal presentation in active labor", "icd10": "O32.9XX0", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 70.5},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-23T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2024-06-11T10:00"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-09-23T16:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-23T16:27"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-23T15:50"},
+            {"procedure": "Immunization administration", "performed": "2024-09-23T16:25"},
+            {"procedure": "Venipuncture", "performed": "2024-09-23T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-23T16:50",
+              "body": "Physical, 7 weeks postpartum. Baby (daughter, 8/2) with her today in a car seat, thriving. Had her OB postpartum check last week, told all healed. Plans to return to teaching in November.\n\nDelivery: term, presentation unclear on exam in labor, ultrasound showed vertex, then an uncomplicated vaginal birth. Summary from the hospital is in the chart. BP normal through the pregnancy and after per pt.\n\nSleeping in pieces as expected. Mood good, partner very involved. Breastfeeding, going well. Bleeding has stopped.\nMeds: prenatal vitamin with DHA daily; calcium carbonate chews, hasn't needed them since delivery but wants to keep them on hand.\nNKDA. No tobacco, no alcohol.\nTdap given at OB in June, added to record.\n\nExam: well, tired-appearing but bright. BP normal. Heart regular, lungs clear. Thyroid normal. Abdomen soft, nontender. No leg swelling.\nPHQ-9: 2.\n\nA/P\n- Postpartum, doing well. CBC today. Pregnancy and the labor presentation issue resolved on the problem list.\n- Continue prenatal vitamin while nursing.\n- Mood screen reassuring; told her to reach out if that changes over the next months.\n- Pap not due until 2026.\n- Flu and updated COVID today (both fine while breastfeeding).\nPhysical next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T11:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count Result",
+              "author": "PCP",
+              "date": "2024-09-24T11:15",
+              "body": "Your blood count from yesterday is normal, no sign of anemia after the delivery. No changes needed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

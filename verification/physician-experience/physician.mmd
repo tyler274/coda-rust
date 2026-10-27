@@ -25,32 +25,17 @@ stateDiagram-v2
 %% event clinical access reduced | by the practice | The physician keeps identity access only; clinical content closes.
 %% event patient access removed | by the practice | The physician can no longer see the patient; everything showing the patient closes.
 %% event go to Today | by you | needs SIn | reason: commands need an active session | You return to Today, the list of what needs you.
-%% event open Basis | by you | needs SIn | reason: commands need an active session | You open what the patient summary rests on and its limits.
-%% event close Basis | by you | needs SIn | reason: commands need an active session | You close Basis.
-%% event open Sources | by you | needs SIn | reason: commands need an active session | You open the list of sources Coda read.
-%% event close Sources | by you | needs SIn | reason: commands need an active session | You close Sources.
-%% event collapse Coda | by you | needs SIn | reason: commands need an active session | Coda shrinks to the orb; the workspace stays mounted.
-%% event open Coda | by you | needs SIn | reason: commands need an active session | Coda opens again where it was.
-%% event hover or focus the orb | by you | needs SIn | reason: commands need an active session | The orb previews what Coda is doing; hovering never navigates or clears attention.
-%% event leave the orb preview | by you | The preview closes when you move away.
-%% event click the orb | by you | needs SIn | reason: commands need an active session | The preview stays open until you close it.
-%% event close the orb preview | by you | needs SIn | reason: commands need an active session | You close the pinned preview.
-%% event press Escape on the orb preview | by you | The preview closes.
 %% event open all updates | by you | needs SIn | reason: commands need an active session | Coda opens on Updates, the record of everything Coda did.
 %% event open find patient | by you | needs SIn | reason: commands need an active session | You open the roster search.
 %% event close find patient | by you | needs SIn | reason: commands need an active session | You close the search.
-%% event type in find patient | by you | needs SIn | reason: commands need an active session | Each change searches the whole roster on the server, 50 at a time.
-%% event more results load | by the practice system | The next 50 results append.
-%% event more results fail to load | by the practice system | What loaded stays, with a quiet line and Retry.
-%% event collapse the {panel} | by you | needs SIn | reason: commands need an active session | You collapse the {panel}; the choice is remembered for you (M8).
-%% event expand the {panel} | by you | needs SIn | reason: commands need an active session | You expand the {panel}; the choice is remembered for you (M8).
+%% event type in find patient | by you | needs SIn | reason: commands need an active session | Each change searches the whole roster on the server.
 %%
 %% Coda's work: one lifecycle for every kind (rewrite-worklist "Ideal behavior: Coda's work").
 %% Causes are other owners' events; they make work owed. Starting waits for what the work needs.
 %% events news for the patient = new records arrive | a shared Duet record arrives | the patient sends For my doctor | the patient joins and consents | a message arrives from a known sender | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel
 %% events the concern is shown = open the concern | the link opens the concern
 %% events message news = a message arrives from a known sender | the patient sends For my doctor | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel | the correction's Undo ends
-%% event new records arrive | by the records source | needs SrcConnecting, SrcChecking | reason: records arrive from a connecting or checking source | New records for the patient are available to read.
+%% event new records arrive | by the records source | needs SrcConnecting, SrcCurrent, SrcFailed, SrcBack | reason: records arrive only from a connected source | New records for the patient are available to read; a source that couldn't update, or is back but not yet updated, is current again.
 %% event a shared Duet record arrives | by the patient through Duet | needs PcConnected | reason: connected means sharing; nothing arrives otherwise | The patient shares something new through Duet.
 %% event the patient sends For my doctor | by the patient through Duet | needs PcConnected | reason: a patient sends only to the practice they're connected to | The patient's own For my doctor arrives, linked to them like a message from a known sender; Coda's agents read it and judge whether a physician needs to see it (Dev 2026-10-26).
 %% event a patient message arrives | by the messaging channel | needs ChLive | reason: only a live channel delivers messages | A message from an unknown sender reaches the practice; Coda suggests a patient, and a person confirms before it becomes evidence (PM-500).
@@ -60,10 +45,10 @@ stateDiagram-v2
 %% event ask Coda to reply | by you | command on the reply: Ask Coda to reply, clicked while SIn | needs AClin, MLLinked, ChAccount, MRRest | reason: only a linked conversation on a connected channel with no reply open can ask for one (X4, px.md:167) | You ask Coda to draft a reply; it waits behind a patient review already running, and a reply that review proposes first answers the ask (px.md:167; Dev 2026-10-24).
 %% event Coda decides to take something on | by Coda | Coda judges something worth doing for the patient and takes it on (charter: Coda may).
 %% event Coda starts the {work} | by Coda | needs WOwed@{key} | reason: only the work's own state makes its events possible | Coda begins the {work} from the latest evidence it may read.
-%% event a tool call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} shows its current step, only from a real tool call.
-%% event the next model call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The step line clears while Coda thinks.
 %% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} couldn't finish after whatever recovery the runtime does on its own; it shows Couldn't finish with Try again, and machinery never alerts you (CT:95).
-%% event Coda finishes the {work} | by Coda | needs WRun@{key}, {normal}@{key}, MLFree | reason: only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% event Coda finishes the {work} with an update for you | by Coda | needs WRun@{key}, NwNone@{key}, MLFree | reason: only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records and writes you an update in Updates. Only such a finish raises or revises a concern, which it explains (care-team contract, visibility table; Dev 2026-10-26); every other effect is a may: a concern raised, revised or closed, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% event Coda finishes the {work} quietly | by Coda | needs WRun@{key}, NwNone@{key}, MLFree | reason: only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records and writes you nothing; quiet in Updates. It may close concerns but never raises or revises one; every other effect is a may: a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% events Coda finishes the {work} = Coda finishes the {work} with an update for you | Coda finishes the {work} quietly
 %% event Coda waits on the {work} for missing information | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | Coda keeps the {work} for information that will arrive anyway; the patient page shows Waiting with the reason and Try again, never Today.
 %% event Coda can't restart the {work} | by Coda's runtime | needs WOwed@{key}, WFail@{key} | reason: only the work's own state makes its events possible | The {work} can't run again; anything left goes to Today with Done, otherwise Updates logs it. It never blocks later work.
 %% event try the {work} again | by you | command on the {work}: Try again, clicked while SIn | needs AClin, WFail@{key}, WWait@{key} | reason: only stalled work offers Try again | You retry the {work}; it reads the latest records and stays in its episode.
@@ -71,11 +56,12 @@ stateDiagram-v2
 %% event stop and discuss the {held} | by you | command on the {held}: Stop and discuss, clicked while SIn | needs AClin, WHand@{key} | reason: only work in hand can be stopped | You stop the {held} and open a conversation that can change what it carried.
 %% event resume the {held} | by you | command on the {held}: Resume, clicked while SIn | needs AClin, HYes@{key} | reason: only held work resumes | The held {held} runs again from a fresh read (N8).
 %% event mark the {left} done | by you | command on the {left}: Done on what's left, clicked while SIn | needs AClin, LShown@{key} | reason: only a row on Today can be marked done | You clear what the {left} left for you.
-%% event update the {fresh} with the newer records | by you | command on the {fresh}: Update, clicked while SIn | needs AClin, WDoneStale@{key} | reason: only work finished on older records offers Update | One tap reruns the {fresh} on the records that arrived after it read (decision 7).
+%% event Coda takes in what arrived in the {work} | by Coda | needs WRun@{key}, NwSeen@{key} | reason: only running work takes in what arrived while it ran | Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).
+%% event update the {fresh} with the newer records | by you | command on the {fresh}: Update, clicked while SIn | needs AClin, WDoneStale@{key} | reason: only an answer with newer records since offers Update | One tap answers again on the newer records (Dev 2026-10-26).
 %%
 %% Outcomes. Every kind of work ends with one event; what it produces is each owner's "may".
-%% events Coda finishes any work = Coda finishes the {work}
-%% event Coda finishes the {fresh} on older records | by Coda | needs WRun@{key}, NwSeen@{key}, MLFree | reason: only the work's own state makes its events possible, and work waits out a correction's Undo (PM:552-559) | Records changed under the {fresh}; Coda finishes from what it read, notes the newer records with one tap to update, and changes nothing from stale reading (decision 7). Background work instead publishes its reassessment as it is (RP:1430-1432).
+%% events Coda finishes any work = Coda finishes the {work} with an update for you | Coda finishes the {work} quietly
+%% events Coda finishes any work with an update for you = Coda finishes the {work} with an update for you
 %% event open the concern | by you | needs SIn, AClin | reason: commands need an active session and clinical access | You read the concern; opening is yours alone and never clears it.
 %% event another physician opens the concern | by another physician | Someone else read it; it stays new to you.
 %% event mark the concern done | by you | command on the concern: Done, clicked while SIn | needs AClin, CNeeds | reason: Done needs clinical access and a concern that needs attention | Done clears this exact concern for every physician (Dev 2026-10-22).
@@ -88,7 +74,7 @@ stateDiagram-v2
 %% event resume the follow-up | by you | command on the follow-up: Resume, clicked while SIn | needs AClin, FHeld | reason: only a held follow-up resumes | Resume reviews the current version of the follow-up (M1).
 %% event cancel the follow-up | by you | command on the follow-up: Cancel, clicked while SIn | needs AClin, FActive, FHeld | reason: only an active or held follow-up is cancelled | You end the follow-up; Coda respects the cancel unless new information arrives (A5).
 %% event complete the follow-up | by you | command on the follow-up: Complete, clicked while SIn | needs AClin, FActive, FHeld | reason: only an active or held follow-up is completed | You mark it complete, offered with new date or cancel when Coda can't restart its review (A4).
-%% events Coda finishes other work = Coda finishes the initial understanding | Coda finishes the patient review | Coda finishes the weekly review | Coda finishes the visit preparation | Coda finishes the asked reply | Coda finishes the proactive work | Coda finishes the answer | Coda finishes the reply revision
+%% events Coda finishes other work = Coda finishes the initial understanding with an update for you | Coda finishes the initial understanding quietly | Coda finishes the patient review with an update for you | Coda finishes the patient review quietly | Coda finishes the weekly review with an update for you | Coda finishes the weekly review quietly | Coda finishes the visit preparation with an update for you | Coda finishes the visit preparation quietly | Coda finishes the asked reply with an update for you | Coda finishes the asked reply quietly | Coda finishes the proactive work with an update for you | Coda finishes the proactive work quietly | Coda finishes the answer with an update for you | Coda finishes the answer quietly | Coda finishes the reply revision with an update for you | Coda finishes the reply revision quietly
 %% event a visit is scheduled | by the practice schedule | needs VNone, VOver, VCancel | reason: one visit is modeled at a time | A new visit for the patient is on the schedule.
 %% event the visit ends | by the clock | needs VAhead, VCancelled | reason: only a visit still ahead can pass | The visit's recorded time passes; a running preparation finishes, anything owed or failed ends.
 %% event the visit is cancelled | by the practice schedule | needs VAhead | reason: only a visit still ahead can be cancelled | Everything unfinished for that visit ends at once; a finished briefing stays as history.
@@ -103,30 +89,26 @@ stateDiagram-v2
 %% event open the follow-up | by you | needs SIn, AClin, FActive, FHeld, FCompleted, FCancelled | reason: commands need an active session and clinical access; only an existing follow-up opens | You read the follow-up in the reader.
 %% event open past work | by you | needs SIn, AClin | reason: commands need an active session and clinical access | You read a piece of Coda's past work.
 %% event open past work from the follow-up | by you | needs SIn, AClin, RFollow | reason: commands need an active session and clinical access | From a follow-up you open the work that set or changed it.
-%% event open the work that raised the concern | by you | needs SIn, AClin, RConcern | reason: commands need an active session and clinical access | From a concern you open the work that raised it.
+%% event open the work that raised the concern | by you | needs SIn, AClin, RConcern | reason: commands need an active session and clinical access | From a concern you open the work that raised or last revised it; that work always has the written communication explaining the concern (CT visibility: a new or revised concern never comes without one). The link is a data promise for a linked proof.
 %% event close the reader | by you | You close the reader and are exactly where you were.
 %% event open Updates | by you | needs SIn | reason: commands need an active session | You open the day's log of everything Coda did.
-%% event open an update from the orb | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | From the orb preview you open one update; Coda opens on it.
 %% event open the reply | by you | needs SIn, AClin, MROpen | reason: replies are clinical content; only open reply work has a card | You open the reply card from Today, Updates or Past work (Review reply, patient-messaging.md:1128); opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).
 %% event open the {row} that couldn't restart | by you | needs SIn, AClin, LShown@{key} | reason: clinical content; only a row on Today opens | You open the row; it stays on Today with Done; opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).
 %% event discuss what you're reading | by you | needs SIn, AClin, ROpen | reason: Discuss belongs to the item open in the reader, which is clinical content | The reader's one primary action opens or returns to that item's exact anchored conversation in this patient, keeping other drafts (px.md:514, 695).
-%% event open an update row | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | You read one update; opening records it seen and never removes it.
+%% event open an update | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | You read one update, from the Updates list or wherever the app offers it; opening records it seen and never removes it. Previewing one never navigates or clears attention; only opening it does (PX).
 %% event back to Updates | by you | You return to the list where you were.
 %% event close Updates | by you | You close the panel.
-%% event show more from this day | by you | needs SIn | reason: commands need an active session | The next page of the day appends.
 %% event {read} shows a saved copy | by the app | needs RdLoading@{key} | reason: only a read in progress shows a saved copy | What you saw last appears at once and refreshes quietly; loading shows only when nothing can.
 %% event {read} loads | by the practice system | A first read shows; a refresh updates what is shown in place, and an empty answer never replaces it (px.md:990).
 %% event {read} loads in part | by the practice system | What loaded shows with one quiet line and Retry; never read as empty (RP-217).
 %% event {read} fails to load | by the practice system | What was shown stays with one quiet line and Retry; with nothing shown, it says it couldn't load, with Retry (px.md:440).
 %% event retry {read} | by you | needs SIn, RdKept@{key}, RdFailed@{key} | reason: only a read that shows a problem offers Retry | You read it again; what is shown stays.
-%% event the next page loads | by the practice system | needs UdMore@day | reason: only a requested page arrives | More rows append.
-%% event the next page fails | by the practice system | needs UdMore@day | reason: only a requested page fails | The rows already shown stay, with Retry for the next page.
-%% event go to an earlier day | by you | needs SIn, RdShown@day, RdKept@day, UdMore@day | reason: Earlier comes from a read that named an earlier day (runtime-protocol.md:418) | You step back to the latest earlier day with rows you may see (PX-437).
+%% event go to an earlier day | by you | needs SIn, RdShown@day, RdKept@day | reason: Earlier comes from a read that named an earlier day (runtime-protocol.md:418) | You step back to the latest earlier day with rows you may see (PX-437).
 %% event return to today's updates | by you | needs SIn, UwEarlier | reason: Today shows only on an earlier day | You come back to today.
 %% event go to the next update | by you | needs SIn, AClin, UReading | reason: an update about a patient is clinical content | The reader steps to the next update, passing over conversation rows (px.md:432).
 %% event go to the previous update | by you | needs SIn, AClin, UReading | reason: an update about a patient is clinical content | The reader steps to the previous update, passing over conversation rows (px.md:432).
 %% event the practice connects a calendar | by the practice | needs ScOff@schedule | reason: only a practice without a calendar connects one | The schedule rail appears beside the list.
-%% event the schedule finds no calendar | by the practice system | There is no schedule area and the list takes the width (px.md:613).
+%% event the schedule finds no calendar | by the practice system | There is no schedule to show (px.md:613).
 %% event midnight passes | by the practice clock | The practice day turns over: Today, Updates on today and the schedule refresh in place, a read that failed tries again, and each patient's update for today starts over (runtime-protocol.md:174-182).
 %%
 %% The conversation. Coda's answer is one more kind of work above. Send while Coda answers steers
@@ -149,14 +131,14 @@ stateDiagram-v2
 %% events you stop the follow-up = stop the follow-up | stop and discuss the follow-up
 %% events you stop the {held} = stop the {held} | stop and discuss the {held}
 %% events you change the Updates day = go to an earlier day | return to today's updates
-%% events another update opens = go to the next update | go to the previous update | open an update from the orb
+%% events another update opens = go to the next update | go to the previous update | open an update
 %% events you write to Coda = send | send to steer the answer | send next | send a queued message now
 %% events access to the patient narrows = clinical access reduced | patient access removed
 %% events you open a conversation = open a conversation | discuss what you're reading | stop and discuss the {held} | stop and discuss the follow-up
 %% events you leave the conversation = go to Today | open the patient | start a new conversation | follow a link | clinical access reduced | patient access removed
 %% events you leave the composer = go to Today | open the patient | open a conversation | start a new conversation | follow a link | discuss what you're reading | clinical access reduced | patient access removed | the session expires
 %% event type in the composer | by you | needs SIn, CrNone@conversation, RdShown@conversation, RdKept@conversation | reason: a composer opens only once its conversation and saved draft are shown, so nothing typed hides the saved text | Your draft saves quietly as you write.
-%% event the draft saves | by the practice system | The draft is saved for you alone.
+%% event the draft saves | by the practice system | A draft that showed Not saved is kept again, for you alone; quiet saving shows nothing.
 %% event the draft fails to save | by the practice system | The draft shows Not saved with Retry; nothing else stops.
 %% event retry saving the draft | by you | needs SIn | reason: commands need an active session | You retry the save.
 %% event discard the draft | by you | needs SIn, CrNone@conversation, RdShown@conversation, RdKept@conversation | reason: a composer opens only once its conversation and saved draft are shown, so nothing typed hides the saved text | You clear the draft on purpose.
@@ -180,32 +162,30 @@ stateDiagram-v2
 %% event open a citation in Updates | by you | needs SIn, AClin, UReading | reason: sources are clinical content | A citation in an update opens its preview.
 %% event open a citation in the patient summary | by you | needs SIn, AClin, PPatient | reason: sources are clinical content | A citation in the summary opens its preview on the page.
 %% event open a citation in the conversation | by you | needs SIn, AClin, PConv | reason: sources are clinical content | A citation in an answer opens its preview.
-%% event go to a source from Sources | by you | needs SIn, AClin, SrcOpen | reason: sources are clinical content | A Sources row opens that source's first citation, revealing Basis first if it sits there (PX 2026-09-17).
+%% event go to a source from Sources | by you | needs SIn, AClin, PPatient | reason: sources are clinical content | A row in the patient page's Sources opens that source's first citation (PX 2026-09-17).
 %% event expand the source | by you | needs SIn, AClin | reason: sources are clinical content | Expand adds the qualified source text.
 %% event the source loads | by the practice system | The source text shows.
 %% event the source fails to load | by the practice system | The preview stays, with Retry.
 %% event the source has no qualified text | by the practice system | Only the preview can be shown.
 %% event retry the source | by you | needs SIn | reason: commands need an active session | You retry the source.
 %% event close the source | by you | The pane closes; the surface stays.
-%% event the daily records check starts | by the records source | needs SrcCurrent | reason: only a source with current records is checked | Each source is checked at least daily, with no model calls (CT).
-%% event the check finds nothing new | by the records source | needs SrcChecking | reason: only a running check finishes | Nothing new; no review follows.
-%% event the records check fails | by the records source | needs SrcChecking | reason: only a running check fails | "Records couldn't be updated"; Coda keeps working from the last good records.
-%% event the records check retries | by the records source | needs SrcFailed | reason: only a failed check retries | The check retries on its own; a small failure never waits a day (N11).
+%% event the records source can't update | by the records source | needs SrcCurrent, SrcBack | reason: only a source with current or reconnected records can fall behind | "Records couldn't be updated"; Coda keeps working from the last good records. How often the runtime checks and retries is not the graph's (Dev 2026-10-24; infrastructure-gaps.md).
+%% event the records source updates again | by the records source | needs SrcFailed, SrcBack | reason: only a source that couldn't update, or is back but not yet updated, recovers | Records are current again; with nothing new, no review follows.
 %% event the source becomes unavailable | by the records source | The patient's source is down; their page and briefing say "Records as of …, couldn't update", and Today shows no row for it.
 %% event the source is reconnected | by the records source | needs SrcGoneKept, SrcGoneEmpty, PsUp | reason: only an unavailable source reconnects, and not while the practice's whole source is down | The source is back; a check runs at once.
 %% event the practice's records source goes down | by the records source | The whole source is down for the practice: one line on Today for the practice, never a row per patient; every patient's records read as unavailable and Coda keeps working from the last good records.
 %% event the practice's records source comes back | by the records source | The Today line goes away and every patient's records are checked at once.
-%% event invite the patient | by you | command on the patient's connection: Invite, clicked while SIn | needs PcNone, PcEnded | reason: only a patient not connected or invited can be invited | Any practice member invites a roster patient to connect through Duet, by text with email as backup.
+%% event invite the patient | by you | command on the patient's connection: Invite, clicked while SIn | needs ADemo, AClin, PcNone, PcEnded | reason: only a patient not connected or invited can be invited; acting on a patient needs you to see them, at least who they are | Any practice member invites a roster patient to connect through Duet, by text with email as backup.
 %% event the invitation is delivered | by the messaging provider | needs PcSending | reason: only a sending invitation is delivered | The patient has the invitation.
 %% event the invitation can't be delivered | by the messaging provider | needs PcSending | reason: only a sending invitation can fail | The roster shows it couldn't be delivered, with Resend.
-%% event resend the invitation | by you | command on the patient's connection: Resend, clicked while SIn | needs PcSent, PcUndelivered | reason: only a sent or undelivered invitation is resent | A resend replaces the earlier invitation.
+%% event resend the invitation | by you | command on the patient's connection: Resend, clicked while SIn | needs ADemo, AClin, PcSent, PcUndelivered | reason: only a sent or undelivered invitation is resent; acting on a patient needs you to see them, at least who they are | A resend replaces the earlier invitation.
 %% event the invitation reminder goes out | by the practice system | needs PcFresh | reason: one reminder only | One reminder, then expiry.
 %% event the invitation expires | by the practice system | needs PcReminded | reason: an invitation expires after its reminder | The invitation lapses; the patient can be invited again.
-%% event cancel the invitation | by you | command on the patient's connection: Cancel the invitation, clicked while SIn | needs PcInvited | reason: only an open invitation is withdrawn | You withdraw the invitation.
+%% event cancel the invitation | by you | command on the patient's connection: Cancel the invitation, clicked while SIn | needs ADemo, AClin, PcInvited | reason: only an open invitation is withdrawn; acting on a patient needs you to see them, at least who they are | You withdraw the invitation.
 %% event the patient joins and consents | by the patient through Duet | needs PcInvited | reason: any invitation the practice still holds open can be accepted, even while it is being resent (Dev 2026-10-25) | Duet owns joining and consent; connected means sharing, so everything the patient already shares arrives with the join, on a first join and on joining again.
 %% event the patient leaves the practice | by the patient through Duet | needs PcConnected | reason: only a live connection can end | The connection ends at once; the practice keeps what it already received, dated.
-%% event discharge the patient | by you | command on the patient's connection: Discharge, clicked while SIn | needs PcConnected | reason: only a live connection can end | Any practice member ends the connection; what was received stays, dated.
-%% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once.
+%% event discharge the patient | by you | command on the patient's connection: Discharge, clicked while SIn | needs ADemo, AClin, PcConnected | reason: only a live connection can end; acting on a patient needs you to see them, at least who they are | Any practice member ends the connection; what was received stays, dated.
+%% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once; the practice keeps what it already received, dated.
 %%
 %% Patient messaging (PM). Coda never sends on its own: you copy a reply and send it in Gmail or
 %% Spruce, or Send has Coda send exactly your approved words for you, shown as sent by Coda for you
@@ -221,26 +201,26 @@ stateDiagram-v2
 %% event a message arrives from a known sender | by the messaging channel | needs ChLive, MLNone | reason: only a live channel delivers; known-sender rules link on arrival (PM-190) | The message links to the patient at once.
 %% event Coda suggests a patient or is unsure | by Coda | needs MLDeciding | reason: only a message being matched | Matching always ends here when Coda can't tell, so a person decides; how long the runtime tries is not the graph's (Dev 2026-10-24). The message waits to be matched; who sees it on Today is a projection.
 %% event Coda finds it is not a patient message | by Coda | needs MLDeciding, MLWaiting | reason: only an unmatched message | It stays out of patient work until the sender writes again.
-%% event confirm the match | by you | command on the message match: Confirm, clicked while SIn | needs MLWaiting | reason: only a message waiting to be matched | Any signed-in physician confirms Coda's suggestion (Dev 2026-10-23); the message becomes the patient's evidence.
+%% event confirm the match | by you | command on the message match: Confirm, clicked while SIn | needs ADemo, AClin, MLWaiting | reason: only a message waiting to be matched; acting on a patient needs you to see them, at least who they are | Any signed-in physician confirms Coda's suggestion (Dev 2026-10-23); the message becomes the patient's evidence.
 %% event confirm another patient | by you | command on the message match: Another patient, clicked while SIn | needs MLWaiting | reason: only a message waiting to be matched | You match it to someone else.
 %% event mark the message not a patient | by you | command on the message match: Not a patient, clicked while SIn | needs MLWaiting | reason: only a message waiting to be matched | It stays out of patient work until the sender writes again.
 %% event the sender writes again | by the messaging channel | needs ChLive, MLUnlinked | reason: only a live channel delivers | Coda looks at it afresh.
-%% event link the message to the patient | by you | command on the message match: Link, clicked while SIn | needs MLUnlinked, MLOther | reason: only an unlinked message or another patient's | You link it; it becomes the patient's evidence.
+%% event link the message to the patient | by you | command on the message match: Link, clicked while SIn | needs ADemo, AClin, MLUnlinked, MLOther | reason: only an unlinked message or another patient's; acting on a patient needs you to see them, at least who they are | You link it; it becomes the patient's evidence.
 %% event the patient writes again | by the patient | needs ChLive, MLLinked | reason: only a live channel delivers to a linked conversation | A newer message in the conversation.
-%% event another patient chosen for the message | by you | command on the message match: Move to another patient, clicked while SIn | needs MgrYes, MLLinked | reason: only the messaging manager corrects a linked match (A3, Dev 2026-10-01) | The correction goes forward only, with Undo for a few seconds.
-%% event the message is marked not a patient | by you | command on the message match: Mark not a patient, clicked while SIn | needs MgrYes, MLLinked | reason: only the messaging manager corrects a linked match (A3, Dev 2026-10-01) | The correction goes forward only, with Undo for a few seconds.
-%% event undo the correction | by you | command on the message match: Undo the correction, clicked while SIn | needs MLUndoOther, MLUndoNot | reason: only while a correction's Undo shows | The correction is undone and the reply restored exactly (Dev 2026-10-23).
+%% event another patient chosen for the message | by you | command on the message match: Move to another patient, clicked while SIn | needs ADemo, AClin, MgrYes, MLLinked | reason: only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are | The correction goes forward only, with Undo for a few seconds.
+%% event the message is marked not a patient | by you | command on the message match: Mark not a patient, clicked while SIn | needs ADemo, AClin, MgrYes, MLLinked | reason: only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are | The correction goes forward only, with Undo for a few seconds.
+%% event undo the correction | by you | command on the message match: Undo the correction, clicked while SIn | needs ADemo, AClin, MLUndoOther, MLUndoNot | reason: only while a correction's Undo shows; acting on a patient needs you to see them, at least who they are | The correction is undone and the reply restored exactly (Dev 2026-10-23).
 %% event the correction's Undo ends | by the clock | needs MLUndoOther, MLUndoNot | reason: only a correction with Undo showing | This patient's reply work goes; what was built on the message is withheld until the immediate re-review revises, re-authors, ends or closes it (N2, PM:701-711).
 %% event Coda can't read a message from the patient | by Coda | A message Coda couldn't read puts the patient on Today, linking to it in Gmail or Spruce; it is never held out of sight (PM-367).
 %% event Coda reads the message | by Coda | needs MrCant, MrDone | reason: only an unread message | The mark clears. A part still coming, such as a voicemail transcript, is read again quietly and never shown as unread (patient-messaging.md:378).
-%% event mark the unread message done | by you | command on the unread message: Done, clicked while SIn | needs MrCant | reason: only a message Coda couldn't read | You've handled it yourself.
+%% event mark the unread message done | by you | command on the unread message: Done, clicked while SIn | needs AClin, MrCant | reason: Done needs clinical access and a message Coda couldn't read | You've handled it yourself.
 %% event mark no reply needed | by you | command on the reply: No reply needed, clicked while SIn | needs AClin, MRReady, MRNewMsg, MLLinked | reason: only an open reply on the linked message | The reply closes with a brief Undo.
-%% event undo no reply needed | by you | command on the reply: Undo no reply needed, clicked while SIn | needs MRUndo | reason: only while its Undo shows | The reply reopens exactly.
+%% event undo no reply needed | by you | command on the reply: Undo no reply needed, clicked while SIn | needs AClin, MRUndo | reason: the reply is clinical content; only while its Undo shows | The reply reopens exactly.
 %% event the no-reply Undo ends | by the clock | needs MRUndo | reason: only a reply with Undo showing | The reply is closed.
 %% event the practice replies in the channel | by the practice in Gmail or Spruce | needs ChLive, MLLinked | reason: only a live linked conversation | The card shows it at once, as a fact, and the review of that conversation wakes.
 %% event edit the reply | by you | needs SIn, AClin, MRReady, MRNewMsg, MLLinked | reason: commands need an active session and clinical access; the reply belongs to the linked message | Your reply box is your private draft; your edits stay yours.
-%% event use Coda's update | by you | command on the reply: Use Coda's update, clicked while SIn | needs RtOffered | reason: only while Coda's update is offered | Coda's newer text replaces yours, with Restore my version.
-%% event restore my version | by you | command on the reply: Restore my version, clicked while SIn | needs RtRestorable | reason: only while your earlier text can be restored | Your earlier text comes back; one restore point.
+%% event use Coda's update | by you | command on the reply: Use Coda's update, clicked while SIn | needs AClin, RtOffered | reason: the reply is clinical content; only while Coda's update is offered | Coda's newer text replaces yours, with Restore my version.
+%% event restore my version | by you | command on the reply: Restore my version, clicked while SIn | needs AClin, RtRestorable | reason: the reply is clinical content; only while your earlier text can be restored | Your earlier text comes back; one restore point.
 %% event send the reply | by you | command on the reply: Send, clicked while SIn | needs AClin, MRReady, MRNewMsg, MLLinked, ChLive, WIdle@revision | reason: Coda sends only the exact words you approved, on the linked conversation through a live channel, and not while a revision is rewriting them (PM:160; Copy waits the same way) | Coda sends exactly the text in your reply box through the channel, shown to the patient and the practice as sent by Coda for you (Dev 2026-10-24).
 %% event the channel sends the reply | by the messaging provider | needs MRSending, MRSendingNew | reason: only a reply Coda is sending can be sent | The channel reports the reply sent. Delivery and reading are the channel's to report, never assumed from sending (PM:161).
 %% event the channel can't send the reply | by the messaging provider | needs MRSending, MRSendingNew | reason: only a reply Coda is sending can fail | The channel refuses or fails; your text stays in the reply box and Send can be tried again.
@@ -286,26 +266,8 @@ stateDiagram-v2
           [*] --> PToday
           state "Today" as PToday
           state "Patient page" as PPatient {
-            state "Basis and limitations" as Basis {
-              [*] --> BClosed
-              state "Basis closed" as BClosed
-              state "Basis open" as BOpen
-              BClosed --> BOpen : open Basis
-              BClosed --> BOpen : go to a source from Sources / may reveal Basis first
-              BOpen --> BClosed : close Basis
-            }
-            --
-            state "Sources list" as Sources {
-              [*] --> SrcClosed
-              state "Sources closed" as SrcClosed
-              state "Sources open" as SrcOpen
-              SrcClosed --> SrcOpen : open Sources
-              SrcOpen --> SrcClosed : close Sources
-              SrcOpen --> SrcClosed : go to a source from Sources
-            }
-            --
             %% The source pane, written once: it belongs to the surface that opened it and closes with it.
-            %% One pane at a time: a citation elsewhere closes this one; another citation here changes only it.
+            %% Another citation on that surface changes only it; how many panes show at once is the app's.
             state "Source pane" as SourceShape {
               %% shape source
               [*] --> EClosed
@@ -331,17 +293,14 @@ stateDiagram-v2
               EOpen --> EOpen : open a citation in the patient summary
               EClosed --> EOpen : go to a source from Sources
               EOpen --> EOpen : go to a source from Sources
-              EOpen --> EClosed : open a citation in the reader
-              EOpen --> EClosed : open a citation in Updates
             }
+            [*] --> EPg
           }
           state "Conversation" as PConv {
             state "Source pane in the conversation" as ECv {
               %% use source as conversation: where = in the conversation
               EClosed --> EOpen : open a citation in the conversation
               EOpen --> EOpen : open a citation in the conversation
-              EOpen --> EClosed : open a citation in the reader
-              EOpen --> EClosed : open a citation in Updates
             }
             [*] --> ECv
           }
@@ -379,16 +338,10 @@ stateDiagram-v2
           %% when ANone | reason: you land where your access allows; identity only never shows clinical content (CT-012, PX-047)
           PDemo --> PGone : follow a link [no access]
           %% when ANone | reason: you land where your access allows; identity only never shows clinical content (CT-012, PX-047)
-          PToday --> PConv : open a conversation
-          PPatient --> PConv : open a conversation
-          PPatient --> PConv : start a new conversation
           %% Discuss, and Stop and discuss once accepted, open the work's exact anchored conversation (px.md:133, 514).
-          PToday --> PConv : discuss what you're reading
-          PPatient --> PConv : discuss what you're reading
-          PToday --> PConv : stop and discuss the {held}
-          PPatient --> PConv : stop and discuss the {held}
-          PToday --> PConv : stop and discuss the follow-up
-          PPatient --> PConv : stop and discuss the follow-up
+          PToday --> PConv : you open a conversation
+          PPatient --> PConv : you open a conversation
+          PPatient --> PConv : start a new conversation
           PPatient --> PConv : send
           PConv --> PPatient : open the patient [clinical access]
           %% when AClin | reason: you land where your access allows; identity only never shows clinical content (CT-012, PX-047)
@@ -434,10 +387,6 @@ stateDiagram-v2
               %% use source as reader: where = in the reader
               EClosed --> EOpen : open a citation in the reader
               EOpen --> EOpen : open a citation in the reader
-              EOpen --> EClosed : open a citation in Updates
-              EOpen --> EClosed : open a citation in the patient summary
-              EOpen --> EClosed : go to a source from Sources
-              EOpen --> EClosed : open a citation in the conversation
             }
             --
             state "Reading load" as RLoad {
@@ -474,11 +423,6 @@ stateDiagram-v2
           ROpen --> RNone : open the patient
           ROpen --> RNone : access to the patient narrows
           RLink --> RNone : access to the patient narrows
-          %% never OnePaneRdUp: Source open in the reader & Source open in Updates -- The shell shows one source pane at a time.
-          %% never OnePaneRdPg: Source open in the reader & Source open on the patient page -- The shell shows one source pane at a time.
-          %% never OnePaneRdCv: Source open in the reader & Conversation.Source pane in the conversation.Source open in the conversation -- The shell shows one source pane at a time.
-          %% never OnePaneUpPg: Source open in Updates & Source open on the patient page -- The shell shows one source pane at a time.
-          %% never OnePaneUpCv: Source open in Updates & Conversation.Source pane in the conversation.Source open in the conversation -- The shell shows one source pane at a time.
           %% never ClinicalReaderNeedsAccess: Reader open & Identity only -- Clinical content never shows without clinical access.
           %% never ClinicalReaderNeedsAnyAccess: Reader open & Cannot see the patient -- Clinical content never shows without access to the patient.
         }
@@ -499,7 +443,7 @@ stateDiagram-v2
                   %% use read as update: read = the update
                 }
               }
-              UList --> UReading : open an update row
+              UList --> UReading : open an update
               UReading --> UReading : another update opens
               UReading --> UList : back to Updates
               UReading --> UList : access to the patient narrows
@@ -509,24 +453,14 @@ stateDiagram-v2
               %% use source as updates: where = in Updates
               EClosed --> EOpen : open a citation in Updates
               EOpen --> EOpen : open a citation in Updates
-              EOpen --> EClosed : open a citation in the reader
-              EOpen --> EClosed : open a citation in the patient summary
-              EOpen --> EClosed : go to a source from Sources
-              EOpen --> EClosed : open a citation in the conversation
               EOpen --> EClosed : back to Updates
               EOpen --> EClosed : access to the patient narrows
             }
             --
             state "Updates day read" as UDay {
               %% use read as day: read = the Updates day
-              state "Showing the Updates day, loading more" as UdMore
-              RdShown --> UdMore : show more from this day
-              RdKept --> UdMore : show more from this day
-              UdMore --> RdShown : the next page loads
-              UdMore --> RdKept : the next page fails
               RdShown --> RdLoading : you change the Updates day
               RdKept --> RdLoading : you change the Updates day
-              UdMore --> RdLoading : you change the Updates day
               RdFailed --> RdLoading : return to today's updates
               RdFailed --> RdLoading : midnight passes [showing today]
               %% when UwToday | reason: an earlier day stays as you chose it
@@ -544,7 +478,7 @@ stateDiagram-v2
           }
           UClosed --> UOpen : open Updates
           UClosed --> UOpen : open all updates
-          UClosed --> UReading : open an update from the orb
+          UClosed --> UReading : open an update
           UOpen --> UClosed : close Updates
           %% never NoUpdateReadWithoutAccess: Reading an update & Cannot see the patient -- An update about a patient never shows without access to that patient.
           %% never NoUpdateReadWithIdentityOnly: Reading an update & Identity only -- An update's clinical content never shows with identity access only.
@@ -609,33 +543,8 @@ stateDiagram-v2
           RdFailed --> RdLoading : midnight passes
         }
         --
-        %% PX "Collapse Coda": the orb keeps the mounted workspace; hover never navigates or clears
-        %% attention.
-        state "Coda window" as Window {
-          [*] --> WinOpen
-          state "Coda open" as WinOpen
-          state "Collapsed to the orb" as WinOrb {
-            [*] --> WinOrbOnly
-            state "Orb only" as WinOrbOnly
-            state "Orb preview shown" as WinPreview
-            state "Orb preview pinned" as WinPinned
-            WinOrbOnly --> WinPreview : hover or focus the orb
-            WinPreview --> WinOrbOnly : leave the orb preview
-            WinPreview --> WinPinned : click the orb
-            WinOrbOnly --> WinPinned : click the orb
-            WinPinned --> WinOrbOnly : close the orb preview
-            WinPreview --> WinOrbOnly : press Escape on the orb preview
-            WinPinned --> WinOrbOnly : press Escape on the orb preview
-          }
-          WinPreview --> WinOpen : open an update from the orb
-          WinPinned --> WinOpen : open an update from the orb
-          WinOpen --> WinOrb : collapse Coda
-          WinOrb --> WinOpen : open Coda
-          WinOrb --> WinOpen : open all updates
-        }
-        --
-        %% PX "Find patient": one server-side roster search, 50 at a time; every roster patient stays
-        %% reachable; a failed page keeps what loaded (PX-89, Dev 2026-10-23).
+        %% PX "Find patient": one server-side roster search; every roster patient stays
+        %% reachable (PX-89, Dev 2026-10-23). How results page is the app's.
         state "Find patient" as Search {
           [*] --> FClosed
           state "Search closed" as FClosed
@@ -649,8 +558,6 @@ stateDiagram-v2
               RdShown --> RdLoading : type in find patient
               RdKept --> RdLoading : type in find patient
               RdFailed --> RdLoading : type in find patient
-              RdShown --> RdShown : more results load
-              RdShown --> RdKept : more results fail to load
             }
           }
           FClosed --> FOpen : open find patient
@@ -811,9 +718,9 @@ stateDiagram-v2
       ADemo --> ANone : patient access removed
     }
     --
-    %% CT clinical responsibilities: each source check runs at least daily with no model calls; a review
-    %% follows only when it brought something new. PX "Records as of" keeps the last good pull and names
-    %% a failure. Coda keeps working from the last good records while the source is unavailable (Dev
+    %% CT clinical responsibilities: a review follows only when something new arrives; how often sources
+    %% are checked is the runtime's (infrastructure-gaps.md). PX "Records as of" keeps the last good pull
+    %% and names a failure. Coda keeps working from the last good records while the source is unavailable (Dev
     %% 2026-10-23). The outage lines are projections from this owner.
     state "Records source" as Source {
       [*] --> SrcConnecting
@@ -821,13 +728,16 @@ stateDiagram-v2
       state "Records kept" as SrcHave {
         [*] --> SrcCurrent
         state "Records current" as SrcCurrent
-        state "Checking for new records" as SrcChecking
-        state "Records couldn't be updated, retrying" as SrcFailed
-        SrcCurrent --> SrcChecking : the daily records check starts
-        SrcChecking --> SrcCurrent : new records arrive
-        SrcChecking --> SrcCurrent : the check finds nothing new
-        SrcChecking --> SrcFailed : the records check fails
-        SrcFailed --> SrcChecking : the records check retries
+        state "Records couldn't be updated" as SrcFailed
+        %% A source that comes back has not updated yet: its records stay as of the last good update
+        %% until it does, so nothing claims they are current early (Astra review of #148).
+        state "Source back, records as of the last good update" as SrcBack
+        SrcCurrent --> SrcFailed : the records source can't update
+        SrcBack --> SrcFailed : the records source can't update
+        SrcFailed --> SrcCurrent : the records source updates again
+        SrcBack --> SrcCurrent : the records source updates again
+        SrcFailed --> SrcCurrent : new records arrive
+        SrcBack --> SrcCurrent : new records arrive
       }
       state "Source unavailable, last good records kept" as SrcGoneKept
       state "Source unavailable, no records yet" as SrcGoneEmpty
@@ -835,11 +745,11 @@ stateDiagram-v2
       SrcConnecting --> SrcGoneEmpty : the source becomes unavailable
       SrcHave --> SrcGoneKept : the source becomes unavailable
       SrcGoneEmpty --> SrcConnecting : the source is reconnected
-      SrcGoneKept --> SrcChecking : the source is reconnected
+      SrcGoneKept --> SrcBack : the source is reconnected
       SrcConnecting --> SrcGoneEmpty : the practice's records source goes down
       SrcHave --> SrcGoneKept : the practice's records source goes down
       SrcGoneEmpty --> SrcConnecting : the practice's records source comes back
-      SrcGoneKept --> SrcChecking : the practice's records source comes back
+      SrcGoneKept --> SrcBack : the practice's records source comes back
     }
     --
     %% Decision 9 (Dev 2026-10-23, practice-wide line approved 2026-10-24): when the practice's whole
@@ -911,18 +821,17 @@ stateDiagram-v2
       %% template
       %% Instance values say what each kind allows: {held} kinds can be stopped (initial
       %% understanding cannot, CT-014), {left} kinds leave a Today row when Coda can't restart them,
-      %% and {fresh} kinds offer one tap to update on newer records. {row} kinds have a row on Today when Coda can't restart them.
-%% {normal} is what an ordinary finish needs beyond running: {fresh} kinds need nothing new since
-%% they started (otherwise they finish on older records); other kinds finish from what they read.
-      %% instance understanding: work = initial understanding, normal = WRun
-      %% instance review: work = patient review, held = patient review, left = patient review, row = patient review, normal = WRun
-      %% instance followup: work = follow-up review, row = follow-up review, normal = WRun
-      %% instance weekly: work = weekly review, held = weekly review, normal = WRun
-      %% instance prep: work = visit preparation, held = visit preparation, left = visit preparation, row = visit preparation, normal = WRun
-      %% instance asked: work = asked reply, held = asked reply, left = asked reply, fresh = asked reply, row = asked reply, normal = NwNone
-      %% instance proactive: work = proactive work, held = proactive work, normal = WRun
-      %% instance answer: work = answer, held = answer, fresh = answer, normal = NwNone
-      %% instance revision: work = reply revision, held = reply revision, normal = WRun
+      %% and the {fresh} (a given chat answer) offers one tap to update when newer records arrive.
+      %% {row} kinds have a row on Today when Coda can't restart them.
+      %% instance understanding: work = initial understanding
+      %% instance review: work = patient review, held = patient review, left = patient review, row = patient review
+      %% instance followup: work = follow-up review, row = follow-up review
+      %% instance weekly: work = weekly review, held = weekly review
+      %% instance prep: work = visit preparation, held = visit preparation, left = visit preparation, row = visit preparation
+      %% instance asked: work = asked reply, held = asked reply, left = asked reply, row = asked reply
+      %% instance proactive: work = proactive work, held = proactive work
+      %% instance answer: work = answer, held = answer, fresh = answer
+      %% instance revision: work = reply revision, held = reply revision
       %% Idle, or in hand. Work in hand is active (owed or running) or stalled (waiting
       %% for an opportunity, or failed with Try again; a question for you is a finish, never a wait, CT:671). Stop, and anything that
       %% ends the work's occasion, takes work in hand back to idle wherever it is.
@@ -931,21 +840,21 @@ stateDiagram-v2
         state "{work} not in hand" as WIdle {
           [*] --> WNone
           state "No {work} owed" as WNone
-          state "{work} finished on older records, with Update" as WDoneStale
-          %% only asked, answer
+          %% A given answer is what was said: it keeps the records it used, marked when newer ones
+          %% arrive (Dev 2026-10-26, live where you work; history as it was).
+          state "{work} given" as WGiven
+          %% only answer
+          state "{work} given, newer records since, with Update" as WDoneStale
+          %% only answer
+          WGiven --> WDoneStale : news for the patient
+          %% only answer
         }
         state "{work} in hand" as WHand {
           [*] --> WActive
           state "{work} active" as WActive {
             [*] --> WOwed
             state "{work} owed, waiting to start" as WOwed
-            state "Coda is working on the {work}" as WRun {
-              [*] --> WQuiet
-              state "Working, no step shown" as WQuiet
-              state "Showing the current step" as WStep
-              WQuiet --> WStep : a tool call starts in the {work}
-              WStep --> WQuiet : the next model call starts in the {work}
-            }
+            state "Coda is working on the {work}" as WRun
           }
           state "{work} stalled" as WStalled {
             [*] --> WWait
@@ -1013,18 +922,12 @@ stateDiagram-v2
         WWait --> WOwed : try the {work} again
         WOwed --> WIdle : Coda can't restart the {work}
         WFail --> WIdle : Coda can't restart the {work}
-        WRun --> WIdle : Coda finishes the {work} [nothing new arrived]
-        %% when NwNone | reason: work that read everything there was is done
-        %% only understanding, review, prep, asked, answer
         WRun --> WIdle : Coda finishes the {work}
-        %% except understanding, review, prep, asked, answer
-        WRun --> WOwed : Coda finishes the {work} [something new arrived]
-        %% when NwSeen | reason: work that finished from what it read looks again at what arrived meanwhile (RP:1430-1432)
-        %% only understanding, review, prep
+        %% except answer
+        WRun --> WGiven : Coda finishes the {work}
+        %% only answer
         WRun --> WOwed : the correction's Undo ends
         %% except asked, revision
-        WRun --> WDoneStale : Coda finishes the {fresh} on older records
-        %% only asked, answer
         WHand --> WIdle : you stop the {held}
         %% except understanding, followup
         WHand --> WIdle : you stop the follow-up
@@ -1039,7 +942,7 @@ stateDiagram-v2
         %% when FHeld | reason: only a held follow-up resumes its review
         %% only followup
         WDoneStale --> WOwed : update the {fresh} with the newer records
-        %% only asked, answer
+        %% only answer
         WHand --> WIdle : cancel the follow-up
         %% only followup
         WHand --> WIdle : complete the follow-up
@@ -1056,37 +959,19 @@ stateDiagram-v2
         %% only revision
         WHand --> WIdle : the correction's Undo ends
         %% only asked, revision
-        WDoneStale --> WNone : the correction's Undo ends
-        %% only asked
         WHand --> WIdle : the disconnect completes
         %% only asked, revision
-        WDoneStale --> WNone : the disconnect completes
-        %% only asked
         WHand --> WIdle : mark no reply needed
         %% only asked, revision
         WHand --> WIdle : Coda finishes the patient review [a linked message, no reply open] / may propose a reply
         %% when MLLinked, MRNone | reason: a reply the review proposes first answers the ask (px.md:167)
         %% only asked
-        WDoneStale --> WNone : mark no reply needed
-        %% only asked
         WHand --> WIdle : Coda finishes the patient review [the practice replied] / may close the reply as answered
         %% when PrShown, MRReady, MRNewMsg | reason: the reply closes as answered only while open and after the practice replied
         %% only revision
-        WIdle --> WOwed : send
+        WIdle --> WOwed : you write to Coda
         %% only answer
-        WStalled --> WOwed : send
-        %% only answer
-        WIdle --> WOwed : send to steer the answer
-        %% only answer
-        WStalled --> WOwed : send to steer the answer
-        %% only answer
-        WIdle --> WOwed : send next
-        %% only answer
-        WStalled --> WOwed : send next
-        %% only answer
-        WIdle --> WOwed : send a queued message now
-        %% only answer
-        WStalled --> WOwed : send a queued message now
+        WStalled --> WOwed : you write to Coda
         %% only answer
         WIdle --> WOwed : the queued message starts
         %% only answer
@@ -1104,20 +989,18 @@ stateDiagram-v2
         %% only prep
       }
       --
-      %% Coda works from what it read. Something new arriving meanwhile never stops it. News is the
-      %% patient review's to take up (or the initial understanding's, before one exists), so those two
-      %% look again once they finish, and so does visit preparation, so a briefing reflects what
-      %% arrived before the visit; a {fresh} kind finishes with Update (decision 7); other work leaves
-      %% news to the review. How often the runtime retries or re-reads is not the graph's
-      %% (Dev 2026-10-24). Each start reads afresh, so starting clears the flag.
+      %% Whatever Coda is working on, it takes in what arrives meanwhile before it finishes, so nothing
+      %% it publishes rests on an older reading (Dev 2026-10-26). Responding to news stays the patient
+      %% review's (or the initial understanding's, before one exists). How the runtime notices and
+      %% re-reads is not the graph's (Dev 2026-10-24). Each start reads afresh, so starting clears it.
       state "{work}: news while working" as News {
-        %% only understanding, review, prep, asked, answer
         [*] --> NwNone
         state "Nothing new since it started" as NwNone
         state "Something new arrived since it started" as NwSeen
         NwNone --> NwSeen : news for the patient [working]
         %% when WRun | reason: only news that arrives while the work runs is news it missed
         NwSeen --> NwNone : Coda starts the {work}
+        NwSeen --> NwNone : Coda takes in what arrived in the {work}
       }
       --
       %% Stop holds the work with Resume where it was stopped. New causes still make new work owed;
@@ -1134,21 +1017,9 @@ stateDiagram-v2
         %% except understanding
         HYes --> HNo : resume the {held}
         %% except understanding
-        HYes --> HNo : send
+        HYes --> HNo : you write to Coda
         %% only answer
-        HYes --> HNo : send to steer the answer
-        %% only answer
-        HYes --> HNo : send next
-        %% only answer
-        HYes --> HNo : send a queued message now
-        %% only answer
-        HNo --> HYes : clinical access reduced [work in hand]
-        %% when WHand | reason: losing access stops what this physician started
-        %% only asked, answer, revision
-        HNo --> HYes : patient access removed [work in hand]
-        %% when WHand | reason: losing access stops what this physician started
-        %% only asked, answer, revision
-        HNo --> HYes : practice access removed [work in hand]
+        HNo --> HYes : you lose clinical access [work in hand]
         %% when WHand | reason: losing access stops what this physician started
         %% only asked, answer, revision
         HYes --> HNo : the correction's Undo ends
@@ -1228,11 +1099,11 @@ stateDiagram-v2
           CUnopened --> COpened : the concern is shown
           COtherOpened --> COpened : the concern is shown
           CUnopened --> COtherOpened : another physician opens the concern
-          COtherOpened --> CUnopened : Coda finishes any work / may revise the concern
-          COpened --> CUnopened : Coda finishes any work / may revise the concern
-          COtherOpened --> CUnopened : Coda finishes any work [not already now] / may raise the urgency
+          COtherOpened --> CUnopened : Coda finishes any work with an update for you / may revise the concern
+          COpened --> CUnopened : Coda finishes any work with an update for you / may revise the concern
+          COtherOpened --> CUnopened : Coda finishes any work with an update for you [not already now] / may raise the urgency
           %% when UrgToday, UrgLowered | reason: a raise to now makes the concern new to everyone (RP:286)
-          COpened --> CUnopened : Coda finishes any work [not already now] / may raise the urgency
+          COpened --> CUnopened : Coda finishes any work with an update for you [not already now] / may raise the urgency
           %% when UrgToday, UrgLowered | reason: a raise to now makes the concern new to everyone (RP:286)
         }
         --
@@ -1241,11 +1112,11 @@ stateDiagram-v2
           state "For today" as UrgToday
           state "Needs you now" as UrgNow
           state "For today, lowered from now before anyone opened it" as UrgLowered
-          UrgToday --> UrgNow : Coda finishes any work / may raise the urgency
-          UrgLowered --> UrgNow : Coda finishes any work / may raise the urgency
-          UrgNow --> UrgToday : Coda finishes any work [opened since marked now] / may lower the urgency
+          UrgToday --> UrgNow : Coda finishes any work with an update for you / may raise the urgency
+          UrgLowered --> UrgNow : Coda finishes any work with an update for you / may raise the urgency
+          UrgNow --> UrgToday : Coda finishes any work with an update for you [opened since marked now] / may lower the urgency
           %% when COpened, COtherOpened | reason: a demotion keeps the now mark until a physician opens it (RP:286-289)
-          UrgNow --> UrgLowered : Coda finishes any work [nobody opened it at now] / may lower the urgency
+          UrgNow --> UrgLowered : Coda finishes any work with an update for you [nobody opened it at now] / may lower the urgency
           %% when CUnopened | reason: a demotion keeps the now mark until a physician opens it (RP:286-289)
           UrgLowered --> UrgToday : the concern is shown
           UrgLowered --> UrgToday : another physician opens the concern
@@ -1257,9 +1128,9 @@ stateDiagram-v2
           state "Tied to the upcoming visit" as NgVisit
           state "Its visit passed while it was marked now and unopened; ends when anyone opens it" as NgPassed
           state "About a patient message; stays with its message" as NgMsg
-          NgMsg --> NgNo : Coda finishes the patient review [the message is no longer linked] / re-authors the concern from the patient's own record
+          NgMsg --> NgNo : Coda finishes the patient review with an update for you [the message is no longer linked] / re-authors the concern from the patient's own record
           %% when not MLLinked | reason: a message no longer linked to this patient, whether moved, marked not a patient or being matched again, is not its evidence, so the re-review decides its concern (N2)
-          NgNo --> NgVisit : Coda finishes any work [a visit ahead] / may tie the concern to the upcoming visit
+          NgNo --> NgVisit : Coda finishes any work with an update for you [a visit ahead] / may tie the concern to the upcoming visit
           %% when VAhead | reason: only a visit still ahead can be linked to (A7)
           NgVisit --> NgPassed : the visit ends [unopened and marked now]
           %% when CUnopened, UrgNow, UrgLowered | reason: Coda never retires a now mark nobody opened (RP-289)
@@ -1267,13 +1138,13 @@ stateDiagram-v2
           %% when CUnopened, UrgNow, UrgLowered | reason: Coda never retires a now mark nobody opened (RP-289)
         }
       }
-      CRest --> CNeeds : Coda finishes any work / may raise a concern
-      CRest --> UrgNow : Coda finishes any work / may raise an urgent concern
-      CRest --> NgVisit : Coda finishes any work [a visit ahead] / may raise a nudge for the upcoming visit
+      CRest --> CNeeds : Coda finishes any work with an update for you / may raise a concern
+      CRest --> UrgNow : Coda finishes any work with an update for you / may raise an urgent concern
+      CRest --> NgVisit : Coda finishes any work with an update for you [a visit ahead] / may raise a nudge for the upcoming visit
       %% when VAhead | reason: only a visit still ahead can be linked to (A7)
-      CRest --> NgMsg : Coda finishes the patient review [a linked message] / may raise a concern about the message
+      CRest --> NgMsg : Coda finishes the patient review with an update for you [a linked message] / may raise a concern about the message
       %% when MLLinked | reason: only a message linked to this patient is this patient's evidence (PM-500)
-      CRest --> NgMsg : Coda finishes the asked reply [a linked message] / may raise a concern about the message
+      CRest --> NgMsg : Coda finishes the asked reply with an update for you [a linked message] / may raise a concern about the message
       %% when MLLinked | reason: only a message linked to this patient is this patient's evidence (PM-500)
       NgVisit --> CClosed : the visit ends [opened]
       %% when COpened, COtherOpened | reason: an opened visit nudge ends with its visit
@@ -1283,8 +1154,10 @@ stateDiagram-v2
       %% when COpened, COtherOpened | reason: an opened visit nudge ends with its visit
       NgVisit --> CClosed : the visit is cancelled [unopened, for today]
       %% when CUnopened, UrgToday | reason: an unopened nudge for today ends with its visit; one marked now waits to be opened (RP-289)
-      NgMsg --> CClosed : Coda finishes the patient review [the message is no longer linked] / may close the concern
+      NgMsg --> CClosed : Coda finishes the patient review with an update for you [the message is no longer linked] / may close the concern
       %% when not MLLinked | reason: a message no longer linked to this patient, whether moved, marked not a patient or being matched again, is not its evidence, so the re-review decides its concern (N2)
+      NgMsg --> CClosed : Coda finishes the patient review quietly [the message is no longer linked] / closes the concern
+      %% when not MLLinked | reason: a re-review that writes nothing can't re-author a concern, so it closes one whose message is no longer this patient's evidence (N2)
       NgPassed --> CClosed : the concern is shown
       NgPassed --> CClosed : another physician opens the concern
       CNeeds --> CDone : mark the concern done
@@ -1405,47 +1278,35 @@ stateDiagram-v2
       %% never NoPrepForCancelledVisit: visit preparation in hand & Visit cancelled -- Cancelling a visit ends its preparation at once.
     }
     --
-    %% PX persistence: one private draft per physician and conversation, saved quietly; Not saved
-    %% stays visible with Retry; Discard is explicit. Text a queue gives back comes
+    %% PX persistence: one private draft per physician and conversation, kept quietly (how it saves
+    %% is the app's); Not saved stays visible with Retry; Discard is explicit (Dev 2026-10-26). Text a queue gives back comes
     %% here, including when access is lost or the session ends; nothing typed is lost (N3).
     state "Your draft" as Draft {
       [*] --> DEmpty
       state "Composer empty" as DEmpty
       state "Draft written" as DText {
-        [*] --> DSaving
-        state "Saving quietly" as DSaving
-        state "Saved" as DSaved
+        [*] --> DKept
+        state "Draft kept quietly" as DKept
         state "Not saved, with Retry" as DNotSaved
-        DSaving --> DSaved : the draft saves
-        DSaving --> DNotSaved : the draft fails to save
-        DNotSaved --> DSaving : retry saving the draft
-        DSaved --> DSaving : type in the composer
-        DNotSaved --> DSaving : type in the composer
-        DSaved --> DSaving : the transcript is inserted
-        DNotSaved --> DSaving : the transcript is inserted
-        DSaved --> DSaving : insert the transcript
-        DNotSaved --> DSaving : insert the transcript
+        DKept --> DNotSaved : the draft fails to save
+        DNotSaved --> DKept : the draft saves
+        DNotSaved --> DKept : retry saving the draft
+        DNotSaved --> DKept : type in the composer
+        DNotSaved --> DKept : the transcript is inserted
+        DNotSaved --> DKept : insert the transcript
       }
-      DEmpty --> DSaving : type in the composer
-      DEmpty --> DSaving : the transcript is inserted
-      DEmpty --> DSaving : insert the transcript
+      DEmpty --> DKept : type in the composer
+      DEmpty --> DKept : the transcript is inserted
+      DEmpty --> DKept : insert the transcript
       DText --> DEmpty : send
       DText --> DEmpty : send to steer the answer
       DText --> DEmpty : send next
       DText --> DEmpty : discard the draft
-      DEmpty --> DSaving : remove a queued message
-      DText --> DSaving : remove a queued message
-      DEmpty --> DSaving : clinical access reduced [a message waits]
+      DEmpty --> DKept : remove a queued message
+      DText --> DKept : remove a queued message
+      DEmpty --> DKept : you lose clinical access [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DText --> DSaving : clinical access reduced [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DEmpty --> DSaving : patient access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DText --> DSaving : patient access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DEmpty --> DSaving : practice access removed [a message waits]
-      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
-      DText --> DSaving : practice access removed [a message waits]
+      DText --> DKept : you lose clinical access [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (N3)
     }
     --
@@ -1524,10 +1385,9 @@ stateDiagram-v2
       state "Nothing written to you today" as UpNone
       state "Written to you, new" as UpNew
       state "Opened by you" as UpOpened
-      UpNone --> UpNew : Coda finishes any work / may write you an update
-      UpOpened --> UpNew : Coda finishes any work / may write you an update
-      UpNew --> UpOpened : open an update row
-      UpNew --> UpOpened : open an update from the orb
+      UpNone --> UpNew : Coda finishes any work with an update for you
+      UpOpened --> UpNew : Coda finishes any work with an update for you
+      UpNew --> UpOpened : open an update
       UpNew --> UpNone : midnight passes
       UpOpened --> UpNone : midnight passes
     }
@@ -1769,19 +1629,6 @@ stateDiagram-v2
       %% never NoReplyForNotAPatient: No correction waiting on Undo.Not a patient, until the sender writes again & Reply work open -- Not a patient keeps the conversation out of patient work.
       %% never NoAskForOtherPatient: No correction waiting on Undo.Another patient's message & asked reply in hand -- A moved message's asked reply stops.
       %% never NoRevisionWithoutReply: reply revision in hand.reply revision active & No open reply -- A revision runs only while its reply is open.
-    }
-    --
-    %% M8: sidebar and schedule collapse are the physician's remembered preferences; they outlive
-    %% sign-out.
-    state "{panel} preference" as Panel {
-      %% template
-      %% instance sidebar: panel = sidebar
-      %% instance schedule: panel = schedule
-      [*] --> PanOpen
-      state "{panel} expanded" as PanOpen
-      state "{panel} collapsed" as PanShut
-      PanOpen --> PanShut : collapse the {panel}
-      PanShut --> PanOpen : expand the {panel}
     }
   }
   [*] --> App

@@ -2,10 +2,7 @@
   "unit": "unit-2676",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002676/2021-08-10a: allergen \"Hymenoptera venom (bees, wasps)\" not in catalog (text only)",
-    "MRN00002676/2021-08-10a: allergen \"Dust mites\" not in catalog (text only)",
     "MRN00002676/2021-08-10a: reaction \"Rhinitis\" not in catalog (text only)",
-    "MRN00002676/2021-08-10a: allergen \"Timothy grass pollen\" not in catalog (text only)",
     "MRN00002676/2021-08-10a: reaction \"Rhinitis\" not in catalog (text only)"
   ],
   "patients": [
@@ -131,6 +128,8 @@
           "allergies": [
             {
               "substance": "Hymenoptera venom (bees, wasps)",
+              "snomed": "125579000",
+              "category": "environment",
               "reaction": "Anaphylaxis",
               "severity": "severe",
               "criticality": "high",
@@ -145,6 +144,8 @@
             },
             {
               "substance": "Dust mites",
+              "snomed": "260147004",
+              "category": "environment",
               "reaction": "Rhinitis",
               "severity": "mild",
               "criticality": "low",
@@ -152,6 +153,8 @@
             },
             {
               "substance": "Timothy grass pollen",
+              "snomed": "256281009",
+              "category": "environment",
               "reaction": "Rhinitis",
               "severity": "mild",
               "criticality": "low",
@@ -2022,6 +2025,23 @@
         "display": "cromolyn sodium 20 MG/ML Oral Solution",
         "ingredient": "cromolyn",
         "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "allergens": {
+      "Dust mites": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Hymenoptera venom (bees, wasps)": {
+        "code": "125579000",
+        "display": "Hymenoptera venom",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Timothy grass pollen": {
+        "code": "256281009",
+        "display": "Timothy grass pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }
