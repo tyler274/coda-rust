@@ -993,6 +993,9 @@ stateDiagram-v2
           DrEmpty --> DrText : edit the unsent message
         }
         --
+        %% An item you attach follows its current version while you draft; if it is deleted, it drops off
+        %% your unsent message with a quiet note, and Send still works (Dev 2026-10-26).
+        %% events something you saved is deleted = delete the note | Duet deletes the note as you asked | delete the Plan | Duet deletes the Plan as you asked | delete the medication | Duet deletes the medication as you asked
         state "Item attached to your draft" as Ctx {
           [*] --> CtxNone
           state "Nothing attached" as CtxNone
@@ -1000,6 +1003,8 @@ stateDiagram-v2
           CtxNone --> CtxOn : ask about this
           CtxOn --> CtxOn : ask about this
           CtxOn --> CtxNone : remove the attached item
+          CtxOn --> CtxNone : something you saved is deleted / the attached item, if it was the one, drops off with a quiet note
+          CtxOn --> CtxOn : something you saved is deleted / any other attached item stays
           CtxOn --> CtxNone : send your message
           CtxNone --> CtxOn : edit the unsent message / may restore the item
         }

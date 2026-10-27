@@ -143,7 +143,9 @@ Linear wins.
   quotes it (north-star.md, Product structure; Dev 2026-09-23). While you
   draft, the item follows its current version, marked if it was corrected, and
   a changed item never bounces the message; once sent, the message keeps the
-  version it carried (Dev 2026-10-26, live where you work).
+  version it carried (Dev 2026-10-26, live where you work). An item deleted
+  while you draft drops off the unsent message with a quiet note, and Send
+  still works (Dev 2026-10-26).
 - Modeling note: "Your latest message" tracks the newest message on its way, on
   the account;
   each earlier message keeps its own state the same way. Person-to-person
