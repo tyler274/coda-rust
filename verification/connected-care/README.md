@@ -11,6 +11,7 @@ shared events, never shared states, and holds the rules that span both.
 | [../physician-experience/physician.mmd](../physician-experience/physician.mmd) | The practice's side: inviting, discharge, and the physician agents' work on what arrives. |
 | [journeys.md](journeys.md) | Joining, sharing, leaving, discharge and deletion across both graphs, replayed by `statechart.mjs journey`. |
 | [verus/](verus/) | The Verus model of the composition, and the proof that every rule holds across both graphs. |
+| [data-promises.md](data-promises.md) | Promises about records the charts' states can't hold, each with the Rust owner that must prove it; none is proved yet. |
 
 The connection is live (Dev 2026-10-25): while connected, each change to what the
 patient shares in Duet reaches the practice as "a shared Duet record arrives",

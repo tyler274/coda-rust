@@ -9,7 +9,7 @@ the graph stops allowing it, so a change that strands a useful outcome is caught
 Several journeys port the walks written for the earlier physician design
 (journey.md's "Walk across the boundaries"); they keep the same outcome in
 today's graph. They show the graph allows each outcome; how the app reaches it
-is coverage.md's, and what each record holds is the data proofs'.
+is coverage.md's, and what each record holds is data-promises.md's.
 
 Check it from the repository root:
 

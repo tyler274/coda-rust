@@ -9,7 +9,7 @@ the arrow hold once it happens, on both sides. A state is named as `duet:` or
 
 They port the earlier Duet examples of joining, sharing, leaving and discharge
 (Dev's October 22 answers Q15 to Q17 and Q20) to today's graphs. What reaches the
-practice, for which patient and at which version, is data/shared_records.rs's.
+practice, for which patient and at which version, is data-promises.md's.
 
 Check it from the repository root:
 

@@ -9,7 +9,7 @@ stops allowing it, so a change that strands a useful outcome is caught.
 Several journeys port examples written for the earlier Duet design (Dev's
 October 22 answers); they keep the same outcome in today's graph. They show the
 graph allows each outcome; how the app reaches it is coverage.md's, and what
-each record holds is the data proofs'.
+each record holds is data-promises.md's.
 
 Check it from the repository root:
 
@@ -162,8 +162,8 @@ From: You set up Duet and talk to it, with no practice or records
 ## Supporting information shows what the reply cited, with a note when a newer version exists
 
 Which version a reply cited, and whether a newer one exists, are records the
-graph doesn't hold; data/cited_version.rs proves the cited version is what
-shows. This journey shows the note can appear when it loads.
+graph doesn't hold; that the cited version is what shows is a promise in
+data-promises.md. This journey shows the note can appear when it loads.
 
 From: You set up Duet and talk to it, with no practice or records
 

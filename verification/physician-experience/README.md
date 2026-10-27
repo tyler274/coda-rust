@@ -10,6 +10,7 @@ The physician web app's behavior, written as one statechart.
 | [journeys.md](journeys.md) | Useful outcomes a physician reaches, replayed from the graph's start by `statechart.mjs journey`; it fails when the graph stops allowing one. |
 | [coverage.md](coverage.md) | What the Rust app shows today for each graph state: built, partial, missing or not shown, and whether the server data exists. `statechart.mjs coverage` checks it against the graph. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
+| [data-promises.md](data-promises.md) | Promises about records the graph's states can't hold, each with the Rust owner that must prove it; none is proved yet. |
 | [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, its Page region is what one browser tab shows, and its Patient link region is the Coda link that tab holds. It has no safety rules. |
 | [sign-in.against.json](sign-in.against.json) | The map that connects sign-in.mmd to the graph, in the graph's words. |
 | [evidence/](evidence/) | Screenshots from exercising the running app, such as the staging email sign-in on 2026-10-24. |

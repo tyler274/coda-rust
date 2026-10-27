@@ -73,8 +73,10 @@ changes it, so a recorded run can be checked against the flat model, and `agains
 checks a more detailed model of the same behavior. The harness has no chart of
 its own; it is just the harness.
 
-Do not force every promise into finite states. Identity, revisions, collections,
-atomic batches and progress need linked data proofs and explicit assumptions.
+Do not force every promise into finite states. A promise about records (identity,
+revisions, collections, atomic batches) is written beside its chart in
+`data-promises.md`, naming the Rust owner that must prove it, and stays marked
+unproven until that proof exists. Progress needs explicit assumptions.
 Charts without safety rules establish transition correspondence only. Keep generated
 behavior separate from editable proofs; `statechart.mjs check` detects generated drift. Review
 manual data refinements and implementation connections separately.
