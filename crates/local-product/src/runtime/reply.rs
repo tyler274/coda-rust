@@ -13,7 +13,7 @@ use harness::execution::{Item, Record, Request, Response};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, Condition, DbErr, EntityTrait, QueryFilter, QueryOrder,
     QuerySelect, Set, TransactionTrait,
-    sea_query::{Alias, Expr, ExprTrait, OnConflict, extension::postgres::PgExpr},
+    sea_query::{Alias, Expr, ExprTrait, Func, OnConflict, extension::postgres::PgExpr},
 };
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -264,6 +264,16 @@ fn nonempty(scope: &Scope) -> Result<(), DbErr> {
     Ok(())
 }
 
+/// One draft's earlier revisions.
+fn history_of(scope: &Scope) -> Condition {
+    use reply_revision::Column as C;
+    Condition::all()
+        .add(C::Practice.eq(scope.practice.as_str()))
+        .add(C::Physician.eq(scope.physician.as_str()))
+        .add(C::Workspace.eq(scope.workspace.as_str()))
+        .add(C::Reply.eq(scope.chat.as_str()))
+}
+
 fn current(state: &Draft, claim: &RevisionClaim, now: i64) -> bool {
     state.status == "active"
         && state.input.as_ref() == Some(&claim.input)
@@ -334,15 +344,10 @@ impl Store {
     /// This physician's earlier revisions of one reply draft, oldest first,
     /// each with its pinned sources and every attempt's retained records.
     pub async fn earlier_revisions(&self, scope: &Scope) -> Result<Vec<EarlierRevision>, DbErr> {
-        use reply_revision::Column as C;
         nonempty(scope)?;
         reply_revision::Entity::find()
-            .filter(C::Practice.eq(scope.practice.as_str()))
-            .filter(C::Physician.eq(scope.physician.as_str()))
-            .filter(C::Workspace.eq(scope.workspace.as_str()))
-            .filter(C::Reply.eq(scope.chat.as_str()))
-            .order_by_asc(C::ArchivedAt)
-            .order_by_asc(C::Key)
+            .filter(history_of(scope))
+            .order_by_asc(reply_revision::Column::Ordinal)
             .all(&self.db)
             .await?
             .into_iter()
@@ -462,6 +467,18 @@ impl Store {
                 attempts: std::mem::take(&mut state.attempts),
             };
             let archived_at = now(&tx).await?;
+            // The draft row lock serializes archiving, so the next ordinal
+            // is the draft's highest so far plus one.
+            let ordinal = reply_revision::Entity::find()
+                .select_only()
+                .expr(Func::max(Expr::col(reply_revision::Column::Ordinal)))
+                .filter(history_of(scope))
+                .into_tuple::<Option<i64>>()
+                .one(&tx)
+                .await?
+                .flatten()
+                .unwrap_or(0)
+                + 1;
             // A plain insert: the command receipt makes the key unique per
             // physician, so a conflict means that invariant broke.
             reply_revision::Entity::insert(reply_revision::ActiveModel {
@@ -471,6 +488,7 @@ impl Store {
                 reply: Set(scope.chat.clone()),
                 key: Set(key),
                 archived_at: Set(archived_at),
+                ordinal: Set(ordinal),
                 state: Set(serde_json::to_value(&earlier)
                     .map_err(|_| error("invalid earlier revision"))?),
             })
@@ -579,7 +597,10 @@ impl Store {
     }
 
     /// Retains one execution record on this attempt. A dispatch needs a
-    /// current attempt; late provider evidence is kept even once stale.
+    /// current attempt; late provider evidence is kept even once stale. When
+    /// a newer revision has already moved this attempt's revision into
+    /// history, the record is appended to that history row instead. Nothing
+    /// else there or on the draft changes, so it can never publish.
     pub async fn record_revision(
         &self,
         claim: &RevisionClaim,
@@ -589,13 +610,40 @@ impl Store {
         if matches!(record, Record::Dispatch { .. }) && !current(&state, claim, now) {
             return Err(error("stale revision dispatch"));
         }
-        let attempt = state
+        if let Some(attempt) = state.attempts.iter_mut().find(|a| a.id == claim.attempt) {
+            attempt.records.push(record);
+            return Self::save_draft_row(tx, &claim.scope, &state).await;
+        }
+        // The draft lock is held first, as on every path that archives, so
+        // this history row cannot be written concurrently.
+        let row = reply_revision::Entity::find_by_id((
+            claim.scope.practice.clone(),
+            claim.scope.physician.clone(),
+            claim.scope.workspace.clone(),
+            claim.scope.chat.clone(),
+            claim.input.key.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| error("unknown revision attempt"))?;
+        let mut earlier: EarlierRevision = serde_json::from_value(row.state.clone())
+            .map_err(|_| error("corrupt earlier revision"))?;
+        if earlier.input != claim.input {
+            return Err(error("unknown revision attempt"));
+        }
+        earlier
             .attempts
             .iter_mut()
             .find(|a| a.id == claim.attempt)
-            .ok_or_else(|| error("unknown revision attempt"))?;
-        attempt.records.push(record);
-        Self::save_draft_row(tx, &claim.scope, &state).await
+            .ok_or_else(|| error("unknown revision attempt"))?
+            .records
+            .push(record);
+        let mut archived: reply_revision::ActiveModel = row.into();
+        archived.state =
+            Set(serde_json::to_value(&earlier).map_err(|_| error("invalid earlier revision"))?);
+        archived.update(&tx).await?;
+        tx.commit().await
     }
 
     /// Publishes the revised text only if this attempt is still current, its

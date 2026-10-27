@@ -265,6 +265,11 @@ impl Store {
         let mut revisions = schema.create_table_from_entity(entities::reply_revision::Entity);
         revisions.if_not_exists();
         tx.execute(&revisions).await?;
+        // The unique (draft, ordinal) index that orders a draft's history.
+        for mut index in schema.create_index_from_entity(entities::reply_revision::Entity) {
+            index.if_not_exists();
+            tx.execute(&index).await?;
+        }
         tx.commit().await
     }
 
