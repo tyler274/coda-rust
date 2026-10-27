@@ -1,0 +1,675 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001736",
+      "events": [
+        {
+          "id": "2025-01-09a",
+          "kind": "ed_visit",
+          "start": "2025-01-09T13:05",
+          "end": "2025-01-10T15:40",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, agitation and tremor",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "icd10": "G25.79",
+              "action": "diagnosed",
+              "onset": "2025-01-09"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sertraline 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched to fluoxetine by outside psychiatry 2025-01-02"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Serotonin syndrome"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-09T13:10",
+              "bp": [
+                160,
+                95
+              ],
+              "hr": 120,
+              "rr": 20,
+              "temp_c": 38.9,
+              "spo2": 98
+            },
+            {
+              "time": "2025-01-10T14:00",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-09T13:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-09T13:25",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-01-09T13:40",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-01-09T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-01-13T08:20",
+              "body": "AREA MEDICAL CENTER, EMERGENCY SERVICES - PHYSICIAN RECORD (received 01/13/2025)\nArrival 01/09/2025 13:05. Held in the ED observation unit; discharged 01/10/2025 15:40.\n\nCC: confused and shaky since this morning.\n\n34 y/o F brought by her husband with about six hours of confusion, agitation and tremor. She vomited several times this morning. Husband says she has seemed more anxious all week. Her psychiatrist changed her antidepressant about a week ago; she is now on fluoxetine. She also takes sumatriptan for occasional migraines and has been using an over-the-counter cough syrup with dextromethorphan for a few days. History of factitious disorder and a prior ED visit for confusion and tremor (hypoglycemia, 2023). Allergies: lamotrigine (TEN), sulfa. Outside med list still shows sertraline 100 mg and loperamide.\n\nExam: T 38.9 C, HR 120, BP 160/95. Sweating, restless. Pupils dilated, reactive to light. Hyperreflexic with inducible clonus at the ankles. Oriented to self only, not to time or place.\n\nLabs: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98. CBC unremarkable. UA normal.\n\nImpression: serotonin syndrome - fluoxetine with dextromethorphan and a triptan.\n\nCourse: all serotonergic drugs and the cough syrup held. IV fluids, IV lorazepam for agitation and tremor, cyproheptadine 12 mg then 2 mg every 2 hours while symptomatic, external cooling. By the next morning she was oriented, afebrile, with clonus gone.\n\nDisposition: home. Do not take dextromethorphan. Fluoxetine stopped; her psychiatrist was called and will advise on her antidepressant. PCP follow-up within a week.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "office_visit",
+          "start": "2025-01-16T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "icd10": "G25.79",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Dextromethorphan",
+              "reaction": "Serotonin syndrome",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "intolerance"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-01-16T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "author": "PCP",
+              "date": "2025-01-16T14:00",
+              "body": "ED/obs 1/9-1/10 for serotonin syndrome: fluoxetine (started by psychiatry 1/2, replacing sertraline) plus OTC dextromethorphan cough syrup plus sumatriptan.\n\nNow: back to herself, no tremor, sleeping. Psychiatry switched her back to sertraline 100 mg on 1/13. Cough gone, no more syrup. Used no sumatriptan since.\n\nExam: vitals as charted, afebrile. Calm, oriented. Pupils equal, normal size. Reflexes 2+ symmetric, no clonus. No tremor.\n\nA/P\n1. Serotonin syndrome, resolved.\n2. Dextromethorphan added to her allergy list as an intolerance so it flags at pharmacies. Went over other OTC products that contain it.\n3. MDD - sertraline 100 per psychiatry.\n4. Migraine - sumatriptan still allowed for attacks per neurology; advised sparing use and to call if any shakiness or fever after a dose.\nBP recheck visit in March as planned."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "outside_records",
+          "start": "2025-02-18T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Psychiatry letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry update",
+              "author": "psychiatry",
+              "date": "2025-02-18T13:30",
+              "body": "OUTSIDE PSYCHIATRY - UPDATE LETTER\nAfter her ED visit in January for serotonin syndrome we stopped fluoxetine and returned to sertraline 100 mg daily on 01/13/2025. She is tolerating it. Therapy continues weekly. Dextromethorphan to be avoided."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure recheck",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2024-10-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              90
+            ]
+          },
+          "state": {
+            "bp": [
+              140,
+              90
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - BP",
+              "author": "PCP",
+              "date": "2025-03-18T16:35",
+              "body": "BP visit. Home log over 4 weeks (she used an upper arm cuff, two readings each morning): mostly 134-142 over 86-92. Here 140/90 after 5 minutes seated. No headaches beyond her usual migraines, no chest pain or dyspnea. Salt intake moderate, walking 2 to 3 times a week.\n\nExam: vitals as charted. Heart RRR, lungs clear, no edema.\n\nA/P\n1. Essential hypertension, mild. Father with HTN. Lifestyle first: salt under 2 g, regular walking. Recheck in 3 to 4 months. She and her husband are hoping to try for a pregnancy this year, so if a medicine is needed we would choose one that is safe in pregnancy.\n2. MDD - stable on sertraline per psychiatry, PHQ-9 8."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "portal_message",
+          "start": "2025-04-02T20:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Home blood pressure",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP readings",
+              "author": "patient",
+              "date": "2025-04-02T20:15",
+              "body": "Two weeks of readings since less salt: 136/88, 138/86, 132/88, 140/90, 134/86, 136/88. A little better?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP readings",
+              "author": "PCP",
+              "date": "2025-04-03T07:40",
+              "body": "A little, yes. Keep going and we will look again this summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "telephone",
+          "start": "2025-06-02T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Sumatriptan PA renewal",
+              "author": "MA",
+              "date": "2025-06-02T12:10",
+              "body": "Annual sumatriptan quantity authorization expired 5/2025. Renewal submitted with neurology letters, approved through 5/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "ed_visit",
+          "start": "2025-07-09T16:50",
+          "end": "2025-07-10T18:10",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, agitation, sweating and fever",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "icd10": "G25.79",
+              "action": "diagnosed",
+              "onset": "2025-07-09"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched to fluoxetine by outside psychiatry 2025-06-30"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Serotonin syndrome"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-09T16:55",
+              "bp": [
+                160,
+                90
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 39.2,
+              "spo2": 98
+            },
+            {
+              "time": "2025-07-10T16:30",
+              "bp": [
+                128,
+                80
+              ],
+              "hr": 82,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-09T17:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-09T17:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-09T17:20",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-07-09T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-07-14T10:05",
+              "body": "AREA MEDICAL CENTER, EMERGENCY SERVICES - PHYSICIAN RECORD (received 07/14/2025)\nArrival 07/09/2025 16:50; observation unit; discharged 07/10/2025 18:10.\n\nCC: confused, sweating, fever.\n\n34 y/o F with factitious disorder, recurrent depression and serotonin syndrome in January of this year. Husband brought her in after about two hours of confusion, agitation, shaking and drenching sweats; she felt hot. He says her psychiatrist started a new medicine recently - fluoxetine again, per the pharmacy, as of 6/30. She took a sumatriptan for a migraine earlier today. No cough syrup this time per husband. Allergies: lamotrigine (TEN), sulfa, dextromethorphan.\n\nExam: T 39.2 C, HR 120, BP 160/90. Diaphoretic, agitated. Hyperreflexia, inducible ankle clonus, ocular clonus. Oriented to person only.\n\nLabs: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98. CBC within normal limits. Urine hCG negative.\n\nImpression: recurrent serotonin syndrome, fluoxetine with sumatriptan.\n\nCourse: serotonergic medicines held. IV fluids, lorazepam, cyproheptadine, cooling blanket. Afebrile overnight, clonus resolved, mental status normal by morning.\n\nDisposition: home. Fluoxetine stopped. Psychiatry notified; they plan to resume her previous sertraline. PCP follow-up within one week.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-16T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "icd10": "G25.79",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-07-16T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit - ED Follow-up",
+              "author": "PCP",
+              "date": "2025-07-16T13:00",
+              "body": "Video, she is at home, identity verified by DOB.\n\nSecond serotonin syndrome, ED/obs 7/9-7/10: psychiatry had put her back on fluoxetine 6/30, and she took sumatriptan that day. Fluoxetine stopped; psychiatry restarted sertraline 100 mg on 7/11.\n\nFeels washed out but no tremor, no fever, thinking clearly. PHQ-9 11, no SI. Husband with her on the call.\n\nA/P\n1. Serotonin syndrome x2, resolved. Asked her to keep sumatriptan to the rarest use; she wants to keep it available. Will let neurology know.\n2. MDD - sertraline per psychiatry. Psychiatry visit next week.\n3. HTN - lifestyle, home log; in person in about a month."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "office_visit",
+          "start": "2025-08-05T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2025-06-28"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-05T09:15",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-05T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, chronic hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Pregnancy",
+              "author": "PCP",
+              "date": "2025-08-05T09:40",
+              "body": "Two positive home tests this week. LMP 6/14/25, so about 7.5 weeks. First pregnancy, planned. Urine hCG here positive. Mild nausea, no bleeding, no pain.\n\nReviewed her meds with pregnancy in mind: sertraline per psychiatry, generally a reasonable choice in pregnancy, and psychiatry is aware. Loperamide only rarely. Sumatriptan: she will talk with OB about it. No antiseizure drugs needed, seizure-free.\n\nBP today as charted, still mildly up.\n\nA/P\n1. Intrauterine pregnancy by dates, about 7 weeks 3 days. Referral to OB; first prenatal visit to be set this month.\n2. Essential hypertension, mild - OB to manage in pregnancy; I sent them her BP history.\n3. MDD, factitious disorder - psychiatry following."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T10:30",
+          "service": "Obstetrics",
+          "reason": "First prenatal visit",
+          "medications": [
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic hypertension in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-08-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics New Prenatal Visit",
+              "author": "obstetrics",
+              "date": "2025-08-25T15:00",
+              "body": "OUTSIDE OBSTETRICS - NEW OB VISIT LETTER\nVisit 08/19/2025\n\nG1P0 at 9 weeks 3 days by LMP of 06/14/2025. Background mild chronic hypertension diagnosed in primary care this spring, untreated; recurrent depression on sertraline via psychiatry; factitious disorder; epilepsy in remission off medication; chronic migraine; IBS-D. Allergies: lamotrigine (TEN), sulfa (rash), dextromethorphan (serotonin syndrome).\n\nBP 142/92 today, on repeat as well.\n\nPlan: labetalol 200 mg twice daily for chronic hypertension in pregnancy, home BP twice daily. Routine prenatal care per our protocol. Discussed signs of preeclampsia. Sertraline continued with psychiatry. Avoid triptans where possible.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "pharmacy",
+          "start": "2025-09-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication list update",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Fill history reviewed",
+              "author": "MA",
+              "date": "2025-09-03T11:00",
+              "body": "Fill history pulled for chart reconciliation: labetalol 200 mg BID filled 8/19 (OB prescriber), sertraline 100 mg filled 8/8 (psychiatry). List updated. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines in pregnancy",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T08:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "author": "RN",
+              "date": "2025-10-07T08:35",
+              "body": "About 16 weeks pregnant, OB asked her to get flu and COVID here. Feeling fine, no fever. Allergy list reviewed. Inactivated trivalent flu L deltoid, COVID R deltoid. Observed 15 minutes, no reaction. OB notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T20:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labetalol",
+              "author": "patient",
+              "date": "2025-11-18T20:30",
+              "body": "OB has me on labetalol and my BP is fine. Do I need to see you for it or do they handle it while I'm pregnant?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labetalol",
+              "author": "PCP",
+              "date": "2025-11-18T21:05",
+              "body": "OB handles it during the pregnancy. After the baby comes we will take it back over. Glad it's going well."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001853",
+      "given": "Delaney",
+      "family": "Martel",
+      "birth_date": "1992-05-16",
+      "address_line": "27 Cotter Hollow Road",
+      "phone": "+1-347-555-0101",
+      "email": "delaney.martel@example.test",
+      "marital_status": "married",
+      "summary": "Healthy environmental consultant with seasonal allergic rhinitis who joined in 2022. Two preterm deliveries by cesarean (32 weeks in 2024, infant with RDS who went home; 34 weeks in 2026, newborn died of RDS) with a high-altitude pulmonary edema ED visit in between. Last seen mid-second pregnancy in May 2026.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "telephone",
+          "start": "2022-08-24T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-08-24T10:40",
+              "body": "Caller would like to move her primary care here. Her old doctor retired in the spring and she has not had a physical since 2021. Works as an environmental consultant, mostly remote with some field days, so mornings are easiest. Membership info emailed. Booked a new-patient physical for 9/12 at 8:30. Records release form sent to her email; she will sign and return so we can request the prior office's chart. BCBS PPO card photo uploaded."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T08:30",
+          "end": "2022-09-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {"label": "Allergic rhinitis due to pollen", "action": "history", "onset": "2010-04-01", "note": "spring and late-summer symptoms since college"}
+          ],
+          "medications": [
+            {"drug_text": "levocetirizine dihydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once daily during allergy season", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "seasonal allergic rhinitis"}
+          ],
+          "allergies": [
+            {"substance": "Latex", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Penicillin", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 61.5, "height_cm": 166.0, "labs": {"Thyroid Stimulating Hormone": 1.74, "Hemoglobin A1c": 5.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social (1-2 drinks per week)"},
+            {"item": "Occupation", "value": "Environmental consultant"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-12T09:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-12T09:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-12T09:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-12T09:25", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hemoglobin A1c"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-12T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2022-09-12T09:20",
+              "body": "30 y/o woman transferring care; prior PCP retired. Feels well. Here to set up care and get a baseline physical.\n\nPMH: seasonal allergic rhinitis since college, sneezing/itchy eyes/clear rhinorrhea in April-May and again late August. Uses levocetirizine 5 mg OTC daily through the season, works well, no sedation. No asthma, no eczema.\nPSH: R knee arthroscopy at 24 (2016), full recovery.\nOB/GYN: G0. Regular cycles. No contraception concerns today. Last Pap with HPV 2020 at prior office, she believes normal; records requested.\nMeds: levocetirizine 5 mg daily in season. No supplements.\nAllergies: latex (rash with gloves); penicillin (told as a child, she does not know what happened).\nFHx: mother had a baby early (preterm) and has seasonal allergies. Father HTN and type 2 diabetes. Maternal aunt reportedly very prone to altitude lung trouble, was told she should not climb high.\nSHx: married, no children. Environmental consultant, site assessments and remote report writing. Never smoker. 1-2 drinks a week, socially. Runs and hikes. No drug use.\n\nROS negative except seasonal nasal symptoms.\n\nExam: well appearing. Vitals as recorded, BMI about 22. HEENT: TMs clear, nasal mucosa pink, no polyps. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, nontender. Skin without rashes. R knee with healed portal scars, full ROM, stable. Mood and affect normal.\n\nAssessment/plan:\n1. Preventive care, 30F. Fasting labs today: CBC, CMP, lipids, TSH, A1c given father's diabetes. One-time HIV and hep C screening, she agrees. PHQ-2 0. Pap due 2025 if 2020 cotest was normal; will confirm from records. Flu and the fall COVID booster at a nurse visit next month when stock arrives.\n2. Seasonal allergic rhinitis: controlled on levocetirizine in season. Continue.\n3. Allergies reconciled: latex and penicillin entered.\nReturn in a year for a physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-09-14T16:05",
+              "body": "Hi Delaney, all of your bloodwork came back in the normal range: blood counts, kidney and liver tests, thyroid, sugar (A1c) and cholesterol. HIV and hepatitis C screens were negative. Nothing to change. Enjoy the rest of September."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "outside_records",
+          "start": "2022-10-06T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2022-10-06T11:15",
+              "body": "Records from prior primary care office, 2016 through 2021, received on signed release.\n\nSummary of relevant items:\n- Annual visits 2017-2021, healthy adult. Problem list: seasonal allergic rhinitis.\n- Allergies on file: latex (rash); penicillin (reaction not documented, childhood).\n- 2016: right knee arthroscopy (outside orthopedics), uneventful recovery noted at follow-up.\n- Tdap 2019.\n- Cervical cytology with HPV co-testing 2020-06: negative for intraepithelial lesion or malignancy; high-risk HPV not detected.\n- Influenza vaccine most years; COVID-19 primary series 2021 per state registry printout.\n\nFiled to chart. Pap 2020 normal confirms next screening in 2025."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T08:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T08:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-20T08:15"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-20T08:30",
+              "body": "Here for seasonal flu and bivalent COVID booster. Screening questions reviewed, no contraindications; latex-free gloves and bandage used per allergy flag. Flu IM left deltoid, COVID IM right deltoid. VIS given. Waited 15 minutes, no reaction. Left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "office_visit",
+          "start": "2023-03-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "allergy follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2023-03-08T15:20",
+              "body": "Patient cancelled 3/9 visit, has a field assignment out of state this week. Will message when her schedule settles."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "office_visit",
+          "start": "2023-05-08T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal allergies",
+          "measure": ["bp", "hr", "temp_c", "spo2"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-05-08T13:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-05-08T14:00",
+              "body": "S: Pollen season is heavier this year and she spent two weeks doing soil sampling along a river corridor. Sneezing, watery itchy eyes, clear drainage. Restarted levocetirizine in mid April and it has taken most of the edge off; worst on field days. No fever, facial pain, wheeze or cough. Sleeping fine.\n\nO: afebrile, vitals reviewed. Conjunctivae mildly injected. Nasal turbinates pale and boggy, clear mucus. No sinus tenderness. Pharynx clear. Lungs clear, no wheeze.\n\nA/P: seasonal allergic rhinitis, typical spring flare. Continue levocetirizine 5 mg nightly through the season. Shower and change after field work, keep car windows up on high-count days. Call if symptoms break through or she develops wheezing."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "annual_physical",
+          "start": "2023-09-25T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-25T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-25T09:10", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-25T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-25T09:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-25T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-09-25T09:15",
+              "body": "Annual exam, 31F. Doing well. Allergies were manageable this year once she started levocetirizine early; finishing the late-summer stretch now and will stop it after the first frost. Running 3x/week.\n\nThey are starting to think about a pregnancy, possibly early next year. Discussed coming in before trying so we can start a prenatal vitamin with folate and go over vaccines and labs.\n\nMeds: levocetirizine 5 mg daily seasonally. Allergies: latex, penicillin. No change in family history. Never smoker, alcohol 1-2/week.\n\nExam: vitals in chart, weight steady. HEENT normal. Neck no thyroid enlargement or nodes. Cardiac RRR, no murmur. Lungs clear. Abdomen benign. Extremities without edema. Skin: no worrisome moles on full survey.\n\nPlan:\n- CBC, BMP, lipids, A1c (family history of diabetes).\n- PHQ-2 negative.\n- Pap not due until 2025.\n- Flu + updated COVID at a nurse visit in October.\n- Preconception visit when ready."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "portal_message",
+          "start": "2023-09-27T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-09-27T12:20",
+              "body": "Delaney, your labs are all reassuring again this year, A1c and cholesterol included. No follow-up needed. Let us know when you want to set up the preconception visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-12T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-12T07:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-12T07:55"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2023-10-12T08:15",
+              "body": "Flu (L arm) and 2023-24 COVID (R arm) given IM. Latex precautions observed. No prior reactions. Observed 15 min, tolerated well. Registry updated."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

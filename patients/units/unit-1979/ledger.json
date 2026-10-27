@@ -1,0 +1,3887 @@
+{
+  "unit": "unit-1979",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001979",
+      "given": "Lamar",
+      "family": "Coleman",
+      "birth_date": "1964-12-14",
+      "address_line": "41 Bridle Path Lane",
+      "phone": "+1-413-555-0116",
+      "email": "lamar.coleman@example.test",
+      "marital_status": "married",
+      "summary": "Delivery driver with 20 years of insulin-treated type 2 diabetes, HIV with patchy adherence and diabetic kidney disease who joins in 2022. Acromegaly is found that spring, the kidney disease is biopsied and progresses to hemodialysis in 2025, with retinopathy, a right Charcot foot, an HFrEF admission and a catheter bloodstream infection along the way.",
+      "events": [
+        {
+          "id": "2022-03-08a",
+          "kind": "telephone",
+          "start": "2022-03-08T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-03-08T10:20",
+              "author": "front desk",
+              "body": "Caller Lamar Coleman, DOB confirmed. Wants a new primary doctor, says his last office closed its internal medicine side and he has been without anyone for most of a year. Has Medicare plus MassHealth. Told him about membership and that insurance still covers labs and specialists. Booked new patient visit 3/22 at 2:40, 60 min slot. He asked that we get records from his old practice and from the ID clinic that manages his HIV meds. Release forms emailed to him, he will sign and send back."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "establish_care",
+          "start": "2022-03-22T14:40",
+          "end": "2022-03-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; diabetes, kidney disease, HIV",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with hyperglycemia",
+              "action": "history",
+              "onset": "2002-06-01",
+              "note": "about 20 years, on basal and mealtime insulin, control poor"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "history",
+              "onset": "2013-01-01",
+              "note": "ART through outside ID clinic, intermittent adherence"
+            },
+            {
+              "label": "Chronic kidney disease, stage 4",
+              "action": "history",
+              "onset": "2020-01-01",
+              "note": "attributed to diabetes; outside nephrology, lapsed follow-up"
+            },
+            {
+              "label": "Type 2 diabetes mellitus with diabetic polyneuropathy",
+              "action": "history",
+              "onset": "2019-01-01",
+              "note": "severe sensorimotor, both feet"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV, prescribed by ID clinic"
+            },
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 24 units under the skin at bedtime",
+              "dose": {
+                "value": 24,
+                "unit": "units"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals per sliding scale",
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              150,
+              95
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 103.8,
+            "height_cm": 187.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-22T15:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 3.38
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 169
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 48
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 20
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-22T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-22T15:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 76
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 145
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-22T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-22T15:40",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Delivery driver, local package delivery"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2022-03-22T14:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-03-22T15:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "insulin-treated type 2 diabetes, poor control; stiff clumsy hands"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-03-22T15:45",
+              "author": "PCP",
+              "body": "57 y/o man here to establish. Has been without a PCP for close to a year.\n\nDiabetes: type 2 since his late 30s, roughly 20 yrs. On glargine 24 u qhs and lispro with meals on a scale, but admits the lispro gets skipped most lunches because he is in the truck. Does not check sugars every day. No hypoglycemia he knows of.\nKidneys: told years ago that diabetes was hurting his kidneys, saw a nephrologist a couple of times and then stopped going. Says he was told stage 4 at the last visit. No swelling right now.\nHIV: diagnosed about 9 yrs ago. Followed by an outside ID clinic, on Biktarvy. Honest that he misses 2-3 doses a week, mostly when his schedule changes.\nBP: on lisinopril 10.\nFeet: numb for a few years, worse at night, previously told neuropathy. Wears work boots all day.\nOther: tired a lot and his hands feel stiff and awkward, drops things. Thinks it is age and the job.\nEyes: has an eye doctor but has not made it to the last couple of appointments.\n\nMeds: Biktarvy daily, glargine 24 u qhs, lispro SSI with meals, lisinopril 10, atorvastatin 40, ASA 81.\nAllergies: NKDA.\nPMH as above. No surgeries.\nFH: father T2DM with kidney disease. Mother HTN, stroke at 68. Brother CAD.\nSH: married. Package delivery driver, on his feet most of the shift. Never smoked. A drink once or twice a month. No drugs.\n\nExam: BP and pulse as recorded, BP above goal. Tall man, NAD. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abd soft, nontender. Ext without edema. Feet: no ulcers, skin intact, thick calluses at the metatarsal heads, monofilament absent across both forefeet, vibration reduced at both great toes. DP pulses palpable.\n\nA/P\n1. T2DM, poorly controlled, on insulin. A1c today. Referring to endocrinology for insulin management in the setting of advanced CKD, and to look at the fatigue and hand complaints at the same time. Glucose log for the next month.\n2. CKD 4, presumed diabetic. CMP today. He needs to reconnect with nephrology; gave him the office number and asked him to call this week.\n3. HIV. Continue Biktarvy per ID. Talked about a weekly pill box. We will request ID records.\n4. HTN, above goal. Continue lisinopril for now, recheck at next visit once labs are back.\n5. Neuropathy with insensate feet. Foot care reviewed, daily foot checks, ask about better-fitting boots.\n6. Eye exam overdue. He will call his eye doctor.\n7. Hep B serologies before possible dialysis down the line. PCV20 today.\nRTC 2-3 months, sooner after the endocrine visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              92
+            ],
+            "weight_kg": 104.0,
+            "height_cm": 188.0,
+            "labs": {
+              "Albumin": 3.3,
+              "Bicarbonate": 21,
+              "Blood Urea Nitrogen": 48,
+              "Creatinine": 3.3,
+              "Glucose": 175,
+              "Hemoglobin": 11.1,
+              "Hemoglobin A1c": 8.6,
+              "Low Density Lipoprotein": 80,
+              "Potassium": 4.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "portal_message",
+          "start": "2022-03-24T17:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2022-03-24T17:05",
+              "author": "PCP",
+              "body": "Hi Mr. Coleman, your labs are back. Kidney function is in the stage 4 range we talked about, so please do call the kidney office. Your A1c is above where we want it, and the endocrinologist will help with the insulin. Blood count is a little low, which goes along with the kidneys. Potassium is at the high end of normal. Cholesterol is fine on the atorvastatin.\nYou are not immune to hepatitis B, so I would like to start the vaccine series. It is three shots over six months and the first one can be a quick nurse visit. The front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-06a",
+          "kind": "outside_records",
+          "start": "2022-04-06T11:30",
+          "reason": "Prior records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care and ID clinic",
+              "date": "2022-04-06T11:30",
+              "author": "MA",
+              "body": "Received 38 pages from prior primary care office and 12 pages from outside ID clinic. Abstracted:\n- Screening colonoscopy 06/2019, prior practice GI: normal to cecum, no polyps, repeat in 10 yrs.\n- Hepatitis C antibody 2020: negative.\n- Influenza vaccines most falls through 2021. COVID primary series 2021 plus one booster per his card.\n- ID clinic: HIV followed there, Biktarvy prescribed there. Notes describe patchy adherence and viral loads that have gone up and down over the years.\n- Prior problem list: T2DM on insulin, HTN, CKD from diabetes, neuropathy.\nScanned to chart and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "nurse_visit",
+          "start": "2022-04-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine #1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-04-19T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-04-19T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Hep B vaccine dose 1",
+              "date": "2022-04-19T08:45",
+              "author": "RN",
+              "body": "In before his route. Hep B dose 1 of 3, L deltoid, VIS given. Tolerated well, waited 15 min. Dose 2 in one month, dose 3 at six months. He asked about his endocrine appointment, which is set for mid May."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "specialist_visit",
+          "start": "2022-05-16T09:00",
+          "service": "Endocrinology",
+          "reason": "Diabetes on insulin; fatigue and hand stiffness",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2022-05-20T13:10",
+              "author": "endocrinology",
+              "body": "Outside endocrinology consultation, date of service 05/16/2022. Received by fax 05/20/2022.\n\nThank you for referring Mr. Coleman, 57, for insulin-treated type 2 diabetes with advanced CKD.\n\nHe tells me the bigger issue for him is that he has been worn out and stiff for about a year and it is getting worse. His hands feel tight and he has trouble holding on to things; he keeps dropping his phone. His wrists ache by evening. He had been chalking it up to getting older. He notices a fluttering heartbeat now and then, without chest pain or shortness of breath. No fevers, rashes or recent illness.\n\nMedications: Biktarvy daily (misses several doses a week), insulin glargine 24 units at bedtime, insulin lispro by scale with meals (often skipped), lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg. NKDA.\n\nExam: BP mildly elevated. Skin over the fingers is thickened and the hands look subtly broad. No joint swelling or redness. Heart and lungs normal. Sensation is diminished over the thumb, index and middle fingers of both hands. The nasolabial folds are deep; the face is symmetric without lesions.\n\nImpression: The soft-tissue changes in the hands and face, the median-distribution sensory loss and the fatigue together raise concern for growth hormone excess. I have ordered an IGF-1 and a dedicated pituitary MRI with and without contrast. No change to his insulin until we sort this out; diabetes plan to follow once the workup is back.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "nurse_visit",
+          "start": "2022-05-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine #2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-17T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-05-17T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Hep B vaccine dose 2",
+              "date": "2022-05-17T08:30",
+              "author": "RN",
+              "body": "Hep B #2 given R deltoid. No reaction to the first dose. Saw endocrine yesterday, says they want an MRI of his pituitary and he is nervous about it. Reassured, told him the PCP will go over results with him. Dose 3 due in October, will pair with flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "imaging",
+          "start": "2022-06-08T07:30",
+          "service": "Radiology",
+          "reason": "Suspected growth hormone excess",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-08T07:15",
+              "results": [
+                {
+                  "test": "Insulin-like growth factor I",
+                  "loinc": "2484-4",
+                  "unit": "ng/mL",
+                  "value": 584
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI pituitary with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2022-06-08T07:30",
+              "text": "Indication: suspected growth hormone excess. Technique: thin-section coronal and sagittal imaging through the sella before and after gadolinium, plus axial images of the brain. Findings: There is a 1.3 cm sellar mass arising from the pituitary gland, enhancing less than the normal gland, consistent with a macroadenoma. The optic chiasm sits above the lesion without contact or displacement. No extension into the cavernous sinuses; the internal carotid flow voids are normal. Pituitary stalk midline. Remainder of the brain is unremarkable, no hydrocephalus.",
+              "conclusion": "1.3 cm pituitary macroadenoma. No optic chiasm compression and no cavernous sinus invasion."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI pituitary and IGF-1 received",
+              "date": "2022-06-10T09:00",
+              "author": "MA",
+              "body": "Outside MRI report (06/08/2022) and IGF-1 result received from the endocrinology office. Filed to chart, routed to PCP. IGF-1 584 ng/mL, flagged high (lab reference about 60-220 for age)."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-22a",
+          "kind": "specialist_visit",
+          "start": "2022-06-22T10:30",
+          "service": "Endocrinology",
+          "reason": "Acromegaly",
+          "conditions": [
+            {
+              "label": "Acromegaly",
+              "action": "diagnosed",
+              "onset": "2022-06-22",
+              "note": "pituitary macroadenoma 1.3 cm, IGF-1 584"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "octreotide 20 MG Injectable Suspension",
+              "action": "historical",
+              "sig": "20 mg IM every 4 weeks, given at endocrinology clinic",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "MONTHLY",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "acromegaly"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2022-06-24T15:20",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up letter, visit 06/22/2022.\n\nMr. Coleman returned with his wife to review results. IGF-1 is 584 ng/mL, well above the age-adjusted range, and the pituitary MRI shows a 1.3 cm macroadenoma clear of the chiasm and not invading the cavernous sinus. This confirms acromegaly, which accounts for the hand and facial changes and very likely contributes to his hard-to-control glucose.\n\nWe talked through transsphenoidal surgery as the usual first step and medical therapy as the alternative. Given his kidney disease and his own preference, he chose to start with medication. Plan: octreotide LAR 20 mg IM every 4 weeks, first injection in our clinic 07/06. Repeat IGF-1 in about 6 months. Visual fields not needed at this size and position, will reconsider if symptoms change. Insulin unchanged for now; he has a glucose log.\n\nMedications: Biktarvy, glargine 24 units qhs, lispro by scale, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg, now octreotide LAR 20 mg monthly. NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "telephone",
+          "start": "2022-07-06T14:10",
+          "reason": "Octreotide coverage",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from endocrine office",
+              "date": "2022-07-06T14:10",
+              "author": "RN",
+              "body": "Endocrine nurse called as a courtesy. First octreotide LAR injection given in their clinic this morning, went fine. Medicare Part B is covering it as clinic-administered, no PA needed on our side. They will keep him on a 4-week injection schedule there. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "office_visit",
+          "start": "2022-08-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling, foamy urine",
+          "vitals": {
+            "bp": [
+              147,
+              96
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 106.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-10T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 3.28
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 20
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 48
+                },
+                {
+                  "test": "Glucose",
+                  "value": 164
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 21
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 19
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-10T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-08-10T15:20"
+            },
+            {
+              "id": "neph-referral-2022",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "CKD 4 with new leg edema and foamy urine"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-08-10T16:05",
+              "author": "PCP",
+              "body": "S: Both legs have been puffy for about 3-4 wks, worse by end of shift. His wife pointed out the urine has been foamy. No SOB lying flat, no chest pain. Never did call nephrology after last visit, says he lost the number. Has had 2 octreotide shots, tolerating, some loose stools the first week only.\nO: BP high today, see vitals. Weight up about 2.5 kg since March. Lungs clear. Heart regular. 2+ pitting edema both shins to about the knee. Feet intact, no wounds.\nA/P: CKD 4 with new edema and likely heavy proteinuria. BMP today. I called the nephrology office from the room and got him a September appointment; referral sent with today's note. Low salt reviewed. Continue lisinopril 10. Will hold off adding anything for BP until nephrology weighs in. Endocrine letters reviewed, acromegaly on octreotide noted.\nRTC after nephrology."
+            }
+          ],
+          "state": {
+            "bp": [
+              150,
+              94
+            ],
+            "weight_kg": 106.5,
+            "labs": {
+              "Albumin": 2.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "specialist_visit",
+          "start": "2022-09-16T13:00",
+          "service": "Nephrology",
+          "reason": "CKD 4, leg edema, foamy urine",
+          "vitals": {
+            "bp": [
+              148,
+              94
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-09-16T13:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "4+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-16T13:40",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "loinc": "1751-7",
+                  "unit": "g/dL",
+                  "value": 2.8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral-2022",
+              "action": "done",
+              "date": "2022-09-16T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology consultation",
+              "date": "2022-09-21T10:45",
+              "author": "nephrology",
+              "body": "Nephrology, office visit 09/16/2022. Letter to referring PCP.\n\nMr. Coleman is a 57-year-old man with long-standing type 2 diabetes, HIV and CKD stage 4, recently diagnosed with acromegaly by endocrinology, back with us after a gap in follow-up. He describes swelling in both legs that has been building and foamy urine. He is candid that he has not been sticking to his medications or the kidney diet.\n\nBP 148/94. Pitting edema to the knees bilaterally. Urinalysis shows 4+ protein and his serum albumin is low.\n\nAssessment: nephrotic-range proteinuria on a background of CKD 4. Diabetic kidney disease is the leading explanation given 20 years of diabetes with neuropathy, but with HIV in the picture we need to exclude HIV-associated nephropathy and other glomerular disease before we settle on a cause. Kidney biopsy arranged for 09/28.\nContinue lisinopril. Dietary sodium and protein counseling with our dietitian.\n\nMedications reviewed: Biktarvy, insulin glargine 24 units, insulin lispro by scale, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg, octreotide LAR 20 mg monthly. Aspirin to be held 7 days before biopsy. NKDA.\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "procedure_visit",
+          "start": "2022-09-28T08:00",
+          "end": "2022-09-28T14:00",
+          "service": "Nephrology",
+          "reason": "Kidney biopsy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-09-28T09:15",
+              "text": "Specimen: left kidney, percutaneous core biopsy, two cores. Light microscopy: up to 18 glomeruli sampled. Glomeruli show diffuse mesangial expansion with nodular mesangial sclerosis forming Kimmelstiel-Wilson nodules. No collapsing lesions and no podocyte hypertrophy or hyperplasia. No crescents. Immunofluorescence: no immune-complex deposits; linear accentuation of IgG and albumin along basement membranes. Electron microscopy: diffuse thickening of glomerular basement membranes, no electron-dense deposits.",
+              "conclusion": "Nodular diabetic glomerulosclerosis. No collapsing glomerulopathy. No immune-complex glomerulonephritis.",
+              "issued": "2022-10-05T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Kidney biopsy",
+              "date": "2022-09-28T14:00",
+              "author": "nephrology",
+              "body": "Ultrasound-guided percutaneous biopsy of the left kidney under local anesthesia, two cores obtained, sent for light, IF and EM. No immediate complication. Observed 4 hours, post-procedure hemoglobin stable, urine clear. Discharged home with his wife. Resume aspirin in 3 days. Pathology results to follow. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "outside_records",
+          "start": "2022-10-12T10:00",
+          "reason": "Kidney biopsy pathology and nephrology letter",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with diabetic nephropathy",
+              "action": "diagnosed",
+              "onset": "2022-09-28",
+              "note": "biopsy: nodular diabetic glomerulosclerosis",
+              "icd10": "E11.21"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Nephrology biopsy results letter",
+              "date": "2022-10-12T10:00",
+              "author": "nephrology",
+              "body": "Nephrology follow-up letter regarding kidney biopsy of 09/28/2022, received 10/12/2022.\n\nThe biopsy shows nodular diabetic glomerulosclerosis, the late-stage lesion of diabetic kidney disease. Reassuringly there is no collapsing glomerulopathy to suggest HIV-associated nephropathy and no immune-complex disease. We discussed with Mr. Coleman by phone that this is diabetic nephropathy, that his kidney function will most likely continue to decline, and that the pace depends a good deal on blood pressure, glucose and staying on his medicines. Follow-up in our office in about 3 months with labs before.\nNephrology"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Biopsy results reviewed",
+              "date": "2022-10-12T16:30",
+              "author": "PCP",
+              "body": "Reviewed biopsy and nephrology letter. Called pt, he had already heard from the kidney doctor. Asked good questions about dialysis; explained that is not where we are today but planning ahead matters. Diabetic nephropathy added to list. Flu shot and hep B #3 next week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T08:22"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-10-19T08:24"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2022-10-19T08:40",
+              "author": "RN",
+              "body": "Three shots today per standing orders and PCP plan: influenza L deltoid, bivalent COVID R deltoid, hep B #3 L deltoid lower. Series now complete; titer can be checked at a later draw. Observed 15 min, felt fine, off to work."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "annual_physical",
+          "start": "2022-11-16T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              139,
+              85
+            ],
+            "hr": 77,
+            "spo2": 98,
+            "weight_kg": 104.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-11-16T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 3.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 20
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 50
+                },
+                {
+                  "test": "Glucose",
+                  "value": 170
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 21
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 17
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-16T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-16T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2022-11-16T15:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-11-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-11-16T15:55",
+              "author": "PCP",
+              "body": "Initial AWV. Medicare via ESRD-track eligibility forms completed by nephrology earlier; MassHealth secondary.\n\nInterval: biopsy showed diabetic nephropathy. Octreotide monthly at endocrine, no side effects now. Swelling better since cutting back on fast food on the route. Still misses some Biktarvy, using the pill box about half the week.\nFunctional: independent, drives for work, manages own meds with wife's help. No falls. Hearing and vision: vision a bit blurry at times, has not rescheduled the eye doctor yet. Pushed again.\nSafety: seat belt always, smoke detector yes. Firearms none.\nAdvance directive: wife is his health care proxy, form given to bring back.\nPHQ-2 0.\n\nExam: BP above goal. Lungs clear. Heart regular. Trace ankle edema. Feet: insensate to monofilament both forefeet, skin intact, calluses trimmed recently.\n\nPrevention: colonoscopy 2019 normal, next 2029. Hep C neg 2020. PCV20 done March. Flu, bivalent COVID and hep B series done. Tdap given today. Shingles vaccine discussed, wants to wait until next year.\n\nA/P: T2DM still above goal, A1c today, endocrine following. CKD 4/diabetic nephropathy, labs today, nephrology in January. HTN not at goal, he blames salt; recheck at next visit before adding anything. HIV per ID.\nPersonalized prevention plan printed and reviewed."
+            }
+          ],
+          "state": {
+            "bp": [
+              144,
+              90
+            ],
+            "weight_kg": 105.0,
+            "labs": {
+              "Hemoglobin A1c": 8.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-12a",
+          "kind": "specialist_visit",
+          "start": "2023-01-12T10:15",
+          "service": "Nephrology",
+          "reason": "CKD 4 follow-up",
+          "conditions": [
+            {
+              "label": "Secondary hyperparathyroidism of renal origin",
+              "action": "diagnosed",
+              "onset": "2023-01-12",
+              "note": "PTH 312, Ca 8.6, phos 5.4",
+              "icd10": "N25.81"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "calcitriol 0.00025 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (0.25 mcg) by mouth daily",
+              "dose": {
+                "value": 0.25,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "secondary hyperparathyroidism"
+            },
+            {
+              "drug_text": "sevelamer carbonate 800 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily with meals",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperphosphatemia, secondary hyperparathyroidism"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-12T10:50",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 312
+                },
+                {
+                  "test": "Calcium",
+                  "loinc": "17861-6",
+                  "unit": "mg/dL",
+                  "value": 8.6
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2023-01-18T09:30",
+              "author": "nephrology",
+              "body": "Nephrology follow-up, visit 01/12/2023.\n\nRoutine review of his advanced CKD from diabetic nephropathy. He feels a little more tired than usual but otherwise has nothing new to report. Looks well on exam; nothing abnormal found. Creatinine was drawn today and is pending at the time of this note; we will forward it.\n\nMineral bone labs: intact PTH 312 pg/mL, calcium 8.6 mg/dL, phosphorus 5.4 mg/dL. This is secondary hyperparathyroidism from his kidney disease. Starting calcitriol 0.25 mcg daily and sevelamer carbonate 800 mg with each meal. Renal diet handout on phosphorus reviewed. Repeat PTH, calcium and phosphorus in 3 months.\n\nMedications: Biktarvy daily, insulin glargine 24 units, lispro by scale, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg, octreotide LAR 20 mg monthly, plus new calcitriol and sevelamer. NKDA.\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.4,
+              "Creatinine": 3.9,
+              "Phosphorus": 5.0
+            }
+          }
+        },
+        {
+          "id": "2023-02-22a",
+          "kind": "specialist_visit",
+          "start": "2023-02-22T09:40",
+          "service": "Endocrinology",
+          "reason": "Acromegaly follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-22T09:20",
+              "results": [
+                {
+                  "test": "Insulin-like growth factor I",
+                  "loinc": "2484-4",
+                  "unit": "ng/mL",
+                  "value": 248
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2023-02-27T11:00",
+              "author": "endocrinology",
+              "body": "Endocrinology, visit 02/22/2023.\n\nSeven months into octreotide LAR 20 mg monthly. Hands feel less tight, he has stopped dropping things as often. GI side effects settled after the first month. IGF-1 today 248 ng/mL, down sharply from 584 and just above the upper limit. Given the steep fall I would keep the dose and recheck in a year rather than escalate now. Glucose remains above goal on his current insulin; insulin unchanged, he will bring his log to his PCP.\n\nMedications: as on file, including calcitriol and sevelamer from nephrology. NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "pharmacy",
+          "start": "2023-03-14T11:45",
+          "reason": "Sevelamer prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy PA request",
+              "date": "2023-03-14T11:45",
+              "author": "MA",
+              "body": "Pharmacy faxed a prior auth request for sevelamer carbonate 800 mg, Part D plan wants diagnosis and phosphorus level. This is a nephrology prescription; forwarded the request to the nephrology office and let the pharmacy know. Pt aware, has a week of tablets left."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "office_visit",
+          "start": "2023-04-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, BP, kidney follow-up",
+          "vitals": {
+            "bp": [
+              147,
+              89
+            ],
+            "hr": 84,
+            "spo2": 97,
+            "weight_kg": 104.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-12T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 3.74
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 47
+                },
+                {
+                  "test": "Glucose",
+                  "value": 171
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 18
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-12T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-12T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-12T16:25",
+              "author": "PCP",
+              "body": "Follow-up.\nNephrology started calcitriol and sevelamer in January, PA sorted. Taking the binder with dinner reliably, the other two meals less so. Endocrine says IGF-1 much better. Glucose log: fasting mostly 150s-190s. Lispro still skipped at lunch.\nNo swelling to speak of. Energy so-so.\n\nExam: BP above goal again. Lungs clear, heart regular, no edema. Feet without wounds.\n\nA/P\nT2DM: A1c today. Discussed making lunch lispro a fixed small dose rather than a scale he never uses; he would rather keep things as they are for now. Revisit.\nCKD 4 / diabetic nephropathy / secondary HPT: BMP today, nephrology following.\nHTN: still above goal, lisinopril 10. He promises better salt discipline before we add a second agent.\nHIV: ID visit overdue per his account, he will call them.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              90
+            ],
+            "weight_kg": 104.5,
+            "labs": {
+              "Hemoglobin A1c": 8.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-05-24T15:30",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:00 follow-up. Called cell, no answer, voicemail left asking him to call to rebook. Note: the April visit already covered his 3-month check, this slot was the BP recheck."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "office_visit",
+          "start": "2023-07-12T10:00",
+          "end": "2023-07-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Forgetfulness and withdrawal, brought by sister",
+          "conditions": [
+            {
+              "label": "Molluscum contagiosum",
+              "action": "diagnosed",
+              "onset": "2023-07-12",
+              "note": "HIV-related opportunistic skin infection, face and neck",
+              "icd10": "B08.1"
+            },
+            {
+              "label": "Chronic kidney disease, stage 4",
+              "action": "resolved"
+            },
+            {
+              "label": "Chronic kidney disease, stage 5",
+              "action": "diagnosed",
+              "onset": "2023-07-12",
+              "note": "not on dialysis",
+              "icd10": "N18.5"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              90
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 103.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-12T10:55",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 180
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 55000
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "value": 160
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 483
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-12T10:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 4.57
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 19
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 181
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 14
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-07-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-07-12T11:20",
+              "author": "PCP",
+              "body": "Here with his sister, who asked for the appointment.\n\nHPI: Sister says that for roughly the last six months he has been losing track of things: forgets conversations, misplaced his route sheets more than once, cannot stay with a TV show. He has stopped going to his Sunday card game and no longer bothers with the garden, which he used to love. Keeps to himself. He shrugs at most of this and says he is just tired. On direct questioning he admits he has been missing Biktarvy, as he has on and off for the ten years he has been on treatment, and has not seen ID since last year. No headache, fever, weakness, falls or seizures per sister.\n\nMeds reviewed with bottles: Biktarvy, glargine 24 u, lispro SSI, lisinopril 10, atorvastatin 40, ASA 81, calcitriol, sevelamer, octreotide LAR at endocrine.\n\nExam: BP 140/90. Quiet, flat, makes little eye contact, answers briefly. Knows who he is and that he is at the doctor's office in town; gives the wrong month and year. Slow to answer and slow to move through tasks. Recalls 0 of 3 words at 5 minutes, 1 with cues. Speech fluent. Cranial nerves intact, strength symmetric, gait steady. Skin: several clusters of small, smooth, dome-shaped papules with central umbilication on the forehead, cheeks and side of neck, nontender. Heart regular, lungs clear, no edema.\n\nA/P\n1. Subacute cognitive decline with apathy and withdrawal in a man with HIV off reliable ART. Uncontrolled HIV is my main concern. Checking CD4 and viral load today along with B12, TSH and RPR. Discussed with sister, who will take over setting up his pill box and watching him take the evening doses. Will contact ID today for an urgent visit. Not driving the truck until he is reassessed; sister will call his dispatcher. Return precautions reviewed with both.\n2. Facial papules: molluscum contagiosum, an opportunistic skin infection given his HIV status. Expect improvement as ART takes hold; nothing to do today.\n3. CKD: kidney function has moved into stage 5. BMP today, nephrology to be updated.\n4. T2DM: A1c and fasting glucose today.\n5. HTN: 140/90, no change today.\nRTC 3 months, sooner pending labs."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              90
+            ],
+            "weight_kg": 103.0,
+            "labs": {
+              "Bicarbonate": 19,
+              "Blood Urea Nitrogen": 64,
+              "Creatinine": 4.9,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Vitamin B12": 480
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-14a",
+          "kind": "telephone",
+          "start": "2023-07-14T12:30",
+          "reason": "Results to patient and sister; ID referral",
+          "orders": [
+            {
+              "id": "id-referral-2023",
+              "action": "placed",
+              "order": "Infectious disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "HIV, CD4 180, viral load 55,000, cognitive decline"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "date": "2023-07-14T12:30",
+              "author": "PCP",
+              "body": "Called pt with sister on speaker (verbal permission from pt to share). CD4 180, viral load 55,000. Fasting glucose 160, A1c 7.8. B12, TSH and RPR normal. Explained that the virus is not controlled and is very likely behind the memory and mood changes, and that consistent Biktarvy is the treatment. Spoke with the ID clinic nurse; he has an urgent slot in August, referral faxed. Sister has his pill box going already. Plan stands."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "specialist_visit",
+          "start": "2023-08-21T09:30",
+          "service": "Infectious Disease",
+          "reason": "HIV with cognitive decline",
+          "medications": [
+            {
+              "drug_text": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pneumocystis prophylaxis, CD4 under 200"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral-2023",
+              "action": "done",
+              "date": "2023-08-21T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious disease follow-up",
+              "date": "2023-08-24T14:00",
+              "author": "infectious disease",
+              "body": "Infectious Disease clinic, visit 08/21/2023. Letter to PCP.\n\nThank you for the urgent referral. Mr. Coleman came with his sister. Since July she has been laying out his doses and he estimates he has missed only two since then. He feels a bit sharper; she agrees, though he still repeats himself.\n\nCD4 180 and viral load 55,000 in July on intermittent bictegravir/FTC/TAF. With the adherence pattern described over years, I think the cognitive change is best explained by uncontrolled HIV, and the best treatment is suppression.\n\nPlan:\n- Continue Biktarvy 1 tablet daily. Pharmacy will switch to weekly blister packs; sister to supervise.\n- Start sulfamethoxazole-trimethoprim single strength 1 tablet daily for pneumocystis prophylaxis while CD4 is under 200. Dose chosen for his kidney function; potassium to be watched on routine labs.\n- Repeat CD4 and viral load in 3 months.\n- Molluscum on face noted, expected to regress with immune recovery.\n\nMedications reviewed and current list attached. NKDA.\nInfectious Disease"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "office_visit",
+          "start": "2023-10-18T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up cognition, HIV, CKD",
+          "vitals": {
+            "bp": [
+              136,
+              84
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 102.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-18T15:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 4.69
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 19
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 70
+                },
+                {
+                  "test": "Glucose",
+                  "value": 178
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 14
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 19
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-18T15:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-18T14:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T15:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-18T15:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-18T15:15",
+              "author": "PCP",
+              "body": "Sister with him again.\nShe reports a real change: he is back at cards on Sundays, follows the news, teases her. Still slower to come up with names. Blister packs working, she checks the pack each evening. He is on light duty at work, dispatcher gave him a shorter route with a helper.\nSeen by ID in August, on SMX-TMP daily now.\n\nExam: BP above goal. Brighter, engaged, jokes. Oriented to person, place and date. 2/3 recall at 5 minutes, third with a cue. Skin: fewer papules on the face, none new on the neck. Lungs clear, heart regular, no edema.\n\nA/P\n1. Cognitive change from uncontrolled HIV, improving with adherence. Repeat labs with ID in November. OK to return to his regular route if ID agrees, ideally with the helper.\n2. Molluscum fading.\n3. CKD 5, not on dialysis: BMP and CBC today; potassium is worth watching now that he is on SMX-TMP.\n4. T2DM, HTN: unchanged plan.\nFlu and updated COVID given today.\nRTC 3-4 months; AWV in November."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              88
+            ],
+            "weight_kg": 102.5,
+            "labs": {
+              "Hemoglobin A1c": 8.1,
+              "Potassium": 5.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "specialist_visit",
+          "start": "2023-11-20T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-20T09:40",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 232
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 410
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious disease follow-up",
+              "date": "2023-11-22T16:10",
+              "author": "infectious disease",
+              "body": "ID clinic follow-up 11/20/2023.\nViral load 410 copies/mL, down from 55,000. CD4 232. Good response with supervised blister packs; he reports two missed doses in three months. Mood and memory better per sister. Molluscum regressing.\nPlan: continue Biktarvy. Continue SMX-TMP SS daily until CD4 has stayed above 200 with a suppressed viral load on the next check. Labs again in 3 months.\nNKDA.\nInfectious Disease"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "annual_physical",
+          "start": "2023-11-29T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              148,
+              95
+            ],
+            "hr": 83,
+            "spo2": 99,
+            "weight_kg": 103.2
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-11-29T15:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 77
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 151
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-29T15:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-11-29T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-11-29T15:50",
+              "author": "PCP",
+              "body": "Subsequent AWV.\nInterval: cognition much improved, ID labs encouraging. Kidney function now CKD 5; nephrology aware, no dialysis yet. Octreotide continues.\nFunctional status: independent in daily activities, driving, back on his full route since November. Sister still checks the blister pack. No falls.\nVision: blurry and up and down during the day. Has missed several eye appointments over the past two years. I called the ophthalmology office with him in the room and booked January.\nPHQ-2 1.\nHealth care proxy form on file, wife named.\n\nExam: BP above goal. Faint residual papules on the cheeks. Lungs clear. Heart regular. Feet: monofilament absent both forefeet, skin intact, no deformity.\n\nPrevention: colonoscopy up to date, next 2029. Vaccines current for the season. Shingrix discussed again, he will do it next year. Lipids and A1c today.\nPlan otherwise per problem list. RTC early spring."
+            }
+          ],
+          "state": {
+            "bp": [
+              144,
+              92
+            ],
+            "weight_kg": 103.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-26a",
+          "kind": "specialist_visit",
+          "start": "2024-01-26T13:30",
+          "service": "Ophthalmology",
+          "reason": "Blurry, fluctuating vision",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with proliferative diabetic retinopathy without macular edema, bilateral",
+              "action": "diagnosed",
+              "onset": "2024-01-26",
+              "icd10": "E11.3593"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ]
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology evaluation",
+              "date": "2024-02-01T10:20",
+              "author": "ophthalmology",
+              "body": "Retina and comprehensive ophthalmology, exam date 01/26/2024. Report to primary care.\n\nReason for visit: Mr. Coleman, 59, with type 2 diabetes for about twenty years and poor control, returns after a long absence; by our records several appointments over the past two years were missed. He describes vision that goes blurry and then clears at different times of day. Faces are hard to make out across a room and colors run together, particularly when the light is low. No pain in the eyes, no light sensitivity, no flashes. He admits he does not take his medicines consistently and has been less active lately.\n\nBP at check-in 142/88.\n\nBest corrected visual acuity: 20/60 OD, 20/70 OS. Pupils equal and reactive, no afferent defect. IOP normal both eyes. Anterior segments quiet; lenses clear for age.\nDilated fundus examination: proliferative diabetic retinopathy in both eyes. No vitreous hemorrhage. No center-involving macular edema on exam or OCT.\n\nAssessment: proliferative diabetic retinopathy OU.\nPlan: pan-retinal photocoagulation, right eye first on 02/09, left eye two weeks later. The importance of glucose and blood pressure control and of keeping these appointments was discussed at length with him and his wife.\n\nMedications per patient list. NKDA.\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-09a",
+          "kind": "procedure_visit",
+          "start": "2024-02-09T08:30",
+          "service": "Ophthalmology",
+          "reason": "Pan-retinal photocoagulation, right eye",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "PRP right eye",
+              "date": "2024-02-12T09:00",
+              "author": "ophthalmology",
+              "body": "Procedure 02/09/2024: pan-retinal photocoagulation, right eye, topical anesthesia, contact lens, single session. Tolerated well. Left eye scheduled 02/23. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "procedure_visit",
+          "start": "2024-02-23T08:30",
+          "service": "Ophthalmology",
+          "reason": "Pan-retinal photocoagulation, left eye",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "PRP left eye",
+              "date": "2024-02-27T09:10",
+              "author": "ophthalmology",
+              "body": "Procedure 02/23/2024: pan-retinal photocoagulation, left eye. Uncomplicated. Follow-up exam both eyes in 3 months to assess regression of neovascularization. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "specialist_visit",
+          "start": "2024-02-26T10:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "medications": [
+            {
+              "drug_text": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet",
+              "action": "stop",
+              "reason": "CD4 above 200 with suppressed viral load"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-26T10:10",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 268
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious disease follow-up",
+              "date": "2024-02-28T15:30",
+              "author": "infectious disease",
+              "body": "ID clinic visit 02/26/2024.\nHIV RNA not detected (<20). CD4 268, up from 232 in November. This is the first undetectable viral load in our records for him in several years. He credits the blister packs and his sister. Facial molluscum has cleared on exam today.\nPlan: stop sulfamethoxazole-trimethoprim. Continue Biktarvy. Labs every 6 months while stable; next due August.\nNKDA.\nInfectious Disease"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "specialist_visit",
+          "start": "2024-03-20T09:00",
+          "service": "Endocrinology",
+          "reason": "Acromegaly follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-20T08:40",
+              "results": [
+                {
+                  "test": "Insulin-like growth factor I",
+                  "loinc": "2484-4",
+                  "unit": "ng/mL",
+                  "value": 205
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2024-03-25T12:15",
+              "author": "endocrinology",
+              "body": "Endocrinology, visit 03/20/2024.\nIGF-1 205 ng/mL, now within the age-adjusted range on octreotide LAR 20 mg every 4 weeks. No headaches or visual field complaints. Recent laser for diabetic retinopathy noted. Plan: continue the same dose, IGF-1 yearly, repeat pituitary MRI at the next visit if IGF-1 drifts up. Glucose management as per PCP and current insulin.\nNKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2024-04-10a",
+          "kind": "office_visit",
+          "start": "2024-04-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "conditions": [
+            {
+              "label": "Molluscum contagiosum",
+              "action": "resolved",
+              "icd10": "B08.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              149,
+              86
+            ],
+            "hr": 82,
+            "spo2": 99,
+            "weight_kg": 104.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-10T14:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 5.02
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 20
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 171
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 13
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-10T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-10T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-10T14:45",
+              "author": "PCP",
+              "body": "Interval: laser to both eyes in February for proliferative retinopathy, says vision is no worse, still blurry in dim light. HIV undetectable in Feb, SMX-TMP stopped. IGF-1 normal at endocrine. Feels himself, working full routes.\nOn glargine 24 and lispro when he remembers. Fasting sugars 140-200 on his meter.\n\nExam: BP above goal. Skin clear, no residual papules on face or neck. Lungs clear, heart regular, trace ankle edema. Feet intact, insensate as before.\n\nA/P: molluscum resolved, off the list. CKD 5 not on dialysis, BMP today; nephrology visit in June. T2DM above goal, A1c today, he declines changes to insulin again. HTN above goal on lisinopril 10; he would like one more stretch of salt restriction, recheck next visit. PDR s/p PRP, ophtho follow-up in May. HIV per ID.\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              144,
+              90
+            ],
+            "weight_kg": 103.5,
+            "labs": {
+              "Hemoglobin A1c": 8.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "specialist_visit",
+          "start": "2024-06-19T11:00",
+          "service": "Nephrology",
+          "reason": "CKD 5 follow-up",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-19T10:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 5.64
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 166
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 11
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-19T10:30",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 345
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2024-06-24T09:40",
+              "author": "nephrology",
+              "body": "Nephrology, visit 06/19/2024.\nCKD stage 5 from diabetic nephropathy, eGFR about 11, no uremic symptoms reported today. Volume acceptable. PTH remains elevated on calcitriol; phosphorus near goal on sevelamer.\nWe spent most of the visit on kidney replacement options. He and his wife attended our dialysis education session last month. He prefers in-center hemodialysis when the time comes.\nPlan: labs every 2 months, see us in 6 months or sooner if symptoms. Continue current medications.\nNKDA.\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 5.6,
+              "Parathyroid Hormone, Intact": 345
+            }
+          }
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "portal_message",
+          "start": "2024-06-25T20:14",
+          "reason": "Question from wife about dialysis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about dialysis",
+              "date": "2024-06-25T20:14",
+              "author": "patient",
+              "body": "This is his wife writing from Lamar's account. The kidney doctor talked about dialysis last week. He says he is fine and doesn't want to think about it. Is there anything we should be doing now to get ready? He is still working every day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about dialysis",
+              "date": "2024-06-26T08:40",
+              "author": "PCP",
+              "body": "Thank you for writing. The most useful things right now are keeping the labs nephrology asks for, sticking with the sevelamer at meals, limiting salt and potassium-heavy foods, and calling if he notices nausea, itching, more swelling or getting short of breath. Nephrology will decide timing with him. I am glad you went to the education session together. Happy to talk it through at his next visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "office_visit",
+          "start": "2024-08-28T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right foot swelling and shape change",
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ],
+            "hr": 81,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 104.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-08-28T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral-2024",
+              "action": "placed",
+              "order": "Orthopedic surgery referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "right foot swelling and deformity, insensate foot"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-08-28T16:00",
+              "author": "PCP",
+              "body": "Wife made this appointment. She has been watching his right foot get bigger and change shape over the spring and summer; he says it doesn't hurt much and he has kept working. Boots fit badly on that side now. No fever. No open sores that he knows of.\n\nExam: afebrile. Right midfoot visibly swollen and warm to the touch compared with the left, shape abnormal through the arch. Skin intact, no ulcer, no drainage. Left foot unremarkable. Both feet insensate to monofilament.\n\nA/P: warm swollen deformed foot in a man with dense neuropathy, concerning for Charcot arthropathy. Called orthopedics, they will see him on 9/11 and image there. Until then: off the foot as much as possible, no long walking shifts; work note given. Return immediately for fever, redness spreading or any skin break.\nRest of chronic issues deferred to next routine visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              90
+            ],
+            "weight_kg": 104.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "specialist_visit",
+          "start": "2024-09-11T10:00",
+          "service": "Orthopedics",
+          "reason": "Right foot swelling and deformity",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with diabetic neuropathic arthropathy",
+              "action": "diagnosed",
+              "onset": "2024-09-11",
+              "note": "Charcot neuroarthropathy, right foot and ankle",
+              "icd10": "E11.610"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-11T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-11T10:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 12
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 0.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Foot X-ray",
+              "performed": "2024-09-11T10:20",
+              "text": "Right foot, three views, weight-bearing as tolerated. Fragmentation of bone at the midfoot articulations with subluxation of the joints and surrounding sclerosis. Soft-tissue swelling over the midfoot. No soft-tissue gas. No radiopaque foreign body.",
+              "conclusion": "Advanced destructive change of the right midfoot joints with fragmentation, subluxation and sclerosis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral-2024",
+              "action": "done",
+              "date": "2024-09-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic foot and ankle consultation",
+              "date": "2024-09-16T11:30",
+              "author": "orthopedics",
+              "body": "Foot and ankle clinic, visit 09/11/2024. Letter to PCP.\n\nHistory: Mr. Coleman, 59, has had about 8 months of slowly progressive swelling and change in shape of the right foot. He says the foot is changing shape and that he sometimes hears a cracking or grinding when he walks, with little or no discomfort. Around nine months ago he rolled the ankle on a broken sidewalk and carried on with his deliveries because it barely hurt. The swelling has crept up since then and the foot now looks crooked to him. His wife has noticed an odd gait, though he never complains of pain. Peripheral neuropathy for about five years. He spends long days standing and walking for work, usually in an old pair of boots. No fevers, chills or recent infections; review of systems otherwise negative.\n\nExam: right foot markedly swollen, warm and red, with collapse of the midfoot and obvious deformity. Joint instability and bony crepitus on palpation; active motion reduced. Ankle reflexes absent on both sides. DP and PT pulses 2+ bilaterally. Skin intact. Left foot normal.\n\nLabs: white count normal, ESR and CRP normal.\nX-rays right foot: bone fragmentation, joint subluxation and sclerosis, advanced joint destruction.\nNo joint aspiration, as there is nothing to suggest infection.\n\nImpression: Charcot neuroarthropathy of the right foot and ankle, active phase.\nPlan: total contact cast today, changed weekly here; non-weight-bearing as much as he can manage with a knee scooter. Once the foot has consolidated, I would plan a right ankle arthrodesis to give him a stable plantigrade foot. Work note for no standing work.\n\nMedications: as on PCP list. NKDA.\nOrthopedics"
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 0.4,
+              "Erythrocyte Sedimentation Rate": 14
+            }
+          }
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-09T09:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID",
+              "date": "2024-10-09T09:20",
+              "author": "RN",
+              "body": "Arrived on knee scooter, right leg in a cast. Influenza and 2024-25 COVID given, one in each arm. Cast intact, no rubbing at the top edge, he has ortho cast changes weekly. Reminded about AWV in November."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "annual_physical",
+          "start": "2024-11-20T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              137,
+              88
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 103.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-20T15:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 5.36
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.0
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 19
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 167
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 12
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-20T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-11-20T15:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 83
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 156
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-20T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-11-20T14:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-11-20T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-11-20T15:25",
+              "author": "PCP",
+              "body": "AWV.\nThe year: retinopathy lasered in Feb. HIV suppressed. Right Charcot foot found in September, in a total contact cast since, changed weekly at ortho, plan for ankle fusion later. Not doing deliveries while in the cast, per ortho. Kidney function close to dialysis; nephrology in December.\nFunction: uses knee scooter, wife drives him. Independent with dressing and bathing using a shower chair. No falls. Memory: sister and wife both say he is sharp now.\nPHQ-2 1. Feels frustrated being off the route but not down.\nHCP on file.\n\nExam: BP above goal. Lungs clear. Heart regular. Left foot intact, insensate. Right leg in cast, skin at cast edges intact, toes warm.\n\nPrevention: Shingrix #1 today, #2 in 2-6 months. Flu and COVID done in October. Colonoscopy next 2029.\nLabs today: CMP, CBC, lipids, A1c.\nRTC after nephrology visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              90
+            ],
+            "weight_kg": 103.0,
+            "labs": {
+              "Hemoglobin": 10.9,
+              "Hemoglobin A1c": 8.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "specialist_visit",
+          "start": "2024-12-11T10:30",
+          "service": "Nephrology",
+          "reason": "CKD 5, dialysis planning",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-11T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 63
+                },
+                {
+                  "test": "Glucose",
+                  "value": 185
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2024-12-16T08:50",
+              "author": "nephrology",
+              "body": "Nephrology, visit 12/11/2024.\neGFR about 9. Fatigue is clearly worse over the last two months; he is sleeping more and struggling to get through the day even off work. No pericardial rub, no asterixis.\nWe agreed it is time to start hemodialysis. Plan: tunneled hemodialysis catheter by interventional radiology the week of 01/13, first in-center treatment the same week, three sessions weekly at our outpatient unit. Epoetin will be given with treatments once he starts. Continue calcitriol, sevelamer and his other medications.\nNKDA.\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 6.9
+            }
+          }
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "procedure_visit",
+          "start": "2025-01-13T07:30",
+          "end": "2025-01-13T15:00",
+          "service": "Interventional Radiology",
+          "reason": "Tunneled hemodialysis catheter placement; dialysis start",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 5",
+              "action": "resolved",
+              "icd10": "N18.5"
+            },
+            {
+              "label": "End stage renal disease",
+              "action": "diagnosed",
+              "onset": "2025-01-13",
+              "note": "in-center hemodialysis three times weekly via tunneled catheter"
+            },
+            {
+              "label": "Anemia in chronic kidney disease",
+              "action": "diagnosed",
+              "onset": "2025-01-13",
+              "icd10": "D63.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "epoetin alfa 4000 UNT/ML Injectable Solution",
+              "action": "historical",
+              "sig": "4000 units IV with each hemodialysis session, three times weekly",
+              "dose": {
+                "value": 4000,
+                "unit": "units"
+              },
+              "frequency": "3 TIMES WEEKLY",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "anemia in chronic kidney disease, given by dialysis unit"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Tunneled hemodialysis catheter placement",
+              "date": "2025-01-13T11:00",
+              "author": "interventional radiology",
+              "body": "Interventional radiology procedure report, 01/13/2025.\nIndication: end-stage renal disease, initiation of hemodialysis.\nProcedure: ultrasound-guided access of the right internal jugular vein, patent and compressible. Tunneled cuffed hemodialysis catheter placed under fluoroscopy with the tip at the cavoatrial junction. Both lumens aspirate and flush well, locked with heparin. Moderate sedation. No complications, no pneumothorax on post-procedure fluoroscopy. Catheter ready for use today.\nAllergies: NKDA."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Dialysis unit admission summary",
+              "date": "2025-01-20T13:00",
+              "author": "nephrology",
+              "body": "Outpatient dialysis unit, initial treatment summary. First hemodialysis 01/13/2025 via right IJ tunneled catheter, uneventful. Schedule Monday/Wednesday/Friday mornings. Epoetin alfa 4000 units IV each treatment started for anemia of CKD. Calcitriol and sevelamer continued. Target weight to be set over the first weeks. Monthly labs will be faxed to the PCP."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 23,
+              "Blood Urea Nitrogen": 52,
+              "Creatinine": 7.6,
+              "Hemoglobin": 10.5
+            }
+          }
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "telephone",
+          "start": "2025-01-22T11:15",
+          "reason": "Check-in after dialysis start",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-dialysis start check-in",
+              "date": "2025-01-22T11:15",
+              "author": "RN",
+              "body": "Called to check in after his first week and a half of dialysis. Wife answered, he was napping after the morning run. Washed out after sessions but otherwise ok, catheter site dry. Unit is managing epoetin. Moved his PCP follow-up to a Thursday so it doesn't collide with treatments. Med list updated with dialysis unit summary."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "specialist_visit",
+          "start": "2025-02-20T13:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-20T12:40",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 241
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 1850
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious disease follow-up",
+              "date": "2025-02-24T10:30",
+              "author": "infectious disease",
+              "body": "ID clinic, visit 02/20/2025.\nViral load 1,850 copies/mL after being undetectable last year; CD4 241. He acknowledges that with the move to dialysis three mornings a week his routine fell apart, and he has missed several doses each week. Sister had stepped back once things were going well.\nPlan: continue Biktarvy; doses to be taken at the same time every evening, sister back to checking the blister pack, pharmacy auto-refill confirmed. Repeat viral load in 3 months.\nNKDA.\nInfectious Disease"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "office_visit",
+          "start": "2025-03-06T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after dialysis start",
+          "vitals": {
+            "bp": [
+              149,
+              83
+            ],
+            "hr": 63,
+            "spo2": 99,
+            "weight_kg": 101.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-06T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-06T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-03-06T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-03-06T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-06T14:50",
+              "author": "PCP",
+              "body": "First visit since starting HD 1/13 (MWF mornings, right IJ tunneled catheter). Tired after treatments, better the next day. Unit labs reviewed from the faxes. Epoetin with treatments.\nID: viral load back up to 1,850 last month with missed doses around the dialysis change. Sister checking packs again.\nFoot still in cast, weekly changes, ortho thinks it is cooling down.\nSugars: lower fasting numbers on dialysis days, no lows below 70.\n\nExam: BP above goal. Catheter dressing clean and dry. Lungs clear. Heart regular. Trace edema left ankle. Right leg cast intact.\n\nA/P\nESRD on HD: per nephrology/unit. Labs come from the unit, so only A1c drawn here.\nT2DM: A1c today, watch for hypoglycemia now that he is on dialysis; told him to call with any reading under 70.\nHIV: adherence back on track per sister.\nHTN: unit adjusting target weight, will reassess.\nShingrix #2 today, series complete.\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              144,
+              88
+            ],
+            "weight_kg": 102.0,
+            "labs": {
+              "Hemoglobin A1c": 8.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "specialist_visit",
+          "start": "2025-04-16T09:20",
+          "service": "Endocrinology",
+          "reason": "Acromegaly follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-16T09:00",
+              "results": [
+                {
+                  "test": "Insulin-like growth factor I",
+                  "loinc": "2484-4",
+                  "unit": "ng/mL",
+                  "value": 198
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2025-04-21T14:00",
+              "author": "endocrinology",
+              "body": "Endocrinology, visit 04/16/2025.\nNow on hemodialysis since January. IGF-1 198 ng/mL, within range on octreotide LAR 20 mg monthly. No headaches or visual change beyond his known retinopathy. Injection days have been moved to Tuesdays so they do not land on dialysis days. Continue. IGF-1 in a year.\nNKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "specialist_visit",
+          "start": "2025-05-21T11:00",
+          "service": "Orthopedics",
+          "reason": "Charcot right foot follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Foot and ankle follow-up",
+              "date": "2025-05-27T10:10",
+              "author": "orthopedics",
+              "body": "Foot and ankle clinic, 05/21/2025.\nAfter eight months in a total contact cast the right foot is cooler and the swelling is down. Moving him into a CROW walker today with gradual return to protected weight-bearing. Skin intact.\nThe right ankle arthrodesis remains the plan once the foot has fully consolidated. Not scheduled yet; we will need medical clearance given his dialysis and other conditions.\nNo return to delivery work for now.\nNKDA.\nOrthopedics"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "hospital_admission",
+          "start": "2025-07-14T16:40",
+          "end": "2025-07-17T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, orthopnea, leg swelling",
+          "conditions": [
+            {
+              "label": "Heart failure with reduced ejection fraction",
+              "action": "diagnosed",
+              "onset": "2025-07-14",
+              "note": "LVEF 30%, global hypokinesis"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "carvedilol 6.25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 6.25,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "heart failure with reduced ejection fraction, started at discharge"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-14T16:45",
+              "bp": [
+                160,
+                90
+              ],
+              "hr": 102,
+              "rr": 22,
+              "spo2": 90
+            },
+            {
+              "time": "2025-07-14T19:30",
+              "bp": [
+                152,
+                88
+              ],
+              "hr": 96,
+              "rr": 20,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-14T17:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 7.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 54
+                },
+                {
+                  "test": "Glucose",
+                  "value": 181
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 7
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-14T17:05",
+              "results": [
+                {
+                  "test": "B-type natriuretic peptide",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "value": 900
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-07-14T17:20",
+              "text": "Portable AP chest. Right internal jugular tunneled catheter with tip at the cavoatrial junction. The cardiac silhouette is enlarged. Pulmonary vascular congestion with interstitial edema bilaterally. No large pleural effusion. No pneumothorax.",
+              "conclusion": "Cardiomegaly with pulmonary congestion."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-07-15T10:00",
+              "text": "Left ventricular cavity size normal. Global hypokinesis, no regional pattern. Estimated LVEF 30% by biplane method. Right ventricular size and function normal. No significant valvular stenosis or regurgitation. No pericardial effusion.",
+              "conclusion": "LVEF 30% with global hypokinesis. No significant valve disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "date": "2025-07-18T09:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department record, 07/14/2025, received 07/18/2025.\n\nCC: shortness of breath.\nHPI: 60-year-old man on hemodialysis for ESRD (nephrology-managed), with diabetes and HIV, here with two days of steadily worsening breathlessness. Has to sleep propped up, and his legs have swelled again. He says he has been eating saltier food over the holiday week and missed several doses of his pills.\nMeds per list: Biktarvy, insulin glargine, lispro scale, lisinopril 10, atorvastatin 40, aspirin 81, sevelamer, calcitriol, octreotide LAR monthly, epoetin with dialysis. NKDA.\n\nVitals on arrival: BP 160/90, HR 102, RR 22, SpO2 90% on room air.\nExam: crackles halfway up both lung fields. S3 gallop. JVP elevated. 2+ pitting edema to the mid-shins. Catheter site clean.\nLabs: Na 138, K 4.9, BNP 900.\nCXR: cardiomegaly with pulmonary congestion.\n\nCourse: placed on 2 L nasal cannula with improvement. Nephrology consulted for urgent ultrafiltration. Admitted to medicine with telemetry."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2025-07-18T09:05",
+              "author": "hospital medicine",
+              "body": "Admission 07/14/2025 - 07/17/2025, regional hospital medicine service.\nPrincipal diagnosis: acute heart failure with reduced ejection fraction, new.\nCourse: urgent hemodialysis with ultrafiltration on admission night and again 07/16, with fluid removal; off oxygen by day 2. Echo: LVEF 30% with global hypokinesis, no significant valve disease. Ischemic evaluation deferred to outpatient cardiology. Lisinopril continued. Started carvedilol 6.25 mg twice daily, tolerated with HR in the 80s.\nDischarge weight to be used as new dialysis target, communicated to his unit.\nDischarge medications: carvedilol 6.25 mg BID (new), Biktarvy daily, insulin glargine 24 units qhs, lispro scale, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg, sevelamer 800 mg TID with meals, calcitriol 0.25 mcg daily, octreotide LAR 20 mg monthly, epoetin with dialysis.\nFollow-up: PCP within 1 week, cardiology 6-8 weeks, resume regular dialysis schedule 07/18.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, heart failure",
+          "medications": [
+            {
+              "drug": "carvedilol 6.25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "carvedilol 12.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 12.5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "heart failure with reduced ejection fraction"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              150,
+              83
+            ],
+            "hr": 76,
+            "spo2": 99,
+            "weight_kg": 101.8
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-07-22T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2025",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "new HFrEF, LVEF 30%"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-07-22T14:30",
+              "author": "PCP",
+              "body": "TCM visit. Discharged 7/17 after 3 days for new HFrEF with volume overload (EF 30%). Discharge summary and ED record reviewed. Interactive contact by RN on 7/18.\nFeels back to normal breathing, sleeps flat again. Back on MWF dialysis, unit lowered his target weight. Taking carvedilol twice a day, no dizziness.\nHonest that the holiday salt and skipped pills set this off. Wife has thrown out the soy sauce.\n\nExam: HR in the 70s, BP above goal. No JVD at 45 degrees. Lungs clear. Heart regular, no gallop heard today. Trace ankle edema left; right in CROW walker. Catheter site clean.\n\nA/P\nHFrEF, new: tolerating carvedilol, HR and BP allow titration. Increase carvedilol to 12.5 mg BID. Continue lisinopril 10. Daily weights at home, call for gain over 2 kg between sessions. Cardiology referral placed, outpatient ischemic evaluation to be discussed there.\nESRD: per unit, weight targets as discharged.\nHTN: should improve on carvedilol.\nMed reconciliation done, list updated.\nRTC 3 months, sooner if symptoms."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              86
+            ],
+            "weight_kg": 101.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "specialist_visit",
+          "start": "2025-09-17T14:00",
+          "service": "Cardiology",
+          "reason": "New HFrEF",
+          "vitals": {
+            "bp": [
+              136,
+              82
+            ]
+          },
+          "orders": [
+            {
+              "id": "cards-referral-2025",
+              "action": "done",
+              "date": "2025-09-17T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2025-09-22T16:20",
+              "author": "cardiology",
+              "body": "Outpatient cardiology, 09/17/2025. Letter to PCP.\n\nReferred after a July admission for decompensated heart failure, LVEF 30% with global hypokinesis. On hemodialysis since January. Since discharge he has been free of orthopnea and his weights have stayed near target with his dialysis sessions. Can walk a block in his walker before he needs to stop, limited more by the foot than breath. NYHA class II.\n\nBP 136/82. JVP not elevated. Lungs clear. Regular rhythm, no gallop. No significant edema.\n\nAssessment: HFrEF, euvolemic on current dialysis prescription.\nPlan: continue carvedilol 12.5 mg twice daily and lisinopril 10 mg. Given diabetes and family history, I offered an ischemic evaluation; he would like to hold off for now and revisit at his next visit. Return in 6 months, sooner for symptoms.\n\nMedications reviewed. NKDA.\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T13:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-09T13:37"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2025-10-09T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2025-10-09T13:55",
+              "author": "RN",
+              "body": "Thursday, non-dialysis day. Influenza L deltoid, COVID R deltoid, RSV L deltoid lower, per PCP order (age 60 with ESRD and heart failure). Each VIS given. Sat for 15 min, no issues. Wife drove."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "annual_physical",
+          "start": "2025-11-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              147,
+              89
+            ],
+            "hr": 80,
+            "spo2": 98,
+            "weight_kg": 100.5
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-13T14:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 73
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 144
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 93
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-13T14:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-11-13T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-11-13T14:50",
+              "author": "PCP",
+              "body": "AWV.\nYear in review: HD since January via tunneled catheter. HFrEF admission in July, stable since on carvedilol 12.5 BID, saw cardiology in September and chose to wait on ischemic testing. Charcot foot now in a CROW walker; ankle fusion still on ortho's list for when the foot is ready. Octreotide continues, IGF-1 normal in April. HIV labs with ID.\nFunction: walks household distances in the walker. Wife drives. Independent in self care. No falls this year. Memory fine per wife.\nPHQ-2 0.\nAdvance care planning: reviewed HCP; he would want dialysis continued and full treatment; documented.\n\nExam: BP a little above goal, better than last year. Lungs clear, heart regular, no edema. Left foot intact, insensate; right in CROW. Catheter site clean.\n\nPrevention: flu, COVID and RSV done in October. Shingrix complete. Colonoscopy due 2029. Lipids and A1c today.\nRTC 2 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              84
+            ],
+            "weight_kg": 101.0,
+            "labs": {
+              "Hemoglobin A1c": 8.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "vitals": {
+            "bp": [
+              148,
+              86
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 101.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-20T15:00",
+              "author": "PCP",
+              "body": "Routine. One year on HD, Tuesday visit to stay off his chair days.\nNo orthopnea, no PND. Home weights steady between treatments. Taking carvedilol twice daily, sister still checks the Biktarvy pack. Foot in CROW, fusion still not scheduled.\nA1c in November was still above 8. He is fine with that and does not want more injections; lows have not been a problem.\nDialysis labs from December reviewed (faxed): hemoglobin in the 10s on epoetin, phosphorus a touch high.\n\nExam: BP near his usual. Lungs clear. Heart regular. No edema. Right chest catheter site clean, no tenderness. Left foot intact and insensate.\n\nA/P\nHFrEF: stable NYHA II, continue carvedilol 12.5 BID and lisinopril 10. Cardiology spring visit.\nESRD on HD / secondary HPT / anemia of CKD: per nephrology and unit.\nT2DM: above goal, stable insulin, no hypoglycemia.\nHIV: per ID.\nCharcot R foot: per ortho.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "weight_kg": 101.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T10:05",
+          "reason": "Insulin pen prior authorization renewal",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PA renewal, insulin pens",
+              "date": "2026-02-10T10:05",
+              "author": "MA",
+              "body": "MassHealth secondary needed annual PA renewal for glargine and lispro pens. Submitted with diagnosis and last A1c. Approved same day, 12 months. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "hospital_admission",
+          "start": "2026-03-12T21:15",
+          "end": "2026-03-17T12:30",
+          "service": "Emergency Medicine",
+          "reason": "Fever and chills with tunneled dialysis catheter",
+          "conditions": [
+            {
+              "label": "Bloodstream infection due to central venous catheter, initial encounter",
+              "action": "diagnosed",
+              "onset": "2026-03-12",
+              "note": "tunneled hemodialysis catheter; coagulase-negative staphylococci, methicillin-resistant",
+              "icd10": "T80.211A"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "vancomycin 1000 MG Injection",
+              "action": "historical",
+              "sig": "Dosed IV after each hemodialysis session per pharmacy levels, 14 days total",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "catheter-related bloodstream infection"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-12T21:20",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 102,
+              "rr": 18,
+              "temp_c": 39.0
+            },
+            {
+              "time": "2026-03-13T02:00",
+              "bp": [
+                138,
+                82
+              ],
+              "hr": 92,
+              "rr": 16,
+              "temp_c": 38.1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-12T21:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 36
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-12T22:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.011
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-12T21:40",
+              "resulted": "2026-03-13T16:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Positive, 2 of 2 sets: coagulase-negative staphylococci, methicillin-resistant; susceptible to vancomycin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-14T08:00",
+              "resulted": "2026-03-19T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "date": "2026-03-18T10:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED record, 03/12/2026. Received 03/18/2026.\n\nCC: fever and chills.\nHPI: 61-year-old man with type 2 diabetes, HIV, ESRD on hemodialysis, right Charcot foot and HFrEF, here with one day of fever with shaking chills. Thermometer at home read 101.5 F. He has had a tunneled dialysis catheter in place for 14 months. Denies cough, painful urination, diarrhea or any other focal complaint.\nMeds: per list including Biktarvy, insulin, carvedilol 12.5 BID, lisinopril, atorvastatin, aspirin, sevelamer, calcitriol, octreotide LAR, epoetin with HD. NKDA.\n\nTriage: T 102.2 F, BP 150/90, HR 102, RR 18.\nExam: ill-appearing but alert. Catheter exit site in the right chest is clean with no redness, swelling or drainage; tunnel nontender. Lungs clear. Heart regular. Abdomen soft. Right foot in walker, skin intact.\nLabs: WBC 12,000, Hgb 10.2, platelets 220,000. UA normal. Blood cultures x2 drawn, pending at disposition.\n\nImpression: fever in a dialysis patient with a tunneled catheter and no other source; catheter-related bloodstream infection is the leading concern.\nPlan: empiric vancomycin after cultures, admit to medicine, nephrology aware."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2026-03-18T10:05",
+              "author": "hospital medicine",
+              "body": "Admission 03/12/2026 - 03/17/2026, regional hospital medicine service.\nPrincipal diagnosis: catheter-related bloodstream infection, tunneled hemodialysis catheter.\nMicrobiology: blood cultures from 03/12, 2 of 2 sets, methicillin-resistant coagulase-negative staphylococci, vancomycin susceptible. Repeat cultures 03/14 no growth to date at discharge.\nCourse: defervesced within 48 hours on vancomycin. Exit site and tunnel never looked infected, so the catheter was exchanged over a guidewire by interventional radiology on 03/14 rather than removed. Hemodialysis continued on schedule in hospital.\nDischarge plan: vancomycin IV dosed after each dialysis session at his outpatient unit to complete 14 days from the first negative culture; unit to follow levels. All home medications unchanged.\nFollow-up: PCP within 1 week; nephrology through the dialysis unit.\nAllergies: NKDA."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.2,
+              "Platelets": 220,
+              "White Blood Cells": 12.0
+            }
+          }
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "outside_records",
+          "start": "2026-03-19T09:30",
+          "reason": "Final blood culture result",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Final repeat blood culture",
+              "date": "2026-03-19T09:30",
+              "author": "MA",
+              "body": "Hospital lab faxed final result: repeat blood cultures from 03/14/2026, no growth at 5 days. Filed, routed to PCP ahead of Tuesday's visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "office_visit",
+          "start": "2026-03-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, catheter infection",
+          "vitals": {
+            "bp": [
+              138,
+              89
+            ],
+            "hr": 73,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 100.7
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-24T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-03-24T14:10",
+              "author": "PCP",
+              "body": "TCM visit after 3/12-3/17 admission for catheter-related bacteremia with methicillin-resistant coagulase-negative staph. Catheter exchanged over wire 3/14. Repeat cultures negative final. Getting vancomycin after each run at the unit, last doses this week.\nNo fevers since the hospital. Appetite back. Tired, but no more than his usual after dialysis weeks.\n\nExam: afebrile. Right chest catheter exit site clean and dry, tunnel nontender. Lungs clear. Heart regular. No edema.\n\nA/P\nCRBSI: improving, complete vancomycin per unit. Call for any fever or chills, especially during or after a run.\nESRD/HD: catheter care reviewed, unit aware.\nOther chronic problems stable, no medication changes. Med reconciliation done.\nRTC 6-8 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              84
+            ],
+            "weight_kg": 100.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "conditions": [
+            {
+              "label": "Bloodstream infection due to central venous catheter, initial encounter",
+              "action": "resolved",
+              "icd10": "T80.211A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              81
+            ],
+            "hr": 80,
+            "spo2": 98,
+            "weight_kg": 100.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-12T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-05-12T14:45",
+              "author": "PCP",
+              "body": "Follow-up. Finished vancomycin in late March, no fevers since. Dialysis going steadily, has not missed a run this spring. Breathing fine. Sister reports Biktarvy pack empty on schedule each week.\n\nExam: BP and HR as charted. Lungs clear, heart regular, no edema. Catheter site clean.\n\nA/P\nCRBSI: treated, resolved.\nT2DM: A1c today.\nHFrEF, HTN, ESRD, HIV, acromegaly, PDR, Charcot: no changes, followed by their specialists.\nRTC August."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "weight_kg": 101.0,
+            "labs": {
+              "Hemoglobin A1c": 8.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T12:10",
+          "reason": "A1c result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2026-05-14T12:10",
+              "author": "PCP",
+              "body": "Hi Lamar, your A1c came back in the same range as the last few, still above our target. No change needed today, but think about whether you would try the lunch-time insulin more regularly. We can talk in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "office_visit",
+          "start": "2026-08-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              75
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 99.7
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-10T14:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 82
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 154
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-10T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-08-10T14:20",
+              "author": "PCP",
+              "body": "Routine visit, came after his morning dialysis run.\nNothing new. No fever since March. No orthopnea, weights stable. Using the CROW for anything beyond the house. Still not back to deliveries. Taking his pills; sister checks the packs. Insulin as before, says he has been better about the lunch dose about half the time.\n\nExam: BP near his usual. Lungs clear. Heart regular. No edema. Catheter exit site clean. Left foot intact, insensate; right in CROW.\n\nA/P\nAll chronic problems stable on current regimen. Lipids and A1c today. Flu and COVID this fall at a nurse visit. Next routine visit in about 3 months; he will call to schedule once he has the fall dialysis calendar."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 101.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-08-12T16:45",
+              "author": "PCP",
+              "body": "Lamar, labs from Monday: cholesterol remains well controlled on atorvastatin. A1c about where it has been. Nothing to change. Please call the office in a few weeks to set up your fall vaccines and the next visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "pharmacy",
+          "start": "2026-08-19T09:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2026-08-19T09:20",
+              "author": "MA",
+              "body": "Pharmacy electronic refill request: carvedilol 12.5 mg BID and atorvastatin 40 mg, 90-day supplies. Both on current list, last visit 8/10. Sent per protocol, PCP cosign."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anemia in chronic kidney disease|D63.1": {
+        "code": "D63.1",
+        "display": "Anemia in chronic kidney disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Bloodstream infection due to central venous catheter, initial encounter|T80.211A": {
+        "code": "T80.211A",
+        "display": "Bloodstream infection due to central venous catheter, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chronic kidney disease, stage 5|N18.5": {
+        "code": "N18.5",
+        "display": "Chronic kidney disease, stage 5",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Molluscum contagiosum|B08.1": {
+        "code": "B08.1",
+        "display": "Molluscum contagiosum",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary hyperparathyroidism of renal origin|N25.81": {
+        "code": "N25.81",
+        "display": "Secondary hyperparathyroidism of renal origin",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Type 2 diabetes mellitus with diabetic nephropathy|E11.21": {
+        "code": "E11.21",
+        "display": "Type 2 diabetes mellitus with diabetic nephropathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Type 2 diabetes mellitus with diabetic neuropathic arthropathy|E11.610": {
+        "code": "E11.610",
+        "display": "Type 2 diabetes mellitus with diabetic neuropathic arthropathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Type 2 diabetes mellitus with proliferative diabetic retinopathy without macular edema, bilateral|E11.3593": {
+        "code": "E11.3593",
+        "display": "Type 2 diabetes mellitus with proliferative diabetic retinopathy without macular edema, bilateral",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "calcitriol 0.00025 MG Oral Capsule": {
+        "code": "308867",
+        "display": "calcitriol 0.00025 MG Oral Capsule",
+        "ingredient": "calcitriol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "epoetin alfa 4000 UNT/ML Injectable Solution": {
+        "code": "239999",
+        "display": "1 ML epoetin alfa 4000 UNT/ML Injection",
+        "ingredient": "epoetin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "octreotide 20 MG Injectable Suspension": {
+        "code": "898589",
+        "display": "octreotide 20 MG Injection",
+        "ingredient": "octreotide",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sevelamer carbonate 800 MG Oral Tablet": {
+        "code": "749206",
+        "display": "sevelamer carbonate 800 MG Oral Tablet",
+        "ingredient": "sevelamer",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet": {
+        "code": "198334",
+        "display": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet",
+        "ingredient": "sulfamethoxazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "vancomycin 1000 MG Injection": {
+        "code": "1807513",
+        "display": "vancomycin 1000 MG Injection",
+        "ingredient": "vancomycin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "B-type natriuretic peptide": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Insulin-like growth factor I": {
+        "code": "2484-4",
+        "display": "Insulin-like growth factor-I [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI pituitary with and without contrast": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

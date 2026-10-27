@@ -1,0 +1,437 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001736",
+      "events": [
+        {
+          "id": "2024-01-14a",
+          "kind": "hospital_admission",
+          "start": "2024-01-14T19:20",
+          "end": "2024-02-01T12:30",
+          "service": "Dermatology",
+          "reason": "Fever, sore throat and blistering skin eruption",
+          "conditions": [
+            {
+              "label": "Toxic epidermal necrolysis",
+              "icd10": "L51.2",
+              "action": "diagnosed",
+              "onset": "2024-01-11"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lamotrigine 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Depression, add-on (outside psychiatry)"
+            },
+            {
+              "drug_text": "lamotrigine 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Toxic epidermal necrolysis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Lamotrigine",
+              "reaction": "Toxic epidermal necrolysis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-01-14T19:30",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 20,
+              "temp_c": 38.9,
+              "spo2": 97
+            },
+            {
+              "time": "2024-01-31T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-14T20:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-14T20:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-31T05:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-31T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-01-14T21:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2024-02-05T09:45",
+              "body": "TERTIARY MEDICAL CENTER - DISCHARGE SUMMARY (received 02/05/2024)\nAdmitted 01/14/2024 via ED to the burn and critical care unit; dermatology consulting. Discharged 02/01/2024.\n\nPrincipal diagnosis: toxic epidermal necrolysis, attributed to lamotrigine.\n\nHistory: 33 year old woman with factitious disorder imposed on self and prior factitious diarrhea, recurrent depression, chronic migraine, IBS-D and epilepsy, who had three days of fever and sore throat before a painful red rash appeared on her chest and back. Over about a day it spread to the face and limbs, with flaccid blisters and skin coming away. Lamotrigine 25 mg daily had been started by her outside psychiatrist about two weeks before, as an add-on for depression. Other medicines: sertraline 100 mg daily, sumatriptan 100 mg as needed, loperamide 2 mg as needed. Known allergy: sulfa (rash).\n\nAdmission exam: T 38.9 C, HR 110, BP 100/60. Dusky macules coalescing into flaccid bullae and sheets of epidermal detachment over the face, trunk and extremities, about 35% of body surface area. Nikolsky sign positive. Erosions on the buccal mucosa. Both conjunctivae injected.\n\nAdmission labs: WBC 15.0, hemoglobin 13.2, platelets 250; creatinine 1.2; ALT 45, AST 47.\n\nCourse: lamotrigine stopped on arrival and listed as an allergy. Managed in the critical care unit with warmed room, IV fluids, non-adherent dressings, eye lubrication with daily eye checks, mouth care and scheduled pain control, with nutrition support. Creatinine came back to normal with fluids. Fever settled in the first week. Re-epithelialization was steady and nearly complete by discharge. No infection. Her eyes were comfortable at discharge.\n\nDischarge medicines: sertraline 100 mg daily; sumatriptan as needed; loperamide as needed; bland emollient to healed areas.\nAllergies at discharge: LAMOTRIGINE - toxic epidermal necrolysis; sulfa - rash.\nAdvice: never take lamotrigine again; tell every prescriber and pharmacist. Follow up with PCP within a week and with dermatology in one month.\n\nHospital medicine attending, for the inpatient team"
+            },
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Inpatient Consultation",
+              "author": "dermatology",
+              "date": "2024-02-05T09:50",
+              "body": "DERMATOLOGY CONSULT (inpatient, 01/14/2024; received with the discharge packet)\nReason: blistering eruption with fever.\n\nThree days of fever and throat pain, then a painful eruption starting on the trunk, now face, trunk and limbs, with blisters and sloughing. New medicine: lamotrigine, about two weeks.\n\nExam: febrile and tachycardic. Confluent dusky erythema with flaccid bullae and denuded areas, positive Nikolsky sign; estimated 35% BSA detachment. Buccal erosions. Bilateral conjunctival injection.\n\nImpression: toxic epidermal necrolysis, lamotrigine the culprit drug.\nRecommendations: stop lamotrigine and record as a permanent allergy; critical care level supportive care; ophthalmic lubrication and daily eye exams; wound care as per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "telephone",
+          "start": "2024-01-16T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Husband calling",
+              "author": "front desk",
+              "date": "2024-01-16T09:05",
+              "body": "Pt's husband called to let us know she was admitted Sunday to the burn and critical care unit at a tertiary hospital for a severe skin reaction, thought to be from a new medicine. Message to PCP. Records request faxed for discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-06T11:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-06T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-02-06T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "author": "PCP",
+              "date": "2024-02-06T11:20",
+              "body": "Discharged 2/1 after 18 days for toxic epidermal necrolysis from lamotrigine. I did not know lamotrigine had been started; psychiatry added it in late December for mood.\n\nToday: skin tender in a few spots on the back and thighs, otherwise healed over, new skin pink. Eyes a little gritty in the mornings, using drops. Mouth fine, eating normally. No fever. Tired. Husband drove her. PHQ-9 10.\n\nExam: vitals as charted, afebrile. Healed, re-epithelialized new skin over trunk and limbs, no open areas, no signs of infection. Conjunctivae quiet. Oral mucosa healed.\n\nA/P\n1. TEN from lamotrigine, recovering. Lamotrigine allergy on our list, flagged as high criticality. Dermatology f/u next month. Sun protection on the new skin. BMP and CBC to confirm recovery.\n2. Depression - psychiatry has seen her since discharge; continuing sertraline 100 only.\n3. Migraine study wrapped up while she was inpatient; neurology letter to follow.\nRTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "specialist_visit",
+          "start": "2024-02-21T14:00",
+          "service": "Neurology",
+          "reason": "Migraine study completion",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "author": "neurology",
+              "date": "2024-02-26T13:15",
+              "body": "OUTSIDE NEUROLOGY - HEADACHE CLINIC FOLLOW-UP\nVisit 02/21/2024\n\nMs. Hurley has completed the six months of the crossover study. Headache days by month from her diary:\nmonths 1, 2, 3: 8, 7 and 6\nmonths 4, 5, 6: 14, 15 and 15\nShe reported no significant side effects at any point. The order of study drug and placebo stays blinded until the whole study closes, and we have asked her not to speculate. I note the hospitalization in January for a reaction to lamotrigine, which was not a study medicine.\n\nExam today is unchanged and normal apart from healing skin.\n\nPlan: back to sumatriptan for attacks; keep the diary; we will contact her when the study is unblinded.\n\nHeadache neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T11:00",
+          "service": "Dermatology",
+          "reason": "Post-TEN follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "author": "dermatology",
+              "date": "2024-03-15T10:20",
+              "body": "OUTSIDE DERMATOLOGY - FOLLOW-UP\nVisit 03/12/2024\nSeen six weeks after toxic epidermal necrolysis from lamotrigine. Skin fully re-epithelialized, no erosions, nails and scalp normal, mouth healed. Eyes asymptomatic. Reinforced lifelong avoidance of lamotrigine, which is now on her allergy card. Sun protection for the next few months. Discharged from dermatology follow-up; return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "telephone",
+          "start": "2024-05-07T09:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Sumatriptan PA renewal",
+              "author": "MA",
+              "date": "2024-05-07T09:25",
+              "body": "Insurer requires annual reauthorization for sumatriptan 100 mg #9 per month. Form completed with diagnosis and neurology letters, signed by PCP, faxed. Approved same day through 5/2025. Pt notified by phone, left message."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-06-11T16:10",
+              "body": "Doing better. Skin fully healed; dermatology released her in March. Eyes fine. Mood steady, still in therapy every other week, psychiatry every 2 months. PHQ-9 7. Migraines back up to about 14 days a month since the study ended; sumatriptan for the worst ones. Bowels at baseline.\n\nVitals as charted. Exam: skin intact, no active lesions.\n\nA/P: TEN, recovered. MDD and factitious disorder, followed by psychiatry. Chronic migraine, she is waiting to hear about unblinding and does not want to start anything new right now. IBS-D stable. Physical in the fall."
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Toxic epidermal necrolysis",
+              "icd10": "L51.2",
+              "action": "resolved"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "portal_message",
+          "start": "2024-08-27T17:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Unblinding",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Migraine study",
+              "author": "patient",
+              "date": "2024-08-27T17:48",
+              "body": "The study team said the study is still running so no unblinding yet. Just letting you know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Migraine study",
+              "author": "PCP",
+              "date": "2024-08-28T08:02",
+              "body": "Thanks for the update. Keep the diary going in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              138,
+              88
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T09:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T08:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-22T09:25",
+              "body": "Annual exam, 33 y/o.\n\nNo hospital or ED visits since February. Mood fair, PHQ-9 8, sees psychiatry and therapy. Migraines frequent, sumatriptan on the bad days. IBS-D baseline. No seizures. She and her husband have been talking about starting a family 'at some point'; discussed folic acid and planning ahead with psychiatry about her medicines.\n\nBP 138/88 today, recheck similar. Father has hypertension. She does not check at home.\n\nExam: vitals as charted. Skin intact. Thyroid normal. Heart RRR, no murmurs. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal.\n\nA/P\n- Elevated BP without diagnosis: home cuff, log for a month, recheck visit in early spring. Salt and exercise talk.\n- Health maintenance: CBC, CMP, lipids. Flu and COVID today. Pap due 2026.\n- MDD, factitious disorder, migraine, IBS-D: as above, no changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "portal_message",
+          "start": "2024-10-25T12:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2024-10-25T12:02",
+              "body": "Blood count, kidney and liver function and cholesterol all look fine. Please keep the BP log and bring it in March."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

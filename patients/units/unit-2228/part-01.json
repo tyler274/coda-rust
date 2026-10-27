@@ -1,0 +1,887 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002228",
+   "given": "Russell",
+   "family": "Gallo",
+   "birth_date": "1951-08-16",
+   "address_line": "19 Overlook Drive",
+   "phone": "+1-978-555-0171",
+   "email": "russell.gallo@example.test",
+   "marital_status": "married",
+   "summary": "Retired physics professor who joined in 2017 with hypertension, type 2 diabetes, CKD 3a and left hip arthritis. Mild cognitive impairment in 2020, a resected mucin-producing pancreatic adenocarcinoma with transient DIC in 2023, flash pulmonary edema and an anterior STEMI in 2024, E. coli septic shock he survived in 2025, and a right MCA stroke in April 2026 after his last practice visit.",
+   "events": [
+    {
+     "id": "2017-08-24a",
+     "kind": "telephone",
+     "start": "2017-08-24T10:20",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2017-08-24T10:20",
+       "body": "Mr. Gallo phoned. His internist of many years has retired and the office is closing; a neighbor gave him our number. Retired from the university, Medicare plus a supplement plan. Says he has blood pressure and diabetes, both 'behaving'. Booked new patient appointment 9/12 at 9:00. Release form for his old office mailed to the house; asked him to bring every pill bottle to the visit."
+      }
+     ]
+    },
+    {
+     "id": "2017-09-12a",
+     "kind": "establish_care",
+     "start": "2017-09-12T09:00",
+     "end": "2017-09-12T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2006-03-01"
+      },
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "onset": "2010-06-01"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3a",
+       "action": "diagnosed",
+       "onset": "2015-01-01"
+      },
+      {
+       "label": "Primary osteoarthritis of hip",
+       "action": "diagnosed",
+       "onset": "2014-01-01",
+       "note": "left hip"
+      },
+      {
+       "label": "Personal history of peptic ulcer disease",
+       "action": "history",
+       "onset": "1996-01-01",
+       "note": "remote, treated, no recurrence",
+       "icd10": "Z87.11"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth daily before breakfast",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "ulcer history, on aspirin"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "diabetes, primary prevention"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "diabetes, primary prevention"
+      },
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "left hip osteoarthritis"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       128,
+       78
+      ],
+      "weight_kg": 86.2,
+      "height_cm": 178.0,
+      "labs": {
+       "Creatinine": 1.42,
+       "Hemoglobin A1c": 6.5,
+       "Low Density Lipoprotein": 74,
+       "Microalbumin/Creatinine Ratio": 14
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2017-09-12T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2017-09-12T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2017-09-12T09:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-09-12T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired university physics professor"
+      },
+      {
+       "item": "Highest level of education",
+       "value": "Doctoral degree"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2017-09-12T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2017-09-12T10:00",
+       "body": "66 y/o man transferring care; his longtime internist retired this summer. Brought a shopping bag of bottles, which made reconciliation easy.\n\nHTN since about 2006, lisinopril 10 for years, does not check at home. T2DM about 7 years, metformin 1000 BID, says last A1c was 'in the sixes'. Told a few years ago his kidney numbers were 'a little low' - CKD stage 3a per his account, no nephrology. L hip arthritis, aches after long walks, takes acetaminophen a few times a week, avoids ibuprofen because of an ulcer in the 1990s (treated, scoped back then, no bleeding since). Stays on omeprazole because he takes aspirin. Atorvastatin 40 and aspirin started by old doctor 'because of the diabetes'.\n\nPSH: appendix out at 24, open incision.\nFHx: father MI at 71. Mother T2DM, stroke at 76. Paternal uncle pancreatic cancer.\nSHx: married, lives with wife in Florence. Daughter nearby, son lives in Germany. Retired university physics professor (PhD). Former smoker, about 20 pack-years, quit roughly 15 years ago. Alcohol a drink or two a month. Walks most days.\nAllergies: NKDA.\n\nROS negative in detail apart from the hip.\n\nExam: BP and pulse as recorded. Pleasant, articulate, good historian. HEENT unremarkable. Neck supple, no thyromegaly, no bruits. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed RLQ scar. Ext without edema; L hip internal rotation a bit limited and uncomfortable at end range. Feet: skin intact, monofilament intact bilaterally, DP pulses 2+.\n\nA/P\n1. HTN - at goal on lisinopril 10. Continue.\n2. T2DM - metformin 1000 BID. A1c, UACR today. Eye exam due - he has an optometrist.\n3. CKD 3a - BMP today to set our own baseline. Keep NSAIDs off the table.\n4. L hip OA - acetaminophen PRN, keep walking.\n5. Remote PUD on aspirin - continue omeprazole.\n6. Lipids/ASA - continue atorvastatin 40, aspirin 81.\n7. HM - one-time HCV and HIV today. Will request old records for colonoscopy and vaccines. Former smoker age 65-75: AAA screening ultrasound ordered. Flu shot at nurse visit next month.\n\nRTC 4 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "placed",
+       "order": "Abdominal aorta ultrasound, AAA screening",
+       "category": "imaging",
+       "reason": "male former smoker age 65-75"
+      }
+     ]
+    },
+    {
+     "id": "2017-09-14a",
+     "kind": "outside_records",
+     "start": "2017-09-14T14:00",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2015-05-19T10:00"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2016-10-04T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior internal medicine practice",
+       "author": "front desk",
+       "date": "2017-09-14T14:00",
+       "body": "Records received from patient's former internist (practice closing). 41 pages scanned. Summary for chart:\n- Colonoscopy 06/2014: normal to the cecum, no polyps, prep good. Repeat interval 10 years.\n- Tdap 05/19/2015. PCV13 10/04/2016.\n- Problem list on their record: hypertension, type 2 diabetes, CKD stage 3a, L hip osteoarthritis, history of peptic ulcer.\n- Last A1c on file 6.4 (spring 2017).\nOriginals to scanning."
+      }
+     ]
+    },
+    {
+     "id": "2017-09-15a",
+     "kind": "portal_message",
+     "start": "2017-09-15T08:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2017-09-15T08:10",
+       "body": "Mr. Gallo, welcome again to the practice. Your labs are back. A1c 6.5, which is good control for you. Kidney function is in the same mildly reduced range your old office described, stable - no change needed, just the usual advice to skip ibuprofen and naproxen. Urine protein is normal. Cholesterol is well treated on the atorvastatin. Hepatitis C and HIV screens negative. See you for the flu shot next month."
+      }
+     ]
+    },
+    {
+     "id": "2017-10-11a",
+     "kind": "nurse_visit",
+     "start": "2017-10-11T11:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "influenza vaccine",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2017-10-11T11:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2017-10-11T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu Vaccine",
+       "author": "RN",
+       "date": "2017-10-11T11:30",
+       "body": "High-dose influenza 0.5 mL IM L deltoid. No prior reactions, VIS given. Tolerated. Reminded about the aorta ultrasound on the 26th - he had it on his calendar."
+      }
+     ]
+    },
+    {
+     "id": "2017-10-26a",
+     "kind": "imaging",
+     "start": "2017-10-26T13:30",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2017-10-26T13:30",
+       "text": "Indication: AAA screening, male former smoker. Technique: grayscale and color imaging of the abdominal aorta from the diaphragm to the bifurcation. Findings: Proximal aorta 1.9 cm, mid 1.8 cm, distal 1.7 cm in AP outer-to-outer dimension. No aneurysmal dilation. Common iliac arteries normal in caliber. No periaortic fluid.",
+       "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "done",
+       "date": "2017-10-26T13:30"
+      }
+     ]
+    },
+    {
+     "id": "2018-01-17a",
+     "kind": "office_visit",
+     "start": "2018-01-17T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-01-17T14:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-01-17T14:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2018-01-17T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2018-01-17T14:45",
+       "body": "S: Doing well over the winter. Walks at the indoor track when the roads are icy. No hypoglycemia (not expected on metformin alone). Hip about the same.\nO: Vitals as charted. Heart RRR. Lungs clear. No edema.\nA/P: BP higher than usual today - he rushed in from the parking lot; was fine in September. Recheck next visit. T2DM steady. A1c and BMP drawn. Meds unchanged. Next visit late spring."
+      }
+     ]
+    },
+    {
+     "id": "2018-01-18a",
+     "kind": "portal_message",
+     "start": "2018-01-18T12:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2018-01-18T12:30",
+       "body": "Your A1c and kidney panel from yesterday are in your usual range. No changes. Enjoy the indoor track."
+      }
+     ]
+    },
+    {
+     "id": "2018-04-03a",
+     "kind": "pharmacy",
+     "start": "2018-04-03T09:05",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Refill request - 90-day supplies",
+       "author": "RN",
+       "date": "2018-04-03T09:05",
+       "body": "Mail-order pharmacy requesting new 90-day scripts with refills for lisinopril 10, metformin 1000, atorvastatin 40, omeprazole 20 (old prescriber retired). Sent per PCP standing approval, 90 days x 3 refills each."
+      }
+     ]
+    },
+    {
+     "id": "2018-05-24a",
+     "kind": "office_visit",
+     "start": "2018-05-24T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2018-05-24T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2018-05-24T11:05",
+       "body": "Spring garden season - L hip complains after a day of digging and kneeling, settles overnight with two acetaminophen. Not limiting walks. No new issues otherwise; January A1c in his usual range.\nExam: BP fine today. L hip: mild discomfort with internal rotation, gait normal.\nPlan: acetaminophen as he uses it, up to 3 g/day max; kneeling pad, break up the garden jobs. Avoid NSAIDs (ulcer history, kidneys). Physical in September."
+      }
+     ]
+    },
+    {
+     "id": "2018-07-12a",
+     "kind": "outside_records",
+     "start": "2018-07-12T15:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination - optometry",
+       "author": "optometry",
+       "date": "2018-07-12T15:30",
+       "body": "Comprehensive dilated eye exam, date of service 07/09/2018. Patient with type 2 diabetes. BCVA 20/25 OD, 20/25 OS. IOP normal OU. Lenses clear. Dilated fundus: no diabetic retinopathy OU, no macular edema. Recommend annual exam. Copy to primary care."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-18a",
+     "kind": "annual_physical",
+     "start": "2018-09-18T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-09-18T09:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2018-09-18T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-09-18T09:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2018-09-18T09:20"
+      },
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2018-09-18T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2018-09-18T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-09-18T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2018-09-18T09:30",
+       "body": "Initial Medicare AWV.\nFunctional: fully independent, still drives, manages own finances and medications (pillbox). No falls this year. Hearing and vision adequate; optometry July - no retinopathy.\nMood: PHQ-2 0. Cognition: no concerns from him or his wife; conversation sharp.\nSafety: seat belt always, smoke detectors yes.\nAdvance directive: has a health care proxy (wife), will bring a copy.\nPreventive: colonoscopy 2014 normal. AAA US 2017 normal. PCV13 2016 - PPSV23 today. High-dose flu today. Shingrix discussed, will do at nurse visits starting late fall.\nExam: vitals as charted. Unremarkable cardiopulmonary exam. Feet: monofilament intact, pulses good.\nLabs drawn. Problems and meds reviewed - no changes."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-20a",
+     "kind": "portal_message",
+     "start": "2018-09-20T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2018-09-20T08:15",
+       "body": "All of your physical labs look as expected: sugars well controlled, kidney function stable, cholesterol on target, blood count normal, no protein in the urine."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-29a",
+     "kind": "nurse_visit",
+     "start": "2018-11-29T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "zoster vaccine dose 1",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2018-11-29T15:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-11-29T15:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Shingrix #1",
+       "author": "RN",
+       "date": "2018-11-29T15:15",
+       "body": "Shingrix dose 1, 0.5 mL IM R deltoid. Counseled that a sore arm and a tired day afterward are common. Dose 2 due in 2-6 months, booked early February."
+      }
+     ]
+    },
+    {
+     "id": "2019-01-23a",
+     "kind": "office_visit",
+     "start": "2019-01-23T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-01-23T14:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-01-23T14:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-01-23T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-01-23T14:00",
+       "body": "Quick visit. Arm was achy for a day after the Shingrix, nothing more. Diet loosened over the holidays, back on track now. Hip unchanged.\nExam: vitals reviewed, lungs clear, RRR, no edema.\nPlan: A1c, BMP. Continue current regimen. Shingrix #2 on 2/7."
+      }
+     ]
+    },
+    {
+     "id": "2019-02-07a",
+     "kind": "nurse_visit",
+     "start": "2019-02-07T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "zoster vaccine dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-02-07T10:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-02-07T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Shingrix #2",
+       "author": "RN",
+       "date": "2019-02-07T10:45",
+       "body": "Second Shingrix 0.5 mL IM L deltoid. Series complete. He asked for a printout of his vaccine record for his own files - given."
+      }
+     ]
+    },
+    {
+     "id": "2019-05-14a",
+     "kind": "office_visit",
+     "start": "2019-05-14T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-05-14T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-05-14T09:40",
+       "body": "Back from three weeks visiting his son abroad, walked a great deal, hip held up. January A1c and creatinine at his usual.\nNo complaints. Exam unremarkable, BP at goal.\nContinue all. Physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-11a",
+     "kind": "portal_message",
+     "start": "2019-06-11T19:45",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Question about omeprazole",
+       "author": "patient",
+       "date": "2019-06-11T19:45",
+       "body": "I read an article suggesting long-term acid blockers may have downsides. My stomach has been quiet for twenty years. Can I stop the omeprazole? - R. Gallo"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Question about omeprazole",
+       "author": "PCP",
+       "date": "2019-06-12T12:10",
+       "body": "Good question, and the article isn't wrong in general. In your case the omeprazole is there because you take a daily aspirin and you've had an ulcer before - that combination is exactly when it earns its keep. I'd stay on it. If we ever stop the aspirin we can revisit."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-18a",
+     "kind": "outside_records",
+     "start": "2019-07-18T11:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination - optometry",
+       "author": "optometry",
+       "date": "2019-07-18T11:00",
+       "body": "Annual dilated exam 07/15/2019. VA cc 20/25 OU. Anterior segments normal. No diabetic retinopathy either eye. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-20a",
+     "kind": "office_visit",
+     "start": "2019-08-20T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2019-09-25a",
+     "kind": "annual_physical",
+     "start": "2019-09-25T08:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-25T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-25T09:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-25T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2019-09-25T09:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2019-09-25T08:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-09-25T09:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2019-09-25T09:40",
+       "body": "Subsequent AWV. Rescheduled from the August visit he cancelled.\nFunction: independent in ADLs and IADLs, drives, still referees a physics problem set for a former colleague now and then. No falls.\nPHQ-2 0. Cognition: he says he is 'as absent-minded as any professor', no specific concerns raised.\nEye exam July - no retinopathy. Vaccines: high-dose flu today; pneumococcal and Shingrix complete; Tdap 2015.\nExam: vitals as charted, cardiopulmonary normal, feet intact.\nLabs drawn. No medication changes."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-27a",
+     "kind": "portal_message",
+     "start": "2019-09-27T09:00",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2019-09-27T09:00",
+       "body": "Labs from Wednesday are back and steady across the board - A1c, kidney function, cholesterol and urine protein all where they have been."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-12a",
+     "kind": "office_visit",
+     "start": "2019-12-12T15:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-12-12T15:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-12-12T15:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-12-12T15:30",
+       "body": "Wife came along today. Both well. Fall labs fine - kidney function unchanged, LDL at goal, urine albumin normal.\nBP at goal. Weight steady. Hip tolerable.\nA1c drawn today. Continue regimen. RTC 2-3 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

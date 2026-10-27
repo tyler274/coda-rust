@@ -1,0 +1,239 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001902",
+      "given": "Emily",
+      "family": "Ouellette",
+      "birth_date": "1999-07-19",
+      "address_line": "27 Fearing Street, Apt 2B",
+      "phone": "+1-802-555-0106",
+      "email": "emily.ouellette@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with generalized epilepsy, seizure-free for years on levetiracetam, who joined the practice in 2023. In 2025 a planned switch to lamotrigine ended in a drug eruption and a permanent lamotrigine allergy, and that fall she had a breakthrough tonic-clonic seizure treated in an outside ED, after which neurology raised her levetiracetam.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2023-08-22T10:12",
+              "body": "Caller is starting a grad program at the university this fall and moved to town last week. Wants a primary care doctor here instead of going back home for care. Has epilepsy, sees a neurology group already and plans to keep seeing them. Student health plan card info taken, verified active. Booked new patient physical 9/12 at 8:40. Mailed records release for her old primary care office and emailed the intake packet. Reminded her to bring her med bottle."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "end": "2023-09-12T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {"label": "Epilepsy", "action": "history", "onset": "2015-11-01", "note": "Generalized tonic-clonic seizures from age 16; seizure-free since about age 19 on levetiracetam; followed by outside neurology"}
+          ],
+          "medications": [
+            {"drug": "levetiracetam 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Epilepsy"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 61.2, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T09:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-09-12T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T09:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, less than 1 drink per month"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-09-12T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2023-09-12T09:35",
+              "body": "24F, new to the practice, first-year grad student. Here to set up primary care locally.\n\nEpilepsy: first convulsive seizures at 16, worked up and diagnosed by a pediatric neurologist, on levetiracetam since. Last seizure she can recall was around age 19. Takes levetiracetam 500 mg twice a day, rarely misses, keeps it in a pill case. Neuro follows her once a year (outside group) and writes the prescription; she intends to stay with them. No side effects she can name.\n\nPMH: as above. PSH: tonsils out at age 8. No other hospital stays.\nMeds: levetiracetam 500 mg BID.\nAllergies: none known.\nFH: father with hypertension, mother with hypothyroidism, a cousin on her mother's side has epilepsy.\nSH: graduate student, lives with a roommate. Never smoked. Alcohol maybe once a month or less, a single drink. No other substances.\n\nROS negative across the board.\n\nExam: well-appearing. Vitals as charted, BMI about 22. HEENT clear, TMs normal, no thyroid enlargement. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Neuro: CN intact, strength and reflexes symmetric, gait normal.\n\nA/P:\n1. Epilepsy, well controlled on levetiracetam. Continue; neurology manages. Will request their last note.\n2. Health maintenance: CBC, CMP (on an antiseizure med), lipids once, HIV and hep C screening today; she agrees. Records release signed for old PCP office for immunizations and Pap history. Flu and COVID vaccines at a nurse visit next month once the fall supply is in.\n3. PHQ-2 is 0.\nNext physical in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2023-09-14T16:48",
+              "body": "Hi Emily, all of your blood work from Tuesday came back normal: blood counts and kidney and liver tests are normal, your cholesterol is fine for your age, and the HIV and hepatitis C screens are negative. Nothing to do on your end. Good meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "outside_records",
+          "start": "2023-10-03T11:20",
+          "immunizations": [
+            {"vaccine": "HPV, 9-valent", "date": "2011-09-06T00:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2012-03-20T00:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T00:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T00:00"},
+            {"vaccine": "Tdap", "date": "2021-06-22T00:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2023-10-03T11:20",
+              "body": "Records received from prior primary care office (14 pages), abstracted by MA:\n- Immunizations: HPV two-dose series 2011 and 2012; Tdap 6/2021; COVID mRNA primary series spring 2021. Childhood series complete per their record.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Problem list there: epilepsy, on levetiracetam per neurology.\n- No allergies recorded.\nImmunizations entered. Scanned to media tab for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T15:26"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-10T15:40",
+              "body": "Here for fall vaccines. Screening questions negative, no prior vaccine reactions. Influenza 0.5 mL IM left deltoid. Updated COVID mRNA IM right deltoid. Lot numbers and VIS dates in the immunization record. Observed 15 minutes, no issues, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "outside_records",
+          "start": "2024-01-23T09:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology annual follow-up letter",
+              "author": "neurology",
+              "date": "2024-01-23T09:05",
+              "body": "Outpatient Neurology — annual epilepsy visit, seen 01/16/2024\n\nDear colleague,\n\nI saw Ms. Ouellette for her yearly epilepsy review. She has generalized epilepsy with tonic-clonic seizures beginning in adolescence and has had no events in roughly five years on levetiracetam monotherapy. She reports good adherence and no mood or sleep complaints she attributes to the drug. Her move for graduate school has gone smoothly.\n\nExamination today was normal, including mental status, cranial nerves, motor, sensory, coordination and gait.\n\nImpression: generalized epilepsy, in remission on levetiracetam.\n\nPlan: continue levetiracetam 500 mg twice daily; 90-day prescription sent with refills. Seizure precautions reviewed. I will see her in one year, sooner for any event.\n\nAllergies: none known.\nMedications: levetiracetam 500 mg twice daily.\n\nWith thanks for allowing me to share in her care,\nAttending neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "portal_message",
+          "start": "2024-03-19T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Keppra refill",
+              "author": "patient",
+              "date": "2024-03-19T20:14",
+              "body": "Hi, my pharmacy says my last refill on the levetiracetam ran out and they're waiting on the neurology office, which hasn't answered in two days. I have about 4 days of pills left. Is there any way you could send a short supply so I don't run out? Sorry for the bother."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Keppra refill",
+              "author": "PCP",
+              "date": "2024-03-20T08:31",
+              "body": "No bother at all. I sent a 30-day supply of levetiracetam 500 mg twice daily to your usual pharmacy, same dose as always. Please keep nudging the neurology office for the long-term prescription. Don't skip doses while you wait."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "portal_message",
+          "start": "2024-05-07T13:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record",
+              "author": "patient",
+              "date": "2024-05-07T13:02",
+              "body": "My program needs a copy of my vaccine record for a summer field placement. Could you upload it here or send it to me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record",
+              "author": "MA",
+              "date": "2024-05-07T15:40",
+              "body": "Your immunization record is attached as a PDF under Documents. It includes everything we have from your old office plus the shots you got here in the fall. Let us know if the program needs a signed form too."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-17T11:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T11:05", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2024-09-17T10:50", "issued": "2024-09-23T14:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy. No organisms identified.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-17T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-17T11:01"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-17T10:20"},
+            {"procedure": "Immunization administration", "performed": "2024-09-17T11:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-17T11:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T11:20",
+              "body": "Annual exam. Second year of her program, busy but doing well.\n\nEpilepsy: no seizures. Levetiracetam 500 mg twice daily, the neurology office sorted out the refill problem in the spring. Saw neuro in January, no changes. Sleeping 7 hours most nights.\n\nMeds: levetiracetam 500 mg BID. Allergies: NKDA.\nSH unchanged; never smoker, alcohol rare.\nPHQ-9 = 2.\n\nExam: vitals as charted. Pleasant, well. Neck supple, no nodes or thyroid enlargement. Cardiac regular rhythm, no murmurs. Lungs clear throughout. Abd soft, no masses. Pelvic: normal external genitalia, vaginal walls normal, cervix without lesions; cytology collected. Skin clear. Neuro grossly intact.\n\nA/P:\n- Epilepsy in remission on levetiracetam; continue, neuro follows.\n- Pap due (last 2021): collected today, cytology alone at her age.\n- CBC and CMP for medication monitoring.\n- Flu and updated COVID given today.\nReturn in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T09:17",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2024-09-24T09:17",
+              "body": "Emily, your Pap test was normal, and your blood counts and chemistry panel look fine too. The next Pap would be due in three years. Have a good semester."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

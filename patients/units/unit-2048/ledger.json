@@ -1,0 +1,2911 @@
+{
+  "unit": "unit-2048",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002048",
+      "given": "Derek",
+      "family": "Mayhew",
+      "birth_date": "1978-02-21",
+      "address_line": "27 Glendale Street",
+      "phone": "+1-518-555-0196",
+      "email": "derek.mayhew@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker with hypertension on hydrochlorothiazide and GERD on omeprazole, former 30 pack-year smoker, who joined in 2021. In 2024 exertional dyspnea and cough led to an HRCT showing fibrosis; pulmonology confirmed idiopathic pulmonary fibrosis and started nintedanib, and follows him yearly with stable resting saturation of 94%.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2021-09-02T10:20",
+              "author": "front desk",
+              "body": "Derek phoned about membership. Has been going to an office in town for years but says he can never get a callback. Works construction, early starts, wants late-morning or end-of-day slots when possible. Membership info emailed. Booked new patient visit Tue 9/14 at 11:00. Asked him to sign a records release so we can get his old chart, and to bring his medication bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T11:00",
+          "end": "2021-09-14T11:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "Longstanding per patient, on hydrochlorothiazide"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "note": "Controlled on omeprazole"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2018-11-01",
+              "note": "30 pack-years, quit late 2018"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "GERD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              139,
+              85
+            ],
+            "hr": 53,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 87.1,
+            "height_cm": 177.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T11:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 195
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T11:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T11:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T11:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month, social"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T11:00"
+            },
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "1990-07-01T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T09:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-14T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T12:10",
+              "author": "PCP",
+              "body": "43M, framing and concrete work for a local builder, here to set up primary care. Coming over from another office in town; release signed, records requested.\n\nHPI: Feels well. Has had high blood pressure for about five years, on HCTZ 25 every morning, rarely misses. No home cuff. Reflux for a couple of years, heartburn after late dinners, gone on omeprazole 20 daily, wants to stay on it. No dysphagia, no weight loss, no black stools. Breathing fine, keeps up on the job site, no cough.\n\nPMH: hypertension, GERD. PSH: tonsils out at 12. Meds: HCTZ 25 mg daily, omeprazole 20 mg daily. Allergies: none to medications.\nFH: father with hypertension. Mother with type 2 diabetes. Nobody with lung disease that he knows of.\nSH: smoked about a pack a day from his late teens, roughly 30 pack-years, stopped in late 2018 around his 40th birthday and has stayed off. A drink or two a month. No drugs. Lives in Easthampton.\nImmunizations: two Pfizer COVID shots this spring at a pharmacy (dates per his card). Flu shot today.\n\nROS: negative except as above.\n\nExam: vitals as charted, BP fine for him. Well appearing. Oropharynx clear. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear to the bases, good air movement. Abdomen soft, nontender. No edema. Skin unremarkable.\n\nA/P:\n1. Hypertension, controlled on HCTZ 25. Continue. CMP today for lytes and kidney function.\n2. GERD, controlled. Continue omeprazole 20; we can try stepping down another time if he wants.\n3. Former smoker, 30 pack-years, quit almost 3 years. Congratulated. Not yet in the age range for lung screening; revisit at 50.\n4. Health maintenance: CBC, lipids, A1c (mother diabetic), one-time HIV and hep C screening, all agreed to. Flu vaccine given. Colon screening starts at 45, will bring up then.\nFollow up in about 6 months for BP, sooner if needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              135,
+              85
+            ],
+            "weight_kg": 87.2,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin": 14.7,
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2021-09-16T16:05",
+              "author": "PCP",
+              "body": "Hi Derek, everything from Tuesday came back normal: kidney function and potassium are fine on the water pill, blood counts normal, sugar and A1c normal, cholesterol in a reasonable range. HIV and hepatitis C screens negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T09:30",
+          "reason": "Prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2021-10-05T09:30",
+              "author": "front desk",
+              "body": "Records from previous primary care office, 34 pages, scanned under Media.\n\nSummary for chart (RN): problem list there shows hypertension since 2016, started on hydrochlorothiazide 25 mg that year and continued; reflux since 2019 on omeprazole 20 mg. Tonsillectomy in childhood. Tobacco use documented through 2018, then recorded as quit. Routine labs 2017 through 2020 with normal chemistry and blood counts. No medication allergies listed. No hospital stays on file. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T08:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Hydrochlorothiazide",
+              "date": "2021-12-07T08:40",
+              "author": "RN",
+              "body": "Pharmacy fax requesting HCTZ 25 mg #90. Seen 9/14, BMP normal. Sent 90 days with 1 refill per standing order."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              78
+            ],
+            "hr": 54,
+            "spo2": 97,
+            "weight_kg": 87.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-08T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-08T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-08T16:50",
+              "author": "PCP",
+              "body": "Six month check. Came straight from a job, still in work boots. No headaches, no chest pain, no swelling. Taking HCTZ every morning. Reflux quiet on omeprazole, still no swallowing trouble. Still not smoking.\n\nBP as charted, about where he usually runs. Heart regular, lungs clear throughout, no edema.\n\nPlan: continue HCTZ 25 and omeprazole 20. BMP for potassium. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "pharmacy",
+          "start": "2022-06-21T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Omeprazole",
+              "date": "2022-06-21T09:10",
+              "author": "RN",
+              "body": "Omeprazole 20 mg capsules, 90-day supply requested by pharmacy. Approved, 1 refill. Due for physical in the fall, front desk to call."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "telephone",
+          "start": "2022-09-21T12:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment Follow-up",
+              "date": "2022-09-21T12:30",
+              "author": "front desk",
+              "body": "Did not come to yesterday's 7:45 physical. Reached him at lunch: crew got pulled to a pour that morning and he forgot to call. Rebooked for Tue 10/18, 4:00. He will come fasting if he can, otherwise fine either way."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              95
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 87.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-10-18T16:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-18T17:05",
+              "author": "PCP",
+              "body": "Annual exam, 44M. Doing well. Busy season at work, long days but sleeping okay. No chest pain, no shortness of breath on the job, no cough. Reflux controlled. Mood good. Still smoke-free, about four years now. Alcohol a couple of drinks a month.\n\nMeds: HCTZ 25 mg daily, omeprazole 20 mg daily. No drug allergies.\n\nExam: vitals as charted. Well appearing. HEENT unremarkable. Neck without nodes or thyroid enlargement. Heart regular, no murmur. Lungs clear, no wheeze or crackles. Abdomen soft, no organomegaly. Extremities without edema. Skin without suspicious lesions.\n\nA/P:\n- Hypertension: controlled, continue HCTZ. CMP.\n- GERD: controlled, continue omeprazole.\n- Prevention: lipids and A1c today. Flu vaccine given. Colorectal screening next year at 45.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "date": "2022-10-20T12:15",
+              "author": "PCP",
+              "body": "Derek, your blood work from the physical is all normal. Kidneys and potassium good, A1c normal, cholesterol fine. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and reflux follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              83
+            ],
+            "hr": 77,
+            "spo2": 96,
+            "weight_kg": 87.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-11T16:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-04-11T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-11T17:00",
+              "author": "PCP",
+              "body": "Routine BP/GERD check. No complaints. Work picking back up after winter. Takes both meds daily, no side effects he notices. No heartburn breakthrough.\n\nExam: BP as charted, his usual range. Heart RRR. Lungs clear. No ankle swelling.\n\nA/P: HTN stable on HCTZ 25, continue; BMP. GERD stable on omeprazole 20, continue. Physical in October; at 45 we'll start colon cancer screening, he'd rather do the stool kit than a colonoscopy."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "portal_message",
+          "start": "2023-07-18T19:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2023-07-18T19:40",
+              "author": "patient",
+              "body": "Hey, pharmacy says I'm out of refills on both the blood pressure pill and the stomach one. Can you send new ones? Same place as before. Thanks, Derek"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2023-07-19T08:25",
+              "author": "RN",
+              "body": "Hi Derek, both are in: hydrochlorothiazide 25 mg and omeprazole 20 mg, 90 days each with refills through your next physical. Should be ready later today."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              92
+            ],
+            "hr": 65,
+            "rr": 19,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 87.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-17T16:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-17T16:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-17T16:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-17T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:36"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T17:10",
+              "author": "PCP",
+              "body": "45M for yearly exam. Feels good, no new issues. Keeping up at work without trouble. No chest pain, palpitations, or breathing complaints. Bowels regular, no blood. Reflux controlled on omeprazole. Five years off cigarettes.\n\nMeds: HCTZ 25 daily, omeprazole 20 daily. NKDA.\n\nExam: vitals as charted. Alert, comfortable. Eyes and ears normal. No lymphadenopathy. Heart regular rate and rhythm. Lungs clear to auscultation, no crackles. Abdomen soft and nontender. Extremities warm, no edema. Neuro grossly intact.\n\nA/P:\n1. HTN: at his usual, continue HCTZ. CMP.\n2. GERD: continue omeprazole.\n3. Colorectal screening, average risk, age 45: FIT kit handed to him, mail it back this week.\n4. Labs: CBC, lipids, A1c.\n5. Flu and updated Pfizer COVID given in clinic.\nNext routine visit in the spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-30a",
+          "kind": "lab_only",
+          "start": "2023-10-30T10:00",
+          "reason": "FIT result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-26T07:00",
+              "resulted": "2023-10-30T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-10-30T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "date": "2023-10-30T13:20",
+              "author": "PCP",
+              "body": "FIT negative. Repeat yearly. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "portal_message",
+          "start": "2024-02-12T06:10",
+          "reason": "Shortness of breath and cough",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Breathing",
+              "date": "2024-02-12T06:10",
+              "author": "patient",
+              "body": "Morning. For about two months I've been getting winded way easier than normal, carrying stuff up ladders or stairs, and I've got this dry cough that won't quit. No fever. Figured it was a winter thing but it's not going away. Can I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Breathing",
+              "date": "2024-02-12T07:35",
+              "author": "PCP",
+              "body": "Glad you wrote. I'd like to listen to you and get some tests. Front desk will put you in Monday 2/19 at 10:30. If you get short of breath at rest, chest pain, or lips turning blue before then, go to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-19a",
+          "kind": "office_visit",
+          "start": "2024-02-19T10:30",
+          "end": "2024-02-19T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Exertional dyspnea and dry cough",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 88,
+            "rr": 20,
+            "temp_c": 36.2,
+            "spo2": 94,
+            "weight_kg": 88.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-19T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-19T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-19T11:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-19T11:10",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-19T11:10",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-02-19T11:30",
+              "text": "Clinical indication: two months of exertional dyspnea and dry cough. Former smoker.\nComparison: none available.\nPA and lateral views of the chest. Reticular opacities are present in both lungs, more pronounced in the lower lobes. No focal consolidation. No pleural effusion or pneumothorax. Heart size normal. Mediastinal contours unremarkable. Osseous structures intact.",
+              "conclusion": "Bilateral reticular opacities with lower-lobe predominance, suggesting interstitial lung disease. Recommend high-resolution CT for further characterization."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-19T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hrct-2024",
+              "action": "placed",
+              "order": "CT chest, high resolution, without contrast",
+              "category": "imaging",
+              "reason": "Reticular opacities on chest x-ray, exertional dyspnea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: Dyspnea and Cough",
+              "date": "2024-02-19T12:20",
+              "author": "PCP",
+              "body": "S: 45M with HTN and GERD. Since around mid-December he gets out of breath with exertion that never used to bother him: ladders, hauling material, two flights of stairs. Slowly worse. Dry cough, no sputum, no blood. No fever, chills or night sweats. Hasn't traveled, nobody sick at home or on the crew. No chest pain or palpitations, no leg swelling, no orthopnea. Reflux controlled. Never had lung trouble before, no asthma. Quit smoking 2018, 30 pack-years. Meds unchanged: HCTZ 25, omeprazole 20. NKDA.\n\nO: BP 135/85, HR 88, RR 20, SpO2 94% on room air (has been 97-98 here). Comfortable sitting, speaks full sentences. No JVD. Heart regular, no murmur or gallop. Lungs: fine inspiratory crackles at both bases, no wheeze. No clubbing. No calf tenderness, no edema.\n\nCXR in office: reticular opacities both lungs, lower zones worse.\n\nA/P: Exertional dyspnea and dry cough with bibasilar crackles, borderline resting sat, and an interstitial pattern on x-ray. Worried about an interstitial lung disease rather than infection or heart failure. Ex-smoker, so differential includes smoking-related ILD; also checking for a connective tissue cause.\n- HRCT chest, ordered today, try to get it this week.\n- CBC, BMP, ESR, ANA, RF today.\n- Pulmonology referral once CT is back.\n- Return precautions reviewed: worsening breathlessness, chest pain, fever, go to the ED."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "portal_message",
+          "start": "2024-02-21T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Work",
+              "date": "2024-02-21T17:30",
+              "author": "PCP",
+              "body": "Derek, Monday's labs: blood counts normal, kidney function normal (creatinine 0.9), inflammation marker (ESR) 20, which is okay, and the two autoimmune screens (ANA and rheumatoid factor) were negative. That makes a rheumatologic cause less likely. CT is tomorrow morning, I'll call you when I have the read."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-22a",
+          "kind": "imaging",
+          "start": "2024-02-22T08:15",
+          "service": "Radiology",
+          "reason": "High-resolution CT chest",
+          "conditions": [
+            {
+              "label": "Idiopathic pulmonary fibrosis",
+              "action": "diagnosed",
+              "onset": "2023-12-15",
+              "note": "HRCT honeycombing and traction bronchiectasis; ANA and RF negative; pulmonology to confirm"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-02-22T08:15",
+              "text": "Technique: high-resolution non-contrast CT of the chest with thin-section inspiratory, expiratory and prone images.\nComparison: chest radiograph 2024-02-19.\nFindings: Bilateral subpleural honeycombing with traction bronchiectasis. No consolidation or ground-glass predominance. No pulmonary mass or suspicious nodule. Airways otherwise patent. No pleural effusion. No mediastinal or hilar lymphadenopathy. Heart size normal, no pericardial effusion. Thoracic aorta normal caliber. Limited upper abdomen unremarkable.",
+              "conclusion": "Subpleural honeycombing and traction bronchiectasis, in keeping with established pulmonary fibrosis. Clinical and pulmonology correlation recommended.",
+              "issued": "2024-02-22T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hrct-2024",
+              "action": "done",
+              "date": "2024-02-22T08:15"
+            },
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Pulmonary fibrosis on HRCT, exertional dyspnea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "HRCT Result Call",
+              "date": "2024-02-22T16:45",
+              "author": "PCP",
+              "body": "Called Derek with the CT. Shows scarring at the edges of both lungs with honeycombing and pulled-open airways, which fits pulmonary fibrosis. With negative ANA/RF and no other explanation found, the leading concern is idiopathic pulmonary fibrosis. Added to problem list pending pulmonology. Explained this is a chronic condition, that there are medicines that slow it, and that a lung specialist will confirm and plan treatment. He took it quietly, asked good questions. Urgent pulmonology referral placed. He has my cell."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "telephone",
+          "start": "2024-02-23T11:00",
+          "reason": "Referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduled",
+              "date": "2024-02-23T11:00",
+              "author": "front desk",
+              "body": "Pulmonology referral faxed with CXR, HRCT report and labs. Their first new-patient opening is Tue 4/16. Pt aware and okay with date, will call if anything worsens. Asked them to put him on the cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "specialist_visit",
+          "start": "2024-04-16T09:00",
+          "service": "Pulmonology",
+          "reason": "Pulmonology consultation, pulmonary fibrosis",
+          "medications": [
+            {
+              "drug_text": "nintedanib 150 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily with food, about 12 hours apart",
+              "dose": {
+                "value": 150,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Idiopathic pulmonary fibrosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 78,
+            "spo2": 94
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2024-04-16T08:15",
+              "text": "Full pulmonary function testing: spirometry, lung volumes and diffusing capacity. Acceptable and reproducible efforts. FVC 70% predicted. DLCO 55% predicted.",
+              "conclusion": "Reduced FVC with reduced diffusing capacity, consistent with fibrotic lung disease."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2024-04-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "date": "2024-04-23T14:00",
+              "author": "pulmonology",
+              "body": "Pulmonary Medicine Consultation\nDate of service: 04/16/2024\nReferring: primary care physician\nReason: interstitial changes on imaging, exertional dyspnea\n\nThank you for asking us to see Mr. Mayhew, a 46-year-old construction worker with hypertension and GERD. He comes to us to continue the evaluation you began in February of breathlessness on exertion and a dry cough, now about four months in total. He reports no chest pain, fevers or weight loss. He is a former smoker of 30 pack-years who stopped in 2018. No family history of fibrotic lung disease. No pets or birds at home, no hobbies with organic dust.\n\nMedications: hydrochlorothiazide 25 mg daily, omeprazole 20 mg daily.\nAllergies: no known drug allergies.\nSurgical history: tonsillectomy in childhood.\nFamily history: father with hypertension (72), mother with type 2 diabetes (75).\n\nExamination: BP 135/85, HR 78, SpO2 94% on room air at rest. Bibasilar inspiratory crackles. No digital clubbing. No peripheral edema. Cardiac exam normal.\n\nData reviewed: February labs with hemoglobin 14.5, WBC 7,000, platelets 250,000, creatinine 0.9, ANA negative, RF negative. We reviewed the February HRCT images directly: bilateral, subpleural, basal-predominant reticular abnormality with minimal honeycombing.\nPulmonary function testing today: FVC 70% predicted, DLCO 55% predicted.\n\nImpression: Idiopathic pulmonary fibrosis. The imaging pattern is typical, serologies are negative and we find no exposure or drug to account for it, so we are comfortable with the diagnosis without biopsy.\n\nPlan:\n1. Antifibrotic therapy: we discussed both available agents and he chose nintedanib 150 mg by mouth twice daily with food. Sent to the specialty pharmacy. Common GI effects reviewed.\n2. Liver tests at 1 month and then every 3 months while on treatment; we will order and follow these.\n3. Continue omeprazole for reflux.\n4. Pneumococcal and yearly influenza vaccination recommended; we defer to you.\n5. Follow-up here in about 6 weeks with labs.\n\nSincerely,\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pulmonology",
+          "vitals": {
+            "bp": [
+              120,
+              85
+            ],
+            "hr": 61,
+            "spo2": 94,
+            "weight_kg": 88.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-14T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-05-14T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-05-14T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-14T16:45",
+              "author": "PCP",
+              "body": "Here to go over the lung specialist visit. Pulmonology confirmed IPF (letter 4/23 reviewed with him) and started nintedanib 150 mg twice daily about four weeks ago, through the specialty pharmacy. Taking it with breakfast and dinner, managing so far. Still short of breath on hills and ladders, about the same as February, dry cough persists. Still working, foreman is letting him take more of the layout work.\n\nVitals as charted, SpO2 94% RA. Bibasilar crackles, unchanged. Heart regular. No edema.\n\nA/P:\n1. IPF on nintedanib, followed by pulmonology, who are doing the liver tests. Nintedanib added to our med list.\n2. HTN at his baseline, continue HCTZ 25.\n3. GERD, continue omeprazole 20; relevant to the lungs too.\n4. Chronic lung disease: PCV20 given today. Flu and COVID in the fall.\nSee him for his physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "lab_only",
+          "start": "2024-05-20T15:00",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-05-17T08:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2024-05-20T15:00",
+              "author": "RN",
+              "body": "Hepatic panel ordered by pulmonology (one month on nintedanib), copy received. All values in range. Scanned and filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "specialist_visit",
+          "start": "2024-06-03T13:30",
+          "service": "Pulmonology",
+          "reason": "Pulmonology follow-up, idiopathic pulmonary fibrosis",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 88,
+            "rr": 20,
+            "spo2": 94
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-03T12:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-03T12:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-03T12:40",
+              "results": [
+                {
+                  "test": "Carcinoembryonic Antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "text": "Within normal limits"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-06-03T12:55",
+              "text": "PA and lateral chest. Bilateral interstitial infiltrates. No focal consolidation, effusion or pneumothorax. Normal heart size. No mass.",
+              "conclusion": "Bilateral interstitial infiltrates consistent with known interstitial lung disease."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2024-06-03T12:20",
+              "text": "High-resolution non-contrast CT of the chest. Comparison 2024-02-22. Interstitial lung disease as previously described. No pulmonary mass or suspicious nodule. No pleural effusion. No mediastinal or hilar lymphadenopathy. Heart normal in size.",
+              "conclusion": "Interstitial lung disease, confirmed. No mass or nodule."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2024-06-03T12:00",
+              "text": "Spirometry, lung volumes and diffusing capacity. Restrictive pattern. Reduced diffusing capacity.",
+              "conclusion": "Restrictive ventilatory defect with reduced diffusion capacity."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "date": "2024-06-10T10:30",
+              "author": "pulmonology",
+              "body": "Pulmonary Medicine Follow-up\nDate of service: 06/03/2024\n\nMr. Mayhew returns for idiopathic pulmonary fibrosis, previously seen here in April after your evaluation in February. For the past two weeks his exertional breathlessness and dry cough have been a bit worse. He is concerned about lung cancer because of his smoking history and asked us directly how likely that is given his symptoms and tests.\n\nMedications: nintedanib 150 mg twice daily, hydrochlorothiazide 25 mg daily, omeprazole 20 mg daily. No known drug allergies.\nPast history: hypertension, GERD. Tonsillectomy as a child. 30 pack-years, quit 2018.\n\nExam: BP 135/85, HR 88, RR 20, SpO2 94% on room air. Inspiratory crackles at both bases.\n\nResults today: hemoglobin 14.5, WBC 7,000, platelets 250,000; sodium 140, potassium 4.2, creatinine 1.0, calcium 9.8, liver enzymes normal. CEA within normal limits. ANA and RF negative previously.\nChest x-ray: bilateral interstitial infiltrates.\nHRCT: interstitial lung disease as before; no mass or nodule.\nPFTs: restrictive pattern with reduced diffusion capacity.\n\nAssessment and plan:\n1. IPF on nintedanib, tolerating it with normal liver tests. Continue.\n2. Cancer concern: we went through his scan with him. There is no mass or nodule, and his marker is normal; nothing here points to lung cancer. He was visibly relieved.\n3. Continue reflux treatment.\n4. Liver tests every 3 months; return in about 8 months with repeat imaging and PFTs, sooner for any change.\n\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T20:15",
+          "reason": "Pulmonology visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung Doctor",
+              "date": "2024-06-11T20:15",
+              "author": "patient",
+              "body": "Saw the lung doctor last week. They said no sign of cancer on the scan which honestly was what I was losing sleep over. Staying on the nintedanib. Just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung Doctor",
+              "date": "2024-06-12T07:50",
+              "author": "PCP",
+              "body": "Thanks for letting me know, Derek. I got their letter yesterday and read it. Very good news on the scan. Keep taking the nintedanib, and reach out any time the breathing changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "pharmacy",
+          "start": "2024-08-13T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Hydrochlorothiazide",
+              "date": "2024-08-13T09:05",
+              "author": "RN",
+              "body": "HCTZ 25 mg #90 requested. Last BMP in June via pulmonology, potassium 4.2, creatinine 1.0. Approved with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "lab_only",
+          "start": "2024-09-03T14:20",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-08-30T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2024-09-03T14:20",
+              "author": "RN",
+              "body": "Copy of pulmonology's quarterly hepatic panel. Normal. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              145,
+              80
+            ],
+            "hr": 70,
+            "rr": 19,
+            "temp_c": 36.4,
+            "spo2": 94,
+            "weight_kg": 86.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-08T16:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-08T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-08T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:16"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-08T16:40",
+              "author": "PCP",
+              "body": "Yearly physical, 46M. IPF diagnosed this year, on nintedanib through pulmonology since April, liver tests normal on their monitoring. Breathing on exertion about where it was in the summer; still working, mostly lighter tasks. Dry cough persists. Mood okay, PHQ-2 1. Off cigarettes six years.\n\nMeds: nintedanib 150 mg BID, HCTZ 25 mg daily, omeprazole 20 mg daily. NKDA.\n\nExam: vitals as charted, SpO2 94% RA. Well appearing, no distress. HEENT normal. Neck supple. Heart regular, no murmur. Lungs: bibasilar inspiratory crackles as before. Abdomen benign. No clubbing, no edema.\n\nA/P:\n1. IPF: stable by his account, pulmonology follow-up early next year.\n2. HTN: continue HCTZ. CMP.\n3. GERD: continue omeprazole.\n4. Health maintenance: lipids, A1c. FIT kit given. Flu and updated COVID given today; PCV20 done in May.\nRecheck in the spring after his pulmonology visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "lab_only",
+          "start": "2024-10-21T11:10",
+          "reason": "FIT result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-17T06:30",
+              "resulted": "2024-10-21T11:10",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-10-21T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "date": "2024-10-21T12:00",
+              "author": "PCP",
+              "body": "Negative FIT. Physical labs also normal. Patient notified through the portal. Next FIT fall 2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "lab_only",
+          "start": "2024-12-03T13:45",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-11-29T08:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2024-12-03T13:45",
+              "author": "MA",
+              "body": "Hepatic panel from pulmonology received by fax. Within normal limits. Filed to chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "specialist_visit",
+          "start": "2025-02-05T10:15",
+          "service": "Pulmonology",
+          "reason": "Pulmonology follow-up, idiopathic pulmonary fibrosis",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 88,
+            "rr": 20,
+            "spo2": 94
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-02-05T09:20",
+              "text": "PA and lateral chest. Comparison 2024-06-03. Diffuse bilateral interstitial infiltrates. No consolidation. No effusion or pneumothorax. Cardiomediastinal silhouette normal.",
+              "conclusion": "Diffuse bilateral interstitial infiltrates, compatible with known fibrotic lung disease."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2025-02-05T08:50",
+              "text": "High-resolution non-contrast CT of the chest. Comparison 2024-06-03. Honeycombing and traction bronchiectasis. No pulmonary mass or suspicious nodule. No pleural effusion. No enlarged mediastinal or hilar lymph nodes. Heart size normal.",
+              "conclusion": "Fibrotic interstitial lung disease with honeycombing and traction bronchiectasis. No mass or nodule."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2025-02-05T08:15",
+              "text": "Spirometry, lung volumes and diffusing capacity. Restrictive pattern with reduced diffusing capacity.",
+              "conclusion": "Restrictive defect, reduced diffusion capacity."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "date": "2025-02-12T09:40",
+              "author": "pulmonology",
+              "body": "Pulmonary Medicine Follow-up\nDate of service: 02/05/2025\n\nInterval history: Mr. Mayhew, 46, with idiopathic pulmonary fibrosis, hypertension and GERD, last seen here in June 2024 (initial evaluation February 2024, our consultation April 2024). Over the past six months his breathlessness with exertion and his dry cough have continued to creep up slowly. No travel, no sick contacts. He again raised the question of his lung cancer risk given his smoking history and current symptoms.\n\nCurrent medications: nintedanib 150 mg twice daily, hydrochlorothiazide 25 mg daily, omeprazole 20 mg daily.\nAllergies: NKDA.\nSocial: former smoker, 30 pack-years, quit 2018. Works construction.\n\nVitals: BP 135/85, HR 88, RR 20, SpO2 94% on room air.\nLungs: bilateral end-inspiratory crackles.\n\nImaging today: chest x-ray with diffuse bilateral interstitial infiltrates. HRCT with honeycombing and traction bronchiectasis; no mass or nodule.\nPFTs: restrictive pattern with reduced diffusion capacity.\nLiver tests on treatment have all been normal.\n\nAssessment: IPF with slow symptomatic progression, resting saturation unchanged at 94%. Continue nintedanib 150 mg twice daily. On cancer risk, we explained that his CT surveillance is already looking at the lungs closely and today shows no mass or nodule.\n\nPlan: continue nintedanib, liver tests every 3 months, reflux treatment to continue, return in 12 months with chest imaging and PFTs.\n\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up, review pulmonology letter",
+          "vitals": {
+            "bp": [
+              135,
+              90
+            ],
+            "hr": 68,
+            "spo2": 94,
+            "weight_kg": 87.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-11T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-11T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-11T16:50",
+              "author": "PCP",
+              "body": "Follow-up. Reviewed the Feb pulmonology letter together: IPF slowly progressing by symptoms, CT without any mass, sat unchanged, staying on nintedanib, next visit there in a year. He says the cough is the most annoying part. Taking all three meds. Reflux fine.\n\nBP as charted, at his usual. SpO2 94% RA. Bibasilar crackles. Heart RRR. No edema.\n\nA/P: HTN, continue HCTZ 25, BMP today. GERD, continue omeprazole 20. IPF per pulmonology. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "lab_only",
+          "start": "2025-05-13T10:30",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-05-09T07:45",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2025-05-13T10:30",
+              "author": "RN",
+              "body": "Pulmonology LFTs (nintedanib monitoring) received. Normal. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "telephone",
+          "start": "2025-07-22T08:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Call",
+              "date": "2025-07-22T08:05",
+              "author": "RN",
+              "body": "Pt called from the truck, omeprazole and HCTZ both run out this week. Sent 90-day supplies of each to his usual pharmacy. Reminded him the flu shot will be in by October; he'll come for a nurse visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "lab_only",
+          "start": "2025-08-26T15:10",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-08-22T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2025-08-26T15:10",
+              "author": "MA",
+              "body": "Hepatic panel copy from pulmonology. All in range. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              135,
+              89
+            ],
+            "hr": 67,
+            "spo2": 94
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Vaccines",
+              "date": "2025-10-14T16:55",
+              "author": "RN",
+              "body": "In for fall vaccines. No fever or acute illness today. Screening questions negative. Influenza (trivalent) left deltoid, updated Pfizer COVID right deltoid, VIS given. Waited 15 minutes, no reaction. Asked him to book his physical; he wants to wait until work slows down after the holidays."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T18:50",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2025-11-12T18:50",
+              "author": "patient",
+              "body": "Can we do my yearly in January instead? We're trying to close in two houses before the snow and I can't get out early. Breathing same as usual."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2025-11-13T09:15",
+              "author": "front desk",
+              "body": "No problem, Derek. You're booked Tuesday January 13 at 4:15. Your refills will carry you to then."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "lab_only",
+          "start": "2025-11-18T14:00",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-14T08:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2025-11-18T14:00",
+              "author": "RN",
+              "body": "Quarterly LFTs from pulmonology received, normal. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13b",
+          "kind": "telephone",
+          "start": "2026-01-13T09:40",
+          "reason": "Appointment cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2026-01-13T09:40",
+              "author": "front desk",
+              "body": "Pt cancelled this afternoon's physical, roads bad and he's stuck at a site in the hills. Moved to Thu 2/5 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "annual_physical",
+          "start": "2026-01-13T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "annual_physical",
+          "start": "2026-02-05T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              87
+            ],
+            "hr": 73,
+            "rr": 19,
+            "temp_c": 36.5,
+            "spo2": 94,
+            "weight_kg": 87.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-05T16:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-05T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-02-05T16:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 82
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-05T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-02-05T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-02-05T16:50",
+              "author": "PCP",
+              "body": "Annual, pushed back from the fall at his request. Turns 48 in a couple of weeks. IPF on nintedanib since 4/2024, followed by pulmonology yearly with quarterly LFTs (all normal); next pulmonology visit later this month. Breathing with exertion unchanged from his last visit here, dry cough persists, no fevers. BP pill and reflux pill daily. Off tobacco seven years. Drinks rarely. Mood fine, PHQ-2 0.\n\nMeds: nintedanib 150 mg twice daily, hydrochlorothiazide 25 mg daily, omeprazole 20 mg daily. No drug allergies.\n\nExam: vitals as charted, SpO2 94% RA. Well appearing, speaking in full sentences. HEENT normal. No adenopathy. Heart regular, no murmur, no gallop. Lungs: fine crackles at both bases, unchanged. Abdomen soft, nontender. No clubbing or edema. Skin clear.\n\nA/P:\n1. IPF: stable at rest; pulmonology visit 2/17.\n2. HTN: at baseline on HCTZ 25. CMP.\n3. GERD: controlled, continue omeprazole 20.\n4. Prevention: CBC, lipids, A1c. FIT kit given (missed doing one in the fall). Flu and COVID done in October, PCV20 2024.\nFollow up in about 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "portal_message",
+          "start": "2026-02-06T13:25",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Results",
+              "date": "2026-02-06T13:25",
+              "author": "PCP",
+              "body": "Hi Derek, yesterday's labs are all within normal range: kidneys, potassium, liver, blood counts, cholesterol and A1c. Mail back the stool kit when you can. Good luck at pulmonology on the 17th."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "specialist_visit",
+          "start": "2026-02-17T09:30",
+          "service": "Pulmonology",
+          "reason": "Pulmonology follow-up, idiopathic pulmonary fibrosis",
+          "vitals": {
+            "spo2": 94
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-02-17T08:40",
+              "text": "PA and lateral chest. Comparison 2025-02-05. Diffuse bilateral interstitial infiltrates. No consolidation, effusion or pneumothorax. Heart size normal.",
+              "conclusion": "Diffuse bilateral interstitial infiltrates, known fibrotic lung disease."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-02-17T08:10",
+              "text": "High-resolution non-contrast CT of the chest. Comparison 2025-02-05. Subpleural reticular changes with honeycombing. No significant mediastinal or hilar lymphadenopathy. No pulmonary mass or suspicious nodule. No pleural effusion.",
+              "conclusion": "Subpleural reticulation and honeycombing without significant lymphadenopathy."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2026-02-17T07:45",
+              "text": "Spirometry, lung volumes and diffusing capacity. Restrictive pattern. Diffusing capacity reduced.",
+              "conclusion": "Restrictive ventilatory defect with reduced diffusion capacity."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "date": "2026-02-24T11:15",
+              "author": "pulmonology",
+              "body": "Pulmonary Medicine Follow-up\nDate of service: 02/17/2026\n\nMr. Mayhew is a 47-year-old man with hypertension and gastroesophageal reflux disease followed here for idiopathic pulmonary fibrosis since 2024. He returns for his yearly review. Exertional breathlessness and a nonproductive cough continue to progress. He has not traveled and has had no sick contacts.\n\nMedications: nintedanib 150 mg twice daily, hydrochlorothiazide 25 mg daily, omeprazole 20 mg daily. Allergies: none known.\nSocial: former smoker, 30 pack-years. Continues to work in construction.\n\nExam: SpO2 94% on room air. Bilateral end-inspiratory crackles.\n\nStudies today: chest x-ray, diffuse bilateral interstitial infiltrates. HRCT, subpleural reticular change and honeycombing with no significant lymphadenopathy. PFTs, restrictive with reduced diffusion capacity. Quarterly liver tests on nintedanib normal.\n\nImpression and plan: idiopathic pulmonary fibrosis. Continue nintedanib 150 mg twice daily, liver tests every 3 months, continue reflux management, return in 12 months or sooner with any change.\n\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "lab_only",
+          "start": "2026-02-23T10:45",
+          "reason": "FIT result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-19T06:45",
+              "resulted": "2026-02-23T10:45",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "done",
+              "date": "2026-02-23T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "date": "2026-02-23T14:30",
+              "author": "PCP",
+              "body": "FIT negative. Pt notified by portal. Repeat in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "outside_records",
+          "start": "2026-02-26T09:00",
+          "reason": "Pulmonology letter filed",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside Letter Filed",
+              "date": "2026-02-26T09:00",
+              "author": "RN",
+              "body": "Pulmonology follow-up letter from 2/17 received 2/24 and scanned. Routed to PCP for review. No medication changes listed."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "pharmacy",
+          "start": "2026-05-05T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills: Hydrochlorothiazide, Omeprazole",
+              "date": "2026-05-05T08:50",
+              "author": "RN",
+              "body": "Pharmacy requesting HCTZ 25 mg and omeprazole 20 mg, 90 days each. Seen 2/5 with normal CMP. Both approved with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "lab_only",
+          "start": "2026-05-19T13:20",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-15T08:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2026-05-19T13:20",
+              "author": "MA",
+              "body": "Hepatic panel from pulmonology, normal. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "lab_only",
+          "start": "2026-08-11T14:30",
+          "service": "Pulmonology",
+          "reason": "Liver tests on nintedanib",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-08-07T08:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab: Hepatic Panel",
+              "date": "2026-08-11T14:30",
+              "author": "RN",
+              "body": "Pulmonology's August LFTs came over. Within range. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T10:00",
+          "reason": "Follow-up reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for a Check-in",
+              "date": "2026-08-20T10:00",
+              "author": "front desk",
+              "body": "Hi Derek, our records show you're due for your six-month blood pressure follow-up. Reply here or call and we'll find a time that works around your job."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "nintedanib 150 MG Oral Capsule": {
+        "code": "1592750",
+        "display": "nintedanib 150 MG Oral Capsule",
+        "ingredient": "nintedanib",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Carcinoembryonic Antigen": {
+        "code": "2039-6",
+        "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

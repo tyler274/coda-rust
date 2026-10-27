@@ -1,0 +1,395 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001979",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "weight_kg": 101.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-01-20T15:00",
+              "body": "Routine. One year on HD, Tuesday visit to stay off his chair days.\nNo orthopnea, no PND. Home weights steady between treatments. Taking carvedilol twice daily, sister still checks the Biktarvy pack. Foot in CROW, fusion still not scheduled.\nA1c in November was still above 8. He is fine with that and does not want more injections; lows have not been a problem.\nDialysis labs from December reviewed (faxed): hemoglobin in the 10s on epoetin, phosphorus a touch high.\n\nExam: BP near his usual. Lungs clear. Heart regular. No edema. Right chest catheter site clean, no tenderness. Left foot intact and insensate.\n\nA/P\nHFrEF: stable NYHA II, continue carvedilol 12.5 BID and lisinopril 10. Cardiology spring visit.\nESRD on HD / secondary HPT / anemia of CKD: per nephrology and unit.\nT2DM: above goal, stable insulin, no hypoglycemia.\nHIV: per ID.\nCharcot R foot: per ortho.\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T10:05",
+          "reason": "Insulin pen prior authorization renewal",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PA renewal, insulin pens",
+              "author": "MA",
+              "date": "2026-02-10T10:05",
+              "body": "MassHealth secondary needed annual PA renewal for glargine and lispro pens. Submitted with diagnosis and last A1c. Approved same day, 12 months. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "hospital_admission",
+          "start": "2026-03-12T21:15",
+          "end": "2026-03-17T12:30",
+          "service": "Emergency Medicine",
+          "reason": "Fever and chills with tunneled dialysis catheter",
+          "vitals": [
+            {
+              "time": "2026-03-12T21:20",
+              "temp_c": 39.0,
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 102,
+              "rr": 18
+            },
+            {
+              "time": "2026-03-13T02:00",
+              "temp_c": 38.1,
+              "bp": [
+                138,
+                82
+              ],
+              "hr": 92,
+              "rr": 16
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Bloodstream infection due to central venous catheter, initial encounter",
+              "icd10": "T80.211A",
+              "action": "diagnosed",
+              "onset": "2026-03-12",
+              "note": "tunneled hemodialysis catheter; coagulase-negative staphylococci, methicillin-resistant"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "vancomycin 1000 MG Injection",
+              "action": "historical",
+              "sig": "Dosed IV after each hemodialysis session per pharmacy levels, 14 days total",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "catheter-related bloodstream infection"
+            }
+          ],
+          "state": {
+            "labs": {
+              "White Blood Cells": 12.0,
+              "Hemoglobin": 10.2,
+              "Platelets": 220
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-12T21:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-12T22:10",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase"
+                },
+                {
+                  "test": "Urine Nitrite"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-12T21:40",
+              "resulted": "2026-03-13T16:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Positive, 2 of 2 sets: coagulase-negative staphylococci, methicillin-resistant; susceptible to vancomycin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-14T08:00",
+              "resulted": "2026-03-19T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "author": "emergency medicine",
+              "date": "2026-03-18T10:00",
+              "body": "Regional hospital ED record, 03/12/2026. Received 03/18/2026.\n\nCC: fever and chills.\nHPI: 61-year-old man with type 2 diabetes, HIV, ESRD on hemodialysis, right Charcot foot and HFrEF, here with one day of fever with shaking chills. Thermometer at home read 101.5 F. He has had a tunneled dialysis catheter in place for 14 months. Denies cough, painful urination, diarrhea or any other focal complaint.\nMeds: per list including Biktarvy, insulin, carvedilol 12.5 BID, lisinopril, atorvastatin, aspirin, sevelamer, calcitriol, octreotide LAR, epoetin with HD. NKDA.\n\nTriage: T 102.2 F, BP 150/90, HR 102, RR 18.\nExam: ill-appearing but alert. Catheter exit site in the right chest is clean with no redness, swelling or drainage; tunnel nontender. Lungs clear. Heart regular. Abdomen soft. Right foot in walker, skin intact.\nLabs: WBC 12,000, Hgb 10.2, platelets 220,000. UA normal. Blood cultures x2 drawn, pending at disposition.\n\nImpression: fever in a dialysis patient with a tunneled catheter and no other source; catheter-related bloodstream infection is the leading concern.\nPlan: empiric vancomycin after cultures, admit to medicine, nephrology aware."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-03-18T10:05",
+              "body": "Admission 03/12/2026 - 03/17/2026, regional hospital medicine service.\nPrincipal diagnosis: catheter-related bloodstream infection, tunneled hemodialysis catheter.\nMicrobiology: blood cultures from 03/12, 2 of 2 sets, methicillin-resistant coagulase-negative staphylococci, vancomycin susceptible. Repeat cultures 03/14 no growth to date at discharge.\nCourse: defervesced within 48 hours on vancomycin. Exit site and tunnel never looked infected, so the catheter was exchanged over a guidewire by interventional radiology on 03/14 rather than removed. Hemodialysis continued on schedule in hospital.\nDischarge plan: vancomycin IV dosed after each dialysis session at his outpatient unit to complete 14 days from the first negative culture; unit to follow levels. All home medications unchanged.\nFollow-up: PCP within 1 week; nephrology through the dialysis unit.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "outside_records",
+          "start": "2026-03-19T09:30",
+          "reason": "Final blood culture result",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Final repeat blood culture",
+              "author": "MA",
+              "date": "2026-03-19T09:30",
+              "body": "Hospital lab faxed final result: repeat blood cultures from 03/14/2026, no growth at 5 days. Filed, routed to PCP ahead of Tuesday's visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "office_visit",
+          "start": "2026-03-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, catheter infection",
+          "state": {
+            "bp": [
+              138,
+              84
+            ],
+            "weight_kg": 100.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-24T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-03-24T14:10",
+              "body": "TCM visit after 3/12-3/17 admission for catheter-related bacteremia with methicillin-resistant coagulase-negative staph. Catheter exchanged over wire 3/14. Repeat cultures negative final. Getting vancomycin after each run at the unit, last doses this week.\nNo fevers since the hospital. Appetite back. Tired, but no more than his usual after dialysis weeks.\n\nExam: afebrile. Right chest catheter exit site clean and dry, tunnel nontender. Lungs clear. Heart regular. No edema.\n\nA/P\nCRBSI: improving, complete vancomycin per unit. Call for any fever or chills, especially during or after a run.\nESRD/HD: catheter care reviewed, unit aware.\nOther chronic problems stable, no medication changes. Med reconciliation done.\nRTC 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "conditions": [
+            {
+              "label": "Bloodstream infection due to central venous catheter, initial encounter",
+              "icd10": "T80.211A",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "weight_kg": 101.0,
+            "labs": {
+              "Hemoglobin A1c": 8.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-12T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-05-12T14:45",
+              "body": "Follow-up. Finished vancomycin in late March, no fevers since. Dialysis going steadily, has not missed a run this spring. Breathing fine. Sister reports Biktarvy pack empty on schedule each week.\n\nExam: BP and HR as charted. Lungs clear, heart regular, no edema. Catheter site clean.\n\nA/P\nCRBSI: treated, resolved.\nT2DM: A1c today.\nHFrEF, HTN, ESRD, HIV, acromegaly, PDR, Charcot: no changes, followed by their specialists.\nRTC August."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T12:10",
+          "reason": "A1c result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2026-05-14T12:10",
+              "body": "Hi Lamar, your A1c came back in the same range as the last few, still above our target. No change needed today, but think about whether you would try the lunch-time insulin more regularly. We can talk in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "office_visit",
+          "start": "2026-08-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 101.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-10T14:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-10T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-08-10T14:20",
+              "body": "Routine visit, came after his morning dialysis run.\nNothing new. No fever since March. No orthopnea, weights stable. Using the CROW for anything beyond the house. Still not back to deliveries. Taking his pills; sister checks the packs. Insulin as before, says he has been better about the lunch dose about half the time.\n\nExam: BP near his usual. Lungs clear. Heart regular. No edema. Catheter exit site clean. Left foot intact, insensate; right in CROW.\n\nA/P\nAll chronic problems stable on current regimen. Lipids and A1c today. Flu and COVID this fall at a nurse visit. Next routine visit in about 3 months; he will call to schedule once he has the fall dialysis calendar."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-08-12T16:45",
+              "body": "Lamar, labs from Monday: cholesterol remains well controlled on atorvastatin. A1c about where it has been. Nothing to change. Please call the office in a few weeks to set up your fall vaccines and the next visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "pharmacy",
+          "start": "2026-08-19T09:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2026-08-19T09:20",
+              "body": "Pharmacy electronic refill request: carvedilol 12.5 mg BID and atorvastatin 40 mg, 90-day supplies. Both on current list, last visit 8/10. Sent per protocol, PCP cosign."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001853",
+      "events": [
+        {
+          "id": "2024-02-26a",
+          "kind": "office_visit",
+          "start": "2024-02-26T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preconception visit",
+          "measure": ["bp", "hr", "weight_kg"],
+          "medications": [
+            {"drug_text": "Prenatal Multivitamin with DHA Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "preconception / pregnancy"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-26T11:35", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-02-26T11:35", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-02-26T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preconception Visit",
+              "author": "PCP",
+              "date": "2024-02-26T11:40",
+              "body": "Here to plan for a first pregnancy; she and her husband would like to start trying this spring. G0. Cycles regular, about every 28-30 days. No pelvic pain. Not on any contraception since January.\n\nCurrent meds: levocetirizine 5 mg in allergy season only, not taking now. Allergies: latex (rash), penicillin.\nFamily: her mother delivered early with at least one pregnancy; she does not know details. Discussed that this is worth telling her OB but does not change anything today.\n\nVitals in chart. Exam not repeated today beyond general appearance; physical was in September.\n\nPlan:\n- Start prenatal vitamin with DHA, one daily, now rather than waiting for a positive test.\n- Vaccines are current (Tdap 2019, flu and COVID this season); Tdap will be repeated by OB in the third trimester.\n- CBC and TSH today as a baseline.\n- Alcohol: plans to stop once trying. Levocetirizine in the spring: reasonable to continue if needed; she will confirm with OB once pregnant.\n- Home pregnancy test if a period is late, then message us and we will get her to an obstetrics practice."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "portal_message",
+          "start": "2024-02-28T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "RN",
+              "date": "2024-02-28T09:10",
+              "body": "Hi Delaney, the doctor reviewed your blood count and thyroid test from Monday. Both normal. The prenatal vitamin was sent to your pharmacy with refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "author": "patient",
+              "date": "2024-05-20T07:48",
+              "body": "Good morning, I took a home test this morning and it was positive. My last period started April 19. What do I do next? Do I come in or go straight to an OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "author": "RN",
+              "date": "2024-05-20T10:22",
+              "body": "Congratulations! Come in Wednesday morning for a quick nurse visit so we can confirm it with a urine test and put in the obstetrics referral. Keep taking the prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "nurse_visit",
+          "start": "2024-05-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pregnancy confirmation",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2024-05-03", "note": "LMP 2024-04-19, EDD 2025-01-24"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-05-22T08:25", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
+          ],
+          "orders": [
+            {"id": "ob-referral-2024", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "new pregnancy, LMP 4/19/24"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2024-05-22T08:40",
+              "body": "Urine hCG positive. LMP 4/19/24, about 4 1/2 weeks. Mild breast tenderness, no bleeding or cramping. Taking prenatal vitamin daily. Reviewed with PCP: referral placed to an outside obstetrics group, her preference for the practice closest to home. Pregnancy added to problem list. Reminded about no alcohol and to call with bleeding or severe pain."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "pharmacy",
+          "start": "2024-05-28T14:02",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-05-28T14:02",
+              "body": "Pharmacy fax requesting 90-day supply of prenatal vitamin with DHA so it goes through her plan. Approved per PCP, 90 tablets with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "outside_records",
+          "start": "2024-06-18T13:30",
+          "orders": [
+            {"id": "ob-referral-2024", "action": "done", "date": "2024-06-18T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics New Pregnancy Visit",
+              "author": "obstetrics",
+              "date": "2024-06-18T13:30",
+              "body": "Obstetrics and Gynecology, outside group\nRe: Delaney Martel, DOB 5/16/1992\nVisit: 6/11/2024\n\nThank you for referring this 32-year-old G1P0 at 7 weeks 4 days by LMP. Dating ultrasound today shows a single intrauterine pregnancy with cardiac activity, size consistent with dates. EDD 1/24/2025 confirmed.\n\nShe feels well, mild nausea only. Exam and prenatal labs unremarkable; blood type and antibody screen, rubella and varicella immunity, hepatitis B, syphilis and HIV screens are in our chart and normal.\n\nMedications: prenatal vitamin with DHA daily; levocetirizine 5 mg seasonally (fine to use in pregnancy as needed).\nAllergies: latex (rash), penicillin.\n\nPlan routine prenatal care, anatomy survey at 20 weeks. We will keep you updated.\n\nAttending obstetrician"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "outside_records",
+          "start": "2024-09-09T10:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Progress Letter",
+              "author": "obstetrics",
+              "date": "2024-09-09T10:05",
+              "body": "Prenatal update, visit 9/3/2024, 19 weeks 4 days.\n\nPregnancy progressing without complication. Anatomy ultrasound: normal fetal anatomy for gestational age, placenta posterior and clear of the cervix, normal amniotic fluid. Blood pressure normal throughout. Glucose screening planned at 24-28 weeks.\n\nMedications unchanged: prenatal vitamin with DHA, levocetirizine as needed. Allergies: latex, penicillin.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "state": {"weight_kg": 69.8},
+          "measure": ["bp", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-10T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-10T16:18"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-10T16:15"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-10T16:30",
+              "body": "25 weeks pregnant, OB asked her to get flu and COVID here since our hours fit better. Both recommended in pregnancy; consent reviewed. Inactivated flu IM L deltoid, 2024-25 COVID IM R deltoid, latex-free supplies. BP and weight recorded. Sat 15 min, no issues. OB office faxed a copy of the record."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-29a",
+          "kind": "hospital_admission",
+          "start": "2024-11-29T05:50",
+          "end": "2024-12-04T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "preterm labor at 32 weeks",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "resolved", "note": "delivered 2024-12-01 at 32 weeks"},
+            {"label": "History of preterm labor", "icd10": "Z87.51", "action": "diagnosed", "onset": "2024-11-29", "note": "preterm labor at 32 weeks, cesarean delivery 12/1/2024"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2024-12-09T09:40",
+              "body": "OBSTETRIC DISCHARGE SUMMARY (outside hospital)\nPatient: Delaney Martel  DOB 5/16/1992\nAdmitted 11/29/2024 - Discharged 12/4/2024\n\nAdmission diagnosis: preterm labor, 32w0d.\nDischarge diagnosis: preterm delivery at 32 weeks by primary low transverse cesarean; breech presentation.\n\nHistory: G1P0 with routine prenatal care and an uneventful pregnancy, presented early on 11/29 with regular painful contractions and cervical change. Prenatal course: normal anatomy survey, normal glucose screen.\n\nHospital course: Admitted to labor and delivery. Tocolytic therapy was started and a full antenatal corticosteroid course (two doses 24 hours apart) completed. Contractions continued and the cervix kept changing despite treatment. On 12/1 she was in active labor and the fetus was breech on ultrasound; she underwent primary low transverse cesarean delivery under spinal anesthesia without complication. Latex-free room and supplies throughout. Postoperative course routine: ambulating day 1, tolerating diet, incision clean and dry, afebrile, blood pressures normal. Pain controlled with routine oral analgesics.\n\nNewborn: liveborn infant admitted directly to the NICU. On initial assessment respiratory rate 70, heart rate 160, oxygen saturation 85% on room air, breath sounds decreased on both sides. Chest radiograph showed a reticulogranular pattern with air bronchograms, consistent with neonatal respiratory distress syndrome. Infant remains in the NICU under neonatology at maternal discharge.\n\nAllergies: latex (rash); penicillin.\nDischarge medications: prenatal vitamin with DHA daily; levocetirizine 5 mg daily as needed for allergy season.\nFollow-up: incision check in 1-2 weeks and postpartum visit at 6 weeks with obstetrics. Future pregnancies are at increased risk of preterm birth; recommend early prenatal care and a delivery-planning discussion given the cesarean.\n\nObstetric hospitalist"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telephone",
+          "start": "2024-12-10T17:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in Call",
+              "author": "PCP",
+              "date": "2024-12-10T17:30",
+              "body": "Called after the discharge summary came in. She is home, sore but healing, walking around the house. Spending most of each day at the NICU; the baby is on breathing support and the team is encouraged. Her husband is off work for now. Sleeping in pieces. Mood: tired and worried, not hopeless, has good support. Encouraged her to call any time; set up a visit with me in January after she sees OB. Problem list updated with history of preterm labor and the cesarean."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

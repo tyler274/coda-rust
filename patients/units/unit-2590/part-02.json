@@ -1,0 +1,400 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002590",
+   "events": [
+    {
+     "id": "2025-01-21a",
+     "kind": "pharmacy",
+     "start": "2025-01-21T09:45",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Albuterol refill",
+       "author": "RN",
+       "date": "2025-01-21T09:45",
+       "body": "Refill request from pharmacy, albuterol HFA. Last fill October. Approved per protocol, 1 inhaler with 2 refills."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "specialist_visit",
+     "start": "2025-02-25T13:30",
+     "service": "Hematology",
+     "reason": "sickle cell disease follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology clinic letter",
+       "author": "hematology",
+       "date": "2025-03-04T11:15",
+       "body": "Adult Sickle Cell Program. Clinic date 02/25/2025.\n\nDear Dr. (primary care),\nCurtis returns for routine review. Interval history notable for laparoscopic cholecystectomy in November complicated by an intraoperative malignant hyperthermia reaction; he recovered fully and we have flagged MH susceptibility in our records. No pain admissions. He continues hydroxyurea most days and folic acid daily.\nExam: well, mild icterus, no hepatosplenomegaly, no leg ulcers.\nLabs today at his steady state.\n\nPlan: continue hydroxyurea 1000 mg daily and folic acid 1 mg daily. CBC and retic every 3 months. Any future procedure requiring anesthesia should involve us in advance. Return in 6 months.\nAllergies: NKDA. MH susceptible: avoid volatile anesthetics and succinylcholine.\n\nWith thanks,\nHematology attending"
+      }
+     ]
+    },
+    {
+     "id": "2025-05-14a",
+     "kind": "ed_visit",
+     "start": "2025-05-14T18:20",
+     "end": "2025-05-15T00:40",
+     "service": "Emergency Medicine",
+     "reason": "left flank pain and blood in urine",
+     "conditions": [
+      {
+       "label": "Renal papillary necrosis",
+       "icd10": "N28.89",
+       "action": "diagnosed",
+       "onset": "2025-05-12"
+      }
+     ],
+     "vitals": {
+      "temp_c": 37.2,
+      "bp": [
+       130,
+       80
+      ],
+      "hr": 88,
+      "rr": 16
+     },
+     "measure": [
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-05-14T18:45",
+       "results": [
+        {
+         "test": "Urine Blood",
+         "text": "Large"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "text": "Too numerous to count"
+        },
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-05-14T18:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-05-14T20:30",
+       "issued": "2025-05-14T21:15",
+       "text": "Indication: left flank pain, gross hematuria, sickle cell disease.\nTechnique: CT of the abdomen and pelvis with IV contrast, including excretory phase images.\nFindings: Left kidney is normal in size. On excretory images, contrast extends from the calyx into a left renal papilla, forming a small cavity at the papillary tip, consistent with papillary necrosis. No renal or ureteral calculus. No hydronephrosis or perinephric fluid. Right kidney enhances and excretes normally with no papillary abnormality. Bladder unremarkable. Gallbladder surgically absent. Liver, pancreas and adrenals unremarkable. No free fluid. Bowel normal in caliber. No lymphadenopathy.",
+       "conclusion": "Findings of left renal papillary necrosis. No urolithiasis or obstruction."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-05-14T18:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-06-10T15:20",
+       "body": "Regional hospital ED. Date of service 05/14/2025.\n\nHPI: 22-year-old man with HbSS sickle cell disease and a history of malignant hyperthermia during surgery last year, here for two days of left-sided flank pain with visibly bloody urine. No injury, no recent heavy exertion. No fever, no dysuria. He is vague about family history and mentions his father has some kind of blood problem.\nMeds: hydroxyurea 1000 mg daily (taken intermittently per hematology), albuterol HFA 2 puffs q4-6h prn wheeze, folic acid 1 mg daily.\nAllergies: NKDA. MH susceptible.\nSocial: never smoker; alcohol 1-2 drinks per month; student and part-time retail.\n\nExam: T 37.2, BP 130/80, HR 88, RR 16. Uncomfortable but nontoxic. Mild tenderness over the left CVA. Abdomen soft, no guarding, no rebound. No suprapubic tenderness.\n\nResults: Urinalysis negative for leukocyte esterase and nitrite, large blood, RBC too numerous to count, red cell casts seen on microscopy. Creatinine and BUN within normal range. CT abdomen/pelvis with excretory phase: left papillary necrosis, no stone, no obstruction.\n\nED course and impression: renal papillary necrosis, left, in the setting of sickle cell disease. Pain controlled with IV fluids and acetaminophen. Discharged home.\nInstructions: drink plenty of fluids; acetaminophen for pain; avoid ibuprofen, naproxen and other NSAIDs; follow up with primary care within 1 week and inform hematology; return for fever, clots or inability to urinate, or worsening pain."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-16a",
+     "kind": "portal_message",
+     "start": "2025-05-16T08:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "ER visit",
+       "author": "patient",
+       "date": "2025-05-16T08:05",
+       "body": "Went to the ER wed night for pain in my left side and my pee was red. they did a CT and said it was papillary necrosis in my kidney from the sickle cell. said to see you this week or next. urine is lighter now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: ER visit",
+       "author": "PCP",
+       "date": "2025-05-16T12:30",
+       "body": "Thanks Curtis. Front desk will set up a visit for next week. Keep up the fluids, use acetaminophen only (no ibuprofen or naproxen), and let your hematology team know. If the bleeding gets heavy, you pass clots, can't pee, or get a fever, go back to the ER. We are requesting the ER record."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-22a",
+     "kind": "office_visit",
+     "start": "2025-05-22T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after ED visit for hematuria",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-05-22T11:20",
+       "results": [
+        {
+         "test": "Urine Blood",
+         "text": "Small"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "value": 8
+        },
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-05-22T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit: post-ED",
+       "author": "PCP",
+       "date": "2025-05-22T11:35",
+       "body": "ED visit 5/14 for left flank pain and gross hematuria; told papillary necrosis on CT (ED record requested, not yet here, history per patient and his discharge sheet).\nNow: flank pain gone since about the weekend. Urine looks normal to him for 3 days. No fever, no clots, no burning. Has been drinking a lot of water. Used acetaminophen only. Messaged hematology.\n\nExam: vitals as charted, afebrile. No CVA tenderness either side. Abdomen soft.\nUA in office: small blood, 8 RBC/hpf, protein negative, LE and nitrite negative.\n\nA/P\n1. Renal papillary necrosis, left, from sickle cell disease. Clinically settling; residual microscopic blood expected for a while. Recheck urine at his physical. Strict NSAID avoidance, reviewed again, including combination cold products. Stay well hydrated, especially during work shifts. Return precautions given.\n2. HbSS, MH susceptibility, asthma: unchanged."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "telephone",
+     "start": "2025-06-10T15:25",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED record received",
+       "author": "front desk",
+       "date": "2025-06-10T15:25",
+       "body": "ED record from 5/14 received by fax today after request on 5/16 and a follow-up call. Scanned, routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-19a",
+     "kind": "annual_physical",
+     "start": "2025-08-19T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-08-19T10:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-08-19T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-08-19T10:00",
+       "results": [
+        {
+         "test": "Reticulocytes",
+         "loinc": "17849-1",
+         "unit": "%"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-08-19T10:00",
+       "results": [
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Red Blood Cells"
+        },
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-08-19T09:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-08-19T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-08-19T10:10",
+       "body": "Physical. Starting his last year of school in a couple weeks.\nSince May: no further flank pain or red urine. No admissions. Saw hematology in Feb; says he went again this month but we have no letter. Hydroxyurea still most days, folic acid daily. Albuterol rarely, mostly spring.\nAllergy list: NKDA; MH-susceptible alert in place. He got the medical alert bracelet and is wearing it today.\nFamily: parents with sickle trait; maternal uncle with suspected MH; paternal grandmother asthma.\nSocial: never smoker, occasional drink.\n\nROS negative.\nExam: vitals as charted. Mild icterus. Heart: soft flow murmur, unchanged. Lungs clear. Abdomen soft, healed port scars. No CVA tenderness. Legs without ulcers.\n\nA/P\n- Renal papillary necrosis, left (May): UA today negative for blood. Continue NSAID avoidance.\n- HbSS on hydroxyurea: CBC, retic, CMP drawn; copies to hematology. Will request their August note.\n- MH susceptibility: alert reviewed.\n- Mild intermittent asthma: no change.\n- Vaccines: flu and COVID once available this fall. PHQ-2 1.\nOne year."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-21a",
+     "kind": "portal_message",
+     "start": "2025-08-21T17:45",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from your physical",
+       "author": "PCP",
+       "date": "2025-08-21T17:45",
+       "body": "Hi Curtis, urine is clear of blood now, which is what I hoped to see. Blood counts and chemistries are in your normal range for HbSS. Good luck with the semester."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2025-08-22T09:10",
+       "body": "Faxed request to hematology clinic for August visit note. Will follow up."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T16:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T16:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-10-14T16:21"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T16:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit: immunizations",
+       "author": "RN",
+       "date": "2025-10-14T16:28",
+       "body": "Flu vaccine L deltoid, 2025-26 COVID R deltoid. Feels well, afebrile by report. Observed 15 min without problem. Hematology August note still not received; second request faxed."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-02a",
+     "kind": "telehealth_visit",
+     "start": "2025-12-02T12:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "inhaler refill, work form",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2025-12-02T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2025-12-02T12:18",
+       "body": "Video visit from his apartment, identity checked by name and DOB.\nStore wants a form for holiday hours and he is down to his last inhaler. Breathing fine, albuterol maybe once a month. No night cough. No sickle pain since spring, urine normal.\nAppears comfortable, no audible wheeze, speaking easily.\nA/P: mild intermittent asthma, stable; albuterol renewed. Work form signed, no restrictions. Due for physical next summer."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

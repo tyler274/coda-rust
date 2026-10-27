@@ -1,0 +1,314 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002002",
+      "events": [
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up; neck recheck",
+          "conditions": [
+            {"label": "Cervical radiculopathy due to C6-C7 disc herniation", "icd10": "M50.123", "action": "resolved", "onset": "2022-09-12"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "stop", "reason": "no longer needed"}
+          ],
+          "state": {"labs": {"Creatinine": 1.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "labs": [
+            {"panel": null, "collected": "2023-03-14T10:35", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-14T10:35", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-03-14T10:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-03-14T10:35", "results": [{"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-14T10:35", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-14T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-03-14T10:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-03-14T10:50",
+             "body": "S: Neck is \"pretty much fine.\" Did a course of physical therapy over the winter and still does the chin tucks. Tingling gone for about a month. Not using acetaminophen. Says he stopped going to his psychiatrist after the holidays, \"didn't need it\"; taking risperidone some days. Sister thinks he is a bit more withdrawn. CPAP some nights.\nO: Vitals as charted, weight steady around 84. Quiet, flat, but cooperative and linear. Neck full range. Strength in the arms full and equal, biceps reflexes symmetric, sensation intact in both hands.\nA/P:\n1. Cervical radiculopathy, resolved with PT. Off the problem list.\n2. Schizophrenia: urged him to go back to psychiatry; gave the clinic number again. PHQ-9 6.\n3. DM, HTN: labs today; lipids, urine microalbumin, CMP, CBC. Metformin, lisinopril same.\n4. Carcinoid: surveillance CT in December was clear; thoracic surgery plans another this winter.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "portal_message",
+          "start": "2023-07-11T09:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed appointment", "author": "front desk", "date": "2023-07-11T09:30",
+             "body": "Hi Sean, we missed you at your appointment on June 20. Your doctor would like to see you for your diabetes check. Please call or reply here to pick a new time. Your metformin and lisinopril refills have been sent through August."}
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "outside_records",
+          "start": "2023-08-08T13:20",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2023-08-08T13:20",
+             "body": "Outside optometry office. Dilated diabetic exam 8/1/2023. Acuity stable with correction. Normal pressures. Retina: no diabetic changes in either eye; maculae flat. Annual follow-up advised."}
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "ed_visit",
+          "start": "2023-10-16T15:10",
+          "end": "2023-10-17T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue, headache, dizziness and excessive water drinking",
+          "conditions": [
+            {"label": "Primary polydipsia", "icd10": "R63.1", "action": "diagnosed", "onset": "2023-08-01"}
+          ],
+          "state": {"weight_kg": 74.0},
+          "vitals": [
+            {"time": "2023-10-16T15:20", "temp_c": 36.8, "bp": [122, 78], "hr": 80, "rr": 16, "spo2": 98},
+            {"time": "2023-10-17T07:00", "temp_c": 36.6, "bp": [118, 76], "hr": 74, "rr": 14, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-16T15:40", "results": [{"test": "Sodium", "value": 127}, {"test": "Chloride", "value": 94}, {"test": "Bicarbonate", "value": 24}, {"test": "Glucose", "value": 88}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2023-10-16T15:40", "results": [{"test": "Fasting Glucose", "value": 88}]},
+            {"panel": null, "collected": "2023-10-16T15:40", "results": [{"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 258}]},
+            {"panel": null, "collected": "2023-10-16T16:05", "results": [{"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 115}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-17T06:00", "results": [{"test": "Sodium", "value": 131}, {"test": "Chloride", "value": 97}, {"test": "Bicarbonate", "value": 25}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2023-10-16T15:10"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2023-10-19T10:00",
+             "body": "Outside regional hospital emergency department. Arrived 10/16/2023 15:10, discharged from ED observation 10/17/2023 11:30.\n\nChief complaint: tired, headaches, lightheaded, drinking too much water.\n\nHPI: 50-year-old man with schizophrenia and a history of ectopic ACTH production (lung carcinoid resected in 2021), brought in by his sister. Over recent weeks he has become more isolated, mostly staying in his apartment, and has been drinking water constantly, carrying a bottle at all times and getting up through the night to drink. Increasing fatigue, headaches and dizziness. He has not been to his psychiatrist for months; he told his sister the appointments were a way for the government to keep control of him. Lives alone. Denies nausea, vomiting, diarrhea, recent illness or any change in appetite.\n\nMedications per patient and sister: risperidone 2 mg daily (not taking regularly), lisinopril 20 mg daily, metformin 1000 mg BID, diphenhydramine 25 mg at night as needed, calcium carbonate as needed. NKDA.\n\nExam: afebrile. BP 122/78, HR 80. Thin. Skin dry. Flat affect, sparse speech, oriented. Neuro: nonfocal, gait steady. No edema.\n\nLabs: sodium 127, serum osmolality 258, urine osmolality 115, fasting glucose 88.\n\nAssessment: hypotonic hyponatremia with maximally dilute urine, consistent with primary polydipsia in the setting of untreated schizophrenia.\n\nED course: free-water restriction, no IV fluids, sodium monitoring in ED observation overnight. Sodium 131 at 06:00. Headache improved. No seizure or confusion. Not felt to be a danger to himself or others; declined psychiatric evaluation in the ED.\n\nDisposition: home with his sister. Fluid limit written out. Follow up with primary care in 2 to 3 days for a sodium check; re-establish with outpatient psychiatry."}
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "office_visit",
+          "start": "2023-10-20T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, low sodium",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-20T12:05", "resulted": "2023-10-20T15:30", "results": [{"test": "Sodium", "value": 135}, {"test": "Chloride", "value": 100}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-20T12:00"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-20T11:40"},
+            {"procedure": "Immunization administration", "performed": "2023-10-20T12:00"},
+            {"procedure": "Venipuncture", "performed": "2023-10-20T12:05"}
+          ],
+          "orders": [
+            {"id": "psych-referral-2023", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "schizophrenia off treatment, primary polydipsia"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - ED Follow-up", "author": "PCP", "date": "2023-10-20T15:45",
+             "body": "Seen with sister. ED record from Monday reviewed (sodium 127, serum osm 258, urine osm 115, glucose 88; 131 the next morning).\n\nS: Says he is \"trying\" with the water limit; sister has been measuring out bottles for the day. Headache gone. Takes risperidone \"when I remember,\" maybe half the days. Has not seen psychiatry since winter. Not keen to go back but does not refuse outright. Denies thoughts of hurting himself.\nO: Vitals as charted. Weight 74 kg. Thin, flat affect, guarded, answers briefly. Mucous membranes moist. Neuro grossly nonfocal. No edema.\nA/P:\n1. Primary polydipsia with hyponatremia, improving. Sodium today, called at 3:40: 135. Continue the fluid limit. Return to ED for confusion, vomiting, severe headache or seizure.\n2. Schizophrenia, off regular treatment. New psychiatry referral sent to the community clinic; sister will help him call. Continue risperidone 2 mg daily; pill box again.\n3. Weight down to 74 kg, much of it the planned loss after the Cushing cure, more recently from poor intake. Will follow.\n4. Flu shot today. RTC 4 weeks."}
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "telephone",
+          "start": "2023-11-02T14:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Psychiatry referral follow-up", "author": "RN", "date": "2023-11-02T14:00",
+             "body": "Community psychiatry clinic says they left two messages for pt and have not heard back. Called pt: says he will \"think about it.\" Spoke with sister, who will try to bring it up again. Referral remains open with the clinic. He asked to move his 4-week visit to after the holidays; front desk will call."}
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "pharmacy",
+          "start": "2023-11-09T14:30",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-11-09T14:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Vaccine record from pharmacy", "author": "MA", "date": "2023-11-10T08:30",
+             "body": "Registry update: 2023-2024 COVID-19 vaccine (Pfizer) given 11/9/2023 at a retail pharmacy. Record updated."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "imaging",
+          "start": "2023-12-05T09:15",
+          "service": "Radiology",
+          "reason": "Surveillance after carcinoid resection",
+          "reports": [
+            {"study": "CT chest", "performed": "2023-12-05T09:15", "issued": "2023-12-05T14:20",
+             "text": "CT chest with contrast. Comparison 12/13/2022. Stable postsurgical changes after right middle lobectomy. No new pulmonary nodule or mass. No thoracic lymphadenopathy. No effusion.",
+             "conclusion": "Stable postoperative chest. No recurrence."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "CT chest result", "author": "PCP", "date": "2023-12-12T08:40",
+             "body": "Thoracic surgery surveillance CT 12/5: stable, no recurrence. Per their cover note, they are releasing him to routine follow-up with endocrinology. Filed."}
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "pharmacy",
+          "start": "2024-01-16T10:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request - risperidone", "author": "MA", "date": "2024-01-16T10:10",
+             "body": "Pharmacy request: risperidone 2 mg daily. Outside psychiatrist's prescription has run out and he is not active with that clinic. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "RE: Refill request - risperidone", "author": "PCP", "date": "2024-01-16T12:30",
+             "body": "OK to send 90 days of risperidone 2 mg daily as a bridge. Psychiatry referral is still open; front desk to remind him at his next visit."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "labs": [
+            {"panel": null, "collected": "2024-03-12T13:35", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-12T13:35", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-03-12T13:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-03-12T13:35", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-03-12T13:30"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-12T13:00"},
+            {"procedure": "Immunization administration", "performed": "2024-03-12T13:30"},
+            {"procedure": "Venipuncture", "performed": "2024-03-12T13:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-03-12T14:00",
+             "body": "First visit since October; he rescheduled twice. S: Keeping to his water limit \"mostly,\" no headaches or dizziness. Taking risperidone from our bridge prescription, says most days. Still has not called the psychiatry clinic. CPAP, \"sometimes.\" Eating better per sister.\nO: Vitals as charted, weight holding at 74. Calmer, more engaged than in October. Heart regular, lungs clear. Feet normal.\nA/P:\n1. Primary polydipsia, stable. Sodium with today's CMP.\n2. Schizophrenia: re-sent the psychiatry referral information; continue risperidone 2 mg.\n3. DM, HTN: A1c, CMP, lipids, urine microalbumin today. No changes.\n4. Shingrix #1 today; #2 in 2-6 months, nurse visit.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "nurse_visit",
+          "start": "2024-06-18T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-06-18T10:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-06-18T10:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Shingrix", "author": "RN", "date": "2024-06-18T10:45",
+             "body": "Second recombinant zoster dose, 0.5 mL IM right deltoid. Had a sore arm and felt tired for a day after dose 1, nothing else. Series complete. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "outside_records",
+          "start": "2024-07-30T11:00",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2024-07-30T11:00",
+             "body": "Outside optometry office. Exam 7/23/2024, dilated. No diabetic retinopathy OU. New glasses prescription given. See again in a year."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"weight_kg": 75.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-09-17T11:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-17T11:10", "results": [{"test": "Creatinine"}, {"test": "Sodium"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-17T11:05"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-09-17T10:40"},
+            {"procedure": "Immunization administration", "performed": "2024-09-17T11:05"},
+            {"procedure": "Venipuncture", "performed": "2024-09-17T11:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-09-17T11:20",
+             "body": "Routine DM/HTN. Feels OK, no complaints. Water intake reasonable per sister. Risperidone most days. Exam: vitals as charted, weight 75. Heart regular, lungs clear, abdomen soft and nontender, right inguinal hernia reducible as before. Plan: A1c and BMP; same meds; flu shot today. COVID booster at the pharmacy when he likes. RTC 4-6 months."}
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "hospital_admission",
+          "start": "2024-10-23T02:40",
+          "end": "2024-10-30T13:00",
+          "service": "Internal Medicine",
+          "reason": "Acute periumbilical abdominal pain with fever",
+          "conditions": [
+            {"label": "Polyarteritis nodosa", "icd10": "M30.0", "action": "diagnosed", "onset": "2024-09-20", "note": "hepatitis B associated, mesenteric involvement"}
+          ],
+          "medications": [
+            {"drug_text": "entecavir 0.5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily on an empty stomach", "dose": {"value": 0.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "chronic hepatitis B with polyarteritis nodosa"},
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 3 tablets (60 mg) by mouth daily for 7 days, then taper off over 2 weeks as directed", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "polyarteritis nodosa"}
+          ],
+          "state": {"weight_kg": 70.5},
+          "vitals": [
+            {"time": "2024-10-23T02:50", "temp_c": 38.1, "bp": [145, 90], "hr": 98, "rr": 18, "spo2": 97},
+            {"time": "2024-10-30T08:00", "temp_c": 36.7, "bp": [128, 80], "hr": 76, "rr": 14, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-23T03:10", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 12.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-23T03:10", "results": [{"test": "Creatinine", "value": 1.8}, {"test": "Aspartate Aminotransferase", "value": 45}, {"test": "Alanine Aminotransferase", "value": 50}]},
+            {"panel": null, "collected": "2024-10-23T03:10", "results": [{"test": "Hepatitis B Surface Antigen", "text": "Positive"}]},
+            {"panel": null, "collected": "2024-10-23T03:10", "results": [{"test": "Lipase", "value": 32}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-10-30T06:00", "results": [{"test": "Creatinine", "value": 1.4}]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2024-10-23T05:15", "issued": "2024-10-23T06:30",
+             "text": "CT abdomen and pelvis with intravenous contrast. Indication: acute periumbilical pain, fever. Appendix normal. Gallbladder normal without wall thickening or pericholecystic fluid. Pancreas normal without peripancreatic stranding. Multiple small aneurysms of the mesenteric arterial branches with areas of irregular narrowing. Bowel normal in caliber and wall thickness. Liver, spleen, adrenals and kidneys unremarkable. No free air or free fluid. Right inguinal hernia containing fat.",
+             "conclusion": "No appendicitis, cholecystitis or pancreatitis. Multiple small mesenteric arterial aneurysms with irregular narrowing, suggestive of a medium-vessel vasculitis such as polyarteritis nodosa."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2024-10-23T07:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2024-10-30T12:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2024-11-19T16:20",
+             "body": "Outside regional hospital, internal medicine service. Admitted 10/23/2024, discharged 10/30/2024.\n\nReason for admission: abrupt severe periumbilical abdominal pain with fever.\n\nHistory: 51-year-old man with schizophrenia, chronic hepatitis B, type 2 diabetes and a reducible inguinal hernia, also hypertension, sleep apnea and a resected bronchial carcinoid. Severe, sharp, constant pain around the umbilicus starting about six hours before arrival. Low-grade fevers and about 10 pounds of unintended weight loss over the preceding month. Home medications: lisinopril 20 mg daily; metformin 1000 mg BID; risperidone 2 mg daily (irregular), diphenhydramine 25 mg at bedtime as needed, calcium carbonate as needed. NKDA. Former smoker, no alcohol.\n\nAdmission findings: T 38.1 C, BP 145/90, HR 98. Abdomen tender around the umbilicus, without rebound or guarding; normal bowel sounds. No jaundice, no rash. Labs: hemoglobin 13.2, WBC 12,000, platelets 250,000, creatinine 1.8 (baseline 1.2), AST 45, ALT 50, hepatitis B surface antigen positive. CT abdomen/pelvis with contrast: no appendicitis, cholecystitis or pancreatitis; multiple small mesenteric arterial aneurysms with irregular narrowing.\n\nHospital course: Rheumatology consulted. The imaging pattern with active hepatitis B infection, fever, weight loss and renal impairment was consistent with hepatitis B-associated polyarteritis nodosa. Treated with antiviral therapy (entecavir 0.5 mg daily) and a short course of prednisone 60 mg daily. Bowel rest initially, diet advanced by day 3. Pain resolved by day 5. Creatinine improved to 1.4 at discharge. Metformin was paused while creatinine was elevated and was restarted on day 6. Lisinopril continued once creatinine improving.\n\nDischarge diagnosis: polyarteritis nodosa associated with chronic hepatitis B, with elevated creatinine, improving.\n\nDischarge medications: entecavir 0.5 mg daily (new, long-term); prednisone 60 mg daily to complete 7 days, then taper off over 2 weeks per written schedule (new); lisinopril 20 mg daily; metformin 1000 mg BID; risperidone 2 mg daily; diphenhydramine and calcium carbonate as needed.\n\nFollow-up: primary care within 1 to 2 weeks with a basic metabolic panel; rheumatology clinic in about 3 months. Check sugars while on prednisone."}
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "telephone",
+          "start": "2024-10-25T09:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Sister calling", "author": "RN", "date": "2024-10-25T09:05",
+             "body": "Sister called: Sean was admitted Wednesday with bad belly pain and a fever, still in the hospital. Doctors told her it is \"inflamed blood vessels\" from his hepatitis B and they started new medicines. She will call when he is discharged. Asked her to have the hospital send records; front desk sent a release request."}
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "office_visit",
+          "start": "2024-11-04T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {"labs": {"Creatinine": 1.4}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-04T14:50", "results": [{"test": "Creatinine", "value": 1.4}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2024-11-04T14:20"},
+            {"procedure": "Venipuncture", "performed": "2024-11-04T14:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital Visit", "author": "PCP", "date": "2024-11-04T16:10",
+             "body": "Seen with sister. No discharge summary yet; history from the two of them, the discharge medication sheet they brought, and the pharmacy fill list.\n\nS: Admitted 10/23-10/30 at the regional hospital for sudden severe pain around the belly button with fever. Told he has polyarteritis nodosa from his hepatitis B. Pain gone since about day 5. Eating normally. No fever since. Weight down to about 70 kg. New meds: entecavir 0.5 mg daily (filled 10/30) and prednisone 60 mg, now on day 5 of the taper. Back on metformin and lisinopril. Home sugars higher on prednisone.\nO: Vitals as charted. Afebrile. Abdomen soft, nontender. No rash. No edema.\nA/P:\n1. Hepatitis B-associated PAN: entecavir and PAN added to our lists. Finish the prednisone taper as written. Rheumatology follow-up in about 3 months; they will arrange it.\n2. Creatinine improving: BMP today, creatinine 1.4 (resulted 5 pm), same as discharge. Recheck with rheum labs.\n3. DM: steroid-related highs expected; should settle after the taper. No change to metformin.\n4. Requested discharge summary again."}
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "pharmacy",
+          "start": "2024-11-21T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization - entecavir", "author": "MA", "date": "2024-11-21T11:30",
+             "body": "Pharmacy says his Part D plan wants a prior authorization for entecavir after the first fill. Submitted with diagnoses chronic hepatitis B and polyarteritis nodosa and the hospital discharge summary (received 11/19). Approved same day for 12 months. Pharmacy notified."}
+          ]
+        }
+      ]
+    }
+  ]
+}

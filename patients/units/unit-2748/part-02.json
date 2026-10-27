@@ -1,0 +1,208 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002748",
+      "events": [
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T20:12",
+          "reason": "Patient update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Quick update",
+              "author": "patient",
+              "date": "2026-02-10T20:12",
+              "body": "Hi, no question really, just wanted to say I've been going for a walk after dinner most nights and started logging my food in an app. Hard to keep it up in this cold but I'm trying! Do I need to come in before summer?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Quick update",
+              "author": "PCP",
+              "date": "2026-02-11T07:50",
+              "body": "That's great to hear, Donna. Keep it going. No need to come in before then unless something changes; we'll do your follow-up and repeat blood work around June."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "telephone",
+          "start": "2026-06-05T09:40",
+          "reason": "Reschedule appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "author": "front desk",
+              "date": "2026-06-05T09:40",
+              "body": "Pt has a work deadline Monday and can't make her 6/8 follow-up. Moved to Mon 6/29, 8:15, fasting for labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "office_visit",
+          "start": "2026-06-08T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up prediabetes",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "office_visit",
+          "start": "2026-06-29T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "One-year follow-up, metabolic syndrome",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-06-29T08:20", "resulted": "2026-06-30T13:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Lipid Panel", "collected": "2026-06-29T08:20", "resulted": "2026-06-30T13:00", "results": [{"test": "Total Cholesterol"}, {"test": "Triglycerides"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Non-HDL Cholesterol"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-29T08:20", "resulted": "2026-06-30T13:00", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-06-29T08:15"},
+            {"procedure": "Venipuncture", "performed": "2026-06-29T08:20"}
+          ],
+          "orders": [
+            {"id": "rd-referral", "action": "placed", "order": "Registered dietitian referral, medical nutrition therapy", "category": "referral", "to": "Nutrition", "reason": "prediabetes, metabolic syndrome, obesity"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-06-29T09:05",
+              "body": "F/u prediabetes / metabolic syndrome, about a year since we first met.\n\nLast June she was worried about her weight and her desk-bound days and said she was ready to make changes. She has: walking 30 min every evening, signed up for a fitness class at the community center a few weeks ago, mostly off sweetened drinks, and counting calories in a phone app. Feels better day to day. No new symptoms. Still no medications.\n\nShe asks whether a nutritionist would help her keep going. I think it would - she has done the hard part of building habits and a dietitian can fine-tune the eating side. She clearly understands the plan and where she wants to take it; her call and a good one.\n\nExam: vitals as recorded. Comfortable. Heart RRR, lungs clear. No edema.\n\nA/P\n- Prediabetes, metabolic syndrome, obesity, dyslipidemia (high TG / low HDL): continue lifestyle program. Fasting A1c, glucose, lipids and CMP drawn today. Referral to registered dietitian for medical nutrition therapy placed.\n- No meds.\n- Annual physical already on the books for late July."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "portal_message",
+          "start": "2026-07-01T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June labs",
+              "author": "PCP",
+              "date": "2026-07-01T12:30",
+              "body": "Hi Donna - results from Monday are back. A1c, fasting sugar, triglycerides and HDL are all close to where they were last year: still the prediabetes picture, not worse. Liver and kidney numbers normal. It often takes a while for blood work to catch up with new habits, so keep at it. We can go over them in detail at your physical on the 28th."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "telephone",
+          "start": "2026-07-08T15:20",
+          "reason": "Referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Dietitian referral",
+              "author": "front desk",
+              "date": "2026-07-08T15:20",
+              "body": "Nutrition office called - referral and last office note received, insurance verified for MNT. They will contact pt directly to book; first openings are in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "annual_physical",
+          "start": "2026-07-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2026-07-28T10:00"}
+          ],
+          "orders": [
+            {"id": "mammo-2026", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "breast cancer screening"},
+            {"id": "fit-2026", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "average-risk colorectal cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-07-28T10:45",
+              "body": "Annual exam, 45F.\n\nInterval: seen 6/29 for metabolic follow-up; dietitian referral in process, nutrition office expects September. Keeping up the evening walks and the class twice a week. No complaints. Sleeping OK. Mood good.\nMeds none. NKDA. Never smoker, weekend wine only.\n\nExam: vitals per flowsheet. NAD. Eyes, ears, oropharynx normal. Neck supple, no thyroid enlargement, no nodes. Heart regular rate, no murmurs. Lungs clear throughout. Breast exam declined, mammogram scheduled. Abdomen soft, nontender. Extremities without edema. Skin no suspicious lesions. Neuro grossly intact.\n\nReviewed June labs with her: A1c and fasting glucose in prediabetic range, TG still high, HDL still low, CMP fine.\n\nPlan:\n- Prediabetes / metabolic syndrome / obesity / dyslipidemia: lifestyle plan, dietitian. Recheck A1c and lipids at a December visit.\n- Screening: mammogram ordered; FIT kit handed to her; cervical screening next due 2028; PHQ-2 0.\n- Vaccines: flu and COVID when the fall supply arrives; Tdap good until 2029.\nDecember follow-up booked at checkout."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "imaging",
+          "start": "2026-08-11T15:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-08-11T15:00",
+              "text": "EXAM: Screening digital breast tomosynthesis, both breasts.\nCOMPARISON: 07/2025.\nBREAST COMPOSITION: Scattered areas of fibroglandular density.\nFINDINGS: Stable appearance of both breasts. No mass, distortion or suspicious calcification. No axillary abnormality.",
+              "conclusion": "BI-RADS 1: Negative. Return to annual screening."
+            }
+          ],
+          "orders": [
+            {"id": "mammo-2026", "action": "done", "date": "2026-08-11T15:00"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2026",
+              "author": "MA",
+              "date": "2026-08-12T09:30",
+              "body": "Screening mammogram report received and filed; negative, BI-RADS 1. Normal-result letter released to portal per PCP protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "lab_only",
+          "start": "2026-08-18T10:05",
+          "reason": "FIT returned",
+          "labs": [
+            {"panel": null, "collected": "2026-08-16T07:30", "resulted": "2026-08-18T10:05", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2026", "action": "done", "date": "2026-08-18T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT 2026",
+              "author": "MA",
+              "date": "2026-08-18T13:40",
+              "body": "FIT came back negative. Pt notified through portal. Next kit due summer 2027."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T18:55",
+          "reason": "Dietitian appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Nutrition appointment",
+              "author": "patient",
+              "date": "2026-08-20T18:55",
+              "body": "Just letting you know the nutrition office called and I'm booked with the dietitian the second week of September. Thanks for setting that up!"
+            }
+          ]
+        },
+        {
+          "id": "2026-12-08a",
+          "kind": "office_visit",
+          "start": "2026-12-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up prediabetes and metabolic syndrome",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

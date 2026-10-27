@@ -1,0 +1,1937 @@
+{
+  "unit": "unit-1821",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\"",
+    "left text-only (not verified): lab \"IgM\" LOINC 2472-4 not found; closest real codes: 55849-4 Cryoglobulin.IgM.monoclonal [Presence] in Serum; 81205-7 Cryoglobulin IgA and IgG and IgM and C3 panel - Serum; 88455-1 California encephalitis virus Ab.IgG and IgM panel - Serum by Immunofluorescence; 9443-3 IgM lymphocytes/Lymphocytes in Leukocytes; 74870-7 IgM.kappa/IgM.lambda [Mass Ratio] in Serum or Plasma"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001821",
+      "given": "Wendy",
+      "family": "Lavoie",
+      "birth_date": "1992-03-05",
+      "address_line": "52 Orchard Hill Rd",
+      "phone": "+1-646-555-0108",
+      "email": "wendy.lavoie@example.test",
+      "marital_status": "married",
+      "summary": "Daycare teacher with chronic hypertension on labetalol who joins in 2023, has a second pregnancy complicated by poor fetal growth (delivered at 37 weeks in 2024), then a right attic cholesteatoma treated surgically in 2025 and right lower lobe bronchiectasis found after a pneumonia in late 2025. Last seen February 2026.",
+      "events": [
+        {
+          "id": "2023-07-27a",
+          "kind": "telephone",
+          "start": "2023-07-27T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-07-27T10:40",
+              "author": "front desk",
+              "body": "Caller looking for a new primary care doctor and asked about openings. 31 yo, works at a daycare, on a blood pressure pill. Booked new patient visit 8/9 at 9:00. Release signed by phone/e-sent for prior records. Membership info emailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "outside_records",
+          "start": "2023-08-02T14:15",
+          "reason": "prior primary care records",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2020-06-01",
+              "note": "Chronic hypertension, diagnosed before first pregnancy per prior practice"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hypertension"
+            },
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2023-08-02T14:15",
+              "author": "front desk",
+              "body": "Received 38 pages from prior primary care office (visits 2019 through spring 2023). Summary abstracted for the chart:\n\n- Hypertension, chronic, picked up on repeat office readings about 2020, before her first pregnancy. Labetalol 200 mg twice daily since that pregnancy; prior office kept her on it as she was planning another.\n- Prenatal vitamin daily.\n- One term vaginal delivery 2021, uncomplicated per their notes.\n- Ear tubes both sides as a child.\n- Cervical cytology with HPV co-test 2021: negative for intraepithelial lesion, HPV not detected.\n- Former smoker. NKDA.\n- Last BMP and lipids there unremarkable.\n\nOriginals scanned to Media."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-09a",
+          "kind": "establish_care",
+          "start": "2023-08-09T09:00",
+          "end": "2023-08-09T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; hypertension",
+          "vitals": {
+            "bp": [
+              119,
+              70
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 70.0,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-09T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 334
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-09T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-09T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 197
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 139
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-09T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-09T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-08-09T10:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.011
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Daycare teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-09T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-09T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-09T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n31F here to establish. Prior PCP records reviewed (see Media).\n\nHTN: told she had high BP around 2020 on several office checks, before her first baby. Put on labetalol during that pregnancy and simply stayed on it - 200 mg BID. Takes it with breakfast and dinner, rarely misses. No home cuff. No headaches, chest pain, visual change. She and her husband would like a second child in the next year or so, which is why the prior office left her on labetalol. Already taking a prenatal vitamin daily.\n\nPMH: HTN. Lots of ear infections as a kid, tubes in both ears; no ear trouble as an adult.\nPSH: tympanostomy tubes (childhood). OB: G1P1, SVD 2021 at term, no complications she knows of.\nMeds: labetalol 200 mg BID; prenatal vitamin daily.\nAllergies: NKDA.\nFH: mother and father both with high blood pressure.\nSH: preschool/daycare teacher (toddler room). Smoked in her late teens and early 20s, roughly 5 pack-years, stopped at 26. No alcohol. No drugs. Married, one child.\n\nROS: negative except as above.\n\nExam: BP and HR as charted, at goal on labetalol. Well-appearing. HEENT: TMs intact bilaterally with some old tube scarring, canals clear. Neck supple, no thyroid enlargement. Heart RRR without murmur. Lungs clear to auscultation throughout. Abd soft. No LE edema. Skin warm.\n\nA/P\n1. Chronic hypertension - controlled on labetalol 200 BID. Reasonable agent given pregnancy plans; continue. Discussed home BP cuff. Baseline CBC, CMP, lipids, UA.\n2. Preconception - continue prenatal vitamin. Asked her to message us when pregnant so we can get her to OB early.\n3. Health maintenance: Pap/HPV 2021 normal, next due 2026. HIV and hep C screening offered, accepted. Flu and COVID this autumn at a nurse visit. PHQ-2 0.\n\nRTC 6 months for BP."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "portal_message",
+          "start": "2023-08-14T16:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2023-08-14T16:20",
+              "author": "PCP",
+              "body": "Hi Wendy - everything from last week came back fine: kidney function, potassium, blood counts, cholesterol and urine all normal, and the HIV and hepatitis C screens were negative. Nothing to change. Keep up the labetalol and we'll check in again in the new year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "nurse_visit",
+          "start": "2023-10-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              123,
+              72
+            ],
+            "hr": 80
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-18T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-10-18T15:50",
+              "author": "RN",
+              "body": "In after work for vaccines. Not pregnant per pt. No prior reactions. Influenza 0.5 mL IM L deltoid; COVID 2023-24 formula IM R deltoid. VIS given. Observed 15 min, tolerated well. BP checked while here, see vitals."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "portal_message",
+          "start": "2024-01-16T07:52",
+          "reason": "positive pregnancy test",
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "pregnancy with chronic hypertension on labetalol"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant!",
+              "date": "2024-01-16T07:52",
+              "author": "patient",
+              "body": "Good morning - I got a positive home test this weekend. First day of my last period was December 13. Still taking the labetalol twice a day and the prenatal. Do I need to come in or should I call OB directly? I went to an OB group last time and would like to go back to them."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant!",
+              "date": "2024-01-16T12:30",
+              "author": "PCP",
+              "body": "Congratulations! By your dates you're due around September 18. No need to come here first. I've sent a referral to your OB group so they can see you early, since your blood pressure makes this a pregnancy they'll want to follow closely. Keep taking the labetalol 200 mg twice a day and the prenatal vitamin - labetalol is one of the preferred blood pressure medicines in pregnancy. Call us or them if you get a severe headache, vision changes, or readings of 160/110 or more."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "pharmacy",
+          "start": "2024-03-20T11:05",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - labetalol",
+              "date": "2024-03-20T11:05",
+              "author": "MA",
+              "body": "eRx request from pharmacy for labetalol 200 mg tab, #180 (90 days, 1 tab BID). Last BP visit 8/2023, now followed by OB. Approved per protocol, 1 refill. Pharmacy confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "specialist_visit",
+          "start": "2024-06-26T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit, 28 weeks, chronic hypertension",
+          "conditions": [
+            {
+              "label": "Pre-existing essential hypertension complicating pregnancy, third trimester",
+              "action": "diagnosed",
+              "onset": "2024-01-16",
+              "icd10": "O10.013"
+            },
+            {
+              "label": "Maternal care for known or suspected poor fetal growth, third trimester",
+              "action": "diagnosed",
+              "onset": "2024-06-26",
+              "icd10": "O36.5930"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ]
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, fetal growth with umbilical artery velocimetry",
+              "loinc": "11525-3",
+              "performed": "2024-06-26T13:15",
+              "text": "Single live intrauterine pregnancy, cephalic. Gestational age by early dating 28w0d. Fetal biometry: estimated fetal weight below the 10th percentile for gestational age. Amniotic fluid index within normal limits. Placenta posterior, no previa. Umbilical artery waveform: increased resistance with elevated systolic/diastolic ratio for gestational age; end-diastolic flow present. Fetal heart rate normal. Survey of visualized anatomy unremarkable.",
+              "conclusion": "Estimated fetal weight below the 10th percentile with elevated umbilical artery S/D ratio, consistent with fetal growth restriction. Normal amniotic fluid. Recommend serial growth and umbilical artery surveillance."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-06-26T14:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2024-06-26T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit, 28 weeks",
+              "date": "2024-07-01T09:10",
+              "author": "obstetrics",
+              "body": "Outside Obstetrics & Gynecology - prenatal visit\nDate of service: 06/26/2024\n\nDear Doctor,\n\nI saw your patient Wendy Lavoie today, 32 years old, G2P1, at 28w0d by early dating.\n\nHer chronic hypertension remains well controlled on labetalol 200 mg twice daily. She takes it and her prenatal vitamin faithfully. Her first child was born at term without complications. No tobacco, alcohol or drugs. No headache, visual change or RUQ pain. Allergies: NKDA.\n\nBP 138/86. Examination unremarkable; fundal height noted.\n\nGrowth ultrasound today shows an estimated fetal weight below the 10th percentile, a normal amniotic fluid index, and increased umbilical artery resistance with an elevated S/D ratio, with end-diastolic flow present.\n\nImpression:\n1. Chronic hypertension in pregnancy, controlled on labetalol.\n2. Fetal growth restriction with abnormal umbilical artery indices.\n\nPlan: continue labetalol 200 mg BID and prenatal vitamin. Serial growth scans with umbilical artery studies and antenatal testing; we will plan delivery at 37 weeks if surveillance stays reassuring, sooner if not. Tdap given today. Preeclampsia precautions reviewed.\n\nThank you for sharing her care.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "hospital_admission",
+          "start": "2024-08-28T06:30",
+          "end": "2024-08-30T11:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "planned induction at 37 weeks for fetal growth restriction",
+          "conditions": [
+            {
+              "label": "Pre-existing essential hypertension complicating pregnancy, third trimester",
+              "action": "resolved",
+              "onset": "2024-01-16",
+              "note": "delivered 08/28/2024",
+              "icd10": "O10.013"
+            },
+            {
+              "label": "Maternal care for known or suspected poor fetal growth, third trimester",
+              "action": "resolved",
+              "onset": "2024-06-26",
+              "note": "delivered 08/28/2024",
+              "icd10": "O36.5930"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2024-09-04T13:30",
+              "author": "obstetrics",
+              "body": "Hospital Labor & Delivery - Discharge Summary\nAdmitted 08/28/2024  Discharged 08/30/2024\n\nAdmission diagnosis: intrauterine pregnancy at 37w0d; fetal growth restriction with elevated umbilical artery S/D ratio; chronic hypertension on labetalol.\n\nCourse: Admitted for planned induction at 37 weeks following serial surveillance. Labor induced. Uncomplicated spontaneous vaginal delivery the evening of 08/28 of a liveborn female, 2,410 g, small for gestational age, vigorous at birth, to the newborn nursery. Estimated blood loss within normal range. Blood pressures remained controlled on her home labetalol 200 mg twice daily throughout; no features of preeclampsia. Breastfeeding established.\n\nDischarge diagnoses: SVD at 37w0d, G2P2; chronic hypertension, controlled.\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: postpartum visit with obstetrics in 6 weeks; BP check with PCP after that; home BP log meanwhile."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "telephone",
+          "start": "2024-09-04T15:10",
+          "reason": "postpartum check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum call",
+              "date": "2024-09-04T15:10",
+              "author": "RN",
+              "body": "Called after discharge summary arrived. Pt one week out from delivery, baby girl doing well, nursing. Home BPs running 120s-130s/70s-low 80s on labetalol BID. No headache, vision change, SOB or leg swelling. Bleeding tapering. Mood ok, tired. OB postpartum appt 10/9. Asked her to book a BP visit with us for later in October; she will bring her log."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "specialist_visit",
+          "start": "2024-10-09T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postpartum visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics postpartum visit",
+              "date": "2024-10-14T08:45",
+              "author": "obstetrics",
+              "body": "Outside Obstetrics & Gynecology - postpartum visit\nDate of service: 10/09/2024\n\nMs. Lavoie is six weeks after a vaginal delivery at 37 weeks. She is recovering well and breastfeeding. BP normal today on labetalol 200 mg twice daily. Postpartum mood screen negative. Pelvic exam normal, healing complete.\n\nShe will continue labetalol and her prenatal vitamin while nursing. Her blood pressure care returns to you from here.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "office_visit",
+          "start": "2024-10-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              79
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 73.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-10-21T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-21T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-21T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-21T16:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - BP after delivery",
+              "date": "2024-10-21T16:40",
+              "author": "PCP",
+              "body": "S: Here with the baby in the car seat. Delivered 8/28 at 37 wk, induced for growth restriction (summary in Media), daughter now gaining well. Nursing. Home log over 6 weeks mostly 118-132/72-82. Takes labetalol 200 BID, prenatal daily. Sleeping in pieces, mood fine.\n\nO: Vitals reviewed, BP at goal. Weight up from prepregnancy, expected. Comfortable. Heart regular rate, no murmur. Lungs clear. Legs without swelling. PHQ-9 3.\n\nA/P: Chronic HTN, postpartum - well controlled. Labetalol remains fine with breastfeeding; no change. OB problems closed on the list; G2P2.\nFlu and COVID given today, she tolerated both.\nBP recheck in about 6 months, sooner for readings over 140/90."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right ear drainage",
+          "vitals": {
+            "bp": [
+              123,
+              78
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "weight_kg": 73.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-09T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "chronic foul right otorrhea with hearing loss"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - R ear",
+              "date": "2024-12-09T11:55",
+              "author": "PCP",
+              "body": "CC: right ear draining.\n\nHPI: Since about July the right ear has leaked on and off - yellowish, and she says the smell is strong enough that others notice. No pain to speak of. Hearing on that side has slowly gone down; she now turns her left ear toward people and has trouble in a loud room. Denies spinning or ringing. No fever. No swimming. Had tubes as a child and many infections then, none since her early teens.\n\nMeds: labetalol 200 BID, prenatal vitamin. NKDA.\n\nExam: afebrile, vitals as charted. R ear: moist debris and discharge in the canal, could not see the drum well after gentle cleaning. L ear: canal clear, TM intact. No mastoid tenderness or swelling. No facial asymmetry. Neck without nodes.\n\nA/P: Chronic right otorrhea with progressive hearing loss in a patient with a childhood tube history. Five months of foul drainage needs an ENT look under the microscope rather than another round of drops from me. Referral placed; front desk to request the earliest opening. Keep the ear dry (cotton ball with petroleum jelly in the shower). Return sooner for pain, swelling behind the ear, dizziness or facial weakness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "specialist_visit",
+          "start": "2025-01-06T08:40",
+          "service": "Otolaryngology",
+          "reason": "right otorrhea and hearing loss",
+          "conditions": [
+            {
+              "label": "Cholesteatoma of attic, right ear",
+              "action": "diagnosed",
+              "onset": "2024-07-01",
+              "icd10": "H71.21"
+            },
+            {
+              "label": "Conductive hearing loss, unilateral, right ear, with unrestricted hearing on the contralateral side",
+              "action": "diagnosed",
+              "onset": "2024-07-01",
+              "icd10": "H90.11"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ofloxacin 3 MG/ML Otic Solution",
+              "action": "historical",
+              "sig": "Instill 5 drops in the right ear twice daily for 10 days",
+              "dose": {
+                "value": 5,
+                "unit": "drop"
+              },
+              "frequency": "BID",
+              "route": "Otic",
+              "course": "short",
+              "reason": "cholesteatoma, preoperative ear drying"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2025-01-06T08:10",
+              "text": "Pure-tone air and bone conduction, both ears. Right: conductive hearing loss, average air-bone gap 30 dB across the speech frequencies; bone conduction thresholds within normal limits. Word recognition 96% at comfortable level. Left: hearing within normal limits, word recognition 100%. Tympanometry deferred on the right because of drainage; left type A.",
+              "conclusion": "Right conductive hearing loss, average air-bone gap 30 dB. Normal left ear."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2025-01-06T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology consultation",
+              "date": "2025-01-10T10:20",
+              "author": "otolaryngology",
+              "body": "Outside Otolaryngology - Head & Neck Surgery\nDate of service: 01/06/2025\nReferred by: primary care, for right otorrhea\n\nHistory: 32-year-old woman with chronic hypertension, four months postpartum (seen by obstetrics through her pregnancy last year), with half a year of right ear drainage that is frequently malodorous, plus steadily declining hearing on the right. Background noise is the hardest part; group conversation at work is a strain. No vertigo, no tinnitus. Many ear infections in childhood with bilateral tubes, but nothing in the last twenty years.\n\nMedications: labetalol 200 mg twice daily; prenatal vitamin daily. Allergies: no known drug allergies.\nSocial: daycare teacher; former smoker, about 5 pack-years, quit at 26; no alcohol.\nFamily: both parents hypertensive.\n\nExamination under the microscope: Right - after suctioning of the canal, the tympanic membrane is intact but retracted, with a pearly white mass in the superior quadrant at the attic. Left - normal canal and drum. Tuning forks: conductive pattern on the right. Facial nerve intact bilaterally. Nose, oral cavity, oropharynx and neck normal.\n\nAudiogram today: right conductive loss, average air-bone gap 30 dB, word recognition 96%; left normal.\n\nImpression: Right attic cholesteatoma with conductive hearing loss.\n\nPlan:\n- Ofloxacin otic, 5 drops right ear twice daily for 10 days; strict water precautions.\n- CT temporal bones without contrast for surgical planning.\n- Surgery is the treatment. We discussed right tympanomastoidectomy, its goal of a safe dry ear, and the possibility of a later look for residual disease. She would like to proceed once the ear is drier.\n\nThank you for the referral.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "imaging",
+          "start": "2025-01-22T13:00",
+          "service": "Radiology",
+          "reason": "right cholesteatoma, surgical planning",
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-01-22T13:00",
+              "text": "Temporal bone protocol. Technique: axial thin-section images of both temporal bones without contrast, with coronal reformats.\nRight: soft-tissue mass in the epitympanum with blunting of the scutum. Ossicular chain intact. Tegmen tympani and lateral semicircular canal intact. Facial nerve canal intact. The mastoid air cells are otherwise aerated. External auditory canal clear.\nLeft: middle ear and mastoid clear and well aerated. Ossicles normal.\nInner ear structures normal bilaterally. Visualized brain unremarkable.",
+              "conclusion": "Right epitympanic soft-tissue mass with scutal blunting, consistent with cholesteatoma. No erosion of the ossicles, tegmen or lateral semicircular canal. Normal left temporal bone."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "office_visit",
+          "start": "2025-02-24T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preoperative evaluation, right ear surgery",
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 73.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-24T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-op evaluation",
+              "date": "2025-02-24T08:50",
+              "author": "PCP",
+              "body": "Pre-operative H&P for R tympanomastoidectomy 3/12 (ENT, general anesthesia, outpatient). ENT letter and CT reviewed - right attic cholesteatoma.\n\nFeels well. Finished the ear drops, drainage much less. Climbs two flights carrying a toddler without chest pain or breathlessness. No personal or family problems with anesthesia. No bleeding history. Not pregnant; still nursing at night. Back at work.\n\nMeds: labetalol 200 mg BID, prenatal vitamin. NKDA.\n\nExam: BP at goal, vitals otherwise normal. Airway: normal mouth opening, good dentition. Heart regular, no murmur. Lungs clear. No edema.\n\nAssessment: low-risk patient for a low-risk procedure. No testing needed beyond what ENT requires. Take labetalol with a sip of water the morning of surgery. Cleared - letter faxed to ENT surgical scheduler."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "procedure_visit",
+          "start": "2025-03-12T07:30",
+          "end": "2025-03-12T15:00",
+          "service": "Otolaryngology — Ambulatory Surgery",
+          "reason": "right tympanomastoidectomy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-03-12T10:15",
+              "text": "Specimen: right middle ear and attic, cholesteatoma matrix.\nGross: multiple fragments of tan-white flaky tissue.\nMicroscopic: keratinizing stratified squamous epithelium with abundant laminated keratin debris and underlying fibrous tissue. No dysplasia or malignancy.",
+              "conclusion": "Right middle ear and attic: cholesteatoma (keratinizing squamous epithelium with keratin debris). Negative for malignancy.",
+              "issued": "2025-03-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report - right tympanomastoidectomy",
+              "date": "2025-03-17T09:00",
+              "author": "otolaryngology",
+              "body": "Outside Otolaryngology - Ambulatory Surgery Center\nDate of surgery: 03/12/2025\n\nPreoperative / postoperative diagnosis: right attic cholesteatoma.\nProcedure: right canal-wall-up tympanomastoidectomy with tympanic membrane reconstruction (temporalis fascia).\nAnesthesia: general. Facial nerve monitoring used throughout.\n\nFindings: cholesteatoma in the attic. Ossicular chain intact and preserved. Facial nerve canal, tegmen and lateral canal intact. Matrix removed completely under the microscope.\n\nEBL minimal. No complications. Discharged home the same afternoon in stable condition, facial function normal.\n\nPlan: dry ear precautions, packing to stay in place until the post-op visit in six weeks; diffusion-weighted MRI at one year to look for residual disease. Pathology to follow.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-17a",
+          "kind": "portal_message",
+          "start": "2025-03-17T19:44",
+          "reason": "update after surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ear surgery went fine",
+              "date": "2025-03-17T19:44",
+              "author": "patient",
+              "body": "Just letting you know the ear surgery was last Wednesday and went well. Ear is packed and a little achy but no fever. The surgeon said it all came out. No questions, just wanted you to have the update!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ear surgery went fine",
+              "date": "2025-03-18T08:12",
+              "author": "PCP",
+              "body": "Thanks for the update, glad it went smoothly. Their report and the pathology just came in and confirm what they told you. Keep it dry and follow their instructions for the packing."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "specialist_visit",
+          "start": "2025-04-23T15:20",
+          "service": "Otolaryngology",
+          "reason": "post-op visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology post-operative visit",
+              "date": "2025-04-28T11:00",
+              "author": "otolaryngology",
+              "body": "Outside Otolaryngology\nDate of service: 04/23/2025\n\nSix weeks after right canal-wall-up tympanomastoidectomy. Packing removed. Postauricular incision well healed. Graft intact and healing, ear dry. Facial function normal. She thinks her hearing is about where it was before surgery.\n\nPathology confirmed cholesteatoma.\n\nPlan: may resume getting the ear wet in two more weeks. Non-echo-planar diffusion-weighted MRI next spring, about a year after surgery, to screen for residual disease. Sooner for drainage or pain.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "annual_physical",
+          "start": "2025-06-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "hr": 72,
+            "rr": 17,
+            "spo2": 98,
+            "weight_kg": 69.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-11T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-11T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-11T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 198
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-11T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-11T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-06-11T08:45",
+              "author": "PCP",
+              "body": "ANNUAL - 33F\n\nInterval: daughter delivered 8/2024 at 37 wk (FGR). R attic cholesteatoma removed 3/2025 (canal-wall-up tympanomastoidectomy), healing well per ENT; MRI planned spring 2026. Weaned from nursing in May.\n\nConcerns today: since the winter she brings up phlegm most mornings and every cold from the toddler room seems to leave a cough for weeks. No fever, no blood, no weight concern raised. She shrugs it off as the daycare.\n\nMeds: labetalol 200 mg BID; prenatal vitamin (asked about stopping; fine either way, she prefers to keep it). NKDA.\nSH: former smoker, quit at 26. No alcohol.\n\nExam: BP at goal, vitals as charted. Weight down to 69.5 kg from 73.5 last fall, postpartum. HEENT: R ear healed postauricular incision, canal dry; L TM normal. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear throughout, no wheeze or crackles. Abdomen soft, nontender. Skin no rashes. Ext no edema.\n\nA/P\n1. Chronic HTN - controlled. Continue labetalol 200 BID. CMP today.\n2. Morning phlegm / post-cold cough - likely postviral with constant exposures at work; lungs clear. Return if it changes, if blood, fever, or weight loss.\n3. Cholesteatoma s/p surgery - ENT following.\n4. HM - CBC, CMP, lipids. Pap/HPV due 2026. Vaccines up to date for the season; flu and COVID in the fall. PHQ-2 0.\n\nFollow up 6 months or as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "portal_message",
+          "start": "2025-06-16T13:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "date": "2025-06-16T13:05",
+              "author": "PCP",
+              "body": "Wendy, your results are all within the normal range - blood counts, kidneys, liver, sugar and cholesterol. Nothing to do. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "portal_message",
+          "start": "2025-08-20T21:10",
+          "reason": "medication supply before travel",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Extra labetalol before a trip",
+              "date": "2025-08-20T21:10",
+              "author": "patient",
+              "body": "Hi, I'm leaving September 8 for a two-month volunteer program overseas (rural area, back early November). Could I get enough labetalol to cover the whole time plus some extra? My pharmacy says insurance needs a vacation override."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Vacation supply - labetalol",
+              "date": "2025-08-21T10:30",
+              "author": "MA",
+              "body": "Per PCP ok for 90-day supply now. Called pharmacy, vacation override requested with insurer; approved, labetalol 200 mg #180 ready 8/22. Messaged pt back."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "office_visit",
+          "start": "2025-11-19T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fever and productive cough",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2025-11-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 7 days with a full glass of water",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "community-acquired pneumonia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 80,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 67.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-19T10:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 335
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-11-19T11:15",
+              "text": "PA and lateral views. Consolidation in the right lower lobe. No pleural effusion or pneumothorax. Left lung clear. Heart size normal. Mediastinal contours normal. Bones unremarkable.",
+              "conclusion": "Right lower lobe consolidation, consistent with pneumonia."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-19T10:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-19T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sick visit - cough, fever",
+              "date": "2025-11-19T11:40",
+              "author": "PCP",
+              "body": "Same-day visit (texted this morning).\n\nS: Got home Nov 7 from two months volunteering in a rural area abroad. About 4 days ago fever up to 38.6 at home and her usual morning phlegm turned into a much heavier cough with thick yellow-green sputum through the day. No blood. Tired. No known sick contacts on the flights. No leg swelling.\n\nMeds: labetalol 200 BID, prenatal vitamin. NKDA.\n\nO: SpO2 96% RA, other vitals as charted; weight 67.0. Mildly ill-appearing, speaking full sentences. Crackles at the right base, no wheeze; left clear. Heart regular. No calf tenderness.\nCXR (read same day): right lower lobe consolidation.\nCBC: WBC 13.6.\n\nA/P: Community-acquired pneumonia, right lower lobe, fine for outpatient treatment. Doxycycline 100 mg BID x 7 days. Fluids, rest. Recheck in 2 weeks; sooner for worsening breathing, persistent fever past 72 hours on treatment, or chest pain. Travel history noted - if symptoms don't fully settle we'll think more broadly."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "telephone",
+          "start": "2025-11-20T14:25",
+          "reason": "check after starting antibiotic",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up call",
+              "date": "2025-11-20T14:25",
+              "author": "RN",
+              "body": "Called pt day 2 of doxycycline. Fever lower overnight than before. Taking with food and water, staying upright after doses. Breathing ok, no worse. Reminded of 12/3 recheck. Will call sooner if fever persists past the weekend."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "office_visit",
+          "start": "2025-12-03T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pneumonia follow-up, ongoing sputum",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved",
+              "onset": "2025-11-15"
+            },
+            {
+              "label": "Unintentional weight loss",
+              "action": "diagnosed",
+              "onset": "2025-09-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              84
+            ],
+            "hr": 86,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 66.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-03T10:20",
+              "resulted": "2025-12-06T09:00",
+              "results": [
+                {
+                  "test": "Quantiferon-TB Gold",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-03T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-03T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-12-03T10:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-12-03T10:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-12-03T10:26"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "persistent purulent sputum with blood streaks and weight loss after right lower lobe pneumonia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up - pneumonia",
+              "date": "2025-12-03T10:30",
+              "author": "PCP",
+              "body": "S: Fever broke after 3 days on doxycycline and has not come back; finished the course. But the sputum hasn't gone away: every day, thick and yellow-green, worst first thing in the morning - she fills tissues before breakfast - and it smells bad. A few times there have been streaks of blood mixed in. More tired than she'd expect, winded on stairs carrying her daughter. Looking back, the morning phlegm has been there since last winter.\n\nWeight: 66.4 today vs 69.5 at the June physical, without trying.\n\nO: Afebrile, SpO2 normal on RA. Coarse crackles persist at the right base. Heart regular. No nodes in the neck or axillae.\n\nA/P\n1. Persistent purulent sputum with blood streaking and weight loss after RLL pneumonia; recent two months in a high-TB-incidence region; daycare exposure. This needs a chest specialist. Pulmonology referral placed, urgent slot requested. Quantiferon today. Mask at work until we hear back on TB testing.\n2. Pneumonia - fever resolved; closing as treated.\n3. Weight loss - 3 kg since June, unintended. Tracking.\n4. Flu and COVID given today (missed the fall while away).\n5. HTN - BP fine on labetalol."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "portal_message",
+          "start": "2025-12-08T12:15",
+          "reason": "TB blood test result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "TB blood test",
+              "date": "2025-12-08T12:15",
+              "author": "PCP",
+              "body": "Your TB blood test (Quantiferon) is negative. That's reassuring, though it doesn't settle everything by itself, so the lung specialist may still want sputum samples. You can stop masking at work. Pulmonology has you for January 5."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "specialist_visit",
+          "start": "2026-01-05T13:30",
+          "service": "Pulmonary Medicine",
+          "reason": "chronic productive cough, hemoptysis, weight loss",
+          "conditions": [
+            {
+              "label": "Bronchiectasis",
+              "action": "diagnosed",
+              "onset": "2025-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with food for 14 days",
+              "dose": {
+                "value": 875,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "bronchiectasis exacerbation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              75
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-05T14:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-05T14:30",
+              "results": [
+                {
+                  "test": "IgG",
+                  "loinc": "2465-3",
+                  "unit": "mg/dL",
+                  "value": 1040
+                },
+                {
+                  "test": "IgA",
+                  "loinc": "2458-8",
+                  "unit": "mg/dL",
+                  "value": 212
+                },
+                {
+                  "test": "IgM",
+                  "loinc": "2472-4",
+                  "unit": "mg/dL",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-06T07:30",
+              "resulted": "2026-01-09T10:00",
+              "results": [
+                {
+                  "test": "Sputum culture",
+                  "loinc": "624-7",
+                  "text": "Normal oropharyngeal flora. No predominant pathogen isolated."
+                },
+                {
+                  "test": "Acid-fast bacilli smear",
+                  "loinc": "11545-1",
+                  "text": "No acid-fast bacilli seen (specimen 1 of 3)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-07T07:30",
+              "resulted": "2026-01-09T10:00",
+              "results": [
+                {
+                  "test": "Acid-fast bacilli smear",
+                  "loinc": "11545-1",
+                  "text": "No acid-fast bacilli seen (specimen 2 of 3)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-08T07:30",
+              "resulted": "2026-01-09T16:00",
+              "results": [
+                {
+                  "test": "Acid-fast bacilli smear",
+                  "loinc": "11545-1",
+                  "text": "No acid-fast bacilli seen (specimen 3 of 3)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-06T07:30",
+              "resulted": "2026-02-20T09:00",
+              "results": [
+                {
+                  "test": "Acid-fast bacilli culture",
+                  "loinc": "543-9",
+                  "text": "No growth at 6 weeks (specimens 1-3). Final."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-01-05T13:55",
+              "text": "PA and lateral views. Parallel linear densities and ring shadows at the right lung base, in keeping with thickened, dilated bronchi. No consolidation. No cavity or mass. No pleural effusion. Left lung clear. Heart and mediastinum normal.",
+              "conclusion": "Tram-track and ring opacities at the right base suggesting bronchiectasis. Prior right lower lobe consolidation has cleared."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2026-01-05T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Medicine consultation",
+              "date": "2026-01-09T15:40",
+              "author": "pulmonology",
+              "body": "Outside Pulmonary Medicine\nDate of service: 01/05/2026\nReason for referral: productive cough and blood-streaked sputum after pneumonia\n\nHPI: 33-year-old woman with chronic hypertension and a right attic cholesteatoma treated surgically last March. She describes a cough that has produced sputum every day for the better part of a year: copious, thick, yellow-green and foul, heaviest on waking. Now and then there are streaks of blood. She is tired, short of breath with exertion, and has lost weight over the last several months without trying. She had a right lower lobe pneumonia in November, treated with doxycycline by her PCP, two weeks after coming home from a two-month rural volunteer placement abroad. She works with toddlers in a busy daycare. She has never had asthma, allergies or any earlier lung problem.\n\nMeds: labetalol 200 mg twice daily; prenatal vitamin daily. NKDA.\nSmoking: about 5 pack-years, stopped at 26. No alcohol.\nFamily history: hypertension in both parents.\nQuantiferon negative last month (PCP).\n\nExam: vital signs normal; weight 64.8 kg. Coarse crackles over the right lung base. Digital clubbing. No wheeze. Heart regular. No lymphadenopathy.\n\nChest X-ray today: tram-track and ring opacities at the right base; no consolidation, cavity or mass.\n\nAssessment: Bronchiectasis, right base, with a current exacerbation (increased purulent sputum, hemoptysis streaking). Travel history makes it important to exclude mycobacterial infection.\n\nPlan:\n1. CT chest without contrast.\n2. Sputum for routine culture and acid-fast smear and culture, three early-morning samples.\n3. CBC with differential; quantitative immunoglobulins (IgG, IgA, IgM).\n4. Amoxicillin-clavulanate 875/125 mg twice daily for 14 days.\n5. Airway clearance: oscillating PEP device twice daily, taught today by our respiratory therapist.\n6. Return in about 5 weeks with spirometry.\n\nThank you for asking me to see her.\nPulmonary Medicine"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "imaging",
+          "start": "2026-01-09T08:15",
+          "service": "Radiology",
+          "reason": "bronchiectasis evaluation",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-01-09T08:15",
+              "text": "Technique: non-contrast CT of the chest with thin-section reconstructions.\nLungs: cylindrical bronchiectasis of the right lower lobe with bronchial wall thickening and mucus plugging. No cavitation. No mass or suspicious nodule. The remaining lobes are clear.\nAirways: central airways patent.\nMediastinum: no lymphadenopathy. Heart normal size. No pericardial effusion.\nPleura: no effusion or pneumothorax.\nUpper abdomen: unremarkable.\nBones: no aggressive lesion.",
+              "conclusion": "Cylindrical bronchiectasis of the right lower lobe with wall thickening and mucus plugging. No cavitation, mass or lymphadenopathy. Other lobes clear."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "specialist_visit",
+          "start": "2026-02-11T10:00",
+          "service": "Pulmonary Medicine",
+          "reason": "bronchiectasis follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              77
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 64.1
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2026-02-11T09:40",
+              "text": "Acceptable and repeatable efforts. FEV1 2.71 L (84% predicted). FVC 3.30 L (91% predicted). FEV1/FVC 0.82. Flow-volume loop normal in shape.",
+              "conclusion": "Normal spirometry. No obstruction."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Medicine follow-up",
+              "date": "2026-02-16T12:10",
+              "author": "pulmonology",
+              "body": "Outside Pulmonary Medicine\nDate of service: 02/11/2026\n\nMs. Lavoie finished the 14 days of amoxicillin-clavulanate. Sputum is down to a fraction of what it was, and there has been no blood since the middle of January. Her energy is better and her weight has held steady. She is doing the oscillating PEP device twice a day.\n\nResults: CT chest - cylindrical bronchiectasis of the right lower lobe with wall thickening and mucus plugging, no cavitation or mass, other lobes clear. Sputum - normal flora; acid-fast smears negative on all three samples, cultures pending. CBC normal. IgG 1,040, IgA 212, IgM 118 mg/dL, all normal.\n\nSpirometry today: FEV1 2.71 L (84%), FVC 3.30 L (91%), ratio 0.82 - no obstruction.\n\nAssessment: Right lower lobe bronchiectasis, likely post-infectious; no other cause identified on this initial evaluation. Exacerbation resolved.\n\nPlan: continue airway clearance daily, more often during colds. Please give her a pneumococcal vaccine. Call us early for increased sputum or blood. Return in 3 months.\nPulmonary Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "outside_records",
+          "start": "2026-02-20T15:30",
+          "reason": "final acid-fast cultures",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Final AFB culture results",
+              "date": "2026-02-20T15:30",
+              "author": "front desk",
+              "body": "Pulmonology office faxed final sputum acid-fast cultures (collected 1/6-1/8): no growth at 6 weeks on all three. Indexed to results; routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "office_visit",
+          "start": "2026-02-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pulmonology",
+          "vitals": {
+            "bp": [
+              113,
+              74
+            ],
+            "hr": 74,
+            "rr": 16,
+            "spo2": 97,
+            "weight_kg": 64.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-23T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-02-23T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2026-02-23T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "date": "2026-02-23T16:20",
+              "author": "PCP",
+              "body": "Follow-up after the lung workup.\n\nPulmonology letters (1/5, 2/11), CT chest and labs reviewed with her: right lower lobe bronchiectasis, felt to be post-infectious. TB evaluation negative throughout - Quantiferon negative in December, three AFB smears negative, AFB cultures final no growth on 2/20. Immunoglobulins normal. Spirometry normal.\n\nShe feels much better. A little sputum most mornings, cleared with the PEP device, which she does before work and at bedtime. No blood since mid-January. No fever. Weight 64.6, about where it was at pulmonology - no further loss.\n\nMeds: labetalol 200 mg BID, prenatal vitamin. NKDA.\n\nExam: BP at goal. Vitals as charted. Lungs - a few crackles at the right base, no wheeze. Heart regular. R ear dry.\n\nA/P\n1. Bronchiectasis, RLL - on the problem list; pulmonology following, next visit May. Airway clearance daily. PCV20 today per pulmonology; flu and COVID done in December.\n2. Weight loss - stable since January; recheck at next visit.\n3. Cholesteatoma s/p R tympanomastoidectomy 3/2025 - ENT MRI due this spring.\n4. Chronic HTN - controlled on labetalol 200 BID. Refills sent.\n5. HM - Pap/HPV due this year.\n\nRTC for physical in the summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "portal_message",
+          "start": "2026-03-18T07:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labetalol refill",
+              "date": "2026-03-18T07:05",
+              "author": "patient",
+              "body": "Pharmacy says my labetalol needs a new prescription? I thought you sent one last month. Down to about a week left."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill clarification",
+              "date": "2026-03-18T09:40",
+              "author": "MA",
+              "body": "Called pharmacy. The 2/23 eRx was received but filed under an old profile. Merged; labetalol 200 mg #180 being filled today. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "specialist_visit",
+          "start": "2026-04-08T11:00",
+          "service": "Otolaryngology",
+          "reason": "one-year cholesteatoma surveillance",
+          "reports": [
+            {
+              "study": "MRI internal auditory canals without contrast",
+              "loinc": "30658-9",
+              "performed": "2026-04-06T18:30",
+              "text": "Protocol: temporal bone imaging with non-echo-planar diffusion-weighted sequences, coronal T1 and T2. History: right canal-wall-up tympanomastoidectomy for cholesteatoma 03/2025.\nNo restricted diffusion in the right middle ear or mastoid. Postoperative changes of the right mastoid. Left temporal bone normal. Internal auditory canals and cerebellopontine angles normal. Visualized brain unremarkable.",
+              "conclusion": "No evidence of residual or recurrent right cholesteatoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology surveillance visit",
+              "date": "2026-04-13T14:00",
+              "author": "otolaryngology",
+              "body": "Outside Otolaryngology\nDate of service: 04/08/2026\n\nOne year after right canal-wall-up tympanomastoidectomy for attic cholesteatoma. The ear has stayed dry. Exam: healed graft, no retraction, canal clean. Diffusion-weighted MRI 04/06: no restricted diffusion, no residual or recurrent disease.\n\nMedications: labetalol, prenatal vitamin. NKDA.\n\nPlan: yearly ear checks with us. Return sooner for drainage.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "specialist_visit",
+          "start": "2026-05-20T09:20",
+          "service": "Pulmonary Medicine",
+          "reason": "bronchiectasis follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              75
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 65.6
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Medicine follow-up",
+              "date": "2026-05-26T10:30",
+              "author": "pulmonology",
+              "body": "Outside Pulmonary Medicine\nDate of service: 05/20/2026\n\nThree-month follow-up for right lower lobe bronchiectasis. Small amount of sputum in the mornings only, no blood, no exacerbation since January. Final acid-fast cultures were negative. Received pneumococcal vaccine in February.\n\nLungs: scattered crackles right base, otherwise clear. Oxygen saturation normal.\n\nPlan: continue daily airway clearance with the PEP device. Early contact for any flare. Follow-up in 6 months.\nPulmonary Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T20:30",
+          "reason": "employer health form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Daycare health form",
+              "date": "2026-07-22T20:30",
+              "author": "patient",
+              "body": "My daycare needs the yearly staff health form before the fall session - I uploaded it. Can it be filled in from my last visit? They mainly want the TB screen and vaccines."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form completed",
+              "date": "2026-07-24T12:45",
+              "author": "PCP",
+              "body": "Staff health form completed from the 2/23/2026 visit and chart: Quantiferon negative 12/2025, sputum AFB negative, immunizations listed (Tdap 2024, influenza and COVID 12/2025, PCV20 2/2026). Signed, uploaded to portal for pt. Reminded her the physical is overdue - she will call to book."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T10:50",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - labetalol",
+              "date": "2026-08-12T10:50",
+              "author": "MA",
+              "body": "Pharmacy request labetalol 200 mg BID #180. Seen 2/2026, BP controlled. Approved x1 per protocol. Note to pt: please book the physical before the next refill."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cholesteatoma of attic, right ear|H71.21": {
+        "code": "H71.21",
+        "display": "Cholesteatoma of mastoid, right ear",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Conductive hearing loss, unilateral, right ear, with unrestricted hearing on the contralateral side|H90.11": {
+        "code": "H90.11",
+        "display": "Conductive hearing loss, unilateral, right ear, with unrestricted hearing on the contralateral side",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Maternal care for known or suspected poor fetal growth, third trimester|O36.5930": {
+        "code": "O36.5930",
+        "display": "Maternal care for other known or suspected poor fetal growth, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pre-existing essential hypertension complicating pregnancy, third trimester|O10.013": {
+        "code": "O10.013",
+        "display": "Pre-existing essential hypertension complicating pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "labetalol hydrochloride 200 MG Oral Tablet": {
+        "code": "896762",
+        "display": "labetalol hydrochloride 200 MG Oral Tablet",
+        "ingredient": "labetalol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ofloxacin 3 MG/ML Otic Solution": {
+        "code": "242446",
+        "display": "ofloxacin 3 MG/ML Otic Solution",
+        "ingredient": "ofloxacin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Acid-fast bacilli culture": {
+        "code": "543-9",
+        "display": "Mycobacterium sp identified in Specimen by Organism specific culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Acid-fast bacilli smear": {
+        "code": "11545-1",
+        "display": "Microscopic observation [Identifier] in Specimen by Acid fast stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "IgA": {
+        "code": "2458-8",
+        "display": "IgA [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "IgG": {
+        "code": "2465-3",
+        "display": "IgG [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sputum culture": {
+        "code": "624-7",
+        "display": "Bacteria identified in Sputum by Respiratory culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI internal auditory canals without contrast": {
+        "code": "30658-9",
+        "display": "MR Internal auditory canal WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, fetal growth with umbilical artery velocimetry": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin Oral Tablet\"",
+      "lab \"IgM\" LOINC 2472-4 not found; closest real codes: 55849-4 Cryoglobulin.IgM.monoclonal [Presence] in Serum; 81205-7 Cryoglobulin IgA and IgG and IgM and C3 panel - Serum; 88455-1 California encephalitis virus Ab.IgG and IgM panel - Serum by Immunofluorescence; 9443-3 IgM lymphocytes/Lymphocytes in Leukocytes; 74870-7 IgM.kappa/IgM.lambda [Mass Ratio] in Serum or Plasma"
+    ]
+  }
+}

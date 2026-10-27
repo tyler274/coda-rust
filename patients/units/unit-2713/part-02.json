@@ -1,0 +1,1136 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002713",
+   "events": [
+    {
+     "id": "2021-03-04a",
+     "kind": "outside_records",
+     "start": "2021-03-04T14:00",
+     "reason": "COVID-19 vaccination record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-09T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-02T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "COVID-19 vaccine record",
+       "author": "MA",
+       "date": "2021-03-04T14:00",
+       "body": "Pt sent photo of her vaccination card via portal. Pfizer dose 1 on 2/9/21 and dose 2 on 3/2/21 at a community vaccination clinic. Entered into immunization history; state registry matches."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-29a",
+     "kind": "office_visit",
+     "start": "2021-03-29T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Neck pain with left arm symptoms",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 6
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-03-29T13:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-cspine",
+       "action": "placed",
+       "order": "MRI cervical spine without contrast",
+       "category": "imaging",
+       "reason": "Neck pain with left arm weakness and numbness"
+      },
+      {
+       "id": "neuro-referral",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "Left arm radicular symptoms with weakness"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-03-29T14:05",
+       "body": "S: Two weeks of neck pain shooting into the L arm. Sharp, burning, worse when she turns her head or looks down at her laptop. Numb L thumb and index finger. No injury she can think of. No bowel/bladder change, no leg symptoms, no fever. Ibuprofen at home took the edge off a little. Pain 6/10.\n\nO: BP as charted. Neck: tender L paraspinal muscles, rotation to the L reproduces arm pain. L elbow flexion weak compared with R; rest of arm strength full. L brachioradialis reflex reduced compared with R; biceps and triceps reflexes symmetric. Light touch reduced over L thumb and index. Gait normal.\n\nA/P: L arm radicular pain with objective weakness and reflex change, likely C6/C7 root. Given the weakness, MRI C-spine now rather than waiting, and neurology referral. Heat, gentle range of motion, avoid heavy lifting. Call with any spreading weakness or trouble with walking or bladder."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-08a",
+     "kind": "imaging",
+     "start": "2021-04-08T18:30",
+     "reason": "MRI cervical spine",
+     "conditions": [
+      {
+       "label": "Cervical degenerative disc disease with C6-C7 herniation",
+       "icd10": "M50.223",
+       "action": "diagnosed",
+       "onset": "2021-04-08"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI cervical spine without contrast",
+       "loinc": "30667-0",
+       "performed": "2021-04-08T18:30",
+       "text": "Technique: multiplanar multisequence MRI of the cervical spine without contrast.\n\nAlignment normal. Vertebral body heights preserved; marrow signal normal. Cord normal in caliber and signal. Craniocervical junction unremarkable.\n\nC2-C3 through C5-C6: no significant disc bulge, canal or foraminal narrowing.\nC6-C7: degenerative disc desiccation with a left-sided disc herniation. Central canal patent.\nC7-T1: unremarkable.\nParaspinal soft tissues normal.",
+       "conclusion": "C6-C7 degenerative disc disease with left-sided disc herniation at C6-C7. No cord compression."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-cspine",
+       "action": "done",
+       "date": "2021-04-08T18:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "MRI C-spine reviewed",
+       "author": "PCP",
+       "date": "2021-04-09T08:15",
+       "body": "C6-7 disc herniation on the left, which fits her arm symptoms. No cord compression. Called her and went over it. Neurology appointment 4/26, keep it. Sooner if weakness worsens."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-26a",
+     "kind": "specialist_visit",
+     "start": "2021-04-26T10:00",
+     "service": "Neurology",
+     "reason": "Left cervical radicular symptoms",
+     "conditions": [
+      {
+       "label": "Cervical radiculopathy",
+       "action": "diagnosed",
+       "onset": "2021-03-15",
+       "note": "Due to C6-C7 intervertebral disc herniation"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "done",
+       "date": "2021-04-26T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2021-04-28T09:00",
+       "body": "OUTPATIENT NEUROLOGY CONSULTATION\nDate of visit: 04/26/2021\nReferring: primary care\n\nReason: neck pain into the left arm.\n\nHistory: 46-year-old office administrator with hypertension and hereditary angioedema (C1 inhibitor deficiency). For about six weeks she has had neck pain that travels into the left arm, described as sharp and burning and aggravated by moving her neck. She notes numbness of the left thumb and index finger. No bladder or bowel symptoms, no gait trouble.\n\nMedications: hydrochlorothiazide 25 mg daily.\nAllergies: no known drug or food allergies.\nFamily: mother with C1 inhibitor deficiency angioedema; father with hypertension and a stroke at age 60.\nSocial: never smoker, about 1-2 alcoholic drinks monthly, office work.\n\nExamination: Alert, fluent, oriented. Cranial nerves II-XII intact. Motor: left biceps weak; remaining upper and lower limb strength full. Reflexes: left brachioradialis diminished; others 2+ and symmetric; toes downgoing. Sensation: reduced light touch over the left thumb and index finger. Spurling-type maneuver not performed. Gait and coordination normal.\n\nImaging: MRI cervical spine 04/08/2021 personally reviewed, C6-C7 disc herniation.\n\nImpression: Left cervical radiculopathy due to C6-C7 intervertebral disc herniation, on a background of cervical degenerative disc disease. No myelopathic signs.\n\nRecommendations:\n1. Physical therapy for cervical radiculopathy, home exercise program.\n2. Ergonomic adjustments at work; avoid prolonged neck flexion and overhead lifting.\n3. If the arm weakness progresses or pain is not improving after 8-10 weeks of therapy, spine surgery opinion.\n4. Follow-up with neurology as needed.\n\nThank you for this referral.\nOutpatient Neurology"
+      }
+     ]
+    },
+    {
+     "id": "2021-04-29a",
+     "kind": "telephone",
+     "start": "2021-04-29T12:40",
+     "reason": "Physical therapy referral",
+     "orders": [
+      {
+       "id": "pt-neck",
+       "action": "placed",
+       "order": "Physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "Cervical radiculopathy, C6-C7"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "PT referral",
+       "author": "PCP",
+       "date": "2021-04-29T12:40",
+       "body": "Neurology letter reviewed. Called pt: plan is PT, surgeon only if the weakness gets worse. PT referral placed to the outpatient PT office near her work, she'll call them. Also mentioned she has gallbladder surgery booked for late May with the general surgeons."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-26a",
+     "kind": "hospital_admission",
+     "start": "2021-05-26T07:00",
+     "end": "2021-05-28T13:00",
+     "service": "General Surgery",
+     "reason": "Elective open cholecystectomy",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-05-26T06:15",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-05-26T06:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.9
+        },
+        {
+         "test": "Bilirubin, Total",
+         "value": 0.8
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 22
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 25
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Operative Note",
+       "title": "Operative Report",
+       "author": "general surgery",
+       "date": "2021-06-01T10:00",
+       "body": "OPERATIVE REPORT (received 06/01/2021)\nDate of surgery: 05/26/2021\nProcedure: elective open cholecystectomy\nAnesthesia: general endotracheal\nAllergies: NKDA\n\nThe patient was placed supine. After prep and drape and time-out, a right subcostal incision was made and carried down through the abdominal wall. The gallbladder was identified and dissected from the liver bed. The cystic duct and cystic artery were identified, clipped and divided. The gallbladder was removed and sent to pathology. Hemostasis in the liver bed was confirmed. The fascia was closed in layers and the skin with staples. Estimated blood loss 50 mL. No complications. Patient to recovery in stable condition.\n\nGeneral Surgery"
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary",
+       "author": "general surgery",
+       "date": "2021-06-01T10:05",
+       "body": "DISCHARGE SUMMARY (received 06/01/2021)\nAdmitted 05/26/2021, discharged 05/28/2021, general surgery service.\n\nProcedure: open cholecystectomy 05/26/2021, uncomplicated.\nHistory: hypertension, hereditary angioedema, cervical disc disease.\nDay-of-surgery labs: WBC 7.0, hemoglobin 13.2, platelets 250K, creatinine 0.9, total bilirubin 0.8, ALT 22, AST 25.\n\nHospital course: diet advanced on post-op day 1, ambulating, pain controlled on oral analgesia. No fever. Incision dry.\n\nDischarge medications: hydrochlorothiazide 25 mg daily (home); acetaminophen as needed for pain.\nFollow-up: general surgery clinic in about 5 days for wound check and staple removal."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-31a",
+     "kind": "specialist_visit",
+     "start": "2021-05-31T09:30",
+     "service": "General Surgery",
+     "reason": "Post-operative visit",
+     "conditions": [
+      {
+       "label": "Postoperative incisional pain",
+       "icd10": "G89.18",
+       "action": "diagnosed",
+       "onset": "2021-05-26"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets by mouth three times daily for 7 days",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Postoperative incisional pain"
+      },
+      {
+       "drug": "ibuprofen 600 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 8 hours with food for 7 days",
+       "dose": {
+        "value": 600,
+        "unit": "mg"
+       },
+       "frequency": "Q8H",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Postoperative incisional pain"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "General Surgery Post-op Visit",
+       "author": "general surgery",
+       "date": "2021-06-02T15:00",
+       "body": "GENERAL SURGERY CLINIC (received 06/02/2021)\nDate of visit: 05/31/2021\n\nPOD 5 from open cholecystectomy. She describes a steady, dull ache along the incision that plain acetaminophen as needed has not touched. No fevers, no nausea or vomiting, bowels moving normally. Eating well.\nPMH: HTN, hereditary angioedema, cervical DDD; recently seen for left arm radiculopathy.\nMeds: HCTZ 25 mg daily. NKDA.\n\nVitals stable. Abdomen soft. Right subcostal incision clean and well approximated, no redness, warmth or drainage. Mildly tender along the wound. No fluctuance, no crepitus. Staples removed, steri-strips applied.\n\nImpression: expected post-operative incisional pain, no sign of wound infection or collection.\nPlan: acetaminophen 1 g scheduled three times daily rather than as needed, plus ibuprofen 600 mg every 8 hours with food for one week. No lifting over 10 lb for 4 more weeks. Return as needed.\n\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2021-06-23a",
+     "kind": "office_visit",
+     "start": "2021-06-23T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after surgery; neck",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Postoperative incisional pain",
+       "action": "resolved",
+       "icd10": "G89.18"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-06-23T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-06-23T16:10",
+       "body": "Catching up after her gallbladder surgery and the neck workup.\n\nIncision pain eased within about a week on the scheduled Tylenol + ibuprofen, finished both, nothing now. Wound healed.\nNeck/arm: 5 PT visits so far, doing the home program. Arm pain much less, maybe 2/10 at end of day. Still a little numb at the tip of the L thumb. Feels stronger.\nNo HAE swelling around the surgery.\n\nExam: BP as charted. Subcostal scar well healed, no tenderness. L elbow flexion nearly full. Reflexes unchanged.\n\nA/P\n1. Post-op incisional pain - resolved.\n2. L C6-7 radiculopathy - improving with PT; continue. If weakness returns, spine surgery opinion per neuro.\n3. HTN - stable on HCTZ.\nPhysical in September."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-27a",
+     "kind": "outside_records",
+     "start": "2021-07-27T10:15",
+     "reason": "Physical therapy discharge summary",
+     "orders": [
+      {
+       "id": "pt-neck",
+       "action": "done",
+       "date": "2021-07-27T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Physical Therapy Discharge Summary",
+       "author": "physical therapy",
+       "date": "2021-07-27T10:15",
+       "body": "OUTPATIENT PHYSICAL THERAPY DISCHARGE SUMMARY\nDiagnosis: cervical radiculopathy, C6-C7 disc herniation\nVisits: 10 (05/04/2021 - 07/20/2021)\n\nTreatment: cervical mobility, deep neck flexor and scapular strengthening, nerve glides, posture and workstation education.\nStatus at discharge: arm pain occasional and mild, neck range of motion full, left elbow flexion strength near normal. Residual faint numbness left thumb. Independent with home program. Discharged to home exercise."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-13a",
+     "kind": "annual_physical",
+     "start": "2021-09-13T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-13T08:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-13T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-13T08:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-09-13T08:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-09-13T08:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2021",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      },
+      {
+       "id": "mammo-2021",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Annual screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-09-13T09:20",
+       "body": "46F annual.\n\nSince June: neck and arm much better, finished PT in July, keeps up the exercises 3x/week. Occasional faint L thumb tingling only. No HAE attacks this year. BP fine.\n\nMeds: HCTZ 25 daily. NKDA. COVID vaccine x2 in Feb/March.\nPHQ-2 0.\n\nExam: vitals as listed. Well. HEENT normal. Neck full ROM, nontender. Heart RRR, no murmur. Lungs clear. Breasts symmetric, no masses, no axillary nodes. Abdomen soft, healed R subcostal scar. Extremities warm, no swelling. Neuro: arm strength 5/5 both sides, L brachioradialis reflex still a bit reduced.\n\nAssessment and plan:\n- Hypertension: controlled, same dose.\n- Cervical radiculopathy: much improved, home program.\n- Hereditary angioedema: quiet.\n- Prevention: FIT kit given. Mammogram ordered. Pap due 2023. Flu shot in October when the clinic gets stock. Labs today."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2021-09-14T17:10",
+       "body": "All normal from your physical, Jennifer. Kidney function and potassium are fine on HCTZ. Remember the FIT kit."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-27a",
+     "kind": "lab_only",
+     "start": "2021-09-27T10:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-09-23T07:00",
+       "resulted": "2021-09-27T10:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2021",
+       "action": "done",
+       "date": "2021-09-27T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT",
+       "author": "PCP",
+       "date": "2021-09-27T12:30",
+       "body": "FIT negative, same as last year. Released."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-05T08:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "MA",
+       "date": "2021-10-05T08:20",
+       "body": "Influenza vaccine (quadrivalent) 0.5 mL IM L deltoid. No contraindications on screening. Pt tolerated without problems, left after 15 minutes."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-22a",
+     "kind": "ed_visit",
+     "start": "2021-10-22T19:40",
+     "end": "2021-10-23T08:30",
+     "service": "Emergency Medicine",
+     "reason": "Abdominal pain and lip swelling",
+     "vitals": [
+      {
+       "time": "2021-10-22T19:45",
+       "bp": [
+        140,
+        90
+       ],
+       "hr": 105,
+       "rr": 28,
+       "temp_c": 36.9,
+       "spo2": 98
+      },
+      {
+       "time": "2021-10-23T07:30",
+       "bp": [
+        124,
+        78
+       ],
+       "hr": 84,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 99
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-10-22T20:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-10-22T20:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-10-22T20:05",
+       "results": [
+        {
+         "test": "Lipase",
+         "value": 32
+        },
+        {
+         "test": "Complement C4",
+         "loinc": "4498-2",
+         "unit": "mg/dL",
+         "value": 6
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2021-10-22T21:10",
+       "text": "CT of the abdomen and pelvis with IV contrast. Post-cholecystectomy. Wall edema of several small bowel loops. Small-volume ascites. No bowel obstruction, no free air, no abscess. Liver, spleen, pancreas and kidneys normal. Appendix normal. No lymphadenopathy.",
+       "conclusion": "Small bowel wall edema with small-volume ascites; in the setting of known hereditary angioedema, consistent with an abdominal attack. No obstruction or perforation."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2021-10-22T19:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2021-10-25T09:30",
+       "body": "EMERGENCY DEPARTMENT RECORD (received 10/25/2021)\nArrival: 10/22/2021 19:40   Departure: 10/23/2021 08:30\n\nCC: belly pain and lip swelling.\n\nHPI: 46F with hereditary angioedema (C1 inhibitor deficiency) and prior open cholecystectomy. Four hours of deep, crampy abdominal pain that does not radiate, plus swelling around the lips. She and her mother, at the bedside, describe similar episodes going back to early childhood, sometimes with swelling of the face, hands, feet or genitals, typically lasting 2-3 days and settling without treatment. Antihistamines in the past never helped. No rash, no fever, no recent illness. No throat tightness, voice change or trouble swallowing.\nMeds: hydrochlorothiazide 25 mg daily. NKDA, no food allergies.\nFamily: mother with C1 inhibitor deficiency; a maternal uncle died in his 20s of unexplained throat swelling.\nSocial: never smoker, rare alcohol, office administrator.\n\nExam: BP 140/90, HR 105, RR 28, afebrile. Uncomfortable. Swelling around the mouth, no hives. Tongue, uvula and voice normal. Lungs clear. Abdomen diffusely tender without rebound or guarding; bowel sounds hyperactive; no organomegaly.\n\nResults: C4 6 mg/dL (low). CBC, metabolic panel and lipase unremarkable. CT abdomen/pelvis: small bowel wall edema and small-volume ascites, no obstruction.\n\nED course: airway monitored, no progression. IV fluids. Kept overnight in the ED observation area; abdominal pain gradually eased and lip swelling began to recede by morning.\n\nImpression: hereditary angioedema attack, abdominal and perioral.\nDisposition: home. Follow up with primary care this week and with allergy/immunology. Return immediately for any throat or tongue swelling, voice change or trouble breathing."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-26a",
+     "kind": "office_visit",
+     "start": "2021-10-26T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after ED visit for angioedema",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-10-26T11:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "allergy-referral",
+       "action": "placed",
+       "order": "Allergy/Immunology referral",
+       "category": "referral",
+       "to": "Allergy/Immunology",
+       "reason": "Hereditary angioedema; on-demand treatment plan"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED Visit",
+       "author": "PCP",
+       "date": "2021-10-26T12:00",
+       "body": "Seen in the ED Friday night for an abdominal HAE attack with lip swelling, kept overnight, home Saturday. Record received and reviewed: low C4, CT with bowel wall edema and a little ascites.\n\nToday: belly sore but much better, eating, lips back to normal. No throat symptoms at any point. She was shaken by it, longest attack in years. Her mother was with her and brought up the uncle who died young of throat swelling, which the patient had not mentioned before; added to family history.\n\nExam: vitals as charted. No facial or oral swelling. Abdomen soft, mild diffuse tenderness, no guarding.\n\nA/P\n1. Hereditary angioedema - recent abdominal attack. She is now ready to see allergy/immunology to get a rescue medication in the house and confirm her complement testing. Referral placed. Until then: ED for any throat or tongue swelling.\n2. HTN - BP fine, HCTZ.\nAlso asked about a COVID booster; fine to get at the pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "outside_records",
+     "start": "2021-11-16T09:40",
+     "reason": "Vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-12T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pharmacy immunization notice",
+       "author": "MA",
+       "date": "2021-11-16T09:40",
+       "body": "Pharmacy notification: Pfizer COVID-19 booster given 11/12/21. Added to immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-07a",
+     "kind": "specialist_visit",
+     "start": "2021-12-07T14:00",
+     "service": "Allergy/Immunology",
+     "reason": "Hereditary angioedema",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-12-07T14:45",
+       "resulted": "2021-12-10T11:00",
+       "results": [
+        {
+         "test": "Complement C4",
+         "loinc": "4498-2",
+         "unit": "mg/dL",
+         "value": 7
+        },
+        {
+         "test": "C1 esterase inhibitor",
+         "loinc": "4477-6",
+         "unit": "mg/dL",
+         "value": 9
+        },
+        {
+         "test": "C1 esterase inhibitor functional",
+         "loinc": "4476-8",
+         "unit": "%",
+         "value": 24
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "3 ML icatibant 10 MG/ML Prefilled Syringe",
+       "action": "start",
+       "sig": "Inject 30 mg subcutaneously at onset of an attack; may repeat once after 6 hours if needed. Max 3 doses in 24 hours.",
+       "dose": {
+        "value": 30,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Hereditary angioedema, on-demand"
+      }
+     ],
+     "orders": [
+      {
+       "id": "allergy-referral",
+       "action": "done",
+       "date": "2021-12-07T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Allergy and Immunology Consultation",
+       "author": "allergy/immunology",
+       "date": "2021-12-14T10:00",
+       "body": "ALLERGY & IMMUNOLOGY CONSULTATION (received 12/14/2021)\nVisit date: 12/07/2021\nReferred by primary care for hereditary angioedema.\n\n46-year-old woman with lifelong recurrent swelling (lips, extremities, genital) and abdominal pain episodes lasting 2-3 days, never responsive to antihistamines, never urticarial. Mother has confirmed C1 inhibitor deficiency; a maternal uncle died young of throat swelling. ED visit 10/22/2021 for an abdominal and perioral attack with C4 of 6 and CT bowel wall edema. Never had laryngeal symptoms. Attack frequency historically one to three per year.\nMeds: hydrochlorothiazide 25 mg. No ACE inhibitor, no estrogen. NKDA.\nPSH: open cholecystectomy 05/2021.\n\nExam: no current swelling. Oropharynx clear. Skin without urticaria.\n\nLabs (drawn today, resulted 12/10): C4 7 mg/dL (low); C1 inhibitor antigen 9 mg/dL (low); C1 inhibitor function 24% (low).\n\nAssessment: hereditary angioedema type 1 (low C1-INH level and function), confirmed.\n\nPlan:\n1. Icatibant 30 mg subcutaneous at the start of any attack, may repeat once after 6 hours. Two syringes to keep at home; self-injection taught today with a trainer device.\n2. Any throat, tongue or voice involvement: inject and call 911.\n3. Continue to avoid ACE inhibitors and estrogen-containing medicines. HCTZ is fine.\n4. Before surgery, endoscopy or major dental work: short-term prophylaxis with C1 inhibitor concentrate; contact our office in advance.\n5. Attack rate does not call for long-term prophylaxis at present; revisit if attacks become more frequent.\n6. Follow up yearly or sooner.\n\nAllergy & Immunology"
+      }
+     ]
+    },
+    {
+     "id": "2021-12-13a",
+     "kind": "telephone",
+     "start": "2021-12-13T13:30",
+     "reason": "Prior authorization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Icatibant prior auth",
+       "author": "MA",
+       "date": "2021-12-13T13:30",
+       "body": "Specialty pharmacy called asking which office will handle the PA for icatibant. Told them allergy is the prescriber. Pt also called, nervous it would not be covered. Allergy office confirmed they submitted PA on 12/9. Will let pt know when we hear."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Icatibant prior auth - update",
+       "author": "MA",
+       "date": "2021-12-20T10:05",
+       "body": "Allergy office: PA approved through 12/2022. Specialty pharmacy shipping 2 syringes to pt's home. Pt aware."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-17a",
+     "kind": "imaging",
+     "start": "2021-12-17T09:10",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-12-17T09:10",
+       "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 2020, 2019. Heterogeneously dense. No suspicious mass, calcification or distortion. Stable.",
+       "conclusion": "BI-RADS 1: negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "done",
+       "date": "2021-12-17T09:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Mammogram result letter",
+       "author": "front desk",
+       "date": "2021-12-20T09:15",
+       "body": "Your screening mammogram on 12/17/2021 showed no signs of cancer (BI-RADS 1)."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-24a",
+     "kind": "office_visit",
+     "start": "2022-03-24T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-24T16:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-03-24T16:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-03-24T16:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-03-24T16:55",
+       "body": "Routine BP check.\n\nFeels well. One hand swelling episode in February, used one icatibant syringe at hour two, swelling stopped growing and was gone the next day. Glad she has it. Specialty pharmacy replaced the syringe. Neck: occasional stiffness after long days, no arm symptoms.\n\nExam: BP at goal per vitals. Heart and lungs unremarkable. No swelling.\n\nPlan: HCTZ continued. BMP. Physical in September."
+      },
+      {
+       "type": "Result Note",
+       "title": "BMP",
+       "author": "PCP",
+       "date": "2022-03-25T08:05",
+       "body": "Normal BMP. No change."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-19a",
+     "kind": "annual_physical",
+     "start": "2022-09-19T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical; hearing change right ear",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-19T09:20",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-19T09:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-19T09:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-09-19T08:40"
+      },
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-09-19T08:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-09-19T09:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-referral",
+       "action": "placed",
+       "order": "Otolaryngology referral",
+       "category": "referral",
+       "to": "Otolaryngology",
+       "reason": "Unilateral right hearing loss with tinnitus"
+      },
+      {
+       "id": "fit-2022",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      },
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Annual screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-09-19T09:45",
+       "body": "Annual, 47F.\n\nNew: since roughly April she has had trouble hearing out of her R ear. Noticed first on phone calls, now switches the phone to the L ear. Getting gradually worse. Intermittent ringing on the R. No ear pain, drainage, vertigo or headaches. No noise exposure or trauma.\nOtherwise: HAE one attack this year, treated. Neck fine. BP fine.\n\nMeds: HCTZ 25 mg daily; icatibant 30 mg SC prn. NKDA.\nPHQ-2: 0.\n\nExam: Vitals as recorded. Ears: canals clear, TMs normal both sides. Whispered voice heard on L, missed on R. Face symmetric at rest and with smile today. Heart regular. Lungs clear. Breasts without masses. Abdomen soft. No edema. Neuro: no nystagmus, gait normal.\n\nA/P\n1. R-sided progressive hearing loss with tinnitus over 5 months, normal canal/TM - asymmetric hearing loss needs audiometry and ENT. Referred to ENT, who will do the audiogram there.\n2. HTN controlled.\n3. HAE: icatibant on hand, PA renewal due December (allergy handles).\n4. Health maintenance: FIT kit, mammogram ordered, fasting labs. Flu and bivalent COVID booster at a nurse visit in October."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Labs and ENT",
+       "author": "PCP",
+       "date": "2022-09-20T18:20",
+       "body": "Jen, your labs are normal. ENT's office should call you this week to set up the hearing test and visit; let us know if you haven't heard by Friday."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Labs and ENT",
+       "author": "patient",
+       "date": "2022-09-21T08:12",
+       "body": "They called, I go Oct 14. They also want an MRI before, is that ok with my angioedema? No contrast allergy that I know of."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Labs and ENT",
+       "author": "PCP",
+       "date": "2022-09-21T12:00",
+       "body": "Yes, gadolinium for MRI is fine with HAE. Good that it's scheduled."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-14a",
+     "kind": "specialist_visit",
+     "start": "2022-10-14T10:30",
+     "service": "Otolaryngology",
+     "reason": "Right hearing loss",
+     "conditions": [
+      {
+       "label": "Acoustic neuroma",
+       "action": "diagnosed",
+       "onset": "2022-04-01",
+       "note": "Right vestibular schwannoma, 2 cm, cerebellopontine angle"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI brain and internal auditory canals with and without gadolinium",
+       "loinc": "43769-9",
+       "performed": "2022-10-12T17:45",
+       "text": "Technique: MRI of the brain with dedicated thin-section imaging of the internal auditory canals, before and after IV gadolinium.\n\nA 2.0 cm enhancing mass in the right cerebellopontine angle with extension into the right internal auditory canal. No hydrocephalus. Left internal auditory canal and cerebellopontine angle normal. Brain parenchyma otherwise normal for age; no acute infarct, hemorrhage or other enhancing lesion. Paranasal sinuses and mastoids clear.",
+       "conclusion": "2.0 cm right cerebellopontine angle mass extending into the internal auditory canal, most consistent with vestibular schwannoma."
+      },
+      {
+       "study": "Audiogram",
+       "performed": "2022-10-14T10:00",
+       "text": "Pure tone audiometry: left ear hearing within normal limits 250-8000 Hz. Right ear sensorineural hearing loss, worse in the high frequencies, with no air-bone gap. Word recognition reduced on the right, normal on the left. Tympanometry type A both ears.",
+       "conclusion": "Asymmetric right sensorineural hearing loss; left normal."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-referral",
+       "action": "done",
+       "date": "2022-10-14T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology Consultation",
+       "author": "otolaryngology",
+       "date": "2022-10-19T08:30",
+       "body": "OTOLARYNGOLOGY CONSULT (received 10/19/2022)\nSeen 10/14/2022, referred by primary care.\n\n47-year-old woman with hereditary angioedema and cervical degenerative disc disease. Six months of slowly worsening hearing in the right ear with intermittent tinnitus; over the same period she has noticed some weakness on the right side of her face. No vertigo, no headache, no change in taste.\nMeds: HCTZ, icatibant as needed. NKDA.\n\nExam: Ear canals and tympanic membranes normal. Right corneal reflex diminished. Mild right facial droop. Remaining cranial nerves intact. No nystagmus.\n\nAudiogram today: right sensorineural hearing loss.\nMRI brain/IACs with gadolinium (10/12/2022, obtained before today's visit): 2 cm right cerebellopontine angle mass.\n\nImpression: right acoustic neuroma (vestibular schwannoma), 2 cm, with hearing loss, tinnitus, reduced corneal reflex and mild facial weakness.\n\nPlan: Discussed observation, microsurgery and stereotactic radiosurgery. With symptoms and size, treatment rather than watching is favored. Referred to the skull base team (neurotology and radiation oncology) for a joint consultation. Copy to PCP.\n\nOtolaryngology"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-25a",
+     "kind": "nurse_visit",
+     "start": "2022-10-25T17:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-25T17:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-25T17:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-25T17:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2022-10-25T17:15",
+       "body": "Flu (quadrivalent) L deltoid, Pfizer bivalent COVID R deltoid. Flu 0.5 mL IM, COVID 0.3 mL IM. Pt fine, no reactions on prior doses. She mentioned she saw ENT and is waiting on the skull base appointment."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-02a",
+     "kind": "lab_only",
+     "start": "2022-11-02T10:30",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-10-29T07:00",
+       "resulted": "2022-11-02T10:30",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2022",
+       "action": "done",
+       "date": "2022-11-02T10:30"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-09a",
+     "kind": "specialist_visit",
+     "start": "2022-11-09T13:00",
+     "service": "Neurotology",
+     "reason": "Right vestibular schwannoma treatment options",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Skull Base Multidisciplinary Consultation",
+       "author": "neurotology",
+       "date": "2022-11-15T09:00",
+       "body": "SKULL BASE CLINIC: NEUROTOLOGY AND RADIATION ONCOLOGY (received 11/15/2022)\nVisit 11/09/2022\n\nDiagnosis: right vestibular schwannoma, 2.0 cm on MRI 10/12/2022, with right sensorineural hearing loss, tinnitus, diminished right corneal reflex and mild right facial weakness.\nPMH: hypertension on HCTZ; hereditary angioedema type 1 (icatibant on demand); cervical DDD with prior C6-C7 radiculopathy; open cholecystectomy 2021.\n\nDiscussion: we reviewed microsurgical resection (translabyrinthine or retrosigmoid) and single-session stereotactic radiosurgery, including tumor control rates, the risk to facial nerve function and to remaining hearing with each, recovery time, and the need for MRI surveillance after radiosurgery. Her HAE adds airway and anesthesia considerations to open surgery.\n\nDecision: she prefers stereotactic radiosurgery. Planning MRI and frame/mask fitting to be scheduled; treatment targeted for January 2023.\n\nNeurotology / Radiation Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-16a",
+     "kind": "imaging",
+     "start": "2022-11-16T12:30",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-11-16T12:30",
+       "text": "Bilateral screening mammogram with tomosynthesis, compared to prior studies back to 2017. Heterogeneously dense. No suspicious finding. Unchanged.",
+       "conclusion": "BI-RADS 1: negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-11-16T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Mammogram result letter",
+       "author": "front desk",
+       "date": "2022-11-18T10:20",
+       "body": "Your screening mammogram of 11/16/2022 was negative. Continue annual screening."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "outside_records",
+     "start": "2022-12-06T11:00",
+     "reason": "Allergy/immunology follow-up letter",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Allergy and Immunology Follow-up",
+       "author": "allergy/immunology",
+       "date": "2022-12-06T11:00",
+       "body": "ALLERGY & IMMUNOLOGY ANNUAL FOLLOW-UP (received 12/06/2022)\nVisit 11/29/2022\n\nHereditary angioedema type 1. One peripheral (hand) attack this year, treated early with icatibant with a good response. No abdominal or laryngeal attacks since the ED visit last October. Now being planned for stereotactic radiosurgery of a right vestibular schwannoma; radiosurgery does not need airway instrumentation, so no pre-procedure C1 inhibitor is planned, but she should have icatibant with her that day.\nPlan: continue icatibant on demand; two in-date syringes at home; prior authorization renewed. Yearly follow-up."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,905 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002228",
+   "events": [
+    {
+     "id": "2020-02-12a",
+     "kind": "office_visit",
+     "start": "2020-02-12T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "memory concerns",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-02-12T11:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-02-12T11:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "progressive memory complaints"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Memory",
+       "author": "PCP",
+       "date": "2020-02-12T11:40",
+       "body": "Visit requested by his wife, who came with him. Over roughly the last year he has missed a dentist appointment and a lunch with a former colleague, keeps losing his reading glasses and keys, and asks her the same question twice within an hour. He acknowledges the appointments but thinks the rest is ordinary aging. No getting lost, no trouble finding words, no change in personality, no hallucinations. Still manages his pills with a pillbox and pays the bills; she now double-checks the calendar.\nNo head injury, no new meds, mood fine, sleeping well, alcohol minimal.\nExam: BP at goal. Alert, oriented, conversational and engaged. Recalled 1 of 3 words at 5 minutes; clock drawing correct. Gait normal. No focal neuro findings.\nA/P: Subjective and observed memory decline over a year in a 68 y/o with vascular risk factors. Labs at his last draw unremarkable. Referring to neurology for formal cognitive testing; they will likely want B12/TSH, which can be done there. BMP today. Discussed that a name for this, if there is one, is the neurologist's call."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-26a",
+     "kind": "telephone",
+     "start": "2020-03-26T09:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Neurology appointment question",
+       "author": "RN",
+       "date": "2020-03-26T09:45",
+       "body": "Wife called - with everything shutting down, will his neurology appointment still happen? Called the neurology office on her behalf: they are keeping in-person new consults with masking; his date of 4/21 stands. Wife informed. Also confirmed 90-day supplies on hand for all meds."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-21a",
+     "kind": "specialist_visit",
+     "start": "2020-04-21T13:00",
+     "service": "Neurology",
+     "reason": "memory complaints",
+     "conditions": [
+      {
+       "label": "Mild cognitive impairment",
+       "action": "diagnosed",
+       "onset": "2019-04-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "donepezil hydrochloride 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "mild cognitive impairment"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-04-21T14:10",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 98
+        },
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.2
+        },
+        {
+         "test": "Vitamin B12",
+         "value": 450
+        },
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "done",
+       "date": "2020-04-21T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2020-04-28T10:00",
+       "body": "OUTSIDE NEUROLOGY - CONSULTATION LETTER\nDate of visit: 04/21/2020\nReferred by primary care for memory complaints.\n\nThank you for referring Mr. Gallo, a 68-year-old retired physics professor, seen with his wife. For about a year he has struggled to keep track of appointments and has been misplacing everyday objects more often. His wife reports that he will ask the same question again during a single conversation. Neither of them describes problems with language, with spatial tasks or navigation, or any change in his personality or behavior.\n\nBackground: hypertension and type 2 diabetes, both under good control on lisinopril and metformin; CKD stage 3a; left hip osteoarthritis; remote peptic ulcer. Appendectomy at 24. Also takes omeprazole, aspirin 81, atorvastatin 40, acetaminophen as needed. NKDA.\nFamily history: father MI at 71; mother type 2 diabetes and a stroke at 76; paternal uncle with pancreatic cancer.\nSocial: married; holds a master's and a doctorate in physics; former smoker (quit about 18 years ago, 20 pack-years); rare alcohol.\n\nExamination: Awake, alert, oriented to person, place and time. Mini-Mental State Examination 28/30, both points lost on delayed recall. Montreal Cognitive Assessment 23/30, losing points on delayed recall, attention and executive items (trails, fluency). Cranial nerves, motor, sensory, coordination and gait unremarkable.\n\nLaboratory (drawn today): fasting glucose 98 mg/dL; HbA1c 6.2%; vitamin B12 450 pg/mL; TSH 2.5 mIU/L. No reversible metabolic contributor identified.\n\nImpression: Mild cognitive impairment, predominantly amnestic with some attention and executive involvement. Independent in daily function.\n\nPlan:\n1. Start donepezil 5 mg nightly; if tolerated after four weeks, increase to 10 mg nightly. Common side effects (vivid dreams, loose stools, nausea) reviewed.\n2. Aerobic exercise, continued intellectual and social engagement, good sleep.\n3. Continue vascular risk factor control with primary care.\n4. Neurology follow-up in about 18 months, sooner for any change.\n\nAllergies: NKDA.\nOutside neurology"
+      }
+     ]
+    },
+    {
+     "id": "2020-05-27a",
+     "kind": "telephone",
+     "start": "2020-05-27T14:30",
+     "medications": [
+      {
+       "drug": "donepezil hydrochloride 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "dose increased by neurology"
+      },
+      {
+       "drug": "donepezil hydrochloride 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "mild cognitive impairment"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Medication update - donepezil",
+       "author": "RN",
+       "date": "2020-05-27T14:30",
+       "body": "Wife called to update his list: neurology increased donepezil from 5 mg to 10 mg at bedtime last week, as planned in their letter. Took the 5 mg for four weeks with only a couple of odd dreams. Med list updated. She asked whether his June visit can be by video - yes, scheduled."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-17a",
+     "kind": "lab_only",
+     "start": "2020-06-17T08:15",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-06-17T08:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-06-17T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2020-06-23a",
+     "kind": "telehealth_visit",
+     "start": "2020-06-23T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up by video",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-06-23T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2020-06-23T10:25",
+       "body": "Video from his study, wife helping with the camera. Identity confirmed.\nNeurology letter reviewed with them: mild cognitive impairment, donepezil now 10 mg at night. Tolerating it; one week of looser stools that settled. They take a long walk together every morning.\nHome cuff: 120s-130s/70s. No chest pain, no breathlessness.\nLabs 6/17: A1c and kidney function in his usual range, potassium normal.\nPlan: no changes. In-person physical in September with flu shot. MCI added to the problem list."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-16a",
+     "kind": "annual_physical",
+     "start": "2020-09-16T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-16T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-16T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-16T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-16T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      },
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 5
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-09-16T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2020-09-16T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-16T09:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "placed",
+       "order": "Orthopedic surgery referral",
+       "category": "referral",
+       "to": "Orthopedics",
+       "reason": "progressive left hip pain, known osteoarthritis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2020-09-16T09:55",
+       "body": "AWV, in person, masked.\nNew concern: L hip has been getting steadily worse since about March. Now hard to get up from low chairs and he takes stairs one at a time with the rail. Pain builds over the day with activity, eases with rest. Only a few minutes of stiffness in the morning. No swelling, fevers or weight change. Acetaminophen helps partly; he is using it most days.\nFunction: ADLs independent. Wife keeps the calendar now; he still drives locally. No falls. PHQ-2 1 (frustrated about the hip).\nCognition: followed by neurology for MCI, on donepezil 10.\nExam: vitals as charted. L hip: groin pain with internal rotation, rotation reduced compared with the right; antalgic gait. Knees and back unremarkable.\nA/P\n1. L hip OA, progressing - ortho referral for evaluation and options. Acetaminophen scheduled up to 3 g/day is fine; still no NSAIDs.\n2. HTN, T2DM, CKD 3a - labs today, no changes.\n3. MCI - per neurology.\n4. HM - high-dose flu today. Colonoscopy due 2024 by interval; will revisit given age."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-14a",
+     "kind": "specialist_visit",
+     "start": "2020-10-14T14:00",
+     "service": "Orthopedics",
+     "reason": "left hip pain",
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "done",
+       "date": "2020-10-14T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic Consultation",
+       "author": "orthopedics",
+       "date": "2021-02-03T11:20",
+       "body": "OUTSIDE ORTHOPEDICS - OFFICE CONSULTATION\nDate of service: 10/14/2020\n\nHistory: 69-year-old man seen by neurology this spring for memory concerns, with known left hip osteoarthritis, referred for six months of increasing left hip pain. Rising from a chair and climbing stairs are now difficult. Pain accumulates across the day with use and is relieved by resting. Morning stiffness lasts only a few minutes. He reports no swelling of the joint and no fevers, chills or weight change.\nPMH: hypertension, type 2 diabetes, CKD 3a, mild cognitive impairment, remote peptic ulcer. PSH: appendectomy.\nMedications: lisinopril, metformin, omeprazole, donepezil 10 mg, aspirin 81 mg, atorvastatin 40 mg, acetaminophen 500 mg as needed.\nAllergies: NKDA.\nSocial: former smoker, 20 pack-years, quit 18 years ago; rare alcohol; retired university physics professor.\nFamily history noncontributory to this complaint.\n\nExamination: Left hip with reduced range of motion in all planes and moderate crepitus on passive motion. No effusion, no warmth. Distal neurovascular status intact.\n\nAssessment: Symptomatic left hip osteoarthritis.\nPlan: Conservative management. Continue acetaminophen as needed; NSAIDs avoided given his kidney function and ulcer history. Home exercise program for hip strength and range of motion, handout given. Follow up as needed if function declines further.\nOutside orthopedics"
+      }
+     ]
+    },
+    {
+     "id": "2020-12-09a",
+     "kind": "office_visit",
+     "start": "2020-12-09T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-12-09T13:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2020-12-09T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2020-12-09T13:45",
+       "body": "Saw ortho in October. Per patient and wife: 'arthritis, nothing to cut yet', given exercises, keep the Tylenol. We have no letter from them yet - front desk to request.\nDoing the hip exercises most days, thinks stairs are a little easier. Memory stable per wife.\nExam: BP at goal. Antalgic gait slight.\nPlan: continue all. A1c today. Recheck 3 months. Talked about COVID vaccine - he'd like it as soon as his group is eligible."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-10a",
+     "kind": "telephone",
+     "start": "2020-12-10T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request - orthopedics",
+       "author": "front desk",
+       "date": "2020-12-10T10:05",
+       "body": "Called the orthopedic office for the 10/14 consult note. They said it was 'in transcription' and would be faxed. Will check back after the holidays."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-19a",
+     "kind": "telephone",
+     "start": "2021-01-19T15:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request - orthopedics, second attempt",
+       "author": "front desk",
+       "date": "2021-01-19T15:40",
+       "body": "Ortho note still not received. Second request sent to their records department with our fax number."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-25a",
+     "kind": "outside_records",
+     "start": "2021-02-25T12:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-01-27T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-17T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "COVID-19 vaccination record",
+       "author": "MA",
+       "date": "2021-02-25T12:00",
+       "body": "Patient brought in his vaccination card. Pfizer-BioNTech dose 1 on 01/27/2021 and dose 2 on 02/17/2021 at a regional vaccination clinic. Entered into immunization record; card copied to chart. Sore arm after dose 2, otherwise fine."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-17a",
+     "kind": "office_visit",
+     "start": "2021-03-17T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-03-17T10:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-03-17T10:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-03-17T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-03-17T10:45",
+       "body": "Ortho letter finally arrived last month: L hip OA, reduced ROM and crepitus, no effusion; conservative plan, home exercises, acetaminophen. Matches what he told us.\nFully vaccinated for COVID. Hip about the same - manages a 2-mile loop with a rest. Memory: wife says no real change since the fall.\nExam: BP at goal, no edema.\nPlan: BMP, A1c. Continue meds. Summer visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-18a",
+     "kind": "portal_message",
+     "start": "2021-03-18T13:00",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-03-18T13:00",
+       "body": "Kidney function and A1c from yesterday are unchanged from your usual. Keep doing what you are doing."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-08a",
+     "kind": "portal_message",
+     "start": "2021-06-08T07:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Donepezil refill",
+       "author": "patient",
+       "date": "2021-06-08T07:55",
+       "body": "Hello, this is Russell's wife writing on his account. The neurologist's prescription for donepezil has run out of refills and his follow-up there isn't until October. Could your office send it in? Thank you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Donepezil refill",
+       "author": "RN",
+       "date": "2021-06-08T13:20",
+       "body": "Hi - the doctor approved a 90-day supply of donepezil 10 mg with one refill to bridge him to the October neurology visit. It's at the mail-order pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-22a",
+     "kind": "outside_records",
+     "start": "2021-07-22T14:15",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination - optometry",
+       "author": "optometry",
+       "date": "2021-07-22T14:15",
+       "body": "Dilated exam 07/20/2021. Glasses updated. VA cc 20/30 OU. Anterior segments unremarkable. Retina: no diabetic retinopathy OU. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-22a",
+     "kind": "annual_physical",
+     "start": "2021-09-22T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-22T09:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-22T09:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-22T09:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-09-22T09:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2021-09-22T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-22T09:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-09-22T09:25",
+       "body": "AWV. Daughter drove him today and stayed for the visit.\nShe raised driving: he has had two minor fender-benders this past year (no injuries) and recently missed the turn for a store he has used for decades. He feels both accidents were the other driver's fault. Neurology follow-up already booked for late October; daughter will raise it there and I encouraged that - they can arrange a formal evaluation.\nFunction: ADLs independent; wife handles finances and the calendar now. No falls. PHQ-2 0.\nEye exam July: no retinopathy.\nExam: vitals as charted. Unremarkable. Feet intact.\nPlan: labs, high-dose flu today. Booster COVID shot when eligible - pharmacy is fine. Continue meds."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-25a",
+     "kind": "specialist_visit",
+     "start": "2021-10-25T09:30",
+     "service": "Neurology",
+     "reason": "mild cognitive impairment follow-up",
+     "vitals": {
+      "bp": [
+       132,
+       78
+      ],
+      "hr": 78
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up",
+       "author": "neurology",
+       "date": "2021-11-03T09:00",
+       "body": "OUTSIDE NEUROLOGY - FOLLOW-UP LETTER\nDate of visit: 10/25/2021\n\nMr. Gallo returned for scheduled follow-up roughly a year and a half after his first visit, accompanied this time by his daughter, who gave additional history. Her main worry is driving: he has been involved in two minor collisions over the past year and has had trouble navigating to places he knows well. She asked what the next step should be.\n\nInterval history: type 2 diabetes, hypertension (well controlled) and mild cognitive impairment diagnosed at his first visit. Medications include donepezil 10 mg nightly, metformin, lisinopril, omeprazole, aspirin 81 mg, atorvastatin 40 mg and acetaminophen as needed. NKDA. Former smoker, rare alcohol, retired physics professor.\n\nVital signs: BP 132/78 mmHg, HR 78.\nExamination: Alert and oriented x3. Corrected visual acuity 20/30 in each eye. MMSE 24/30, with errors on attention (serial sevens) and recall. Remainder of neurological exam nonfocal.\n\nImpression: Mild cognitive impairment, with a decline in MMSE from 28 to 24 since April 2020 and new concerns about driving safety.\n\nPlan:\n1. Formal driving evaluation through an occupational therapy driver rehabilitation program is recommended; information given to his daughter. Until it is completed we advised he limit driving to short familiar daytime trips, or not drive.\n2. Continue donepezil 10 mg nightly.\n3. Continue exercise and cognitive and social engagement.\n4. Return in 12 months or sooner with changes.\nOutside neurology"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-29a",
+     "kind": "pharmacy",
+     "start": "2021-10-29T16:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-29T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Immunization notification - COVID-19 booster",
+       "author": "pharmacy",
+       "date": "2021-10-29T16:00",
+       "body": "Notification of vaccine administered at community pharmacy: Pfizer-BioNTech COVID-19 booster dose, 10/29/2021, L deltoid. No adverse reaction observed during the 15-minute wait."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-15a",
+     "kind": "office_visit",
+     "start": "2021-12-15T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up, driving safety",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-12-15T14:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-12-15T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-12-15T14:35",
+       "body": "Neurology letter from 10/25 reviewed with him and his wife: MMSE 24 (was 28 in 2020), still called MCI, donepezil continued, formal driving evaluation recommended.\nHe is not happy about the driving question and says he has cut back to daytime errands near home. Wife says the daughter has the program's information but nothing is scheduled yet. I reinforced the neurologist's advice and that the evaluation protects him as much as anyone. They will call the program.\nOtherwise: no new symptoms. Hip okay with exercises.\nExam: BP at goal. Gait steady.\nPlan: A1c today. Continue meds. Spring visit."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-23a",
+     "kind": "office_visit",
+     "start": "2022-03-23T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-23T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-03-23T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-23T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-03-23T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-03-23T10:05",
+       "body": "Routine. Wife with him. Winter uneventful. December A1c in target.\nAsked about the driving evaluation - wife says 'it's on the list'; no report has come to us.\nExam: BP at goal, lungs clear, no edema.\nPlan: BMP, CBC, A1c today. Continue regimen."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "telephone",
+     "start": "2022-06-14T11:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill - mail order",
+       "author": "RN",
+       "date": "2022-06-14T11:10",
+       "body": "Mail-order pharmacy faxed renewal requests for lisinopril 10, metformin 1000, atorvastatin 40, omeprazole 20, donepezil 10. Last labs 3/23 stable. Renewed x 1 year per PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-21a",
+     "kind": "outside_records",
+     "start": "2022-07-21T10:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination - optometry",
+       "author": "optometry",
+       "date": "2022-07-21T10:30",
+       "body": "Annual diabetic exam 07/18/2022. VA cc 20/30 OU. Dilated fundus exam without diabetic retinopathy OU. RTC 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-21a",
+     "kind": "annual_physical",
+     "start": "2022-09-21T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-21T09:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-21T09:15",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-21T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-09-21T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-09-21T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-09-21T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-21T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-09-21T09:35",
+       "body": "AWV with wife.\nFunction: ADLs independent; IADLs shared - wife manages money, meds set up weekly together. Drives rarely now, only with her in the car, by his choice. No falls. PHQ-2 0.\nNeurology: they canceled his October slot and rebooked for next year.\nEye exam July: no retinopathy.\nPreventive: colonoscopy 2014 normal; at 71 with his other issues we agreed not to repeat in 2024 unless something changes. Pneumococcal and zoster complete.\nExam: vitals as charted. Heart and lungs normal. Feet: monofilament intact, pulses palpable.\nPlan: labs; high-dose flu and bivalent COVID today. Continue meds."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-23a",
+     "kind": "portal_message",
+     "start": "2022-09-23T10:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2022-09-23T10:40",
+       "body": "Your fall labs are fine - nothing new to act on. Kidney numbers are at your long-standing baseline."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-14a",
+     "kind": "office_visit",
+     "start": "2022-12-14T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-12-14T15:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-12-14T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-12-14T15:20",
+       "body": "Feels well. Weight steady. Fall labs reviewed - kidney function at his baseline, LDL in range, urine albumin normal.\nExam: BP at goal. No edema.\nPlan: A1c. Continue. Next visit in March."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

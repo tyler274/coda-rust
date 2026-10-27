@@ -1,0 +1,720 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002255",
+   "given": "Raymond",
+   "family": "Alden",
+   "birth_date": "1956-07-06",
+   "address_line": "37 Cabot Ridge Lane",
+   "phone": "+1-413-555-0115",
+   "email": "raymond.alden@example.test",
+   "marital_status": "married",
+   "summary": "Retired pharmaceutical sales rep with CAD, old MI with a stent, ischemic cardiomyopathy, hypertension and hyperlipidemia who joins in 2020, develops essential tremor and stable angina, and is last seen in October 2024. Afterward the chart receives late outside records of a 2025 cardiology visit, a 2026 VF arrest with post-hypoxic myoclonus and post-MI pericarditis, and a 2026 Weber syndrome stroke.",
+   "events": [
+    {
+     "id": "2020-08-31a",
+     "kind": "telephone",
+     "start": "2020-08-31T10:12",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2020-08-31T10:12",
+       "body": "Mr. Alden phoned about joining. Recently retired, wants a doctor he can actually reach; his current office is a 40 minute drive. Has a cardiologist he plans to keep. Membership info emailed. New patient visit set for 9/14 at 9:00. Release forms for his prior PCP and his cardiology group sent with the welcome packet. Asked him to bring all pill bottles."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-14a",
+     "kind": "establish_care",
+     "start": "2020-09-14T09:00",
+     "end": "2020-09-14T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "note": "longstanding, on lisinopril"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "note": "on atorvastatin"
+      },
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed",
+       "note": "followed by outside cardiology"
+      },
+      {
+       "label": "Old myocardial infarction",
+       "action": "diagnosed",
+       "note": "remote MI treated with PCI"
+      },
+      {
+       "label": "Presence of coronary artery stent",
+       "action": "diagnosed",
+       "note": "drug-eluting stent"
+      },
+      {
+       "label": "Ischemic cardiomyopathy",
+       "icd10": "I25.5",
+       "action": "diagnosed",
+       "note": "per cardiology records"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "coronary artery disease"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "ischemic cardiomyopathy"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "NIGHTLY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       132,
+       80
+      ],
+      "weight_kg": 88.2,
+      "height_cm": 178.0,
+      "labs": {
+       "Low Density Lipoprotein": 68, "Hemoglobin A1c": 5.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm",
+      "temp_c"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired pharmaceutical sales representative"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "2-3 glasses of wine per week"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-14T10:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-14T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-14T10:15",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-14T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-14T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2020",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "30 pack-year former smoker, quit 2015"
+      }
+     ],
+     "documents": [
+      {
+       "type": "History and physical note",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-14T10:05",
+       "body": "NEW PATIENT VISIT\n\nRaymond is a 64 year old man joining us from a primary care office out of town. He retired this spring after a long career selling pharmaceuticals, mostly to cardiology and internal medicine offices, so he knows his drugs better than most.\n\nCardiac history (his account; records requested): remote myocardial infarction treated with cardiac catheterization and a drug-eluting stent. He was told afterward that the heart muscle was weakened (ischemic cardiomyopathy). He does not remember the ejection fraction number. Sees an outside cardiology group about once a year and wants to keep them. No chest pain. Walks the neighborhood most days, no exertional symptoms with that. No orthopnea, no leg swelling, no palpitations, no fainting.\n\nAlso hypertension and high cholesterol for many years.\n\nMEDS (bottles reviewed): aspirin 81 mg daily; metoprolol succinate 50 mg daily; lisinopril 20 mg daily; atorvastatin 40 mg at bedtime. Takes them every day, uses a pill box.\nALLERGIES: none to medications.\nSURGICAL: cardiac cath with PCI/DES as above. Nothing else.\nFAMILY: father had an MI at 59. Mother had high blood pressure and high cholesterol. Brother has a tremor that a neurologist called essential tremor. Paternal uncle had a stroke at 64.\nSOCIAL: married, lives with his wife. Smoked about 30 pack-years and quit in 2015. Wine 2 to 3 glasses a week. No other substances.\nPREVENTION per his recollection: colonoscopy a couple of years ago, told it was clean. Thinks he had a tetanus shot in 2017. Has never had a lung CT.\n\nROS: otherwise negative in detail.\n\nEXAM: vitals as charted. Well appearing, pleasant. HEENT normal. Neck supple, no JVD, no carotid bruit. Heart regular rate and rhythm, no murmur or gallop. Lungs clear throughout. Abdomen soft, nontender. Extremities warm, no edema, distal pulses 2+. Neuro grossly nonfocal, no tremor noted.\n\nASSESSMENT/PLAN\n1. CAD with old MI, stent in place; ischemic cardiomyopathy, clinically compensated. Continue aspirin, metoprolol succinate, lisinopril, atorvastatin. Records from cardiology requested so we have his echo history here.\n2. Hypertension: office reading above goal today; he says home readings run in the 120s-130s. Recheck with his home cuff log at the next visit, no change now.\n3. Hyperlipidemia: lipid panel today on atorvastatin 40.\n4. Lung cancer screening: eligible (30 pack-years, quit within 15 years). Discussed annual low-dose CT; he wants it. Ordered.\n5. Health maintenance: CMP, CBC, lipids, A1c, one-time hepatitis C and HIV screening, all accepted. Flu shot next month once the nurse clinic opens. Colonoscopy and Tdap to be confirmed from old records.\n\nFollow up in about 4 months, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-16a",
+     "kind": "portal_message",
+     "start": "2020-09-16T16:40",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-09-16T16:40",
+       "body": "Hi Raymond, your blood work from Monday is back. Kidney and liver tests are normal, blood counts are normal, and your sugar (A1c) is in the normal range. LDL cholesterol is right where we want it for someone with a stent, so no change to the atorvastatin. Hepatitis C and HIV screens were negative. The lung CT order went to scheduling and they should call you this week."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-28a",
+     "kind": "outside_records",
+     "start": "2020-09-28T11:30",
+     "reason": "prior records received",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2017-05-22T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "outside primary care",
+       "date": "2020-09-28T11:30",
+       "body": "RECORDS FROM PRIOR PRIMARY CARE OFFICE (received by fax, 14 pages)\n\nProblem list on their system: hypertension; hyperlipidemia; coronary artery disease s/p PCI with drug-eluting stent; history of myocardial infarction; ischemic cardiomyopathy (managed by cardiology); tobacco use, quit 2015.\nMedications: aspirin 81 mg daily, metoprolol succinate ER 50 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg qhs.\nAllergies: NKDA.\nImmunizations: Tdap 05/2017.\nScreening colonoscopy 2018: prep good, cecum reached, no polyps, internal hemorrhoids only. Return in 10 years.\nLast labs on file (2019) unremarkable.\n\nPCP note: summary reviewed. Colonoscopy due 2028. Tdap entered."
+      },
+      {
+       "type": "Outside Records",
+       "title": "Cardiology records summary",
+       "author": "cardiology",
+       "date": "2020-09-28T11:35",
+       "body": "OUTSIDE CARDIOLOGY GROUP - RECORDS RELEASE\n\nPatient followed in our office for coronary artery disease with prior myocardial infarction treated by percutaneous coronary intervention with drug-eluting stent, and resulting ischemic cardiomyopathy. Also hypertension and hyperlipidemia. Seen annually. Current regimen aspirin 81 mg, metoprolol succinate 50 mg, lisinopril 20 mg, atorvastatin 40 mg. No known drug allergies. Prior echo reports were not included in this release.\n\nPCP note: no echo reports in the packet. Will get them with his next cardiology letter."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-07a",
+     "kind": "nurse_visit",
+     "start": "2020-10-07T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-07T14:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-07T14:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Flu Vaccine",
+       "author": "RN",
+       "date": "2020-10-07T14:40",
+       "body": "Here for flu vaccine. No fever, no prior reaction to vaccines. Quadrivalent influenza 0.5 mL IM right deltoid, lot recorded. VIS given. Waited 15 minutes, no reaction. Reminded him the lung CT is on the 20th."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-20a",
+     "kind": "imaging",
+     "start": "2020-10-20T08:30",
+     "reason": "lung cancer screening",
+     "orders": [
+      {
+       "id": "ldct-2020",
+       "action": "done",
+       "date": "2020-10-20T08:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2020-10-20T08:30",
+       "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: 64 year old former smoker, 30 pack-years, quit 2015.\nTechnique: low-dose helical CT of the chest without contrast.\nFindings: Lungs clear without nodule, mass or consolidation. Airways patent. No pleural effusion. Heart normal in size; coronary artery calcification and a coronary stent. No pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable. Bones without suspicious lesion.",
+       "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT result",
+       "author": "PCP",
+       "date": "2020-10-21T08:15",
+       "body": "Baseline lung screening CT negative, Lung-RADS 1. Coronary calcification and stent are known. Repeat in one year. Released to portal with a note."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "pharmacy",
+     "start": "2020-12-08T09:05",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "90-day refills",
+       "author": "MA",
+       "date": "2020-12-08T09:05",
+       "body": "Mail-order pharmacy request to move all four cardiac meds to 90-day supplies under our office now. Metoprolol succinate 50, lisinopril 20, atorvastatin 40 sent x90 with 3 refills per PCP. Aspirin is OTC, he buys it himself."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-19a",
+     "kind": "telehealth_visit",
+     "start": "2021-01-19T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and heart follow-up",
+     "vitals": {
+      "bp": [
+       128,
+       78
+      ],
+      "hr": 66
+     },
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2021-01-19T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Follow-up",
+       "author": "PCP",
+       "date": "2021-01-19T11:30",
+       "body": "Video visit, he is at home, wife nearby. We moved this to video given the winter surge.\n\nFeels well. Home cuff readings mostly 120s-130s over high 70s; today 128/78, pulse 66 on his machine. Walking indoors at the mall when it opens early. No chest discomfort, no breathlessness on his usual walking, no swelling, no dizziness. Taking all meds. Signed up for a COVID vaccine slot at a pharmacy next month.\n\nImpression: HTN controlled. CAD/ischemic cardiomyopathy stable by history. Lipids at goal in September.\nPlan: no changes. In-person visit in spring with a BMP. Keep the vaccine appointment."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-09a",
+     "kind": "portal_message",
+     "start": "2021-03-09T19:22",
+     "reason": "COVID vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, original",
+       "date": "2021-02-04T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, original",
+       "date": "2021-03-04T13:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Vaccine card",
+       "author": "patient",
+       "date": "2021-03-09T19:22",
+       "body": "Both Moderna shots done, Feb 4 and March 4, at the pharmacy. Photo of my card attached. Tired for a day after the second one, otherwise fine. Ray"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Vaccine card",
+       "author": "MA",
+       "date": "2021-03-10T09:10",
+       "body": "Thanks Ray, both doses are entered in your chart now."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-20a",
+     "kind": "office_visit",
+     "start": "2021-04-20T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hypertension and CAD follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-04-20T11:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-04-20T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-04-20T11:15",
+       "body": "S: Routine follow-up. Doing well. Fully vaccinated. Walking 30 to 40 minutes most days without chest symptoms. Saw cardiology? Not since before he joined; he has a yearly visit coming due and will call them. Meds unchanged, no side effects.\nO: Vitals as charted. No JVD. Heart regular, no murmur. Lungs clear. No edema.\nA/P: HTN: office BP a bit high again, home readings mostly at goal per his log. Leave lisinopril at 20 for now. CAD stable. BMP today for potassium and creatinine on the ACE inhibitor. He turns 65 in July; Welcome to Medicare visit in August, which will include his pneumonia vaccine."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-21a",
+     "kind": "portal_message",
+     "start": "2021-04-21T12:05",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "BMP result",
+       "author": "PCP",
+       "date": "2021-04-21T12:05",
+       "body": "Kidney function and potassium are normal on the lisinopril. Nothing to change."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-10a",
+     "kind": "annual_physical",
+     "start": "2021-08-10T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Welcome to Medicare preventive visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm",
+      "temp_c"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-08-10T09:50"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-10T09:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-10T09:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-08-10T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+       "performed": "2021-08-10T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-08-10T09:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "placed",
+       "order": "Abdominal ultrasound, aorta (AAA screening)",
+       "category": "imaging",
+       "reason": "male former smoker age 65"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Initial Preventive Physical Exam",
+       "author": "PCP",
+       "date": "2021-08-10T10:00",
+       "body": "WELCOME TO MEDICARE VISIT\n\nTurned 65 last month. No new concerns. Exercise: walks daily, golfs nine holes on weekends with a cart. Diet: his wife cooks low salt. Sleep fine. No falls. Hearing and vision adequate, wears readers. Drives. Independent in all daily activities. Wine 2-3 glasses a week, no tobacco since 2015.\n\nPHQ-2 negative. AUDIT-C 2. No cognitive concerns raised by him or his wife.\n\nMeds reconciled, unchanged: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40.\n\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. Abdomen soft, no pulsatile mass. No edema. Gait normal.\n\nAdvance directive: he and his wife each have a health care proxy naming the other; copy requested.\n\nPrevention:\n- PCV20 given today (left deltoid).\n- Shingrix: recommended; he will get both doses at his pharmacy this fall.\n- AAA screening ultrasound ordered (male, former smoker, 65).\n- Lung screening CT due in October.\n- Colonoscopy 2018 normal, next 2028.\n- Flu shot in October.\nLabs: CMP, lipids, CBC.\n\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-12a",
+     "kind": "portal_message",
+     "start": "2021-08-12T08:30",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Labs from your physical",
+       "author": "PCP",
+       "date": "2021-08-12T08:30",
+       "body": "Raymond, everything from Tuesday is normal: kidney, liver, blood count, and the LDL is still under 70. The ultrasound people will reach out about the aorta scan."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "imaging",
+     "start": "2021-09-14T13:15",
+     "reason": "AAA screening",
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "done",
+       "date": "2021-09-14T13:15"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2021-09-14T13:15",
+       "text": "ULTRASOUND ABDOMINAL AORTA, SCREENING\nIndication: AAA screening, male former smoker.\nFindings: The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximal diameters: proximal 2.0 cm, mid 1.9 cm, distal 1.7 cm. No aneurysmal dilation. Common iliac arteries normal in caliber.",
+       "conclusion": "No abdominal aortic aneurysm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Aorta ultrasound",
+       "author": "PCP",
+       "date": "2021-09-14T16:50",
+       "body": "Normal aorta. No further AAA screening needed."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T15:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, original",
+       "date": "2021-10-05T15:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T15:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2021-10-05T15:25",
+       "body": "High-dose flu, left deltoid. Moderna booster (half dose), right deltoid. Feeling well, no fever. Observed 15 min, fine. He got his first Shingrix at the pharmacy two weeks ago, says he'll send the date."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-26a",
+     "kind": "imaging",
+     "start": "2021-10-26T08:00",
+     "reason": "lung cancer screening, annual",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2021-10-26T08:00",
+       "text": "LOW-DOSE CT CHEST, ANNUAL SCREENING\nComparison: 10/20/2020.\nFindings: No pulmonary nodules. No consolidation or effusion. Central airways clear. Coronary artery calcification with a coronary stent, unchanged. Heart size normal. No adenopathy. No suspicious osseous lesion.",
+       "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 2021",
+       "author": "PCP",
+       "date": "2021-10-27T07:55",
+       "body": "Negative again, Lung-RADS 1. Next due October 2022."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "portal_message",
+     "start": "2021-12-14T18:47",
+     "reason": "shingles vaccine dates",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-09-21T11:00"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-12-10T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Shingles shots",
+       "author": "patient",
+       "date": "2021-12-14T18:47",
+       "body": "Second Shingrix done Friday. First was Sept 21. That second one knocked me out for a day, but I'm back to normal. Also need a refill on the metoprolol soon, the mail order says it needs a new script."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Shingles shots",
+       "author": "MA",
+       "date": "2021-12-15T08:40",
+       "body": "Both dates entered. New metoprolol succinate 50 mg script sent to the mail-order pharmacy this morning, 90 days with 3 refills."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

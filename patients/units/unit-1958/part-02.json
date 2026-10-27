@@ -1,0 +1,167 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001958",
+      "events": [
+        {
+          "id": "2026-01-30a",
+          "kind": "annual_physical",
+          "start": "2026-01-30T09:30",
+          "end": "2026-01-30T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 58.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-30T10:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-30T10:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-01-30T10:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2026-01-30T10:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2026-01-30T09:55",
+              "issued": "2026-02-03T14:00",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-01-30T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-01-30T10:15",
+              "body": "28 y/o here for yearly exam. Takayasu arteritis dx 3/2025, managed by rheumatology; in remission at her October rheum visit on prednisone 5 mg and methotrexate 15 mg weekly. Next rheum visit in March, cardiology around then too.\n\nInterval: feeling like herself. Working on her dissertation proposal. No fevers. No arm heaviness or pain with use, no chest pain, no lightheadedness, headaches or vision change. Sleeping better since the dose came down. Mild nausea the day after methotrexate, manageable. Missed one weekly dose over the holidays.\n\nMeds: prednisone 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\nSH: never smoker, rare drink. Exercise is walking, some yoga.\nGyn: regular cycles. Aware of the methotrexate pregnancy precautions from rheum.\nPHQ-9: 3.\n\nExam: BP right arm as charted. Weight back to about her pre-illness baseline. Well appearing. HEENT normal. No thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear. Abdomen benign. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin: no striae, no rash. Extremities without edema.\n\nA/P:\n1. Preventive: Pap today. Flu, COVID, PCV20 and Shingrix done in 2025. Tdap 2021.\n2. Takayasu arteritis on low-dose prednisone and methotrexate: stable per patient and rheum notes. Rheum follows markers.\n3. On long-term prednisone: A1c and lipids with today's labs. Continue D3.\nCBC, CMP, lipids, A1c today. I'll send results through the portal. Follow up with me in about 6 months, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "portal_message",
+          "start": "2026-02-04T08:20",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results From Your Physical",
+              "author": "PCP",
+              "date": "2026-02-04T08:20",
+              "body": "Priya, good news across the board. Your Pap is normal. Blood counts, kidney and liver tests are normal, which is reassuring on methotrexate. Your A1c is normal and cholesterol is fine, so the prednisone isn't pushing your sugar. The front desk will help you book a follow-up for late summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T14:00",
+          "service": "Cardiology",
+          "reason": "Takayasu arteritis follow-up",
+          "vitals": {"bp": [138, 82]},
+          "measure": ["hr", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2026-03-09T13:30", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 98, "unit": "mm/h"}]}
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-03-09T11:00",
+              "issued": "2026-03-09T13:10",
+              "text": "CT ANGIOGRAM OF THE CHEST\nIndication: Takayasu arteritis, worsening arm symptoms. Comparison: CT angiogram 03/07/2025.\nTechnique: Arterial-phase helical CT of the chest after IV contrast with multiplanar and 3D reformats.\nFindings: The aortic arch is narrowed. Both proximal subclavian arteries are narrowed; on the prior study only the left was involved. Ascending and descending thoracic aorta normal in caliber. Pulmonary arteries opacify normally. Heart size normal, no pericardial effusion. Lungs clear, no pleural effusion. No enlarged mediastinal or hilar nodes. No acute osseous finding.",
+              "conclusion": "Narrowing of the aortic arch and proximal subclavian arteries, progressed since 03/07/2025."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "author": "cardiology",
+              "date": "2026-03-11T16:30",
+              "body": "Outside cardiology follow-up, seen 03/09/2026. Copy to primary care and rheumatology.\n\nShe returns a year after her rheumatology diagnosis of Takayasu arteritis, earlier than planned because she has not felt well. For several weeks: tiredness that does not lift, low-grade temperatures, and arm pain that builds as she uses them. Both arms feel heavy doing housework, and holding her arms up to brush her hair has become hard. She has lost weight without trying and has some diffuse muscle aching. She denies jaw pain with chewing, any loss of vision, and headaches.\n\nMeds per patient: prednisone 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\n\nExam: BP 138/82 in the right arm; a left arm pressure could not be obtained. Left radial pulse weak. Right brachial pulse diminished. No carotid, subclavian or abdominal bruits heard today. Heart regular, no murmur. Lungs clear.\n\nData: ESR 98. CT angiography today shows narrowing of the aortic arch and of both proximal subclavian arteries, worse than March 2025.\n\nAssessment: Takayasu arteritis with active disease and anatomic progression despite low-dose prednisone and methotrexate. No aortic valve involvement clinically.\nPlan: I spoke with her rheumatologist today and she will be seen this month to intensify treatment. Right arm pressures only. Cardiology follow-up in 6 months, sooner for chest pain, neurologic or visual symptoms.\n\nOutside cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "portal_message",
+          "start": "2026-03-16T20:40",
+          "reason": "vasculitis flare",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flare Update",
+              "author": "patient",
+              "date": "2026-03-16T20:40",
+              "body": "Hi, I wanted you to know the vasculitis is acting up again. My arms have been getting heavy and I've had low fevers. Cardiology did a new scan and said it's worse. I see rheumatology on Friday. I'm pretty discouraged."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flare Update",
+              "author": "PCP",
+              "date": "2026-03-17T07:45",
+              "body": "Thank you for telling me, and I'm sorry. I read the cardiology letter. Relapses as the steroid comes down are common with this disease and there are good next options; Friday is the right place to sort that out. Before then, if you get chest pain, new weakness, trouble speaking or seeing, go to the emergency department. I'm here if you want to talk any of this through."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "specialist_visit",
+          "start": "2026-03-20T10:30",
+          "service": "Rheumatology",
+          "reason": "Takayasu arteritis relapse",
+          "labs": [
+            {"panel": null, "collected": "2026-03-20T11:15", "results": [{"test": "Quantiferon-TB Gold", "text": "Negative"}]},
+            {"panel": null, "collected": "2026-03-20T11:15", "results": [{"test": "Hepatitis B surface antigen", "loinc": "5196-1", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2026-03-20T11:15", "results": [{"test": "Hepatitis B core antibody, total", "loinc": "16933-4", "text": "Nonreactive"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-03-24T09:50",
+              "body": "Outside rheumatology visit, seen 03/20/2026.\n\nReason: relapse of Takayasu arteritis, seen urgently after her cardiology visit 03/09 (ESR 98; CT angiogram with aortic arch and bilateral proximal subclavian narrowing, progressed).\n\nShe has had several weeks of fatigue, low fevers, arm heaviness with use and some weight loss on prednisone 5 mg and methotrexate 15 mg weekly. No headache, visual symptoms or jaw pain. Adherent apart from a missed methotrexate dose in December.\n\nExam: right arm pressure recorded; left arm not obtainable. Weak left radial pulse, diminished right brachial pulse. No synovitis.\n\nPre-biologic screening drawn today: QuantiFERON negative, hepatitis B surface antigen and core antibody nonreactive.\n\nAssessment: relapsing Takayasu arteritis with progression on imaging.\nPlan:\n- Prednisone increased to 40 mg daily, with a slower taper I will set at follow-up.\n- Add tocilizumab 162 mg subcutaneously once weekly; prior authorization submitted by our office, first dose taught in clinic once approved.\n- Continue methotrexate 15 mg weekly and folic acid 1 mg daily; continue vitamin D3.\n- CBC, CMP and lipids 4 weeks after starting tocilizumab, then every 8 weeks.\n- Return in 6 weeks.\n\nMeds at end of visit: prednisone 40 mg daily, tocilizumab 162 mg SC weekly (pending approval), methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\n\nOutside rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T12:05",
+          "reason": "appointment confirmation",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment Reminder",
+              "author": "front desk",
+              "date": "2026-08-10T12:05",
+              "body": "Reminder: follow-up with your primary care physician on Friday, September 11, 2026 at 11:00 AM. Reply to confirm or call us to reschedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment Reminder",
+              "author": "patient",
+              "date": "2026-08-10T18:30",
+              "body": "Confirmed, thank you. I'll bring my updated med list from rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-11a",
+          "kind": "office_visit",
+          "start": "2026-09-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

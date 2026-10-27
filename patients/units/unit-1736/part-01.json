@@ -1,0 +1,493 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001736",
+      "given": "Karen",
+      "family": "Hurley",
+      "birth_date": "1990-12-22",
+      "address_line": "27 Petticoat Hill Road, Williamsburg, MA 01096",
+      "phone": "+1-413-555-0174",
+      "email": "karen.hurley@example.test",
+      "marital_status": "married",
+      "summary": "Licensed practical nurse with recurrent depression, chronic migraine, IBS-D and quiescent epilepsy who joins in 2020; later factitious diarrhea and surreptitious sulfonylurea hypoglycemia lead to a diagnosis of factitious disorder imposed on self. Toxic epidermal necrolysis from lamotrigine in 2024, three episodes of serotonin syndrome 2025 to 2026, and a pregnancy ending in severe preeclampsia with pulmonary edema and preterm cesarean in January 2026.",
+      "events": [
+        {
+          "id": "2020-09-08a",
+          "kind": "telephone",
+          "start": "2020-09-08T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2020-09-08T10:12",
+              "body": "Caller wants to establish with the practice. Works as an LPN at a rehab facility, says her old office in town is closing its doors to adult patients at the end of the year. Membership terms reviewed, she will sign at the first visit. Booked new patient appt 9/17 at 2:40. Signed release sent by email; we will fax the request to her prior primary care office for the last 5 yrs of notes, labs and immunizations."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "outside_records",
+          "start": "2020-09-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care office records",
+              "author": "outside primary care",
+              "date": "2020-09-14T15:30",
+              "body": "Records received from prior primary care office, 38 pages, covering 2015 to 2020.\n\nProblem summary as carried by that office: depression, recurrent, on sertraline since her early twenties with good response at 100 mg; migraine without aura, chronic, uses sumatriptan; IBS with diarrhea predominance, loperamide as needed; epilepsy, onset in adolescence, followed in childhood by pediatric neurology, seizure-free for many years and off antiseizure medicine since her late teens.\n\nSurgical: laparoscopic appendectomy 2015, uneventful recovery.\nAllergy: sulfa antibiotics - rash.\n\nLast Pap 2018 NILM. Childhood vaccines documented complete. Influenza vaccine yearly through her employer.\n\nMost recent visit 03/2020: PHQ-9 of 6, BP 112/70, weight 63 kg. No labs in the last 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-17a",
+          "kind": "establish_care",
+          "start": "2020-09-17T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, recurrent, unspecified",
+              "icd10": "F33.9",
+              "action": "history",
+              "onset": "2012-06-01"
+            },
+            {
+              "label": "Chronic migraine without aura",
+              "action": "history",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Irritable bowel syndrome with diarrhea",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Epilepsy",
+              "action": "history",
+              "onset": "2004-01-01",
+              "note": "Seizure-free for years, off antiseizure medication"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug_text": "sumatriptan 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at migraine onset; may repeat once after 2 hours. Max 200 mg per day",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Migraine"
+            },
+            {
+              "drug_text": "loperamide hydrochloride 2 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth as needed for loose stools. Max 8 mg per day",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "IBS with diarrhea"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Creatinine": 0.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.74
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Licensed practical nurse"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-17T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-09-17T16:20",
+              "body": "29F here to establish. LPN, works days at a rehab and skilled nursing facility. Married, no kids. Prior office records reviewed (scanned 9/14).\n\nDepression: recurrent, first episode in her early 20s. On sertraline 100 mg for years, feels it works. Mood 'okay, work is a lot right now.' No SI. Not in counseling at present. PHQ-9 7, GAD-7 5.\n\nMigraine: chronic, no aura. Mother has the same. Uses sumatriptan 100, usually works within an hour. Estimates 6 to 8 doses a month. Discussed medication-overuse headache and prevention; she would rather keep things as they are for now.\n\nIBS-D: years of loose stools with stress, loperamide a few times a month. No blood, no weight loss, no nocturnal stools. Sister has IBS too.\n\nEpilepsy: seizures as a teenager, treated in childhood, off meds since about age 18 and seizure-free since. Does drive. Maternal aunt has epilepsy.\n\nPSH: lap appy 2015.\nFHx: mother depression and migraine; maternal aunt epilepsy; father HTN; sister IBS.\nSH: never smoker, no alcohol, no drugs.\nAllergy: sulfa (rash).\n\nExam: well appearing, pleasant. Vitals as charted. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars. No edema. Neuro: CN intact, strength and reflexes symmetric, gait normal. Affect a little flat but appropriate.\n\nA/P\n1. MDD, recurrent - stable on sertraline 100 mg, will take over prescribing. Counseling list given.\n2. Chronic migraine without aura - sumatriptan PRN; headache diary. Revisit prevention if frequency climbs.\n3. IBS-D - loperamide PRN.\n4. Epilepsy, in long remission off meds - no action.\n5. Health maintenance: CBC, CMP, lipids, TSH; HIV and hep C screen once, she agrees. Pap due 2021. Flu shot next month at our nurse clinic (she usually gets it at work, will do it here this year).\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-21a",
+          "kind": "portal_message",
+          "start": "2020-09-21T08:47",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2020-09-21T08:47",
+              "body": "Hi Karen - everything from Thursday came back fine. Blood counts, kidney and liver tests, thyroid and cholesterol are all in the normal range, and the HIV and hepatitis C screens were negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2020-10-13T08:05",
+              "body": "In before her shift for flu vaccine. No fever today, no prior reaction to flu shots. Allergy list reviewed (sulfa). Quadrivalent 0.5 mL IM L deltoid. VIS given. Waited 15 min, fine. Left for work."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-03a",
+          "kind": "pharmacy",
+          "start": "2020-12-03T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline refill",
+              "author": "MA",
+              "date": "2020-12-03T11:20",
+              "body": "Pharmacy fax: last refill from her prior doctor used up. Sertraline 100 mg #90 with 3 refills sent per PCP plan from the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "portal_message",
+          "start": "2021-01-19T19:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question about vaccine",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "author": "patient",
+              "date": "2021-01-19T19:22",
+              "body": "Work offered me the COVID shot and I got the first one on the 6th. Anything I should know with my sertraline or my migraines?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "author": "PCP",
+              "date": "2021-01-20T07:55",
+              "body": "No interaction with sertraline. A headache the day after is common; your usual sumatriptan is fine to use. Please send a picture of your card once you have both doses so we can add it here."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "outside_records",
+          "start": "2021-02-09T13:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-06T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-27T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Employer vaccination card",
+              "author": "patient",
+              "date": "2021-02-09T13:05",
+              "body": "Pt uploaded a photo of her vaccine card from the employee clinic at work: Pfizer COVID-19 doses on 1/6/21 and 1/27/21. Entered into the immunization record. She had a sore arm and a tired day after dose 2, nothing more."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-07a",
+          "kind": "office_visit",
+          "start": "2021-04-07T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression and migraine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-04-07T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2021-04-07T16:35",
+              "body": "S: 6 mo f/u. Winter was long, worked a lot of extra shifts, but mood held. Taking sertraline daily. PHQ-9 6. Headache diary: about 7 migraine days in March, each responded to one sumatriptan. Bowels at her usual, loperamide maybe twice a month.\nO: vitals as charted, looks well. Brief exam unremarkable.\nA/P: MDD recurrent - stable, continue sertraline 100. Chronic migraine - stable on PRN triptan, reminded of the 2-day-a-week ceiling to avoid rebound. IBS-D quiet. Physical and Pap in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "pharmacy",
+          "start": "2021-06-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Sumatriptan quantity limit",
+              "author": "MA",
+              "date": "2021-06-22T09:40",
+              "body": "Insurer limits sumatriptan to 9 tabs per 30 days. Her prior office prescription has run out. New Rx sent for #9 with refills under our name; PA for quantity not needed at this amount, she says 9 is usually enough. Loperamide also rewritten so it is on our list (she buys it OTC most months)."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "telephone",
+          "start": "2021-09-28T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical scheduling",
+              "author": "front desk",
+              "date": "2021-09-28T11:40",
+              "body": "Pt called to set up her yearly physical with Pap. Booked 10/19 8:20, reminded to come in fasting is not needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-10-19T08:45",
+              "issued": "2021-10-25T14:00",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative."
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-10-19T09:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T09:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-19T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-10-19T09:30",
+              "body": "Preventive visit, age 30.\n\nInterval: no new issues. Mood steady, PHQ-9 5. Migraines about the same, 6 to 8 a month, triptan works. IBS flares with stress, loperamide occasionally. No seizures. Not planning a pregnancy at present; discussed folic acid if that changes.\n\nROS otherwise negative.\n\nExam: Vitals as charted. Well appearing. Skin without rashes. HEENT normal, TMs clear. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Breasts symmetric, no masses. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap and HPV collected. Extremities without edema. Neuro nonfocal. Mood and affect normal.\n\nA/P\n- Health maintenance: Pap with HPV today. Tdap (last one over 10 yrs ago per old records) and flu today. CBC/CMP.\n- MDD, migraine, IBS-D: unchanged, meds continued.\nRTC 6 months or as needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "portal_message",
+          "start": "2021-10-26T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2021-10-26T12:15",
+              "body": "Your Pap smear was normal and the HPV test was negative, so the next one is not due for five years. Blood work from the physical was normal too."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

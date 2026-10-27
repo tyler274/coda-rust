@@ -1,0 +1,210 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001906",
+      "given": "Lori",
+      "family": "Simard",
+      "birth_date": "1995-09-16",
+      "address_line": "28 Quarry Ridge Road",
+      "phone": "+1-617-555-0192",
+      "email": "lori.simard@example.test",
+      "marital_status": "single",
+      "summary": "Thirty-year-old math teacher who joined in August 2025 with amenorrhea and nipple discharge; outside gynecology found a prolactin of 250 and a 1.5 cm pituitary macroadenoma with a bitemporal field defect. Endocrinology started cabergoline with partial response; an ED visit in June 2026 for headaches and worsening vision led to a dose increase and a neurosurgery opinion favoring transsphenoidal resection, decision pending.",
+      "events": [
+        {
+          "id": "2025-08-12a",
+          "kind": "telephone",
+          "start": "2025-08-12T10:05",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2025-08-12T10:05",
+              "body": "Caller moved her care out to this area last year and has been without a primary doctor. Teaches math at the high school, wants something before classes start. Membership info emailed, she signed up over the phone. New patient visit set for 8/19 at 8:20. Asked her to sign a release for her old practice so we can pull records."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "establish_care",
+          "start": "2025-08-19T08:20",
+          "end": "2025-08-19T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 63.2, "height_cm": 165.0, "bp": [112, 72], "labs": {"Low Density Lipoprotein": 88}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "High school mathematics teacher"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-08-19T08:45", "resulted": "2025-08-19T09:00", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": "CBC with Differential", "collected": "2025-08-19T09:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-19T09:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-19T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-08-19T09:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, low MDM", "performed": "2025-08-19T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2025-08-19T09:10",
+              "body": "New patient, 29, here to set up primary care. Previously seen at a practice out east, records requested.\n\nShe has not had a period since roughly April. Before that cycles were regular. Over the same stretch she has noticed a small amount of milky fluid from the nipples, mostly when she showers. She already has an appointment with gynecology in October for this and would like to keep it there. Otherwise feels well, energy fine, weight stable.\n\nPMH: none. PSH: tonsils out at 12. Meds: none. Allergies: no known drug allergies.\nFH: mother on thyroid replacement for hypothyroidism, father treated for high blood pressure. Nobody with pituitary or other gland tumors that she knows of.\nSH: teaches high school math. Never smoked. Wine once or twice a week.\n\nExam: well appearing. Vitals as recorded. Thyroid not enlarged. Heart RRR without murmur, lungs clear bilaterally. Abdomen soft. Breast exam deferred to gyn at her request. Skin no hirsutism or acne.\n\nUrine hCG in office negative.\n\nA/P\n1. Secondary amenorrhea with nipple discharge. Pregnancy excluded today. Keeping her gyn appointment in October, which she prefers; asked her to have them send us their note and any labs. Low threshold to move it up if anything new.\n2. Health maintenance: baseline CBC, CMP, lipids. Offered one-time HIV and hep C screening, she agreed. Last Pap at 27 per her report, normal; due again at 30 with HPV. Flu and COVID vaccines when the fall supply arrives.\nFollow up after the gyn visit, or yearly physical next spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2025-08-21T16:40",
+              "body": "Hi Lori, your blood count, chemistries, kidney and liver numbers and cholesterol all came back normal. HIV and hepatitis C screens were negative. Nothing to do here. Let me know what gynecology says in October. — your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "outside_records",
+          "start": "2025-09-05T11:30",
+          "reason": "prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "author": "MA",
+              "date": "2025-09-05T11:30",
+              "body": "Records from her previous primary care office arrived electronically, 34 pages, covering 2019 to 2024. Summary for the chart:\n- Annual visits, all routine. No chronic problems listed, no medications.\n- Allergies: none.\n- Surgical: tonsillectomy in childhood.\n- Cervical cytology 2022: negative for intraepithelial lesion. Recommended repeat 3 years.\n- Last visit 2024: well visit, no concerns, normal exam.\nFiled to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-09T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-09T15:36"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-09T15:36"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2025-10-09T15:45",
+              "body": "Came in after school for vaccines. No fever, no prior reactions. Screening questions reviewed, not pregnant (negative test in August, no periods since spring, has gyn appointment later this month).\nInfluenza 0.5 mL IM left deltoid. COVID 2025-26 formula 0.3 mL IM right deltoid. VIS given for both.\nWaited 15 minutes, felt fine, left at 4:05."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "specialist_visit",
+          "start": "2025-10-28T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "amenorrhea and galactorrhea",
+          "labs": [
+            {"panel": null, "collected": "2025-10-28T13:50", "resulted": "2025-10-29T14:00", "results": [
+              {"test": "Prolactin", "value": 250, "unit": "ng/mL"},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5, "unit": "m[IU]/L"},
+              {"test": "Follicle Stimulating Hormone", "value": 7.2, "unit": "m[IU]/mL"},
+              {"test": "Luteinizing Hormone", "loinc": "10501-5", "value": 6.8, "unit": "m[IU]/mL"}
+            ]}
+          ],
+          "orders": [
+            {"id": "pituitary-mri", "action": "placed", "order": "MRI brain with contrast", "category": "imaging", "reason": "hyperprolactinemia with visual field defect"},
+            {"id": "endo-referral", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "hyperprolactinemia, pituitary mass suspected"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2025-11-03T09:15",
+              "body": "OUTSIDE GYNECOLOGY — CONSULTATION\nDate of service: 10/28/2025\nCopy to: primary care\n\nReason: no menses for half a year, nipple discharge.\n\nHistory: 30-year-old whose periods stopped about six months ago after years of regular cycles. Over the same time she has had milky expression from both breasts. On direct questioning she has also noticed her side vision fading slowly, more so on the right. No headache, no lightheadedness, weight unchanged. Office hCG negative at her PCP in August.\n\nPMH none. PSH tonsillectomy age 12. Medications none. Allergies NKDA.\nFamily: mother hypothyroid, father hypertensive. No known pituitary or endocrine tumors in the family.\nSocial: teaches high school math, never smoker, wine socially one to two glasses weekly.\n\nExam: BP and weight as recorded by our staff. Breasts symmetric, no masses; scant white fluid expressed bilaterally. Pelvic exam normal. Confrontation fields: temporal loss in both eyes, pattern consistent with a bitemporal hemianopsia. Pupils equal and reactive, extraocular movements full, cranial nerves otherwise intact, strength and reflexes normal.\n\nLabs drawn today:\nProlactin 250 ng/mL (ref 4-23)\nTSH 2.5 mIU/L (ref 0.4-4.0)\nFSH 7.2 mIU/mL (ref 3.5-12.5)\nLH 6.8 mIU/mL (ref 2.4-12.6)\n\nImpression: hyperprolactinemic amenorrhea with galactorrhea and a bitemporal field cut, worrying for a pituitary macroadenoma. Thyroid normal, gonadotropins in range.\n\nPlan: MRI of the brain with contrast with attention to the sella, scheduled. Referral to endocrinology placed and expedited given the field loss. Advised her not to drive at night until evaluated. We will forward the MRI result to her PCP.\n\n— Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "imaging",
+          "start": "2025-11-06T07:30",
+          "reason": "pituitary mass suspected",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2025-11-06T07:30",
+              "issued": "2025-11-06T13:10",
+              "text": "OUTSIDE IMAGING CENTER\nExam: MRI brain with and without IV gadolinium, dedicated thin-section coronal and sagittal images through the sella.\nIndication: elevated prolactin, bitemporal field loss.\nComparison: none.\n\nFindings: There is a 1.5 cm sellar mass arising from the pituitary gland, measured in greatest craniocaudal dimension on coronal post-contrast images, enhancing less than the normal gland. It extends above the diaphragma sellae into the suprasellar cistern. The cavernous sinuses appear free of tumor and the internal carotid flow voids are normal. The pituitary stalk is displaced but intact. No hemorrhage within the mass.\nBrain parenchyma is normal in signal without mass effect elsewhere. Ventricles normal in size. No abnormal enhancement outside the sella. Paranasal sinuses and mastoids clear.",
+              "conclusion": "1.5 cm pituitary macroadenoma with suprasellar extension."
+            }
+          ],
+          "orders": [
+            {"id": "pituitary-mri", "action": "done", "date": "2025-11-06T13:10"}
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "telephone",
+          "start": "2025-11-07T12:20",
+          "reason": "MRI result",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call With Patient re MRI",
+              "author": "PCP",
+              "date": "2025-11-07T12:35",
+              "body": "Called her at lunch break. Gyn had already spoken with her yesterday about the scan. Reviewed: 1.5 cm pituitary adenoma reaching up above the sella, which fits the prolactin of 250 and explains the field loss. Explained that these are almost always benign and that most respond to medication that shrinks them, and that endocrinology leads from here. Her endo appointment is 11/20. She is understandably rattled; questions answered. Reminded her to go to the ED for sudden severe headache or sudden change in vision. She will message after the endo visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "specialist_visit",
+          "start": "2025-11-20T10:00",
+          "service": "Endocrinology",
+          "reason": "pituitary macroadenoma, hyperprolactinemia",
+          "conditions": [
+            {"label": "Prolactinoma", "action": "diagnosed", "onset": "2025-11-06"}
+          ],
+          "medications": [
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "historical", "sig": "Take one-half tablet (0.25 mg) by mouth twice weekly", "dose": {"value": 0.25, "unit": "mg"}, "frequency": "TWICE WEEKLY", "route": "Oral", "course": "chronic", "reason": "Prolactinoma"}
+          ],
+          "orders": [
+            {"id": "endo-referral", "action": "done", "date": "2025-11-20T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2025-11-24T08:40",
+              "body": "OUTSIDE ENDOCRINOLOGY — NEW CONSULTATION\nVisit: 11/20/2025\nReferred by gynecology; copy to PCP.\n\nThirty-year-old woman with about seven months of amenorrhea and galactorrhea, prolactin 250 ng/mL in late October with normal TSH, FSH and LH, and a 1.5 cm pituitary adenoma extending above the sella on MRI 11/6. She describes the peripheral vision loss, right a bit worse than left. No headache. No medications. NKDA.\n\nExam: vitals per our intake. Bilateral temporal field restriction to confrontation, right more than left. Visual acuity grossly intact. No cushingoid or acromegalic features. Thyroid normal. Small amount of fluid expressible from both breasts.\n\nAssessment: macroprolactinoma with suprasellar extension contacting the chiasm. A prolactin of 250 with a tumor of this size is consistent with a true prolactinoma rather than stalk effect.\n\nPlan:\n- Start cabergoline 0.25 mg (half of a 0.5 mg tablet) twice weekly, taken at bedtime with a snack. Discussed nausea and lightheadedness early on, and rare impulse-control changes.\n- Prolactin again in 2 to 3 months, then titrate.\n- Repeat pituitary MRI in about 6 months.\n- Cabergoline lowers prolactin quickly and fertility can return; she should use reliable contraception and let us know if she wishes to conceive.\n- Call sooner for headache or any worsening of vision.\n\n— Endocrinology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2828 @@
+{
+  "unit": "unit-1700",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001700",
+      "given": "Maricel",
+      "family": "Srisai",
+      "birth_date": "1994-05-22",
+      "address_line": "61 Mulberry Lane",
+      "phone": "+1-646-555-0157",
+      "email": "maricel.srisai@example.test",
+      "marital_status": "partnered",
+      "summary": "Kindergarten teacher with alpha-thalassemia trait who joined in 2021; rheumatic mitral stenosis found at a 2023 ED visit for atrial fibrillation. Second pregnancy 2025-2026 with fetal effusions, a left popliteal DVT on enoxaparin, meralgia paresthetica, and a cesarean for arrest of labor after a Category III tracing.",
+      "events": [
+        {
+          "id": "2021-05-25a",
+          "kind": "telephone",
+          "start": "2021-05-25T10:20",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-05-25T10:20",
+              "author": "front desk",
+              "body": "Caller is a 27 y/o teacher looking to switch primary care doctors, a coworker recommended us. Explained membership and how insurance still covers labs and specialists. Booked new patient visit 6/8 at 8:40. Asked her to fill out the intake forms online and sign a release so we can pull records from her old doctor and her OB."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit, establish care",
+          "conditions": [
+            {
+              "label": "Alpha-thalassemia trait",
+              "action": "history",
+              "onset": "2019-01-10",
+              "note": "found on testing during first pregnancy",
+              "icd10": "D56.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "alpha-thalassemia trait"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              77
+            ],
+            "hr": 60,
+            "rr": 13,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 55.1,
+            "height_cm": 157.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 329
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 22.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 96
+                },
+                {
+                  "test": "Iron",
+                  "value": 102
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 306
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 33
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Kindergarten teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-06-08T09:10",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2021-06-16T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-06-08T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-prior-2021",
+              "action": "placed",
+              "order": "Outside records request, prior primary care and OB",
+              "category": "procedure",
+              "reason": "establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-06-08T09:25",
+              "author": "PCP",
+              "body": "27 y/o F here to establish care. Teaches kindergarten. Switching from her old PCP, last physical about 2 yrs ago with her old PCP.\n\nPMH: alpha-thalassemia trait, told during her pregnancy in 2019. No other medical problems. Never told of a heart murmur.\nOB: G1P1, term vaginal delivery 2019, no complications.\nPSH: none other.\nMeds: prenatal vitamin daily, folic acid 1 mg daily, started by her OB and she kept taking them; may want another child at some point.\nAllergies: NKDA.\nFH: mother has rheumatic heart disease. Alpha-thal trait in her immediate family. Mother's pregnancies were all fine.\nSH: lives with partner and their 2 y/o. Never smoker, no alcohol, no drugs. Both she and partner were born outside the US.\n\nROS: negative, no dyspnea, palpitations, edema, heavy menses.\n\nExam: well appearing. Vitals as recorded. HEENT nl, thyroid not enlarged. Heart RRR, S1 S2 normal, no murmurs. Lungs clear. Abd soft NT. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Ext warm without edema. Skin no rashes.\n\nA/P\n1. Preventive: Pap today. CBC, CMP, lipids, TSH, iron studies to sort out trait vs iron. HIV and hep C once, she agreed. PHQ-2 0.\n2. Alpha-thal trait: expect mild microcytosis, ferritin to make sure no iron deficiency on top. Continue folic acid, I'll take over the Rx.\n3. Records: release signed for old PCP and OB, want the 2019 hemoglobin workup.\n4. Flu this fall. COVID primary series done in the spring per her card.\nRTC 1 yr or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.0,
+            "height_cm": 157.0,
+            "labs": {
+              "Hematocrit": 37.1,
+              "Hemoglobin": 11.8,
+              "Mean Corpuscular Volume": 66,
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T16:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-06-10T16:45",
+              "author": "PCP",
+              "body": "Hi Maricel, your labs are back. Blood counts show the small red cells we expected from the thalassemia trait, and your iron level is normal, so there is no iron deficiency to treat. Kidney, liver, thyroid and cholesterol are all fine. HIV and hepatitis C negative. The Pap result usually takes another week. Keep taking the folic acid."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "portal_message",
+          "start": "2021-06-17T09:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "date": "2021-06-17T09:05",
+              "author": "PCP",
+              "body": "Pap smear normal. Next one due in 3 years. Released to patient with a short note."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "outside_records",
+          "start": "2021-06-22T11:30",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-03-20T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-30T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T15:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-prior-2021",
+              "action": "done",
+              "date": "2021-06-22T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care and obstetric records",
+              "date": "2021-06-22T11:30",
+              "author": "outside obstetrics",
+              "body": "Records received from prior PCP and prior obstetric practice (34 pages), scanned.\n\nObstetric summary, 2019: G1, prenatal course without complications. Initial CBC with microcytosis, ferritin normal. Hemoglobin electrophoresis: normal pattern, HbA2 and HbF within reference range. Alpha-globin gene analysis: two-gene deletion on one chromosome, consistent with alpha-thalassemia trait. Spontaneous vaginal delivery at 39 weeks, 2019, uncomplicated. Postpartum visit normal. Tdap given 3/2019 at 30 weeks.\n\nPrior primary care: 2018 Pap normal. MMR x2 in childhood per school record. COVID vaccine x2 spring 2021 (pharmacy card). Allergies: none known. Medications: prenatal vitamin, folic acid 1 mg daily.\n\nPCP review: trait confirmed by gene testing, nothing else new. Partner's testing not in these records."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-19T15:50",
+              "author": "RN",
+              "body": "Came in after school. No fever today, no prior vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid, VIS given. Waited 15 min, fine. Says half her class is already sniffling."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T13:10",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Folic acid refill",
+              "date": "2021-12-07T13:10",
+              "author": "RN",
+              "body": "Pharmacy request for folic acid 1 mg, old OB's prescription out of refills. Per PCP, sent new Rx folic acid 1 mg daily #90 x3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "annual_physical",
+          "start": "2022-06-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              73
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 57.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-14T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-06-14T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-06-14T16:05",
+              "author": "PCP",
+              "body": "Annual. School just let out for the summer, she is relieved. No concerns. Taking prenatal vitamin and folic acid. No plans for another pregnancy this year.\nROS negative: no exertional dyspnea, palpitations, chest pain, edema.\nExam: vitals as charted. HEENT normal. Heart regular rate, no murmur appreciated. Lungs clear. Abdomen soft. No edema. Mood and affect normal.\nPHQ-2 0.\nA/P: healthy 28 y/o with alpha-thal trait. CBC today to keep a baseline. Pap next 2024. Flu in the fall. Follow up 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "portal_message",
+          "start": "2022-10-04T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot",
+              "date": "2022-10-04T19:30",
+              "author": "patient",
+              "body": "Hi, got the reminder about flu shots. I think I will skip it this year, last time my arm hurt for days and I could not lift the kids at school. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot",
+              "date": "2022-10-05T08:15",
+              "author": "RN",
+              "body": "Understood, we'll note that you declined for now. The offer stands all season if you change your mind, especially with little ones coughing on you at work."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-01a",
+          "kind": "ed_visit",
+          "start": "2023-04-01T14:10",
+          "end": "2023-04-01T23:40",
+          "service": "Emergency Medicine",
+          "reason": "shortness of breath, palpitations",
+          "conditions": [
+            {
+              "label": "Rheumatic mitral stenosis",
+              "action": "diagnosed",
+              "onset": "2023-04-01",
+              "icd10": "I05.0"
+            },
+            {
+              "label": "Paroxysmal atrial fibrillation",
+              "action": "diagnosed",
+              "onset": "2023-03-30"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "atrial fibrillation, mitral stenosis"
+            },
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 5 days",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pulmonary congestion"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-04-01T14:15",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 36.9,
+              "spo2": 94
+            },
+            {
+              "time": "2023-04-01T17:30",
+              "bp": [
+                108,
+                68
+              ],
+              "hr": 96,
+              "rr": 18,
+              "spo2": 96
+            },
+            {
+              "time": "2023-04-01T23:00",
+              "bp": [
+                112,
+                72
+              ],
+              "hr": 74,
+              "rr": 16,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-01T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 68
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 22.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-01T14:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-01T14:35",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-01T14:35",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-04-01T14:20",
+              "text": "Atrial fibrillation with rapid ventricular response, ventricular rate about 120. Normal axis. QRS narrow. No ST-segment changes. No T-wave abnormalities.",
+              "conclusion": "Atrial fibrillation with rapid ventricular response; no acute ST or T-wave change."
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-04-01T14:50",
+              "text": "PA and lateral views. Enlarged left atrium with straightening of the left heart border. Pulmonary venous congestion with upper-zone vascular redistribution. No pleural effusion. No pneumothorax. No focal consolidation. Bones unremarkable.",
+              "conclusion": "Pulmonary venous congestion and left atrial enlargement."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-04-01T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2023-04-19T10:05",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 04/01/2023\nPatient: Maricel Srisai, 28 F\nAllergies: NKDA\n\nCC: shortness of breath and racing heart\n\nHPI: 28 year old woman with alpha thalassemia trait, otherwise healthy, two days of breathlessness that has been getting worse, now cannot lie flat and has been sleeping propped on pillows, with a fluttering, fast heartbeat on and off. No chest pain, no fever, no leg swelling, no recent travel. Not pregnant per patient, urine hCG negative.\n\nPMH: alpha-thal trait. Prior SVD. Meds: prenatal vitamin, folic acid 1 mg. SH: never smoker, no EtOH, kindergarten teacher. FH: mother with rheumatic heart disease.\n\nExam: in mild respiratory distress, speaking full sentences. BP 110/70, HR 120 and irregularly irregular, RR 22, SpO2 94% RA, afebrile. Cardiac: irregular rhythm; low-pitched rumbling diastolic murmur loudest at the apex with an opening snap. Lungs: crackles at both bases. JVP difficult to assess. Extremities without edema.\n\nECG: atrial fibrillation, rate ~120, no ST or T changes.\nCXR: venous congestion, enlarged LA.\nLabs: hs troponin 3, BMP normal, CBC with microcytosis consistent with known trait.\n\nED course: metoprolol 5 mg IV x2 with rate improvement, furosemide 20 mg IV with good urine output and easier breathing. Spontaneously converted to sinus rhythm at about 21:30. Ambulated on room air, SpO2 97%.\n\nImpression: new atrial fibrillation with rapid rate and pulmonary congestion; exam and film most consistent with rheumatic mitral stenosis, given family history.\n\nDisposition: discharged home in sinus rhythm 23:40. Metoprolol succinate 25 mg daily. Furosemide 20 mg daily for 5 days. Needs echocardiogram and cardiology; follow up with PCP within one week. Return for chest pain, worsening breathing or recurrent palpitations.\n\n[Received by fax 4/19/2023 after records request.]"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-02a",
+          "kind": "portal_message",
+          "start": "2023-04-02T09:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the ER last night",
+              "date": "2023-04-02T09:50",
+              "author": "patient",
+              "body": "Hello doctor, I went to the emergency room yesterday because I couldn't breathe lying down and my heart was racing. They said my heart was out of rhythm and that I may have a problem with a heart valve, like my mom. They gave me two new pills, metoprolol and a water pill for 5 days. I feel much better today. They told me to see you this week and to get a heart ultrasound. What should I do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the ER last night",
+              "date": "2023-04-02T12:20",
+              "author": "PCP",
+              "body": "Glad you are feeling better. Keep taking both pills as they told you. The office will call tomorrow to get you in this week, I have Thursday morning open. If the racing or breathlessness comes back before then, go back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "office_visit",
+          "start": "2023-04-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, atrial fibrillation",
+          "vitals": {
+            "bp": [
+              115,
+              78
+            ],
+            "hr": 76,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 57.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-06T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-06T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-04-06T09:15",
+              "text": "Sinus rhythm, rate 72. PR, QRS and QT intervals normal. Normal axis. No ST-segment or T-wave abnormality.",
+              "conclusion": "Normal sinus rhythm."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-06T09:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-04-06T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2023",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "suspected rheumatic mitral stenosis, atrial fibrillation; needs echo"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2023-04-06T09:40",
+              "author": "PCP",
+              "body": "S: Seen in ED Sat 4/1 for 2 days of orthopnea, dyspnea and palpitations; per pt and discharge paperwork she was in AF with RVR, CXR with congestion, converted in the ED. Sent home on metoprolol succinate 25 daily and 5 days of furosemide, which she finished yesterday. Since then breathing back to normal, sleeping flat, no palpitations. Mild fatigue first two days on metoprolol, better now. ED told her they suspect a mitral valve problem like her mother's. We do not have the ED record yet, front desk requesting.\n\nO: vitals as charted, regular pulse. Appears well. JVP not elevated. Heart regular, soft low-pitched diastolic rumble at the apex in left lateral position, which I did not hear at her last physical. Lungs clear. No edema.\nECG in office: sinus rhythm 72, normal intervals.\n\nA/P\n1. Paroxysmal AF, single episode, now sinus on metoprolol. Check TSH, BMP after diuretic.\n2. Probable rheumatic mitral stenosis given exam and her mother's history. Needs TTE and cardiology; referral placed today, asked for a visit within a month.\n3. Continue metoprolol succinate 25 mg daily.\nReturn precautions reviewed. Will call with labs."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-07a",
+          "kind": "portal_message",
+          "start": "2023-04-07T13:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Thyroid and chemistry results",
+              "date": "2023-04-07T13:30",
+              "author": "PCP",
+              "body": "TSH normal, so thyroid is not the trigger. Potassium and kidney function fine after the water pill. Cardiology should be calling you to schedule. Let me know if you have not heard from them by next week."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "telephone",
+          "start": "2023-04-11T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED records request",
+              "date": "2023-04-11T11:00",
+              "author": "front desk",
+              "body": "Called the hospital ED HIM department, record from 4/1 not sent yet. Faxed a second request with the signed release. They said 5 to 7 business days."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-18a",
+          "kind": "specialist_visit",
+          "start": "2023-05-18T13:30",
+          "service": "Cardiology",
+          "reason": "suspected rheumatic mitral stenosis, atrial fibrillation",
+          "vitals": {
+            "bp": [
+              103,
+              80
+            ],
+            "hr": 55,
+            "weight_kg": 57.2
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2023-05-18T12:45",
+              "text": "Technically adequate study. Left ventricle normal in size and wall thickness with normal systolic function, LVEF 60%. No regional wall motion abnormality. Right ventricle normal in size and function. Mitral valve: rheumatic morphology with commissural fusion and diastolic doming of the anterior leaflet. Mitral valve area 1.6 cm2 by planimetry. Mean transmitral gradient 6 mmHg at heart rate 68. Mild mitral regurgitation. Left atrium enlarged, volume index 46 mL/m2. No left atrial thrombus seen on transthoracic imaging. Aortic valve trileaflet, opens normally, no aortic regurgitation. Tricuspid valve normal with trace regurgitation; estimated pulmonary artery systolic pressure 36 mmHg. Inferior vena cava normal in size with normal collapse. No pericardial effusion.",
+              "conclusion": "Rheumatic mitral stenosis, MVA 1.6 cm2, mean gradient 6 mmHg; mild MR; enlarged left atrium; normal LV function; PASP 36 mmHg."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2023",
+              "action": "done",
+              "date": "2023-05-18T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2023-05-25T16:10",
+              "author": "cardiology",
+              "body": "Outpatient Cardiology Consultation\nDate of visit: 05/18/2023\nReferred by: primary care, for mitral stenosis and atrial fibrillation\n\nThank you for asking us to see Ms. Srisai, a 28 year old kindergarten teacher with alpha-thalassemia trait, seen in the emergency department on 4/1 with AF and rapid rates and pulmonary congestion that settled with rate control and diuresis, converting to sinus rhythm. She has felt well since, with no palpitations, orthopnea or exertional limitation. She takes metoprolol succinate 25 mg daily, a prenatal vitamin and folic acid. No known drug allergies. Her mother has rheumatic heart disease. She recalls no childhood rheumatic fever. Never smoker, no alcohol.\n\nExam: BP and HR as recorded, regular rhythm. Loud S1, opening snap, and a low-pitched mid-diastolic rumble at the apex. Lungs clear. No edema.\n\nEcho today: rheumatic mitral valve, MVA 1.6 cm2 by planimetry, mean gradient 6 mmHg at HR 68, mild MR, LA volume index 46 mL/m2, LVEF 60%, PASP 36 mmHg.\n\nAssessment: progressive (stage B) rheumatic mitral stenosis. Her decompensation occurred with AF and fast rates, which shorten diastolic filling. Currently in sinus rhythm.\n\nRecommendations:\n1. Continue metoprolol succinate 25 mg daily.\n2. Repeat echocardiogram yearly, sooner with symptoms.\n3. She mentions she may want a second child. Please have her see us before trying to conceive; pregnancy increases the gradient and needs close follow-up.\n4. Seek care promptly for palpitations or breathlessness.\nWe will see her in 1 year with an echo.\n\nOutside cardiology group"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "pharmacy",
+          "start": "2023-07-06T10:40",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Metoprolol refill",
+              "date": "2023-07-06T10:40",
+              "author": "RN",
+              "body": "Pharmacy fax: metoprolol succinate 25 mg, ED Rx with no refills left. Cardiology letter says continue. Per PCP sent metoprolol succinate ER 25 mg daily #90 with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              73
+            ],
+            "hr": 58,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 57.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 68
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 22.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-22T09:00",
+              "author": "PCP",
+              "body": "29 y/o here for yearly visit before classes start back. Saw cardiology in May, echo showed rheumatic MS, MVA 1.6, on metoprolol, yearly echo. No palpitations since April. Walks fine, no orthopnea. Taking metoprolol, prenatal vitamin, folic acid. Thinking about a second baby maybe next year.\n\nExam: vitals reviewed. Heart regular, apical diastolic rumble unchanged. Lungs clear. No edema. Abdomen benign. Normal affect.\nPHQ-2: 1.\n\nA/P\n1. Rheumatic mitral stenosis, stage B, sinus rhythm: per cardiology. Reminded her the cardiologist wants to see her before she tries to conceive.\n2. Hx paroxysmal AF: none since April.\n3. Alpha-thal trait: CBC today.\n4. Health maintenance: Pap 2024. Flu and COVID offered for October, she will come in.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza and COVID vaccines",
+              "date": "2023-10-24T16:20",
+              "author": "RN",
+              "body": "In for flu and the updated COVID shot. Afebrile, feels well. Flu 0.5 mL IM left deltoid; COVID 2023-24 formula 0.3 mL IM right deltoid. VIS for both. Observed 15 min, tolerated. Joked she is doing it this year because last winter she caught everything her class brought in."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "annual_physical",
+          "start": "2024-06-25T10:00",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "telephone",
+          "start": "2024-06-26T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-06-26T09:15",
+              "author": "front desk",
+              "body": "Called re missed physical yesterday. She apologized, mixed up the date with a field day at school. Rebooked 7/16 at 1:40."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "annual_physical",
+          "start": "2024-07-16T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              81
+            ],
+            "hr": 63,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 57.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-16T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 64
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 21.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-16T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-07-16T14:05",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-07-22T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-07-16T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-07-16T14:25",
+              "author": "PCP",
+              "body": "30 y/o, rescheduled from June. Saw cardiology last month for her yearly echo; she says it was the same as last year and they want her back in a year. We have not received that letter, will ask. She and her partner would like to try for a second baby this fall; she says the cardiologist told her that was OK as long as she is followed closely in pregnancy. No palpitations, dyspnea, orthopnea or edema. On metoprolol 25, prenatal vitamin, folic acid.\n\nExam: vitals as charted. Heart regular, apical diastolic rumble. Lungs clear. Abd soft. Pelvic exam normal, Pap collected. No edema.\nPHQ-2: 0.\n\nA/P\n1. Rheumatic MS, stable per pt report of June echo. Requesting cardiology note.\n2. Preconception: continue folic acid and prenatal vitamin. When pregnant, tell OB and cardiology right away. MMR documented in old records.\n3. Alpha-thal trait: CBC.\n4. Pap today.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "portal_message",
+          "start": "2024-07-23T08:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and labs",
+              "date": "2024-07-23T08:40",
+              "author": "PCP",
+              "body": "Pap normal, next in 3 years. Blood count stable for you, kidney function and potassium normal. Still no cardiology letter from June; front desk sent a request."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "portal_message",
+          "start": "2024-10-08T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot this year",
+              "date": "2024-10-08T20:10",
+              "author": "patient",
+              "body": "Got the flu shot reminder. I am going to pass this year, I will think about it later in the season. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot this year",
+              "date": "2024-10-09T09:00",
+              "author": "MA",
+              "body": "No problem, noted as declined for now. Just call or message us if you'd like to come in for it."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, planning pregnancy",
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped on her own"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              83
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 57.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-03-11T16:35",
+              "author": "PCP",
+              "body": "S: Here to check in, they have been trying to conceive since the fall. On review of meds she tells me she stopped the metoprolol sometime in November, maybe earlier, because she felt tired on it and was not sure it was OK while trying to get pregnant. No palpitations, no racing, no breathlessness, no orthopnea since. Still on prenatal vitamin and folic acid. Has not been back to cardiology since last June.\n\nO: vitals as charted, pulse regular. Heart regular with the apical diastolic rumble. Lungs clear. No edema.\n\nA/P\n1. Rheumatic mitral stenosis, asymptomatic, sinus rhythm by exam. Off metoprolol for several months without symptoms. Taking it off her list for now. Asked her to message cardiology about stopping it and about her pregnancy plans, and to call right away for palpitations.\n2. Preconception: folic acid, prenatal vitamin. Let OB and cardiology know as soon as she has a positive test.\nRTC for physical in the summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Visit summary",
+              "date": "2025-03-12T07:45",
+              "author": "MA",
+              "body": "Hi Maricel, attached is your after-visit summary from yesterday. Your medication list now shows only the prenatal vitamin and folic acid. The doctor asked that you send a note to your cardiologist about the metoprolol. Let us know if you need their number."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "portal_message",
+          "start": "2025-06-30T06:55",
+          "conditions": [
+            {
+              "label": "Uncomplicated pregnancy without urinary tract infection",
+              "action": "diagnosed",
+              "onset": "2025-05-23",
+              "note": "G2P1, LMP 5/23/2025, EDD 2/27/2026",
+              "icd10": "Z34.81"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-preg",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "rheumatic mitral stenosis, new pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "date": "2025-06-30T06:55",
+              "author": "patient",
+              "body": "Good morning! I took a pregnancy test this morning and it was positive. My last period started May 23. I already called my OB and they can see me in two weeks. Is there anything I should do for my heart?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "date": "2025-06-30T12:10",
+              "author": "PCP",
+              "body": "Congratulations! Keep up the prenatal vitamin and folic acid. Please tell your OB about the mitral valve at your first visit. I have put in a referral back to cardiology so they can see you early in the pregnancy, their office should call you. If you get short of breath, can't lie flat, or feel your heart racing, call us or go to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "telephone",
+          "start": "2025-07-14T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request from OB",
+              "date": "2025-07-14T14:30",
+              "author": "front desk",
+              "body": "Outside OB office called requesting PMH, med list, cardiology and ED notes for new prenatal patient. Release on file. Faxed problem list, med list, 2023 ED record, 2023 cardiology consult, last labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "telephone",
+          "start": "2025-08-19T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cardiology referral status",
+              "date": "2025-08-19T10:10",
+              "author": "MA",
+              "body": "Checked referral status for cardiology. Their scheduler says they left her two voicemails in July. Called pt, left a message with the cardiology scheduling number and asked her to call them."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-12a",
+          "kind": "portal_message",
+          "start": "2025-10-12T18:20",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, unspecified",
+              "date": "2025-10-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot at OB",
+              "date": "2025-10-12T18:20",
+              "author": "patient",
+              "body": "Hi, just letting you know I had my 20 week visit Friday and everything was normal so far. I asked the OB if I should wait until after the baby for the flu shot because I was nervous about it, but she explained it is safe in pregnancy and protects the baby too, so I got it there. I was worried because the kids at school get so sick in the winter. You can put it in my record. I had one with you two years ago."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot at OB",
+              "date": "2025-10-12T19:05",
+              "author": "RN",
+              "body": "Thanks for letting us know, added to your immunization record as given at your OB office 10/10. Good choice. Did cardiology ever reach you to schedule?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Flu shot at OB",
+              "date": "2025-10-13T07:30",
+              "author": "patient",
+              "body": "Not yet, I keep missing their calls during school. I will try again."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "specialist_visit",
+          "start": "2025-12-03T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit, 28 weeks",
+          "conditions": [
+            {
+              "label": "Alpha-thalassemia",
+              "action": "diagnosed",
+              "onset": "2025-12-03",
+              "note": "as listed by OB during evaluation of fetal effusions",
+              "icd10": "D56.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2025-12-03T09:45",
+              "text": "Single live intrauterine pregnancy, gestational age 27 weeks 5 days by early dating. Fetal cardiac activity present. Fetal biometry within the expected range for dates. Fetal ascites present. Bilateral fetal pleural effusions. Small fetal pericardial effusion. Amniotic fluid volume normal. Placenta posterior, no previa.",
+              "conclusion": "Fetal ascites, bilateral pleural effusions and a small pericardial effusion with normal fluid and normal growth."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit, 28 weeks",
+              "date": "2025-12-08T15:40",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology, prenatal visit\nDate of visit: 12/03/2025\ncc: primary care physician\n\n31 y/o G2P1 at 27w5d by early ultrasound, with rheumatic mitral stenosis and alpha-thalassemia trait, here for her routine third-trimester visit. She feels well, no complaints, no recent illness, no trauma. Glucose screening normal, no maternal diabetes. Antibody screen negative; no alloimmunization.\n\nLabs: Toxoplasma, CMV and parvovirus B19 serologies negative. Cell-free DNA screening earlier in pregnancy low risk, no chromosomal abnormality.\n\nUltrasound today: fetal ascites, bilateral fetal pleural effusions and a small pericardial effusion. Amniotic fluid normal. Growth appropriate.\n\nAssessment/Plan:\n- Fetal effusions as above, infectious and immune causes not supported by the workup to date. With maternal alpha-thalassemia trait, fetal alpha-thalassemia is a leading concern. Problem list: alpha-thalassemia.\n- Neonatology consulted today.\n- Maternal peripheral blood smear sent.\n- Maternal-fetal medicine to follow closely.\n- Medications: prenatal vitamin, folic acid 1 mg. NKDA.\n\nDiscussed findings with patient and partner at length."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "telephone",
+          "start": "2025-12-05T12:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call after ultrasound",
+              "date": "2025-12-05T12:15",
+              "author": "RN",
+              "body": "Pt called crying, says her scan Wednesday showed fluid around the baby and the OB thinks it may be the thalassemia. Wants to talk to her doctor. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP callback",
+              "date": "2025-12-05T17:30",
+              "author": "PCP",
+              "body": "Called back, spoke 20 min. We have not received the OB note yet. She explained the ultrasound findings as she understands them, and that the OB, the high-risk pregnancy team and the newborn doctors are all involved. Listened, answered what I could, encouraged her to write down questions for the specialists. She feels well herself, no breathlessness or palpitations. She has support from her partner. Will watch for the OB letter. Told her she can message any time."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "specialist_visit",
+          "start": "2026-01-05T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit; right thigh pain",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "date": "2026-03-06T10:20",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology, prenatal visit\nDate of visit: 01/05/2026\n\n31 y/o G2P1 at 32w3d, rheumatic mitral stenosis, alpha-thalassemia trait, followed since the 28-week visit. New concern: about two months of burning and pins-and-needles along the outer right thigh. Worse when she stands for a long time at work, eases when she lies down. No injury. No back pain, no weakness. Weight up 25 lb this pregnancy.\n\nExam: right thigh skin normal, no redness or swelling. Patch of reduced light-touch sensation over the anterolateral thigh. Hip exam normal, full painless range. Lumbar spine nontender, normal motion. Patellar and ankle reflexes intact and symmetric. Straight leg raise negative right and left. Strength normal.\n\nAssessment: meralgia paresthetica, right, lateral femoral cutaneous nerve compression, typical in late pregnancy.\nPlan: reassurance, avoid tight waistbands and belts, change position and sit when possible during the school day. Expect improvement after delivery. Return if weakness or bladder or bowel changes.\nMeds: prenatal vitamin, folic acid 1 mg. NKDA.\n\n[Received with delivery records 3/6/2026.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "ed_visit",
+          "start": "2026-01-16T17:20",
+          "end": "2026-01-16T22:10",
+          "service": "Emergency Medicine",
+          "reason": "left leg swelling in pregnancy",
+          "conditions": [
+            {
+              "label": "Deep vein thrombosis of left lower extremity in pregnancy",
+              "action": "diagnosed",
+              "onset": "2026-01-13",
+              "icd10": "O22.33"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 80 MG in 0.8 ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 70 mg (0.7 mL) under the skin every 12 hours",
+              "dose": {
+                "value": 70,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "DVT in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              74
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 69.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-16T17:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Platelets",
+                  "value": 324
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 64
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 20.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-16T17:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-16T17:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2026-01-16T19:05",
+              "text": "Left lower extremity venous compression ultrasound with color and spectral flow assessment. Common femoral and femoral veins compressible with normal phasic flow. Popliteal vein noncompressible and distended with intraluminal echogenic material and absent flow. Calf veins incompletely seen due to swelling.",
+              "conclusion": "Acute deep vein thrombosis of the left popliteal vein."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-16T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-01-23T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 01/16/2026\nPatient: Maricel Srisai, 31 F, G2P1 at 34w0d\nAllergies: NKDA\n\nCC: left leg swelling\n\nHPI: 31 year old pregnant woman with rheumatic mitral stenosis and alpha-thal trait. Three days of left leg swelling with a tight, aching feeling, worse the longer she stands, now hard to walk on. No injury, no long trips. No chest pain, no shortness of breath. Fetal movement normal.\n\nMeds: prenatal vitamin, folic acid. SH: no tobacco, alcohol or drugs.\n\nExam: afebrile, vitals stable and within normal limits. Left calf visibly larger than right and tender, faint redness, skin intact without breakdown or ulcers. Dorsalis pedis and posterior tibial pulses intact both feet. Lungs clear. Gravid abdomen, nontender.\n\nUltrasound: left popliteal vein will not compress, consistent with DVT.\nLabs: CBC with platelets normal, Hgb at her usual low level, creatinine normal, PT/INR normal.\n\nImpression: acute left lower extremity DVT (popliteal) in the third trimester.\n\nPlan: discussed with on-call OB. Enoxaparin 70 mg subcutaneous every 12 hours (1 mg/kg, weight 69 kg), first dose given here at 21:00, teaching done. Prescription sent. OB follow-up early next week; PCP follow-up. Leg elevation, walking as tolerated. Return for chest pain, breathlessness, bleeding, or decreased fetal movement.\n\n[Received 1/23/2026.]"
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0,
+            "labs": {
+              "Hematocrit": 33.6,
+              "Hemoglobin": 10.8,
+              "Mean Corpuscular Volume": 66
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "pharmacy",
+          "start": "2026-01-19T09:20",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Enoxaparin prior authorization",
+              "date": "2026-01-19T09:20",
+              "author": "RN",
+              "body": "Pharmacy faxed a PA request for enoxaparin 80 mg/0.8 mL syringes, 70 mg q12h, prescribed by the ED on 1/16. We had no record of this visit. Called pt: seen in the ED Friday for a left leg clot, ultrasound positive, started on shots. Has been using the ED's starter syringes, has enough through tonight. PA submitted to insurer with diagnosis DVT in pregnancy. Telehealth booked with PCP Wednesday. ED record requested."
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Enoxaparin PA approved",
+              "date": "2026-01-19T15:45",
+              "author": "RN",
+              "body": "Insurer approved enoxaparin through 7/2026. Pharmacy notified, filling today. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-01-21T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "DVT follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-01-21T12:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2026-01",
+              "action": "placed",
+              "order": "CBC",
+              "category": "lab",
+              "reason": "platelet check on enoxaparin"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2026-01-21T12:40",
+              "author": "PCP",
+              "body": "Video visit, pt at home on her lunch break, identity verified.\n\nS: 34 weeks. ED 1/16 for 3 days of left leg swelling and aching, ultrasound showed left popliteal DVT. On enoxaparin 70 mg every 12 hours since that night, giving it herself in the belly, some bruising, no other bleeding. Swelling already a bit down, walking easier. No chest pain, no dyspnea, no palpitations. Baby moving well. Saw OB yesterday, they will manage the anticoagulation around delivery. Thigh tingling on the right still bothers her when she stands, OB told her it is a pregnancy nerve thing.\n\nO: appears comfortable on video, speaking full sentences, left calf still fuller than right on camera.\n\nA/P\n1. Left popliteal DVT in pregnancy on therapeutic enoxaparin, improving. Platelet check this week, standing order at the lab. Continue enoxaparin; OB to plan peripartum dosing. Signs of PE reviewed.\n2. Rheumatic MS: no symptoms. She has still not seen cardiology this pregnancy; gave her the scheduling number again.\nFollow up after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "lab_only",
+          "start": "2026-01-22T07:30",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-22T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 308
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 66
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 21.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2026-01",
+              "action": "done",
+              "date": "2026-01-22T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC on enoxaparin",
+              "date": "2026-01-22T13:00",
+              "author": "PCP",
+              "body": "Platelets normal, no drop on enoxaparin. Hgb stable at her pregnancy baseline. Released to pt."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "ed_visit",
+          "start": "2026-02-13T08:40",
+          "end": "2026-02-13T12:30",
+          "service": "Emergency Medicine",
+          "reason": "decreased fetal movement",
+          "conditions": [
+            {
+              "label": "Decreased fetal movements in third trimester",
+              "action": "diagnosed",
+              "onset": "2026-02-12",
+              "icd10": "O36.8130"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-02-13T08:45",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-13T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-03-06T10:25",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 02/13/2026\nPatient: Maricel Srisai, 31 F, G2P1 at 38w0d\nAllergies: NKDA\n\nCC: baby not moving much\n\nHPI: 38 weeks, about four weeks out from a left leg DVT, on enoxaparin twice daily. Normally a very active baby, especially after she eats, but since yesterday morning she has felt only a handful of movements. No bleeding, no fluid leaking, no contractions. Very anxious and asking whether the baby is all right.\n\nMeds (home list): prenatal vitamin, folic acid. Also on enoxaparin as above.\n\nExam: BP 120/78, HR 88. Fetal heart rate 140 by handheld fetal monitor. Abdomen soft, nontender. Fundus appropriate for dates.\nPrenatal labs reviewed, unremarkable; glucose challenge normal.\n\nCourse: placed on continuous fetal monitoring with OB at bedside, reactive tracing, she felt multiple movements during monitoring.\n\nImpression: decreased fetal movement, third trimester, reassuring evaluation.\nDisposition: home with kick-count instructions, keep scheduled OB visit next week, return immediately for fewer than 10 movements in 2 hours.\n\n[Received with delivery records 3/6/2026.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "hospital_admission",
+          "start": "2026-02-20T10:15",
+          "end": "2026-02-24T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "decreased fetal movement, nonreassuring fetal testing; labor",
+          "conditions": [
+            {
+              "label": "Fetal distress (Category III fetal heart rate tracing)",
+              "action": "diagnosed",
+              "onset": "2026-02-20",
+              "icd10": "O36.8330"
+            },
+            {
+              "label": "Labor arrest disorder",
+              "action": "diagnosed",
+              "note": "arrest of active phase 2/21/2026",
+              "icd10": "O62.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 80 MG in 0.8 ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "held for delivery; dose changed after delivery"
+            },
+            {
+              "drug_text": "enoxaparin sodium 60 MG in 0.6 ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 60 mg under the skin every 12 hours until 4/17/2026",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "DVT in pregnancy, postpartum"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-02-20T10:20",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2026-02-21T09:00",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 84,
+              "rr": 18,
+              "temp_c": 36.9,
+              "spo2": 99
+            },
+            {
+              "time": "2026-02-24T08:00",
+              "bp": [
+                114,
+                70
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 36.6,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-20T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 66
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 21.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-22T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 66
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 21.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2026-02-20T11:20",
+              "text": "Single live intrauterine pregnancy, cephalic presentation, 39 weeks 0 days. Biophysical profile: nonstress test 0/2, fetal breathing movements 0/2, fetal movements 2/2, fetal tone 2/2, amniotic fluid volume 0/2. Oligohydramnios. Placenta posterior.",
+              "conclusion": "Oligohydramnios. Biophysical profile 4/10."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-20T12:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-03-06T10:30",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 02/20/2026   Discharged: 02/24/2026\nPatient: Maricel Srisai, 31 y/o, G2P1 -> P2\nAllergies: NKDA\n\nAdmission diagnosis: decreased fetal movement at 39w0d with nonreassuring fetal testing.\nDischarge diagnoses: Category III fetal heart rate tracing, resolved with resuscitation; arrest of active phase of labor; low transverse cesarean delivery; left popliteal DVT in pregnancy on enoxaparin; rheumatic mitral stenosis; alpha-thalassemia trait.\n\nPrenatal course: rheumatic mitral stenosis and alpha-thalassemia trait. Fetal ascites, pleural and pericardial effusions on the 28-week ultrasound, followed by maternal-fetal medicine and neonatology; maternal smear from that visit showed microcytic, hypochromic red cells with target cells, consistent with alpha-thalassemia trait. Right meralgia paresthetica. Left popliteal DVT 1/16/2026 on therapeutic enoxaparin. ED visit 2/13 for decreased fetal movement, reassuring.\n\nHospital course: presented to triage 2/20 with six hours of decreased movement. BP 120/75, P 80, T 36.8 C. Fetal tracing with minimal variability, no accelerations and recurrent late decelerations, Category III. Ultrasound with oligohydramnios, BPP 4/10. Admitted to labor and delivery. Last enoxaparin dose 2/20 at 07:00 at home, held from admission. Intrauterine resuscitation with left lateral positioning and IV fluid bolus; tracing returned to Category I within the hour. Induction of labor begun with close monitoring.\nEarly 2/21 membranes ruptured, clear fluid, followed by regular contractions every 3 minutes. Cervix 6 cm, 90% effaced, -2 station. After five hours of adequate contractions she was in severe pain and requested analgesia; epidural placed at 10:15, more than 24 hours after her last therapeutic dose. Repeat exam unchanged in dilation, effacement and station. Intrauterine pressure catheter averaging 220 MVU per 10 minutes. Afebrile, no signs of chorioamnionitis. Fetal tracing reassuring throughout labor.\nDiagnosis of active-phase arrest; low transverse cesarean delivery under epidural anesthesia 2/21 at 15:40, uncomplicated. Liveborn infant handed to the neonatal team.\nPostpartum: recovered well, ambulating, tolerating diet. Enoxaparin restarted 24 hours after surgery at 60 mg every 12 hours (weight 63 kg). Postop day 1 Hgb 10.2. Mitral stenosis: no dyspnea, no arrhythmia on telemetry during labor.\n\nDischarge medications: enoxaparin 60 mg subcut every 12 hours until 4/17/2026 (at least 6 weeks postpartum and 3 months total), acetaminophen 1000 mg every 6 hours as needed, prenatal vitamin daily, folic acid 1 mg daily.\nFollow-up: OB incision check in 1 to 2 weeks; postpartum visit 6 weeks; PCP; cardiology.\n\n[Received by fax 3/6/2026 after request.]"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0
+          }
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "portal_message",
+          "start": "2026-02-26T21:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2026-02-26T21:15",
+              "author": "patient",
+              "body": "Hi doctor, I wanted you to know I had the baby last Saturday by C-section. The baby was not moving much so they kept me, then my labor stopped at 6 cm. The baby is with the newborn team. I am home now, still on the blood thinner shots, now 60 twice a day until April 17. I will make an appointment after my OB checkup."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2026-02-27T08:05",
+              "author": "PCP",
+              "body": "Thank you for telling me, I have been thinking of you. Rest as much as you can. Keep up the shots until April 17. Call right away for chest pain, trouble breathing, heavy bleeding or a hot, red incision. We'll request the hospital records and see you in April."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "telephone",
+          "start": "2026-02-27T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2026-02-27T09:30",
+              "author": "front desk",
+              "body": "Faxed request to the hospital and the OB office for the delivery admission, the 2/13 ED visit and prenatal notes since December."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T11:05",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Enoxaparin refill",
+              "date": "2026-03-10T11:05",
+              "author": "RN",
+              "body": "Pharmacy asking for refill of enoxaparin 60 mg/0.6 mL syringes, hospital Rx was a 2 week supply. Per PCP and discharge summary, sent 60 mg q12h, quantity to finish through 4/17, no refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "conditions": [
+            {
+              "label": "Meralgia paresthetica, right lower limb",
+              "action": "diagnosed",
+              "onset": "2025-11-05",
+              "icd10": "G57.11"
+            },
+            {
+              "label": "Deep vein thrombosis of left lower extremity in pregnancy",
+              "action": "resolved",
+              "icd10": "O22.33"
+            },
+            {
+              "label": "History of deep vein thrombosis",
+              "action": "history",
+              "onset": "2026-01-13"
+            },
+            {
+              "label": "Uncomplicated pregnancy without urinary tract infection",
+              "action": "resolved",
+              "icd10": "Z34.81"
+            },
+            {
+              "label": "Decreased fetal movements in third trimester",
+              "action": "resolved",
+              "icd10": "O36.8130"
+            },
+            {
+              "label": "Fetal distress (Category III fetal heart rate tracing)",
+              "action": "resolved",
+              "icd10": "O36.8330"
+            },
+            {
+              "label": "Labor arrest disorder",
+              "action": "resolved",
+              "icd10": "O62.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 60 MG in 0.6 ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "course completed 4/17/2026"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              78
+            ],
+            "hr": 58,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 60.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-21T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 66
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 21.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-04-21T16:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 87
+                },
+                {
+                  "test": "Iron",
+                  "value": 112
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 38
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 298
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Follow-up",
+              "date": "2026-04-21T16:20",
+              "author": "PCP",
+              "body": "S: 8 weeks after cesarean on 2/21 for arrest of labor. Records from the hospital and OB arrived 3/6 and are reviewed. Did her last enoxaparin injection 4/17 as planned, no bleeding problems. Left leg back to normal size, no pain. OB postpartum check went fine, incision healed. Right outer thigh tingling much better since delivery, only notices it after a long day. Sleeping in pieces with the baby, partner helping. Mood mostly OK, tired. No breathlessness, orthopnea or palpitations. Still has not seen cardiology; appointment now booked for May.\nMeds: prenatal vitamin, folic acid. NKDA.\n\nO: vitals as charted, regular pulse. Well appearing. Heart regular, apical diastolic rumble as before. Lungs clear. Abdomen: low transverse incision well healed. Legs: symmetric, no edema, no calf tenderness. Right thigh: small area of slightly reduced light touch anterolaterally, strength and reflexes normal.\nPHQ-9: 4.\n\nA/P\n1. Left popliteal DVT in pregnancy, provoked, completed 3 months of enoxaparin. Stopped. Moved to history.\n2. Meralgia paresthetica, right, from OB note 1/5, improving postpartum. Added to list. Expect it to settle.\n3. Pregnancy items resolved on the problem list.\n4. Rheumatic MS: cardiology 5/19, glad it is booked.\n5. Alpha-thal trait, post-cesarean: CBC and iron today.\n6. Mood: PHQ-9 4, normal postpartum fatigue, she knows to reach out.\nPhysical in the summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.5,
+            "labs": {
+              "Hematocrit": 35.8,
+              "Hemoglobin": 11.5,
+              "Mean Corpuscular Volume": 66
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "portal_message",
+          "start": "2026-04-22T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count and iron",
+              "date": "2026-04-22T12:30",
+              "author": "PCP",
+              "body": "Your blood count is nearly back to your usual level and iron stores are normal, so no iron pills needed. Keep the prenatal vitamin and folic acid."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T09:00",
+          "service": "Cardiology",
+          "reason": "rheumatic mitral stenosis, postpartum",
+          "vitals": {
+            "bp": [
+              120,
+              82
+            ],
+            "hr": 60,
+            "weight_kg": 59.6
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-05-19T08:15",
+              "text": "Technically adequate study. Left ventricle normal in size and wall thickness, LVEF 60%, no regional wall motion abnormality. Right ventricle normal size and function. Mitral valve rheumatic with commissural fusion and anterior leaflet doming. Mitral valve area 1.6 cm2 by planimetry. Mean gradient 6 mmHg at heart rate 70. Mild mitral regurgitation. Left atrium enlarged, volume index 47 mL/m2. Aortic valve normal. Trace tricuspid regurgitation, estimated PASP 34 mmHg. No pericardial effusion.",
+              "conclusion": "Rheumatic mitral stenosis, MVA 1.6 cm2, mean gradient 6 mmHg, unchanged from 2023; mild MR; LVEF 60%."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-05-19T08:50",
+              "text": "Sinus rhythm, rate 70. Normal intervals and axis. No ST or T-wave abnormality.",
+              "conclusion": "Sinus rhythm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-preg",
+              "action": "done",
+              "date": "2026-05-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2026-06-02T14:00",
+              "author": "cardiology",
+              "body": "Outpatient Cardiology Follow-up\nDate of visit: 05/19/2026\n\nMs. Srisai returns, last seen by us 6/2024. Since then she stopped metoprolol on her own in late 2024, conceived in May 2025, and delivered by cesarean on 2/21/2026 for arrest of labor after a pregnancy complicated by fetal effusions and a left popliteal DVT treated with enoxaparin through 4/17. She was not seen here during the pregnancy. She reports no palpitations, orthopnea, or exertional dyspnea, including during labor. Meds: prenatal vitamin, folic acid 1 mg. NKDA.\n\nExam: regular rhythm, loud S1, opening snap, apical diastolic rumble. Lungs clear. No edema.\nECG: sinus rhythm 70.\nEcho: MVA 1.6 cm2, mean gradient 6 mmHg at HR 70, LA volume index 47 mL/m2, PASP 34 mmHg, LVEF 60%, mild MR. Unchanged from 2023.\n\nAssessment: stable stage B rheumatic mitral stenosis in sinus rhythm, asymptomatic.\nPlan: echo and visit yearly. Please let us know early in any future pregnancy. Prompt evaluation for palpitations or breathlessness.\n\nOutside cardiology group"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "annual_physical",
+          "start": "2026-07-23T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Meralgia paresthetica, right lower limb",
+              "action": "resolved",
+              "icd10": "G57.11"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              74
+            ],
+            "hr": 60,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 57.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-23T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.31
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 67
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 21.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-23T11:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-23T11:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-23T11:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-23T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-23T11:30",
+              "author": "PCP",
+              "body": "32 y/o here for annual, five months after her cesarean. Feels like herself again, sleeping better. Thigh tingling gone for about a month. Saw cardiology 5/19, echo unchanged, yearly follow-up; letter received. No palpitations, dyspnea, orthopnea, leg swelling or calf pain. Off enoxaparin since April. Taking prenatal vitamin and folic acid. Back to school in the fall.\n\nExam: vitals as charted. Well. Thyroid normal. Heart regular, apical diastolic rumble, unchanged. Lungs clear. Abdomen soft, incision healed. Legs symmetric, no edema. Right thigh sensation normal today. Mood bright.\nPHQ-2: 0.\n\nA/P\n1. Rheumatic MS stage B, sinus rhythm, cardiology yearly.\n2. Hx paroxysmal AF 2023, no recurrence.\n3. Hx provoked DVT in pregnancy, off anticoagulation.\n4. Meralgia paresthetica resolved.\n5. Alpha-thal trait: CBC; continue folic acid.\n6. Health maintenance: CMP, lipids, TSH. Pap due 2027. Flu and COVID this fall, booked in November.\nRTC November."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.2,
+            "labs": {
+              "Hematocrit": 36.9,
+              "Hemoglobin": 11.8,
+              "Mean Corpuscular Volume": 66
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "portal_message",
+          "start": "2026-07-24T14:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2026-07-24T14:10",
+              "author": "PCP",
+              "body": "Hi Maricel, everything from Thursday came back fine: blood count back to your usual thalassemia-trait level, kidney and liver normal, thyroid normal, cholesterol good. See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T10:00",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Folic acid refill",
+              "date": "2026-08-11T10:00",
+              "author": "RN",
+              "body": "Refill request folic acid 1 mg daily. Last seen 7/23, on list. Approved #90 with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment reminder",
+              "date": "2026-08-18T09:30",
+              "author": "front desk",
+              "body": "Reminder: you have a follow-up visit with flu vaccine on November 10 at 3:20 pm. Reply here or call if you need to change it."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-10a",
+          "kind": "office_visit",
+          "start": "2026-11-10T15:20",
+          "reason": "routine follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Alpha-thalassemia trait|D56.3": {
+        "code": "D56.3",
+        "display": "Thalassemia minor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alpha-thalassemia|D56.0": {
+        "code": "D56.0",
+        "display": "Alpha thalassemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Decreased fetal movements in third trimester|O36.8130": {
+        "code": "O36.8130",
+        "display": "Decreased fetal movements, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Deep vein thrombosis of left lower extremity in pregnancy|O22.33": {
+        "code": "O22.33",
+        "display": "Deep phlebothrombosis in pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fetal distress (Category III fetal heart rate tracing)|O36.8330": {
+        "code": "O36.8330",
+        "display": "Maternal care for abnormalities of the fetal heart rate or rhythm, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Labor arrest disorder|O62.1": {
+        "code": "O62.1",
+        "display": "Secondary uterine inertia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Meralgia paresthetica, right lower limb|G57.11": {
+        "code": "G57.11",
+        "display": "Meralgia paresthetica, right lower limb",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rheumatic mitral stenosis|I05.0": {
+        "code": "I05.0",
+        "display": "Rheumatic mitral stenosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Uncomplicated pregnancy without urinary tract infection|Z34.81": {
+        "code": "Z34.81",
+        "display": "Encounter for supervision of other normal pregnancy, first trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "enoxaparin sodium 60 MG in 0.6 ML Prefilled Syringe": {
+        "code": "854238",
+        "display": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+        "ingredient": "enoxaparin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "enoxaparin sodium 80 MG in 0.8 ML Prefilled Syringe": {
+        "code": "854241",
+        "display": "0.8 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+        "ingredient": "enoxaparin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin Oral Tablet\""
+    ]
+  }
+}

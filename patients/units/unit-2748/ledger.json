@@ -1,0 +1,873 @@
+{
+  "unit": "unit-2748",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002748",
+      "given": "Donna",
+      "family": "Langevin",
+      "birth_date": "1981-05-13",
+      "address_line": "41 Riverbend Road",
+      "phone": "+1-646-555-0153",
+      "email": "donna.langevin@example.test",
+      "marital_status": "married",
+      "summary": "Forty-four-year-old administrative assistant who joined the practice in June 2025 for a routine health check and trouble losing weight; obesity (BMI 32), prediabetes, dyslipidemia and metabolic syndrome found at that visit. Managed with lifestyle change only; one-year follow-up in June 2026 led to a dietitian referral.",
+      "events": [
+        {
+          "id": "2025-06-03a",
+          "kind": "telephone",
+          "start": "2025-06-03T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2025-06-03T10:20",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; her previous physician retired last year and she has not had a checkup since. Works as an admin assistant, insurance through her employer. Explained membership, same-day access and that insurance still covers labs and referrals. She would like a routine health check. Scheduled new patient visit Mon 6/23 at 8:30, asked her to come fasting. Release form for her old office emailed to her; she will sign and return today."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "outside_records",
+          "start": "2025-06-12T14:05",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2025-06-12T14:05",
+              "author": "front desk",
+              "body": "Records received from patient's former primary care office (34 pages), covering 2016 through 2023.\n\nSummary abstracted for the new-patient visit:\n- Problem list on their system: none active.\n- Medications: none.\n- Allergies: no known drug allergies.\n- Surgical: tonsillectomy in childhood; cesarean delivery.\n- Health maintenance: Pap with HPV co-test 05/2023, negative for intraepithelial lesion, HPV not detected. Tdap 2019.\n- Last office visit 08/2023, well visit, no concerns documented.\n\nOriginals scanned under Media. Flagged for PCP before 6/23."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "establish_care",
+          "start": "2025-06-23T08:30",
+          "end": "2025-06-23T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, routine health check",
+          "conditions": [
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2025-06-23",
+              "note": "BMI 32"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 77,
+            "spo2": 96,
+            "weight_kg": 85.7,
+            "height_cm": 162.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-23T08:40",
+              "resulted": "2025-06-23T15:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 103
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-23T08:40",
+              "resulted": "2025-06-23T15:10",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 38
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-23T08:40",
+              "resulted": "2025-06-23T15:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.28
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-23T08:40",
+              "resulted": "2025-06-23T15:10",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 103
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-23T08:40",
+              "resulted": "2025-06-24T11:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant (sedentary desk job)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2025-06-23T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-23T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "average-risk colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-06-23T09:30",
+              "author": "PCP",
+              "body": "New patient, 44F, here to establish and for a general checkup.\n\nS: Feels well. Main concern is weight: she has tried cutting portions and some walking on and off but the scale has not moved, and she is frustrated. Sits at a desk most of the day as an administrative assistant. Diet by her own account leans on bread, pasta and snack foods. She says she is tired of putting this off and wants to get on top of her health now. No chest pain, dyspnea, polyuria or polydipsia.\nPMH: nothing chronic on file at her old office.\nPSH: tonsillectomy age 8; C-section age 29.\nMeds: none. Allergies: NKDA.\nFH: mother with type 2 DM diagnosed at 55; older brother also has type 2 DM; father with high cholesterol and HTN; maternal grandmother had an MI at 68.\nSH: never smoker. Wine 1-2 glasses on weekends. Married.\n\nO: BP 128/82. Ht 163 cm, wt 85.0 kg, BMI 32. Waist circumference elevated. Well appearing. HEENT unremarkable, thyroid not enlarged. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no organomegaly. No pedal edema. Skin without acanthosis or concerning lesions.\n\nA/P:\n1. Obesity, BMI 32. Talked through where to start: steady daily movement, swapping refined carbs and sweet drinks, food tracking if it helps her. Fasting labs drawn this morning - A1c, glucose, lipids, CMP, CBC, TSH.\n2. Strong family history of diabetes, plus father's lipids and BP and her grandmother's MI; will see what labs show.\n3. Health maintenance: Pap/HPV 2023 negative per old records, next due 2028. Mammogram ordered. Colon screening now recommended from 45 - she prefers stool testing, FIT kit given. HIV and hep C screening sent with today's blood work. PHQ-2 negative. Flu and COVID in the fall.\nWill message results."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              82
+            ],
+            "weight_kg": 85.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Creatinine": 0.9,
+              "Fasting Glucose": 103,
+              "Glucose": 103,
+              "Hemoglobin A1c": 5.7,
+              "High Density Lipoprotein": 38,
+              "Low Density Lipoprotein": 95,
+              "Thyroid Stimulating Hormone": 1.7,
+              "Triglycerides": 180
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "portal_message",
+          "start": "2025-06-24T16:45",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Prediabetes",
+              "action": "diagnosed",
+              "onset": "2025-06-23"
+            },
+            {
+              "label": "Dyslipidemia",
+              "action": "diagnosed",
+              "onset": "2025-06-23",
+              "note": "high triglycerides, low HDL",
+              "icd10": "E78.5"
+            },
+            {
+              "label": "Metabolic syndrome",
+              "action": "diagnosed",
+              "onset": "2025-06-23",
+              "icd10": "E88.810"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2025-06-24T16:45",
+              "author": "PCP",
+              "body": "Hi Donna,\n\nYour results are in. A few of them fit together, so I want to explain them as a group.\n\n- A1c 5.7% and fasting sugar 103. Both are in the prediabetes range: not diabetes, but the stage before it, and given your mom and brother it is worth taking seriously.\n- Triglycerides 180 (high) and HDL, the protective cholesterol, 38 (low).\n- Kidney function (creatinine 0.9), blood counts and thyroid are normal. HIV and hepatitis C screens negative.\n\nPut together with your waist measurement, this is what we call metabolic syndrome. The good news is that it responds very well to exactly what you told me you want to do: more daily movement, fewer refined carbs and sugary drinks, and gradual weight loss. Even 5-7% of body weight makes a real difference. I don't recommend medication right now.\n\nLet's recheck all of this in about a year, sooner if you want a check-in. Message me any time.\n\n- Your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "lab_only",
+          "start": "2025-07-08T09:15",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-07T07:00",
+              "resulted": "2025-07-08T09:15",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-07-08T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-07-08T11:00",
+              "author": "MA",
+              "body": "FIT negative. Released to portal per PCP standing note: normal stool test, repeat yearly. Recall set for 07/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-17a",
+          "kind": "imaging",
+          "start": "2025-07-17T13:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-07-17T13:30",
+              "text": "EXAM: Bilateral screening mammogram with tomosynthesis.\nCOMPARISON: None available.\nBREAST COMPOSITION: Scattered areas of fibroglandular density.\nFINDINGS: No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable. No axillary adenopathy.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-07-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram result",
+              "date": "2025-07-18T08:10",
+              "author": "PCP",
+              "body": "Donna - your mammogram was normal (BI-RADS 1). Next one in a year. - PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Seasonal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T12:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T12:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2025-10-14T12:35",
+              "author": "RN",
+              "body": "Came in on her lunch break for vaccines. Screening questions negative, no prior reactions, not ill today. Flu vaccine IM left deltoid, 2025-26 COVID vaccine IM right deltoid. Lot numbers in the immunization record. Waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T20:12",
+          "reason": "Patient update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Quick update",
+              "date": "2026-02-10T20:12",
+              "author": "patient",
+              "body": "Hi, no question really, just wanted to say I've been going for a walk after dinner most nights and started logging my food in an app. Hard to keep it up in this cold but I'm trying! Do I need to come in before summer?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Quick update",
+              "date": "2026-02-11T07:50",
+              "author": "PCP",
+              "body": "That's great to hear, Donna. Keep it going. No need to come in before then unless something changes; we'll do your follow-up and repeat blood work around June."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "telephone",
+          "start": "2026-06-05T09:40",
+          "reason": "Reschedule appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "date": "2026-06-05T09:40",
+              "author": "front desk",
+              "body": "Pt has a work deadline Monday and can't make her 6/8 follow-up. Moved to Mon 6/29, 8:15, fasting for labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "office_visit",
+          "start": "2026-06-08T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up prediabetes",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "office_visit",
+          "start": "2026-06-29T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "One-year follow-up, metabolic syndrome",
+          "vitals": {
+            "bp": [
+              127,
+              73
+            ],
+            "hr": 68,
+            "spo2": 96,
+            "weight_kg": 85.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-29T08:20",
+              "resulted": "2026-06-30T13:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-29T08:20",
+              "resulted": "2026-06-30T13:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 41
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-29T08:20",
+              "resulted": "2026-06-30T13:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 104
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-06-29T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-29T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rd-referral",
+              "action": "placed",
+              "order": "Registered dietitian referral, medical nutrition therapy",
+              "category": "referral",
+              "to": "Nutrition",
+              "reason": "prediabetes, metabolic syndrome, obesity"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-06-29T09:05",
+              "author": "PCP",
+              "body": "F/u prediabetes / metabolic syndrome, about a year since we first met.\n\nLast June she was worried about her weight and her desk-bound days and said she was ready to make changes. She has: walking 30 min every evening, signed up for a fitness class at the community center a few weeks ago, mostly off sweetened drinks, and counting calories in a phone app. Feels better day to day. No new symptoms. Still no medications.\n\nShe asks whether a nutritionist would help her keep going. I think it would - she has done the hard part of building habits and a dietitian can fine-tune the eating side. She clearly understands the plan and where she wants to take it; her call and a good one.\n\nExam: vitals as recorded. Comfortable. Heart RRR, lungs clear. No edema.\n\nA/P\n- Prediabetes, metabolic syndrome, obesity, dyslipidemia (high TG / low HDL): continue lifestyle program. Fasting A1c, glucose, lipids and CMP drawn today. Referral to registered dietitian for medical nutrition therapy placed.\n- No meds.\n- Annual physical already on the books for late July."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "portal_message",
+          "start": "2026-07-01T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June labs",
+              "date": "2026-07-01T12:30",
+              "author": "PCP",
+              "body": "Hi Donna - results from Monday are back. A1c, fasting sugar, triglycerides and HDL are all close to where they were last year: still the prediabetes picture, not worse. Liver and kidney numbers normal. It often takes a while for blood work to catch up with new habits, so keep at it. We can go over them in detail at your physical on the 28th."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "telephone",
+          "start": "2026-07-08T15:20",
+          "reason": "Referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Dietitian referral",
+              "date": "2026-07-08T15:20",
+              "author": "front desk",
+              "body": "Nutrition office called - referral and last office note received, insurance verified for MNT. They will contact pt directly to book; first openings are in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "annual_physical",
+          "start": "2026-07-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 73,
+            "spo2": 97,
+            "weight_kg": 84.8,
+            "height_cm": 163.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-07-28T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            },
+            {
+              "id": "fit-2026",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-28T10:45",
+              "author": "PCP",
+              "body": "Annual exam, 45F.\n\nInterval: seen 6/29 for metabolic follow-up; dietitian referral in process, nutrition office expects September. Keeping up the evening walks and the class twice a week. No complaints. Sleeping OK. Mood good.\nMeds none. NKDA. Never smoker, weekend wine only.\n\nExam: vitals per flowsheet. NAD. Eyes, ears, oropharynx normal. Neck supple, no thyroid enlargement, no nodes. Heart regular rate, no murmurs. Lungs clear throughout. Breast exam declined, mammogram scheduled. Abdomen soft, nontender. Extremities without edema. Skin no suspicious lesions. Neuro grossly intact.\n\nReviewed June labs with her: A1c and fasting glucose in prediabetic range, TG still high, HDL still low, CMP fine.\n\nPlan:\n- Prediabetes / metabolic syndrome / obesity / dyslipidemia: lifestyle plan, dietitian. Recheck A1c and lipids at a December visit.\n- Screening: mammogram ordered; FIT kit handed to her; cervical screening next due 2028; PHQ-2 0.\n- Vaccines: flu and COVID when the fall supply arrives; Tdap good until 2029.\nDecember follow-up booked at checkout."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "imaging",
+          "start": "2026-08-11T15:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-08-11T15:00",
+              "text": "EXAM: Screening digital breast tomosynthesis, both breasts.\nCOMPARISON: 07/2025.\nBREAST COMPOSITION: Scattered areas of fibroglandular density.\nFINDINGS: Stable appearance of both breasts. No mass, distortion or suspicious calcification. No axillary abnormality.",
+              "conclusion": "BI-RADS 1: Negative. Return to annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "done",
+              "date": "2026-08-11T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2026",
+              "date": "2026-08-12T09:30",
+              "author": "MA",
+              "body": "Screening mammogram report received and filed; negative, BI-RADS 1. Normal-result letter released to portal per PCP protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "lab_only",
+          "start": "2026-08-18T10:05",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-16T07:30",
+              "resulted": "2026-08-18T10:05",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "done",
+              "date": "2026-08-18T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT 2026",
+              "date": "2026-08-18T13:40",
+              "author": "MA",
+              "body": "FIT came back negative. Pt notified through portal. Next kit due summer 2027."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T18:55",
+          "reason": "Dietitian appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Nutrition appointment",
+              "date": "2026-08-20T18:55",
+              "author": "patient",
+              "body": "Just letting you know the nutrition office called and I'm booked with the dietitian the second week of September. Thanks for setting that up!"
+            }
+          ]
+        },
+        {
+          "id": "2026-12-08a",
+          "kind": "office_visit",
+          "start": "2026-12-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up prediabetes and metabolic syndrome",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Dyslipidemia|E78.5": {
+        "code": "E78.5",
+        "display": "Hyperlipidemia, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Metabolic syndrome|E88.810": {
+        "code": "E88.810",
+        "display": "Metabolic syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

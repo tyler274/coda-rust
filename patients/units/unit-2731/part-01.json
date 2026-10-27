@@ -1,0 +1,318 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002731",
+      "given": "Andrea",
+      "family": "Davidson",
+      "birth_date": "1968-03-17",
+      "address_line": "58 Prospect Ridge Lane",
+      "phone": "+1-774-555-0160",
+      "email": "andrea.davidson@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant in her fifties, survivor of stage II right breast cancer (2012) and stage IIIB cervical stump cancer (2021) with surgical menopause and a malignancy-associated PE on apixaban. Over the practice years she develops vasomotor symptoms, left leg lymphedema, a cystocele, a radiation vesicovaginal fistula that recurs after repair, and radiation pericarditis that becomes constrictive; after her last visit she is admitted with a recurrent PE on apixaban.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient request", "author": "front desk", "date": "2021-09-02T10:20",
+             "body": "Caller wants to transfer her primary care here. Her previous internist retired over the summer and she has been without a PCP for a couple of months. Says she is in the middle of follow-up with oncology and needs someone to manage refills, especially her blood thinner. Booked the first available new patient slot. Release forms emailed for the old practice and for her cancer center. Asked her to bring all her bottles."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "History of breast cancer", "action": "history", "onset": "2012-05-01", "note": "Stage II right breast, endocrine-receptor positive; lumpectomy, SLNB, adjuvant chemotherapy and whole-breast radiation 2012-2013"},
+            {"label": "History of cervical cancer", "action": "history", "onset": "2020-12-01", "note": "Stage IIIB carcinoma of the cervical stump; radical stump resection with BSO and pelvic node dissection 3/2021, adjuvant chemoradiation completed 6/2021; no evidence of disease"},
+            {"label": "Symptomatic postprocedural ovarian failure", "icd10": "E89.41", "action": "diagnosed", "onset": "2021-03-03", "note": "Surgical menopause after BSO and pelvic radiation"},
+            {"label": "Acquired absence of uterus and cervix", "action": "history", "onset": "2021-03-03", "note": "Supracervical hysterectomy 2018, cervical stump removed 2021"},
+            {"label": "Personal history of irradiation", "icd10": "Z92.3", "action": "history", "onset": "2013-01-07", "note": "Right breast 2013; pelvis with brachytherapy 2021"},
+            {"label": "History of pulmonary embolism", "action": "history", "onset": "2021-03-12", "note": "Provoked, postoperative and malignancy-associated; on apixaban"},
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2015-01-01", "note": "Class I, BMI 32"},
+            {"label": "Chronic constipation", "action": "diagnosed", "onset": "2021-03-15", "note": "Began on postoperative opioids, persisted after they stopped"}
+          ],
+          "medications": [
+            {"drug_text": "anastrozole 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Extended adjuvant endocrine therapy, breast cancer (medical oncology)"},
+            {"drug": "apixaban 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Pulmonary embolism"},
+            {"drug_text": "calcium carbonate 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Bone health on aromatase inhibitor"},
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule (2000 units) by mouth daily", "dose": {"value": 2000, "unit": "[IU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Supplement"},
+            {"drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution", "action": "historical", "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation", "dose": {"value": 17, "unit": "g"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "Constipation"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "moderate", "criticality": "low", "type": "allergy"},
+            {"substance": "Iodinated contrast media", "reaction": "Hives", "severity": "moderate", "criticality": "high", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 80.0, "height_cm": 158.0, "labs": {"Hemoglobin A1c": 5.6, "25-hydroxy Vitamin D": 36, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "Administrative assistant (desk work)"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T10:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T10:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T10:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T10:05", "results": [{"test": "Hemoglobin A1c"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "25-hydroxy Vitamin D"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, high MDM", "performed": "2021-09-14T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-09-14T10:05"}
+          ],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "placed", "order": "Records request, prior primary care", "category": "procedure", "reason": "Establishing care"},
+            {"id": "records-oncology", "action": "placed", "order": "Records request, cancer center and treating hospital", "category": "procedure", "reason": "Oncologic and surgical history"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-14T09:00",
+             "body": "53F transferring care; her internist of many years retired. Came with a folder of her own notes and a bag of bottles, which helped.\n\nOncologic history, as she tells it and per her folder (formal records requested):\n- 2012: stage II right breast cancer, hormone-receptor positive. Lumpectomy with sentinel node biopsy, port placed. Chemo through the fall, port out in January 2013, then radiation to the right breast. Took tamoxifen 5 years, finished 2018.\n- 2018: supracervical hysterectomy for fibroids; cervix left in place.\n- Late 2020: diagnosed with cancer of the remaining cervix, stage IIIB. Surgery in early March 2021 at the regional cancer center: radical removal of the cervical stump, both ovaries and tubes, and the pelvic lymph nodes. Couldn't void afterward and needed a cystoscopy and catheter later that month. While recovering she had a clot in the lungs; started apixaban in the hospital and has stayed on it.\n- Oncology moved her to anastrozole in April now that she is postmenopausal; plan is five years.\n- Chemoradiation (weekly cisplatin, external beam, brachytherapy) April to June. Last scans per her report clear. Next gyn onc visit in November.\nSurgical menopause since March. Hot flashes are there but tolerable. Bowels sluggish since the post-op pain pills, which she stopped by May; uses PEG a few times a week.\n\nMeds (bottles reviewed): anastrozole 1 mg daily, apixaban 5 mg BID, calcium carbonate 500 mg TID, vitamin D3 2000 units daily, PEG 3350 17 g PRN.\nAllergies: sulfa antibiotics (sulfamethoxazole-trimethoprim) gave a rash. IV contrast caused hives; she must be premedicated.\n\nFamily: mother had breast cancer after menopause, at 62, ER/PR positive; also has osteoporosis. Father with colon polyps and high blood pressure. Sister on thyroid replacement for hypothyroidism. Father's mother had ovarian cancer at 70.\nSocial: administrative assistant, sits most of the day. Never a smoker. A glass or two of wine on the weekend. Two vaginal births.\nPrevention: colonoscopy 2018 per her, normal. Mammograms through the breast program. COVID shots done this past winter.\n\nExam: vitals as charted. Weight 80 kg, height 158 cm, BMI 32. Comfortable, talkative. Well-healed right breast scar, no masses either breast, no axillary nodes. Lungs clear. Regular rhythm without murmur. Abdomen soft, lower midline scar healed, nontender. Legs symmetric, no swelling.\n\nAssessment and plan:\n1. Cervical cancer, stage IIIB, recently completed treatment, NED: surveillance with gyn onc; we will mirror their letters.\n2. Breast cancer history on anastrozole: oncology manages; calcium and D continue. Vitamin D level today.\n3. PE 3/2021 on apixaban 5 BID: oncology/hospital started; I can handle refills. Duration per oncology.\n4. Surgical menopause: hot flashes manageable; no estrogen given breast cancer.\n5. Obesity, BMI 32: talked about walking at lunch.\n6. Constipation: PEG as needed.\n7. Health maintenance: CMP, CBC, lipids, A1c, vitamin D; one-time HCV and HIV screening, she agrees. Flu shot next month. Records requested from the old practice and the cancer center.\nFollow-up in 3 months."}
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your new patient labs", "author": "PCP", "date": "2021-09-16T16:40",
+             "body": "Hi Andrea, all of your bloodwork from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol and sugar normal, vitamin D in range on your current dose. The hepatitis C and HIV screens were negative, so those never need repeating unless something changes. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T11:15",
+          "reason": "Records from prior primary care",
+          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2021-10-05T11:15"}],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-01-28T14:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-18T14:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records summary", "author": "MA", "date": "2021-10-05T11:15",
+             "body": "Records received from her former internist's office (about 60 pages), abstracted for the chart:\n- Colonoscopy 2018, done for screening with father's polyp history: normal colon, no polyps; repeat interval 10 years.\n- COVID-19 vaccine, Pfizer, doses January 28 and February 18, 2021.\n- Influenza vaccine every fall through 2020.\n- Problem list and medications match what she brought to her visit.\n- Old labs unremarkable.\nOriginals scanned to media. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "outside_records",
+          "start": "2021-10-12T14:30",
+          "reason": "Records from cancer center",
+          "orders": [{"id": "records-oncology", "action": "done", "date": "2021-10-12T14:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Gynecologic oncology operative summary (March 2021)", "author": "gynecologic oncology", "date": "2021-10-12T14:30",
+             "body": "Regional cancer center, gynecologic oncology. Date of surgery: 2021-03-03.\nPreoperative diagnosis: carcinoma of the cervical stump, status post supracervical hysterectomy (2018) for leiomyomata.\nProcedure: radical resection of the cervical stump with upper vagina, bilateral salpingo-oophorectomy, bilateral pelvic lymph node dissection.\nFinal stage after pathology and imaging: FIGO IIIB.\nPostoperative course: urinary retention at catheter removal; discharged with an indwelling catheter. Cystoscopy with catheter replacement on 2021-03-22; voiding trial afterward successful.\nAllergies: sulfonamide antibiotics (rash); iodinated contrast (urticaria; premedication protocol required).\nPlan at that time: adjuvant chemoradiation."},
+            {"type": "Outside Records", "title": "Hospital discharge summary (March 2021)", "author": "hospital medicine", "date": "2021-10-12T14:31",
+             "body": "Readmission 2021-03-12 to 2021-03-15. Postoperative day 9 after radical surgery for cervical cancer; presented with acute shortness of breath. Diagnosis: acute pulmonary embolism, provoked, in the setting of recent surgery and active malignancy. Started on anticoagulation and transitioned to apixaban, maintenance 5 mg twice daily. Tamoxifen not active (completed 2018). Hemodynamically stable throughout, discharged on room air. Follow-up with oncology for anticoagulation duration.\nAllergies: sulfonamide antibiotics, iodinated contrast (urticaria)."},
+            {"type": "Outside Records", "title": "Medical oncology note (April 2021)", "author": "medical oncology", "date": "2021-10-12T14:32",
+             "body": "Medical oncology follow-up, 2021-04-06. History: stage II right breast cancer 2012, ER/PR positive, lumpectomy with SLNB, adjuvant chemotherapy, whole-breast radiation, tamoxifen 2013 to 2018. Now surgically postmenopausal after BSO for a new cervical primary. Discussed extended adjuvant endocrine therapy with an aromatase inhibitor; she wishes to proceed. Start anastrozole 1 mg daily, planned 5 years. Calcium 500 mg three times daily and vitamin D3 2000 units daily. Baseline bone density ordered. Continue apixaban 5 mg twice daily for the PE; reassess duration over time given ongoing risk."},
+            {"type": "Outside Records", "title": "Radiation oncology treatment summary (June 2021)", "author": "radiation oncology", "date": "2021-10-12T14:33",
+             "body": "Treatment summary. Indication: FIGO IIIB carcinoma of the cervical stump after radical resection. Pelvic external beam radiation with concurrent weekly cisplatin, followed by vaginal brachytherapy. Start 2021-04-19, completion 2021-06-11. Tolerated with expected fatigue and bowel changes, resolved. Follow-up with gynecologic oncology every 3 to 6 months. Late effects counseling given, including bladder, bowel and lymphatic effects of pelvic radiation. Prior right breast radiation 2013 noted."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T08:40",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-19T08:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T08:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2021-10-19T08:40",
+             "body": "Here for seasonal flu vaccine and COVID booster (eligible given cancer treatment this year). Screening questions negative. Flu IM left deltoid, Pfizer booster IM right deltoid. Lots and expirations recorded. Pressure held at both sites, on apixaban, no bleeding. Waited 15 minutes without issue."}
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "outside_records",
+          "start": "2021-11-30T13:10",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {"type": "Letter", "title": "Gynecologic oncology surveillance visit", "author": "gynecologic oncology", "date": "2021-11-30T13:10",
+             "body": "Seen 2021-11-23 for surveillance after treatment of stage IIIB cervical stump carcinoma (completed June 2021). Feels well, energy returning. Exam: no lymphadenopathy, abdomen benign, vaginal vault healed with expected post-radiation pallor, no lesion, rectovaginal exam smooth. No evidence of disease. Plan: visits every 6 months for now; imaging only for symptoms. Medications reviewed. Allergies: sulfonamides, iodinated contrast."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "medications": [
+            {"drug": "apixaban 5 MG Oral Tablet", "action": "stop", "reason": "Reissued as practice prescription"},
+            {"drug": "apixaban 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Pulmonary embolism"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-14T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-12-14T15:20",
+             "body": "Three-month check. Gyn onc saw her in November, no evidence of disease, letter in chart. Taking anastrozole without trouble. No bleeding on apixaban, no bruising beyond the usual. Hot flashes a few a day. Bowels fine with PEG two or three times a week.\nExam: vitals in the flowsheet. Lungs clear, heart regular, calves soft and equal.\nPlan: taking over the apixaban prescription so she isn't chasing the hospital for refills; 90-day supply with refills sent. Everything else unchanged. Annual physical in March."}
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "annual_physical",
+          "start": "2022-03-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-08T09:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "CBC with Differential", "collected": "2022-03-08T09:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-03-08T09:15", "results": [{"test": "Total Cholesterol"}]},
+            {"panel": null, "collected": "2022-03-08T09:15", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-03-08T09:05"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-03-08T09:07"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-03-08T08:30"},
+            {"procedure": "Immunization administration", "performed": "2022-03-08T09:05"},
+            {"procedure": "Venipuncture", "performed": "2022-03-08T09:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-03-08T08:30",
+             "body": "Annual exam. Turns 54 next week. Overall doing well; back at work full time since the fall. Walking some at lunch when the weather allows.\nROS: occasional hot flashes, otherwise negative.\nMeds and allergies reviewed, unchanged.\nExam: vitals per flowsheet, BMI about 32. HEENT unremarkable. Neck supple, thyroid not enlarged. Breasts: right lumpectomy scar, no masses, no nodes. Lungs clear. Cardiac rhythm regular, no murmur, rub or gallop. Abdomen soft. Legs without swelling. Skin: no worrying lesions.\nPHQ-9 of 2.\nHealth maintenance:\n- Colonoscopy 2018 normal, next 2028.\n- Mammography: diagnostic mammogram due in May; order placed.\n- No cervical screening needed (cervix removed; vault surveillance with gyn onc).\n- Tdap today (no record of one in the last 10 years). First recombinant zoster dose today; second in 2 to 6 months.\n- Labs today: CMP, CBC with diff, lipids, A1c, TSH (sister with hypothyroidism, she asked).\nPlan: return in about 6 months; sooner as needed."}
+          ],
+          "orders": [{"id": "mammo-2022", "action": "placed", "order": "Diagnostic mammogram, bilateral", "category": "imaging", "reason": "History of right breast cancer, yearly surveillance"}]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "portal_message",
+          "start": "2022-03-10T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical bloodwork", "author": "PCP", "date": "2022-03-10T12:05",
+             "body": "Andrea, your physical labs are back and nothing needs attention. Blood counts, kidneys, liver, thyroid, cholesterol and A1c are all in the normal range. The arm might be sore from the shingles shot for a day or two; that's expected."},
+            {"type": "Patient Message", "title": "RE: Physical bloodwork", "author": "patient", "date": "2022-03-10T19:42",
+             "body": "Thanks! Arm was sore and I felt run down the next day but I'm fine now. Do I call to book the second shingles shot or will you?"},
+            {"type": "Patient Message", "title": "RE: Physical bloodwork", "author": "front desk", "date": "2022-03-11T09:10",
+             "body": "We booked you for May 24 at 8:30 with the nurse for the second dose. Reply here if that doesn't work."}
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "outside_records",
+          "start": "2022-04-19T10:45",
+          "reason": "Medical oncology letter",
+          "documents": [
+            {"type": "Letter", "title": "Medical oncology follow-up", "author": "medical oncology", "date": "2022-04-19T10:45",
+             "body": "Seen 2022-04-12. History of stage II ER/PR-positive right breast cancer (2012) and stage IIIB cervical stump carcinoma (2021). Year one of extended anastrozole, tolerating it well. No breast complaints; exam without masses or adenopathy. Continue anastrozole 1 mg daily, calcium and vitamin D. Baseline bone density last spring was normal; repeat in 2 years. Continue apixaban 5 mg twice daily for now given recent cancer-associated PE; will revisit. Yearly diagnostic mammography through primary care. Return in one year."}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "imaging",
+          "start": "2022-05-10T13:00",
+          "reason": "Surveillance mammogram",
+          "orders": [{"id": "mammo-2022", "action": "done", "date": "2022-05-10T13:00"}],
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2022-05-10T13:00",
+             "text": "Bilateral diagnostic mammogram with tomosynthesis. Indication: personal history of right breast cancer treated with lumpectomy and radiation, 2012-2013. Comparison: outside studies 2020 and 2021. Breasts are heterogeneously dense. Right breast: stable post-lumpectomy architectural distortion and skin thickening in the upper outer quadrant, consistent with treatment change. No new mass, suspicious calcification or distortion. Left breast: no suspicious findings.",
+             "conclusion": "Benign post-treatment changes. BI-RADS 2. Annual diagnostic mammogram recommended."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram result", "author": "PCP", "date": "2022-05-11T08:20",
+             "body": "Mammogram stable, benign post-lumpectomy changes only. Letter to patient. Repeat in one year."}
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "nurse_visit",
+          "start": "2022-05-24T08:30",
+          "reason": "Second zoster dose",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-05-24T08:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-05-24T08:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2022-05-24T08:30",
+             "body": "Second recombinant zoster dose, IM right deltoid. Series complete. She had a day of fatigue after the first; told her that can happen again. Observed, left in good spirits."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-21T11:30",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {"type": "Letter", "title": "Gynecologic oncology surveillance visit", "author": "gynecologic oncology", "date": "2022-06-21T11:30",
+             "body": "Seen 2022-06-14, one year from completion of chemoradiation for FIGO IIIB cervical stump carcinoma. Asymptomatic. No groin or supraclavicular nodes. Abdomen soft, no masses. Speculum: vaginal vault smooth, atrophic post-radiation mucosa, no lesions. Bimanual and rectovaginal: no nodularity. No evidence of recurrent disease. Continue 6-month visits."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "pharmacy",
+          "start": "2022-07-12T09:50",
+          "reason": "Prior authorization",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Apixaban prior authorization", "author": "MA", "date": "2022-07-12T09:50",
+             "body": "Pharmacy faxed a rejection on apixaban: plan year reset, PA required again. Completed online with diagnosis (PE 2021, cancer-associated) and duration. Approved through July 2023. Pharmacy notified, filling today. Patient texted that it's sorted."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-08-16T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2022-08-16T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Follow-up", "author": "PCP", "date": "2022-08-16T12:15",
+             "body": "Video from her car on lunch break, identity checked. Gyn onc in June: no sign of disease. Feels well. No bleeding or bruising on apixaban. Taking anastrozole, calcium, D. Bowels OK. Hot flashes a few a day, some at night, livable.\nNo exam (video); she looks well, speaks in full sentences, no distress.\nPlan: no changes. Flu shot and updated COVID in early October. In-person visit around the new year."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:10",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T16:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T16:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2022-10-04T16:10",
+             "body": "Seasonal influenza and bivalent COVID booster given, flu in the left arm and COVID in the right. Pressure applied, she is anticoagulated. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hot flashes",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T10:40"}],
+          "orders": [{"id": "gyn-referral-2022", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "Severe vasomotor symptoms, surgical menopause, breast cancer survivor"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-12-13T10:40",
+             "body": "Main reason today: the hot flashes have ramped up over the fall. Several an hour some days, soaking at night, up two or three times changing her shirt. Exhausted at work and making mistakes she doesn't usually make. Surgical menopause since March 2021, on anastrozole since April 2021, which she knows can make this worse.\nNo fevers, no weight loss, no new lumps, no palpitations or tremor.\nExam: vitals fine. Flushed briefly during the visit. Thyroid normal size, no nodules. Lungs clear, heart regular.\nAssessment: vasomotor symptoms of surgical menopause, aggravated by the aromatase inhibitor. Estrogen is off the table with her breast cancer. Non-hormonal options exist (gabapentin, SNRIs, others); with her anticoagulation and cancer history I would like gynecology's menopause clinic to weigh in and pick, they see this every day. Referral placed. Layers, fan at the desk, cool bedroom in the meantime.\nTSH was normal in March."}
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T14:00",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {"type": "Letter", "title": "Gynecologic oncology surveillance visit", "author": "gynecologic oncology", "date": "2022-12-20T14:00",
+             "body": "Seen 2022-12-13. Eighteen months after treatment for stage IIIB cervical stump carcinoma. Reports bothersome hot flashes, which her primary care physician is addressing. No bleeding, discharge or pelvic pain. Exam: no adenopathy; vault smooth, no lesion; rectovaginal exam without nodularity. No evidence of disease. Next visit in 6 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

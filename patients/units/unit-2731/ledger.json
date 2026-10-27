@@ -1,0 +1,4226 @@
+{
+  "unit": "unit-2731",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002731",
+      "given": "Andrea",
+      "family": "Davidson",
+      "birth_date": "1968-03-17",
+      "address_line": "58 Prospect Ridge Lane",
+      "phone": "+1-774-555-0160",
+      "email": "andrea.davidson@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant in her fifties, survivor of stage II right breast cancer (2012) and stage IIIB cervical stump cancer (2021) with surgical menopause and a malignancy-associated PE on apixaban. Over the practice years she develops vasomotor symptoms, left leg lymphedema, a cystocele, a radiation vesicovaginal fistula that recurs after repair, and radiation pericarditis that becomes constrictive; after her last visit she is admitted with a recurrent PE on apixaban.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient request",
+              "date": "2021-09-02T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer her primary care here. Her previous internist retired over the summer and she has been without a PCP for a couple of months. Says she is in the middle of follow-up with oncology and needs someone to manage refills, especially her blood thinner. Booked the first available new patient slot. Release forms emailed for the old practice and for her cancer center. Asked her to bring all her bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "History of breast cancer",
+              "action": "history",
+              "onset": "2012-05-01",
+              "note": "Stage II right breast, endocrine-receptor positive; lumpectomy, SLNB, adjuvant chemotherapy and whole-breast radiation 2012-2013"
+            },
+            {
+              "label": "History of cervical cancer",
+              "action": "history",
+              "onset": "2020-12-01",
+              "note": "Stage IIIB carcinoma of the cervical stump; radical stump resection with BSO and pelvic node dissection 3/2021, adjuvant chemoradiation completed 6/2021; no evidence of disease"
+            },
+            {
+              "label": "Symptomatic postprocedural ovarian failure",
+              "action": "diagnosed",
+              "onset": "2021-03-03",
+              "note": "Surgical menopause after BSO and pelvic radiation",
+              "icd10": "E89.41"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "history",
+              "onset": "2021-03-03",
+              "note": "Supracervical hysterectomy 2018, cervical stump removed 2021"
+            },
+            {
+              "label": "Personal history of irradiation",
+              "action": "history",
+              "onset": "2013-01-07",
+              "note": "Right breast 2013; pelvis with brachytherapy 2021",
+              "icd10": "Z92.3"
+            },
+            {
+              "label": "History of pulmonary embolism",
+              "action": "history",
+              "onset": "2021-03-12",
+              "note": "Provoked, postoperative and malignancy-associated; on apixaban"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2015-01-01",
+              "note": "Class I, BMI 32"
+            },
+            {
+              "label": "Chronic constipation",
+              "action": "diagnosed",
+              "onset": "2021-03-15",
+              "note": "Began on postoperative opioids, persisted after they stopped"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "anastrozole 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Extended adjuvant endocrine therapy, breast cancer (medical oncology)"
+            },
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pulmonary embolism"
+            },
+            {
+              "drug_text": "calcium carbonate 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bone health on aromatase inhibitor"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Supplement"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Iodinated contrast media",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              68
+            ],
+            "hr": 73,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 80.2,
+            "height_cm": 158.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant (desk work)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2021-09-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T10:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "Establishing care"
+            },
+            {
+              "id": "records-oncology",
+              "action": "placed",
+              "order": "Records request, cancer center and treating hospital",
+              "category": "procedure",
+              "reason": "Oncologic and surgical history"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T09:00",
+              "author": "PCP",
+              "body": "53F transferring care; her internist of many years retired. Came with a folder of her own notes and a bag of bottles, which helped.\n\nOncologic history, as she tells it and per her folder (formal records requested):\n- 2012: stage II right breast cancer, hormone-receptor positive. Lumpectomy with sentinel node biopsy, port placed. Chemo through the fall, port out in January 2013, then radiation to the right breast. Took tamoxifen 5 years, finished 2018.\n- 2018: supracervical hysterectomy for fibroids; cervix left in place.\n- Late 2020: diagnosed with cancer of the remaining cervix, stage IIIB. Surgery in early March 2021 at the regional cancer center: radical removal of the cervical stump, both ovaries and tubes, and the pelvic lymph nodes. Couldn't void afterward and needed a cystoscopy and catheter later that month. While recovering she had a clot in the lungs; started apixaban in the hospital and has stayed on it.\n- Oncology moved her to anastrozole in April now that she is postmenopausal; plan is five years.\n- Chemoradiation (weekly cisplatin, external beam, brachytherapy) April to June. Last scans per her report clear. Next gyn onc visit in November.\nSurgical menopause since March. Hot flashes are there but tolerable. Bowels sluggish since the post-op pain pills, which she stopped by May; uses PEG a few times a week.\n\nMeds (bottles reviewed): anastrozole 1 mg daily, apixaban 5 mg BID, calcium carbonate 500 mg TID, vitamin D3 2000 units daily, PEG 3350 17 g PRN.\nAllergies: sulfa antibiotics (sulfamethoxazole-trimethoprim) gave a rash. IV contrast caused hives; she must be premedicated.\n\nFamily: mother had breast cancer after menopause, at 62, ER/PR positive; also has osteoporosis. Father with colon polyps and high blood pressure. Sister on thyroid replacement for hypothyroidism. Father's mother had ovarian cancer at 70.\nSocial: administrative assistant, sits most of the day. Never a smoker. A glass or two of wine on the weekend. Two vaginal births.\nPrevention: colonoscopy 2018 per her, normal. Mammograms through the breast program. COVID shots done this past winter.\n\nExam: vitals as charted. Weight 80 kg, height 158 cm, BMI 32. Comfortable, talkative. Well-healed right breast scar, no masses either breast, no axillary nodes. Lungs clear. Regular rhythm without murmur. Abdomen soft, lower midline scar healed, nontender. Legs symmetric, no swelling.\n\nAssessment and plan:\n1. Cervical cancer, stage IIIB, recently completed treatment, NED: surveillance with gyn onc; we will mirror their letters.\n2. Breast cancer history on anastrozole: oncology manages; calcium and D continue. Vitamin D level today.\n3. PE 3/2021 on apixaban 5 BID: oncology/hospital started; I can handle refills. Duration per oncology.\n4. Surgical menopause: hot flashes manageable; no estrogen given breast cancer.\n5. Obesity, BMI 32: talked about walking at lunch.\n6. Constipation: PEG as needed.\n7. Health maintenance: CMP, CBC, lipids, A1c, vitamin D; one-time HCV and HIV screening, she agrees. Flu shot next month. Records requested from the old practice and the cancer center.\nFollow-up in 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.0,
+            "height_cm": 158.0,
+            "labs": {
+              "25-hydroxy Vitamin D": 36,
+              "Hemoglobin A1c": 5.6,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your new patient labs",
+              "date": "2021-09-16T16:40",
+              "author": "PCP",
+              "body": "Hi Andrea, all of your bloodwork from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol and sugar normal, vitamin D in range on your current dose. The hepatitis C and HIV screens were negative, so those never need repeating unless something changes. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T11:15",
+          "reason": "Records from prior primary care",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-28T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-18T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2021-10-05T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records summary",
+              "date": "2021-10-05T11:15",
+              "author": "MA",
+              "body": "Records received from her former internist's office (about 60 pages), abstracted for the chart:\n- Colonoscopy 2018, done for screening with father's polyp history: normal colon, no polyps; repeat interval 10 years.\n- COVID-19 vaccine, Pfizer, doses January 28 and February 18, 2021.\n- Influenza vaccine every fall through 2020.\n- Problem list and medications match what she brought to her visit.\n- Old labs unremarkable.\nOriginals scanned to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "outside_records",
+          "start": "2021-10-12T14:30",
+          "reason": "Records from cancer center",
+          "orders": [
+            {
+              "id": "records-oncology",
+              "action": "done",
+              "date": "2021-10-12T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic oncology operative summary (March 2021)",
+              "date": "2021-10-12T14:30",
+              "author": "gynecologic oncology",
+              "body": "Regional cancer center, gynecologic oncology. Date of surgery: 2021-03-03.\nPreoperative diagnosis: carcinoma of the cervical stump, status post supracervical hysterectomy (2018) for leiomyomata.\nProcedure: radical resection of the cervical stump with upper vagina, bilateral salpingo-oophorectomy, bilateral pelvic lymph node dissection.\nFinal stage after pathology and imaging: FIGO IIIB.\nPostoperative course: urinary retention at catheter removal; discharged with an indwelling catheter. Cystoscopy with catheter replacement on 2021-03-22; voiding trial afterward successful.\nAllergies: sulfonamide antibiotics (rash); iodinated contrast (urticaria; premedication protocol required).\nPlan at that time: adjuvant chemoradiation."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital discharge summary (March 2021)",
+              "date": "2021-10-12T14:31",
+              "author": "hospital medicine",
+              "body": "Readmission 2021-03-12 to 2021-03-15. Postoperative day 9 after radical surgery for cervical cancer; presented with acute shortness of breath. Diagnosis: acute pulmonary embolism, provoked, in the setting of recent surgery and active malignancy. Started on anticoagulation and transitioned to apixaban, maintenance 5 mg twice daily. Tamoxifen not active (completed 2018). Hemodynamically stable throughout, discharged on room air. Follow-up with oncology for anticoagulation duration.\nAllergies: sulfonamide antibiotics, iodinated contrast (urticaria)."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Medical oncology note (April 2021)",
+              "date": "2021-10-12T14:32",
+              "author": "medical oncology",
+              "body": "Medical oncology follow-up, 2021-04-06. History: stage II right breast cancer 2012, ER/PR positive, lumpectomy with SLNB, adjuvant chemotherapy, whole-breast radiation, tamoxifen 2013 to 2018. Now surgically postmenopausal after BSO for a new cervical primary. Discussed extended adjuvant endocrine therapy with an aromatase inhibitor; she wishes to proceed. Start anastrozole 1 mg daily, planned 5 years. Calcium 500 mg three times daily and vitamin D3 2000 units daily. Baseline bone density ordered. Continue apixaban 5 mg twice daily for the PE; reassess duration over time given ongoing risk."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Radiation oncology treatment summary (June 2021)",
+              "date": "2021-10-12T14:33",
+              "author": "radiation oncology",
+              "body": "Treatment summary. Indication: FIGO IIIB carcinoma of the cervical stump after radical resection. Pelvic external beam radiation with concurrent weekly cisplatin, followed by vaginal brachytherapy. Start 2021-04-19, completion 2021-06-11. Tolerated with expected fatigue and bowel changes, resolved. Follow-up with gynecologic oncology every 3 to 6 months. Late effects counseling given, including bladder, bowel and lymphatic effects of pelvic radiation. Prior right breast radiation 2013 noted."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T08:40",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2021-10-19T08:40",
+              "author": "RN",
+              "body": "Here for seasonal flu vaccine and COVID booster (eligible given cancer treatment this year). Screening questions negative. Flu IM left deltoid, Pfizer booster IM right deltoid. Lots and expirations recorded. Pressure held at both sites, on apixaban, no bleeding. Waited 15 minutes without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "outside_records",
+          "start": "2021-11-30T13:10",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2021-11-30T13:10",
+              "author": "gynecologic oncology",
+              "body": "Seen 2021-11-23 for surveillance after treatment of stage IIIB cervical stump carcinoma (completed June 2021). Feels well, energy returning. Exam: no lymphadenopathy, abdomen benign, vaginal vault healed with expected post-radiation pallor, no lesion, rectovaginal exam smooth. No evidence of disease. Plan: visits every 6 months for now; imaging only for symptoms. Medications reviewed. Allergies: sulfonamides, iodinated contrast."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Reissued as practice prescription"
+            },
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pulmonary embolism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              81
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 80.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-12-14T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-12-14T15:20",
+              "author": "PCP",
+              "body": "Three-month check. Gyn onc saw her in November, no evidence of disease, letter in chart. Taking anastrozole without trouble. No bleeding on apixaban, no bruising beyond the usual. Hot flashes a few a day. Bowels fine with PEG two or three times a week.\nExam: vitals in the flowsheet. Lungs clear, heart regular, calves soft and equal.\nPlan: taking over the apixaban prescription so she isn't chasing the hospital for refills; 90-day supply with refills sent. Everything else unchanged. Annual physical in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "annual_physical",
+          "start": "2022-03-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              66
+            ],
+            "hr": 59,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 79.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-08T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-03-08T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 338
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-08T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-08T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-03-08T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-08T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-08T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-03-08T09:05"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-08T09:07"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Diagnostic mammogram, bilateral",
+              "category": "imaging",
+              "reason": "History of right breast cancer, yearly surveillance"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-03-08T08:30",
+              "author": "PCP",
+              "body": "Annual exam. Turns 54 next week. Overall doing well; back at work full time since the fall. Walking some at lunch when the weather allows.\nROS: occasional hot flashes, otherwise negative.\nMeds and allergies reviewed, unchanged.\nExam: vitals per flowsheet, BMI about 32. HEENT unremarkable. Neck supple, thyroid not enlarged. Breasts: right lumpectomy scar, no masses, no nodes. Lungs clear. Cardiac rhythm regular, no murmur, rub or gallop. Abdomen soft. Legs without swelling. Skin: no worrying lesions.\nPHQ-9 of 2.\nHealth maintenance:\n- Colonoscopy 2018 normal, next 2028.\n- Mammography: diagnostic mammogram due in May; order placed.\n- No cervical screening needed (cervix removed; vault surveillance with gyn onc).\n- Tdap today (no record of one in the last 10 years). First recombinant zoster dose today; second in 2 to 6 months.\n- Labs today: CMP, CBC with diff, lipids, A1c, TSH (sister with hypothyroidism, she asked).\nPlan: return in about 6 months; sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "portal_message",
+          "start": "2022-03-10T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical bloodwork",
+              "date": "2022-03-10T12:05",
+              "author": "PCP",
+              "body": "Andrea, your physical labs are back and nothing needs attention. Blood counts, kidneys, liver, thyroid, cholesterol and A1c are all in the normal range. The arm might be sore from the shingles shot for a day or two; that's expected."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical bloodwork",
+              "date": "2022-03-10T19:42",
+              "author": "patient",
+              "body": "Thanks! Arm was sore and I felt run down the next day but I'm fine now. Do I call to book the second shingles shot or will you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical bloodwork",
+              "date": "2022-03-11T09:10",
+              "author": "front desk",
+              "body": "We booked you for May 24 at 8:30 with the nurse for the second dose. Reply here if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "outside_records",
+          "start": "2022-04-19T10:45",
+          "reason": "Medical oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Medical oncology follow-up",
+              "date": "2022-04-19T10:45",
+              "author": "medical oncology",
+              "body": "Seen 2022-04-12. History of stage II ER/PR-positive right breast cancer (2012) and stage IIIB cervical stump carcinoma (2021). Year one of extended anastrozole, tolerating it well. No breast complaints; exam without masses or adenopathy. Continue anastrozole 1 mg daily, calcium and vitamin D. Baseline bone density last spring was normal; repeat in 2 years. Continue apixaban 5 mg twice daily for now given recent cancer-associated PE; will revisit. Yearly diagnostic mammography through primary care. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "imaging",
+          "start": "2022-05-10T13:00",
+          "reason": "Surveillance mammogram",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2022-05-10T13:00",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. Indication: personal history of right breast cancer treated with lumpectomy and radiation, 2012-2013. Comparison: outside studies 2020 and 2021. Breasts are heterogeneously dense. Right breast: stable post-lumpectomy architectural distortion and skin thickening in the upper outer quadrant, consistent with treatment change. No new mass, suspicious calcification or distortion. Left breast: no suspicious findings.",
+              "conclusion": "Benign post-treatment changes. BI-RADS 2. Annual diagnostic mammogram recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-05-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2022-05-11T08:20",
+              "author": "PCP",
+              "body": "Mammogram stable, benign post-lumpectomy changes only. Letter to patient. Repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "nurse_visit",
+          "start": "2022-05-24T08:30",
+          "reason": "Second zoster dose",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-24T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-05-24T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-05-24T08:30",
+              "author": "RN",
+              "body": "Second recombinant zoster dose, IM right deltoid. Series complete. She had a day of fatigue after the first; told her that can happen again. Observed, left in good spirits."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-21T11:30",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2022-06-21T11:30",
+              "author": "gynecologic oncology",
+              "body": "Seen 2022-06-14, one year from completion of chemoradiation for FIGO IIIB cervical stump carcinoma. Asymptomatic. No groin or supraclavicular nodes. Abdomen soft, no masses. Speculum: vaginal vault smooth, atrophic post-radiation mucosa, no lesions. Bimanual and rectovaginal: no nodularity. No evidence of recurrent disease. Continue 6-month visits."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "pharmacy",
+          "start": "2022-07-12T09:50",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Apixaban prior authorization",
+              "date": "2022-07-12T09:50",
+              "author": "MA",
+              "body": "Pharmacy faxed a rejection on apixaban: plan year reset, PA required again. Completed online with diagnosis (PE 2021, cancer-associated) and duration. Approved through July 2023. Pharmacy notified, filling today. Patient texted that it's sorted."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-08-16T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-08-16T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Follow-up",
+              "date": "2022-08-16T12:15",
+              "author": "PCP",
+              "body": "Video from her car on lunch break, identity checked. Gyn onc in June: no sign of disease. Feels well. No bleeding or bruising on apixaban. Taking anastrozole, calcium, D. Bowels OK. Hot flashes a few a day, some at night, livable.\nNo exam (video); she looks well, speaks in full sentences, no distress.\nPlan: no changes. Flu shot and updated COVID in early October. In-person visit around the new year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:10",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-10-04T16:10",
+              "author": "RN",
+              "body": "Seasonal influenza and bivalent COVID booster given, flu in the left arm and COVID in the right. Pressure applied, she is anticoagulated. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hot flashes",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 79.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-13T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2022",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Severe vasomotor symptoms, surgical menopause, breast cancer survivor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-13T10:40",
+              "author": "PCP",
+              "body": "Main reason today: the hot flashes have ramped up over the fall. Several an hour some days, soaking at night, up two or three times changing her shirt. Exhausted at work and making mistakes she doesn't usually make. Surgical menopause since March 2021, on anastrozole since April 2021, which she knows can make this worse.\nNo fevers, no weight loss, no new lumps, no palpitations or tremor.\nExam: vitals fine. Flushed briefly during the visit. Thyroid normal size, no nodules. Lungs clear, heart regular.\nAssessment: vasomotor symptoms of surgical menopause, aggravated by the aromatase inhibitor. Estrogen is off the table with her breast cancer. Non-hormonal options exist (gabapentin, SNRIs, others); with her anticoagulation and cancer history I would like gynecology's menopause clinic to weigh in and pick, they see this every day. Referral placed. Layers, fan at the desk, cool bedroom in the meantime.\nTSH was normal in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T14:00",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2022-12-20T14:00",
+              "author": "gynecologic oncology",
+              "body": "Seen 2022-12-13. Eighteen months after treatment for stage IIIB cervical stump carcinoma. Reports bothersome hot flashes, which her primary care physician is addressing. No bleeding, discharge or pelvic pain. Exam: no adenopathy; vault smooth, no lesion; rectovaginal exam without nodularity. No evidence of disease. Next visit in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-25a",
+          "kind": "specialist_visit",
+          "start": "2023-01-25T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Vasomotor symptoms",
+          "conditions": [
+            {
+              "label": "Menopausal and female climacteric states",
+              "action": "diagnosed",
+              "onset": "2022-09-01",
+              "note": "Systemic menopausal syndrome, surgical menopause; severe vasomotor symptoms"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "gabapentin 300 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule at bedtime for 1 week, then twice daily for 1 week, then 1 capsule three times daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vasomotor symptoms"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78,
+            "weight_kg": 80.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-25T14:40",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 78
+                },
+                {
+                  "test": "Luteinizing Hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 55
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "text": "<20"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-25T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 340
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-01-25T14:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2022",
+              "action": "done",
+              "date": "2023-01-25T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation: menopause clinic",
+              "date": "2023-01-27T09:30",
+              "author": "gynecology",
+              "body": "Outside gynecology, menopause clinic. Date of visit: 2023-01-25. Referred by her primary care physician.\n\nReason: hot flushes and drenching sweats, many times a day and through the night, wrecking her sleep and getting in the way at work.\n\nBackground: surgical menopause since March 2021 (BSO with radical resection of the cervical stump for stage IIIB cervical cancer, then chemoradiation). Stage II ER/PR-positive right breast cancer 2012, on anastrozole. PE 2021 on apixaban. Supracervical hysterectomy for fibroids 2018. Two vaginal deliveries.\nMedications: anastrozole 1 mg daily, apixaban 5 mg twice daily, calcium carbonate 500 mg three times daily, vitamin D3 2000 units daily, polyethylene glycol 3350 as needed.\nAllergies: sulfamethoxazole-trimethoprim (rash); iodinated contrast (hives, premedicate).\nFamily: mother with postmenopausal breast cancer and osteoporosis; paternal grandmother ovarian cancer.\nSocial: administrative assistant, never smoker, light social drinking.\n\nExam: BP 130/85, pulse 78. Well appearing. Thyroid normal. Breasts deferred to oncology. Abdomen soft. External genitalia with atrophic change; remainder of the exam unremarkable.\n\nLabs today: FSH 78 IU/L (high), LH 55 IU/L (high), estradiol <20 pg/mL (low) - a postmenopausal pattern, as expected. TSH 2.5. CBC and lipid panel normal.\n\nImpression: systemic menopausal syndrome with severe vasomotor symptoms after surgical menopause, worsened by aromatase inhibitor therapy. Hormone therapy contraindicated (hormone-sensitive breast cancer, prior VTE).\n\nPlan: gabapentin 300 mg, starting at bedtime and building to three times daily over two weeks. Behavioral measures reviewed. Phone follow-up in 6 to 8 weeks; can increase if needed. Copy to primary care."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "portal_message",
+          "start": "2023-02-07T20:15",
+          "reason": "Medication question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gabapentin with my other pills",
+              "date": "2023-02-07T20:15",
+              "author": "patient",
+              "body": "The menopause doctor started me on gabapentin. I'm up to two a day now. Is it OK to take with the apixaban and the anastrozole? The pharmacist said yes but I wanted to ask you too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gabapentin with my other pills",
+              "date": "2023-02-08T07:50",
+              "author": "PCP",
+              "body": "Yes, no meaningful interaction with either one. It can make some people drowsy or dizzy at first, so be careful driving until you know how it affects you. I have the gyn letter and added it to your list."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "annual_physical",
+          "start": "2023-03-28T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              79
+            ],
+            "hr": 49,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 79.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-28T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-28T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-28T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-03-28T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-28T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Diagnostic mammogram, bilateral",
+              "category": "imaging",
+              "reason": "History of right breast cancer"
+            },
+            {
+              "id": "dxa-2023",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "Aromatase inhibitor therapy, surgical menopause"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-28T08:20",
+              "author": "PCP",
+              "body": "Yearly exam, age 55. Hot flashes are much better on gabapentin 300 three times daily; sleeping through most nights now. Gyn onc in December: no evidence of disease. Oncology visit coming up next month.\nROS otherwise negative.\nExam: vitals in flowsheet, weight unchanged, BMI 32. Thyroid normal. Breasts: right lumpectomy scar, no mass, no axillary or supraclavicular nodes. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. No leg edema. Skin without concerning lesions.\nPHQ-9: 3.\nPrevention: colonoscopy due 2028. Mammogram and bone density (on anastrozole, last one 2021) ordered for late spring. Lipids done at gynecology in January, normal, not repeated. Zoster series and Tdap complete.\nLabs: CMP, CBC with diff, A1c, vitamin D.\nNext visit in about 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-30a",
+          "kind": "portal_message",
+          "start": "2023-03-30T13:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "date": "2023-03-30T13:30",
+              "author": "PCP",
+              "body": "Hi Andrea, everything from the physical is normal: blood counts, chemistries, A1c and vitamin D. Keep doing what you're doing. The imaging center will call you about the mammogram and bone scan."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Left leg swelling",
+          "vitals": {
+            "bp": [
+              123,
+              86
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 79.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "Left leg swelling after pelvic lymphadenectomy and radiation, evaluate for lymphedema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-18T11:00",
+              "author": "PCP",
+              "body": "Left leg has been swelling since late last fall, she says, thigh down to the ankle, with a heavy, tight feeling by the end of the workday. At first it went down overnight with her leg up; now it stays. No injury, no long trips. No calf pain. On apixaban without missed doses.\nExam: vitals OK. Left leg visibly fuller than the right from thigh to ankle; skin firmer on the left. No redness or warmth, calf not tender. Right leg normal.\nAssessment: progressive left leg swelling after pelvic node dissection and pelvic radiation, most consistent with lymphedema. Clot unlikely on uninterrupted apixaban but still worth excluding; recurrence of pelvic disease is the other thing to keep in mind, and gyn onc surveillance has been clean.\nPlan: referral to the general surgery group that runs the lymphedema program; they do their own venous study at the first visit. She will call if pain, redness or breathlessness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "outside_records",
+          "start": "2023-04-25T15:00",
+          "reason": "Medical oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Medical oncology follow-up",
+              "date": "2023-04-25T15:00",
+              "author": "medical oncology",
+              "body": "Seen 2023-04-18. Two years into extended adjuvant anastrozole for 2012 right breast cancer. Vasomotor symptoms now controlled on gabapentin started by gynecology. No breast symptoms; exam without masses or adenopathy. New left leg swelling noted; her PCP is arranging lymphedema evaluation. Continue anastrozole 1 mg daily to complete five years in 2026, calcium and vitamin D. Continue apixaban 5 mg twice daily. Bone density due this spring. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-15a",
+          "kind": "specialist_visit",
+          "start": "2023-05-15T09:30",
+          "service": "General Surgery",
+          "reason": "Left leg swelling",
+          "conditions": [
+            {
+              "label": "Lymphedema",
+              "action": "diagnosed",
+              "onset": "2022-11-15",
+              "note": "Secondary lymphedema of the left lower extremity after pelvic lymphadenectomy and radiation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              81
+            ],
+            "hr": 77,
+            "weight_kg": 79.9
+          },
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2023-05-15T10:15",
+              "text": "Left lower extremity venous duplex ultrasound. Indication: left leg swelling. The common femoral, femoral, popliteal, posterior tibial and peroneal veins are compressible with normal color flow, phasic respiratory variation and augmentation. Great saphenous vein compressible. Subcutaneous edema in the left calf and thigh.",
+              "conclusion": "No deep vein thrombosis in the left leg."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral",
+              "action": "done",
+              "date": "2023-05-15T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery: lymphedema evaluation",
+              "date": "2023-05-17T10:20",
+              "author": "general surgery",
+              "body": "Outside general surgery and lymphedema program. Date of service: 2023-05-15. Thank you for sending Ms. Davidson.\n\nShe returns for the left leg swelling: six months of gradually worsening swelling and heaviness, which early on settled with elevation and now does not. Denies trauma or recent travel.\nHistory: stage IIIB cervical stump cancer treated with radical resection and bilateral pelvic lymph node dissection followed by chemoradiation, completed about two years ago. Breast cancer 2012. PE 2021 on apixaban.\nMedications: anastrozole, apixaban, gabapentin 300 mg three times daily, calcium carbonate, vitamin D3, polyethylene glycol as needed.\nAllergies: sulfa antibiotics (rash); iodinated contrast (urticaria, premedication required).\n\nExam: left leg enlarged from thigh to ankle; skin thickened, edema non-pitting. No erythema, warmth or tenderness. Right leg normal.\nVenous duplex today: no DVT.\n\nImpression: secondary lymphedema of the left lower extremity following pelvic lymphadenectomy and radiation.\nPlan: complete decongestive therapy with our certified lymphedema therapist (manual drainage, bandaging, exercise), then a fitted compression garment for daily wear. Skin care and infection precautions reviewed. Follow up as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "imaging",
+          "start": "2023-05-30T15:30",
+          "reason": "Surveillance mammogram",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2023-05-30T15:30",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. History of right breast cancer, lumpectomy and radiation 2012-2013. Compared with 2022. Heterogeneously dense tissue. Right breast: post-lumpectomy scar and mild skin thickening, unchanged. No new mass, suspicious calcifications or architectural distortion in either breast.",
+              "conclusion": "Stable post-treatment changes. BI-RADS 2, benign. Annual diagnostic mammogram."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-05-30T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2023-05-31T08:05",
+              "author": "PCP",
+              "body": "Stable, benign. Patient notified by portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "outside_records",
+          "start": "2023-06-13T10:00",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2023-06-13T10:00",
+              "author": "gynecologic oncology",
+              "body": "Seen 2023-06-06, two years after chemoradiation. New left leg lymphedema since late 2022, now in decongestive therapy; duplex negative. No pelvic pain or bleeding. Exam: no inguinal or supraclavicular nodes; vault smooth without lesion; rectovaginal exam without nodularity. No evidence of disease. Continue 6-month surveillance."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "imaging",
+          "start": "2023-06-20T08:00",
+          "reason": "Bone density",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-06-20T08:00",
+              "text": "DXA of the lumbar spine (L1-L4) and both hips. Indication: aromatase inhibitor therapy, surgical menopause. Lumbar spine T-score -0.7. Left femoral neck T-score -0.5; right femoral neck -0.4; total hip T-scores within normal range. No significant change from the outside 2021 baseline.",
+              "conclusion": "Normal bone density."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2023",
+              "action": "done",
+              "date": "2023-06-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bone density result",
+              "date": "2023-06-21T12:40",
+              "author": "PCP",
+              "body": "Normal bone density, stable. Continue calcium and D. Repeat in 2 years while on anastrozole."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "outside_records",
+          "start": "2023-07-11T09:45",
+          "reason": "Lymphedema therapy note",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Lymphedema therapy discharge summary",
+              "date": "2023-07-11T09:45",
+              "author": "physical therapy",
+              "body": "Certified lymphedema therapist, outpatient rehabilitation. Diagnosis: secondary lymphedema, left lower extremity. Completed 8 sessions of complete decongestive therapy (manual lymphatic drainage, multilayer bandaging, home exercise) from late May through early July. Left limb volume reduced; skin softer. Measured and fitted for a thigh-high flat-knit compression garment, class 2, two sets ordered. Independent with garment donning and self-drainage. Discharged to home program; return for re-measurement every 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "medications": [
+            {
+              "drug": "gabapentin 300 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Prescription transferred to primary care"
+            },
+            {
+              "drug": "gabapentin 300 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth three times daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vasomotor symptoms"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              81
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 79.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-22T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-08-22T14:00",
+              "author": "PCP",
+              "body": "Summer check-in. Finished lymphedema therapy in July and has her compression stocking; wears it at work, hates it in the heat, but the leg is clearly smaller and lighter. Hot flashes controlled on gabapentin. No bleeding on apixaban.\nExam: vitals fine. Left leg still fuller than the right, skin intact, no redness. Lungs clear, heart regular.\nPlan: gyn asked us to take over the gabapentin prescription, done (same dose). Skin care for the leg reviewed: moisturize, treat any cut promptly, call for redness or fever. Flu and COVID vaccines in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T12:10",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T12:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-03T12:10",
+              "author": "RN",
+              "body": "Influenza (left deltoid) and 2023-2024 COVID vaccine (right deltoid). Both arms used; left leg lymphedema noted, no injections in the leg anyway. Pressure held. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "office_visit",
+          "start": "2023-10-17T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaginal bulge, urine leakage",
+          "vitals": {
+            "bp": [
+              119,
+              89
+            ],
+            "hr": 66,
+            "weight_kg": 80.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-17T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Pelvic organ prolapse symptoms with stress incontinence"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-17T09:20",
+              "author": "PCP",
+              "body": "Came in about a feeling of pressure and something bulging at the vaginal opening, getting worse over the past year, and leaking urine when she coughs or sneezes. Using a liner. No pain with urination, no blood. Bowels unchanged.\nExam: vitals fine. Abdomen soft, nontender. Pelvic exam deferred to gynecology at her request; she would rather be examined once by the person who will treat it.\nAssessment: symptoms of anterior pelvic organ prolapse with stress incontinence; pelvic surgery and radiation in her history.\nPlan: referral back to the gynecology group (urogynecology side). Urinalysis can be done there."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "specialist_visit",
+          "start": "2023-11-27T13:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Pelvic organ prolapse",
+          "conditions": [
+            {
+              "label": "Cystocele",
+              "action": "diagnosed",
+              "onset": "2022-11-01",
+              "note": "Anterior vaginal wall prolapse with stress incontinence"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 62,
+            "weight_kg": 80.1
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-11-27T13:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "done",
+              "date": "2023-11-27T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation: prolapse",
+              "date": "2023-11-29T11:00",
+              "author": "gynecology",
+              "body": "Outside gynecology. Date of visit: 2023-11-27.\n\nShe is back with us, this time for a sense that something is coming down out of the vagina, steadily worse over the past year, with urine loss on coughing or sneezing.\nObstetric history: two vaginal deliveries. Supracervical hysterectomy for fibroids in 2018; radical resection of the cervical stump with BSO and node dissection in 2021, then chemoradiation. BMI 32.\nCurrent medications: anastrozole, apixaban, gabapentin, calcium carbonate, vitamin D3, polyethylene glycol as needed.\nAllergies: sulfonamides (rash); iodinated contrast (urticaria).\n\nExam: with bearing down, a bulge of the anterior vaginal wall protrudes through the introitus. Pelvic floor weak on voluntary contraction. Vault otherwise smooth.\nUrinalysis: unremarkable.\n\nImpression: cystocele (anterior vaginal wall prolapse) with stress urinary incontinence.\nPlan: pelvic floor physical therapy referral. Discussed pessary and surgical options for later if therapy is not enough; she wants to start with therapy. Return as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "outside_records",
+          "start": "2023-12-12T14:20",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2023-12-12T14:20",
+              "author": "gynecologic oncology",
+              "body": "Seen 2023-12-05, two and a half years after treatment. Cystocele recently diagnosed by gynecology, starting pelvic floor therapy. Lymphedema stable in garment. Exam: no adenopathy; vault without lesion; no pelvic or rectovaginal nodularity. No evidence of disease. Next surveillance in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "outside_records",
+          "start": "2024-01-09T16:00",
+          "reason": "Physical therapy evaluation",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pelvic floor physical therapy evaluation",
+              "date": "2024-01-09T16:00",
+              "author": "physical therapy",
+              "body": "Outpatient pelvic health physical therapy, initial evaluation 2024-01-04. Referral diagnosis: cystocele with stress urinary incontinence. Pelvic floor strength reduced, poor endurance; coordination improves with cueing. Goals: fewer leakage episodes with cough and sneeze, better support with lifting. Plan: weekly sessions for 8 weeks with a home exercise program and bladder habits education."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-02-06T10:30",
+              "author": "front desk",
+              "body": "No-show for 10:00 follow-up. Called, left voicemail to reschedule. Physical is already booked for late March; can fold this into that if she prefers."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "annual_physical",
+          "start": "2024-03-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              71
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 80.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-26T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-03-26T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-26T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-26T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 33
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-03-26T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-26T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Diagnostic mammogram, bilateral",
+              "category": "imaging",
+              "reason": "History of right breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-26T08:30",
+              "author": "PCP",
+              "body": "Physical, now 56. Apologized for February; she forgot and was stuck at work. Pelvic floor PT through early March helped the cough-and-sneeze leaking, though lately she feels wetter than she expected and uses pads more; she plans to tell gyn. Leg stable in her garment. Hot flashes controlled.\nROS otherwise negative. No bleeding on apixaban.\nExam: vitals per flowsheet, BMI 32. Thyroid normal. Breasts: stable right lumpectomy scar, no masses or nodes. Lungs clear, heart regular, no murmur. Abdomen soft. Left leg in compression garment, skin healthy; right leg normal.\nPHQ-9: 2.\nPrevention: mammogram ordered. Colonoscopy 2028. Bone density 2025. Labs: CMP, CBC with diff, lipids, A1c, vitamin D.\nPlan: gyn follow-up for the leakage, she will call them this week. Return in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "portal_message",
+          "start": "2024-03-28T11:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical labs",
+              "date": "2024-03-28T11:50",
+              "author": "PCP",
+              "body": "All normal again this year, including cholesterol and A1c. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "outside_records",
+          "start": "2024-04-23T09:15",
+          "reason": "Medical oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Medical oncology follow-up",
+              "date": "2024-04-23T09:15",
+              "author": "medical oncology",
+              "body": "Seen 2024-04-16. Year three of extended anastrozole after 2012 breast cancer. No breast symptoms; exam benign. Mammogram 2023 benign; bone density 2023 normal. Continue anastrozole 1 mg daily through spring 2026, calcium, vitamin D. Continue apixaban 5 mg twice daily. One year follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "specialist_visit",
+          "start": "2024-05-21T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Continuous urine leakage",
+          "conditions": [
+            {
+              "label": "Vesicovaginal fistula",
+              "action": "diagnosed",
+              "onset": "2023-11-20",
+              "note": "Radiation-induced",
+              "icd10": "N82.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              81
+            ],
+            "hr": 72,
+            "temp_c": 36.8
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-05-21T10:35",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up: urinary leakage",
+              "date": "2024-05-23T14:10",
+              "author": "gynecology",
+              "body": "Outside gynecology. Date of visit: 2024-05-21.\n\nSeen six months ago for a cystocele. Since about then she has had steady, painless leakage of urine, worse when standing or walking, now needing pads around the clock; the odor embarrasses her. No burning, urgency or frequency.\nHistory: pelvic radiation and brachytherapy 2021 after radical resection of the cervical stump. Pelvic floor therapy completed.\nMedications and allergies unchanged (sulfonamides, iodinated contrast).\n\nExam: no suprapubic tenderness. Neurologic exam of the lower extremities and perineum normal. Speculum exam: a small opening in the anterior vaginal wall with clear fluid leaking continuously.\nUrinalysis: no signs of infection, no blood.\n\nImpression: vesicovaginal fistula, radiation-induced.\nPlan: referral to urology (reconstructive) for cystoscopic evaluation and repair planning. Pads and barrier cream meanwhile. Copy to primary care and gynecologic oncology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "portal_message",
+          "start": "2024-05-28T21:05",
+          "reason": "Question about new diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fistula",
+              "date": "2024-05-28T21:05",
+              "author": "patient",
+              "body": "Gyn says the constant wetness is a fistula between my bladder and vagina from the radiation. They're sending me to urology. Honestly I'm pretty down about it - I thought I was done with all this. Is surgery the only fix?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fistula",
+              "date": "2024-05-29T08:15",
+              "author": "PCP",
+              "body": "Andrea, I'm sorry, that's a hard thing to hear after everything. I read the gyn note. Small fistulas occasionally close with a catheter alone, but after radiation most need a repair, and the urologists who do these regularly have good success, often bringing in healthy tissue to help it heal. They will look with a scope first and lay out the options. The apixaban will need a plan around any procedure; they'll coordinate. If you want to talk it through, book a video visit with me any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "imaging",
+          "start": "2024-06-04T14:45",
+          "reason": "Surveillance mammogram",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-06-04T14:45",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. Prior right lumpectomy and radiation. Comparison 2023 and 2022. Heterogeneously dense breasts. Expected right breast scar and trabecular thickening, stable. No suspicious mass, calcification or distortion bilaterally.",
+              "conclusion": "BI-RADS 2: benign post-treatment findings. Return in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-06-04T14:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2024-06-05T07:55",
+              "author": "PCP",
+              "body": "Benign and stable. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "specialist_visit",
+          "start": "2024-06-18T13:00",
+          "service": "Urology",
+          "reason": "Vesicovaginal fistula",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology consultation: vesicovaginal fistula",
+              "date": "2024-06-20T10:00",
+              "author": "urology",
+              "body": "Outside reconstructive urology. Date of visit: 2024-06-18.\n\nReferred by gynecology for continuous urinary leakage after pelvic radiation, with a fistula seen on speculum exam.\nCystoscopy today in clinic: bladder capacity reasonable; a single small fistulous opening at the bladder base above the trigone, well clear of both ureteral orifices. Surrounding mucosa shows radiation change without a mass. Vaginal exam confirms the vaginal end at the anterior vault.\nImpression: single small radiation-induced vesicovaginal fistula.\nPlan: transvaginal repair with a vascularized tissue interposition flap, which radiated tissue needs. Target late summer. Apixaban to be held around surgery per our protocol, coordinated with her prescriber. Allergies noted: sulfonamides; iodinated contrast (premedicate if any contrast study is needed)."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "procedure_visit",
+          "start": "2024-08-21T07:30",
+          "end": "2024-08-21T11:00",
+          "service": "Urology",
+          "reason": "Vesicovaginal fistula repair",
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: transvaginal fistula repair",
+              "date": "2024-08-26T09:00",
+              "author": "urology",
+              "body": "Outside hospital, received by fax. Date of surgery: 2024-08-21.\nPreoperative and postoperative diagnosis: radiation-induced vesicovaginal fistula.\nProcedure: cystoscopy, transvaginal repair of vesicovaginal fistula with vascularized labial fat pad interposition flap.\nAnesthesia: general. Apixaban held 48 hours before surgery.\nFindings: single small fistula at the bladder base at the anterior vaginal vault; ureteral orifices clear of the repair.\nThe tract was excised, the bladder closed in two layers and tested watertight, the flap tunneled and secured over the repair, and the vaginal wall closed.\nEstimated blood loss minimal. No complications.\nDisposition: home the next day with an indwelling urethral catheter for about 2 weeks; resume apixaban 24 hours after surgery if no bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T15:40",
+          "reason": "Post-operative check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-op call",
+              "date": "2024-09-03T15:40",
+              "author": "RN",
+              "body": "Called to check in after her fistula repair. Catheter came out at urology yesterday after a bladder test showed no leak. Dry so far and over the moon about it. Back on apixaban since the day after surgery, no bleeding. Mild soreness only. No fever. Reminded her of the urology follow-up in early October."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "nurse_visit",
+          "start": "2024-10-01T08:15",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-01T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-01T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-01T08:15",
+              "author": "RN",
+              "body": "Flu vaccine in the left arm, 2024-25 Moderna COVID in the right. No problems with last year's. Anticoagulated, pressure held. Observed without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "specialist_visit",
+          "start": "2024-10-08T11:00",
+          "service": "Urology",
+          "reason": "Post-operative follow-up",
+          "conditions": [
+            {
+              "label": "Vesicovaginal fistula",
+              "action": "resolved",
+              "icd10": "N82.0"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Urology post-operative follow-up",
+              "date": "2024-10-10T13:30",
+              "author": "urology",
+              "body": "Date of visit: 2024-10-08. Seven weeks after transvaginal vesicovaginal fistula repair with interposition flap. Completely dry since catheter removal; no pads. No urinary symptoms. Vaginal exam: repair healed, flap viable, no leak with bladder filling. Fistula closed. Follow up as needed; call for any recurrent leakage."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "office_visit",
+          "start": "2024-10-29T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath on exertion, fatigue",
+          "vitals": {
+            "bp": [
+              124,
+              77
+            ],
+            "hr": 65,
+            "rr": 15,
+            "spo2": 96,
+            "weight_kg": 81.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-29T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-29T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-29T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-29T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2024",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Progressive exertional dyspnea and fatigue after chest and pelvic radiation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-29T13:40",
+              "author": "PCP",
+              "body": "Good news first: the fistula repair worked and she is dry. But for about two months she has gotten winded with things that used to be easy, the stairs to her office and carrying groceries, and she is tired all the time. No chest pain, no fever, no cough. No missed apixaban doses. Not lightheaded.\nExam: vitals in the flowsheet, resting oxygen normal. Lungs clear. Rhythm regular. Abdomen soft. Left leg in garment as usual; right leg without swelling.\nAssessment: progressive exertional dyspnea and fatigue. Recurrent PE is less likely on full-dose apixaban but not impossible. She had radiation to the right breast in 2013, and late cardiac and pericardial effects of radiation are on the list. Anemia to check.\nPlan: CBC and BMP today. Prompt cardiology referral; they can do the echo at the first visit. Go to the ED for chest pain, worsening breathlessness or fainting."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "specialist_visit",
+          "start": "2024-11-18T09:00",
+          "service": "Cardiology",
+          "reason": "Dyspnea on exertion",
+          "conditions": [
+            {
+              "label": "Radiation pericarditis",
+              "action": "diagnosed",
+              "onset": "2024-09-01",
+              "note": "With pericardial effusion",
+              "icd10": "I31.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              70
+            ],
+            "hr": 95,
+            "rr": 18,
+            "spo2": 97,
+            "weight_kg": 80.1
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-11-18T09:40",
+              "text": "PA and lateral chest. The cardiac silhouette is enlarged with a symmetric flask (water-bottle) configuration. Lungs clear. No pleural effusion. No pneumothorax. Surgical clips in the right axilla.",
+              "conclusion": "Enlarged water-bottle cardiac silhouette, suggesting pericardial effusion."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-11-18T10:30",
+              "text": "Left ventricle normal in size with normal wall thickness and normal systolic function. Right ventricle normal in size and function. Pericardial effusion present, circumferential. No right atrial or right ventricular diastolic collapse; no significant respiratory variation of mitral or tricuspid inflow. Valves without significant disease.",
+              "conclusion": "Pericardial effusion without tamponade physiology. Normal biventricular function."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2024",
+              "action": "done",
+              "date": "2024-11-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2024-11-20T16:00",
+              "author": "cardiology",
+              "body": "Outside cardiology. Date of visit: 2024-11-18. Referred by primary care.\n\nTwo months of worsening breathlessness with exertion and fatigue. No chest pain, fever or cough. History of right breast radiation (2013) and pelvic chemoradiation (2021), PE 2021 on apixaban, recent fistula repair.\nMedications: anastrozole 1 mg, apixaban 5 mg twice daily, gabapentin 300 mg three times daily, calcium carbonate, vitamin D3, polyethylene glycol as needed.\nAllergies: sulfonamides; iodinated contrast (urticaria).\n\nExam: BP 110/70, HR 95, RR 18, SpO2 97% on room air. Heart sounds muffled; apical impulse not palpable. Jugular venous pressure elevated. Lungs clear.\nChest x-ray: enlarged, water-bottle cardiac silhouette.\nEchocardiogram: pericardial effusion, normal LV function, no tamponade physiology.\n\nImpression: radiation-induced pericarditis with pericardial effusion, hemodynamically stable.\nPlan: outpatient management with close follow-up; go to the ED for lightheadedness, worsening dyspnea or chest pain. We will see her back to follow the effusion. Copy to primary care."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T10:50",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2024-12-10T10:50",
+              "author": "gynecologic oncology",
+              "body": "Seen 2024-12-03, three and a half years after treatment. Fistula repaired by urology in August, dry since. Newly diagnosed radiation pericarditis with effusion, followed by cardiology. Exam: no adenopathy; vault and flap site healed, no lesion; no pelvic nodularity. No evidence of disease. Next visit in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology",
+          "vitals": {
+            "bp": [
+              120,
+              76
+            ],
+            "hr": 68,
+            "rr": 15,
+            "spo2": 96,
+            "weight_kg": 79.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-01-21T15:00",
+              "author": "PCP",
+              "body": "Follow-up after the cardiology consult. Diagnosed with radiation pericarditis with a pericardial fluid collection; they are following it as an outpatient. She still tires faster than a year ago but manages a full workday. No chest pain, no lightheadedness, no fainting. Still dry after the fistula repair. October labs were normal (blood count and chemistries), so no anemia behind the fatigue.\nExam: vitals in flowsheet, BP fine, resting oxygen normal. Lungs clear. Regular rhythm. Left leg in garment; right leg without edema.\nAssessment: radiation pericarditis with effusion, stable, cardiology managing. Other problems steady.\nPlan: reviewed the warning signs again (worsening breathlessness, lightheadedness, chest pain: ED). Physical in April."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "annual_physical",
+          "start": "2025-04-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              81
+            ],
+            "hr": 77,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 79.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-08T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-04-08T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 326
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-08T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 38
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-04-08T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Diagnostic mammogram, bilateral",
+              "category": "imaging",
+              "reason": "History of right breast cancer"
+            },
+            {
+              "id": "dxa-2025",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "Aromatase inhibitor therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-08T08:40",
+              "author": "PCP",
+              "body": "Yearly visit, 57 now. Energy a bit low but stable; she paces herself on the stairs. Cardiology following the pericardial fluid. No leakage since the fistula repair. Hot flashes controlled on gabapentin. Mood steady, PHQ-9 of 4, mostly sleep and energy items.\nMeds and allergies reviewed.\nExam: vitals per flowsheet, BMI about 32. Thyroid normal. Breasts: right lumpectomy scar, no masses, no nodes. Lungs clear. Heart regular. Abdomen soft, nontender. Left leg in garment, skin intact; right leg normal.\nPrevention: mammogram and bone density ordered. Colonoscopy 2028. Labs: CMP, CBC with diff, lipids, A1c, vitamin D. Pneumococcal vaccine with the fall shots.\nReturn in 6 months or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T17:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2025-04-10T17:20",
+              "author": "PCP",
+              "body": "Andrea, your bloodwork is all normal - counts, kidney and liver numbers, cholesterol, sugar and vitamin D. Imaging will call about the mammogram and bone scan."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical results",
+              "date": "2025-04-10T18:02",
+              "author": "patient",
+              "body": "Great, thank you. Booked both for June."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "outside_records",
+          "start": "2025-04-22T11:10",
+          "reason": "Medical oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Medical oncology follow-up",
+              "date": "2025-04-22T11:10",
+              "author": "medical oncology",
+              "body": "Seen 2025-04-15. Fourth year of extended adjuvant anastrozole. No breast symptoms; exam benign; 2024 mammogram benign. Interval: radiation pericarditis with effusion diagnosed by cardiology in November. Continue anastrozole 1 mg daily, calcium and vitamin D; bone density due this year. Continue apixaban 5 mg twice daily. Next visit in about 9 months to plan completion of endocrine therapy."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "specialist_visit",
+          "start": "2025-05-27T11:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Watery vaginal discharge",
+          "conditions": [
+            {
+              "label": "Vesicovaginal fistula",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "note": "Recurrent after 2024 repair; radiation-induced",
+              "icd10": "N82.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 70,
+            "temp_c": 36.4
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-27T11:20",
+              "results": [
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.01
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-27T11:20",
+              "results": [
+                {
+                  "test": "Bacteria",
+                  "loinc": "25145-4",
+                  "text": "None seen"
+                },
+                {
+                  "test": "Epithelial cells",
+                  "loinc": "11277-1",
+                  "text": "Few"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit: watery discharge",
+              "date": "2025-05-29T15:45",
+              "author": "gynecology",
+              "body": "Outside gynecology. Date of visit: 2025-05-27.\n\nFor two weeks she has had a constant, painless, watery discharge and is wearing pads all day again; she is worried the fistula is back. Repair was August 2024 with a flap; dry until this month.\nNo fever, urgency, frequency or burning.\nMedications and allergies unchanged (sulfonamides; iodinated contrast).\n\nExam: afebrile. Abdomen soft and nontender. Pelvic exam: a small pool of clear fluid in the vaginal vault.\nUrinalysis: pH 6.0, specific gravity 1.010; leukocyte esterase, nitrite, protein, glucose, ketones and blood all negative; no bacteria seen; few epithelial cells.\n\nImpression: recurrent vesicovaginal fistula.\nPlan: back to her reconstructive urologist promptly for cystoscopy. Pads and skin protection. Copy to primary care."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "imaging",
+          "start": "2025-06-03T16:00",
+          "reason": "Surveillance mammogram",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2025-06-03T16:00",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. History of right lumpectomy and whole-breast radiation. Compared with 2024 and 2023. Heterogeneously dense. Right breast post-surgical scar unchanged. No new mass, suspicious calcifications or distortion on either side.",
+              "conclusion": "Benign, stable. BI-RADS 2. Next diagnostic mammogram in one year."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-06-03T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2025-06-04T08:30",
+              "author": "PCP",
+              "body": "Benign, unchanged. Patient informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "imaging",
+          "start": "2025-06-17T07:45",
+          "reason": "Bone density",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2025-06-17T07:45",
+              "text": "DXA lumbar spine (L1-L4) and bilateral hips. Indication: aromatase inhibitor therapy. Lumbar spine T-score -0.8. Femoral neck T-scores -0.6 left and -0.5 right; total hip within normal range. Compared with 2023, no statistically significant change.",
+              "conclusion": "Normal bone density, stable."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2025",
+              "action": "done",
+              "date": "2025-06-17T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bone density result",
+              "date": "2025-06-18T09:15",
+              "author": "PCP",
+              "body": "Still normal. Continue calcium and vitamin D."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "specialist_visit",
+          "start": "2025-06-24T14:30",
+          "service": "Urology",
+          "reason": "Recurrent vesicovaginal fistula",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology: recurrent fistula",
+              "date": "2025-06-26T10:40",
+              "author": "urology",
+              "body": "Outside reconstructive urology. Date of visit: 2025-06-24.\nContinuous leakage recurred in May, ten months after transvaginal repair with interposition flap.\nCystoscopy: a small recurrent fistula at the site of the prior repair on the bladder base; ureteral orifices clear.\nImpression: small recurrent radiation-induced vesicovaginal fistula.\nPlan: a trial of continuous bladder drainage with an indwelling catheter for 6 weeks, which sometimes lets a small tract close. If it persists, options are a repeat repair or continued pads. Catheter placed today; catheter care taught."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-08T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-07-08T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-07-08T12:30",
+              "author": "PCP",
+              "body": "Video check-in, identity confirmed, she is home. Two weeks into catheter drainage for the recurrent fistula. Hates the bag, managing it, working from home for now. No fever, urine clear. Breathing about the same as winter; cardiology visit coming in the fall. Mood: frustrated, not hopeless, sleeping OK. Declined counseling referral for now, will ask if she wants it.\nPlan: nothing changed. Urology recheck in August. Fall vaccines in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "specialist_visit",
+          "start": "2025-08-12T10:00",
+          "service": "Urology",
+          "reason": "Fistula follow-up",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Urology follow-up",
+              "date": "2025-08-14T12:00",
+              "author": "urology",
+              "body": "Date of visit: 2025-08-12. Six weeks of catheter drainage completed; catheter removed today. On bladder filling there is still a small leak from the vault: the recurrent fistula persists, smaller. Offered repeat repair. She prefers to hold off for now and manage with pads; we agree this is reasonable and will revisit whenever she wishes. Return in 6 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T08:10",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T08:17"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-10-07T08:19"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-07T08:10",
+              "author": "RN",
+              "body": "Three vaccines today per PCP plan: influenza and PCV20 in the left deltoid, spaced apart, and 2025-26 COVID in the right. Screening negative. Pressure held, anticoagulated. Fine after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "specialist_visit",
+          "start": "2025-11-24T13:30",
+          "service": "Cardiology",
+          "reason": "Pericarditis follow-up",
+          "conditions": [
+            {
+              "label": "Constrictive pericarditis",
+              "action": "diagnosed",
+              "onset": "2025-05-24",
+              "note": "Radiation-induced, constrictive physiology",
+              "icd10": "I31.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Constrictive pericarditis, fluid retention"
+            },
+            {
+              "drug": "spironolactone 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Fluid retention, ascites"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 88,
+            "rr": 18,
+            "spo2": 97,
+            "weight_kg": 84.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-24T13:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-24T13:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 66
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-24T13:45",
+              "results": [
+                {
+                  "test": "B-type natriuretic peptide",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "value": 550
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-11-24T14:10",
+              "text": "PA and lateral chest. Curvilinear calcification along the pericardium, best seen on the lateral view. Cardiac size within normal limits. No pulmonary vascular congestion, no edema, no pleural effusion. Right axillary surgical clips.",
+              "conclusion": "Pericardial calcification. No pulmonary congestion."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-11-24T14:45",
+              "text": "Left ventricle normal in size with normal systolic function. Pericardium thickened and echo-bright. Interventricular septal bounce with respiration. No significant pericardial effusion now. Valves without significant disease.",
+              "conclusion": "Normal LV function; thickened pericardium with septal bounce, consistent with constrictive physiology."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up: constrictive pericarditis",
+              "date": "2025-11-26T17:10",
+              "author": "cardiology",
+              "body": "Outside cardiology. Date of visit: 2025-11-24.\n\nFollow-up for radiation-induced pericarditis diagnosed a year ago, in the setting of right breast radiation over a decade ago and pelvic chemoradiation in 2021. Over six months, increasing breathlessness, swollen legs and a swollen abdomen, all worse toward evening, and 10 pounds gained in the last two months without eating differently.\nMedications: anastrozole 1 mg daily, apixaban 5 mg twice daily, gabapentin 300 mg three times daily, calcium carbonate 500 mg three times daily, vitamin D3 2000 units daily, polyethylene glycol 3350 as needed.\nAllergies: sulfamethoxazole-trimethoprim (rash); iodinated contrast (urticaria, premedication required).\nFamily: mother breast cancer; father colon polyps and hypertension; sister hypothyroidism; paternal grandmother ovarian cancer.\nSocial: never smoker, light alcohol, desk job.\n\nExam: BP 130/80, HR 88, RR 18. Weight 84.5 kg. JVP elevated with a positive hepatojugular reflux. Liver edge palpable 3 cm below the right costal margin. Pericardial knock on auscultation.\nLabs: hemoglobin 13.2, WBC 7.8, platelets 250, creatinine 1.0, albumin 3.5, ALT 45, AST 50, total bilirubin 1.2, BNP 550 pg/mL.\nChest x-ray: pericardial calcification, no pulmonary congestion.\nEcho: normal LV function, thickened pericardium, septal bounce.\n\nImpression: constrictive pericarditis, radiation-induced, with systemic venous congestion (hepatic congestion explaining the mild transaminase rise).\nPlan: start furosemide 40 mg each morning and spironolactone 25 mg daily. Daily weights. Basic metabolic panel in 1 to 2 weeks, her PCP has agreed to draw it. Follow-up here in about 10 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.5
+          },
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, new diuretics",
+          "vitals": {
+            "bp": [
+              132,
+              79
+            ],
+            "hr": 65,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-09T11:55",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-09T11:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-09T11:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-12-09T11:20",
+              "author": "PCP",
+              "body": "Two weeks after cardiology diagnosed constrictive pericarditis and started furosemide 40 and spironolactone 25. Urinating a lot in the mornings, which with the fistula is a nuisance, but the belly is less tight and the legs less puffy. Home scale down about 5 pounds. No dizziness on standing, no cramps.\nExam: vitals in flowsheet, weight down from the cardiology visit. Lungs clear. Regular rhythm. Abdomen less full than she describes it was. Right leg trace edema at the ankle; left leg in garment.\nPlan: BMP today for potassium and creatinine on the new diuretics. Keep the daily weight log for cardiology. Call if weight drops fast or she gets lightheaded."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "portal_message",
+          "start": "2025-12-10T08:45",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Potassium and kidneys",
+              "date": "2025-12-10T08:45",
+              "author": "PCP",
+              "body": "Your potassium and kidney function are normal on the two water pills. I'll send the result to cardiology too. Keep going as is."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "outside_records",
+          "start": "2025-12-16T13:00",
+          "reason": "Gynecologic oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2025-12-16T13:00",
+              "author": "gynecologic oncology",
+              "body": "Seen 2025-12-02, four and a half years after chemoradiation for stage IIIB cervical stump carcinoma. Interval: recurrent vesicovaginal fistula at the prior repair site, persistent after catheter drainage, managed with pads by her choice; constrictive pericarditis diagnosed by cardiology, now on diuretics. Exam: no adenopathy; small amount of clear fluid at the vault from the known fistula, no mass or lesion; no pelvic nodularity. No evidence of cancer recurrence. Move to yearly visits after the five-year mark."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "outside_records",
+          "start": "2026-01-13T10:30",
+          "reason": "Medical oncology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Medical oncology follow-up",
+              "date": "2026-01-13T10:30",
+              "author": "medical oncology",
+              "body": "Seen 2026-01-06. Approaching five years of extended adjuvant anastrozole (started April 2021) after ER/PR-positive right breast cancer in 2012. No breast concerns; exam benign; 2025 mammogram and bone density normal. Interval constrictive pericarditis on diuretics and a recurrent fistula noted. Continue anastrozole 1 mg daily for now, calcium and vitamin D; we will review stopping at the summer visit. Continue apixaban 5 mg twice daily."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "specialist_visit",
+          "start": "2026-02-10T09:15",
+          "service": "Cardiology",
+          "reason": "Constrictive pericarditis follow-up",
+          "vitals": {
+            "bp": [
+              108,
+              66
+            ],
+            "hr": 50,
+            "spo2": 98,
+            "weight_kg": 79.6
+          },
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Cardiology follow-up",
+              "date": "2026-02-12T15:20",
+              "author": "cardiology",
+              "body": "Date of visit: 2026-02-10. Constrictive pericarditis, radiation-induced. On furosemide 40 mg daily and spironolactone 25 mg daily since November. Weight back to about 80 kg; leg and abdominal swelling much improved; breathlessness better on stairs, though not back to normal. December BMP from her PCP normal.\nExam: JVP lower than in November; liver edge less prominent; lungs clear; minimal ankle edema on the right.\nAssessment: improved on diuretics.\nPlan: continue both diuretics at the same doses. We discussed pericardiectomy; with radiation-related disease the surgical results are less predictable, and with her symptoms controlled we will not pursue it now, revisiting if she worsens. Return in 4 months; BMP with each primary care visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "office_visit",
+          "start": "2026-03-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              79
+            ],
+            "hr": 64,
+            "rr": 16,
+            "spo2": 97,
+            "weight_kg": 80.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-12T10:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-12T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-12T10:00",
+              "author": "PCP",
+              "body": "Turns 58 next week. Doing better than in the fall: cardiology pleased in February, weight holding near 80 kg, legs and belly down. Walks the flat loop near home most days. Still leaks a little from the fistula and uses pads; not ready for another surgery and doesn't want to talk about it today. Hot flashes controlled. No bleeding on apixaban. Oncology to discuss stopping anastrozole this summer.\nMeds reviewed: anastrozole 1 daily, apixaban 5 BID, furosemide 40 daily, spironolactone 25 daily, gabapentin 300 TID, calcium carbonate 500 TID, vitamin D3 2000 units, PEG as needed.\nExam: vitals per flowsheet. Neck veins not visibly distended sitting up. Lungs clear. Regular rhythm. Abdomen soft, not distended. Left leg in garment; right ankle without edema today.\nAssessment and plan:\n1. Constrictive pericarditis on diuretics, improved: BMP today; continue.\n2. Recurrent vesicovaginal fistula: pads; urology when she is ready.\n3. PE history on apixaban, cancer histories under surveillance, lymphedema, menopausal symptoms: unchanged.\nPhysical and follow-up in September; she booked on the way out."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-13a",
+          "kind": "portal_message",
+          "start": "2026-03-13T12:10",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's bloodwork",
+              "date": "2026-03-13T12:10",
+              "author": "PCP",
+              "body": "Sodium, potassium and kidney function all normal. No changes. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T09:30",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill requests",
+              "date": "2026-04-14T09:30",
+              "author": "MA",
+              "body": "Pharmacy requests for furosemide 40 mg and spironolactone 25 mg (cardiology prescriptions transferred to us at her request) and apixaban 5 mg. Last BMP 3/12 normal. Approved per PCP, 90 days with 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "ed_visit",
+          "start": "2026-05-13T06:40",
+          "end": "2026-05-13T12:30",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, pleuritic chest pain",
+          "vitals": [
+            {
+              "time": "2026-05-13T06:45",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 37.8,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-13T07:30",
+              "resulted": "2026-05-13T07:42",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 32
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 70
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-13T07:05",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-13T07:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 308
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-13T07:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-05-13T07:15",
+              "text": "Portable AP chest. Lungs clear. No consolidation, pleural effusion or pneumothorax. Cardiomediastinal silhouette within normal limits. Right axillary surgical clips.",
+              "conclusion": "No acute cardiopulmonary abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-13T06:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-05-19T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service: 2026-05-13. Received with the discharge packet.\n\nChief complaint: abrupt breathlessness and sharp left-sided chest pain on breathing in, since early this morning.\nHPI: 58-year-old woman with a prior pulmonary embolism (2021) on apixaban. Two days of cough with some wheezing. No recent travel, surgery or prolonged immobility.\nHistory: radiation-induced constrictive pericarditis on diuretics; cervical stump cancer 2021 and right breast cancer 2012, no evidence of disease; left leg lymphedema; cystocele; recurrent vesicovaginal fistula; surgical menopause.\nHome medications: anastrozole 1 mg daily, apixaban 5 mg twice daily, furosemide 40 mg daily, spironolactone 25 mg daily, gabapentin 300 mg three times daily, calcium carbonate 500 mg three times daily, vitamin D3 2000 units daily, polyethylene glycol 3350 as needed.\nAllergies: sulfamethoxazole-trimethoprim (rash); iodinated contrast (urticaria; premedication protocol required).\n\nTriage: temp 37.8 C (100 F), BP 135/85, pulse 110, RR 22, SpO2 89% on room air.\nExam: tachypneic. Diminished breath sounds with expiratory wheezes over the left lower lung field. Mild swelling of the left calf with tenderness on palpation, on a background of known left leg lymphedema.\nArterial blood gas on room air, drawn after she had settled: pH 7.48, PaCO2 32, PaO2 70, HCO3 24.\nHigh-sensitivity troponin within normal limits. Portable chest x-ray unremarkable.\n\nAssessment: suspected recurrent pulmonary embolism despite apixaban. Iodinated contrast premedication protocol started for CT pulmonary angiography. Admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13b",
+          "kind": "hospital_admission",
+          "start": "2026-05-13T12:30",
+          "end": "2026-05-16T11:00",
+          "service": "Hospital Medicine",
+          "reason": "Recurrent pulmonary embolism",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-05-13T19:30",
+              "text": "CT angiography of the chest, pulmonary embolism protocol, after premedication for prior contrast urticaria. Acute filling defects in segmental branches of the left lower lobe pulmonary arteries. Main and lobar pulmonary arteries otherwise patent. Right ventricle to left ventricle ratio less than 1; no septal flattening. Lungs clear without consolidation. No pleural effusion. Pericardial thickening with calcification, known. No mediastinal or hilar lymphadenopathy.",
+              "conclusion": "Acute left lower lobe segmental pulmonary emboli without right heart strain."
+            },
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2026-05-14T09:00",
+              "text": "Left lower extremity venous duplex. Noncompressible, expanded left peroneal veins with intraluminal echogenic thrombus and absent flow. Common femoral, femoral, popliteal and posterior tibial veins compressible with normal flow. Subcutaneous edema of the calf.",
+              "conclusion": "Acute deep vein thrombosis of the left peroneal veins."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-05-13T12:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-05-19T10:20",
+              "author": "hospital medicine",
+              "body": "Regional hospital, medicine service. Admitted 2026-05-13, discharged 2026-05-16.\n\nDiagnoses: acute pulmonary embolism, left lower lobe segmental, recurrent, while on apixaban; acute left peroneal vein DVT.\nOther: radiation-induced constrictive pericarditis; history of cervical stump cancer (2021) and right breast cancer (2012); left leg lymphedema; recurrent vesicovaginal fistula; cystocele; surgical menopause.\nAllergies: sulfamethoxazole-trimethoprim (rash); iodinated contrast (urticaria) - premedicated before CT this admission without reaction.\n\nCourse: presented through the ED with breathlessness, left pleuritic pain, tachycardia and hypoxemia (details in the ED record). After steroid and antihistamine premedication, CT pulmonary angiography showed acute segmental emboli in the left lower lobe without right heart strain. Duplex showed acute DVT in the left peroneal veins. Troponin normal. Oxygen weaned to room air by day 2. Because this occurred on apixaban, she was changed to enoxaparin 80 mg subcutaneously every 12 hours (weight 80 kg); apixaban stopped. Diuretics continued.\n\nDischarge medications: enoxaparin 80 mg subcutaneously every 12 hours (new); STOP apixaban; continue anastrozole 1 mg daily, furosemide 40 mg daily, spironolactone 25 mg daily, gabapentin 300 mg three times daily, calcium carbonate 500 mg three times daily, vitamin D3 2000 units daily, polyethylene glycol 3350 as needed.\nFollow-up: hematology in 4 to 6 weeks; primary care; cardiology as scheduled. Injection teaching completed."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T18:30",
+          "reason": "Hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I was in the hospital",
+              "date": "2026-05-19T18:30",
+              "author": "patient",
+              "body": "Wanted you to know I was admitted last week with another blood clot in my lung, and one in my left leg. Even though I was taking the apixaban every day. They switched me to shots twice a day (enoxaparin) and I see hematology next month. I'm home and breathing OK. Do I need to come in before September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I was in the hospital",
+              "date": "2026-05-20T07:40",
+              "author": "PCP",
+              "body": "Andrea, I'm sorry, and thank you for telling me. The hospital records came in yesterday and I've read them. Switching to the injections is the right move when a clot happens on a pill like apixaban, and hematology is the right next step. Stop the apixaban if you haven't. Keep the cardiology plan. If you'd rather not wait until September, message me and we'll get you in; and please go straight to the ED for worse breathlessness, chest pain or coughing blood."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I was in the hospital",
+              "date": "2026-05-20T12:05",
+              "author": "patient",
+              "body": "Thank you. I'll see how hematology goes and keep September unless something comes up."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "specialist_visit",
+          "start": "2026-06-16T14:00",
+          "service": "Hematology",
+          "reason": "Recurrent venous thromboembolism",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology consultation",
+              "date": "2026-06-18T11:30",
+              "author": "hematology",
+              "body": "Outside hematology. Date of visit: 2026-06-16. Referred at hospital discharge.\n\nRecurrent pulmonary embolism (left lower lobe segmental) with left peroneal DVT in May 2026 while taking apixaban 5 mg twice daily, five years after a postoperative, malignancy-associated PE in 2021. Cancer histories without evidence of disease. Ongoing risks: left leg lymphedema, prior pelvic surgery and radiation, obesity.\nOn enoxaparin 80 mg every 12 hours since May 13, injecting without trouble; no bleeding; breathing back near her baseline.\nAllergies: sulfonamides; iodinated contrast.\n\nImpression: recurrent VTE on a direct oral anticoagulant.\nPlan: continue enoxaparin 80 mg every 12 hours indefinitely. CBC and creatinine every 3 months. Return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Gabapentin refill",
+              "date": "2026-07-21T10:05",
+              "author": "MA",
+              "body": "Pharmacy request for gabapentin 300 mg capsules, three times daily. Last visit March. Approved per PCP, 90 days. Reminded patient of the September appointment when she picked up."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up and annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Constrictive pericarditis|I31.1": {
+        "code": "I31.1",
+        "display": "Chronic constrictive pericarditis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of irradiation|Z92.3": {
+        "code": "Z92.3",
+        "display": "Personal history of irradiation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Radiation pericarditis|I31.8": {
+        "code": "I31.8",
+        "display": "Other specified diseases of pericardium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Symptomatic postprocedural ovarian failure|E89.41": {
+        "code": "E89.41",
+        "display": "Symptomatic postprocedural ovarian failure",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Vesicovaginal fistula|N82.0": {
+        "code": "N82.0",
+        "display": "Vesicovaginal fistula",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "anastrozole 1 MG Oral Tablet": {
+        "code": "199224",
+        "display": "anastrozole 1 MG Oral Tablet",
+        "ingredient": "anastrozole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "calcium carbonate 500 MG Oral Tablet": {
+        "code": "318076",
+        "display": "calcium carbonate 500 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "B-type natriuretic peptide": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bacteria": {
+        "code": "25145-4",
+        "display": "Bacteria [Presence] in Urine sediment by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Epithelial cells": {
+        "code": "11277-1",
+        "display": "Epithelial cells.squamous [#/area] in Urine sediment by Microscopy high power field",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing Hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,850 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001867",
+   "events": [
+    {
+     "id": "2024-02-27a",
+     "kind": "portal_message",
+     "start": "2024-02-27T10:02",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Appointment reminder",
+       "author": "MA",
+       "date": "2024-02-27T10:02",
+       "body": "Reminder of your physical on Tuesday 3/5 at 8:20. Fasting please, and hold the morning lithium until after labs."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-05a",
+     "kind": "annual_physical",
+     "start": "2024-03-05T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2024-03-05b",
+     "kind": "telephone",
+     "start": "2024-03-05T11:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed physical",
+       "author": "front desk",
+       "date": "2024-03-05T11:30",
+       "body": "Called re missed 8:20 physical. She was scheduled to open the store this morning and forgot to cancel, apologized. Rebooked 3/26 8:40. Reminded her to fast and hold the morning lithium until after the draw."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-26a",
+     "kind": "annual_physical",
+     "start": "2024-03-26T08:40",
+     "end": "2024-03-26T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-03-26T09:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-03-26T09:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-03-26T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-26T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-03-26T08:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-03-26T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-03-26T08:40",
+       "body": "34 yo F, yearly visit (rescheduled from 3/5).\n\nSince last year: no acute issues. Psychiatry follow-ups on schedule, lithium 600 twice a day and quetiapine 300 at night unchanged. Still at the store, now training new hires. Fasting today, held AM lithium.\nNKDA. Never smoker, no alcohol.\n\nExam: vitals reviewed. NAD. HEENT clear. Neck supple, thyroid normal size. RRR, no murmur or gallop. Clear lungs. Abd soft, NT. Extremities without edema. No tremor. Neuro grossly intact. Mental status: euthymic, organized.\n\nPlan:\n- Lithium monitoring labs + quetiapine metabolic labs today.\n- Pap/HPV done 2023, next 2028.\n- PHQ-9 1.\n- Flu and COVID this fall.\n- Lithium/BMP/TSH again in September; standing order placed."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-27a",
+     "kind": "portal_message",
+     "start": "2024-03-27T13:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from your physical",
+       "author": "PCP",
+       "date": "2024-03-27T13:15",
+       "body": "Hi Andrea, all normal - lithium level, kidney function, calcium, thyroid, blood counts, A1c and cholesterol. Faxed to psychiatry. Lab orders for September are already in, just stop by in the morning before your lithium dose."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "lab_only",
+     "start": "2024-09-17T07:55",
+     "reason": "lithium monitoring",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-09-17T07:55",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-17T07:55",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-09-17T07:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Lab Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2024-09-17T07:55",
+       "body": "Standing-order draw. Pt reports last lithium 10 pm. Lithium, BMP, TSH collected L antecubital."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-18a",
+     "kind": "portal_message",
+     "start": "2024-09-18T08:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2024-09-18T08:40",
+       "body": "Lithium level, kidney function, calcium and thyroid normal. Copy to psychiatry. You can book flu and COVID vaccines with the nurse any time now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lab results",
+       "author": "patient",
+       "date": "2024-09-18T12:02",
+       "body": "Great. Can I do the shots on a weekday after 3? I work mornings most of October"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lab results",
+       "author": "front desk",
+       "date": "2024-09-18T14:26",
+       "body": "Yes - booked you Tuesday 10/22 at 3:20 with the nurse."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "nurse_visit",
+     "start": "2024-10-22T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "fall vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-22T15:25"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2024-10-22T15:27"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-22T15:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Immunizations",
+       "author": "RN",
+       "date": "2024-10-22T15:20",
+       "body": "Influenza (trivalent) IM left arm, 2024-25 COVID IM right arm. No contraindications on screening. Tolerated, observed 15 min."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-03a",
+     "kind": "portal_message",
+     "start": "2024-12-03T18:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "vaccine record",
+       "author": "patient",
+       "date": "2024-12-03T18:30",
+       "body": "My manager is asking for proof of my flu shot. Can you send something?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: vaccine record",
+       "author": "MA",
+       "date": "2024-12-04T09:20",
+       "body": "Attached your immunization record showing the 10/22 flu shot. You can also print it any time from the Health Summary tab."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "annual_physical",
+     "start": "2025-02-25T08:40",
+     "end": "2025-02-25T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-02-25T09:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-02-25T09:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-02-25T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-02-25T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-02-25T08:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-02-25T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-02-25T08:40",
+       "body": "Preventive visit. 35F.\n\nNo new concerns. Last psychiatry visit in January, regimen unchanged. Works full time. Sleeping fine. Never smoked, no alcohol.\nMeds: lithium carbonate 600 mg BID, quetiapine 300 mg qhs. NKDA.\n\nExam: vitals in flowsheet; weight steady over three years. Alert, well groomed, normal speech and affect. HEENT normal. Thyroid not palpable. Cor regular, no murmur. Lungs clear. Abdomen benign. No edema, no tremor.\n\nAssessment/plan:\n1. Bipolar I disorder - stable. Annual lithium and quetiapine monitoring labs drawn.\n2. Prevention: cervical screening current through 2028. Vaccines up to date for this season. PHQ-9 3.\nLithium labs again late summer; physical next February."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-26a",
+     "kind": "portal_message",
+     "start": "2025-02-26T15:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2025-02-26T15:50",
+       "body": "Andrea, your results are all within normal limits again this year, including the lithium level. Forwarded to psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-08a",
+     "kind": "specialist_visit",
+     "start": "2025-05-08T14:00",
+     "service": "Psychiatry",
+     "reason": "bipolar disorder follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Outpatient Psychiatry Progress Note (received)",
+       "author": "psychiatry",
+       "date": "2025-08-20T10:30",
+       "body": "OUTSIDE PSYCHIATRY - OUTPATIENT PROGRESS NOTE\nDate of visit: 05/08/2025. Faxed in response to records request.\n\nReason for visit: scheduled medication management, bipolar I disorder.\n\nInterval history: Patient describes her mood as extremely good, feels on top of the world. For roughly the past week she has been getting 3 to 4 hours of sleep a night and does not feel tired. She has made several large purchases recently that she acknowledges she cannot afford.\n\nCurrent medications: lithium carbonate 600 mg PO BID; quetiapine 300 mg PO QHS.\nAllergies: NKDA.\nFamily psychiatric history: mother, bipolar I disorder; maternal grandmother, schizophrenia.\nSocial: retail sales associate. Never smoker. No alcohol.\n\nMental status: cheerful, elevated mood. Speech rapid. Easily distracted during the interview. Near the end of the session she thanked the writer effusively and offered a new high-end laptop as a gift, which was declined.\n\nAssessment: Bipolar disorder, current episode manic.\nPlan: continue lithium carbonate 600 mg twice daily and quetiapine 300 mg at bedtime. Return to clinic."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-06a",
+     "kind": "ed_visit",
+     "start": "2025-06-06T19:40",
+     "end": "2025-06-07T01:15",
+     "service": "Emergency Medicine",
+     "reason": "erratic behavior, brought by sister",
+     "conditions": [
+      {
+       "label": "Bipolar I disorder, current episode manic, moderate",
+       "icd10": "F31.12",
+       "action": "diagnosed",
+       "onset": "2025-05-08"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-06-06T20:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-06-06T20:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-06-06T20:15",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Free Thyroxine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2025-06-06T19:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Provider Note (received)",
+       "author": "emergency medicine",
+       "date": "2025-06-10T09:20",
+       "body": "EMERGENCY DEPARTMENT RECORD - regional hospital\nArrival 06/06/2025 19:40. Copy sent to primary care.\n\nCC: brought in by sister for erratic behavior.\n\nHPI: 35-year-old woman with bipolar I disorder. Per patient and sister, the past two weeks she has felt on top of the world, sleeping about 3 hours a night, and has been spending large amounts of money online that she cannot afford. Sister reports she is much more talkative than her baseline and has been describing grand plans to start her own business. About a month ago she saw her outpatient psychiatrist for similar symptoms: elevated mood, little sleep, overspending.\n\nMeds: lithium carbonate 600 mg BID, quetiapine 300 mg QHS. Allergies: NKDA.\nPMH: bipolar I disorder. PSH: wisdom tooth extraction age 18.\nFHx: mother bipolar I; maternal grandmother schizophrenia.\nSHx: retail sales. Never smoker, no alcohol.\n\nExam: vital signs within normal limits. Well groomed. Speech rapid; easily pulled off topic by activity in the room. Thought process goal directed. Denies suicidal ideation. Recognizes she needs treatment and states she would like to avoid admission. General physical exam unremarkable: heart regular, lungs clear, abdomen soft, neuro nonfocal.\n\nLabs: CBC normal. Basic metabolic panel normal. Thyroid studies normal.\n\nImpression: bipolar I disorder, current episode manic, moderate.\n\nDisposition: not felt to require inpatient admission; no suicidal ideation, goal-directed, engaged with care, sister able to stay with her. Discharged home with her sister to follow up with her outpatient psychiatrist. Home medications continued."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-11a",
+     "kind": "telephone",
+     "start": "2025-06-11T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-ED call",
+       "author": "RN",
+       "date": "2025-06-11T10:05",
+       "body": "Called after ED record came in. Spoke with patient; sister also on the line. Pt says she is sleeping more, is staying at her sister's for now, and has a psychiatry appointment set up. Taking both meds. Denies thoughts of harming herself. Booked follow-up with PCP 7/1 4:00. Gave her the crisis line number and told her to go back to the ED for any safety concern."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-01a",
+     "kind": "office_visit",
+     "start": "2025-07-01T16:00",
+     "end": "2025-07-01T16:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after ED visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-07-01T16:30",
+       "resulted": "2025-07-02T07:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-07-01T16:30",
+       "resulted": "2025-07-02T07:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-01T16:30",
+       "resulted": "2025-07-02T07:40",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-07-01T16:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-07-01T16:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - ED Follow-up",
+       "author": "PCP",
+       "date": "2025-07-01T16:00",
+       "body": "Seen after ED visit 6/6, record reviewed.\n\nHPI: Sister brought her to the ED early June for two weeks of very little sleep, overspending online and big business plans. ED dx bipolar I, current episode manic, moderate; labs (CBC, BMP, thyroid) were normal and she went home with her sister. She tells me she had also seen her psychiatrist in early May for the same symptoms - we never got a note from that visit. She has seen psychiatry again since the ED and is on the same doses: lithium 600 BID, quetiapine 300 qhs. Says she is sleeping longer now. No SI.\n\nExam: vitals as recorded. Casually dressed, cooperative, makes good eye contact. Speech normal rate today. Thought process linear. Heart RRR, lungs clear. No tremor.\n\nA/P:\n1. Bipolar I disorder, current episode manic, moderate, per ED - care by psychiatry. No lithium level was drawn in the ED; checking lithium level, BMP, TSH and CBC today, results to her and psychiatry.\n2. Records request to psychiatry for the May note and recent visits.\n3. Physical due February. She knows to call or message any time."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-02a",
+     "kind": "portal_message",
+     "start": "2025-07-02T12:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Labs from Tuesday",
+       "author": "PCP",
+       "date": "2025-07-02T12:30",
+       "body": "Hi Andrea, your lithium level is in range and kidney function, calcium, thyroid and blood counts are all normal. Copies sent to your psychiatrist. Glad you are feeling more rested."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2025-07-02T14:10",
+       "body": "Faxed records request to outside psychiatry office for office notes 5/2025 to present, per PCP. Release on file."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-20b",
+     "kind": "telephone",
+     "start": "2025-08-20T10:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Psychiatry records received",
+       "author": "front desk",
+       "date": "2025-08-20T10:45",
+       "body": "Psychiatry office note from 5/8/25 received by fax after July request. Only the one visit sent. Scanned and routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Psychiatry records reviewed",
+       "author": "PCP",
+       "date": "2025-08-21T07:50",
+       "body": "Reviewed the May psychiatry note: manic symptoms, doses continued. Consistent with what she and the ED told us. No action needed from us."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-19a",
+     "kind": "hospital_admission",
+     "start": "2025-11-19T13:30",
+     "end": "2025-12-04T11:00",
+     "service": "Psychiatry",
+     "reason": "auditory hallucinations and delusional thinking",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-11-19T15:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-11-19T15:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-11-19T15:10",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Free Thyroxine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-11-19T13:30"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-12-04T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Inpatient Psychiatry Discharge Summary (received)",
+       "author": "inpatient psychiatry",
+       "date": "2026-01-22T15:40",
+       "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmitted 11/19/2025. Discharged 12/04/2025.\n\nReason for admission: 36-year-old woman with known bipolar I disorder, previously evaluated in May and June 2025 for manic symptoms with grandiosity and overspending, admitted for a month of auditory hallucinations and delusional thinking. She holds the belief that she is a prophet who has been given a special mission to save the world, and this has seriously impaired her social functioning.\n\nHistory: She also describes intermittent spells lasting several days of elevated mood, high energy and reduced need for sleep. Her sister, who participated in the history, observes that these mood spells are separated by weeks in which the patient functions fairly well, but the hallucinations and delusions do not go away during those weeks.\n\nMedications on admission: lithium carbonate 600 mg PO twice daily; quetiapine fumarate 300 mg PO at bedtime.\nAllergies: NKDA.\nFamily history: mother with bipolar I disorder; maternal grandmother with schizophrenia.\nSubstance use: none.\n\nPhysical examination: unremarkable.\nLaboratory: CBC, comprehensive metabolic panel and thyroid function within normal limits.\n\nDischarge diagnosis: schizoaffective disorder, bipolar type (psychotic symptoms persisting outside of mood episodes).\n\nDischarge medications: lithium carbonate 600 mg PO twice daily; quetiapine 300 mg PO at bedtime.\nFollow-up: outpatient psychiatry.\nCopy to primary care."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-10a",
+     "kind": "portal_message",
+     "start": "2025-12-10T21:14",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "was in the hospital",
+       "author": "patient",
+       "date": "2025-12-10T21:14",
+       "body": "Hi, just wanted you to know I was in the psych unit for a couple weeks, got out last Thursday. I'm at my sister's. Same meds. I have follow up with my psychiatrist next week."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: was in the hospital",
+       "author": "PCP",
+       "date": "2025-12-11T08:05",
+       "body": "Thank you for letting me know, Andrea. I'm glad you're home and with your sister. We'll request the hospital summary so your chart here is current. Message me any time, and let's plan to see you for your physical in the new year."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2025-12-11T10:30",
+       "body": "Discharge summary requested from the hospital's inpatient psychiatry unit (admit 11/19/25). Release signed electronically by pt."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-13a",
+     "kind": "telephone",
+     "start": "2026-01-13T13:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records follow-up",
+       "author": "front desk",
+       "date": "2026-01-13T13:45",
+       "body": "Discharge summary from December request still not here. Called the hospital medical records line, they had the request in queue. Resent release. Told 1 to 2 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-22b",
+     "kind": "telephone",
+     "start": "2026-01-22T16:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Discharge summary received",
+       "author": "front desk",
+       "date": "2026-01-22T16:05",
+       "body": "Inpatient psychiatry discharge summary (11/19 to 12/4/25) received. Scanned and routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Discharge summary reviewed",
+       "author": "PCP",
+       "date": "2026-01-23T08:15",
+       "body": "Read the discharge summary. Discharge diagnosis schizoaffective disorder, bipolar type; same lithium and quetiapine doses; following with psychiatry. Will go over it and update her list when she comes in."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "pharmacy",
+     "start": "2026-02-17T11:20",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Pharmacy inquiry",
+       "author": "front desk",
+       "date": "2026-02-17T11:20",
+       "body": "Pharmacy faxed asking whether we prescribe her lithium and quetiapine - patient asked them to check refills. Replied by fax: both are prescribed by her outside psychiatrist, not this office. Pharmacy will contact psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "portal_message",
+     "start": "2026-04-21T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Time for a checkup",
+       "author": "PCP",
+       "date": "2026-04-21T12:40",
+       "body": "Hi Andrea, checking in. You are due for your physical and lithium blood work - last labs here were in July. Please call or use the portal to book a time that works with your schedule."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-13a",
+     "kind": "portal_message",
+     "start": "2026-08-13T19:52",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "appointment",
+       "author": "patient",
+       "date": "2026-08-13T19:52",
+       "body": "Hi I know I missed my physical this year. Can I get in sometime in September? Thursdays are best"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: appointment",
+       "author": "front desk",
+       "date": "2026-08-14T09:10",
+       "body": "Hi Andrea, you're booked Thursday 9/10 at 9:20 for a physical and follow-up. Please come fasting."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-10a",
+     "kind": "office_visit",
+     "start": "2026-09-10T09:20",
+     "reason": "follow-up and physical",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}
