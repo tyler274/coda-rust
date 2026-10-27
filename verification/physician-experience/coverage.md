@@ -500,6 +500,7 @@ check prints the current counts.
 | Connecting the source | missing |  | yes | records_as_of ignores any state but usable/refreshing/failed, so nothing says Coda is connecting the source. |
 | Records kept.Records current | built | summary_times, records_as_of (shell.rs); PatientSurface Patient summary meta (physician-app lib.rs) | yes | "Records as of …" shows only inside the Patient summary section, so a patient without a summary shows no records time. |
 | Records kept.Records couldn't be updated | partial | records_as_of (shell.rs) | yes | A failed source keeps the last good "Records as of …" but never says "Records couldn't be updated". |
+| Records kept.Source back, records as of the last good update | partial | records_as_of (shell.rs) | yes | Shows the last good "Records as of …"; the wire does not tell a reconnected source apart from a current one. |
 | Source unavailable, last good records kept | partial | records_as_of (shell.rs) | yes | Only a "failed" source with a usable_snapshot shows a bare time; an unavailable one shows nothing, and "couldn't update" never appears. |
 | Source unavailable, no records yet | missing |  | yes | Nothing renders for a down source with no records. |
 

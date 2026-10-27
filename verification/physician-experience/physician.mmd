@@ -37,7 +37,7 @@ stateDiagram-v2
 %% events news for the patient = new records arrive | a shared Duet record arrives | the patient sends For my doctor | the patient joins and consents | a message arrives from a known sender | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel
 %% events the concern is shown = open the concern | the link opens the concern
 %% events message news = a message arrives from a known sender | the patient sends For my doctor | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel | the correction's Undo ends
-%% event new records arrive | by the records source | needs SrcConnecting, SrcCurrent, SrcFailed | reason: records arrive only from a connected source | New records for the patient are available to read; a source that couldn't update is current again.
+%% event new records arrive | by the records source | needs SrcConnecting, SrcCurrent, SrcFailed, SrcBack | reason: records arrive only from a connected source | New records for the patient are available to read; a source that couldn't update, or is back but not yet updated, is current again.
 %% event a shared Duet record arrives | by the patient through Duet | needs PcConnected | reason: connected means sharing; nothing arrives otherwise | The patient shares something new through Duet.
 %% event the patient sends For my doctor | by the patient through Duet | needs PcConnected | reason: a patient sends only to the practice they're connected to | The patient's own For my doctor arrives, linked to them like a message from a known sender; Coda's agents read it and judge whether a physician needs to see it (Dev 2026-10-26).
 %% event a patient message arrives | by the messaging channel | needs ChLive | reason: only a live channel delivers messages | A message from an unknown sender reaches the practice; Coda suggests a patient, and a person confirms before it becomes evidence (PM-500).
@@ -172,8 +172,8 @@ stateDiagram-v2
 %% event the source has no qualified text | by the practice system | Only the preview can be shown.
 %% event retry the source | by you | needs SIn | reason: commands need an active session | You retry the source.
 %% event close the source | by you | The pane closes; the surface stays.
-%% event the records source can't update | by the records source | needs SrcCurrent | reason: only a source with current records can fall behind | "Records couldn't be updated"; Coda keeps working from the last good records. How often the runtime checks and retries is not the graph's (Dev 2026-10-24; infrastructure-gaps.md).
-%% event the records source updates again | by the records source | needs SrcFailed | reason: only a source that couldn't update recovers | Records are current again; with nothing new, no review follows.
+%% event the records source can't update | by the records source | needs SrcCurrent, SrcBack | reason: only a source with current or reconnected records can fall behind | "Records couldn't be updated"; Coda keeps working from the last good records. How often the runtime checks and retries is not the graph's (Dev 2026-10-24; infrastructure-gaps.md).
+%% event the records source updates again | by the records source | needs SrcFailed, SrcBack | reason: only a source that couldn't update, or is back but not yet updated, recovers | Records are current again; with nothing new, no review follows.
 %% event the source becomes unavailable | by the records source | The patient's source is down; their page and briefing say "Records as of …, couldn't update", and Today shows no row for it.
 %% event the source is reconnected | by the records source | needs SrcGoneKept, SrcGoneEmpty, PsUp | reason: only an unavailable source reconnects, and not while the practice's whole source is down | The source is back; a check runs at once.
 %% event the practice's records source goes down | by the records source | The whole source is down for the practice: one line on Today for the practice, never a row per patient; every patient's records read as unavailable and Coda keeps working from the last good records.
@@ -763,9 +763,15 @@ stateDiagram-v2
         [*] --> SrcCurrent
         state "Records current" as SrcCurrent
         state "Records couldn't be updated" as SrcFailed
+        %% A source that comes back has not updated yet: its records stay as of the last good update
+        %% until it does, so nothing claims they are current early (Astra review of #148).
+        state "Source back, records as of the last good update" as SrcBack
         SrcCurrent --> SrcFailed : the records source can't update
+        SrcBack --> SrcFailed : the records source can't update
         SrcFailed --> SrcCurrent : the records source updates again
+        SrcBack --> SrcCurrent : the records source updates again
         SrcFailed --> SrcCurrent : new records arrive
+        SrcBack --> SrcCurrent : new records arrive
       }
       state "Source unavailable, last good records kept" as SrcGoneKept
       state "Source unavailable, no records yet" as SrcGoneEmpty
@@ -773,11 +779,11 @@ stateDiagram-v2
       SrcConnecting --> SrcGoneEmpty : the source becomes unavailable
       SrcHave --> SrcGoneKept : the source becomes unavailable
       SrcGoneEmpty --> SrcConnecting : the source is reconnected
-      SrcGoneKept --> SrcCurrent : the source is reconnected
+      SrcGoneKept --> SrcBack : the source is reconnected
       SrcConnecting --> SrcGoneEmpty : the practice's records source goes down
       SrcHave --> SrcGoneKept : the practice's records source goes down
       SrcGoneEmpty --> SrcConnecting : the practice's records source comes back
-      SrcGoneKept --> SrcCurrent : the practice's records source comes back
+      SrcGoneKept --> SrcBack : the practice's records source comes back
     }
     --
     %% Decision 9 (Dev 2026-10-23, practice-wide line approved 2026-10-24): when the practice's whole

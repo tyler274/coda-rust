@@ -1,8 +1,8 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "49b0d017523e4f19e06f127ec8d1388f009e0d94ab44ac52c9607181a0008782",
-  "generated_sha256": "7a1f0f5b4cc645fb7096fe9b216bcfea3fcd6f3d683df4bb98258fcfa0437820",
+  "chart_sha256": "3b879e9221ad0a597bd7fce5f00c97c95b8c615d10933ed833448d93581e5488",
+  "generated_sha256": "631c0c976e460875f611761301956a8161e4622e9ef3662a3c21a3493312554c",
   "steps_sha256": "a835526ff569843d76e55f65a091f2ed1c72f70886a610430760c0f738e51777",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
@@ -2021,6 +2021,11 @@
         {
           "caption": "Records kept.Records couldn't be updated",
           "variant": "RegionRecordsSource::StateRecordsKeptRecordsCouldnTBeUpdated",
+          "initial": false
+        },
+        {
+          "caption": "Records kept.Source back, records as of the last good update",
+          "variant": "RegionRecordsSource::StateRecordsKeptSourceBackRecordsAsOfTheLastGoodUpdate",
           "initial": false
         },
         {
@@ -24704,15 +24709,22 @@
         "not": false,
         "states": {
           "Records source": [
-            "Records kept.Records current"
+            "Records kept.Records current",
+            "Records kept.Source back, records as of the last good update"
           ]
         },
-        "reason": "only a source with current records can fall behind"
+        "reason": "only a source with current or reconnected records can fall behind"
       },
       "transitions": [
         {
           "region": "Records source",
           "from": "Records kept.Records current",
+          "to": "Records kept.Records couldn't be updated",
+          "guard": null
+        },
+        {
+          "region": "Records source",
+          "from": "Records kept.Source back, records as of the last good update",
           "to": "Records kept.Records couldn't be updated",
           "guard": null
         }
@@ -24727,15 +24739,22 @@
         "not": false,
         "states": {
           "Records source": [
-            "Records kept.Records couldn't be updated"
+            "Records kept.Records couldn't be updated",
+            "Records kept.Source back, records as of the last good update"
           ]
         },
-        "reason": "only a source that couldn't update recovers"
+        "reason": "only a source that couldn't update, or is back but not yet updated, recovers"
       },
       "transitions": [
         {
           "region": "Records source",
           "from": "Records kept.Records couldn't be updated",
+          "to": "Records kept.Records current",
+          "guard": null
+        },
+        {
+          "region": "Records source",
+          "from": "Records kept.Source back, records as of the last good update",
           "to": "Records kept.Records current",
           "guard": null
         }
@@ -24745,14 +24764,15 @@
       "label": "new records arrive",
       "function": "event_new_records_arrive",
       "cause": "the records source",
-      "intent": "New records for the patient are available to read; a source that couldn't update is current again.",
+      "intent": "New records for the patient are available to read; a source that couldn't update, or is back but not yet updated, is current again.",
       "needs": {
         "not": false,
         "states": {
           "Records source": [
             "Connecting the source",
             "Records kept.Records couldn't be updated",
-            "Records kept.Records current"
+            "Records kept.Records current",
+            "Records kept.Source back, records as of the last good update"
           ]
         },
         "reason": "records arrive only from a connected source"
@@ -24761,6 +24781,12 @@
         {
           "region": "Records source",
           "from": "Records kept.Records couldn't be updated",
+          "to": "Records kept.Records current",
+          "guard": null
+        },
+        {
+          "region": "Records source",
+          "from": "Records kept.Source back, records as of the last good update",
           "to": "Records kept.Records current",
           "guard": null
         },
@@ -25018,6 +25044,12 @@
           "from": "Records kept.Records couldn't be updated",
           "to": "Source unavailable, last good records kept",
           "guard": null
+        },
+        {
+          "region": "Records source",
+          "from": "Records kept.Source back, records as of the last good update",
+          "to": "Source unavailable, last good records kept",
+          "guard": null
         }
       ]
     },
@@ -25049,7 +25081,7 @@
         {
           "region": "Records source",
           "from": "Source unavailable, last good records kept",
-          "to": "Records kept.Records current",
+          "to": "Records kept.Source back, records as of the last good update",
           "guard": null
         }
       ]
@@ -25080,6 +25112,12 @@
           "guard": null
         },
         {
+          "region": "Records source",
+          "from": "Records kept.Source back, records as of the last good update",
+          "to": "Source unavailable, last good records kept",
+          "guard": null
+        },
+        {
           "region": "Practice records source",
           "from": "Practice source up",
           "to": "Practice source down, one line on Today",
@@ -25103,7 +25141,7 @@
         {
           "region": "Records source",
           "from": "Source unavailable, last good records kept",
-          "to": "Records kept.Records current",
+          "to": "Records kept.Source back, records as of the last good update",
           "guard": null
         },
         {
@@ -26514,6 +26552,7 @@
               "Records source": [
                 "Records kept.Records couldn't be updated",
                 "Records kept.Records current",
+                "Records kept.Source back, records as of the last good update",
                 "Source unavailable, last good records kept"
               ]
             },

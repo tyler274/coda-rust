@@ -80,7 +80,8 @@ Linear, then the settled docs, then mockups.
    when accepted; a lost receipt shows as pending and never sends twice; only
    if it still can't be confirmed does the item say so, with Check again.
 9. When a records source is down, each patient page and briefing says
-   "Records as of …, couldn't update". When the practice's whole source is down,
+   "Records as of …, couldn't update". A source that comes back keeps its last
+   good "Records as of …" until it actually updates. When the practice's whole source is down,
    Today carries one line for the practice, never a row per patient. Coda keeps
    working from the last good records. *The practice-wide line was approved for
    the graph 2026-10-24.*
