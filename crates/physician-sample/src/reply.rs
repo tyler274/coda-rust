@@ -172,12 +172,6 @@ pub(crate) async fn accept_durable(
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let scope = scope(ctx, &input.patient_workspace_id, &input.reply_work_id);
-    let sources = live
-        .sources
-        .iter()
-        .filter(|source| source.workspace == input.patient_workspace_id)
-        .cloned()
-        .collect();
     let revision = RevisionInput {
         key: id.into(),
         expected_revision: input.expected_draft_revision,
@@ -185,10 +179,7 @@ pub(crate) async fn accept_durable(
         timezone: input.physician_time_zone,
     };
     let hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
-    match durable
-        .accept_revision(&scope, &revision, hash, sources)
-        .await
-    {
+    match durable.accept_revision(&scope, &revision, hash).await {
         Ok(RevisionAccepted::New | RevisionAccepted::Duplicate) => Json(json!({
             "outcome": "accepted", "patient_workspace_id": input.patient_workspace_id, "run_id": id,
         }))
@@ -221,6 +212,9 @@ pub(crate) async fn admit(
         return Err("not authorized".into());
     }
     let target = target(ctx, &input.reply_work_id);
+    // Observation before session, the order `LiveOwner::finish` takes them.
+    // Anything recorded after this read is caught before the work finishes.
+    let (version, sources) = live.observed_sources(&input.patient_workspace_id);
     let mut session = live.session.lock().expect("physician session");
     let (revision, text, _) = session
         .draft(&input.patient_workspace_id, &target)
@@ -228,12 +222,6 @@ pub(crate) async fn admit(
     if revision != input.expected_draft_revision {
         return Err("stale draft".into());
     }
-    let sources: Vec<_> = live
-        .sources
-        .iter()
-        .filter(|s| s.workspace == input.patient_workspace_id)
-        .cloned()
-        .collect();
     let request = local_product::runtime::reply::request(
         &live.binding.model,
         &live.binding.effort,
@@ -243,5 +231,5 @@ pub(crate) async fn admit(
         &sources,
     );
     let work = session.revise(id, &input.patient_workspace_id, &target, revision, request)?;
-    session.pin_sources(&work, sources)
+    session.pin_sources(&work, version, sources)
 }

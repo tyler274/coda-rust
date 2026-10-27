@@ -312,6 +312,147 @@ async fn recovery_reconciles_recorded_tool_batch_without_provider_redispatch() {
     );
 }
 
+/// Declines the first `moves` terminal exchanges because its inputs moved,
+/// then commits.
+struct Moving {
+    records: Vec<Record>,
+    moves: usize,
+    committed: usize,
+}
+impl Owner for Moving {
+    fn terminal(&self, response: &Response) -> bool {
+        response.calls.iter().any(|call| call.name == "finish")
+    }
+    async fn check(&mut self) -> Result<(), String> {
+        Ok(())
+    }
+    async fn record(&mut self, record: Record) -> Result<(), String> {
+        self.records.push(record);
+        Ok(())
+    }
+    async fn dispatch(&mut self, _: &Call, _: &Cancellation) -> Result<Value, String> {
+        Ok(json!({"read": true}))
+    }
+    async fn complete(&mut self, _: &Response) -> Result<(), String> {
+        self.committed += 1;
+        Ok(())
+    }
+    async fn finish(&mut self, response: &Response) -> Result<Finish, String> {
+        if self.moves > 0 {
+            self.moves -= 1;
+            return Ok(Finish::Continue(json!({"outcome": "inputs_changed"})));
+        }
+        self.complete(response).await?;
+        Ok(Finish::Committed)
+    }
+}
+fn finish(id: &str) -> Call {
+    Call {
+        id: id.into(),
+        name: "finish".into(),
+        arguments: json!({}),
+    }
+}
+
+#[tokio::test]
+async fn declined_finish_continues_the_same_run_and_then_commits() {
+    let mut provider = Controlled {
+        replies: vec![
+            response(vec![finish("finish-1")]),
+            response(vec![call("read-1")]),
+            response(vec![finish("finish-2")]),
+        ],
+        cancel: false,
+        fail: false,
+    };
+    let mut owner = Moving {
+        records: vec![],
+        moves: 1,
+        committed: 0,
+    };
+    let mut progress = Progress::default();
+    run(
+        &mut provider,
+        &mut owner,
+        request(),
+        &mut progress,
+        Limits::default(),
+        &Cancellation::default(),
+        &mut |_| Ok(()),
+    )
+    .await
+    .unwrap();
+    assert_eq!(owner.committed, 1);
+    assert_eq!(progress.calls, 3);
+    let dispatches: Vec<&Request> = owner
+        .records
+        .iter()
+        .filter_map(|record| match record {
+            Record::Dispatch { request, .. } => Some(request),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(dispatches.len(), 3);
+    // The second dispatch carries the declined finish and its product result.
+    assert_eq!(
+        dispatches[1].items,
+        vec![
+            Item::Message {
+                role: "assistant".into(),
+                text: "answer".into(),
+            },
+            Item::Call(finish("finish-1")),
+            Item::Result {
+                call_id: "finish-1".into(),
+                value: json!({"outcome": "inputs_changed"}),
+            },
+        ]
+    );
+    assert_eq!(
+        dispatches[1].items,
+        continued(
+            request(),
+            &response(vec![finish("finish-1")]),
+            &json!({"outcome": "inputs_changed"})
+        )
+        .items
+    );
+}
+
+#[tokio::test]
+async fn declined_finishes_stay_within_the_call_bound() {
+    let mut provider = Controlled {
+        replies: (0..4)
+            .map(|n| response(vec![finish(&format!("finish-{n}"))]))
+            .collect(),
+        cancel: false,
+        fail: false,
+    };
+    let mut owner = Moving {
+        records: vec![],
+        moves: usize::MAX,
+        committed: 0,
+    };
+    let mut progress = Progress::default();
+    let error = run(
+        &mut provider,
+        &mut owner,
+        request(),
+        &mut progress,
+        Limits {
+            max_calls: 3,
+            ..Limits::default()
+        },
+        &Cancellation::default(),
+        &mut |_| Ok(()),
+    )
+    .await
+    .unwrap_err();
+    assert_eq!(error, "execution usage bound reached");
+    assert_eq!(owner.committed, 0);
+    assert_eq!(progress.calls, 3);
+}
+
 #[test]
 fn structured_wire_roundtrip_preserves_tool_ids_usage_and_incomplete_failure() {
     let body = json!({"status": "completed", "id": "provider-1", "output": [

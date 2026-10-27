@@ -168,7 +168,7 @@ pub enum Record {
 /// Product authority and execution-record interface. Each callback must be
 /// fenced by the durable claim/accepted work captured inside the adapter.
 /// `dispatch` reconciles uncertain/duplicate effects in that same owner.
-pub trait Owner {
+pub trait Owner: Send {
     /// Product-defined terminal tool exchange. Returning true routes the entire
     /// response to atomic completion, without executing its calls as effects.
     fn terminal(&self, _response: &Response) -> bool {
@@ -197,6 +197,31 @@ pub trait Owner {
     /// Commits completion and staged effects atomically under the product fence.
     /// Must reject stale completion even if the preceding `check` succeeded.
     fn complete(&mut self, response: &Response) -> impl Future<Output = Result<(), String>> + Send;
+    /// Settles a terminal exchange. The default commits through `complete`.
+    /// A product may instead decline to publish because its inputs moved
+    /// after the model last read them, and return `Finish::Continue` with a
+    /// structured result for each terminal call. The run then makes another
+    /// provider call under the same call and token bounds; nothing is
+    /// published for the declined exchange.
+    fn finish(
+        &mut self,
+        response: &Response,
+    ) -> impl Future<Output = Result<Finish, String>> + Send {
+        async move {
+            self.complete(response).await?;
+            Ok(Finish::Committed)
+        }
+    }
+}
+
+/// How a terminal exchange settled.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Finish {
+    /// The product committed the completion.
+    Committed,
+    /// The product declined to commit. The value is returned to the model as
+    /// the result of each terminal call, and the run continues.
+    Continue(Value),
 }
 
 /// Per-work resource bounds. Exhaustion leaves recovery to the product owner.
@@ -453,9 +478,18 @@ pub async fn run<P: Provider, O: Owner>(
                 return Err("invalid or repeated tool invocation identity".into());
             }
         }
-        if response.calls.is_empty() || owner.terminal(&response) {
+        if response.calls.is_empty() {
             owner.complete(&response).await?;
             return Ok(response);
+        }
+        if owner.terminal(&response) {
+            match owner.finish(&response).await? {
+                Finish::Committed => return Ok(response),
+                Finish::Continue(value) => {
+                    request = continued(request, &response, &value);
+                    continue;
+                }
+            }
         }
         request = resume_tools(owner, request, &response, cancel).await?;
     }
@@ -481,15 +515,7 @@ pub async fn resume_tools<O: Owner>(
             return Err("invalid or repeated tool invocation identity".into());
         }
     }
-    if !response.text.is_empty() {
-        request.items.push(Item::Message {
-            role: "assistant".into(),
-            text: response.text.clone(),
-        });
-    }
-    request
-        .items
-        .extend(response.calls.iter().cloned().map(Item::Call));
+    append_exchange(&mut request, response);
     for call in &response.calls {
         cancel.check()?;
         owner.check().await?;
@@ -500,6 +526,32 @@ pub async fn resume_tools<O: Owner>(
         });
     }
     Ok(request)
+}
+
+/// The request after a declined terminal exchange: the exchange itself, then
+/// the product's result for each terminal call. Exposed so recovery can rebuild
+/// the same context from retained records.
+pub fn continued(mut request: Request, response: &Response, value: &Value) -> Request {
+    append_exchange(&mut request, response);
+    request
+        .items
+        .extend(response.calls.iter().map(|call| Item::Result {
+            call_id: call.id.clone(),
+            value: value.clone(),
+        }));
+    request
+}
+
+fn append_exchange(request: &mut Request, response: &Response) {
+    if !response.text.is_empty() {
+        request.items.push(Item::Message {
+            role: "assistant".into(),
+            text: response.text.clone(),
+        });
+    }
+    request
+        .items
+        .extend(response.calls.iter().cloned().map(Item::Call));
 }
 
 fn bounded(value: &impl Serialize, max: usize) -> Result<(), String> {
