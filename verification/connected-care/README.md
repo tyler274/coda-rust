@@ -9,6 +9,7 @@ shared events, never shared states, and holds the rules that span both.
 | [connection.mmd](connection.mmd) | Which events cross between the graphs, and the rules across them. |
 | [../duet-experience/duet.mmd](../duet-experience/duet.mmd) | The patient's side: invitation, joining and consent, leaving, deletion, and the live feed. |
 | [../physician-experience/physician.mmd](../physician-experience/physician.mmd) | The practice's side: inviting, discharge, and the physician agents' work on what arrives. |
+| [journeys.md](journeys.md) | Joining, sharing, leaving, discharge and deletion across both graphs, replayed by `statechart.mjs journey`. |
 | [verus/](verus/) | The Verus model of the composition, and the proof that every rule holds across both graphs. |
 
 The connection is live (Dev 2026-10-25): while connected, each change to what the

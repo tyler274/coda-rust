@@ -7,6 +7,7 @@ The physician web app's behavior, written as one statechart.
 | [physician.mmd](physician.mmd) | The spec: the ideal behavior of the full product for every user. It covers what people see and how things act and work for them. |
 | [decisions.md](decisions.md) | Why: Dev's dated decisions and the audit findings the graph rests on. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph leaves to the runtime, and what the runtime must still guarantee. |
+| [journeys.md](journeys.md) | Useful outcomes a physician reaches, replayed from the graph's start by `statechart.mjs journey`; it fails when the graph stops allowing one. |
 | [coverage.md](coverage.md) | What the Rust app shows today for each graph state: built, partial, missing or not shown, and whether the server data exists. `statechart.mjs coverage` checks it against the graph. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
 | [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, its Page region is what one browser tab shows, and its Patient link region is the Coda link that tab holds. It has no safety rules. |

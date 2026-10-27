@@ -57,6 +57,9 @@ flattened representation between Verus generation and finite reachability search
 `statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
 search covers only the finite chart's rules; limits or interruption are incomplete.
 An inductive Verus obligation can fail without a reachable chart violation.
+Rules and proofs say what never happens; each graph's `journeys.md`, replayed by
+`statechart.mjs journey` on the same representation, shows its useful outcomes
+are reachable, and fails when a change strands one.
 
 ## Connect the harness through events
 
@@ -141,7 +144,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against` and `coverage`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
+| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage` and `journey`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model
