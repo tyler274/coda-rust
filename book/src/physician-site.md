@@ -67,7 +67,7 @@ The physician site sets `cpu_idle = false` so the Redis subscriber and the Postg
 
 Memorystore Basic 1 GB is about $35/month and the site's minimum instance about $48/month after the free tier. Dev raised the `coda-rust-stg` budget alert from $10 to $200/month before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
 
-`nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it).
+`nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it). The scale tests start it through the shared `pubsub::testing::Emulator` ([`crates/pubsub`](/crates/pubsub/src/testing.rs)); [`tests/scale/mod.rs`](/crates/physician-sample/tests/scale/mod.rs) only adds the chat-turn topic, push subscription and dead letter.
 
 The bus proofs in [`tests/redis.rs`](/crates/physician-bus/tests/redis.rs) do not race production timing. `RedisBus::connect_with` takes a test `Timing` (heartbeat, command timeout, reconnect backoff and jitter); `connect` keeps the production values. The fast-restart proof routes the bus through a TCP proxy that the test closes and reopens, with a 60 s heartbeat and no jitter, so only the reconnect path can resync. Each test waits for the bus to be live and quiet instead of sleeping a fixed time.
 

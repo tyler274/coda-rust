@@ -74,6 +74,21 @@ administrator's block surfaces Reconnect (PM-1275). Reconnecting catches up
 without duplicates, and accepted, sent, delivered and read stay distinct
 (PM:161).
 
+**Proved so far (Gmail push wake).** Evidence kind: a controlled test on the
+real Pub/Sub emulator, driving the real `gmail::push` router and
+`gmail::history` reader against the `FakeGmail` stand-in
+([`crates/gmail/tests/push_wake.rs`](../../crates/gmail/tests/push_wake.rs)).
+It shows that a push is a wake only: state changes only through
+`history.list` from the stored cursor, and an unknown mailbox or malformed
+payload is acked without a read. Duplicate and reordered wakes apply each
+message once and never move the cursor back. A refused push, a crash before the
+cursor commits, and a nacked pull are redelivered without repeating effects.
+A poison wake dead-letters after five attempts while healthy wakes complete.
+One ordering key keeps publish order, and an expired cursor surfaces instead of
+reading past it. Still unproven: push OIDC (the emulator has no IAM), real
+Gmail, the durable cursor and intake that own these effects, and hosted
+Pub/Sub.
+
 ## Command receipts
 
 **Assumed away.** How a lost receipt is confirmed.

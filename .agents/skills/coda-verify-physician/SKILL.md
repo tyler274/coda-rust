@@ -168,6 +168,8 @@ Do not kill processes that belong to another run.
   `--worker-fail-marker`, `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
   `--site-dir DIR`, `--check`, `--dependencies-only`, `-- <child command>`.
   `kill -USR1 <pid>` restarts Valkey on the same port.
+  The Gmail push-wake suite reuses the stack's emulator through `PUBSUB_EMULATOR_HOST`:
+  `scripts/physician-scale-stack.py --dependencies-only -- cargo test -p gmail --test push_wake -- --test-threads=1`.
 - [`scripts/physician-drive.py`](scripts/physician-drive.py) (executable):
   `sign-in`, `page-url`, `send`, `snapshot --wait-text/--wait-failed`, `resume [--run]`,
   `watch --until <event>`, `dead-letters`, `restart-valkey`, `subscribers`.
@@ -179,3 +181,7 @@ verification is off under `PUBSUB_EMULATOR_HOST`, the provider is the fixed text
 mail is proof delivery. Those remain unverified here and are proved only in staging per
 [book/src/gcp.md](../../../book/src/gcp.md). The inline fallback for a site without
 `PHYSICIAN_CHAT_TOPIC` is not on this stack; `crates/physician-sample` tests cover it.
+Gmail push wake is proved only as a controlled emulator test against a Gmail stand-in
+(`crates/gmail/tests/push_wake.rs`, recorded under Channel sync in
+[infrastructure-gaps.md](../../../verification/physician-experience/infrastructure-gaps.md)).
+It has no feature file: nothing a physician sees changes until the product's Gmail intake exists.

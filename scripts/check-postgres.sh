@@ -53,3 +53,6 @@ cargo test --locked -p physician-sample --test try_again -- --test-threads=1
 # finishes the turn. Exhausted worker leases fail the turn, announce it and
 # dead-letter its wakeup.
 cargo test --locked -p physician-sample --test instance_loss -- --test-threads=1
+# Gmail push wake on the Pub/Sub emulator: the shared harness, then wake-only,
+# duplicates, redelivery, dead letters, ordering keys and cursor expiry.
+cargo test --locked -p pubsub --test emulator -p gmail --test push_wake -- --test-threads=1
