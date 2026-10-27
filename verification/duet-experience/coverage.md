@@ -80,7 +80,7 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Nothing on its way | built | ConversationTab (duet-app lib.rs) | yes | The composer, when the page allows a send. |
-| Sending | built | ConversationTab (duet-app lib.rs) | yes | Send is disabled while a send is in flight. |
+| Sending | partial | ConversationTab (duet-app lib.rs) | yes | Your words stay in the composer and Send is disabled until the server accepts them; the graph moves them into an outgoing message at once and leaves the composer free for the next one. |
 | Not confirmed yet | partial | ConversationTab (duet-app lib.rs) | yes | A failed send keeps the draft and a retry of the same text reuses its id, but it shows the same unavailable line as a refusal. |
 | Not sent, with Try again and Edit | partial | ConversationTab (duet-app lib.rs) | yes | The draft stays editable with an alert; sending again is the Send button, with no Try again. |
 | Sent | built | ConversationTab (duet-app lib.rs) | yes | The accepted message joins the thread before the reload. |
@@ -514,10 +514,10 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No command on your alerts in flight | built | YouTab (duet-app lib.rs) | yes |  |
-| Turn on on your alerts: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes |  |
-| Couldn't confirm Turn on on your alerts, with Check again | not shown | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
-| Turn off on your alerts: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes |  |
-| Couldn't confirm Turn off on your alerts, with Check again | not shown | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
+| Turn on on your alerts: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | The New insight notifications switch changes on this device at once; nothing goes to your account, so nothing waits. |
+| Couldn't confirm Turn on on your alerts, with Check again | missing | none | yes | The switch sends nothing to your account, so no lost answer shows and there is no Check again. |
+| Turn off on your alerts: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | As for Turn on. |
+| Couldn't confirm Turn off on your alerts, with Check again | missing | none | yes | As for Turn on. |
 
 ## This device/Signed in on this device/Your command on the proposed note
 
@@ -561,10 +561,10 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Loading the item | not shown | ConversationTab (duet-app lib.rs) | n/a | Items open from lists loaded with the thread, so there is no load of the item itself. |
+| Loading the item | missing | none | yes | Items open from the lists loaded with the thread; the app never loads the item itself, so it shows that copy however old. |
 | Showing the item | built | ConversationTab (duet-app lib.rs) | yes |  |
 | Showing the item, with one quiet line and Retry | missing | none | yes | Nothing says an open item may be out of date. |
-| Couldn't load the item, with Retry | not shown | none | n/a | As for loading. |
+| Couldn't load the item, with Retry | missing | none | yes | As for loading: with no load of its own, nothing can say it failed or offer Retry. |
 | Nothing open on Today | built | TodayTab (duet-app lib.rs) | n/a |  |
 
 ## This device/Signed in on this device/Your health library read
@@ -608,7 +608,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | Loading the supporting information | built | load_source (duet-app lib.rs) | yes |  |
 | Showing the supporting information | built | load_source (duet-app lib.rs) | yes |  |
-| Showing the supporting information, with one quiet line and Retry | not shown | none | n/a | Each open loads afresh; nothing earlier is kept to show. |
+| Showing the supporting information, with one quiet line and Retry | missing | none | yes | Each open loads afresh and keeps nothing, so a failed refresh can't keep what you were reading with a quiet line. |
 | Couldn't load the supporting information, with Retry | partial | load_source (duet-app lib.rs) | yes | "This source couldn't be opened." with no Retry. |
 
 ## This device/Signed in on this device/Open on Duet/Supporting information open/The cited version
