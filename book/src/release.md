@@ -35,6 +35,7 @@ This workspace does not run `init` against a backend and does not apply these ro
 | --- | --- | --- |
 | [`infra/gcp/public-site`](/infra/gcp/public-site) | Public-site Cloud Run behind IAP. This workspace owns its staging state and may plan and apply staging from a reviewed saved plan; never production. | [Public site](public-site.md#staging-state-and-deployment) |
 | [`infra/gcp/rust-environments`](/infra/gcp/rust-environments) | The isolated Rust Cloud Run environments for the physician and Duet services. It needs an administrator bootstrap before its first apply. | [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate) |
+| [`infra/gcp/shared-mail`](/infra/gcp/shared-mail) | Production mail only in `coda-health-prod`, with separate state and operator-approved saved-plan applies. | [Production shared mail](/infra/gcp/shared-mail/README.md) |
 | [`infra/gcp/observability`](/infra/gcp/observability) | The shared collector deployment | [Observability](observability.md) |
 
 ## Duet backend on GCP

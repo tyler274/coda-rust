@@ -2,6 +2,11 @@
 
 Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
 
+The mail-only [shared-mail root](/infra/gcp/shared-mail/README.md) is owned here
+for production SMTP in `coda-health-prod`, with separate state and explicit
+saved-plan approval. This exception grants no authority over the referenced
+production application or clinical-evidence roots.
+
 ## Public marketing site preparation
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
@@ -635,6 +640,8 @@ Source: <a href="/submodules/coda-app/infra/gcp/README%2Emd#dated-release-and-se
 ## Shared mail service
 
 Products hosted outside the Rust VPC can use the `mail-relay` binary in `crates/gmail`.
+The mail-only [production root](/infra/gcp/shared-mail/README.md) owns its separate
+deployment in `coda-health-prod`; `rust-environments` continues to own staging.
 It wraps the existing `SmtpRelay`; it does not own product sign-in, message templates,
 recipients, send records or retry decisions. The physician server continues to use
 that same transport directly. There is one SMTP implementation and no additional
@@ -656,11 +663,11 @@ Workspace IP allowlist. It needs no Doppler token. Runtime settings are
 
 For Gym staging, the named caller is
 `serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com`.
-Production would use `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
-on its own production relay and authorized egress. This repository's infrastructure
-root remains staging-only: production preparation belongs to its separately authorized
-infrastructure owner and must not be planned or applied from this root. Do not grant a public invoker or
-route production through staging. The `mail_relay_url` output is both the caller's
+Production uses `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
+on its own relay and authorized egress, managed by `infra/gcp/shared-mail` in a
+separate state. Production must not be planned or applied from the Rust staging
+root. Neither root grants a public invoker or routes production through staging.
+The `mail_relay_url` output is both the caller's
 base URL and ID-token audience. Cloud Run IAM checks identity; the adapter does
 not add a second token verifier.
 

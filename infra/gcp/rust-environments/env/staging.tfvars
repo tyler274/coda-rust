@@ -34,6 +34,12 @@ runtime_and_database_contract_approved = true
 # Approved staging relay networking; preserve the Workspace-allowlisted IP.
 enable_physician_smtp_relay = true
 
+# Selected shared-mail image from Rust c0773fb920dea0aaef93894a71176d719b8b5ac8.
+# Publish and verify this exact digest before applying; desired configuration
+# does not establish deployment or delivery. Production selects the same bytes.
+mail_relay_image    = "us-east1-docker.pkg.dev/coda-rust-staging/apps/mail-relay@sha256:2c6e167df7ece92dca647240de8ee17c2f46207f0f8ce85b4156fcac756076f9"
+mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com"]
+
 # Physician scaling (book/src/gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns):
 # Memorystore Basic 1 GB (about $35/month, always billed), the Pub/Sub chat-turn
 # queue, the internal physician-worker, and one always-on physician site

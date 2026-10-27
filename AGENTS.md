@@ -75,7 +75,7 @@ Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in on
 
 Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`, a read-only service token scoped to one config: Cloud Run mounts it, and the process starts under `doppler run --`, which loads the rest. GitHub release jobs read the same token from an environment secret. Do not copy Doppler values into Secret Manager. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` installs the pinned, checksum-verified CLI for images and runners.
 
-`infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) lists each one and who applies it. This workspace owns two staging roots, `public-site` and `rust-environments`, and applies each only from a reviewed saved plan. The other roots are references whose apply authority stays in the product repositories. Production is never planned or applied from here.
+`infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) lists each one and who applies it. This workspace owns the staging roots `public-site` and `rust-environments`, plus the mail-only production root `shared-mail`. Apply each only from a reviewed saved plan with the operator's authorization. The other roots are references whose apply authority stays in the product repositories. The shared-mail exception grants no production authority over physician, Duet, clinical evidence, public-site or Gym application deployments.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 
