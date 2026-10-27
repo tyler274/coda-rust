@@ -38,10 +38,7 @@ impl DurableChat {
         if matches!(accepted, Accepted::Duplicate) {
             return Ok(accepted);
         }
-        let delivery = Delivery {
-            scope: scope.clone(),
-            input_id: input.key.clone(),
-        };
+        let delivery = Delivery::chat_turn(scope.clone(), input.key.clone());
         if self.queue.publish(&delivery).await.is_ok() {
             self.store
                 .dispatched(&delivery, 60)
@@ -72,10 +69,7 @@ impl DurableChat {
         let Resumed::Pending { input_id } = &resumed else {
             return Ok(resumed);
         };
-        let delivery = Delivery {
-            scope: scope.clone(),
-            input_id: input_id.clone(),
-        };
+        let delivery = Delivery::chat_turn(scope.clone(), input_id.clone());
         if self.queue.publish(&delivery).await.is_ok() {
             self.store
                 .dispatched(&delivery, 60)

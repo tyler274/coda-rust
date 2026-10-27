@@ -1,3 +1,6 @@
+#[path = "tests/reply.rs"]
+mod reply_tests;
+
 use super::delivery::{Delivery, DeliveryState};
 use super::*;
 
@@ -305,10 +308,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
             .cloned()
             .collect()
     };
-    let first = Delivery {
-        scope: scope.clone(),
-        input_id: "first".into(),
-    };
+    let first = Delivery::chat_turn(scope.clone(), "first".into());
     let page = store.dispatch_due(100, Some(&start)).await.unwrap();
     assert_eq!(ours(&page), vec![first.clone()]);
     // Successful publication suppresses republish until the retry hint passes.
@@ -331,10 +331,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         store.delivery_state(&first).await.unwrap(),
         DeliveryState::Settled
     );
-    let second = Delivery {
-        scope: scope.clone(),
-        input_id: "second".into(),
-    };
+    let second = Delivery::chat_turn(scope.clone(), "second".into());
     assert_eq!(
         ours(&store.dispatch_due(100, Some(&start)).await.unwrap()),
         vec![second.clone()]
@@ -401,10 +398,7 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
         .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
         .await
         .unwrap();
-    let turn = Delivery {
-        scope: scope.clone(),
-        input_id: "turn".into(),
-    };
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
     for failure in 1..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
         store.retry_delivery(&claim).await.unwrap();
@@ -489,10 +483,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
         .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
         .await
         .unwrap();
-    let turn = Delivery {
-        scope: scope.clone(),
-        input_id: "turn".into(),
-    };
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
     // Pending work is not failed: nothing to try again.
     let pending = store.conversation(&scope).await.unwrap();
     assert_eq!(
@@ -615,10 +606,7 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
         .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32])
         .await
         .unwrap();
-    let delivery = Delivery {
-        scope: scope.clone(),
-        input_id: "turn".into(),
-    };
+    let delivery = Delivery::chat_turn(scope.clone(), "turn".into());
     let claim = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
     store.dispatched(&delivery, 60).await.unwrap();
     // Expire lease and dispatch hint at the storage owner instead of sleeping

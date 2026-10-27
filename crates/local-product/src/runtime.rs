@@ -1,8 +1,9 @@
 //! Physician operational truth. Every mutation locks its conversation in Postgres.
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
-//! Hosted mutation tools and reply revision remain unavailable until their
-//! product effect owners are ported. No process-memory persistence fallback.
+//! Hosted mutation tools remain unavailable until their product effect owners
+//! are ported; reply drafts and their revisions live in [`reply`]. No
+//! process-memory persistence fallback.
 
 /// Async callback implementation helper for product adapters.
 pub use async_trait::async_trait;
@@ -25,6 +26,8 @@ pub mod delivery;
 mod entities;
 /// Explicit bounded restart activation, separate from construction.
 pub mod recovery;
+/// Hosted physician reply drafts and their revision work.
+pub mod reply;
 #[cfg(test)]
 mod tests;
 use entities::{command, conversation};
@@ -38,7 +41,7 @@ pub struct Scope {
     pub physician: String,
     /// Authorized patient workspace.
     pub workspace: String,
-    /// Conversation identity.
+    /// Conversation identity. For a reply draft and its revisions, the reply work.
     pub chat: String,
 }
 
@@ -253,6 +256,20 @@ impl Store {
         tx.execute_unprepared("SELECT pg_advisory_xact_lock(804081)")
             .await?;
         tx.execute_unprepared(include_str!("runtime.sql")).await?;
+        // Later tables come from their entities through the SeaORM schema
+        // builder, so the recorded statements above never change.
+        let schema = sea_orm::Schema::new(sea_orm::DbBackend::Postgres);
+        let mut drafts = schema.create_table_from_entity(entities::reply_draft::Entity);
+        drafts.if_not_exists();
+        tx.execute(&drafts).await?;
+        let mut revisions = schema.create_table_from_entity(entities::reply_revision::Entity);
+        revisions.if_not_exists();
+        tx.execute(&revisions).await?;
+        // The unique (draft, ordinal) index that orders a draft's history.
+        for mut index in schema.create_index_from_entity(entities::reply_revision::Entity) {
+            index.if_not_exists();
+            tx.execute(&index).await?;
+        }
         tx.commit().await
     }
 
