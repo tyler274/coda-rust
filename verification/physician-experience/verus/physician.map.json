@@ -1,8 +1,8 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "d388c8e955fd37c719717eb00f2f1bbc31d5d18ebc6438389f6d7dbf7e6014c0",
-  "generated_sha256": "05cbf4269abd8bcda207aa6ed59a5cdb75505f03c582dcbf4b242a145d6dccd7",
+  "chart_sha256": "53cd68d5bc09d7f9ebefc9fbf8c65f292f39825c7445a03d98485a71c2d49444",
+  "generated_sha256": "e814d0c20635523804e2341150f8f47de45e304003bf8a7681b8f5e657003948",
   "steps_sha256": "87d78e548f87ba8070e5ab73af3031a314d25bd086945259ce2442acbf9293ab",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
@@ -8809,7 +8809,7 @@
       "label": "open the work that raised the concern",
       "function": "event_open_the_work_that_raised_the_concern",
       "cause": "you",
-      "intent": "From a concern you open the work that raised it.",
+      "intent": "From a concern you open the work that raised or last revised it; that work always has the written communication explaining the concern (CT visibility: a new or revised concern never comes without one). The link is a data promise for a linked proof.",
       "needs": {
         "not": false,
         "states": {

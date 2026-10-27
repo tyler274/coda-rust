@@ -86,7 +86,7 @@ stateDiagram-v2
 %% event open the follow-up | by you | needs SIn, AClin, FActive, FHeld, FCompleted, FCancelled | reason: commands need an active session and clinical access; only an existing follow-up opens | You read the follow-up in the reader.
 %% event open past work | by you | needs SIn, AClin | reason: commands need an active session and clinical access | You read a piece of Coda's past work.
 %% event open past work from the follow-up | by you | needs SIn, AClin, RFollow | reason: commands need an active session and clinical access | From a follow-up you open the work that set or changed it.
-%% event open the work that raised the concern | by you | needs SIn, AClin, RConcern | reason: commands need an active session and clinical access | From a concern you open the work that raised it.
+%% event open the work that raised the concern | by you | needs SIn, AClin, RConcern | reason: commands need an active session and clinical access | From a concern you open the work that raised or last revised it; that work always has the written communication explaining the concern (CT visibility: a new or revised concern never comes without one). The link is a data promise for a linked proof.
 %% event close the reader | by you | You close the reader and are exactly where you were.
 %% event open Updates | by you | needs SIn | reason: commands need an active session | You open the day's log of everything Coda did.
 %% event open the reply | by you | needs SIn, AClin, MROpen | reason: replies are clinical content; only open reply work has a card | You open the reply card from Today, Updates or Past work (Review reply, patient-messaging.md:1128); opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).

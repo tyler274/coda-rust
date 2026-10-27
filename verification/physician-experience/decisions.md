@@ -24,6 +24,12 @@ Linear, then the settled docs, then mockups.
   access, and anything showing or changing clinical content needs clinical
   access. Roles inside the practice are practice policy, not graph state; only
   the messaging manager is modeled, as the messaging contract names it.
+- **A concern always comes with its explanation (2026-10-26, from the care-team
+  contract's visibility table).** Coda raises or revises a concern only in work
+  that writes the physician a communication explaining it, and the concern
+  opens that work. A quiet finish may only close concerns. The link from each
+  concern revision to its communication is a data promise for a linked proof,
+  not graph state.
 - **Behavior, not presentation (2026-10-26).** Layout, open and close, hover
   and paging belong to the surface map and the app, not the graph, as in
   Duet's. The graph keeps what the physician can do, what Coda does, and what
