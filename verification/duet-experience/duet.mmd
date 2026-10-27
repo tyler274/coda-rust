@@ -257,8 +257,6 @@ stateDiagram-v2
 %% event go to You | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Your health library, your sources and settings (north-star.md, You).
 %% event open an insight | by you | needs TabToday, TpPinned, TCur | reason: only what Today pins opens from Today; newer Terms wait first | Its detail: the explanation, its exact support and recording limits, Ask about this and Not accurate (ui-surface-map.md, Insight detail).
 %% event open a measurement on Today | by you | needs TabToday, TCur | reason: Today shows only measurements you chose; newer Terms wait first | The measurement's chart, with its source and any estimate marked as one.
-%% event choose Today's measurements | by you | needs TabToday, TCur | reason: the choice is yours; newer Terms wait first | Up to three measurements to show on Today; choosing is not a second health library (ui-surface-map.md, At a glance picker).
-%% event save Today's measurements | by you | needs ToPick, TCur | reason: only an open choice is saved; newer Terms wait first | Today shows the measurements you chose.
 %% event open your Plan | by you | needs TabToday, PlSaved, TCur | reason: only a saved Plan opens; newer Terms wait first | The Plan, the Reminders and Check-ins that serve it, and the conversation that saved it; no counts, progress or results.
 %% event open the Reminder | by you | needs TabToday, FuActive@reminder, FuPaused@reminder, FuDone@reminder, FuCancelled@reminder, TCur | reason: only a Reminder you have opens; newer Terms wait first | The Reminder's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
 %% event open the Check-in | by you | needs TabToday, FuActive@checkin, FuDue@checkin, FuRun@checkin, FuStuck@checkin, FuPaused@checkin, FuDone@checkin, FuCancelled@checkin, TCur | reason: only a Check-in you have opens; newer Terms wait first | The Check-in's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
@@ -278,7 +276,7 @@ stateDiagram-v2
 %% event open Settings | by you | needs DIn, AReady | reason: Settings stay reachable even before newer Terms, for exporting, deleting your account and withdrawing AI permission | Your name, AI, privacy, export, sign-out and deletion (ui-surface-map.md, Settings).
 %% event open AI settings | by you | needs DIn, AReady | reason: AI settings stay reachable even before newer Terms, for withdrawing permission | Your AI permission, the AI switch, and proactive work.
 %% event go back on You | by you | needs TabYou | reason: only the tab you're on goes back | You return to your health library; nothing you had saved changes. How far back goes is presentation.
-%% events you open something on Today = open an insight | open a measurement on Today | choose Today's measurements | open your Plan | open the Reminder | open the Check-in | open For my doctor | open your doctor's plan
+%% events you open something on Today = open an insight | open a measurement on Today | open your Plan | open the Reminder | open the Check-in | open For my doctor | open your doctor's plan
 %% events you open a page on You = open a records group | open a record | open Measurements & trends | open a measurement in You | open Health history | open Earlier insights | search your health | open Sources & data | open Doctors & hospitals | open your phone's health data | open Settings | open AI settings
 %% event open supporting information | by you | needs TabDuet, TCur | reason: citations are in the conversation; newer Terms wait first | The exact version of what a reply cited, never a newer one in its place (C6; ui-surface-map.md, cited source).
 %% event close the supporting information | by you | needs CoSource | reason: only open supporting information closes | You're back in the conversation where you were.
@@ -1121,36 +1119,24 @@ stateDiagram-v2
           TabToday --> TabYou : open AI settings
         }
         --
-        %% What is open on Today. Opening changes nothing; a Plan deleted while open says so.
+        %% Only what a guarantee rests on (D1, Dev 2026-10-26): an item you don't have never opens, and a Plan
+        %% deleted while open says so. Which other page is open is the app's; opening changes nothing.
         state "Open on Today" as TodayOpen {
           [*] --> ToNone
           state "Today itself" as ToNone
-          state "An insight open" as ToInsight
-          state "A measurement open on Today" as ToMeasure
-          state "Choosing Today's measurements" as ToPick
           state "Your Plan open" as ToPlan
           state "The Reminder open" as ToRem
           state "The Check-in open" as ToChk
-          state "For my doctor open" as ToDoctor
           state "Your doctor's plan open" as ToDocPlan
           state "Your Plan open, removed since" as ToPlanGone
-          ToNone --> ToInsight : open an insight
-          ToInsight --> ToNone : go back on Today
-          ToNone --> ToMeasure : open a measurement on Today
-          ToMeasure --> ToNone : go back on Today
-          ToNone --> ToPick : choose Today's measurements
-          ToPick --> ToNone : go back on Today
           ToNone --> ToPlan : open your Plan
           ToPlan --> ToNone : go back on Today
           ToNone --> ToRem : open the Reminder
           ToRem --> ToNone : go back on Today
           ToNone --> ToChk : open the Check-in
           ToChk --> ToNone : go back on Today
-          ToNone --> ToDoctor : open For my doctor
-          ToDoctor --> ToNone : go back on Today
           ToNone --> ToDocPlan : open your doctor's plan
           ToDocPlan --> ToNone : go back on Today
-          ToPick --> ToNone : save Today's measurements
           ToRem --> ToPlan : open your Plan
           ToChk --> ToPlan : open your Plan
           ToPlan --> ToRem : open the Reminder
@@ -1181,73 +1167,6 @@ stateDiagram-v2
           RdKept --> TiNone : go back on Today
           RdFailed --> TiNone : go back on Today
           RdLoading --> TiNone : go back on Today
-        }
-        --
-        %% What is open on You (north-star.md, You; ui-surface-map.md, You library through Settings).
-        %% A record opens from its group, a search or Health history. Going back returns to the library.
-        state "Open on You" as YouOpen {
-          [*] --> YoNone
-          state "Your health library" as YoNone
-          state "A records group" as YoGroup
-          state "A record" as YoRecord
-          state "Measurements & trends" as YoMeasures
-          state "A measurement's chart" as YoChart
-          state "Health history" as YoHistory
-          state "Earlier insights" as YoEarlier
-          state "Searching your health" as YoSearch
-          state "Sources & data" as YoSources
-          state "Doctors & hospitals" as YoOrg
-          state "Your phone's health data" as YoPhone
-          state "Settings" as YoSettings
-          state "AI settings" as YoAI
-          YoNone --> YoGroup : open a records group
-          YoGroup --> YoNone : go back on You
-          YoGroup --> YoRecord : open a record
-          YoSearch --> YoRecord : open a record
-          YoHistory --> YoRecord : open a record
-          YoRecord --> YoNone : go back on You
-          YoNone --> YoMeasures : open Measurements & trends
-          YoMeasures --> YoNone : go back on You
-          YoMeasures --> YoChart : open a measurement in You
-          YoChart --> YoNone : go back on You
-          YoNone --> YoHistory : open Health history
-          YoHistory --> YoNone : go back on You
-          YoNone --> YoEarlier : open Earlier insights
-          YoEarlier --> YoNone : go back on You
-          YoNone --> YoSearch : search your health
-          YoSearch --> YoNone : go back on You
-          YoNone --> YoSources : open Sources & data
-          YoSources --> YoNone : go back on You
-          YoSources --> YoOrg : open Doctors & hospitals
-          YoOrg --> YoNone : go back on You
-          YoSources --> YoPhone : open your phone's health data
-          YoPhone --> YoNone : go back on You
-          YoNone --> YoSettings : open Settings
-          YoGroup --> YoSettings : open Settings
-          YoMeasures --> YoSettings : open Settings
-          YoChart --> YoSettings : open Settings
-          YoHistory --> YoSettings : open Settings
-          YoEarlier --> YoSettings : open Settings
-          YoSearch --> YoSettings : open Settings
-          YoSources --> YoSettings : open Settings
-          YoOrg --> YoSettings : open Settings
-          YoPhone --> YoSettings : open Settings
-          YoAI --> YoSettings : open Settings
-          YoRecord --> YoSettings : open Settings
-          YoSettings --> YoNone : go back on You
-          YoNone --> YoAI : open AI settings
-          YoGroup --> YoAI : open AI settings
-          YoMeasures --> YoAI : open AI settings
-          YoChart --> YoAI : open AI settings
-          YoHistory --> YoAI : open AI settings
-          YoEarlier --> YoAI : open AI settings
-          YoSearch --> YoAI : open AI settings
-          YoSources --> YoAI : open AI settings
-          YoOrg --> YoAI : open AI settings
-          YoPhone --> YoAI : open AI settings
-          YoSettings --> YoAI : open AI settings
-          YoRecord --> YoAI : open AI settings
-          YoAI --> YoNone : go back on You
         }
         --
         state "Your health library read" as LibraryRead {

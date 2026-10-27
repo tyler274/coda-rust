@@ -375,7 +375,12 @@ Linear wins.
 ## Your screens (step 9)
 
 The graph models what you see and open, as the physician graph does (Dev
-2026-10-26: "yes, model the screens"). Sources: north-star.md (Product
+2026-10-26: "yes, model the screens"), and keeps what is open only where a
+read, an access limit or a guarantee depends on it (D1, Dev 2026-10-26): the
+tab you're on, since seeing new messages needs the conversation; supporting
+information; each read; and an open Plan, Reminder, Check-in or doctor's plan.
+Which page of You or Today is open, and which measurements Today shows, are
+the app's (north-star.md: the choice "changes presentation only"). Sources: north-star.md (Product
 structure, Today, You) and the original app's ui-surface-map.md (Navigation
 map; Page and state inventory), with later decisions winning.
 
@@ -384,8 +389,8 @@ map; Page and state inventory), with later decisions winning.
   doctor and your doctor's plan (ENG-34, ENG-168), replacing the companion's
   card as the way in. Your doctor's plan lives on Today with them (Dev
   2026-10-26); the order and density of Today is still open (ENG-168).
-- Each tab keeps what it has open. Moving around never changes your health
-  data or Duet's work, and opening something never marks it done.
+- Moving around never changes your health data or Duet's work, and opening
+  something never marks it done.
 - Ask about this takes you to the conversation with that item, leaving the
   other tabs as they were.
 - You holds the library (records groups, records, Measurements & trends,
