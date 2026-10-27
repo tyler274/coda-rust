@@ -15,13 +15,23 @@ Follow the [shared principles](../../../verification/README.md#principles).
    about implementation; missing code does not narrow the design.
 2. Draw meaningful states, actions, external events, guards and effects in Mermaid.
    Use user-facing labels and independent regions for cooperating responsibilities.
-   Include hidden distinctions only when they change a promised outcome.
+   Start with few states. Split a state only when the split separates two broken
+   rules or the reader must see the step; include hidden distinctions only when
+   they change a promised outcome. When revising, remove what no promise needs
+   before adding anything.
 3. Walk ordinary continuation, alternatives, completion and recovery from each
    state, including cross-feature interactions and reopening where relevant.
    Challenge the complete journey first; known failures add further challenges.
 4. Draw what an observer sees happen; guidance and taste belong in prompts, skills
-   and evals. Actors choose nondeterministically (`may`); keep hard limits few,
-   each with a reason naming what it protects. Every event declares its cause; an
+   and evals. The chart is the product's contract and the harness serves it: a state
+   or event belongs only when it is something the reader sees or controls, a limit
+   on access, communication, data or consent, a fact another party depends on, or a
+   guarantee about what happens in what order. Model judgment, memory, prompts,
+   schedules, retry budgets, queues and navigation mechanics are harness; a feature
+   with no region is not a gap until it passes this test. `lint --unread` lists
+   states nothing else reads: keep each only when the reader sees it. Actors choose
+   nondeterministically (`may`); keep hard limits few, each with a reason naming
+   what it protects. Every event declares its cause; an
    agent's event is an output of the system running it. Charts compose through
    shared declared events, not copied states: a composition file pairs them and
    holds the rules that span charts. A chart that details part of
@@ -35,7 +45,7 @@ Follow the [shared principles](../../../verification/README.md#principles).
 Use the [compiler](references/compiler.md) for its supported `stateDiagram-v2`
 subset: nested parallel regions, templates, shapes, declared events, commands and
 `/ effect` labels expand into one flat model. Write shared behavior once (a template,
-a shape or an event group) instead of copying it. Encode real finite-state exclusions with `%% never` and
+a shape, an event group or a cause's standing needs) instead of copying it. Encode real finite-state exclusions with `%% never` and
 state guards with `%% when`. Link identity, revision, collection and progress promises to named data
 proofs; do not invent artificial states to make every chart have a safety rule.
 A chart without rules establishes transition correspondence only.
@@ -44,7 +54,7 @@ Generate the model with `statechart.mjs verus`, run its Verus proof and `check`,
 and use `trace` to find shortest reachable chart violations (`rules` when the chart
 is too large to exhaust). Use `lint`, `query`, `flat` and `compare` to read a chart: `lint --cause` lists
 limits that state no reason, `lint --repeats` lists events written together that no
-group names, and `compare` proves a rewrite keeps the flat model. Show an established violation as numbered
+group names, `lint --unread` lists states nothing outside their region reads, and `compare` proves a rewrite keeps the flat model. Show an established violation as numbered
 user steps and its generated path diagram. Search exhaustion is limited to the
 finite chart; an interrupted or bounded search is incomplete. A failed Verus data
 obligation need not have a reachable counterexample.

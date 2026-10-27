@@ -118,7 +118,9 @@ export function expand(parsed, options = {}) {
   }
   expandIn(root);
   const { catalog, problems } = expandEvents(parsed, instances, options);
-  expandCommands(root, names, catalog);
+  const limitOf = causeLimits(parsed.causes ?? new Map(), catalog);
+  expandCommands(root, names, catalog, limitOf);
+  limitOf.attach(root);
 
   // Every id a step reads, after templates and events are bound: outside its template, a
   // template-local id must name its instance.
@@ -129,7 +131,7 @@ export function expand(parsed, options = {}) {
           if (local.has(id)) throw new Error(`${id} is inside template ${local.get(id)}; outside it, name one instance as ${id}@KEY in a %% line`);
         for (const id of t.when?.ids ?? [])
           if (local.has(id)) throw new Error(`a %% when line names ${id}, which is inside template ${local.get(id)}; name one instance as ${id}@KEY`);
-        for (const id of t.needsIds?.ids ?? [])
+        for (const id of [...(t.needsIds?.ids ?? []), ...(t.causeIds ?? []).flatMap((c) => c.ids)])
           if (local.has(id)) throw new Error(`the event "${t.label}" needs ${id}, which is inside template ${local.get(id)}; name one instance as ${id}@KEY, or ${id}@{key} in a family`);
       }
       for (const c of p.children) if (!c.leaf) refs(c);
@@ -143,6 +145,37 @@ export function expand(parsed, options = {}) {
   return { ...parsed, nevers, instances, catalog, problems };
 }
 
+// A cause's standing limit holds for every concrete event its cause causes, bound with the
+// event's template values. Each event's limits are a list kept apart from its needs, so nothing
+// an event names can widen them: its own cause's, and for a command's acceptance also the
+// click's, since the system accepts on the clicker's behalf. Events commands generate get
+// theirs as they are declared; attach then puts every event's limits on each of its steps.
+function causeLimits(causes, catalog) {
+  const used = new Set();
+  const limitOf = (cause, values) => {
+    const limit = causes.get(cause);
+    if (!limit) return [];
+    used.add(cause);
+    return [{ not: limit.not, ids: limit.ids.map((id) => substitute(id, values)), cause,
+      ...(limit.reason ? { reason: substitute(limit.reason, values) } : {}) }];
+  };
+  for (const entry of catalog.values()) entry.limits = limitOf(substitute(entry.decl.cause, entry.values), entry.values);
+  limitOf.attach = (root) => {
+    for (const cause of causes.keys())
+      if (!used.has(cause)) throw new Error(`no event is caused "by ${cause}", so its %% cause line limits nothing`);
+    (function walk(q) {
+      for (const p of q.parts) {
+        for (const t of p.transitions) {
+          const limits = t.label && t.from !== "[*]" && catalog.get(t.label)?.limits;
+          if (limits?.length) t.causeIds = limits;
+        }
+        for (const c of p.children) if (!c.leaf) walk(c);
+      }
+    })(root);
+  };
+  return limitOf;
+}
+
 // Commands: a declared event with "command on ITEM: VERB" is a request the system accepts
 // exactly while its needs hold; "clicked while Ids" adds what only the click needs (the
 // client's own state). The %% receipt composite for ITEM becomes one receipt for all of ITEM's commands:
@@ -152,7 +185,7 @@ export function expand(parsed, options = {}) {
 // through" instead, so the item changes only on acceptance; "is refused" fires exactly when
 // the needs fail and changes nothing else. Every outcome needs its command in flight, so no
 // region reacts to an answer nobody asked for.
-function expandCommands(root, names, catalog) {
+function expandCommands(root, names, catalog, limitOf) {
   const receipts = new Map(); // item -> composite
   (function find(q) {
     for (const p of q.parts) for (const c of p.children) {
@@ -174,7 +207,7 @@ function expandCommands(root, names, catalog) {
       reason: "the control shows only while the client's own state allows it" };
     if (needs?.not) throw new Error(`the command "${label}" names what it needs, not what it must avoid`);
     if (!commands.has(item)) commands.set(item, []);
-    commands.get(item).push({ click: label, verb, needs, client });
+    commands.get(item).push({ click: label, verb, needs, client, values, limits: catalog.get(label).limits });
   }
   const accepted = new Map(); // click label -> { through, sending }
   const generated = new Set();
@@ -186,15 +219,16 @@ function expandCommands(root, names, catalog) {
     const [base, key] = node.name.split("@");
     const id = (slug) => `${base}_${slug}${key ? `@${key}` : ""}`;
     const state = (slug, caption) => { names.set(id(slug), caption); return { name: id(slug), leaf: true }; };
-    const declare = (label, decl) => {
+    // A generated event keeps its click's template values, and its own cause's limit.
+    const declare = (label, decl, values, also = []) => {
       if (catalog.has(label)) throw new Error(`the event "${label}" is declared twice`);
-      catalog.set(label, { decl: { label, ...decl }, values: {} });
+      catalog.set(label, { decl: { label, ...decl }, values, limits: [...also, ...limitOf(decl.cause, values)] });
     };
     const idle = id("idle");
     const children = [state("idle", `No command on ${item} in flight`)];
     const transitions = [{ from: "[*]", to: idle, text: "", label: "" }];
     const slugs = new Set();
-    for (const { click, verb, needs, client } of list) {
+    for (const { click, verb, needs, client, values, limits } of list) {
       let slug = verb.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") || "command";
       while (slugs.has(slug)) slug += "_";
       slugs.add(slug);
@@ -205,17 +239,19 @@ function expandCommands(root, names, catalog) {
       const lost = `your ${verb} on ${item} can't be confirmed`, again = `check your ${verb} on ${item} again`;
       const inFlight = (at, also, why = "an answer comes only for a command in flight") =>
         ({ not: false, ids: [at, ...(also?.ids ?? [])], reason: also?.reason ? `${also.reason}; and ${why}` : why });
+      // Acceptance needs everything the click does, its limits included; refusal fires exactly
+      // when any of it fails.
       declare(through, { cause: "the system", accepts: click, needs: inFlight(sending, needs),
-        intent: `Accepted while the command is still allowed, directly or after the same request is resent; only now does ${item} change.` });
-      declare(refused, { cause: "the system", needs: inFlight(sending), ...(needs ? { refuses: needs } : {}),
-        intent: `${item[0].toUpperCase()}${item.slice(1)} no longer allows it when it arrives; nothing changes, and the view refreshes and says why.` });
-      declare(lost, { cause: "the client", needs: inFlight(sending), intent: "The same request was resent and still has no answer; you are asked, with Check again." });
-      declare(again, { cause: "you", needs: inFlight(stuck, null, "Check again shows only when an answer couldn't be confirmed"), intent: "The same request is resent; it can never be applied twice." });
+        intent: `Accepted while the command is still allowed, directly or after the same request is resent; only now does ${item} change.` }, values, limits);
+      declare(refused, { cause: "the system", needs: inFlight(sending), refusal: true, ...(needs ? { refuses: needs } : {}), ...(limits.length ? { refuseLimits: limits } : {}),
+        intent: `${item[0].toUpperCase()}${item.slice(1)} no longer allows it when it arrives; nothing changes, and the view refreshes and says why.` }, values);
+      declare(lost, { cause: "the client", needs: inFlight(sending), intent: "The same request was resent and still has no answer; you are asked, with Check again." }, values);
+      declare(again, { cause: "you", needs: inFlight(stuck, null, "Check again shows only when an answer couldn't be confirmed"), intent: "The same request is resent; it can never be applied twice." }, values);
       const step = (from, to, label, extra = {}) => ({ from, to, text: label, label, ...extra });
       transitions.push(
         step(idle, sending, click, { ...(needs ? { needsIds: needs } : {}), ...(client ? { when: client } : {}) }),
         step(sending, idle, through, needs ? { needsIds: needs } : {}),
-        step(sending, idle, refused, needs ? { refuseIds: needs } : {}),
+        step(sending, idle, refused, { refusal: true, ...(needs ? { refuseIds: needs } : {}), ...(limits.length ? { refuseLimits: limits } : {}) }),
         step(sending, stuck, lost),
         step(stuck, sending, again));
       accepted.set(click, { through, sending, inFlight });

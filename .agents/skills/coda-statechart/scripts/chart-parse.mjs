@@ -46,7 +46,7 @@ export function reasoned(text) {
 
 // Reserved words at the start of a %% line. A line that starts with one but does not
 // have the construct's shape stays an ordinary comment; lint lists such lines.
-export const KEYWORDS = /^%%\s*(when|never|template|instance|only|except|event|events)\b/;
+export const KEYWORDS = /^%%\s*(when|never|template|instance|only|except|event|events|cause)\b/;
 
 // Shapes: a composite whose first line is `%% shape NAME` is not part of the chart; it
 // defines contents written once. A composite whose first line is
@@ -94,6 +94,7 @@ export function readChart(text) {
   const nevers = [];
   const ignored = [];
   const events = [];
+  const causes = new Map(); // cause -> what every event it causes needs
   const groups = new Map();
   let strict = false;
   let last = null; // the transition a %% when line guards
@@ -220,6 +221,16 @@ export function readChart(text) {
       item = null;
       continue;
     }
+    // A cause's standing limit: "%% cause CAUSE | needs [not] Id, Id | reason: TEXT" holds for
+    // every event CAUSE causes, as its own condition beside each event's needs.
+    const standing = /^%%\s*cause\s+(.+?)\s*\|\s*needs\s+(not\s+)?(.+?)\s*$/.exec(line);
+    if (standing) {
+      const [ids, why] = reasoned(standing[3]);
+      if (causes.has(standing[1])) throw new Error(`the cause "${standing[1]}" is declared twice`);
+      causes.set(standing[1], { not: Boolean(standing[2]), ids: ids.split(",").map((s) => s.trim()), ...(why ? { reason: why } : {}) });
+      item = null;
+      continue;
+    }
     if (/^%%\s*events\s+declared\s*$/.test(line)) { strict = true; item = null; continue; }
     const group = /^%%\s*events\s+(.+?)\s*=\s*(.+)$/.exec(line);
     if (group) {
@@ -297,7 +308,7 @@ export function readChart(text) {
     throw new Error(
       "the chart has -- outside a composite; to make parallel regions, split one top-level composite with --",
     );
-  return { root, names, nevers, ignored, events, groups, strict };
+  return { root, names, nevers, ignored, events, causes, groups, strict };
 }
 
 // Checks that need the final (expanded) tree.

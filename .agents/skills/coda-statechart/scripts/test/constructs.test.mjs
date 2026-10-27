@@ -731,6 +731,68 @@ test("negative control: without needs the courier fills a locker while the other
   assert.match(trace.text, /VIOLATION NotBothFull_a/);
 });
 
+test("a cause's limit holds for every event it causes, as its own condition nothing widens", () => {
+  // The event's own needs name both courier states, yet the cause's limit still holds.
+  const limited = lockerEvents.replace("  %% events declared\n", "  %% events declared\n  %% cause the courier | needs Driving | reason: the courier fills only on a round\n")
+    .replace("needs Empty@{key}, Empty@{other}", "needs Empty@{key}, Empty@{other}, Driving, Gone");
+  const f = generated(limited);
+  const { state: s, event: e, map } = names(f);
+  const fill = map.events.find((x) => x.label === "the courier fills locker a");
+  assert.deepEqual(fill.limits, [{ not: false, states: { Courier: ["Driving"] }, reason: "the courier fills only on a round", cause: "the courier" }]);
+  assert.equal(map.events.find((x) => x.label === "you collect from locker a").limits, undefined);
+  const a = "Waiting for a small parcel", b = "Waiting for a large parcel";
+  addProof(f, `
+    assert forall|x: State| !${e("the courier fills locker a")}(${s(a, b, "Gone")}, x) by {};
+    assert forall|x: State| ${e("the courier fills locker a")}(${s(a, b, "Driving")}, x) == (x == ${s("Full", b, "Gone")}) by {};
+  `);
+  verify(f);
+  // A limit with placeholders binds per instance, like the event it limits.
+  const bound = names(generated(lockerEvents.replace(" | needs Empty@{key}, Empty@{other}", " | needs Empty@{key}")
+    .replace("  %% events declared\n", "  %% events declared\n  %% cause the courier | needs Empty@{other} | reason: one parcel at a time\n"))).map;
+  assert.deepEqual(bound.events.find((x) => x.label === "the courier fills locker a").limits[0].states, { "Locker b (large)": ["Waiting for a large parcel"] });
+  // Events a command generates keep their own cause's limit...
+  const desk = names(generated(office.replace("%% events declared\n", "%% events declared\n%% cause the system | needs In | reason: the server answers only a signed-in session\n"))).map;
+  const through = desk.events.find((x) => x.label === "your Close on the item goes through");
+  assert.deepEqual(through.limits.map((l) => Object.values(l.states)), [[["In"]]]);
+  assert.ok(through.transitions.every((t) => t.within?.some((w) => w.cause === "the system")));
+  // ...and their click's template values.
+  for (const cause of ["you", "the system"]) {
+    const shift = names(generated(shifts.replace("%% events declared\n", `%% events declared\n%% cause ${cause} | needs Run@{key} | reason: only running work\n`))).map;
+    const label = cause === "you" ? "check your Stop on the review again" : "your Stop on the review goes through";
+    assert.deepEqual(Object.values(shift.events.find((x) => x.label === label).limits.at(-1).states), [["review running"]]);
+  }
+  generated(limited.replace("needs Driving |", "needs not Gone |"));
+  refused(limited.replace("cause the courier", "cause the postman"), /no event is caused "by the postman"/);
+  refused(limited.replace("needs Driving |", "needs Parked |"), /the cause "the courier" needs Parked, which is not a state id/);
+  refused(limited.replace("  %% events declared\n", "  %% events declared\n  %% cause the courier | needs Gone\n"), /the cause "the courier" is declared twice/);
+});
+
+test("a command that needs nothing is never refused: nothing it needs can fail", () => {
+  const idle = "No command on the item in flight", sending = "Close on the item: sending; other commands on it wait";
+  const f = generated(office.replace("command on the item: Close, clicked while In | needs Open | reason: only a signed-in physician closes an open item |", "command on the item: Close |"));
+  const { state: s, event: e } = names(f);
+  addProof(f, `
+    assert forall|a: State, x: State| !${e("your Close on the item is refused")}(a, x) by {};
+    assert forall|x: State| ${e("your Close on the item goes through")}(${s("Out", "Open", sending)}, x) == (x == ${s("Out", "Closed", idle)}) by {};
+  `);
+  verify(f);
+  assert.match(cmd("query", f.input, "--event", "your Close on the item is refused").stdout, /never: its command needs nothing that can fail/);
+});
+
+test("a command is accepted only while its click's limits still hold, and refused when they fail", () => {
+  const f = generated(office.replace("%% events declared\n", "%% events declared\n%% cause the physician | needs In | reason: only a signed-in physician acts\n")
+    .replace("%% event close the item | by you | command on the item: Close, clicked while In |", "%% event close the item | by the physician | command on the item: Close |"));
+  const { state: s, event: e } = names(f);
+  const idle = "No command on the item in flight", sending = "Close on the item: sending; other commands on it wait";
+  addProof(f, `
+    assert forall|x: State| !${e("your Close on the item goes through")}(${s("Out", "Open", sending)}, x) by {};
+    assert forall|x: State| ${e("your Close on the item is refused")}(${s("Out", "Open", sending)}, x) == (x == ${s("Out", "Open", idle)}) by {};
+    assert forall|x: State| ${e("your Close on the item goes through")}(${s("In", "Open", sending)}, x) == (x == ${s("In", "Closed", idle)}) by {};
+    assert forall|x: State| !${e("your Close on the item is refused")}(${s("In", "Open", sending)}, x) by {};
+  `);
+  verify(f);
+});
+
 test("strict events refuse undeclared and unlabeled steps; declarations are checked", () => {
   refused(lockerEvents.replace("Gone --> Driving : a collection", "Gone --> Driving : you wave"), /strict events: "you wave" is not declared/);
   refused(lockerEvents.replace("Gone --> Driving : a collection", "Gone --> Driving"), /strict events: the step Gone --> Driving has no event label/);
@@ -864,6 +926,34 @@ ${group}state Desk {
   assert.match(found.stdout, /^repeated on 3 moves: "close it", "you leave"; one %% events group could name them once\n1 finding\.\n$/);
   assert.match(cmd("lint", fixture(chart("")).input).stdout, /^No findings\.\n$/);
   assert.match(cmd("lint", fixture(chart("%% events closing = close it | you leave\n")).input, "--repeats").stdout, /^No findings\.\n$/);
+});
+
+test("lint --unread lists states that nothing outside their own region reads", () => {
+  const chart = (rule) => `stateDiagram-v2
+state Room {
+ state Door {
+  [*] --> Shut
+  Shut --> Open : open it
+  Open --> Shut : close it
+ }
+ --
+ state Lamp {
+  [*] --> Off
+  Off --> On : switch on [door open]
+  %% when Open
+  On --> Off : switch off
+  ${rule}
+ }
+}
+[*] --> Room
+`;
+  const found = cmd("lint", fixture(chart("")).input, "--unread");
+  assert.match(found.stdout, /^unread region: Lamp: nothing outside it reads its states\n1 finding\.\n$/);
+  const ruled = cmd("lint", fixture(chart("%% never DarkWhenShut: On & Shut -- The lamp is off while the door is shut.")).input, "--unread");
+  assert.match(ruled.stdout, /^No findings\.\n$/);
+  const third = cmd("lint", fixture(chart("").replace("  On --> Off : switch off", "  On --> Off : switch off\n  On --> Dim : dim it\n  Dim --> Off : switch off\n  %% never DarkWhenShut: On & Shut -- The lamp is off while the door is shut.")).input, "--unread");
+  assert.match(third.stdout, /^unread: Lamp: Dim\n1 finding\.\n$/);
+  assert.match(cmd("lint", fixture(chart("")).input).stdout, /^No findings\.\n$/);
 });
 
 test("query lists ways in and out with cause, needs and intent, reacting regions, and region summaries", () => {
@@ -1295,6 +1385,26 @@ test("compose joins separate charts through shared events and checks rules acros
   // practice can invite.
   const invite = cmd("query", both, "--event", "invite the patient").stdout;
   assert.match(invite, /Patient app\/Your practice\n      Not connected --> Invited \(needs here: when Patient app\/Your practice is Not connected[^)]*; the event's own needs: when Practice\/Connection is Not connected/);
+  // A cause's limit survives composition: a follower's step waits for the owner's cause too...
+  fs.writeFileSync(path.join(dir, "compose-app-limited.mmd"), here("compose-app.mmd")
+    .replace("%% events declared\n", "%% events declared\n%% cause you | needs not NNone | reason: you act on a practice you know\n"));
+  const owned = cmd("query", write(base.join("\n").replace("compose-app.mmd", "compose-app-limited.mmd")), "--event", "save a note");
+  assert.equal(owned.status, 0, owned.text);
+  assert.match(owned.stdout, /Practice\/Work\n      Idle --> Owed \([^)]*the event's cause, you, always needs: unless Patient app\/Your practice is Not connected/);
+  // ...and keeps its own cause's limit once drawn on the owner's event.
+  fs.writeFileSync(path.join(dir, "compose-practice-limited.mmd"), here("compose-practice.mmd")
+    .replace("%% events declared\n", "%% events declared\n%% cause the patient through the app | needs not PNone | reason: the patient acts on a practice that invited them\n"));
+  const kept = cmd("query", write(base.join("\n").replace("compose-practice.mmd", "compose-practice-limited.mmd")), "--event", "join");
+  assert.equal(kept.status, 0, kept.text);
+  assert.match(kept.stdout, /Practice\/Connection\n      Invited --> Connected \([^)]*this step's cause, the patient through the app, always needs: unless Practice\/Connection is Not connected/);
+  // Owner and follower with one cause name but different limits: query shows both.
+  fs.writeFileSync(path.join(dir, "compose-practice-you.mmd"), here("compose-practice.mmd")
+    .replace("%% event a record arrives | by the patient through the app |", "%% event a record arrives | by you |")
+    .replace("%% events declared\n", "%% events declared\n%% cause you | needs not PInvited | reason: for the test\n"));
+  const both2 = cmd("query", write(base.join("\n").replace("compose-app.mmd", "compose-app-limited.mmd").replace("compose-practice.mmd", "compose-practice-you.mmd")
+    .replace("%% outside practice: by the patient through the app", "%% outside practice: by the patient through the app")), "--event", "save a note");
+  assert.equal(both2.status, 0, both2.text);
+  assert.match(both2.stdout, /Practice\/Work\n      Idle --> Owed \([^)]*this step's cause, you, always needs: unless Practice\/Connection is Invited[^)]*the event's cause, you, always needs: unless Patient app\/Your practice is Not connected/);
   // Negative control: joining on the wrong event breaks the status rule, and trace shows how.
   const wrong = write(base.join("\n").replace("%% shared practice: the patient joins = app: join", "%% shared practice: the patient joins = app: save a note"));
   const broken = cmd("trace", wrong);
