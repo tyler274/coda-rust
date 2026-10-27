@@ -196,6 +196,44 @@ pub struct WorkspaceReply {
     #[serde(default)]
     /// Reason this reply was superseded, if any.
     pub superseded_reason: Option<String>,
+    #[serde(default)]
+    /// The saved reply draft's exact revision, when a hosted owner holds it.
+    /// A revision request names this revision; absent on recorded replies.
+    pub draft_revision: Option<u64>,
+    #[serde(default)]
+    /// The latest revision run on the saved draft, when one was accepted.
+    pub revision_run: Option<ReplyRevisionRun>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// The latest accepted revision of a saved reply draft and how it stands.
+pub struct ReplyRevisionRun {
+    /// The revision command's key.
+    pub run_id: String,
+    /// `pending`, `active`, `completed`, `failed` or `superseded`.
+    pub status: String,
+}
+
+impl ReplyRevisionRun {
+    /// Whether the run is still waiting or working.
+    pub fn running(&self) -> bool {
+        matches!(self.status.as_str(), "pending" | "active")
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// The reply-draft route's answer: saved text at an exact revision.
+pub struct ReplyDraftWire {
+    /// Saved revision.
+    pub revision: u64,
+    /// Saved text.
+    pub text: String,
+    #[serde(default)]
+    /// The text the latest save or revision replaced.
+    pub restore_text: Option<String>,
+    #[serde(default)]
+    /// The latest accepted revision run, if any.
+    pub revision_run: Option<ReplyRevisionRun>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

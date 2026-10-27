@@ -483,3 +483,96 @@ fn reply_delivery_preserves_legacy_chat_wire_shape() {
         revision
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn authorized_opening_is_idempotent_scoped_and_fenced_by_authority() {
+    let (store, scope) = setup().await;
+    let session = [7_u8; 32];
+    // Revoked authority opens nothing and leaves no row behind.
+    assert!(
+        store
+            .open_draft_authorized(&scope, "Original", &session, &mut TestAuthority(false))
+            .await
+            .unwrap()
+            .is_none()
+    );
+    assert!(store.draft(&scope).await.unwrap().is_none());
+    assert!(
+        store
+            .open_draft_authorized(&scope, " ", &session, &mut TestAuthority(true))
+            .await
+            .is_err()
+    );
+
+    // Concurrent openers agree on exactly one revision-1 draft.
+    let (mut a, mut b) = (TestAuthority(true), TestAuthority(true));
+    let (first, second) = tokio::join!(
+        store.open_draft_authorized(&scope, "Original", &session, &mut a),
+        store.open_draft_authorized(&scope, "Racing text", &session, &mut b)
+    );
+    let (first, second) = (first.unwrap().unwrap(), second.unwrap().unwrap());
+    assert_eq!((first.revision, second.revision), (1, 1));
+    assert_eq!(first.text, second.text);
+    let opened = first.text.clone();
+
+    // A physician edit and an accepted revision survive reopening unchanged.
+    let saved = store
+        .save_draft(&scope, 1, "Edited", &session, &mut TestAuthority(true))
+        .await
+        .unwrap();
+    assert_eq!(saved, 2);
+    assert_eq!(
+        store
+            .accept_revision(&scope, &input("kept", 2), vec![7; 32], vec![])
+            .await
+            .unwrap(),
+        RevisionAccepted::New
+    );
+    let reopened = store
+        .open_draft_authorized(&scope, "Original", &session, &mut TestAuthority(true))
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(reopened.revision, 2);
+    assert_eq!(reopened.text, "Edited");
+    assert_eq!(reopened.restore_text.as_deref(), Some(opened.as_str()));
+    assert_eq!(
+        reopened.input.as_ref().map(|i| i.key.as_str()),
+        Some("kept")
+    );
+    // Revoked authority cannot even read through the opener once it exists.
+    assert!(
+        store
+            .open_draft_authorized(&scope, "Original", &session, &mut TestAuthority(false))
+            .await
+            .unwrap()
+            .is_none()
+    );
+
+    // Another physician and another workspace each get their own draft.
+    let mut other_physician = scope.clone();
+    other_physician.physician = "other".into();
+    let mut other_workspace = scope.clone();
+    other_workspace.workspace = "other-workspace".into();
+    for other in [&other_physician, &other_workspace] {
+        let draft = store
+            .open_draft_authorized(other, "Original", &session, &mut TestAuthority(true))
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!((draft.revision, draft.text.as_str()), (1, "Original"));
+    }
+    assert_eq!(store.draft(&scope).await.unwrap().unwrap().text, "Edited");
+
+    // Save still refuses an arbitrary reply that was never opened.
+    let mut missing = scope.clone();
+    missing.chat = "never-opened".into();
+    assert!(
+        store
+            .save_draft(&missing, 1, "Invented", &session, &mut TestAuthority(true))
+            .await
+            .is_err()
+    );
+    assert!(store.draft(&missing).await.unwrap().is_none());
+}

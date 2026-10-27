@@ -267,6 +267,49 @@ fn reply_close_fences_active_revision_without_replacing_saved_text() {
     assert_eq!(session.draft("w", "p/r").unwrap().1, "saved");
 }
 
+#[test]
+fn opening_reply_work_is_idempotent_and_keeps_edits_and_runs() {
+    let path = path();
+    let mut session = PhysicianSession::open(&path).unwrap();
+    for blank in [("", "p/r", "text"), ("w", " ", "text"), ("w", "p/r", " ")] {
+        assert!(session.open_reply_draft(blank.0, blank.1, blank.2).is_err());
+    }
+    assert!(session.draft("w", "p/r").is_none());
+    assert_eq!(session.open_reply_draft("w", "p/r", "first").unwrap(), 1);
+    assert_eq!(session.open_reply_draft("w", "p/r", "other").unwrap(), 1);
+    assert_eq!(
+        session.draft("w", "p/r").unwrap(),
+        (1, "first".into(), None)
+    );
+    assert!(session.reply_run("w", "p/r").is_none());
+
+    assert_eq!(session.save_draft("w", "p/r", 1, "edited").unwrap(), 2);
+    let work = session.revise("run", "w", "p/r", 2, request()).unwrap();
+    assert_eq!(session.open_reply_draft("w", "p/r", "first").unwrap(), 2);
+    assert_eq!(
+        session.draft("w", "p/r").unwrap(),
+        (2, "edited".into(), Some("first".into()))
+    );
+    assert_eq!(
+        session.reply_run("w", "p/r"),
+        Some(("run".into(), Status::Active))
+    );
+    session.complete(&work, "revised").unwrap();
+    assert_eq!(
+        session.reply_run("w", "p/r"),
+        Some(("run".into(), Status::Completed))
+    );
+    // Another workspace or physician target is separate reply work.
+    assert_eq!(session.open_reply_draft("w2", "p/r", "first").unwrap(), 1);
+    assert_eq!(session.open_reply_draft("w", "q/r", "first").unwrap(), 1);
+    assert!(session.reply_run("w2", "p/r").is_none());
+    drop(session);
+    let session = PhysicianSession::open(&path).unwrap();
+    assert_eq!(session.draft("w", "p/r").unwrap().0, 3);
+    drop(session);
+    cleanup(&path);
+}
+
 #[tokio::test]
 async fn shared_loop_commits_persistent_physician_work_and_keeps_provider_evidence() {
     let path = path();

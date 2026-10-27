@@ -327,6 +327,60 @@ impl PhysicianSession {
             Ok(t.revision)
         })
     }
+    /// Opens trusted, server-owned reply work's first saved draft at the
+    /// first revision. The caller holds the physician publication fence.
+    /// Opening again leaves an existing draft, its edits and revision unchanged.
+    pub fn open_reply_draft(
+        &mut self,
+        workspace: &str,
+        target: &str,
+        text: &str,
+    ) -> Result<u64, String> {
+        if [workspace, target, text]
+            .iter()
+            .any(|s| s.trim().is_empty())
+        {
+            return Err("invalid reply draft".into());
+        }
+        if let Some((revision, _, _)) = self.draft(workspace, target) {
+            return Ok(revision);
+        }
+        self.change(|state| {
+            if state
+                .targets
+                .iter()
+                .any(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)
+            {
+                return Err("reply target exists without a draft".into());
+            }
+            state.targets.push(Target {
+                workspace: workspace.into(),
+                id: target.into(),
+                owner: None,
+                revision: 1,
+                open: true,
+                turns: vec![],
+                draft: Some(text.into()),
+                restore_text: None,
+                opened_at: unix_now(),
+            });
+            Ok(1)
+        })
+    }
+    /// The latest reply revision admitted on this draft and its status.
+    pub fn reply_run(&self, workspace: &str, target: &str) -> Option<(String, Status)> {
+        self.state
+            .work
+            .iter()
+            .rev()
+            .find(|w| {
+                w.owner.is_none()
+                    && w.surface == Surface::ReplyRevision
+                    && w.workspace == workspace
+                    && w.target == target
+            })
+            .map(|w| (w.id.clone(), w.status.clone()))
+    }
     /// Admits an already assembled immutable reply revision request. The caller
     /// binds target to the asking physician and exact reply work identity.
     pub fn revise(

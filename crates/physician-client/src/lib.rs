@@ -7,7 +7,7 @@ use physician_wire::{
     ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
     PanelAssignmentResponse, PanelResponse, PatientInvitationResponse, PatientLinkWire,
     PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
-    PlanItemWire, PracticeDayResponse, RecentConversationsResponse, SignInResponse,
+    PlanItemWire, PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, SignInResponse,
     TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
@@ -298,21 +298,64 @@ impl PhysicianClient {
             .await
     }
 
-    /// Saves the draft over the revision it was read or last saved at and
-    /// returns the saved draft with its new revision. A stale revision
-    /// answers 409 and writes nothing.
+    /// Saves the draft over the revision it was read or last saved at.
+    /// A stale revision answers 409 and writes nothing; only a validated
+    /// `{"outcome": "conflict", "current": {revision, text}}` body becomes
+    /// [`DraftSave::Conflict`]. A bare or malformed 409 stays an error and
+    /// never names a revision to overwrite.
     pub async fn save_draft(
         &self,
         workspace_id: &str,
         chat_id: &str,
         revision: i64,
         text: &str,
-    ) -> Result<PhysicianDraft, http::HttpError> {
-        self.put(
-            &format!("/physician-state/drafts/{workspace_id}/{chat_id}"),
-            &serde_json::json!({ "expected_revision": revision, "text": text }),
-        )
+    ) -> Result<DraftSave, http::HttpError> {
+        let answer = self
+            .put::<PhysicianDraft>(
+                &format!("/physician-state/drafts/{workspace_id}/{chat_id}"),
+                &serde_json::json!({ "expected_revision": revision, "text": text }),
+            )
+            .await;
+        match answer {
+            Ok(saved) => Ok(DraftSave::Saved(saved)),
+            Err(http::HttpError::Status { status: 409, body }) => match draft_conflict(&body) {
+                Some(current) => Ok(DraftSave::Conflict(current)),
+                None => Err(http::HttpError::Status { status: 409, body }),
+            },
+            Err(error) => Err(error),
+        }
+    }
+
+    /// Reads one reply draft with its exact revision and latest revision run.
+    pub async fn read_reply_draft(
+        &self,
+        workspace_id: &str,
+        reply_work_id: &str,
+    ) -> Result<ReplyDraftWire, http::HttpError> {
+        self.get(&format!(
+            "/physician-state/reply-drafts/{workspace_id}/{reply_work_id}"
+        ))
         .await
+    }
+
+    /// The same client with its own copy of the current session. A request
+    /// begun under one account keeps that account's bearer even if the shared
+    /// session is signed out or replaced before the request is sent.
+    pub fn pinned(&self) -> Self {
+        let session = Session::new();
+        if let Some(current) = self.session.get() {
+            session.set(current);
+        }
+        Self {
+            base: self.base.clone(),
+            http: self.http.clone(),
+            session,
+        }
+    }
+
+    /// The server this client calls.
+    pub fn base(&self) -> &str {
+        &self.base
     }
 
     /// Sends recorded audio for transcription.
@@ -401,6 +444,27 @@ fn query_escape(value: &str) -> String {
         }
     }
     out
+}
+
+/// How the server answered a draft save.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum DraftSave {
+    /// Saved at the returned revision.
+    Saved(PhysicianDraft),
+    /// Another save got there first; this is the server's current draft.
+    /// Nothing was written.
+    Conflict(PhysicianDraft),
+}
+
+/// The current draft in a validated conflict body, and nothing else.
+fn draft_conflict(body: &str) -> Option<PhysicianDraft> {
+    #[derive(serde::Deserialize)]
+    struct Conflict {
+        outcome: String,
+        current: PhysicianDraft,
+    }
+    let conflict: Conflict = serde_json::from_str(body).ok()?;
+    (conflict.outcome == "conflict" && conflict.current.revision >= 0).then_some(conflict.current)
 }
 
 /// Decodes one response, keeping the server's status and body on failure.
@@ -496,9 +560,92 @@ mod tests {
             .save_draft("ws", "chat", draft.revision, "revised")
             .await
             .unwrap();
-        assert_eq!(saved.revision, 5);
+        assert_eq!(
+            saved,
+            DraftSave::Saved(PhysicianDraft {
+                text: "revised".into(),
+                revision: 5
+            })
+        );
         let snapshot = client.chat_snapshot("ws", "chat").await.unwrap();
         assert_eq!(snapshot.snapshot.conversation[0].body(), Some("Hello"));
+    }
+
+    /// Only a validated conflict body names the server's current draft; a
+    /// bare or malformed 409 (an authority refusal, a proxy) stays an error.
+    #[tokio::test]
+    async fn only_a_validated_conflict_body_is_a_draft_conflict() {
+        use axum::extract::Path;
+        use axum::http::StatusCode;
+        let app = axum::Router::new().route(
+            "/physician-state/drafts/{workspace}/{chat}",
+            axum::routing::put(|Path((_, chat)): Path<(String, String)>| async move {
+                let body = match chat.as_str() {
+                    "valid" => r#"{"outcome":"conflict","current":{"revision":7,"text":"newer"}}"#,
+                    "bare" => "",
+                    "wrong-outcome" => {
+                        r#"{"outcome":"rejected","current":{"revision":7,"text":"newer"}}"#
+                    }
+                    "no-current" => r#"{"outcome":"conflict"}"#,
+                    "negative" => r#"{"outcome":"conflict","current":{"revision":-1,"text":"x"}}"#,
+                    _ => "not json",
+                };
+                (StatusCode::CONFLICT, body.to_owned()).into_response()
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = PhysicianClient::new(format!("http://{address}"));
+        assert_eq!(
+            client.save_draft("ws", "valid", 1, "mine").await.unwrap(),
+            DraftSave::Conflict(PhysicianDraft {
+                text: "newer".into(),
+                revision: 7
+            })
+        );
+        for malformed in ["bare", "wrong-outcome", "no-current", "negative", "garbage"] {
+            assert!(
+                matches!(
+                    client.save_draft("ws", malformed, 1, "mine").await,
+                    Err(HttpError::Status { status: 409, .. })
+                ),
+                "{malformed}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_pinned_client_keeps_the_session_it_was_pinned_with() {
+        let client = PhysicianClient::new("http://example.test");
+        client.session().set("first".into());
+        let pinned = client.pinned();
+        client.session().clear();
+        client.session().set("second".into());
+        assert_eq!(pinned.session().get().as_deref(), Some("first"));
+        assert_eq!(pinned.base(), "http://example.test");
+    }
+
+    #[tokio::test]
+    async fn reads_a_reply_draft_with_its_revision_run() {
+        let app = axum::Router::new().route(
+            "/physician-state/reply-drafts/{workspace}/{reply}",
+            get(|| async {
+                Json(serde_json::json!({
+                    "revision": 3,
+                    "text": "Reply",
+                    "restore_text": null,
+                    "revision_run": { "run_id": "k1", "status": "pending" }
+                }))
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = PhysicianClient::new(format!("http://{address}"));
+        let draft = client.read_reply_draft("ws", "reply").await.unwrap();
+        assert_eq!(draft.revision, 3);
+        assert!(draft.revision_run.unwrap().running());
     }
 
     #[tokio::test]

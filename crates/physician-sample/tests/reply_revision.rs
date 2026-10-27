@@ -13,6 +13,9 @@ use local_product::runtime::{MAX_FAILED_ATTEMPTS, Scope, Store};
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
 use serde_json::{Value, json};
 
+#[allow(dead_code)]
+#[path = "../../mobile/tests/common/devtools.rs"]
+mod devtools;
 #[path = "scale/mod.rs"]
 mod support;
 
@@ -24,7 +27,7 @@ struct Running {
     database: support::Database,
     store: Store,
     emulator: support::Emulator,
-    _valkey: support::Valkey,
+    valkey: support::Valkey,
     worker: support::Process,
     sites: Vec<support::Process>,
     hosts: [String; 2],
@@ -45,6 +48,30 @@ impl Drop for Running {
 
 impl Running {
     async fn start(label: &str, failures: u32, delay_ms: u64) -> Option<Self> {
+        Self::start_with(label, failures, delay_ms, false).await
+    }
+
+    /// Like `start`; `synthetic` sets the explicit synthetic reply switch on
+    /// both sites, so reply work opens without any direct draft seeding.
+    async fn start_with(
+        label: &str,
+        failures: u32,
+        delay_ms: u64,
+        synthetic: bool,
+    ) -> Option<Self> {
+        Self::start_full(label, failures, delay_ms, synthetic, &[], &[]).await
+    }
+
+    /// Like `start_with`, with extra environment for both sites and the
+    /// worker (the browser journey adds the page directory and fail marker).
+    async fn start_full(
+        label: &str,
+        failures: u32,
+        delay_ms: u64,
+        synthetic: bool,
+        site_env: &[(&str, &str)],
+        worker_env: &[(&str, &str)],
+    ) -> Option<Self> {
         let database = support::Database::create(label).await?;
         support::staging_account(&database.url).await;
         let store = Store::connect(&database.url).await.expect("runtime store");
@@ -61,21 +88,17 @@ impl Running {
         let worker_host = format!("127.0.0.1:{worker_port}");
         let failures = failures.to_string();
         let delay = delay_ms.to_string();
-        let mut worker = support::Process::spawn(
-            "worker",
-            support::worker_bin(),
-            &[],
-            &[
-                ("PHYSICIAN_DATABASE_URL", &database.url),
-                ("PHYSICIAN_REDIS_URL", &redis),
-                ("PUBSUB_EMULATOR_HOST", &emulator.host),
-                ("PHYSICIAN_WORKER_LISTEN_ADDR", &worker_host),
-                ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
-                ("PHYSICIAN_WORKER_FIXED_FAILURES", &failures),
-                ("PHYSICIAN_WORKER_FIXED_DELAY_MS", &delay),
-            ],
-            &home,
-        );
+        let mut env = vec![
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", &redis),
+            ("PUBSUB_EMULATOR_HOST", &emulator.host),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", &worker_host),
+            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            ("PHYSICIAN_WORKER_FIXED_FAILURES", &failures),
+            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", &delay),
+        ];
+        env.extend_from_slice(worker_env);
+        let mut worker = support::Process::spawn("worker", support::worker_bin(), &[], &env, &home);
         support::wait_ready(&mut worker, worker_port).await;
         let topic = support::topic();
         let mut sites = Vec::new();
@@ -96,20 +119,24 @@ impl Running {
             }];
             let snapshot = home.join(format!("sources-{index}.json"));
             std::fs::write(&snapshot, serde_json::to_vec(&sources).unwrap()).unwrap();
+            let switch = if synthetic { "1" } else { "0" };
+            let mut env = vec![
+                ("PHYSICIAN_SYNTHETIC_REPLY", switch),
+                ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+                ("PHYSICIAN_REDIS_URL", &redis),
+                ("PUBSUB_EMULATOR_HOST", &emulator.host),
+                ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
+                ("PHYSICIAN_CHAT_TOPIC", &topic),
+                ("CODA_PHYSICIAN_SOURCE_SNAPSHOT", snapshot.to_str().unwrap()),
+                ("PHYSICIAN_AUTH", "required"),
+                ("PHYSICIAN_LISTEN_ADDR", host),
+            ];
+            env.extend_from_slice(site_env);
             let mut site = support::Process::spawn(
                 &format!("site-{index}"),
                 support::site_bin(),
                 &[],
-                &[
-                    ("PHYSICIAN_DATABASE_URL", &database.url),
-                    ("PHYSICIAN_REDIS_URL", &redis),
-                    ("PUBSUB_EMULATOR_HOST", &emulator.host),
-                    ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-                    ("PHYSICIAN_CHAT_TOPIC", &topic),
-                    ("CODA_PHYSICIAN_SOURCE_SNAPSHOT", snapshot.to_str().unwrap()),
-                    ("PHYSICIAN_AUTH", "required"),
-                    ("PHYSICIAN_LISTEN_ADDR", host),
-                ],
+                &env,
                 &home,
             );
             // Start sequentially, as each instance seeds the practice panel.
@@ -121,7 +148,7 @@ impl Running {
             database,
             store,
             emulator,
-            _valkey: valkey,
+            valkey,
             worker,
             sites,
             hosts,
@@ -620,4 +647,523 @@ async fn missing_and_other_physician_drafts_are_not_created_or_exposed() {
         .await
         .unwrap();
     assert_eq!(status, 401);
+}
+
+/// The explicitly enabled synthetic reply's stable server-owned identity.
+const SYNTHETIC_REPLY: &str = "synthetic-reply-medication-question";
+
+fn workspace_path() -> String {
+    format!("/patient-workspaces/{}", physician_sample::WORKSPACE_IDS[0])
+}
+
+fn synthetic_scope() -> Scope {
+    Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: physician_sample::WORKSPACE_IDS[0].into(),
+        chat: SYNTHETIC_REPLY.into(),
+    }
+}
+
+impl Running {
+    /// The synthetic reply as the workspace projection on `site` lists it.
+    async fn listed(&self, site: usize, session: &str) -> Option<Value> {
+        let (status, body) = support::get_json(&self.hosts[site], &workspace_path(), session).await;
+        assert_eq!(status, 200, "{body}\n{}", self.logs());
+        body["replies"]
+            .as_array()
+            .and_then(|replies| {
+                replies
+                    .iter()
+                    .find(|reply| reply["reply_work_id"] == SYNTHETIC_REPLY)
+            })
+            .cloned()
+    }
+}
+
+#[tokio::test]
+async fn the_synthetic_switch_off_opens_no_reply_work() {
+    let Some(running) = Running::start("reply_synthetic_off", 0, 0).await else {
+        return;
+    };
+    for site in 0..2 {
+        assert!(running.listed(site, &running.session).await.is_none());
+    }
+    assert!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .is_none()
+    );
+    // Without the source, PUT and revise still refuse the identifier.
+    let (status, _) = running.save(&synthetic_scope(), 0, "invented").await;
+    assert_eq!(status, 409);
+    running
+        .command(
+            0,
+            &revise(&synthetic_scope(), "synthetic-off", 1),
+            "rejected",
+        )
+        .await;
+    assert!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .is_none()
+    );
+}
+
+#[tokio::test]
+async fn the_synthetic_reply_opens_once_and_revises_from_the_displayed_revision() {
+    let Some(running) = Running::start_with("reply_synthetic", 0, 400, true).await else {
+        return;
+    };
+    let scope = synthetic_scope();
+    // Concurrent first loads on both sites open revision 1 exactly once.
+    let (a, b) = tokio::join!(
+        running.listed(0, &running.session),
+        running.listed(1, &running.session)
+    );
+    let (a, b) = (a.expect("reply on A"), b.expect("reply on B"));
+    assert_eq!(a["draft_revision"], 1, "{a}");
+    assert_eq!(b["draft_revision"], 1, "{b}");
+    assert_eq!(a["draft_text"], b["draft_text"]);
+    assert_eq!(a["revision_run"], Value::Null);
+    let opened = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(opened.revision, 1);
+    assert!(
+        running
+            .store
+            .earlier_revisions(&scope)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+
+    // A physician save on B; reopening on A keeps the edit and its revision.
+    let (status, body) = running.save(&scope, 1, SAVED).await;
+    assert_eq!(status, 200, "{body}");
+    let shown = running.listed(0, &running.session).await.unwrap();
+    assert_eq!(shown["draft_text"], SAVED);
+    assert_eq!(shown["draft_revision"], 2);
+
+    // A revision naming the displayed revision is accepted and shows pending
+    // or active; one naming the stale first revision is refused.
+    running
+        .command(0, &revise(&scope, "synthetic-stale", 1), "rejected")
+        .await;
+    let displayed = shown["draft_revision"].as_u64().unwrap();
+    running
+        .command(
+            1,
+            &revise(&scope, "synthetic-revise", displayed),
+            "accepted",
+        )
+        .await;
+    let running_now = running.listed(0, &running.session).await.unwrap();
+    assert_eq!(running_now["revision_run"]["run_id"], "synthetic-revise");
+    assert!(
+        matches!(
+            running_now["revision_run"]["status"].as_str(),
+            Some("pending" | "active" | "completed")
+        ),
+        "{running_now}"
+    );
+
+    // The worker's wording replaces the draft; both sites project it.
+    running
+        .wait_draft(&scope, |draft| draft.status == "completed")
+        .await;
+    for site in 0..2 {
+        let done = running.listed(site, &running.session).await.unwrap();
+        assert_eq!(done["draft_text"], support::FIXED_TEXT, "{done}");
+        assert_eq!(done["draft_revision"], 3);
+        assert_eq!(
+            done["revision_run"],
+            json!({"run_id": "synthetic-revise", "status": "completed"})
+        );
+    }
+    // Opening again never resets the revised draft or its history.
+    let again = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(again.revision, 3);
+    assert_eq!(again.text, support::FIXED_TEXT);
+}
+
+#[tokio::test]
+async fn a_failed_synthetic_revision_shows_failed_and_keeps_the_draft() {
+    let Some(running) =
+        Running::start_with("reply_synthetic_failed", MAX_FAILED_ATTEMPTS, 0, true).await
+    else {
+        return;
+    };
+    let scope = synthetic_scope();
+    let shown = running.listed(0, &running.session).await.unwrap();
+    let text = shown["draft_text"].clone();
+    running
+        .command(0, &revise(&scope, "synthetic-fails", 1), "accepted")
+        .await;
+    running
+        .wait_draft(&scope, |draft| draft.status == "failed")
+        .await;
+    for site in 0..2 {
+        let failed = running.listed(site, &running.session).await.unwrap();
+        assert_eq!(failed["draft_text"], text);
+        assert_eq!(failed["draft_revision"], 1);
+        assert_eq!(
+            failed["revision_run"],
+            json!({"run_id": "synthetic-fails", "status": "failed"})
+        );
+    }
+}
+
+#[tokio::test]
+async fn synthetic_reply_opening_refuses_other_physicians_and_revoked_authority() {
+    let Some(running) = Running::start_with("reply_synthetic_authority", 0, 0, true).await else {
+        return;
+    };
+    let auth = PostgresAuthStore::connect_without_migrations(&running.database.url)
+        .await
+        .unwrap();
+    let email = "synthetic-colleague@example.test";
+    auth.ensure_account(
+        physician_sample::STAGING_PRACTICE_ID,
+        "synthetic-colleague",
+        email,
+        "Colleague",
+        false,
+        support::unix_now(),
+    )
+    .await
+    .unwrap();
+    let token = auth
+        .begin_sign_in(email, support::unix_now())
+        .await
+        .unwrap();
+    let (identity, session) = auth
+        .complete_sign_in(email, &token, support::unix_now())
+        .await
+        .unwrap();
+    let mut theirs = synthetic_scope();
+    theirs.physician = identity.physician_id.clone();
+
+    // Demographic-only access (same clinic, not on the panel) opens nothing.
+    auth.set_membership(&identity, &theirs.workspace, Membership::Denied)
+        .await;
+    let (status, body) = support::get_json(&running.hosts[1], &workspace_path(), &session).await;
+    assert_eq!(status, 200, "{body}");
+    assert_eq!(body["membership"], "clinic_demographic");
+    assert!(
+        body["replies"].as_array().is_none_or(Vec::is_empty),
+        "{body}"
+    );
+    assert!(running.store.draft(&theirs).await.unwrap().is_none());
+
+    // On the panel the colleague gets their own draft, never the physician's.
+    auth.set_membership(&identity, &theirs.workspace, Membership::Allowed)
+        .await;
+    let mine = running.listed(0, &running.session).await.unwrap();
+    let (status, _) = running.save(&synthetic_scope(), 1, SAVED).await;
+    assert_eq!(status, 200);
+    let (status, body) = support::get_json(&running.hosts[1], &workspace_path(), &session).await;
+    assert_eq!(status, 200, "{body}");
+    let listed = body["replies"]
+        .as_array()
+        .and_then(|r| r.iter().find(|r| r["reply_work_id"] == SYNTHETIC_REPLY))
+        .cloned()
+        .expect("colleague's own synthetic reply");
+    assert_eq!(listed["draft_text"], mine["draft_text"]);
+    assert_eq!(listed["draft_revision"], 1);
+    assert_eq!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .unwrap()
+            .text,
+        SAVED
+    );
+
+    // A signed-out session can no longer open, read or project the reply.
+    let (other_identity, other_session) = {
+        let email = "synthetic-revoked@example.test";
+        auth.ensure_account(
+            physician_sample::STAGING_PRACTICE_ID,
+            "synthetic-revoked",
+            email,
+            "Revoked",
+            false,
+            support::unix_now(),
+        )
+        .await
+        .unwrap();
+        let token = auth
+            .begin_sign_in(email, support::unix_now())
+            .await
+            .unwrap();
+        auth.complete_sign_in(email, &token, support::unix_now())
+            .await
+            .unwrap()
+    };
+    auth.set_membership(&other_identity, &theirs.workspace, Membership::Allowed)
+        .await;
+    auth.end_session(&other_session).await;
+    let (status, _) = support::get_json(&running.hosts[0], &workspace_path(), &other_session).await;
+    assert_eq!(status, 401);
+    let mut revoked = synthetic_scope();
+    revoked.physician = other_identity.physician_id;
+    assert!(running.store.draft(&revoked).await.unwrap().is_none());
+}
+
+/// The synthetic reply card as the page on `browser` shows it: its draft
+/// revision, latest revision status, draft wording and status words.
+fn card(browser: &mut devtools::Browser) -> Option<(u64, String, String, String)> {
+    let value = browser.page().evaluate(
+        "(() => { const c = document.querySelector('article.reply-review'); \
+         if (!c) return null; \
+         return [Number(c.dataset.draftRevision), c.dataset.revisionStatus || '', \
+         c.innerText, c.querySelector('[data-reply-revision]')?.textContent ?? '']; })()",
+    );
+    let row = value.as_array()?;
+    Some((
+        row[0].as_u64()?,
+        row[1].as_str()?.to_owned(),
+        row[2].as_str()?.to_owned(),
+        row[3].as_str()?.to_owned(),
+    ))
+}
+
+/// Waits up to `seconds` until the card satisfies `done`, and returns it.
+fn wait_card(
+    browser: &mut devtools::Browser,
+    seconds: u64,
+    what: &str,
+    done: impl Fn(&(u64, String, String, String)) -> bool,
+) -> (u64, String, String, String) {
+    let deadline = Instant::now() + Duration::from_secs(seconds);
+    loop {
+        let shown = card(browser);
+        if let Some(shown) = shown.as_ref().filter(|shown| done(shown)) {
+            return shown.clone();
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the reply card never showed {what}: {shown:?}\n{}",
+            browser.body_text().unwrap_or_default()
+        );
+        std::thread::sleep(Duration::from_millis(200));
+    }
+}
+
+/// Asks Coda to revise from the page: types into the revise field and
+/// presses its button, which names the revision on screen.
+fn ask_from_page(browser: &mut devtools::Browser, instruction: &str) {
+    browser.type_into("input.reply-review-instruction", instruction);
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while browser
+        .page()
+        .evaluate("!!document.querySelector('button[data-reply-action=\"revise\"]')")
+        .as_bool()
+        != Some(true)
+    {
+        assert!(Instant::now() < deadline, "no Ask Coda to revise button");
+        std::thread::sleep(Duration::from_millis(50));
+    }
+    browser.click("button[data-reply-action=\"revise\"]");
+}
+
+/// Signs the browser in on `host` and opens the synthetic reply's workspace.
+fn open_workspace(browser: &mut devtools::Browser, host: &str) {
+    let url = format!(
+        "http://{host}/?patient={}",
+        physician_sample::WORKSPACE_IDS[0]
+    );
+    browser.text_until(&url, "Sign in to Coda");
+    browser.type_into(".sign-in-input", "physician@codahealth.test");
+    browser.click(".sign-in-primary");
+    browser.wait_for("Patient summary");
+}
+
+/// The real hosted browser journey for the synthetic reply: two site
+/// instances, the worker and the Pub/Sub emulator; nothing seeds the draft.
+/// The page shows revision 1, asks from the displayed revision, shows pending
+/// and then the worker's wording on both sites; a stale revision is refused
+/// and the current draft shown; a failed revision says so and keeps the
+/// draft; and a Valkey restart (missed notifications) still converges.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification on the scale stack; run explicitly with --ignored"]
+async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
+    let page = support::page_dir();
+    let page = page.to_str().unwrap().to_owned();
+    let Some(mut running) = Running::start_full(
+        "reply_synthetic_browser",
+        0,
+        1_500,
+        true,
+        &[("PHYSICIAN_SITE_DIR", &page)],
+        &[("PHYSICIAN_WORKER_FIXED_FAIL_MARKER", "1")],
+    )
+    .await
+    else {
+        return;
+    };
+    let scope = synthetic_scope();
+    let hosts = running.hosts.clone();
+    let mut a = devtools::Browser::launch();
+    a.resize(devtools::DESKTOP);
+    open_workspace(&mut a, &hosts[0]);
+    let mut b = devtools::Browser::launch();
+    b.resize(devtools::DESKTOP);
+    open_workspace(&mut b, &hosts[1]);
+
+    // Both sites show the opened first draft at revision 1, with no run yet.
+    for browser in [&mut a, &mut b] {
+        let (revision, status, text, _) =
+            wait_card(browser, 30, "the first draft", |(r, _, _, _)| *r == 1);
+        assert_eq!(status, "");
+        assert!(text.contains("Please keep taking your medicines"), "{text}");
+        assert!(text.contains("Replying in"), "{text}");
+        let _ = revision;
+    }
+    // The synthetic reply offers no close/send lifecycle action.
+    assert_eq!(
+        a.page()
+            .evaluate("!!document.querySelector('[data-reply-action=\"no-reply-needed\"]')"),
+        json!(false),
+        "the synthetic reply offered an unsupported close action"
+    );
+
+    // Ask on A from revision 1: pending/active shows, then the worker's
+    // wording lands at revision 2 on both sites, refreshed by the
+    // worker's workspace_changed announcement.
+    ask_from_page(&mut a, "Make this reply shorter.");
+    let (_, status, _, words) = wait_card(&mut a, 15, "a running revision", |(_, s, _, _)| {
+        matches!(s.as_str(), "pending" | "active")
+    });
+    assert!(
+        words == "Coda will revise this reply shortly." || words == "Coda is revising this reply.",
+        "{status}: {words}"
+    );
+    let input = running
+        .wait_draft(&scope, |draft| draft.input.is_some())
+        .await
+        .input
+        .unwrap();
+    assert_eq!(input.expected_revision, 1);
+    for browser in [&mut a, &mut b] {
+        let (revision, status, text, words) =
+            wait_card(browser, 30, "the worker's wording", |(r, s, _, _)| {
+                *r == 2 && s == "completed"
+            });
+        assert_eq!(revision, 2);
+        assert!(text.contains(support::FIXED_TEXT), "{status}: {text}");
+        assert_eq!(words, "Coda revised this reply.");
+    }
+
+    // A physician save on site B (revision 3) while A still shows revision 2:
+    // A's ask names revision 2, is refused, and A shows the current draft.
+    let (status, body) = running.save(&scope, 2, SAVED).await;
+    assert_eq!(status, 200, "{body}");
+    // A raw-HTTP save announces nothing to the page, so A still shows 2.
+    assert_eq!(card(&mut a).unwrap().0, 2);
+    ask_from_page(&mut a, "Use plainer words.");
+    a.wait_for("Coda couldn’t take that revision.");
+    let (revision, _, text, _) =
+        wait_card(&mut a, 30, "the newer saved draft", |(r, _, _, _)| *r == 3);
+    assert_eq!(revision, 3);
+    assert!(text.contains(SAVED), "{text}");
+    assert_eq!(
+        running.store.draft(&scope).await.unwrap().unwrap().revision,
+        3,
+        "a stale ask changed the draft"
+    );
+
+    // A revision that fails every attempt: B shows failed and keeps the
+    // saved wording. Valkey restarts meanwhile, so workspace_changed may be
+    // missed; reconnect resync and bounded reconciliation still converge.
+    // The save above went over raw HTTP, which no page hears; B reloads to
+    // show revision 3 before asking.
+    b.text_until(
+        &format!(
+            "http://{}/?patient={}",
+            hosts[1],
+            physician_sample::WORKSPACE_IDS[0]
+        ),
+        "Patient summary",
+    );
+    wait_card(&mut b, 30, "revision 3 on B", |(r, _, _, _)| *r == 3);
+    ask_from_page(&mut b, "Rephrase it [fail:9]");
+    wait_card(
+        &mut b,
+        15,
+        "the failing revision running",
+        |(_, s, _, _)| matches!(s.as_str(), "pending" | "active"),
+    );
+    running.valkey.restart().await;
+    for browser in [&mut a, &mut b] {
+        let (revision, _, text, words) =
+            wait_card(browser, 120, "the failed revision", |(_, s, _, _)| {
+                s == "failed"
+            });
+        assert_eq!(revision, 3);
+        assert!(text.contains(SAVED), "{text}");
+        assert_eq!(
+            words,
+            "Coda couldn’t revise this reply. The saved draft is unchanged."
+        );
+    }
+
+    // Reload on A: the projection, not page memory, still shows the state.
+    a.text_until(
+        &format!(
+            "http://{}/?patient={}",
+            hosts[0],
+            physician_sample::WORKSPACE_IDS[0]
+        ),
+        "Patient summary",
+    );
+    let (revision, status, text, _) =
+        wait_card(&mut a, 30, "the reloaded card", |(r, _, _, _)| *r == 3);
+    assert_eq!((revision, status.as_str()), (3, "failed"));
+    assert!(text.contains(SAVED));
+}
+
+/// With the switch off, a signed-in page on the hosted stack shows no
+/// synthetic reply at all.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification on the scale stack; run explicitly with --ignored"]
+async fn the_synthetic_switch_off_shows_no_reply_in_the_browser() {
+    let page = support::page_dir();
+    let page = page.to_str().unwrap().to_owned();
+    let Some(running) = Running::start_full(
+        "reply_synthetic_browser_off",
+        0,
+        0,
+        false,
+        &[("PHYSICIAN_SITE_DIR", &page)],
+        &[],
+    )
+    .await
+    else {
+        return;
+    };
+    let mut browser = devtools::Browser::launch();
+    browser.resize(devtools::DESKTOP);
+    open_workspace(&mut browser, &running.hosts[0]);
+    std::thread::sleep(Duration::from_secs(2));
+    let text = browser.body_text().unwrap_or_default();
+    assert!(card(&mut browser).is_none(), "{text}");
+    assert!(!text.contains("Synthetic message"), "{text}");
+    assert!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .is_none()
+    );
 }
