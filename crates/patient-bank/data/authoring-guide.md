@@ -115,7 +115,11 @@ Every record knows only what was known on its date.
   it. A dose change stops the old order and starts a new one. A restart is a new
   `start`.
 - An order is `placed` once, then closed later by `done` or `cancelled` with the
-  same `id`, or left open.
+  same `id`, or left open. It orders one thing, by its vocabulary label: a lab or
+  panel, a study, a procedure; a referral names its specialty in `to`. Two tests
+  are two orders, and when it is due belongs in the note. Asking another office
+  for records is not an order; the request goes in the note or a letter, and the
+  records arrive as `outside_records`.
 - Every event and record falls after birth.
 
 ## Events
@@ -208,7 +212,8 @@ Event ids are unique across a patient's parts and sort by date (`2019-03-14a`).
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "YYYY-MM-DDTHH:MM"},
                          {"procedure": "Cesarean section", "snomed": "11466000 (one the catalog lacks)", "performed": "YYYY-MM-DDTHH:MM"}],
           "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "YYYY-MM-DDTHH:MM"}],
-          "orders": [{"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral|lab|imaging|procedure", "to": "Dermatology", "reason": "changing mole"},
+          "orders": [{"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology (a referral specialty)", "reason": "changing mole"},
+                     {"id": "fit", "action": "placed", "order": "Fecal Immunochemical Test (one lab, panel, study or procedure label)", "category": "lab|imaging|procedure"},
                      {"id": "derm-referral", "action": "done|cancelled", "date": "YYYY-MM-DDTHH:MM (on a later event)"}],
           "documents": [{"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "YYYY-MM-DDTHH:MM", "body": "…"}]
         }

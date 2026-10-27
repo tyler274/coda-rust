@@ -87,4 +87,5 @@ the terminology cache, the bank and the schema live under the ignored
 - **The renderer.** Encounters, Conditions, MedicationRequests, Observations
   (lab panels with `hasMember`, BP with components), DiagnosticReports,
   Procedures, AllergyIntolerances, DocumentReferences, Immunizations and
-  ServiceRequests, with UTC timestamps and opaque ids, from the ledger as it is.
+  ServiceRequests (coded by what each orders, a referral's specialty as its
+  performer), with UTC timestamps and opaque ids, from the ledger as it is.

@@ -398,13 +398,15 @@ fn a_visit_is_an_encounter_its_records_link_to() {
 }
 
 #[test]
-fn an_order_stays_open_until_it_is_done_or_cancelled() {
+fn an_order_is_coded_by_what_it_orders_and_stays_open_until_closed() {
     let p = patient(json!([
         visit("e1", "2026-03-02T09:00", json!({"orders": [
             {"id": "cards", "action": "placed", "order": "Cardiology referral",
              "category": "referral", "to": "Cardiology", "reason": "palpitations"},
             {"id": "echo", "action": "placed", "order": "Transthoracic echocardiogram",
-             "category": "imaging"}
+             "category": "imaging"},
+            {"id": "fit", "action": "placed", "order": "Fecal Immunochemical Test",
+             "category": "lab"}
         ]})),
         {"id": "e2", "kind": "telephone", "start": "2026-04-10T15:00", "orders": [
             {"id": "echo", "action": "cancelled"}
@@ -433,6 +435,20 @@ fn an_order_stays_open_until_it_is_done_or_cancelled() {
         Some("revoked")
     );
     assert!(render(&p, "2026-03-01T09:00").service_requests.is_empty());
+    // each order carries its catalog code; a referral's specialty is its performer
+    let catalog = catalog();
+    let order = |what: &str| {
+        open.service_requests
+            .iter()
+            .find(|o| o.code.text.as_deref() == Some(what))
+            .expect(what)
+    };
+    let fit = &catalog.labs["Fecal Immunochemical Test"].code;
+    assert_eq!(order("Fecal Immunochemical Test").code.coding[0].code, *fit);
+    assert_eq!(
+        order("Cardiology referral").performer_type[0].coding[0].code,
+        catalog.specialties["Cardiology"].code
+    );
 }
 
 #[test]

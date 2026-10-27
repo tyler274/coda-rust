@@ -2,7 +2,8 @@
 //!
 //! `data/catalog.json` holds every code authors may use by label: ICD-10-CM
 //! conditions, RxNorm drugs, LOINC labs, panels, surveys, social items and reports,
-//! CPT and HCPCS procedures, SNOMED allergens, reactions and order categories, and
+//! CPT and HCPCS procedures, SNOMED allergens, reactions, order categories and
+//! referral specialties, and
 //! CVX vaccines. `catalog` reads every entry back from its official service and
 //! records the canonical display and a receipt; nothing is guessed. The catalog is
 //! its own input: a concept is added by writing its label and code into it. Responses are kept in a local cache under `target/patient-bank/`, so a
@@ -17,7 +18,7 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::ledger::{AllergyCategory, AllergyItem};
+use crate::ledger::{AllergyCategory, AllergyItem, OrderCategory, OrderItem};
 use crate::{Result, paths};
 
 pub const ICD: &str = "http://hl7.org/fhir/sid/icd-10-cm";
@@ -60,6 +61,9 @@ pub struct Catalog {
     pub reactions: Section,
     pub vaccines: Section,
     pub order_categories: Section,
+    /// Who a referral goes to: a specialty, coded as the SNOMED CT occupation that
+    /// practices it.
+    pub specialties: Section,
 }
 
 impl Catalog {
@@ -92,6 +96,23 @@ impl Catalog {
         c
     }
 
+    /// What an order orders: a lab, panel, study or procedure by its label, looked
+    /// up in the order's own category first, since one label (spirometry) can be
+    /// both a procedure and a study. A referral's specialty is its performer.
+    pub fn orderable(&self, item: &OrderItem) -> Option<&Entry> {
+        let what = item.order.as_deref()?;
+        let sections = match item.category.unwrap_or(OrderCategory::Referral) {
+            OrderCategory::Referral => return None,
+            OrderCategory::Lab => [&self.labs, &self.panels, &self.reports, &self.procedures],
+            OrderCategory::Imaging => [&self.reports, &self.labs, &self.panels, &self.procedures],
+            OrderCategory::Procedure => [&self.procedures, &self.reports, &self.labs, &self.panels],
+        };
+        sections
+            .into_iter()
+            .find_map(|s| s.get(what))
+            .filter(|e| e.display.is_some())
+    }
+
     /// An allergy entry's FHIR category (the catalog's, else the entry's own), and
     /// the category it rules out when it is a "no known" entry.
     pub fn allergy_class(&self, item: &AllergyItem) -> (&str, Option<&str>) {
@@ -117,7 +138,7 @@ impl Catalog {
             .collect()
     }
 
-    pub fn sections(&self) -> [(&'static str, &Section); 12] {
+    pub fn sections(&self) -> [(&'static str, &Section); 13] {
         [
             ("conditions", &self.conditions),
             ("medications", &self.medications),
@@ -131,6 +152,7 @@ impl Catalog {
             ("reactions", &self.reactions),
             ("vaccines", &self.vaccines),
             ("order_categories", &self.order_categories),
+            ("specialties", &self.specialties),
         ]
     }
 }
@@ -786,6 +808,11 @@ pub fn build(roger: &Path) -> Result<i32> {
             let d = look.snomed(&e.code);
             confirm(&mut problems, what, label, e, d);
         }
+    }
+    for (label, e) in &mut c.specialties {
+        e.system = SNOMED.into();
+        let d = look.snomed_of(&e.code, &["occupation"]);
+        confirm(&mut problems, "specialty", label, e, d);
     }
     for (label, e) in &mut c.vaccines {
         e.system = CVX.into();

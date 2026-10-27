@@ -15,7 +15,8 @@ use crate::catalog::Catalog;
 use crate::draw::IDENTITIES;
 use crate::labs::DIFFERENTIAL;
 use crate::ledger::{
-    Appointment, ConditionAction, Event, Lab, MedicationAction, OrderAction, Patient, Stamp, num,
+    Appointment, ConditionAction, Event, Lab, MedicationAction, OrderAction, OrderCategory,
+    Patient, Stamp, num,
 };
 use crate::seeds::Unit;
 use crate::time;
@@ -584,6 +585,26 @@ fn check_event<'a>(
                 "{eid}: procedure {:?} not in catalog and has no snomed (text only)",
                 x.procedure
             ));
+        }
+    }
+    for o in ev.orders.iter().filter(|o| o.action == OrderAction::Placed) {
+        let what = o.order.as_deref().unwrap_or("");
+        match o.category.unwrap_or(OrderCategory::Referral) {
+            OrderCategory::Referral => {
+                if let Some(to) =
+                    o.to.as_deref()
+                        .filter(|t| !catalog.specialties.contains_key(*t))
+                {
+                    warnings.push(format!(
+                        "{eid}: referral to {to:?} names no catalog specialty"
+                    ));
+                }
+            }
+            category if catalog.orderable(o).is_none() => warnings.push(format!(
+                "{eid}: {} order {what:?} names no one catalog lab, panel, study or procedure",
+                format!("{category:?}").to_lowercase(),
+            )),
+            _ => {}
         }
     }
     for i in &ev.immunizations {

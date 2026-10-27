@@ -934,13 +934,7 @@ impl Renderer<'_> {
                 OrderCategory::Imaging => "imaging",
                 OrderCategory::Procedure => "procedure",
             };
-            let known = self
-                .catalog
-                .procedures
-                .get(what)
-                .or_else(|| self.catalog.reports.get(what))
-                .filter(|e| e.display.is_some());
-            let code = match known {
+            let code = match self.catalog.orderable(item) {
                 Some(e) => CodeableConcept::coded(coding(e), what),
                 None => CodeableConcept::text(what),
             };
@@ -966,7 +960,12 @@ impl Renderer<'_> {
                 subject: subject.clone(),
                 encounter: encounter_of(o.event),
                 authored_on: authored,
-                performer_type: item.to.iter().map(|t| CodeableConcept::text(t)).collect(),
+                performer_type: (item.to.iter())
+                    .map(|t| match self.catalog.specialties.get(t) {
+                        Some(e) => CodeableConcept::coded(coding(e), t),
+                        None => CodeableConcept::text(t),
+                    })
+                    .collect(),
                 reason_code: item
                     .reason
                     .iter()
