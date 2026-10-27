@@ -1,0 +1,531 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002065",
+      "given": "Glenn",
+      "family": "Ryan",
+      "birth_date": "1973-06-18",
+      "address_line": "18 Cottage Hill Road, Amherst, MA 01002",
+      "phone": "+1-201-555-0123",
+      "email": "glenn.ryan@example.test",
+      "marital_status": "married",
+      "summary": "Construction supervisor with chronic low back pain on pain-clinic oxycodone, severe daily alcohol use and alcoholic liver disease with suspected cirrhosis, who joined in 2023. In 2026 he has acetaminophen toxicity, an opioid overdose and a hematemesis admission complicated by delirium tremens.",
+      "events": [
+        {
+          "id": "2023-09-05a",
+          "kind": "telephone",
+          "start": "2023-09-05T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient scheduling call",
+              "author": "front desk",
+              "date": "2023-09-05T10:20",
+              "body": "Mr. Ryan phoned wanting to transfer his primary care here; his old office is closing its internal medicine side. Membership paperwork emailed. New patient visit set for 9/12 at 7:40 am (he wants the earliest slot, on site by 9 most days). Signed release on file for prior PCP records; request sent today. He says a pain management office writes his pain medicine and he wants to keep them for that."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T07:40",
+          "end": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Chronic low back pain",
+              "action": "history",
+              "onset": "2015-05-01"
+            },
+            {
+              "label": "Alcohol use disorder",
+              "icd10": "F10.20",
+              "action": "history",
+              "onset": "2010-01-01",
+              "note": "Daily vodka, about a pint a day"
+            },
+            {
+              "label": "Alcoholic liver disease with suspected cirrhosis",
+              "icd10": "K70.9",
+              "action": "history",
+              "onset": "2021-01-01",
+              "note": "Cirrhosis suspected, not confirmed"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "20 pack-years, quit 2018"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 to 2 tablets (5-10 mg) by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "Q6H",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic low back pain; prescribed by outside pain management"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Gastritis prophylaxis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 84.2,
+            "height_cm": 180.0,
+            "labs": {
+              "Aspartate Aminotransferase": 68,
+              "Alanine Aminotransferase": 34,
+              "Gamma Glutamyl Transferase": 212,
+              "Bilirubin, Total": 1.4,
+              "Albumin": 3.7,
+              "Prothrombin Time-International Normalized Ratio": 1.2,
+              "Platelets": 142,
+              "Mean Corpuscular Volume": 102
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 34
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "Platelets",
+                  "value": 142
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 212
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About one pint of vodka daily"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction supervisor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2023",
+              "action": "placed",
+              "order": "Right upper quadrant ultrasound",
+              "category": "imaging",
+              "reason": "Alcoholic liver disease, suspected cirrhosis"
+            },
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Former smoker, 20 pack-years, quit 2018"
+            },
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T08:40",
+              "body": "New patient, 50 y/o man, here to set up care. Supervises crews for a commercial builder, on his feet and climbing most of the day.\n\nBack: low back pain for close to ten years, worse after long days on site, no leg weakness, no bowel or bladder change. Brother has the same problem. A pain management office has prescribed oxycodone 5 mg, one or two tabs up to every 6 hours as needed, for years; he gets it filled monthly and says he uses 2-4 tabs most days. He wants that to stay with them.\n\nAlcohol: open about it. A pint of vodka most nights, more on weekends, for many years. Was told at his last office that his liver was damaged from drinking and that it might be cirrhosis; never saw a liver specialist. Has not had withdrawal seizures that he knows of. Not interested in a program right now: \"I know, I know.\" Wife would like him to cut back.\n\nOther: omeprazole 20 mg daily, started by the old office to protect the stomach. Appendix out at 11. Quit cigarettes in 2018 after about 20 pack-years. No drug allergies. Father drank heavily and had high blood pressure; mother has arthritis.\n\nExam: vitals as charted. Alert, no jaundice, no asterixis. Heart regular, lungs clear. Abdomen soft, nontender, no palpable liver edge, no fluid wave. Paraspinal tenderness low lumbar, straight leg raise negative both sides, strength and reflexes symmetric. No spider angiomas noted, no edema.\n\nAUDIT-C 12. PHQ-2 0. Pain 5/10.\n\nA/P\n1. Alcohol use disorder, severe by history. Spent a good part of the visit on this. Recommended cutting down with a goal of stopping; offered counseling referral and medication options, declined for now. Will keep asking.\n2. Alcoholic liver disease, cirrhosis suspected, not confirmed. CMP, CBC, PT/INR, GGT today. RUQ ultrasound. Hep A/B status; vaccinate if not immune.\n3. Chronic low back pain on pain clinic oxycodone. Not adding anything. Reviewed mixing opioid with alcohol.\n4. Omeprazole continued, refills here.\n5. Health maintenance: eligible for lung screening (20 pk-yr, quit within 15 yrs) - LDCT ordered. FIT kit given. Hep C and HIV screens with labs. Flu, COVID and pneumococcal shots next month at a nurse visit along with hepatitis vaccines if needed.\nFollow up in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T17:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "author": "PCP",
+              "date": "2023-09-14T17:55",
+              "body": "Glenn, your labs are back. Your liver tests show the pattern we see with alcohol: the AST is higher than the ALT and the GGT is well up. Bilirubin is a touch high and albumin a touch low, and your platelets are mildly low. Together these fit the liver damage you were told about, and they are one more reason to cut back. Kidneys and blood counts otherwise fine. Hepatitis C, HIV and hepatitis B screens are all negative. You are not immune to hepatitis B, so we will start that series and hepatitis A when you come in for your shots. Ultrasound is scheduled for the 26th."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "outside_records",
+          "start": "2023-09-21T11:05",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2023-09-21T11:05",
+              "body": "Received 14 pages from prior primary care office covering 2019-2023. Problem list: chronic low back pain, alcohol use disorder, alcoholic liver disease (cirrhosis suspected). Medications: omeprazole 20 mg daily; oxycodone per pain management. NKDA. Appendectomy in childhood. Notes repeatedly document advice to reduce alcohol. No liver imaging in the packet. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "imaging",
+          "start": "2023-09-26T13:10",
+          "reason": "Suspected cirrhosis",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2023-09-26T13:10",
+              "text": "EXAM: Ultrasound abdomen, right upper quadrant.\nINDICATION: Alcohol use, suspected cirrhosis.\nCOMPARISON: None.\nFINDINGS: The liver is coarsened and diffusely echogenic with a subtly nodular surface contour. No focal hepatic lesion. Main portal vein is patent with hepatopetal flow. No ascites. Gallbladder is normally distended without stones, wall thickening or pericholecystic fluid. Common bile duct measures 4 mm. No intrahepatic ductal dilatation. Right kidney unremarkable. Spleen is normal in size.",
+              "conclusion": "Coarsened, echogenic liver with subtly nodular contour, suggestive of cirrhosis. No focal liver lesion. No ascites."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2023",
+              "action": "done",
+              "date": "2023-09-26T13:10"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "portal_message",
+          "start": "2023-09-28T12:30",
+          "reason": "Ultrasound result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound result",
+              "author": "PCP",
+              "date": "2023-09-28T12:30",
+              "body": "Your liver ultrasound shows a liver that looks scarred, the kind of change that suggests cirrhosis. No mass and no fluid in the belly, and the blood flow to the liver is normal. This doesn't change what matters most, which is the alcohol. Happy to talk it through by phone or at your next visit.\n\nPatient reply 9/28: ok got it. see you in december"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:30",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T07:36"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-10T07:37"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2023-10-10T07:38"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2023-10-10T07:39"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-10T07:50",
+              "body": "In before work for shots ordered by PCP. Screening questions negative, no allergies. Given: flu (L deltoid), COVID updated (R deltoid), PCV20 (L deltoid, 1 inch apart), hep A #1 (R deltoid), hep B #1 (R deltoid, separate site). VIS sheets given. Waited 15 min without issue. Hep B #2 due in 1 month; hep A #2 and hep B #3 in 6 months, reminders set."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "imaging",
+          "start": "2023-10-24T16:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-24T16:00",
+              "text": "EXAM: Low-dose CT chest without contrast, lung cancer screening, baseline.\nINDICATION: Former smoker, 20 pack-years, quit 2018.\nFINDINGS: Lungs are clear without nodules, consolidation or emphysema. Airways patent. No pleural effusion. Heart size normal; no pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen without acute finding. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-24T16:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "lab_only",
+          "start": "2023-11-02T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-01T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-11-02T09:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "nurse_visit",
+          "start": "2023-11-14T07:30",
+          "reason": "Hepatitis B dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2023-11-14T07:32"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-14T07:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hep B #2",
+              "author": "RN",
+              "date": "2023-11-14T07:40",
+              "body": "Hep B #2 given L deltoid, tolerated. No reaction to last month's shots per pt. LDCT and FIT both negative, he had seen the messages. Next: hep A #2 + hep B #3 in April."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up back pain and alcohol",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-12-12T08:20",
+              "body": "3 month f/u. Back is worse with the cold and a big job wrapping up before the holidays. Still on pain clinic oxycodone, same amount. Drinking unchanged by his account; tried a dry week in November and made it 3 days. No shakes in the mornings he'll admit to. Appetite ok, no abdominal swelling, no yellowing, no black stools.\n\nExam: VS as charted. No icterus. Abdomen soft, no ascites. Lumbar paraspinal tightness, neuro intact in legs.\n\nAUDIT-C 12. Pain 6/10.\n\nA/P\nAUD - again offered referral to counseling and a medication; again declines. Talked about not stopping cold turkey on his own given how much he drinks, call us first.\nALD w/ suspected cirrhosis - imaging as above; labs again in spring.\nLow back pain - heat, stretching; pain clinic continues meds.\nHep vaccines on track. RTC 3 mo."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

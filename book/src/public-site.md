@@ -264,10 +264,12 @@ Reproduce the site checks from the workspace root, inside the dev shell:
 
 ```bash
 nix develop --command cargo test --locked -p public-site
-nix develop --command cargo test --locked -p public-site --test site -- --nocapture
+nix develop --command cargo test --locked -p public-site --test site -- --ignored --nocapture
 nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
 nix develop --command mdbook build book
 ```
+
+Routine CI does not launch browsers. The `site` browser test is ignored by default; run the explicit command above or manually dispatch the CI workflow for browser qualification.
 
 Use the shell's Chromium (or set `CHROMIUM` to the approved browser executable).
 The default startup uses port 8791; choose another `PUBLIC_SITE_LISTEN_ADDR` if a
@@ -787,7 +789,7 @@ and `service_account: public-site-ci-deployer@coda-health-staging.iam.gserviceac
 
 The `deploy-public-site-staging` job in
 [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) redeploys staging from every
-push to `main`, after `ci` (which includes the public-site browser proof) and
+push to `main`, after `ci` (unit, service, storage and HTTP checks) and
 `cargo-deny` pass. It runs only when the repository variable
 `PUBLIC_SITE_STAGING_DEPLOY` is `enabled`; unset it to stop deploys without
 editing the workflow. The GitHub `staging` environment allows only the `main`

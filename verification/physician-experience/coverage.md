@@ -843,9 +843,9 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Composer empty | partial | PatientWorkspace composer textarea (physician-app lib.rs) | yes | An empty composer shows, but an accepted Send doesn't clear the draft and a saved draft is never read back. |
-| Draft written.Draft kept quietly | partial | on_save, PhysicianClient::save_draft (physician-app lib.rs) | no | There is no autosave; drafts save only through the Save button, and the sample's draft save always answers 409. |
-| Draft written.Not saved, with Retry | partial | on_save, NOT_SAVED composer-notice (physician-app lib.rs) | yes | "Not saved" shows beside the composer, but there is no Retry, only the Save button. |
+| Composer empty | partial | PatientWorkspace composer textarea; Composer (physician-app lib.rs, composer.rs) | yes | Opening a chat reads its saved draft into the composer unless text typed there is unsaved, but an accepted Send doesn't clear the draft. The conversation and its draft are separate reads, so the composer can be typed in before the draft arrives; that text is kept and saved over the revision it started from. |
+| Draft written.Draft kept quietly | partial | on_save, Composer::begin and finish (physician-app lib.rs, composer.rs); chat_draft.rs (physician-sample) | yes | There is no autosave; drafts save only through the Save button, which shows "Saving…" then "Saved". Each patient and chat keeps its own composer text and the revision it was read or last saved at, and Save names that revision. The live sample stores the draft per physician, patient and chat: in Postgres on hosted sites and in the session inline. The recorded and simulation projections are read-only and still answer 409. |
+| Draft written.Not saved, with Retry | partial | on_save, Composer::finish, NOT_SAVED composer-notice (physician-app lib.rs, composer.rs) | yes | "Not saved" shows beside the composer when the save fails or another tab or instance saved a newer revision first (409); the server keeps the newer text and the composer keeps this tab's text. There is no Retry or way to take the newer text, only the Save button, which refuses again until a reload shows the newer text (dropping this tab's unsaved text). |
 
 ## Queued messages
 

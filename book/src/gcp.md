@@ -302,9 +302,9 @@ Merge the code before applying the plan. That order is safe: without
 `PHYSICIAN_CHAT_TOPIC` the site starts, logs a warning and runs chat inline, as
 it did before the worker. Without `PHYSICIAN_REDIS_URL` it keeps the in-process
 bus. Applying the plan sets the topic on the service, and from then on the site
-queues turns for the worker. With the topic set, `reply.revise` answers 503
-"Hosted reply revision is unavailable." until reply revision also moves to the
-worker (see [Remaining gaps](physician-site.md#remaining-gaps)).
+queues turns and reply revisions for the worker. Reply drafts live in
+Postgres; see [Physician site](physician-site.md) for how a revision is
+accepted, retried and fenced.
 
 Activation, in order, from an authorized engineering account. Engineering
 cannot apply this plan alone; the exact commands Dev runs, including the IAM
@@ -630,3 +630,51 @@ Source: <a href="/submodules/coda-app/infra/gcp/README%2Emd#dated-release-and-se
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#september-30-2026-companion-release">September 30, 2026 companion release</a>
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#september-27-2026-first-session-recovery-release">September 27, 2026 first-session recovery release</a>
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#earlier-releases">Earlier releases</a>
+
+
+## Shared mail service
+
+Products hosted outside the Rust VPC can use the `mail-relay` binary in `crates/gmail`.
+It wraps the existing `SmtpRelay`; it does not own product sign-in, message templates,
+recipients, send records or retry decisions. The physician server continues to use
+that same transport directly. There is one SMTP implementation and no additional
+mail vendor, mailbox credential, queue or persistence layer.
+
+Build `crates/gmail/Dockerfile` from the workspace root for `linux/amd64`. It follows
+the existing private, digest-pinned base-image convention and builds only
+`cargo build --locked --release -p gmail --bin mail-relay`. Build/push and infrastructure
+apply require the normal release approvals. This addition is not wired into the
+physician release pipeline; configure its reviewed image digest explicitly.
+
+In `infra/gcp/rust-environments`, `mail_relay_image` defaults to null (no service).
+Setting a reviewed digest and nonempty `mail_relay_invokers` creates an IAM-protected
+Cloud Run service, a runtime identity with no application-data roles, and a
+service-scoped invoker binding. `enable_physician_smtp_relay` must already be enabled:
+the adapter uses that existing network, subnet and NAT address, preserving the
+Workspace IP allowlist. It needs no Doppler token. Runtime settings are
+`MAIL_FROM=signin@codahealth.ai` and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
+
+For Gym staging, the named caller is
+`serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com`.
+Production would use `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
+on its own production relay and authorized egress. This repository's infrastructure
+root remains staging-only: production preparation belongs to its separately authorized
+infrastructure owner and must not be planned or applied from this root. Do not grant a public invoker or
+route production through staging. The `mail_relay_url` output is both the caller's
+base URL and ID-token audience. Cloud Run IAM checks identity; the adapter does
+not add a second token verifier.
+
+`POST /send` accepts JSON `{to, subject, text, html?}`. The server fixes the sender.
+HTTP 204 means the SMTP server accepted the message, not that a mailbox received it.
+HTTP 422 means invalid headers or an explicit SMTP refusal. HTTP 503 means acceptance
+could not be established; a caller must not assume it is safe to retry. No message
+content, code, bearer token or SMTP response text is returned or logged by the adapter.
+`GET /readyz` returning 204 checks only process readiness, not SMTP or delivery.
+
+Before cutover, read back the image digest, IAM enforcement, named invoker, runtime
+identity, ALL_TRAFFIC routing and the existing NAT address. Check authenticated
+readiness from the actual calling runtime and denial without a token. Then, under
+explicit approval of the exact email and recipient, verify receipt and sender in the
+mailbox and the owning product's completed workflow. Preserve the old credential
+until that proof is complete; deployment alone is not delivery proof. Gym owns its
+cutover and cleanup steps in `authoring/web/infra/README.md` in the coda-gym repository.

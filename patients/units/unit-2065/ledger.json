@@ -1,0 +1,2811 @@
+{
+  "unit": "unit-2065",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002065",
+      "given": "Glenn",
+      "family": "Ryan",
+      "birth_date": "1973-06-18",
+      "address_line": "18 Cottage Hill Road, Amherst, MA 01002",
+      "phone": "+1-201-555-0123",
+      "email": "glenn.ryan@example.test",
+      "marital_status": "married",
+      "summary": "Construction supervisor with chronic low back pain on pain-clinic oxycodone, severe daily alcohol use and alcoholic liver disease with suspected cirrhosis, who joined in 2023. In 2026 he has acetaminophen toxicity, an opioid overdose and a hematemesis admission complicated by delirium tremens.",
+      "events": [
+        {
+          "id": "2023-09-05a",
+          "kind": "telephone",
+          "start": "2023-09-05T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient scheduling call",
+              "date": "2023-09-05T10:20",
+              "author": "front desk",
+              "body": "Mr. Ryan phoned wanting to transfer his primary care here; his old office is closing its internal medicine side. Membership paperwork emailed. New patient visit set for 9/12 at 7:40 am (he wants the earliest slot, on site by 9 most days). Signed release on file for prior PCP records; request sent today. He says a pain management office writes his pain medicine and he wants to keep them for that."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T07:40",
+          "end": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Chronic low back pain",
+              "action": "history",
+              "onset": "2015-05-01"
+            },
+            {
+              "label": "Alcohol use disorder",
+              "action": "history",
+              "onset": "2010-01-01",
+              "note": "Daily vodka, about a pint a day",
+              "icd10": "F10.20"
+            },
+            {
+              "label": "Alcoholic liver disease with suspected cirrhosis",
+              "action": "history",
+              "onset": "2021-01-01",
+              "note": "Cirrhosis suspected, not confirmed",
+              "icd10": "K70.9"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "20 pack-years, quit 2018"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 to 2 tablets (5-10 mg) by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "Q6H",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic low back pain; prescribed by outside pain management"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Gastritis prophylaxis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              78
+            ],
+            "hr": 59,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 84.3,
+            "height_cm": 180.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 34
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "Platelets",
+                  "value": 142
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 212
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About one pint of vodka daily"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction supervisor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2023",
+              "action": "placed",
+              "order": "Right upper quadrant ultrasound",
+              "category": "imaging",
+              "reason": "Alcoholic liver disease, suspected cirrhosis"
+            },
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Former smoker, 20 pack-years, quit 2018"
+            },
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T08:40",
+              "author": "PCP",
+              "body": "New patient, 50 y/o man, here to set up care. Supervises crews for a commercial builder, on his feet and climbing most of the day.\n\nBack: low back pain for close to ten years, worse after long days on site, no leg weakness, no bowel or bladder change. Brother has the same problem. A pain management office has prescribed oxycodone 5 mg, one or two tabs up to every 6 hours as needed, for years; he gets it filled monthly and says he uses 2-4 tabs most days. He wants that to stay with them.\n\nAlcohol: open about it. A pint of vodka most nights, more on weekends, for many years. Was told at his last office that his liver was damaged from drinking and that it might be cirrhosis; never saw a liver specialist. Has not had withdrawal seizures that he knows of. Not interested in a program right now: \"I know, I know.\" Wife would like him to cut back.\n\nOther: omeprazole 20 mg daily, started by the old office to protect the stomach. Appendix out at 11. Quit cigarettes in 2018 after about 20 pack-years. No drug allergies. Father drank heavily and had high blood pressure; mother has arthritis.\n\nExam: vitals as charted. Alert, no jaundice, no asterixis. Heart regular, lungs clear. Abdomen soft, nontender, no palpable liver edge, no fluid wave. Paraspinal tenderness low lumbar, straight leg raise negative both sides, strength and reflexes symmetric. No spider angiomas noted, no edema.\n\nAUDIT-C 12. PHQ-2 0. Pain 5/10.\n\nA/P\n1. Alcohol use disorder, severe by history. Spent a good part of the visit on this. Recommended cutting down with a goal of stopping; offered counseling referral and medication options, declined for now. Will keep asking.\n2. Alcoholic liver disease, cirrhosis suspected, not confirmed. CMP, CBC, PT/INR, GGT today. RUQ ultrasound. Hep A/B status; vaccinate if not immune.\n3. Chronic low back pain on pain clinic oxycodone. Not adding anything. Reviewed mixing opioid with alcohol.\n4. Omeprazole continued, refills here.\n5. Health maintenance: eligible for lung screening (20 pk-yr, quit within 15 yrs) - LDCT ordered. FIT kit given. Hep C and HIV screens with labs. Flu, COVID and pneumococcal shots next month at a nurse visit along with hepatitis vaccines if needed.\nFollow up in 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.2,
+            "height_cm": 180.0,
+            "labs": {
+              "Alanine Aminotransferase": 34,
+              "Albumin": 3.7,
+              "Aspartate Aminotransferase": 68,
+              "Bilirubin, Total": 1.4,
+              "Gamma Glutamyl Transferase": 212,
+              "Mean Corpuscular Volume": 102,
+              "Platelets": 142,
+              "Prothrombin Time-International Normalized Ratio": 1.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T17:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2023-09-14T17:55",
+              "author": "PCP",
+              "body": "Glenn, your labs are back. Your liver tests show the pattern we see with alcohol: the AST is higher than the ALT and the GGT is well up. Bilirubin is a touch high and albumin a touch low, and your platelets are mildly low. Together these fit the liver damage you were told about, and they are one more reason to cut back. Kidneys and blood counts otherwise fine. Hepatitis C, HIV and hepatitis B screens are all negative. You are not immune to hepatitis B, so we will start that series and hepatitis A when you come in for your shots. Ultrasound is scheduled for the 26th."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "outside_records",
+          "start": "2023-09-21T11:05",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2023-09-21T11:05",
+              "author": "front desk",
+              "body": "Received 14 pages from prior primary care office covering 2019-2023. Problem list: chronic low back pain, alcohol use disorder, alcoholic liver disease (cirrhosis suspected). Medications: omeprazole 20 mg daily; oxycodone per pain management. NKDA. Appendectomy in childhood. Notes repeatedly document advice to reduce alcohol. No liver imaging in the packet. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "imaging",
+          "start": "2023-09-26T13:10",
+          "reason": "Suspected cirrhosis",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2023-09-26T13:10",
+              "text": "EXAM: Ultrasound abdomen, right upper quadrant.\nINDICATION: Alcohol use, suspected cirrhosis.\nCOMPARISON: None.\nFINDINGS: The liver is coarsened and diffusely echogenic with a subtly nodular surface contour. No focal hepatic lesion. Main portal vein is patent with hepatopetal flow. No ascites. Gallbladder is normally distended without stones, wall thickening or pericholecystic fluid. Common bile duct measures 4 mm. No intrahepatic ductal dilatation. Right kidney unremarkable. Spleen is normal in size.",
+              "conclusion": "Coarsened, echogenic liver with subtly nodular contour, suggestive of cirrhosis. No focal liver lesion. No ascites."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2023",
+              "action": "done",
+              "date": "2023-09-26T13:10"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "portal_message",
+          "start": "2023-09-28T12:30",
+          "reason": "Ultrasound result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound result",
+              "date": "2023-09-28T12:30",
+              "author": "PCP",
+              "body": "Your liver ultrasound shows a liver that looks scarred, the kind of change that suggests cirrhosis. No mass and no fluid in the belly, and the blood flow to the liver is normal. This doesn't change what matters most, which is the alcohol. Happy to talk it through by phone or at your next visit.\n\nPatient reply 9/28: ok got it. see you in december"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:30",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T07:36"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-10T07:37"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2023-10-10T07:38"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2023-10-10T07:39"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2023-10-10T07:50",
+              "author": "RN",
+              "body": "In before work for shots ordered by PCP. Screening questions negative, no allergies. Given: flu (L deltoid), COVID updated (R deltoid), PCV20 (L deltoid, 1 inch apart), hep A #1 (R deltoid), hep B #1 (R deltoid, separate site). VIS sheets given. Waited 15 min without issue. Hep B #2 due in 1 month; hep A #2 and hep B #3 in 6 months, reminders set."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "imaging",
+          "start": "2023-10-24T16:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-24T16:00",
+              "text": "EXAM: Low-dose CT chest without contrast, lung cancer screening, baseline.\nINDICATION: Former smoker, 20 pack-years, quit 2018.\nFINDINGS: Lungs are clear without nodules, consolidation or emphysema. Airways patent. No pleural effusion. Heart size normal; no pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen without acute finding. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-24T16:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "lab_only",
+          "start": "2023-11-02T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-01T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-11-02T09:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "nurse_visit",
+          "start": "2023-11-14T07:30",
+          "reason": "Hepatitis B dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-14T07:32"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2023-11-14T07:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hep B #2",
+              "date": "2023-11-14T07:40",
+              "author": "RN",
+              "body": "Hep B #2 given L deltoid, tolerated. No reaction to last month's shots per pt. LDCT and FIT both negative, he had seen the messages. Next: hep A #2 + hep B #3 in April."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up back pain and alcohol",
+          "vitals": {
+            "bp": [
+              129,
+              91
+            ],
+            "hr": 58,
+            "spo2": 97,
+            "weight_kg": 83.5
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2023-12-12T08:20",
+              "author": "PCP",
+              "body": "3 month f/u. Back is worse with the cold and a big job wrapping up before the holidays. Still on pain clinic oxycodone, same amount. Drinking unchanged by his account; tried a dry week in November and made it 3 days. No shakes in the mornings he'll admit to. Appetite ok, no abdominal swelling, no yellowing, no black stools.\n\nExam: VS as charted. No icterus. Abdomen soft, no ascites. Lumbar paraspinal tightness, neuro intact in legs.\n\nAUDIT-C 12. Pain 6/10.\n\nA/P\nAUD - again offered referral to counseling and a medication; again declines. Talked about not stopping cold turkey on his own given how much he drinks, call us first.\nALD w/ suspected cirrhosis - imaging as above; labs again in spring.\nLow back pain - heat, stretching; pain clinic continues meds.\nHep vaccines on track. RTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "pharmacy",
+          "start": "2024-01-18T14:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Omeprazole refill",
+              "date": "2024-01-18T14:10",
+              "author": "MA",
+              "body": "Pharmacy e-request for omeprazole 20 mg caps #90. Last OV 12/12/23. Sent per PCP protocol with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              80
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 84.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 32
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-19T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Platelets",
+                  "value": 149
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-03-19T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T08:15",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 216
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic care follow-up",
+              "date": "2024-03-19T08:25",
+              "author": "PCP",
+              "body": "Here for back/liver/alcohol check. Season starting up at work. Back about the same, pain clinic visit last month, nothing changed there. Still a pint most days. Denies jaundice, swelling, confusion, vomiting blood or black stool. Sleeps poorly.\n\nExam: VS as charted, weight steady. Not jaundiced. Abd soft, no shifting dullness. No edema. Lumbar exam unchanged.\n\nAssessment / plan:\n- Alcohol use disorder: brief intervention again. Wife came up in conversation, she is worried. He is \"thinking about it.\" Door left open for a counseling referral.\n- Alcoholic liver disease, cirrhosis suspected: labs today.\n- Chronic LBP: as before.\n- Hep A #2 / hep B #3 next month.\nBack in about 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-03-21T12:15",
+              "author": "PCP",
+              "body": "Liver numbers look about the same as in September. Same message as before, honestly: the best thing for these numbers is less alcohol. Let me know when you're ready and we'll make a plan together."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "nurse_visit",
+          "start": "2024-04-16T07:30",
+          "reason": "Hepatitis vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-04-16T07:32"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-04-16T07:32"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2024-04-16T07:33"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hep A #2, hep B #3",
+              "date": "2024-04-16T07:40",
+              "author": "RN",
+              "body": "Final doses: hep A #2 R deltoid, hep B #3 L deltoid. No problems. Both series complete, updated in record."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "office_visit",
+          "start": "2024-06-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "portal_message",
+          "start": "2024-06-19T19:42",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed yesterday",
+              "date": "2024-06-19T19:42",
+              "author": "patient",
+              "body": "Sorry about yesterday, concrete pour got moved up and I was on site at 6. Can we do something in July early morning?\n\nFront desk reply 6/20: Rebooked for Tuesday 7/9 at 7:40."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "office_visit",
+          "start": "2024-07-09T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 83.4
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-07-09T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit",
+              "date": "2024-07-09T08:10",
+              "author": "PCP",
+              "body": "Rescheduled f/u. Summer is better for his back. Prescription monitoring report reviewed today: oxycodone 5 mg from the pain management prescriber, one fill every month, no other controlled fills. Says he's down to \"most of a pint\" on weeknights. No new GI symptoms.\n\nExam: well appearing, no jaundice, abdomen benign, ambulates normally.\n\nA/P: AUD with liver disease - acknowledged effort, still well above any safe amount; repeated offer of help. LBP stable. Physical in October with labs, flu and the first shingles shot."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              80
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 33
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-10-22T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 101
+                },
+                {
+                  "test": "Platelets",
+                  "value": 152
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-10-22T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T08:20",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 215
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 159
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 81
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-22T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T08:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T08:26"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-10-22T08:27"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening"
+            },
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T08:35",
+              "author": "PCP",
+              "body": "Yearly physical, 51 y/o.\n\nInterval: no ED visits or hospital stays. Back unchanged; pain management still prescribing oxycodone 5 mg as needed. Omeprazole daily. Still drinking daily, roughly a pint; his wife has been after him about it.\n\nROS: no chest pain, dyspnea, abdominal pain, jaundice, hematemesis, melena, leg swelling or confusion. Sleep fragmented. Mood ok.\n\nPMH: chronic LBP, AUD, alcoholic liver disease (cirrhosis suspected on US 9/2023). Appendectomy age 11. Former smoker, quit 2018. NKDA.\n\nExam: VS as charted. Anicteric. Oropharynx clear. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no ascites, no palpable spleen. No edema. Skin: no jaundice. Neuro: no tremor, gait normal.\n\nPHQ-9 3. AUDIT-C 12.\n\nA/P\n- Health maintenance: flu, COVID, Shingrix #1 today (#2 in 2-6 mo). LDCT due, ordered. FIT kit handed over. Lipids and A1c with today's draw. Hep A/B series done, PCV20 done.\n- Alcohol use disorder / liver: same counseling; he would rather do it on his own. Labs today.\n- LBP: no change.\nRTC 4-5 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:05",
+          "reason": "Physical labs",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2024-10-24T13:05",
+              "author": "PCP",
+              "body": "Cholesterol and sugar are fine. Liver tests are in the same range as before, not better and not worse. Lung CT is set for November 7."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "imaging",
+          "start": "2024-11-07T16:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-11-07T16:30",
+              "text": "EXAM: Low-dose CT chest, annual lung cancer screening.\nCOMPARISON: 10/24/2023.\nFINDINGS: No pulmonary nodule. No consolidation, effusion or pneumothorax. No emphysematous change. Normal heart size. No adenopathy. Limited upper abdominal images without acute abnormality. Osseous structures unremarkable.",
+              "conclusion": "Lung-RADS 1. Negative screening. Next annual LDCT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-11-07T16:30"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "lab_only",
+          "start": "2024-11-19T10:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-18T06:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-11-19T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT and LDCT",
+              "date": "2024-11-19T15:40",
+              "author": "PCP",
+              "body": "FIT negative. LDCT Lung-RADS 1. Both repeat next fall. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "nurse_visit",
+          "start": "2025-01-07T07:30",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-01-07T07:33"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-01-07T07:33"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "date": "2025-01-07T07:40",
+              "author": "RN",
+              "body": "Shingrix #2 given R deltoid. After #1 he felt run down for a day and the arm ached. Advised same may happen. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "pharmacy",
+          "start": "2025-02-04T11:25",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Omeprazole renewal",
+              "date": "2025-02-04T11:25",
+              "author": "MA",
+              "body": "Omeprazole 20 mg DR caps, 90-day supply with 3 refills, renewed per protocol. Seen 10/2024."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 67,
+            "spo2": 99,
+            "weight_kg": 84.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-11T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-11T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 106
+                },
+                {
+                  "test": "Platelets",
+                  "value": 130
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 35.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-11T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-11T08:10",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 233
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-11T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-03-11T08:30",
+              "author": "PCP",
+              "body": "Chronic f/u. Long winter, back has been stiff, worse first thing in the morning. Pain clinic oxycodone unchanged. Alcohol: same, pint most nights. No GI bleeding, no yellow eyes, no belly swelling, no confusion per him (wife not here).\n\nExam: VS as charted. No scleral icterus. Abdomen soft, no ascites appreciated. Lumbar ROM limited by pain, neuro normal.\n\nA/P\n1. AUD - I was more direct today about where this goes with his liver. He listened. Still declining a referral or medication.\n2. ALD, suspected cirrhosis - labs.\n3. Chronic LBP - walking, core stretching sheet given; pain clinic manages medication.\nF/u 3-4 months, video ok."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "portal_message",
+          "start": "2025-03-13T08:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "March labs",
+              "date": "2025-03-13T08:50",
+              "author": "PCP",
+              "body": "Liver tests and blood counts are in your usual range. Nothing urgent. Talk in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-17T18:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up by video",
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-17T18:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video follow-up",
+              "date": "2025-06-17T18:40",
+              "author": "PCP",
+              "body": "Video, he's in his truck after work, identity verified, consents to video care.\nBack better with warm weather, pain 4/10. Same oxycodone from pain management. Drinking: \"a little less, maybe.\" No GI symptoms.\nNo exam beyond appearance: not jaundiced on camera, speaking comfortably.\nPlan: keep going; physical with labs in October. Reminded him not to mix the pain pills with drinking."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "telephone",
+          "start": "2025-09-09T16:45",
+          "reason": "Reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical rescheduled",
+              "date": "2025-09-09T16:45",
+              "author": "front desk",
+              "body": "Pt's wife called, he can't make the 9/23 physical because of an inspection on site. Moved to 10/21 7:30 am; wants flu and COVID done the same day."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              66
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 84.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-21T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 69
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 33
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-21T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 97
+                },
+                {
+                  "test": "Platelets",
+                  "value": 162
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-21T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T08:15",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 201
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-21T08:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-21T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-21T08:21"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2025-10-21T08:22"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening"
+            },
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-21T08:40",
+              "author": "PCP",
+              "body": "Physical, 52 y/o man.\n\nSince last fall: no ER or hospital. Back pain steady, pain clinic still writing oxycodone 5 mg prn. Omeprazole daily. Alcohol unchanged overall per him; wife had told our front desk she is worried.\n\nROS negative for jaundice, abdominal swelling, GI bleeding, chest pain, shortness of breath, falls.\n\nExam: VS as charted, weight stable. Anicteric. Neck no masses. Heart regular rate, no murmurs. Lungs clear bilaterally. Abd soft, liver not palpable, no ascites. Ext without edema. No tremor. Skin no rashes.\n\nAUDIT-C 12. PHQ-9 2.\n\nA/P\nPrevention: flu, updated COVID and Tdap (no tetanus record in his old chart, he can't recall one) today. LDCT and FIT again. Lipids, A1c in the draw.\nAUD / alcoholic liver disease: advice repeated, he declines referral. Labs.\nLow back pain: stable.\nSee him in early 2026."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "portal_message",
+          "start": "2025-10-23T12:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2025-10-23T12:40",
+              "author": "PCP",
+              "body": "Cholesterol and A1c normal. Liver tests and platelets in the same range they've been since 2023."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "imaging",
+          "start": "2025-11-06T15:45",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-11-06T15:45",
+              "text": "EXAM: LDCT chest for lung cancer screening.\nCOMPARISON: 11/07/2024, 10/24/2023.\nFINDINGS: Lungs clear, no nodules. No airspace disease or pleural fluid. Heart and great vessels normal in size. No lymphadenopathy. Upper abdomen and bones without acute or suspicious finding.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-11-06T15:45"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "lab_only",
+          "start": "2025-11-18T09:30",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-17T06:45",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-11-18T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Screening results",
+              "date": "2025-11-18T14:00",
+              "author": "RN",
+              "body": "FIT negative, LDCT Lung-RADS 1. Portal message sent to pt. Both due again fall 2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-01a",
+          "kind": "ed_visit",
+          "start": "2026-01-01T13:50",
+          "end": "2026-01-01T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Nausea, vomiting, right upper quadrant pain",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-01T14:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 2500
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2300
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 5.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-01T14:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 25.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-01T14:20",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-01T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department note (outside)",
+              "date": "2026-01-06T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 01/01/2026. Faxed to PCP 01/06/2026.\n\n52M with alcohol use disorder, alcoholic liver disease (?cirrhosis), chronic back pain on oxycodone, presents with two days of nausea, emesis and RUQ abdominal pain. Has had a headache this past week and took more than the usual amount of OTC pain reliever, he describes it as \"a few extra.\"\n\nMeds: oxycodone 5-10 mg q6h prn, omeprazole 20 mg daily. Allergies: NKDA.\n\nExam: lethargic, oriented to person and place. Jaundiced skin, icteric sclerae. RUQ tenderness, no rebound, no guarding.\n\nLabs: AST 2500, ALT 2300, T bili 5.2, INR 2.1. Acetaminophen level 30 mcg/mL (ref 10-20).\n\nImpression: acetaminophen hepatotoxicity on background alcoholic liver disease.\nPlan: N-acetylcysteine infusion started in ED. Admit to medicine. Poison center contacted."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-02a",
+          "kind": "portal_message",
+          "start": "2026-01-02T08:05",
+          "reason": "Patient in hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Glenn is in the hospital",
+              "date": "2026-01-02T08:05",
+              "author": "patient",
+              "body": "This is Glenn's wife on his account. He went to the ER yesterday with stomach pain and throwing up and they said his liver is bad from Tylenol he took for a headache. He's admitted and on an IV medicine. Just wanted you to know.\n\nPCP reply 1/2: Thank you for letting me know. I'll ask the hospital for records. Please have him make an appointment with me within a week or so of getting home, and no Tylenol or anything with acetaminophen in it for now."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, acetaminophen toxicity",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "action": "diagnosed",
+              "onset": "2026-01-01",
+              "icd10": "T39.1X1A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              70
+            ],
+            "hr": 65,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 84.3
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 168
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 15.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-01-13T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2026-01-13T08:35",
+              "author": "PCP",
+              "body": "Seen after his New Year's Day ED visit and admission. ED note received 1/6; no discharge summary yet. By his account he was in about four days, got the IV antidote the whole time, and went home on the 5th once the numbers were coming down. He had a bad headache over Christmas week and took extra OTC acetaminophen on top of his usual drinking, didn't count the pills. Nausea gone, eating, no abdominal pain now. Says he hasn't had a drink since he got out but is vague.\n\nExam: VS as charted. Sclerae anicteric today. Abdomen soft, nontender, no ascites. Alert and oriented x3, no asterixis.\n\nA/P\n1. Acetaminophen toxicity, recovering. Repeat hepatic panel and INR today. No acetaminophen in any form - went through his medicine cabinet list with him, including combination cold products.\n2. Alcohol use disorder with alcoholic liver disease. This was a scare for both of them. Offered referral again; he will think about it this week. AUDIT-C remains 12 for the past year.\n3. Back pain - oxycodone through pain clinic, no change.\nPortal me with how he's doing, recheck labs at next visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "portal_message",
+          "start": "2026-01-15T17:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests improving",
+              "date": "2026-01-15T17:20",
+              "author": "PCP",
+              "body": "Glenn, good news: your liver enzymes have come way down from the hospital (AST 74, ALT 168), bilirubin is 2.1 and clotting is 1.3. Still healing. Keep away from acetaminophen and alcohol and let's see you in a couple of months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-08a",
+          "kind": "hospital_admission",
+          "start": "2026-03-08T22:10",
+          "end": "2026-03-10T13:30",
+          "service": "Critical Care Medicine",
+          "reason": "Lethargy and shallow breathing",
+          "vitals": [
+            {
+              "time": "2026-03-08T22:15",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 55,
+              "rr": 8,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-08T22:30",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.28
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 65
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 58
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU discharge summary (outside)",
+              "date": "2026-03-24T09:40",
+              "author": "critical care",
+              "body": "Regional hospital, critical care service. Admitted 03/08/2026, discharged 03/10/2026. Received by fax 03/24/2026.\n\nReason for admission: opioid overdose with hypoventilation.\n\nBrief history: 52M with alcohol use disorder, alcoholic liver disease and acetaminophen toxicity in January 2026, on prescribed oxycodone for chronic back pain. Wife brought him to the ED after several hours of worsening drowsiness and slow, shallow breathing. He drinks regularly and denies other drug use.\n\nOn arrival: RR 8, BP 110/70, HR 55, SpO2 89% on room air. Somnolent, rousable to voice.\nABG: pH 7.28 / PaCO2 65 / PaO2 58 / HCO3 24 - acute respiratory acidosis.\n\nCourse: responded to IV naloxone in the ED with improved respiratory effort. Admitted to ICU for monitoring for recurrent sedation; no further naloxone needed after the first night. Breathing and mentation normal by day 2.\n\nDischarge medications: omeprazole 20 mg daily; oxycodone 5-10 mg q6h prn (per outpatient prescriber); NEW naloxone 4 mg nasal spray, use for suspected overdose, call 911.\nAllergies: NKDA.\nFollow-up: PCP within 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T07:15",
+          "reason": "Patient hospitalized",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the hospital",
+              "date": "2026-03-09T07:15",
+              "author": "patient",
+              "body": "Glenn's wife again. Last night he got so sleepy I couldn't keep him awake and his breathing was really slow so I drove him in. They said it was the pain pills and gave him the reversal shot, he's in the ICU being watched but he's talking now.\n\nPCP reply 3/9: I'm so glad you got him there. Please set up a visit for when he's home. I'll be in touch with the hospital team."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, opioid overdose",
+          "conditions": [
+            {
+              "label": "Opioid overdose",
+              "action": "diagnosed",
+              "onset": "2026-03-08",
+              "icd10": "T40.2X4A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "historical",
+              "sig": "1 spray in one nostril for suspected opioid overdose; call 911; may repeat in other nostril",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Opioid overdose, prescribed at hospital discharge"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 69,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 84.5
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-17T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU visit",
+              "date": "2026-03-17T08:30",
+              "author": "PCP",
+              "body": "Here with his wife after the ICU stay 3/8-3/10. No summary in yet; history from both of them. She found him very hard to wake and breathing slowly that evening and brought him in; he got naloxone in the ED and was watched in the ICU. He had taken his usual oxycodone and had been drinking. He says it was not on purpose, denies any thoughts of harming himself, and his wife agrees. He went home with a naloxone nasal spray; she has it in her purse and knows how to use it.\n\nNo breathing problems since. Back pain at baseline.\n\nExam: VS as charted. Alert, oriented, conversant. Lungs clear. Abdomen soft. No icterus today.\n\nPHQ-9 4. AUDIT-C 12.\n\nA/P\n1. Opioid overdose with alcohol on board, 3/8. Naloxone kit at home, reviewed use with wife. Discussed that alcohol plus opioid is what makes this dangerous.\n2. Alcohol use disorder - the conversation was more serious with his wife in the room. He still isn't ready for a program or a medication. I'll keep asking.\n3. Recent acetaminophen toxicity - LFTs next visit.\n4. Requesting ICU summary.\nRTC 6-8 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "telephone",
+          "start": "2026-03-19T11:30",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ICU records request",
+              "date": "2026-03-19T11:30",
+              "author": "MA",
+              "body": "Called hospital HIM for the 3/8-3/10 ICU stay; no summary sent yet. Re-faxed our request with signed release. Also asked again for the January discharge summary; told it may not have been dictated yet."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "action": "resolved",
+              "onset": "2026-01-01",
+              "icd10": "T39.1X1A"
+            },
+            {
+              "label": "Opioid overdose",
+              "action": "resolved",
+              "onset": "2026-03-08",
+              "icd10": "T40.2X4A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              81
+            ],
+            "hr": 69,
+            "spo2": 99,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 32
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "Platelets",
+                  "value": 136
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 209
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2026-05-12T08:30",
+              "author": "PCP",
+              "body": "F/u after a rough winter. ICU summary from March is in the chart (received 3/24). No further sedation episodes, naloxone still at home unused. No acetaminophen. Back to work full time. Drinking: says he cut down for a few weeks after March and is \"back to about where I was.\"\n\nNo jaundice, no abdominal swelling, no GI bleeding.\n\nExam: VS as charted. Anicteric. Abdomen soft, no ascites. Lumbar tenderness as before.\n\nA/P\n- Acetaminophen toxicity: recovered; labs today should be back to his baseline. Closing the problem.\n- Opioid overdose 3/2026: no recurrence. Closing as an active problem; kit at home.\n- AUD / alcoholic liver disease with suspected cirrhosis: counseling, declines referral.\n- LBP: unchanged.\nCheck in this summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T12:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "May labs",
+              "date": "2026-05-14T12:50",
+              "author": "PCP",
+              "body": "Your liver tests are back to where they were before January. The acetaminophen injury has healed. What's left is the alcohol-related damage we've been watching."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Omeprazole refill",
+              "date": "2026-06-09T09:40",
+              "author": "MA",
+              "body": "Omeprazole 20 mg #90 refill sent. Seen 5/12."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-12a",
+          "kind": "telehealth_visit",
+          "start": "2026-07-12T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vomiting blood",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-07-12T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day video visit",
+              "date": "2026-07-12T08:35",
+              "author": "PCP",
+              "body": "Sunday. His wife texted my phone at 7:50 that he had thrown up blood; video call at 8:10 with both of them at home, identity confirmed.\n\nHe has vomited blood this morning. Drank last night as usual.\n\nOn video: sitting at the kitchen table, speaking in full sentences, answering appropriately.\n\nA/P: Hematemesis in a man with alcoholic liver disease and suspected cirrhosis. Needs emergency evaluation now. Told them to call 911 rather than drive; wife called while we were still on. Not to eat or drink anything. I phoned the ED charge nurse with his history (alcohol use disorder, suspected cirrhosis, acetaminophen toxicity 1/2026, opioid overdose 3/2026, oxycodone and omeprazole, NKDA)."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-12b",
+          "kind": "hospital_admission",
+          "start": "2026-07-12T09:05",
+          "end": "2026-07-21T12:00",
+          "service": "Internal Medicine",
+          "reason": "Hematemesis",
+          "vitals": [
+            {
+              "time": "2026-07-14T21:30",
+              "bp": [
+                168,
+                96
+              ],
+              "hr": 122,
+              "rr": 22,
+              "temp_c": 38.6
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-14T22:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-14T23:10",
+              "text": "EXAM: CT head without contrast.\nINDICATION: Acute confusion and agitation.\nFINDINGS: No intracranial hemorrhage, mass, mass effect or acute territorial infarct. Ventricles and sulci normal for age. Gray-white differentiation preserved. Calvarium intact. Visualized sinuses and mastoids clear.",
+              "conclusion": "Normal noncontrast head CT."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary (outside)",
+              "date": "2026-07-24T14:20",
+              "author": "internal medicine",
+              "body": "Regional hospital, inpatient medicine. Admitted 07/12/2026, discharged 07/21/2026. Received 07/24/2026.\n\nPrincipal problem: hematemesis.\nHospital course complicated by: delirium tremens.\n\nHistory: 53M with alcohol use disorder, alcoholic liver disease with suspected cirrhosis, prior critical care admissions this year (acetaminophen toxicity January, opioid overdose March), chronic back pain on oxycodone, sent in by his PCP after vomiting blood at home. Per wife he drinks a pint of vodka a day; last drink the day of admission.\n\nCourse: treated with IV acid suppression; no further hematemesis after admission. On hospital day 3 (07/14) he became increasingly agitated and confused, trying to get out of bed and saying there were spiders on the walls. T 38.6 C (101.5 F), BP 168/96, HR 122, RR 22. Diaphoretic, fine tremor, disoriented. Electrolytes within normal limits. Noncontrast head CT normal. Treated for delirium tremens with lorazepam and IV thiamine with ICU-level monitoring; delirium cleared over the following days and benzodiazepines were tapered off before discharge.\n\nDischarge condition: alert and oriented, ambulating.\nDischarge medications: omeprazole 20 mg daily; oxycodone 5-10 mg q6h prn (outpatient prescriber).\nAllergies: NKDA.\nFollow-up: PCP in 1 week. Strongly advised alcohol abstinence."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T20:10",
+          "reason": "Home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "He's home",
+              "date": "2026-07-22T20:10",
+              "author": "patient",
+              "body": "Glenn's wife. He came home yesterday. It was a really bad week, he was seeing things and didn't know where he was for a couple days. He's sleeping a lot but ok. They said to see you next week.\n\nPCP reply 7/23: Thank you for the update, I'm relieved he's home. Yes, I want to see him soon, please call the office or reply here and we'll find a time that works. If he has any more bleeding, black stools, confusion or shaking, call 911."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "telephone",
+          "start": "2026-07-28T15:05",
+          "reason": "Post-hospital scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling outreach",
+              "date": "2026-07-28T15:05",
+              "author": "front desk",
+              "body": "Called pt's cell to book post-hospital visit per PCP, discharge summary in chart 7/24. No answer, voicemail left with our number. Portal reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T10:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Omeprazole refill",
+              "date": "2026-08-11T10:20",
+              "author": "MA",
+              "body": "Pharmacy request omeprazole 20 mg #90. Sent per PCP. Still no post-hospital visit on the books; left another message on the portal asking him to call."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acetaminophen toxicity|T39.1X1A": {
+        "code": "T39.1X1A",
+        "display": "Poisoning by 4-Aminophenol derivatives, accidental (unintentional), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcohol use disorder|F10.20": {
+        "code": "F10.20",
+        "display": "Alcohol dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcoholic liver disease with suspected cirrhosis|K70.9": {
+        "code": "K70.9",
+        "display": "Alcoholic liver disease, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Opioid overdose|T40.2X4A": {
+        "code": "T40.2X4A",
+        "display": "Poisoning by other opioids, undetermined, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "oxycodone hydrochloride 5 MG Oral Tablet": {
+        "code": "1049621",
+        "display": "oxycodone hydrochloride 5 MG Oral Tablet",
+        "ingredient": "oxycodone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Acetaminophen [Mass/volume] in Serum or Plasma": {
+        "code": "3298-7",
+        "display": "Acetaminophen [Mass/volume] in Serum or Plasma",
+        "unit": "ug/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002005",
+      "events": [
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T09:40",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2024-12-03T09:40", "body": "Pharmacy request for metformin 1000, lisinopril 20, atorvastatin 40. Last physical 9/6/24 with labs. Approved 90 days, 1 refill, per protocol."}
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T10:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Time for your diabetes check", "author": "front desk", "date": "2025-03-11T10:00", "body": "Hello Mr. Coleman, our records show you are due for your 6-month diabetes visit. Please call or reply here and we will find a time that works around your shifts."}
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "pharmacy",
+          "start": "2025-06-03T11:25",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request: needs visit", "author": "PCP", "date": "2025-06-03T11:25", "body": "Refills sent for lisinopril, metformin and atorvastatin, 90 days, no further refills. Overdue for diabetes follow-up and labs since March, no reply to recall. Front desk please call to schedule before the next refill."},
+            {"type": "Telephone Encounter", "title": "Scheduling call", "author": "front desk", "date": "2025-06-04T15:10", "body": "Called per PCP. No answer, left message with our number. Will try again."}
+          ]
+        },
+        {
+          "id": "2025-10-11a",
+          "kind": "ed_visit",
+          "start": "2025-10-11T18:52",
+          "end": "2025-10-11T23:05",
+          "service": "Emergency Medicine",
+          "reason": "Severe diffuse abdominal pain, nausea, fever",
+          "vitals": [
+            {"time": "2025-10-11T18:58", "temp_c": 38.2, "hr": 102, "bp": [135, 85]}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-10-11T19:20", "resulted": "2025-10-11T19:52", "results": [{"test": "White Blood Cells", "value": 16.4}, {"test": "Neutrophils %", "value": 88}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-11T19:20", "resulted": "2025-10-11T20:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-10-11T19:35", "text": "Single upright frontal view of the chest. Free intraperitoneal air beneath the diaphragm. Lungs clear. No effusion or pneumothorax. Heart size normal. Mediastinum unremarkable.", "conclusion": "Free air under the diaphragm, consistent with a perforated viscus. Findings called to the ED physician at 19:48."}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2025-12-04T14:30", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 10/11/2025 18:52\n\nCC: severe abdominal pain, nausea, fever\n\nHPI: 59-year-old man with a history of recurrent diverticulitis, followed by his primary care practice since 2018, with hypertension, type 2 diabetes and hyperlipidemia. Pain started roughly 4 hours ago, shortly after eating. At first it was sharp and severe, then let up for a short time, and is now spread across his whole abdomen and constant. Nauseated, feels feverish. No prior abdominal surgery.\n\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily, metformin 1000 mg twice daily.\nAllergies: NKDA.\nSocial: former smoker, about one glass of wine nightly, postal service supervisor.\nFamily: father MI at 58, mother type 2 diabetes, brother hypertension.\n\nTriage vitals: T 38.2 C (100.8 F), HR 102, BP 135/85.\n\nExam: Appears uncomfortable, lying still. Abdomen with tenderness throughout, rebound and voluntary guarding. Bowel sounds diminished.\n\nResults: WBC 16.4 with 88% neutrophils, left shift. Upright chest film shows free air under the diaphragm.\n\nMDM: Peritonitis with pneumoperitoneum; given his history, perforated diverticulitis is most likely. NPO, IV fluids, IV piperacillin-tazobactam, IV analgesia and antiemetic. General surgery consulted at bedside and will take him to the OR tonight.\n\nDiagnosis: perforated diverticulitis with peritonitis.\nDisposition: admitted to general surgery."}
+          ]
+        },
+        {
+          "id": "2025-10-11b",
+          "kind": "hospital_admission",
+          "start": "2025-10-11T23:05",
+          "end": "2025-10-17T12:40",
+          "service": "General Surgery",
+          "reason": "Perforated diverticulitis with peritonitis",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-10-12T00:40", "issued": "2025-10-14T15:00", "text": "Specimen: sigmoid colon, segmental resection. Gross: segment of sigmoid colon with multiple diverticula and a perforation site with overlying fibrinopurulent exudate. Microscopic: acute and chronic diverticulitis with perforation and acute serositis. Margins viable. Lymph nodes reactive. No dysplasia or malignancy identified.", "conclusion": "Sigmoid colon: perforated diverticulitis with acute serositis. Negative for dysplasia and malignancy."}
+          ],
+          "documents": [
+            {"type": "Operative Note", "title": "Operative report", "author": "general surgery", "date": "2025-12-04T14:31", "body": "OPERATIVE REPORT\nDate of surgery: 10/11/2025, case start 23:40\nPreoperative diagnosis: perforated viscus, suspected perforated diverticulitis\nPostoperative diagnosis: perforated sigmoid diverticulitis with purulent peritonitis\nProcedure: exploratory laparotomy, sigmoid colectomy with primary colorectal anastomosis, abdominal washout\nAnesthesia: general endotracheal\nFindings: purulent fluid throughout the abdomen from a perforated sigmoid diverticulum. No feculent contamination. Remainder of the colon and small bowel healthy in appearance.\nDescription: Midline laparotomy. Purulent fluid evacuated. Sigmoid mobilized, resected between staple lines to healthy, well-perfused bowel. Stapled end-to-end colorectal anastomosis, air leak test negative. Abdomen irrigated. Fascia closed, skin loosely approximated.\nEBL 150 mL. No complications. To PACU in stable condition.\nGeneral surgery"},
+            {"type": "Discharge Summary", "title": "Discharge summary", "author": "general surgery", "date": "2025-12-04T14:32", "body": "DISCHARGE SUMMARY\nAdmitted 10/11/2025, discharged 10/17/2025\nService: general surgery\n\nDiagnosis: perforated sigmoid diverticulitis with purulent peritonitis\nProcedure: 10/11/2025 exploratory laparotomy, sigmoid colectomy with primary anastomosis (no stoma)\n\nCourse: Taken to the OR from the ED the night of arrival. Uneventful recovery. IV piperacillin-tazobactam continued for 4 days after surgery, then stopped. Diet advanced from postoperative day 3, tolerating regular food, bowel function returned. Metformin and lisinopril held while NPO, both resumed before discharge. Blood sugars monitored in house. Pathology: perforated diverticulitis, no dysplasia or cancer. Incision clean and dry at discharge.\n\nDischarge medications:\n- lisinopril 20 mg daily (resume)\n- atorvastatin 40 mg daily (resume)\n- metformin 1000 mg twice daily (resume)\n- acetaminophen 1000 mg every 8 hours as needed for pain\n- oxycodone 5 mg every 6 hours as needed for severe pain, 12 tablets, no refills\n\nAllergies: NKDA\nInstructions: no lifting over 10 lb for 6 weeks; call for fever, worsening abdominal pain, wound redness or drainage.\nFollow-up: general surgery clinic in 2 weeks; primary care within 1-2 weeks of discharge."}
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "portal_message",
+          "start": "2025-10-20T19:22",
+          "documents": [
+            {"type": "Patient Message", "title": "Was in the hospital", "author": "patient", "date": "2025-10-20T19:22", "body": "Wanted to let you know I was in the hospital last week. My diverticulitis came back bad, they said it busted through and I had emergency surgery that night, they took out part of my colon. No bag thank God. Home since Friday, sore but getting around. Can you get the paperwork from the hospital."},
+            {"type": "Patient Message", "title": "RE: Was in the hospital", "author": "PCP", "date": "2025-10-21T08:10", "body": "I'm so sorry you went through that, and glad you are home and moving. We'll request the hospital records today. I'd like to see you in the next week or two to look at the incision and go over your diabetes and blood pressure meds; please call the front desk to set that up. Call right away or go back to the ED for fever, worse belly pain, vomiting, or redness or drainage at the incision."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "telephone",
+          "start": "2025-10-21T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Hospital records request", "author": "MA", "date": "2025-10-21T09:30", "body": "Request faxed to regional hospital HIM for ED record, op note, pathology and discharge summary, admission 10/11-10/17/25. Pt signed release on file."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T13:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Hospital records: second request", "author": "MA", "date": "2025-11-18T13:45", "body": "Nothing received from hospital. Re-faxed request and called HIM, told 2-3 weeks. Also called pt to schedule post-hospital visit, voicemail left."}
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "portal_message",
+          "start": "2025-12-05T11:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Your hospital records", "author": "PCP", "date": "2025-12-05T11:15", "body": "Hi Mr. Coleman, your hospital records finally arrived and I've read through them. The pathology showed inflammation from the diverticulitis and no cancer, which is good news. I still haven't seen you since September of last year and want to check on your recovery, your diabetes and your blood pressure. Please call us to schedule; we have early morning openings."}
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "pharmacy",
+          "start": "2026-01-06T10:05",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "PCP", "date": "2026-01-06T10:05", "body": "Pharmacy request for lisinopril 20, atorvastatin 40, metformin 1000. Not seen since 9/2024, last labs then. Sent 90 days so he is not without his meds. Needs visit and labs before more refills; message sent."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T09:20",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "PCP", "date": "2026-04-14T09:20", "body": "Pharmacy request again for all three maintenance meds. Still no visit. Sent 30-day supply only. Front desk to call and book."},
+            {"type": "Telephone Encounter", "title": "Scheduling call", "author": "front desk", "date": "2026-04-14T14:50", "body": "Reached pt. Says work has been heavy since he went back after surgery and he will call next week to book a physical. Offered 7am slots."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T08:40",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "PCP", "date": "2026-05-19T08:40", "body": "Another refill request. No appointment made. Sent 90 days of lisinopril, atorvastatin and metformin to avoid a gap; I'll keep trying to get him in."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T10:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Overdue physical", "author": "front desk", "date": "2026-07-21T10:00", "body": "Hello Mr. Coleman, you are overdue for your annual physical and diabetes labs. Please reply or call to schedule. Thank you."}
+          ]
+        }
+      ]
+    }
+  ]
+}

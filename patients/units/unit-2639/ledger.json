@@ -1,0 +1,2149 @@
+{
+  "unit": "unit-2639",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002639",
+      "given": "Silas",
+      "family": "Morrow",
+      "birth_date": "1997-07-25",
+      "address_line": "27 Silver Street, Apt 3",
+      "phone": "+1-802-555-0182",
+      "email": "silas.morrow@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with genetically confirmed Marfan syndrome and bilateral ectopia lentis who joins in 2022 on metoprolol and aspirin. A 2024 echo finds a 4.2 cm aortic root and severe aortic regurgitation managed medically; a 2025 right lens subluxation and a February 2026 type A dissection repaired with a valve-sparing root and hemiarch replacement follow.",
+      "events": [
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-09-06T10:20",
+              "author": "front desk",
+              "body": "Caller is a grad student who moved to the area for his library science program, still on his dad's PPO. Says he has a genetic connective tissue condition and hasn't had a regular doctor since college health. Booked new patient slot 9/14 at 2:40. Mailed intake packet and records release form for his old pediatric cardiology office."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T14:40",
+          "end": "2022-09-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Marfan syndrome, unspecified",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "FBN1 pathogenic variant on family testing in his teens"
+            },
+            {
+              "label": "Ectopia lentis, bilateral",
+              "action": "history",
+              "onset": "2005-01-01",
+              "note": "bilateral lens subluxation since childhood; wears glasses",
+              "icd10": "Q12.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Marfan syndrome"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              84
+            ],
+            "hr": 71,
+            "spo2": 96,
+            "weight_kg": 79.8,
+            "height_cm": 193.8
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student, library sciences"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-14T14:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2022",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Marfan syndrome, aortic surveillance overdue"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-14T16:05",
+              "author": "PCP",
+              "body": "25 y/o man here to establish. Started a master's in library sciences this fall, lives in an apartment near downtown.\n\nHx: Marfan syndrome. Dad was diagnosed in his late 30s and had his aortic root replaced prophylactically at 38 (composite valve-graft); the family was tested after that and Silas carries the same FBN1 variant. Younger sister also positive, followed by her own cardiologist. Paternal uncle died suddenly at 31 -- family has always assumed a dissection. Mom healthy, tested negative.\nBoth lenses have been partly dislocated since he was a kid; wears glasses, eye exams were through a pediatric ophthalmologist and lapsed after high school.\nSaw a pediatric cardiologist through his teens who put him on metoprolol succinate 50 and a baby aspirin. Thinks his last echo was freshman year of college. No echo or CT since. Feels fine. No chest pain, no dyspnea, no palpitations, no syncope. Plays pickup ultimate occasionally.\n\nMeds: metoprolol succinate 50 mg daily, aspirin 81 mg daily.\nAllergies: none to medications.\nSurg: none.\nSocial: never smoker, a drink or two a month, no drugs. Single.\n\nExam: very tall, slender. Long fingers, arm span looks longer than height. Chest wall normal on inspection.Heart RRR, no murmur appreciated today. Lungs clear. Pupils round, glasses on. No edema.\n\nA/P\n1. Marfan syndrome with FBN1 variant -- he is overdue for aortic imaging by a few years. Referral to adult cardiology for echo and ongoing surveillance. Continue metoprolol. Talked about avoiding heavy lifting/straining and competitive contact sports until cardiology weighs in.\n2. Ectopia lentis -- suggested he get back in with an eye doctor; he'll look for one his insurance covers.\n3. Aspirin -- continue for now, will let cardiology decide whether it's needed.\nRecords release signed for the pediatric cardiology and genetics offices.\nPhysical in about a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.0,
+            "height_cm": 193.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-05T11:10",
+          "reason": "Prior records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior pediatric cardiology and genetics records",
+              "date": "2022-10-05T11:10",
+              "author": "MA",
+              "body": "Received 14 pages from the patient's former pediatric cardiology practice, including a clinical genetics letter. Summary for the chart: genetic testing in adolescence found a pathogenic FBN1 variant (same variant as father); clinical diagnosis of Marfan syndrome with bilateral ectopia lentis. Started on metoprolol succinate and low-dose aspirin by the pediatric cardiologist. Immunizations through childhood complete per their records. Last clinic note is from the patient's first year of college; no measurements abstracted. Scanned under Media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              126,
+              81
+            ],
+            "hr": 70
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T08:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T08:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-10-20T09:05",
+              "author": "RN",
+              "body": "In for flu and the bivalent covid booster. No reactions to prior vaccines, feels well today. Flu vaccine L deltoid, Pfizer bivalent R deltoid. Waited 15 min without issue. VIS given."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-12-02a",
+          "kind": "portal_message",
+          "start": "2022-12-02T13:30",
+          "reason": "Referral follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology referral",
+              "date": "2022-12-02T13:30",
+              "author": "front desk",
+              "body": "Hi Silas, checking in -- the cardiology office says they left you two voicemails about scheduling the visit Dr. ordered in September. Their scheduling number is on your after-visit summary. Let us know if you need it resent."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cardiology referral",
+              "date": "2022-12-04T20:12",
+              "author": "patient",
+              "body": "Sorry, semester has been insane. I'll call them after finals."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "portal_message",
+          "start": "2023-03-08T07:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2023-03-08T07:45",
+              "author": "patient",
+              "body": "Can I get 90 day supplies of the metoprolol and aspirin? My old cardiologist's refills finally ran out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2023-03-08T12:20",
+              "author": "PCP",
+              "body": "Done, both sent with a year of refills. Still want you to get in with cardiology -- want me to have the front desk call them for you?"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "telephone",
+          "start": "2023-04-12T09:15",
+          "reason": "Referral closed",
+          "orders": [
+            {
+              "id": "cards-ref-2022",
+              "action": "cancelled",
+              "date": "2023-04-12T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "date": "2023-04-12T09:15",
+              "author": "MA",
+              "body": "Cardiology office closed the September referral -- never scheduled, past their 6 month window. LVM for pt. Will flag for PCP to readdress at physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "annual_physical",
+          "start": "2023-09-28T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 85,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 80.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-28T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-28T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-28T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-28T09:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-28T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-28T09:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-28T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-28T09:35"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-28T09:36"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-28T09:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-28T10:20",
+              "author": "PCP",
+              "body": "Physical. Second year of the program, working at the campus archives part time. No complaints. Walks everywhere, no exercise limitation. Denies chest discomfort, shortness of breath, fainting, palpitations. Vision stable with his glasses; hasn't found an eye doctor yet.\n\nNever got to cardiology -- the referral timed out in the spring. We talked again about why it matters given his dad's and uncle's history. He says he'll call himself once his assistantship schedule settles; I gave him the number again rather than re-placing it today.\n\nMeds metoprolol succinate 50, aspirin 81, taking both. NKDA.\nPHQ-2 0.\n\nExam: tall thin young man in no distress. HEENT normal, glasses. Neck supple. Heart regular, I don't hear a murmur. Lungs clear bilaterally. Abd soft. Long fingers and limbs. Skin no rashes. Neuro grossly normal.\n\nPlan\n- CMP, CBC, lipids; one-time HIV and hep C screens -- he agreed.\n- Tdap today (unsure when last), flu, updated covid.\n- Cardiology: patient to self-schedule, gave number.\n- Eye care: list of in-network ophthalmologists in AVS.\n- See back in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-02a",
+          "kind": "portal_message",
+          "start": "2023-10-02T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2023-10-02T16:40",
+              "author": "PCP",
+              "body": "Silas -- your blood work from the physical is all normal: kidney and liver tests, blood counts and cholesterol are fine, and the HIV and hepatitis C screens are negative. Nothing to change. Still hoping you'll get that cardiology appointment on the calendar."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and shortness of breath with exertion",
+          "vitals": {
+            "bp": [
+              146,
+              39
+            ],
+            "hr": 71,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 79.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-23T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 209
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-23T16:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-23T16:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.74
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-23T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-23T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2024",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "New murmur, wide pulse pressure, exertional dyspnea in Marfan syndrome; urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-01-23T16:30",
+              "author": "PCP",
+              "body": "S: Came in because he's been running out of gas. Over the last few months more tired than usual and gets winded climbing to the 4th floor stacks, which never used to bother him. Every so often feels his heart racing, and at night lying down he can feel it pounding in his chest. No chest pain, no fainting, no leg swelling, no fevers. Sleeping ok.\nUnrelated: had a molar pulled earlier this month; the dentist had him take an antibiotic beforehand because of the Marfan.\nStill hasn't seen cardiology.\n\nMeds: metoprolol succinate 50 daily, ASA 81. NKDA.\n\nO: BP and HR as charted -- note diastolic is low, pulse pressure wide. Pulses bounding at the wrists. Heart: there's a murmur today along the left sternal border that I did not hear on prior exams. Lungs clear, no crackles. No JVD. No peripheral edema. Thin, long limbs.\n\nA/P: Exertional fatigue/dyspnea with palpitations, new murmur and wide pulse pressure in a 26 yo with Marfan -- worried about the aortic root and aortic valve. Urgent cardiology referral placed today, and I called their office myself to get him in within 2 weeks. CBC, BMP, TSH to look for anything else contributing. Told him no heavy lifting, and to go straight to the ED for chest, back or abdominal pain, fainting, or sudden shortness of breath. He understood and seemed more motivated this time."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              50
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-01-25a",
+          "kind": "portal_message",
+          "start": "2024-01-25T08:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-01-25T08:10",
+              "author": "PCP",
+              "body": "Blood count, kidney function, electrolytes and thyroid all came back normal, so no anemia or thyroid problem behind the fatigue. Cardiology has you on 2/6 -- please keep that one."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-01-25T12:44",
+              "author": "patient",
+              "body": "Got it, it's in my calendar. Thanks for calling them."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "specialist_visit",
+          "start": "2024-02-06T10:30",
+          "service": "Cardiology",
+          "reason": "Fatigue, exertional dyspnea and palpitations in Marfan syndrome",
+          "vitals": {
+            "bp": [
+              140,
+              45
+            ],
+            "hr": 90,
+            "spo2": 96,
+            "weight_kg": 80.2,
+            "height_cm": 193.0
+          },
+          "orders": [
+            {
+              "id": "cards-ref-2024",
+              "action": "done",
+              "date": "2024-02-06T10:30"
+            },
+            {
+              "id": "echo-2024",
+              "action": "placed",
+              "order": "Transthoracic echocardiogram",
+              "category": "imaging",
+              "to": "Cardiology",
+              "reason": "Murmur, wide pulse pressure, Marfan syndrome"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2024-02-08T09:00",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY GROUP -- CONSULTATION\nDate of service: 02/06/2024\nReferring: primary care physician\n\nReason for consultation: fatigue and exertional dyspnea, Marfan syndrome.\n\nHistory: 26-year-old graduate student with FBN1-positive Marfan syndrome and bilateral lens subluxation, without cardiology follow-up since early college. Over several months he has noticed progressive tiredness and breathlessness with exertion. He describes intermittent palpitations and an uncomfortable awareness of a forceful heartbeat when he lies flat. No exertional chest pain or syncope.\n\nMedications: metoprolol succinate 50 mg daily; aspirin 81 mg daily.\nAllergies: no known drug allergies.\nSurgical history: dental extraction January 2024 with antibiotic prophylaxis from his dentist.\nFamily history: father with Marfan syndrome who underwent prophylactic aortic root replacement at 38; paternal uncle died suddenly at 31, presumed dissection; mother well; younger sister with Marfan syndrome, under surveillance.\nSocial: never smoker; alcohol 1-2 drinks per month; graduate student in library sciences.\n\nExamination: BP 140/45 mmHg. Pulse 90, bounding character. Height 193 cm. Arachnodactyly; arm span greater than height. A murmur is present on auscultation. Fundi normal on fundoscopy. Lungs clear. No edema.\n\nImpression: Marfan syndrome with symptoms and a hyperdynamic circulation that raise concern for aortic root enlargement with aortic valve incompetence.\n\nPlan: transthoracic echocardiogram, scheduled 2/21. Continue current medications. Follow-up after the study.\n\nThank you for this referral.\nCardiology"
+            }
+          ],
+          "measure": [
+            "weight_kg",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "imaging",
+          "start": "2024-02-21T13:00",
+          "service": "Cardiology",
+          "reason": "Transthoracic echocardiogram",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-02-21T13:00",
+              "text": "Indication: Marfan syndrome, murmur, wide pulse pressure.\nTechnically adequate study.\nLeft ventricle: normal size and wall thickness. Normal systolic function, LVEF 60% by biplane method. No regional wall motion abnormality.\nRight ventricle: normal size and function.\nAtria: normal size.\nAortic valve: trileaflet. Chronic severe aortic regurgitation, central jet.\nAortic root: dilated, 4.2 cm at the sinuses, measured leading edge to leading edge in end-diastole. Ascending aorta normal caliber.\nMitral valve: prolapse of the mitral leaflets with mild mitral regurgitation.\nTricuspid and pulmonic valves: normal.\nPericardium: no effusion.\nIVC normal size with normal respiratory variation.",
+              "conclusion": "Dilated aortic root 4.2 cm. Chronic severe aortic regurgitation. Mitral valve prolapse with mild mitral regurgitation. Normal LV size and function, LVEF 60%.",
+              "issued": "2024-02-22T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "echo-2024",
+              "action": "done",
+              "date": "2024-02-21T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Echocardiogram report received",
+              "date": "2024-02-23T09:30",
+              "author": "MA",
+              "body": "Echo report from outside cardiology received by fax and attached. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-29a",
+          "kind": "specialist_visit",
+          "start": "2024-02-29T14:00",
+          "service": "Cardiology",
+          "reason": "Echocardiogram review",
+          "conditions": [
+            {
+              "label": "Thoracic aortic aneurysm without rupture",
+              "action": "diagnosed",
+              "onset": "2024-02-21",
+              "note": "dilated aortic root 4.2 cm"
+            },
+            {
+              "label": "Nonrheumatic aortic (valve) insufficiency",
+              "action": "diagnosed",
+              "onset": "2024-02-21",
+              "note": "chronic severe",
+              "icd10": "I35.1"
+            },
+            {
+              "label": "Mitral valve prolapse",
+              "action": "diagnosed",
+              "onset": "2024-02-21",
+              "note": "mild mitral regurgitation"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic severe aortic regurgitation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              139,
+              49
+            ],
+            "hr": 85
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2024-03-04T08:40",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY GROUP -- FOLLOW-UP\nDate of service: 02/29/2024\n\nSilas returns to review his echocardiogram of 2/21.\n\nFindings reviewed with him: aortic root measures 4.2 cm at the sinuses; chronic severe aortic regurgitation; mitral valve prolapse with mild mitral regurgitation; left ventricle normal in size with LVEF 60%.\n\nAssessment:\n1. Marfan syndrome (FBN1) with aortic root aneurysm, 4.2 cm.\n2. Chronic severe aortic regurgitation.\n3. Mitral valve prolapse, mild MR.\n\nPlan:\n- Start lisinopril 10 mg daily for afterload reduction; continue metoprolol succinate 50 mg daily and aspirin 81 mg daily.\n- Avoid heavy lifting, straining and competitive or contact sports.\n- BMP with his primary care physician in 3-4 weeks after starting lisinopril.\n- Repeat echocardiogram in 6 months.\n- Go to an emergency department for sudden chest, back or abdominal pain, or fainting.\n\nMedications at end of visit: metoprolol succinate 50 mg daily, lisinopril 10 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\n\nCardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "portal_message",
+          "start": "2024-03-05T21:15",
+          "reason": "Question about echo",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Echo results",
+              "date": "2024-03-05T21:15",
+              "author": "patient",
+              "body": "Cardiology told me my aortic root is 4.2 and the valve is leaking a lot. My dad's was replaced but he was older. Should I be worried? They started me on lisinopril."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Echo results",
+              "date": "2024-03-06T07:50",
+              "author": "PCP",
+              "body": "Good questions. I got their letter. The root is enlarged and the valve leak is significant, which is why they added lisinopril alongside your metoprolol and want a repeat echo in 6 months -- that's how they'll watch it. Let's go over it in person when you come in for the blood test in a few weeks; I put you down for 3/26. Same warning signs as before: sudden chest or back pain or fainting means the ER, not a message."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "office_visit",
+          "start": "2024-03-26T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology; lab check on lisinopril",
+          "vitals": {
+            "bp": [
+              118,
+              55
+            ],
+            "hr": 85,
+            "spo2": 97,
+            "weight_kg": 79.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-26T11:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-26T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-26T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-26T12:05",
+              "author": "PCP",
+              "body": "Follow-up after his cardiology workup. Echo 2/21: aortic root 4.2 cm, chronic severe AR, MVP with mild MR, EF 60%. Lisinopril 10 added 2/29.\n\nTaking all three meds. No cough, no lightheadedness on standing. Energy about the same, still some breathlessness on stairs. No chest or back pain.\n\nBP better than January though diastolic still low, as expected with the leak. Diastolic murmur LSB. Lungs clear. No edema.\n\nWe spent most of the visit on what this means -- the root and valve will be followed with echoes, and I explained the reasons for no heavy lifting. He asked about his sister; told him her cardiologist is the right person for her screening. BMP today for K and creatinine on the ACE inhibitor.\n\nProblem list updated with cardiology's diagnoses. Continue metoprolol succinate 50, lisinopril 10, aspirin 81. Physical in the fall."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              54
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "portal_message",
+          "start": "2024-03-28T09:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2024-03-28T09:20",
+              "author": "RN",
+              "body": "Per PCP: potassium and kidney function normal on lisinopril. Continue as prescribed."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "specialist_visit",
+          "start": "2024-08-21T09:00",
+          "service": "Cardiology",
+          "reason": "Six-month echocardiogram and follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              55
+            ],
+            "hr": 84
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-08-21T09:00",
+              "text": "Comparison: 02/21/2024.\nLeft ventricle normal size, normal systolic function, LVEF 60%.\nAortic valve trileaflet with severe aortic regurgitation, unchanged.\nAortic root 4.2 cm at the sinuses, unchanged. Ascending aorta normal caliber.\nMitral valve prolapse with mild mitral regurgitation, unchanged.\nRight heart normal. No pericardial effusion.",
+              "conclusion": "Stable aortic root 4.2 cm. Severe aortic regurgitation, unchanged. MVP with mild MR. LVEF 60%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2024-08-26T14:10",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY GROUP -- FOLLOW-UP\nDate of service: 08/21/2024\n\nMarfan syndrome, aortic root aneurysm, severe AR, MVP. Tolerating lisinopril without side effects. No chest pain or syncope.\n\nEcho today compared with February: root 4.2 cm, unchanged; severe AR, unchanged; LV size normal, EF 60%; MVP with mild MR.\n\nPlan: continue metoprolol succinate 50 mg daily, lisinopril 10 mg daily, aspirin 81 mg daily. Activity guidance unchanged. Echo and visit in one year.\nAllergies: NKDA.\n\nCardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "pharmacy",
+          "start": "2024-09-10T10:05",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request",
+              "date": "2024-09-10T10:05",
+              "author": "RN",
+              "body": "eRx requests for metoprolol succinate ER 50 mg, lisinopril 10 mg, aspirin EC 81 mg, 90 days each. Current per last cardiology letter. Approved x3 refills each per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-11a",
+          "kind": "nurse_visit",
+          "start": "2024-10-11T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              132,
+              57
+            ],
+            "hr": 81
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-11T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-11T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-11T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2024-10-11T16:30",
+              "author": "RN",
+              "body": "Flu (trivalent) given L arm and 2024-25 covid given R arm. Pt well, no prior reactions. Observed 15 minutes, left in good condition. Reminded him his physical is next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "annual_physical",
+          "start": "2024-11-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              136,
+              51
+            ],
+            "hr": 86,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 80.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-07T08:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-07T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 215
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-11-07T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-07T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-11-07T09:30",
+              "author": "PCP",
+              "body": "Yearly exam. Finishing coursework, thesis on archival metadata. Seen by cardiology in August -- echo unchanged (root 4.2 cm, severe AR, MVP mild MR, EF 60%), no med changes, next echo August 2025.\n\nFeels about the same; tires on long stair climbs, otherwise fine. No chest pain, syncope, orthopnea. Stress manageable, PHQ-9 2. Still hasn't established with an eye doctor; vision unchanged with glasses.\n\nMeds: metoprolol succinate 50, lisinopril 10, aspirin 81. NKDA. Flu and covid done in October.\n\nExam: well-appearing. BP with wide pulse pressure as before. Early diastolic murmur along the left sternal border. Lungs clear. Abdomen soft, nontender. No edema. Long extremities. Skin normal.\n\nA/P\n- Marfan with root aneurysm, severe AR, MVP: stable per cardiology; continue meds and restrictions.\n- Ectopia lentis: nudged again about an ophthalmology exam.\n- Health maintenance: CMP, CBC. Vaccines current.\nReturn in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "ed_visit",
+          "start": "2025-02-12T07:05",
+          "end": "2025-02-12T10:40",
+          "service": "Emergency Medicine",
+          "reason": "Sudden change in vision, right eye",
+          "vitals": {
+            "bp": [
+              130,
+              70
+            ],
+            "hr": 78,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-02-12T07:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-02-14T13:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY PHYSICIAN DOCUMENTATION -- outside hospital\nArrival 02/12/2025 07:05\n\nCC: R eye vision changed this AM\n\nHPI: 27M with Marfan syndrome and known bilateral lens subluxation, evaluated by cardiology about a year ago for aortic regurgitation. Woke up, rubbed his right eye lightly, and his vision in that eye abruptly shifted -- blurry and \"off.\" No injury beyond the rub. No eye pain. No headache.\n\nPMH: Marfan syndrome (FBN1); aortic root aneurysm 4.2 cm; chronic severe AR; MVP with mild MR, diagnosed last year; bilateral ectopia lentis. Tall with long extremities.\nPSH: dental extraction 2024 (antibiotic prophylaxis).\nMeds: metoprolol succinate 50 mg daily, lisinopril 10 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFHx: father Marfan, prophylactic root replacement at 38; paternal uncle sudden death at 31, presumed dissection; mother healthy; younger sister with Marfan.\nSHx: never smoker; EtOH 1-2/month; graduate student, library sciences.\n\nExam:\nVS: BP 130/70, HR 78, afebrile.\nGeneral: 6'4\", arm span exceeds height, comfortable.\nEyes: right lens displaced up and toward the nose. Conjunctiva white, no injection. Fluorescein: no corneal abrasion. No redness.\nCV: midsystolic click, then a late systolic murmur at the apex.\nRemainder of exam unremarkable.\n\nMDM: painless acute visual change from progression of known right lens subluxation after minor rubbing. No signs of trauma, globe injury or angle closure. Habitus marfanoid, consistent with his known diagnosis.\n\nImpression: right ectopia lentis, acute progression of subluxation.\nDisposition: home. Eye shield not required. Ophthalmology referral for urgent visit, appointment arranged for 2/14. Return for eye pain, red eye, worsening vision, flashes, floaters or a curtain over vision.\n\nEmergency medicine attending"
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-02-14a",
+          "kind": "specialist_visit",
+          "start": "2025-02-14T10:15",
+          "service": "Ophthalmology",
+          "reason": "Right lens subluxation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Consultation",
+              "date": "2025-02-19T15:00",
+              "author": "ophthalmology",
+              "body": "Ophthalmology consultation, 02/14/2025. Seen at the request of the emergency department; copy to primary care.\n\nThank you for sending Mr. Morrow, a 27-year-old with Marfan syndrome and bilateral ectopia lentis since childhood, seen two days ago in the ED after his right vision shifted on rubbing the eye. No pain.\n\nExamination: right lens subluxated superonasally, more than the left. The left lens subluxation appears stable from his description of childhood findings. Both lenses remain behind the iris; no lens in the anterior chamber or vitreous. Intraocular pressure normal in both eyes. Anterior chambers quiet. Dilated fundus exam: retina attached in both eyes, no tears or holes, optic nerves healthy.\n\nAssessment: bilateral ectopia lentis, recent progression on the right.\n\nPlan: refraction updated and new spectacle prescription provided. Observation. He should avoid rubbing his eyes. Lens surgery would be considered only if his vision cannot be adequately corrected with glasses. Return immediately for flashes, new floaters or a curtain in his vision. Recheck in 6 months.\n\nMeds reviewed: metoprolol succinate, lisinopril, aspirin. Allergies: NKDA.\n\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "office_visit",
+          "start": "2025-02-25T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for vision change",
+          "vitals": {
+            "bp": [
+              134,
+              48
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 79.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-25T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-25T14:15",
+              "author": "PCP",
+              "body": "ED f/u. 2/12 R eye vision change after rubbing it -- ED found the right lens shifted further superonasally, no abrasion. Ophtho saw him 2/14: both lenses behind the iris, pressures normal, retina attached, new glasses ordered, observation.\n\nToday: right eye still a bit blurry until the new glasses come in, otherwise fine. No pain, no flashes or floaters. Cardiac: no new symptoms, same mild stair intolerance.\n\nPulse pressure still wide. Diastolic murmur at LSB. Lungs clear.\n\nA/P: Ectopia lentis with R progression -- glad he finally has an ophthalmologist; keep the 6 month recheck. Reviewed the retinal detachment warning signs again. Cardiac issues unchanged, cardiology echo due in August. Meds same."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "portal_message",
+          "start": "2025-06-17T19:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills before I travel",
+              "date": "2025-06-17T19:30",
+              "author": "patient",
+              "body": "I'm going to be at my parents' for most of July. Could the pharmacy fill all 3 of my meds early so I don't run out?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills before I travel",
+              "date": "2025-06-18T09:05",
+              "author": "RN",
+              "body": "Called the pharmacy and they will do a vacation override on the metoprolol, lisinopril and aspirin. Should be ready by tomorrow afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "specialist_visit",
+          "start": "2025-08-20T08:30",
+          "service": "Cardiology",
+          "reason": "Annual echocardiogram and follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              56
+            ],
+            "hr": 80
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-08-20T08:30",
+              "text": "Comparison: 08/21/2024.\nLV normal in size with normal wall motion; LVEF 60%.\nTrileaflet aortic valve; severe aortic regurgitation, unchanged from prior.\nAortic root 4.2 cm at the sinuses, no interval change. Ascending aorta not dilated.\nMitral valve prolapse, mild MR.\nNormal RV size and function. No effusion.",
+              "conclusion": "No interval change: aortic root 4.2 cm, severe AR, MVP with mild MR, LVEF 60%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2025-08-25T11:45",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY GROUP -- ANNUAL FOLLOW-UP\nDate of service: 08/20/2025\n\nInterval: ED visit in February for right lens subluxation, managed by ophthalmology. No cardiac events. Denies chest pain or syncope.\n\nEcho today: aortic root 4.2 cm, unchanged; severe AR, unchanged; MVP with mild MR; LVEF 60%.\n\nAssessment/plan: Marfan syndrome with stable root aneurysm and severe AR. Continue metoprolol succinate 50 mg, lisinopril 10 mg, aspirin 81 mg daily. Activity restrictions as before. Echo and visit in 12 months.\nAllergies: NKDA.\n\nCardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              125,
+              44
+            ],
+            "hr": 73
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-09T12:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-10-09T12:30",
+              "author": "RN",
+              "body": "Came over on his lunch hour for this season's flu and covid. Our stock this season is Moderna. Flu L deltoid, covid R deltoid. Tolerated well, observed 15 min."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "telephone",
+          "start": "2025-11-06T08:40",
+          "reason": "Reschedule",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule physical",
+              "date": "2025-11-06T08:40",
+              "author": "front desk",
+              "body": "Pt has a thesis meeting tomorrow morning, moved his physical from 11/7 to 11/13 at 9:20."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "annual_physical",
+          "start": "2025-11-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              56
+            ],
+            "hr": 77,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 79.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-13T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-13T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.81
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-13T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-13T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-13T10:10",
+              "author": "PCP",
+              "body": "Annual. Defending his thesis in the spring. Cardiology in August: no change on echo (root 4.2, severe AR, MVP mild MR, EF 60%), meds the same, next echo in a year. Vision fine with the new glasses.\n\nROS: tires with long stair climbs as before; no chest or back pain, no fainting, no palpitations lately. Mood fine, PHQ-2 1.\nMeds: metoprolol succinate 50, lisinopril 10, aspirin 81. NKDA. Flu/covid done 10/9.\n\nExam: tall, thin, NAD. Eyes: glasses, no redness. Heart: diastolic murmur at LSB, regular rhythm. Lungs clear. Abd benign. Ext no swelling. Skin clear.\n\nA/P: chronic issues stable and followed by cardiology and ophthalmology. Labs CMP/CBC. Reinforced: ED for any sudden severe chest, back or belly pain. Return in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "ed_visit",
+          "start": "2026-02-13T09:31",
+          "end": "2026-02-13T13:55",
+          "service": "Emergency Medicine",
+          "reason": "Sudden severe upper back pain",
+          "conditions": [
+            {
+              "label": "Dissection of ascending aorta",
+              "action": "diagnosed",
+              "onset": "2026-02-13",
+              "note": "acute type A, root through ascending aorta into proximal arch",
+              "icd10": "I71.010"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-02-13T09:36",
+              "bp": [
+                88,
+                40
+              ],
+              "hr": 112,
+              "rr": 22,
+              "temp_c": 36.7,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-13T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T09:50",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-02-13T09:58",
+              "text": "Portable AP chest. The mediastinum is widened. Lungs are clear. No pneumothorax. No pleural effusion. Bony thorax intact.",
+              "conclusion": "Widened mediastinum."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-02-13T10:40",
+              "text": "CT angiography of the chest with IV contrast, dissection protocol.\nAn intimal flap begins at the aortic root and extends through the ascending aorta into the proximal aortic arch. Aortic root measures 4.2 cm. The descending thoracic aorta is normal in caliber without a flap. No pericardial effusion. No mediastinal hematoma beyond the aortic wall. Lungs clear; no pleural effusion.",
+              "conclusion": "Acute type A aortic dissection from the aortic root into the proximal arch."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-13T09:31"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-02-17T10:30",
+              "author": "emergency medicine",
+              "body": "OUTSIDE HOSPITAL ED -- PHYSICIAN NOTE\nArrived by ambulance 02/13/2026 09:31\n\nChief complaint: acute upper back pain.\n\nHPI: 28-year-old man with Marfan syndrome and a known thoracic aortic root aneurysm, followed for aortic regurgitation since 2024 and seen here in 2025 for a lens problem in his right eye. Brought in after abrupt, severe pain between the shoulder blades that started while he was sitting at his desk. He calls it sharp and ripping.\n\nMeds: metoprolol succinate 50 mg, lisinopril 10 mg, aspirin 81 mg daily. NKDA.\nPSH: dental extraction 2024.\nFHx: father with Marfan, aortic root replaced at 38; paternal uncle died suddenly at 31, thought to be dissection; sister with Marfan.\nSocial: never smoker; rare alcohol; graduate student.\n\nExam: Temp 36.7 C. BP 88/40 right arm, 112/44 left arm. HR 112. Tall, thin, limbs and fingers disproportionately long. Heart: high-pitched early diastolic decrescendo murmur, loudest at the left sternal border. Lungs clear.\n\nCourse: two large-bore IVs. Portable chest film with a wide mediastinum. Cardiothoracic surgery at the tertiary center called before CT. CT angiogram: acute type A dissection from the root into the proximal arch. CBC, BMP and high-sensitivity troponin within normal limits. Aspirin held. Accepted in transfer by cardiac surgery; left by critical care transport at 13:55.\n\nDiagnosis: acute type A aortic dissection.\nAllergies: NKDA.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-13b",
+          "kind": "hospital_admission",
+          "start": "2026-02-13T15:10",
+          "end": "2026-02-20T11:30",
+          "service": "Cardiac Surgery",
+          "reason": "Acute type A aortic dissection",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for incision pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-sternotomy pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary -- Cardiac Surgery",
+              "date": "2026-02-23T08:15",
+              "author": "cardiac surgery",
+              "body": "TERTIARY CARE CENTER -- CARDIAC SURGERY DISCHARGE SUMMARY\nAdmitted 02/13/2026 (transfer from outside ED). Discharged 02/20/2026.\n\nPrincipal diagnosis: acute type A aortic dissection.\nBackground: Marfan syndrome (FBN1); aortic root aneurysm 4.2 cm; chronic severe aortic regurgitation; mitral valve prolapse with mild MR; bilateral ectopia lentis.\n\nOperation 02/13/2026: emergency valve-sparing aortic root replacement (reimplantation) with hemiarch replacement, via median sternotomy, under cardiopulmonary bypass with circulatory arrest for the hemiarch. Native aortic valve preserved. Intraoperative TEE after repair: trace aortic regurgitation, LVEF 55%.\n\nHospital course: extubated postoperative day 1. ICU through day 2, then step-down. Chest tubes out day 3. Pain controlled with oral acetaminophen. Ambulating independently by day 4. Uneventful recovery.\n\nDischarge medications:\n- metoprolol succinate ER 50 mg daily\n- lisinopril 10 mg daily\n- aspirin 81 mg daily (resumed)\n- acetaminophen 1000 mg every 8 hours as needed for pain\n\nAllergies: NKDA.\n\nInstructions: sternal precautions -- no lifting over 10 lb, no pushing or pulling, no driving for 6 weeks. Keep the incision clean and dry. Referral placed to outpatient cardiac rehabilitation. Cardiac surgery clinic in about 5 weeks. Primary care within 2 weeks. Call or return for fever, wound drainage, chest or back pain, or shortness of breath.\n\nCardiac surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "telephone",
+          "start": "2026-02-23T10:45",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-02-23T10:45",
+              "author": "RN",
+              "body": "Spoke with pt, staying with his parents for now. Home since Friday after emergency aortic root/hemiarch repair for a type A dissection. Pain 3/10, using acetaminophen once or twice a day. Incision dry, no redness or drainage. No fever. Walking around the house several times a day. Has all 3 heart meds plus Tylenol, reviewed against discharge list -- matches. Knows sternal precautions. Parents driving him. Booked with PCP 3/3, surgery clinic letter says late March. Reviewed when to call 911."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after aortic dissection repair",
+          "conditions": [
+            {
+              "label": "Thoracic aortic aneurysm without rupture",
+              "action": "resolved",
+              "note": "aortic root replaced 2/13/2026"
+            },
+            {
+              "label": "Nonrheumatic aortic (valve) insufficiency",
+              "action": "resolved",
+              "note": "valve-sparing repair 2/13/2026; trace residual AR",
+              "icd10": "I35.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              73
+            ],
+            "hr": 83,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 78.3
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-03T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-03-03T11:25",
+              "author": "PCP",
+              "body": "Hospital follow-up. Discharge summary and outside ED record reviewed.\n2/13 sudden ripping interscapular pain at his desk; outside ED: BP 88/40 R, 112/44 L, HR 112, new early diastolic murmur, wide mediastinum on CXR; CTA type A dissection root to proximal arch. Transferred, emergency valve-sparing root reimplantation + hemiarch the same evening. TEE afterward trace AR, EF 55%. Home 2/20.\n\nNow: dad drove him in. Sore at the sternum, acetaminophen a couple times a day. Walking 15-20 min twice daily. First cardiac rehab session was yesterday. No fever, no wound drainage, no new back or chest pain, no shortness of breath.\nMeds: metoprolol succinate 50, lisinopril 10, aspirin 81, acetaminophen PRN. Matches the discharge list.\n\nExam: looks tired but well. BP and HR as charted -- pulse pressure normal now. Sternotomy incision intact, edges together, no erythema or drainage; sternum stable. Heart regular, I don't hear the old diastolic murmur. Lungs clear. No edema. Weight down a few pounds from the hospital stay.\n\nA/P\n1. Type A aortic dissection s/p valve-sparing root + hemiarch replacement -- recovering on schedule. Updated the problem list: root aneurysm and AR marked resolved with the repair; dissection kept. Continue meds. Sternal precautions until 6 weeks. Surgery clinic 3/25.\n2. Marfan syndrome / MVP / ectopia lentis -- unchanged.\n3. Spent time on how he's coping -- shaken, but has family around; he knows to reach out.\nSee me again in about 5-6 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              116,
+              70
+            ],
+            "weight_kg": 77.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "specialist_visit",
+          "start": "2026-03-25T13:30",
+          "service": "Cardiac Surgery",
+          "reason": "Postoperative visit",
+          "vitals": {
+            "bp": [
+              111,
+              74
+            ],
+            "hr": 76
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiac Surgery Postoperative Visit",
+              "date": "2026-03-30T09:10",
+              "author": "cardiac surgery",
+              "body": "Cardiac surgery clinic, 03/25/2026.\n\nSix weeks after emergency valve-sparing aortic root replacement with hemiarch for acute type A dissection. Progressing well in cardiac rehabilitation. Minimal sternal discomfort; off acetaminophen most days.\n\nExam: sternotomy healed, sternum stable. Regular rhythm. Lungs clear.\n\nPlan: may advance activity per cardiac rehab and resume driving. Lifelong avoidance of heavy lifting and straining (isometric exertion). Continue metoprolol succinate 50 mg, lisinopril 10 mg, aspirin 81 mg. Surveillance CT angiogram of the chest at about 6 months after surgery; ongoing care with his cardiologist.\nAllergies: NKDA.\n\nCardiac surgery"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "office_visit",
+          "start": "2026-04-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after aortic repair",
+          "vitals": {
+            "bp": [
+              131,
+              61
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 77.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-10T14:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-10T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 218
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-10T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-10T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-10T14:50",
+              "author": "PCP",
+              "body": "8 wk out from the type A repair. Surgery clinic 3/25: healed, cleared to drive and progress through rehab, CTA around August.\n\nDrove himself today. Back in his own apartment. Rehab 3x/week, says he feels better than he did before the surgery -- more energy on the stairs. Not taking acetaminophen anymore. No chest or back pain, no palpitations, no swelling. Thesis defense pushed to summer, his advisor has been flexible.\nMeds: metoprolol succinate 50, lisinopril 10, aspirin 81. NKDA.\n\nExam: well. Sternotomy well healed. RRR, soft systolic click at the apex, no diastolic murmur. Lungs clear. No edema.\n\nA/P: s/p aortic dissection repair, doing well. BMP and CBC today. Keep cardiology and CTA in summer. Annual physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "portal_message",
+          "start": "2026-04-13T08:25",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-04-13T08:25",
+              "author": "PCP",
+              "body": "Hi Silas -- kidney function, potassium and blood counts from Friday are all normal, including your hemoglobin after the surgery. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T11:00",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request",
+              "date": "2026-05-19T11:00",
+              "author": "RN",
+              "body": "Pharmacy requesting 90-day refills: metoprolol succinate ER 50 mg, lisinopril 10 mg, aspirin EC 81 mg. Last BMP 4/10 normal. Approved per standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "imaging",
+          "start": "2026-07-08T07:40",
+          "service": "Radiology",
+          "reason": "Surveillance after aortic repair",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-07-08T07:40",
+              "text": "CT angiography of the chest with IV contrast.\nComparison: 02/13/2026.\nPostoperative changes of aortic root replacement and hemiarch graft. Graft intact, without contrast leak or pseudoaneurysm. Native distal aortic arch and descending thoracic aorta normal in caliber, no residual dissection flap. Sternotomy wires intact. No pericardial or pleural effusion. Lungs clear.",
+              "conclusion": "Intact aortic root and hemiarch repair. No residual dissection."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Outside CT angiogram received",
+              "date": "2026-07-21T15:00",
+              "author": "MA",
+              "body": "Surveillance CTA chest from 7/8 received with the cardiology letter. Scanned to Media and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "specialist_visit",
+          "start": "2026-07-16T10:00",
+          "service": "Cardiology",
+          "reason": "Follow-up after aortic repair",
+          "vitals": {
+            "bp": [
+              114,
+              78
+            ],
+            "hr": 74
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-07-16T10:00",
+              "text": "Comparison: 08/20/2025 and intraoperative TEE 02/13/2026.\nStatus post valve-sparing aortic root replacement. Native trileaflet aortic valve with trace aortic regurgitation. Root graft well seated.\nLV normal size, LVEF 55%.\nMitral valve prolapse with mild MR.\nRV normal. No pericardial effusion.",
+              "conclusion": "Trace AR after valve-sparing root replacement. LVEF 55%. MVP with mild MR."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2026-07-21T14:30",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY GROUP -- FOLLOW-UP\nDate of service: 07/16/2026\n\nFive months after emergency valve-sparing root and hemiarch replacement for type A dissection. Finished cardiac rehab. Feels well, no chest or back pain.\n\nCTA 7/8: repair intact, no residual dissection, distal aorta normal caliber.\nEcho today: trace AR, LVEF 55%, MVP with mild MR.\n\nPlan: continue metoprolol succinate 50 mg, lisinopril 10 mg and aspirin 81 mg daily. Lifelong activity restrictions as discussed. Yearly imaging of the aorta, alternating echo and CTA. Return in 12 months.\nAllergies: NKDA.\n\nCardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Dissection of ascending aorta|I71.010": {
+        "code": "I71.010",
+        "display": "Dissection of ascending aorta",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ectopia lentis, bilateral|Q12.1": {
+        "code": "Q12.1",
+        "display": "Congenital displaced lens",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Nonrheumatic aortic (valve) insufficiency|I35.1": {
+        "code": "I35.1",
+        "display": "Nonrheumatic aortic (valve) insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

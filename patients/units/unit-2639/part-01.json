@@ -1,0 +1,223 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002639",
+      "given": "Silas",
+      "family": "Morrow",
+      "birth_date": "1997-07-25",
+      "address_line": "27 Silver Street, Apt 3",
+      "phone": "+1-802-555-0182",
+      "email": "silas.morrow@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with genetically confirmed Marfan syndrome and bilateral ectopia lentis who joins in 2022 on metoprolol and aspirin. A 2024 echo finds a 4.2 cm aortic root and severe aortic regurgitation managed medically; a 2025 right lens subluxation and a February 2026 type A dissection repaired with a valve-sparing root and hemiarch replacement follow.",
+      "events": [
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-09-06T10:20",
+              "body": "Caller is a grad student who moved to the area for his library science program, still on his dad's PPO. Says he has a genetic connective tissue condition and hasn't had a regular doctor since college health. Booked new patient slot 9/14 at 2:40. Mailed intake packet and records release form for his old pediatric cardiology office."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T14:40",
+          "end": "2022-09-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Marfan syndrome, unspecified", "action": "history", "onset": "2012-06-01", "note": "FBN1 pathogenic variant on family testing in his teens"},
+            {"label": "Ectopia lentis, bilateral", "icd10": "Q12.1", "action": "history", "onset": "2005-01-01", "note": "bilateral lens subluxation since childhood; wears glasses"}
+          ],
+          "medications": [
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Marfan syndrome"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 80.0, "height_cm": 193.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Graduate student, library sciences"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-14T14:40"}
+          ],
+          "orders": [
+            {"id": "cards-ref-2022", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Marfan syndrome, aortic surveillance overdue"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-14T16:05",
+              "body": "25 y/o man here to establish. Started a master's in library sciences this fall, lives in an apartment near downtown.\n\nHx: Marfan syndrome. Dad was diagnosed in his late 30s and had his aortic root replaced prophylactically at 38 (composite valve-graft); the family was tested after that and Silas carries the same FBN1 variant. Younger sister also positive, followed by her own cardiologist. Paternal uncle died suddenly at 31 -- family has always assumed a dissection. Mom healthy, tested negative.\nBoth lenses have been partly dislocated since he was a kid; wears glasses, eye exams were through a pediatric ophthalmologist and lapsed after high school.\nSaw a pediatric cardiologist through his teens who put him on metoprolol succinate 50 and a baby aspirin. Thinks his last echo was freshman year of college. No echo or CT since. Feels fine. No chest pain, no dyspnea, no palpitations, no syncope. Plays pickup ultimate occasionally.\n\nMeds: metoprolol succinate 50 mg daily, aspirin 81 mg daily.\nAllergies: none to medications.\nSurg: none.\nSocial: never smoker, a drink or two a month, no drugs. Single.\n\nExam: very tall, slender. Long fingers, arm span looks longer than height. Chest wall normal on inspection.Heart RRR, no murmur appreciated today. Lungs clear. Pupils round, glasses on. No edema.\n\nA/P\n1. Marfan syndrome with FBN1 variant -- he is overdue for aortic imaging by a few years. Referral to adult cardiology for echo and ongoing surveillance. Continue metoprolol. Talked about avoiding heavy lifting/straining and competitive contact sports until cardiology weighs in.\n2. Ectopia lentis -- suggested he get back in with an eye doctor; he'll look for one his insurance covers.\n3. Aspirin -- continue for now, will let cardiology decide whether it's needed.\nRecords release signed for the pediatric cardiology and genetics offices.\nPhysical in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-05T11:10",
+          "reason": "Prior records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior pediatric cardiology and genetics records",
+              "author": "MA",
+              "date": "2022-10-05T11:10",
+              "body": "Received 14 pages from the patient's former pediatric cardiology practice, including a clinical genetics letter. Summary for the chart: genetic testing in adolescence found a pathogenic FBN1 variant (same variant as father); clinical diagnosis of Marfan syndrome with bilateral ectopia lentis. Started on metoprolol succinate and low-dose aspirin by the pediatric cardiologist. Immunizations through childhood complete per their records. Last clinic note is from the patient's first year of college; no measurements abstracted. Scanned under Media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T08:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T08:57"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-20T08:55"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2022-10-20T09:05",
+              "body": "In for flu and the bivalent covid booster. No reactions to prior vaccines, feels well today. Flu vaccine L deltoid, Pfizer bivalent R deltoid. Waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-02a",
+          "kind": "portal_message",
+          "start": "2022-12-02T13:30",
+          "reason": "Referral follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology referral",
+              "author": "front desk",
+              "date": "2022-12-02T13:30",
+              "body": "Hi Silas, checking in -- the cardiology office says they left you two voicemails about scheduling the visit Dr. ordered in September. Their scheduling number is on your after-visit summary. Let us know if you need it resent."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cardiology referral",
+              "author": "patient",
+              "date": "2022-12-04T20:12",
+              "body": "Sorry, semester has been insane. I'll call them after finals."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "portal_message",
+          "start": "2023-03-08T07:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2023-03-08T07:45",
+              "body": "Can I get 90 day supplies of the metoprolol and aspirin? My old cardiologist's refills finally ran out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "PCP",
+              "date": "2023-03-08T12:20",
+              "body": "Done, both sent with a year of refills. Still want you to get in with cardiology -- want me to have the front desk call them for you?"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "telephone",
+          "start": "2023-04-12T09:15",
+          "reason": "Referral closed",
+          "orders": [
+            {"id": "cards-ref-2022", "action": "cancelled", "date": "2023-04-12T09:15"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "author": "MA",
+              "date": "2023-04-12T09:15",
+              "body": "Cardiology office closed the September referral -- never scheduled, past their 6 month window. LVM for pt. Will flag for PCP to readdress at physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "annual_physical",
+          "start": "2023-09-28T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-28T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-28T09:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-28T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-09-28T09:40", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-09-28T09:35"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-28T09:36"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-28T09:37"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-28T09:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-28T09:35"},
+            {"procedure": "Venipuncture", "performed": "2023-09-28T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-28T10:20",
+              "body": "Physical. Second year of the program, working at the campus archives part time. No complaints. Walks everywhere, no exercise limitation. Denies chest discomfort, shortness of breath, fainting, palpitations. Vision stable with his glasses; hasn't found an eye doctor yet.\n\nNever got to cardiology -- the referral timed out in the spring. We talked again about why it matters given his dad's and uncle's history. He says he'll call himself once his assistantship schedule settles; I gave him the number again rather than re-placing it today.\n\nMeds metoprolol succinate 50, aspirin 81, taking both. NKDA.\nPHQ-2 0.\n\nExam: tall thin young man in no distress. HEENT normal, glasses. Neck supple. Heart regular, I don't hear a murmur. Lungs clear bilaterally. Abd soft. Long fingers and limbs. Skin no rashes. Neuro grossly normal.\n\nPlan\n- CMP, CBC, lipids; one-time HIV and hep C screens -- he agreed.\n- Tdap today (unsure when last), flu, updated covid.\n- Cardiology: patient to self-schedule, gave number.\n- Eye care: list of in-network ophthalmologists in AVS.\n- See back in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-02a",
+          "kind": "portal_message",
+          "start": "2023-10-02T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-10-02T16:40",
+              "body": "Silas -- your blood work from the physical is all normal: kidney and liver tests, blood counts and cholesterol are fine, and the HIV and hepatitis C screens are negative. Nothing to change. Still hoping you'll get that cardiology appointment on the calendar."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

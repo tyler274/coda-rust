@@ -1,6 +1,6 @@
 # Workspace authenticates this exact public IP. No Gmail user, OAuth grant,
-# SMTP password or inbound listener is created. Only physician runtime sends
-# public traffic through NAT; SQL continues using the existing private route.
+# SMTP password is created. Physician and the optional mail adapter send
+# public traffic through the same NAT; SQL continues using the existing private route.
 variable "enable_physician_smtp_relay" {
   type        = bool
   default     = false

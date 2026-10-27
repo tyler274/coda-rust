@@ -1,0 +1,402 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002006",
+      "events": [
+        {
+          "id": "2024-04-19a",
+          "kind": "outside_records",
+          "start": "2024-04-19T10:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Scan results", "author": "patient", "date": "2024-04-12T18:20", "body": "FYI had my first follow up CT for the kidney on the 10th. Urology called, said everything looks clean, no sign of it coming back. Next one in a year or so."},
+            {"type": "Patient Message", "title": "RE: Scan results", "author": "PCP", "date": "2024-04-15T08:05", "body": "That's great news, thanks for letting me know. I'll ask them to send the report."},
+            {"type": "Outside Records", "title": "Urology surveillance letter", "author": "urology", "date": "2024-04-19T10:40", "body": "Outside urology. Mr. O'Connell had 6-month surveillance imaging after left partial nephrectomy for pT1b clear cell RCC on 4/10/2024: CT abdomen and pelvis with contrast and CT chest show postsurgical change at the left lower pole without recurrence, and no metastatic disease. Next imaging in about 18 months, then yearly. Creatinine stable."}
+          ]
+        },
+        {
+          "id": "2024-05-08a",
+          "kind": "office_visit",
+          "start": "2024-05-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-05-08T13:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-05-08T13:20"}, {"procedure": "Venipuncture", "performed": "2024-05-08T13:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-05-08T13:20", "body": "Routine BP follow-up. April surveillance CT clear per urology letter. Feels well, full duty. Scrotal ache comes and goes, mild. No stones, no gout.\nBP per flowsheet at goal. Heart and lungs clear. No edema.\nPlan: continue lisinopril 10 and HCTZ 12.5. BMP. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "ed_visit",
+          "start": "2024-08-14T16:30",
+          "end": "2024-08-14T19:10",
+          "service": "Emergency Medicine",
+          "reason": "right shoulder pain after fall",
+          "measure": ["bp", "hr"],
+          "reports": [
+            {"study": "Shoulder X-ray", "performed": "2024-08-14T17:05", "text": "Right shoulder, three views. No fracture. Glenohumeral and acromioclavicular joints congruent. No dislocation. Soft tissues unremarkable.", "conclusion": "No acute fracture or dislocation."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2024-08-14T16:30"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department note", "author": "emergency medicine", "date": "2024-08-16T08:45", "body": "Community hospital ED, 8/14/2024. Short note.\n\n48M with chronic right rotator cuff pathology, recurrent stones, history of clear cell RCC. Fell off a ladder two days ago and caught himself on his outstretched right arm, felt a sharp pain in the shoulder right away. Since then cannot lift things above shoulder height.\nMeds: lisinopril, HCTZ. Allergies: allopurinol, sulfa.\n\nRight shoulder tender anteriorly. Abduction and external rotation clearly weaker than the left. Passive range preserved. Distal neurovascular exam intact.\nXR right shoulder: no fracture or dislocation.\n\nImpression: right shoulder injury, likely rotator cuff re-injury.\nSling for comfort, acetaminophen. Follow up with orthopedics this week or next for MRI."}
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "office_visit",
+          "start": "2024-08-19T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, right shoulder",
+          "measure": ["bp", "hr", "weight_kg"],
+          "orders": [{"id": "ortho-2024", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "right shoulder re-injury after ladder fall"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-08-19T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-08-19T11:20", "body": "ED f/u. Fell from a ladder 8/12 onto the outstretched R arm, ED 8/14, x-ray negative. Still can't get the arm above his shoulder. Wearing the sling some of the day. Acetaminophen helps a little.\n\nExam: R shoulder tender anteriorly, weak abduction and external rotation, passive motion preserved. Neurovascularly intact.\n\nA/P: right shoulder injury on top of the known supraspinatus tear. Re-referred to the same orthopedics clinic; they will image. Work note: no overhead work or lifting over 10 lb with the right arm until seen. Acetaminophen, no NSAIDs."},
+            {"type": "Letter", "title": "Work note", "author": "PCP", "date": "2024-08-19T11:50", "body": "To whom it may concern: Matthew O'Connell is under my care for a right shoulder injury. Please restrict him from overhead work and from lifting more than 10 pounds with the right arm until cleared by orthopedics."}
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "specialist_visit",
+          "start": "2024-09-04T09:30",
+          "service": "Orthopedics",
+          "reason": "right shoulder injury",
+          "orders": [{"id": "ortho-2024", "action": "done", "date": "2024-09-04T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedic follow-up", "author": "orthopedics", "date": "2024-09-09T13:15", "body": "Outside orthopedics, shoulder clinic. Visit 9/4/2024.\nKnown to us from 2021 for a right supraspinatus tear treated with therapy. Now after a ladder fall 8/12 onto the outstretched arm, with pain and overhead weakness.\nExam: anterior shoulder tenderness, weak abduction and external rotation, passive range preserved.\nMRI right shoulder 8/30/2024: increased signal within the supraspinatus tendon consistent with a tear.\nPlan: physical therapy, light duty with no overhead lifting for 6 weeks, acetaminophen. Recheck if not progressing; surgical repair would be discussed then. Allergies: allopurinol, sulfa."}
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "portal_message",
+          "start": "2024-10-02T20:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Shoulder", "author": "patient", "date": "2024-10-02T20:30", "body": "PT going ok, arm getting stronger. Boss has me on the ground crew for now. Can I get the flu shot when I come in for my physical or should I do it sooner?"},
+            {"type": "Patient Message", "title": "RE: Shoulder", "author": "RN", "date": "2024-10-03T08:50", "body": "Sooner is better. We have flu and COVID shots on the nurse schedule most mornings. I booked you 10/16 at 7:30."}
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "nurse_visit",
+          "start": "2024-10-16T07:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-16T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-16T07:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-16T07:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2024-10-16T07:30", "body": "Flu (trivalent this season) L deltoid, 2024-25 COVID R deltoid, avoided the healing R shoulder for the flu shot. No reactions."}
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "annual_physical",
+          "start": "2024-11-20T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-11-20T13:45", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-20T13:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-11-20T13:45", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-11-20T13:00"}, {"procedure": "Venipuncture", "performed": "2024-11-20T13:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-11-20T13:00", "body": "Physical, 48M.\n\nThis year: right shoulder re-injured in an August ladder fall, MRI again showed the supraspinatus tear, PT through October, back to regular duty early November with some soreness. Kidney surveillance CT in April clear. No stones, no gout flares.\n\nMeds: lisinopril 10 mg, HCTZ 12.5 mg, acetaminophen prn. Allergies: sulfa; allopurinol.\nSH: construction, quit smoking 2018, 1-2 beers a week.\n\nExam: well. HEENT normal. Heart regular. Lungs clear. Abdomen soft, healed port scars. R shoulder: abduction full with a painful arc, strength 4+/5. Skin clear. No edema.\nPHQ-2 0, AUDIT-C 2.\n\nA/P:\n1. HTN at goal.\n2. RCC s/p partial nephrectomy, next CT per urology in fall 2025.\n3. R rotator cuff tear, improved after PT.\n4. Labs CMP, CBC, lipids. Flu and COVID done. Colonoscopy due 2032. Shingles vaccine at 50.\nRTC spring."}
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "pharmacy",
+          "start": "2025-03-12T09:50",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2025-03-12T09:50", "body": "Refill lisinopril 10 mg and HCTZ 12.5 mg. Labs 11/2024 normal. 90 days x1 sent. Pt due for spring BP visit, front desk to call."}
+          ]
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "ed_visit",
+          "start": "2025-04-07T21:40",
+          "end": "2025-04-08T02:30",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain",
+          "vitals": [{"time": "2025-04-07T21:45", "temp_c": 36.9, "bp": [150, 90], "hr": 98}],
+          "conditions": [
+            {"label": "Ureterolithiasis", "action": "diagnosed", "icd10": "N20.1", "onset": "2025-04-07", "note": "7 mm left ureterovesical junction stone, mild hydronephrosis"}
+          ],
+          "medications": [
+            {"drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth daily until the stone passes", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "reason": "medical expulsive therapy, ureteral stone"},
+            {"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "start", "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea", "dose": {"value": 4, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "nausea"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-07T22:00", "results": [{"test": "Creatinine", "value": 1.2}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-07T22:00", "results": [{"test": "White Blood Cells", "value": 12.0}]},
+            {"panel": "Urinalysis", "collected": "2025-04-07T22:05", "results": [{"test": "Urine Blood", "text": "Large"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-04-07T21:40"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department note", "author": "emergency medicine", "date": "2025-04-09T10:15", "body": "Regional hospital ED, 4/7/2025, abbreviated.\n\n48M, recurrent stones, prior left ureteral stone, s/p left partial nephrectomy for RCC. Six hours of severe left flank pain into the groin, nausea and vomiting. No fever or chills. Allergies: allopurinol, sulfa. Meds: lisinopril, HCTZ.\n\nAfebrile, BP 150/90, HR 98. Left CVA tenderness.\nUA: hematuria. Creatinine 1.2 (baseline 1.0). WBC 12.0.\nCT abdomen/pelvis without contrast: 7 mm stone at the left UVJ with mild hydronephrosis. No signs of infection.\n\nDx: left UVJ stone.\nIV fluids, analgesia and antiemetic in the ED. Home on tamsulosin 0.4 mg daily and ondansetron ODT, acetaminophen. Strain urine. Urology follow-up within 1-2 weeks; return for fever or uncontrolled pain."}
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "office_visit",
+          "start": "2025-04-14T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, kidney stone",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-14T12:05", "resulted": "2025-04-14T16:40", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-14T11:40"}, {"procedure": "Venipuncture", "performed": "2025-04-14T12:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-04-14T11:40", "body": "ED 4/7 for a 7 mm left UVJ stone with mild hydronephrosis, Cr 1.2 there. On tamsulosin since. Hasn't seen it come out yet. Pain now a dull ache, needs acetaminophen at night only. No fever, no vomiting since the first day.\n\nExam: afebrile, BP per vitals. Mild left CVA tenderness. Abdomen soft.\n\nA/P: left UVJ stone, not yet passed, symptoms improving. Continue tamsulosin. Recheck creatinine today. Urology appointment is 4/23; if not passed by then they will discuss ureteroscopy. Fever, rigors or worsening pain: go back to the ED.\nAddendum 16:50: creatinine back to 1.0."}
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "portal_message",
+          "start": "2025-04-17T06:55",
+          "conditions": [
+            {"label": "Ureterolithiasis", "action": "resolved", "icd10": "N20.1"}
+          ],
+          "medications": [
+            {"drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule", "action": "stop", "reason": "stone passed"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Stone", "author": "patient", "date": "2025-04-17T06:55", "body": "It passed last night!! Pain is gone. Can I stop the tamsulosin? Should I still go to urology next week?"},
+            {"type": "Patient Message", "title": "RE: Stone", "author": "PCP", "date": "2025-04-17T09:30", "body": "Great. Yes, you can stop the tamsulosin. Bring the stone to urology; keep that appointment so they can confirm and send it for analysis if they want."}
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-18T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-06-18T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2025-06-18T12:15", "body": "Video from his truck at lunch, identity verified. BP check deferred to home cuff: he bought one after the ED, readings mostly 128-136 over 78-84 in the mornings. No symptoms. Stone passed in April; urology saw him, no further plans other than hydration. Meds lisinopril 10, HCTZ 12.5.\nA/P: HTN controlled on home readings. Continue. In-person physical in the fall with labs."}
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "portal_message",
+          "start": "2025-10-10T17:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Kidney scan", "author": "patient", "date": "2025-10-10T17:45", "body": "Had my 2 year scan Wednesday 10/8, CT of the belly and chest. Urology says still no cancer. Next one in a year. Can you get me in for flu?"},
+            {"type": "Patient Message", "title": "RE: Kidney scan", "author": "RN", "date": "2025-10-11T08:30", "body": "Wonderful news. Booked flu shot 10/22 at 7:30."}
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "nurse_visit",
+          "start": "2025-10-22T07:30",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-22T07:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-22T07:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2025-10-22T07:30", "body": "Flu vaccine given L deltoid. Declined COVID this year, would rather wait. Tolerated."}
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "annual_physical",
+          "start": "2025-11-19T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-19T13:40", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-19T13:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-11-19T13:40", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-11-19T13:00"}, {"procedure": "Venipuncture", "performed": "2025-11-19T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-11-19T13:00", "body": "Physical, 49M.\n\nInterval: April left UVJ stone, passed on tamsulosin. October surveillance CT clear per patient and urology. Shoulder holding up, sore after heavy days. No gout flares.\n\nMeds unchanged: lisinopril 10, HCTZ 12.5, acetaminophen prn. Allergies sulfa, allopurinol.\nSH: former smoker (quit 2018, 15 pk-yr), light alcohol, construction.\n\nExam: well. Heart regular. Lungs clear. Abdomen soft, nontender. R shoulder mild painful arc. No edema. Skin clear.\nPHQ-2 0.\n\nA/P:\n1. HTN controlled.\n2. RCC surveillance per urology, next fall 2026.\n3. Nephrolithiasis, recurrent: fluids.\n4. Labs today. Shingrix at 50 next year. Colonoscopy 2032.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "portal_message",
+          "start": "2025-11-21T08:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-11-21T08:20", "body": "Hi Matthew, labs all normal including kidney function and cholesterol. Have a good winter."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "ed_visit",
+          "start": "2026-02-12T10:35",
+          "end": "2026-02-12T14:50",
+          "service": "Emergency Medicine",
+          "reason": "chest injury after fall from scaffold",
+          "vitals": [{"time": "2026-02-12T10:40", "rr": 28}],
+          "conditions": [
+            {"label": "Flail chest", "action": "diagnosed", "icd10": "S22.5XXA", "onset": "2026-02-12", "note": "left ribs 4 to 7, each fractured in more than two places"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-02-12T11:05", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24},
+              {"test": "Oxygen saturation in Arterial blood", "loinc": "2708-6", "unit": "%", "value": 90}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-02-12T10:55", "text": "Portable AP chest. Fractures of the left 4th through 7th ribs, each rib fractured in more than two locations, forming a flail segment. No pneumothorax seen on this supine film. Cardiomediastinal silhouette normal.", "conclusion": "Multiple segmental left rib fractures, ribs 4 to 7, consistent with flail chest."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-02-12T10:35"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department note", "author": "emergency medicine", "date": "2026-02-23T09:00", "body": "Regional hospital ED, 2/12/2026. Copy received with the discharge summary.\n\n49M construction worker, HTN, gout, recurrent kidney stones, chronic R rotator cuff problem (ladder fall 2024). Fell from a second-story scaffold onto his left side. Severe left chest pain, worse breathing in and coughing. No LOC, no headache, no vomiting.\n\nRR 28, tachypneic, distressed. Decreased breath sounds left lower field. Exquisitely tender left chest wall with paradoxical inward motion on inspiration.\nABG: pH 7.45, PaCO2 32, PaO2 60, HCO3 24, sat 90%.\nCXR: left ribs 4-7 fractured, each in more than two places.\n\nImpression: flail chest, left. Hypoxemia.\nOxygen, analgesia, trauma surgery consulted. Admitted to ICU."}
+          ]
+        },
+        {
+          "id": "2026-02-12b",
+          "kind": "hospital_admission",
+          "start": "2026-02-12T15:00",
+          "end": "2026-02-20T12:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "flail chest with respiratory distress",
+          "vitals": [{"time": "2026-02-12T15:10", "rr": 28, "spo2": 92, "temp_c": 37.2, "bp": [145, 90], "hr": 110}],
+          "conditions": [
+            {"label": "Acute hypoxemic respiratory failure", "action": "diagnosed", "icd10": "J96.01", "onset": "2026-02-12"}
+          ],
+          "medications": [
+            {"drug_text": "oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain", "dose": {"value": 5, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "rib fracture pain"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-02-12T15:30", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.35},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-02-12T16:00", "text": "Portable AP chest in the ICU. Multiple left rib fractures as before. No pneumothorax. No pleural effusion. Heart size normal.", "conclusion": "Multiple left rib fractures. No pneumothorax."}
+          ],
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2026-02-12T15:00"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary", "author": "trauma surgery", "date": "2026-02-23T09:00", "body": "Regional hospital. Admitted 2/12/2026, discharged 2/20/2026.\nDiagnoses: left flail chest (ribs 4-7, segmental); acute hypoxemic respiratory failure.\n\nCourse: from the ED to the ICU in moderate respiratory distress, RR 28, SpO2 92% on room air, T 37.2, BP 145/90, HR 110, with a deformed left chest wall moving paradoxically and decreased left breath sounds. ABG on arrival pH 7.35, PaCO2 45, PaO2 60, HCO3 24. Repeat CXR: left rib fractures, no pneumothorax. Thoracic epidural placed for analgesia, high-flow nasal cannula, aggressive incentive spirometry and pulmonary toilet. Did not require intubation. Not a candidate for operative rib fixation per trauma surgery. Weaned to room air and moved to the ward 2/16, epidural out 2/18, pain controlled on oral medicine.\n\nDischarge meds: home lisinopril 10 mg and HCTZ 12.5 mg; acetaminophen as needed; oxycodone 5 mg every 6 hours as needed, 5-day supply. Avoid NSAIDs.\nAllergies: allopurinol, sulfa.\nFollow-up: trauma clinic in 3 weeks with chest x-ray; PCP within 1 week. No work until cleared by trauma clinic."}
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "telephone",
+          "start": "2026-02-23T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-02-23T09:30", "body": "Transitional care call. Home since Friday 2/20 after a scaffold fall with left rib fractures, ICU stay. Breathing OK at rest, short of breath climbing his stairs but better each day. Using the spirometer. Taking oxycodone 2-3 times a day plus acetaminophen. No fever, no cough with sputum. Bowels moving. Discharge papers received today. Booked with PCP 2/25. A friend will drive him."}
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "office_visit",
+          "start": "2026-02-25T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {"label": "Acute hypoxemic respiratory failure", "action": "resolved", "icd10": "J96.01"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-02-25T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2026-02-25T10:40", "body": "Hospital follow-up. Fell from a second-story scaffold 2/12. Left flail chest, ribs 4-7 broken in several places each, hypoxemic respiratory failure; ICU with epidural and high-flow oxygen, no intubation, no surgery. Home 2/20.\n\nNow: pain 5/10, worse with coughing and turning in bed. Oxycodone twice a day, acetaminophen. Breathing better, walks around the house fine, winded on stairs. Spirometer reaching about where the hospital wanted. No fever or sputum.\n\nMeds reconciled: lisinopril 10, HCTZ 12.5, acetaminophen prn, oxycodone 5 mg prn (short supply). Allergies sulfa, allopurinol.\n\nExam: comfortable at rest, SpO2 on room air per vitals. Left chest wall tender with bruising fading, chest wall moves symmetrically now. Lungs clear, no crackles. Heart regular. No calf tenderness.\n\nA/P:\n1. Left flail chest, healing. Keep up incentive spirometer, splint with a pillow to cough. Taper oxycodone over the next week; no refill planned. Acetaminophen scheduled while sore. No NSAIDs (kidney history).\n2. Acute hypoxemic respiratory failure, resolved, on room air.\n3. HTN: BP fine, no changes.\n4. Off work until trauma clinic clears him; work note given.\nTrauma clinic 3/11."},
+            {"type": "Letter", "title": "Work note", "author": "PCP", "date": "2026-02-25T11:20", "body": "To whom it may concern: Matthew O'Connell is recovering from injuries sustained 2/12/2026 and is unable to work. His return date will be set by his trauma surgery team."}
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T13:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Trauma clinic note", "author": "trauma surgery", "date": "2026-03-16T13:00", "body": "Trauma surgery clinic, seen 3/11/2026. Four weeks after left flail chest. Pain improving, off oxycodone. Lungs clear. CXR today: healing left rib fractures 4-7, no effusion, no pneumothorax. Plan: progressive activity, no lifting over 20 lb for 4 more weeks, then graded return to work. Follow up as needed."}
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "portal_message",
+          "start": "2026-03-30T15:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Work", "author": "patient", "date": "2026-03-30T15:10", "body": "Done with the oxycodone, just Tylenol now. Trauma clinic said light duty in May. My employer wants a note from you too saying I can't work until then. Can you send one?"},
+            {"type": "Patient Message", "title": "RE: Work", "author": "PCP", "date": "2026-03-30T16:40", "body": "Done, the note is attached in your portal letters. Keep walking every day. Let us know if the breathing gets worse instead of better."}
+          ],
+          "medications": [
+            {"drug_text": "oxycodone hydrochloride 5 MG Oral Tablet", "action": "stop", "reason": "pain resolved, course completed"}
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "portal_message",
+          "start": "2026-05-06T19:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Back to work", "author": "patient", "date": "2026-05-06T19:25", "body": "Back on light duty as of Monday. Ribs only sore at the end of the day. Staying off ladders for now, believe me. Do I need to see you before my physical?"},
+            {"type": "Patient Message", "title": "RE: Back to work", "author": "PCP", "date": "2026-05-06T21:00", "body": "Good to hear. No, unless something changes. Let's do your physical in early summer; you turn 50 this month so we'll start the shingles shots."}
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "pharmacy",
+          "start": "2026-06-03T10:10",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2026-06-03T10:10", "body": "Refill lisinopril 10 mg, HCTZ 12.5 mg. Last labs 11/2025 normal. Physical booked 7/10. Sent 90 days."}
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "annual_physical",
+          "start": "2026-07-10T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2026-07-10T13:50"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-10T13:40", "resulted": "2026-07-11T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-10T13:40", "resulted": "2026-07-11T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2026-07-10T13:40", "resulted": "2026-07-11T09:00", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2026-07-10T13:00"}, {"procedure": "Immunization administration", "performed": "2026-07-10T13:50"}, {"procedure": "Venipuncture", "performed": "2026-07-10T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-07-10T13:00", "body": "Physical, 50M.\n\nInterval: February scaffold fall with left flail chest and hypoxemic respiratory failure, ICU, no intubation. Off opioids since March. Back on light duty since early May, now doing most of his old job except high work. Ribs ache after long days, breathing normal, no cough. Shoulder about the same. No stones since April 2025, no gout flares. Kidney surveillance CT due this fall with urology.\n\nMeds: lisinopril 10 mg daily, HCTZ 12.5 mg daily, acetaminophen prn.\nAllergies: sulfa; allopurinol (AIN).\nSH: quit smoking 2018, 15 pack-years. 1-2 drinks weekly. Construction.\n\nROS otherwise negative.\nExam: well. HEENT normal. Neck supple. Heart regular, no murmur. Lungs clear bilaterally, good air movement. Chest wall: mild tenderness left lateral ribs, no deformity. Abdomen soft, healed port scars. R shoulder mild painful arc, strength good. No edema. Skin clear.\nPHQ-2 0, AUDIT-C 2.\n\nA/P:\n1. HTN, controlled. Continue.\n2. Left flail chest, healed clinically; respiratory failure resolved.\n3. Clear cell RCC s/p partial nephrectomy, surveillance through urology.\n4. Recurrent nephrolithiasis, gout: quiet.\n5. R rotator cuff tear, chronic, functional.\n6. Prevention: Shingrix #1 today, #2 in 2-6 months. Colonoscopy due 2032. CMP, CBC, lipids.\nRTC 1 year, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "portal_message",
+          "start": "2026-07-13T08:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2026-07-13T08:10", "body": "Matthew, your labs from Friday are normal: kidney function steady, blood count and cholesterol fine. Nothing to change."},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "patient", "date": "2026-07-13T12:30", "body": "Thanks. Arm was sore from the shingles shot for 2 days, figured that's normal."}
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "pharmacy",
+          "start": "2026-08-10T09:40",
+          "documents": [
+            {"type": "Refill Request", "title": "Pharmacy fill history", "author": "MA", "date": "2026-08-10T09:40", "body": "Pharmacy confirmed auto-refill of lisinopril 10 mg and HCTZ 12.5 mg picked up 8/9. No action needed."}
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Shingles shot", "author": "patient", "date": "2026-08-18T20:05", "body": "When should I get the second shingles shot? Fall works better for me, work is crazy right now."},
+            {"type": "Patient Message", "title": "RE: Shingles shot", "author": "RN", "date": "2026-08-19T08:25", "body": "Anytime from September through early January is fine. Call or message when you know your schedule and we'll put you on the nurse schedule, and we can do your flu shot the same morning."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001913",
+      "given": "Abigail",
+      "family": "O'Leary",
+      "birth_date": "1996-11-04",
+      "address_line": "14 Cranberry Hollow Lane",
+      "phone": "+1-617-555-0131",
+      "email": "abigail.oleary@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young woman, never on medications, who joined at 20 and developed palpitations at 23; the practice diagnosed mitral valve prolapse clinically and cardiology confirmed it by echo, then followed her by letter with gaps. Last seen at her 2025 physical; an ED visit for palpitations and lightheadedness came after, with an echo advised but not resulted.",
+      "events": [
+        {
+          "id": "2017-08-14a",
+          "kind": "telephone",
+          "start": "2017-08-14T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2017-08-14T10:20",
+              "body": "Caller is a 20 yo college student, home for the summer, wants a doctor locally now that she has aged out of her pediatrician. Covered under a parent's PPO; insurance info taken. Explained the membership model and same-day access, she was fine with it. New patient physical scheduled for 8/29 at 9:00. Asked her to have the pediatric office send records and to bring a list of any meds (she says none)."
+            }
+          ]
+        },
+        {
+          "id": "2017-08-29a",
+          "kind": "establish_care",
+          "start": "2017-08-29T09:00",
+          "end": "2017-08-29T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "College student"}
+          ],
+          "state": {"weight_kg": 52.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2017-08-29T09:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2017-08-29T09:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2017-08-29T09:45"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2017-08-29T09:00"},
+            {"procedure": "Immunization administration", "performed": "2017-08-29T09:45"},
+            {"procedure": "Venipuncture", "performed": "2017-08-29T09:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2017-08-29T09:00",
+              "body": "NEW PATIENT VISIT\n\n20 yo F here to establish primary care. Was followed by a pediatric practice until this year; records requested. Rising junior in college, plans on grad school. Feels well. No complaints today.\n\nPMH: none. No hospitalizations.\nPSH: none.\nMeds: none. No supplements.\nAllergies: NKDA.\n\nFamily hx:\n- Mother: mitral valve prolapse with mild mitral regurgitation, followed by cardiology\n- Maternal grandmother: told she had a \"heart murmur\", never evaluated as far as pt knows\n- Father: hypertension\n\nSocial: lives with roommates during the school year, home with parents in summer. Never smoker, does not drink, no drug use. Walks and does yoga a few times a week. Wears a seatbelt.\n\nROS: negative in full, including no chest pain, palpitations, dyspnea, syncope.\n\nExam: well-appearing, slim. Vitals as charted. HEENT: TMs clear, oropharynx normal. Neck supple, no thyromegaly or nodes. Heart: regular rate and rhythm. Lungs clear bilaterally. Abd soft, nontender, no HSM. Skin: no rashes or worrisome nevi. Neuro grossly normal. Mood and affect bright.\n\nPHQ-2: 0.\n\nAssessment/Plan:\n1. Adult wellness exam. Healthy young woman. CBC and BMP today as a baseline. Flu vaccine given (early supply, she leaves for campus next week). Will update immunizations once pediatric records arrive. Cervical screening starts at 21, so next year.\n2. Family history of MVP in her mother: discussed that it can run in families; let us know about palpitations, chest pain or fainting.\n\nRTC 1 yr for physical."
+            }
+          ]
+        },
+        {
+          "id": "2017-09-01a",
+          "kind": "portal_message",
+          "start": "2017-09-01T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2017-09-01T16:40",
+              "body": "Hi Abigail, your blood count and chemistry panel from Tuesday all came back in the normal range. Nothing to do. Good luck with the semester!"
+            }
+          ]
+        },
+        {
+          "id": "2017-10-12a",
+          "kind": "outside_records",
+          "start": "2017-10-12T11:05",
+          "reason": "Pediatric records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pediatric Records Summary",
+              "author": "MA",
+              "date": "2017-10-12T11:05",
+              "body": "Records from prior pediatric practice received by fax, 23 pages, covering birth through 2017. Abstracted for PCP:\n- Routine well visits, normal growth along lower percentiles for weight.\n- No chronic diagnoses, no surgeries, no hospital stays.\n- Allergies: none recorded.\n- Immunizations: childhood series complete per schedule. HPV series completed (3 doses, ages 11-12). Tdap at age 11 (2008). MenACWY with booster at 16. Varicella and MMR x2.\nOriginal scanned to the media tab."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-11a",
+          "kind": "annual_physical",
+          "start": "2018-09-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2018-09-11T08:55",
+              "issued": "2018-09-18T14:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."
+            }
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2018-09-11T09:10"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-09-11T09:12"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2018-09-11T08:30"},
+            {"procedure": "Immunization administration", "performed": "2018-09-11T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2018-09-11T08:30",
+              "body": "ANNUAL EXAM\n\nAbigail is 21 now, senior year, here for her yearly. No interval illness. No meds. NKDA. Periods regular. Still not smoking or drinking. Busy with thesis and a part-time job at the campus library, which she loves; thinking about a library science master's.\n\nFHx unchanged (mother MVP/mild MR, maternal grandmother murmur, father HTN).\n\nROS negative.\n\nExam: vitals reviewed, BMI about 19, stable. Thyroid normal. Heart: RRR. Lungs clear. Abdomen benign. Breast exam deferred per pt preference, no concerns. Pelvic: normal external genitalia, cervix normal appearing, Pap collected. Skin clear.\n\nPHQ-2 = 0.\n\nPlan:\n- First Pap today, will message result.\n- Tdap given (last dose 2008 per pediatric record). Flu shot given.\n- No labs needed this year.\n- Back in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-19a",
+          "kind": "portal_message",
+          "start": "2018-09-19T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "RN",
+              "date": "2018-09-19T09:15",
+              "body": "Hello, your Pap smear from last week was normal. At your age the next one is due in 3 years. Please reach out if you have any questions."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-20a",
+          "kind": "portal_message",
+          "start": "2019-03-20T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization form",
+              "author": "patient",
+              "date": "2019-03-20T21:48",
+              "body": "Hi! I got into the MLIS program for the fall and they need a health form with my immunizations filled out by a provider. Can I upload it here? It's due April 15. Thanks so much."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization form",
+              "author": "MA",
+              "date": "2019-03-21T10:02",
+              "body": "Congratulations! Yes, attach it here and we'll complete it from your record and the pediatric vaccine history we have on file. It usually takes 3-5 business days. We'll send it back through the portal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Form completed",
+              "author": "MA",
+              "date": "2019-03-26T15:30",
+              "body": "Your graduate program health form is signed and attached. Let us know if they need anything else."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "annual_physical",
+          "start": "2019-09-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "social": [
+            {"item": "Occupation", "value": "Graduate student (library sciences)"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2019-09-10T15:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T15:40", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-09-10T15:40", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-09-10T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2019-09-10T15:00"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T15:35"},
+            {"procedure": "Venipuncture", "performed": "2019-09-10T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2019-09-10T15:00",
+              "body": "Preventive visit, 22 yo F.\n\nGraduated in May; started her MLIS two weeks ago and works as a grad assistant in the archives. A bit stressed by the new schedule but sleeping okay. No health concerns. No meds, NKDA. Never smoker, no alcohol.\n\nFamily history reviewed, no change.\n\nROS: no chest pain, no shortness of breath, no fainting. GI and GU negative.\n\nExam: NAD. Vitals as recorded. Neck without nodes or goiter. Cardiac exam regular. Lungs clear. Abdomen soft. No edema. Skin without lesions.\n\nPHQ-2 1 (a few days of feeling down around graduation, resolved).\n\nA/P\n- Wellness: once-in-a-lifetime HIV and hepatitis C screens offered and accepted. Lipid panel since she has never had one. Flu vaccine today.\n- Pap up to date (2018), next 2021.\n- See next fall."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "portal_message",
+          "start": "2019-09-13T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2019-09-13T12:30",
+              "body": "Abigail - HIV and hepatitis C screens were both negative, and your cholesterol numbers look great. No need to repeat the cholesterol for several years."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

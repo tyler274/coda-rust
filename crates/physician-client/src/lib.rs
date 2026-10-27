@@ -298,21 +298,21 @@ impl PhysicianClient {
             .await
     }
 
-    /// Saves the draft at its revision.
+    /// Saves the draft over the revision it was read or last saved at and
+    /// returns the saved draft with its new revision. A stale revision
+    /// answers 409 and writes nothing.
     pub async fn save_draft(
         &self,
         workspace_id: &str,
         chat_id: &str,
         revision: i64,
         text: &str,
-    ) -> Result<(), http::HttpError> {
-        let _: serde_json::Value = self
-            .put(
-                &format!("/physician-state/drafts/{workspace_id}/{chat_id}"),
-                &serde_json::json!({ "expected_revision": revision, "text": text }),
-            )
-            .await?;
-        Ok(())
+    ) -> Result<PhysicianDraft, http::HttpError> {
+        self.put(
+            &format!("/physician-state/drafts/{workspace_id}/{chat_id}"),
+            &serde_json::json!({ "expected_revision": revision, "text": text }),
+        )
+        .await
     }
 
     /// Sends recorded audio for transcription.
@@ -492,10 +492,11 @@ mod tests {
         let client = PhysicianClient::new(format!("http://{address}"));
         let draft = client.read_draft("ws", "chat").await.unwrap();
         assert_eq!(draft.revision, 4);
-        client
+        let saved = client
             .save_draft("ws", "chat", draft.revision, "revised")
             .await
             .unwrap();
+        assert_eq!(saved.revision, 5);
         let snapshot = client.chat_snapshot("ws", "chat").await.unwrap();
         assert_eq!(snapshot.snapshot.conversation[0].body(), Some("Hello"));
     }

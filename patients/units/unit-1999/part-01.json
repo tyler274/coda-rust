@@ -1,0 +1,399 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001999",
+      "given": "Kevin",
+      "family": "Shapiro",
+      "birth_date": "1971-01-29",
+      "address_line": "41 Pomeroy Meadow Road, Apt 3",
+      "phone": "+1-774-555-0110",
+      "email": "kevin.shapiro@example.test",
+      "marital_status": "single",
+      "summary": "Former construction laborer on Medicaid with severe alcohol use disorder and compensated alcoholic cirrhosis who joins the practice in August 2024. Three withdrawal-delirium admissions in eleven months lead to acamprosate and an outpatient addiction program, after which he reports abstinence.",
+      "events": [
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T10:14",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2024-08-12T10:14",
+              "body": "Caller wants to transfer his primary care here. Says his old office is too far now that he is living in Easthampton and he has no car most days. Medicaid card on file, plan is accepted. His sister may drive him to appointments. Offered the 8/20 new patient slot at 9:00, he took it. Records release form emailed for his former PCP office. Reminded him to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T09:00",
+          "end": "2024-08-20T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Alcohol use disorder, severe", "icd10": "F10.20", "action": "history", "onset": "2009-06-01"},
+            {"label": "Alcoholic cirrhosis of liver", "action": "history", "onset": "2021-03-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2016-01-01"},
+            {"label": "Thiamine deficiency", "icd10": "E51.9", "action": "history", "onset": "2021-03-01"},
+            {"label": "Major depressive disorder, single episode, unspecified", "icd10": "F32.9", "action": "history", "onset": "2018-01-01"},
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "history", "onset": "2017-01-01"}
+          ],
+          "medications": [
+            {"drug_text": "thiamine 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Thiamine deficiency"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "GERD"},
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {
+            "bp": [134, 84],
+            "weight_kg": 74.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Aspartate Aminotransferase": 72,
+              "Alanine Aminotransferase": 50,
+              "Gamma Glutamyl Transferase": 150,
+              "Bilirubin, Total": 1.2,
+              "Alkaline Phosphatase": 85,
+              "Mean Corpuscular Volume": 96,
+              "Magnesium": 1.8
+            }
+          },
+          "vitals": {"bp": [134, 84], "weight_kg": 74.0, "height_cm": 178.0},
+          "measure": ["hr", "rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T10:10", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 72},
+              {"test": "Alanine Aminotransferase", "value": 50},
+              {"test": "Bilirubin, Total", "value": 1.2},
+              {"test": "Alkaline Phosphatase", "value": 85}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T10:10", "results": [
+              {"test": "Mean Corpuscular Volume", "value": 96}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2024-08-20T10:10", "results": [
+              {"test": "Prothrombin Time-International Normalized Ratio"}
+            ]},
+            {"panel": "Lipid Panel", "collected": "2024-08-20T10:10", "results": [
+              {"test": "Low Density Lipoprotein"}
+            ]},
+            {"panel": null, "collected": "2024-08-20T10:10", "results": [
+              {"test": "Gamma Glutamyl Transferase", "value": 150},
+              {"test": "Magnesium", "value": 1.8},
+              {"test": "Hepatitis B Surface Antigen", "text": "Negative"},
+              {"test": "Hepatitis B Surface Antibody", "text": "Negative"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ], "resulted": "2024-08-21T16:20"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 9},
+            {"survey": "AUDIT-C total score", "value": 12}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "About 750 mL vodka daily for 15 years"},
+            {"item": "Occupation", "value": "Unemployed, formerly construction laborer"}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-08-20T10:00"},
+            {"vaccine": "Hepatitis A, adult", "date": "2024-08-20T10:00"},
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2024-08-20T10:00"}
+          ],
+          "orders": [
+            {"id": "hep-referral-2024", "action": "placed", "order": "Hepatology referral", "category": "referral", "to": "Hepatology", "reason": "alcoholic cirrhosis, establish specialty follow-up"},
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "current smoker, 30 pack-years"},
+            {"id": "fit-2024", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, high MDM", "performed": "2024-08-20T09:00"},
+            {"procedure": "Immunization administration", "performed": "2024-08-20T10:00"},
+            {"procedure": "Venipuncture", "performed": "2024-08-20T10:10"}
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-20T10:40",
+              "body": "53M new to me, transferring from a prior primary care office (records requested). Came alone today.\n\nHe is straightforward about drinking: roughly a fifth of vodka a day for about fifteen years. Has tried to quit on his own several times; each time he got shaky and sweaty and went back to it within a day or two. Never been through a detox unit or a program. Not interested in cutting down right now, though he says he knows where it is heading - his father drank, had cirrhosis, and died at 61. Last drink was last night.\n\nKnown problems per patient and pill bottles: alcohol use disorder, alcoholic cirrhosis (told by the old office a few years ago, no specialist), hypertension, thiamine deficiency, depression, reflux. Appendix out at 22. No other surgery.\n\nMeds: thiamine 100 daily, folic acid 1 mg daily, a multivitamin, omeprazole 20 daily, amlodipine 5 daily. Says he takes them most days. NKDA.\n\nFamily: father as above. Mother has high blood pressure and type 2 diabetes. One sister, who has anxiety; she is the person he leans on.\n\nSocial: lives alone in an apartment in town. Worked construction as a laborer for years, out of work now. Smokes a pack a day, has since his early twenties, ~30 pack-years. No other drugs.\n\nMood: low on and off for years, given a depression diagnosis at the old office. Sleep is broken, energy poor. Denies any thoughts of harming himself. PHQ-9 9. Does not want an antidepressant, 'I've got enough pills.' AUDIT-C 12.\n\nROS: no jaundice he has noticed, no belly swelling, no black stools or vomiting blood, no confusion. Heartburn controlled on omeprazole.\n\nExam: thin, alert, smells of tobacco. BP 134/84. Wt 74 kg, ht 178 cm. Anicteric. No asterixis, no tremor at rest today. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no ascites, liver edge not felt, healed RLQ scar. No spider angiomata seen, no palmar erythema. No leg swelling. Oriented, fluent, appropriate.\n\nA/P\n1. Severe alcohol use disorder. Long talk about the risks, including withdrawal if he stops abruptly - he should call us or go to the ED if he gets confused, sees things, or shakes badly. He is not ready for treatment; door is open.\n2. Alcoholic cirrhosis, never seen hepatology. CMP, GGT, CBC, PT/INR today. Referring to hepatology for staging and surveillance. Hep B surface Ag/Ab, hep C, HIV today. Starting hep A and hep B series today along with PCV20.\n3. HTN at goal on amlodipine 5. Continue.\n4. Thiamine deficiency - continue thiamine, folate, MVI.\n5. Depression, mild by PHQ. Declines medication. Will recheck at visits.\n6. GERD - continue omeprazole.\n7. Tobacco - advised to quit, not ready, declines nicotine replacement. Qualifies for lung screening; low-dose CT ordered.\n8. Colon screening never done - FIT kit given.\n\nReturn in about 3 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T08:35",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-08-22T08:35",
+              "body": "Hi Kevin, your blood work from Tuesday is back. Your liver enzymes (AST 72, ALT 50, GGT 150) are elevated in the pattern we see with heavy alcohol use, which fits what we talked about. Bilirubin 1.2 is borderline. Blood clotting test, blood counts, kidneys and cholesterol are fine, magnesium is at the low end of normal (1.8). Hepatitis B, hepatitis C and HIV tests are all negative - you are not immune to hepatitis B, which is why we started that vaccine. The hepatology office should call you to set up a visit. Second hep B shot is due in about 4 weeks; the front desk can book a nurse visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "outside_records",
+          "start": "2024-08-29T14:02",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "outside primary care",
+              "date": "2024-08-29T14:02",
+              "body": "Received by fax, 22 pages: office notes 2019 to 2024 from his previous primary care practice.\n\nProblem list as they kept it: alcohol dependence, alcoholic cirrhosis, hypertension, thiamine deficiency, major depression, GERD. Past surgical: appendectomy.\nMedications: thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily, omeprazole 20 mg daily, amlodipine 5 mg daily.\nAllergies: none known.\nImmunizations: Tdap 2019. No pneumococcal or hepatitis vaccines on record.\nNotes repeatedly document heavy daily alcohol use with counseling given and declined. Visits were irregular, often a year apart.\n\nAbstracted to chart; nothing new. Original in media tab."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "nurse_visit",
+          "start": "2024-09-19T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "immunizations": [
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2024-09-19T13:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-09-19T13:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2024-09-19T13:45",
+              "body": "In for second dose of the two-dose hep B series. No problems after the first one. Given IM left deltoid, lot recorded. Tolerated. Hep B series now complete. Hep A #2 due February. He has not returned the FIT kit yet - reminded him, says it is on his kitchen table."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "lab_only",
+          "start": "2024-09-24T11:00",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {"panel": null, "collected": "2024-09-23T07:00", "results": [
+              {"test": "Fecal Immunochemical Test", "text": "Negative"}
+            ], "resulted": "2024-09-24T15:10"}
+          ],
+          "orders": [
+            {"id": "fit-2024", "action": "done", "date": "2024-09-24T15:10"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "MA",
+              "date": "2024-09-25T09:12",
+              "body": "FIT negative. Per PCP, repeat in one year. Letter mailed to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "imaging",
+          "start": "2024-09-26T08:20",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-09-26T08:20",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: Current smoker, 30 pack-years, age 53. Asymptomatic.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nComparison: None.\nFindings: No pulmonary nodules. No consolidation or effusion. Airways patent. Heart size normal; no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. The visualized upper abdomen is limited by technique. No aggressive osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "done", "date": "2024-09-26T08:20"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT reviewed",
+              "author": "PCP",
+              "date": "2024-09-27T12:30",
+              "body": "Baseline lung screening CT negative, Lung-RADS 1. Repeat next September. Portal note sent; also used it as another nudge to quit smoking."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "specialist_visit",
+          "start": "2024-10-08T14:00",
+          "service": "Hepatology",
+          "reason": "alcoholic cirrhosis",
+          "orders": [
+            {"id": "hep-referral-2024", "action": "done", "date": "2024-10-08T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology consultation",
+              "author": "hepatology",
+              "date": "2024-10-11T09:40",
+              "body": "Outside hepatology group - new patient consultation, seen 10/8/2024. Letter to the referring primary care physician.\n\nThank you for sending this 53-year-old man with a known diagnosis of alcohol-related cirrhosis made at his previous practice, never previously seen by a liver specialist. He drinks roughly 750 mL of vodka daily and smokes a pack per day. He has had no jaundice, ascites, encephalopathy or GI bleeding. Other history: hypertension, reflux, depression, thiamine deficiency, remote appendectomy. Medications: thiamine, folic acid, multivitamin, omeprazole 20 mg, amlodipine 5 mg. No known drug allergies.\n\nOn examination he was alert without asterixis, anicteric, abdomen soft without fluid wave or splenomegaly.\n\nYour recent labs: AST 72, ALT 50, bilirubin 1.2, albumin and INR normal, platelets normal, GGT 150. Viral hepatitis screen negative; I see hepatitis A and B vaccination is underway, which I appreciate.\n\nImpression: compensated alcohol-related cirrhosis, Child-Pugh class A.\n\nRecommendations:\n1. Complete abstinence is the single most important thing for his liver. We discussed this directly.\n2. Liver ultrasound now for hepatocellular carcinoma surveillance and every 6 months thereafter.\n3. Screening upper endoscopy for varices - scheduled with our endoscopy unit.\n4. Avoid NSAIDs; acetaminophen no more than 2 g daily.\n5. Follow-up here in about 6 to 8 months.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "imaging",
+          "start": "2024-10-17T10:15",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2024-10-17T10:15",
+              "text": "ULTRASOUND ABDOMEN, COMPLETE\nIndication: Alcohol-related cirrhosis; hepatocellular carcinoma surveillance.\nComparison: None available.\nLiver: Coarsened echotexture with a nodular surface contour, consistent with cirrhosis. No focal hepatic lesion. Main portal vein patent with normal direction of flow on color imaging.\nGallbladder: No stones or wall thickening. Common bile duct 4 mm.\nPancreas: Visualized portions unremarkable.\nSpleen: 10.8 cm, normal in size.\nKidneys: Normal size and echogenicity bilaterally; no hydronephrosis.\nAorta: Normal caliber where seen.\nNo ascites.",
+              "conclusion": "Cirrhotic liver morphology without focal lesion. No ascites. Normal spleen size. Patent portal vein."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver ultrasound received",
+              "author": "PCP",
+              "date": "2024-10-18T08:05",
+              "body": "Hepatology's surveillance US: cirrhotic liver, no mass, no ascites, spleen normal. They will repeat in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-22T15:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T15:15"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-10-22T15:16"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-22T15:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "author": "RN",
+              "date": "2024-10-22T15:30",
+              "body": "Here for seasonal shots. Agreed to start the shingles series too after the PCP's suggestion at intake. Influenza L deltoid, COVID R deltoid, Shingrix R deltoid lower site. Warned the shingles shot can make him feel achy for a day or two. Observed 15 min, no reaction. Shingrix #2 in 2 to 6 months - will pair with hep A #2 in February."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "procedure_visit",
+          "start": "2024-11-14T08:30",
+          "service": "Hepatology",
+          "reason": "variceal screening endoscopy",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "author": "gastroenterology",
+              "date": "2024-11-18T11:20",
+              "body": "Outside endoscopy unit, procedure date 11/14/2024. Copy to primary care.\n\nProcedure: Esophagogastroduodenoscopy.\nIndication: Screening for esophageal varices in compensated alcohol-related cirrhosis.\nSedation: Monitored anesthesia care. Tolerated well.\nAllergies: NKDA.\n\nFindings:\nEsophagus: Normal mucosa throughout. No varices. No esophagitis. Z-line regular.\nStomach: Normal; no portal hypertensive gastropathy, no gastric varices.\nDuodenum: Normal to the second portion.\nNo biopsies taken.\n\nImpression: Normal EGD. No esophageal or gastric varices. Reflux without esophagitis on current PPI.\n\nPlan: No beta-blocker indicated. Repeat variceal screening per hepatology, typically in 2 to 3 years if he continues to drink, sooner if anything changes. Continue omeprazole."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "ed_visit",
+          "start": "2024-12-03T11:05",
+          "end": "2024-12-03T17:40",
+          "service": "Emergency Medicine",
+          "reason": "hallucinations and agitation",
+          "conditions": [
+            {"label": "Alcohol withdrawal delirium", "icd10": "F10.231", "action": "diagnosed", "onset": "2024-12-03"}
+          ],
+          "vitals": [
+            {"time": "2024-12-03T11:10", "bp": [160, 100], "hr": 110, "rr": 22, "temp_c": 37.8}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-03T11:30", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 4.0},
+              {"test": "Chloride", "value": 100},
+              {"test": "Blood Urea Nitrogen", "value": 18},
+              {"test": "Creatinine", "value": 1.1},
+              {"test": "Glucose", "value": 90},
+              {"test": "Calcium", "value": 9.2}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-12-03T11:30", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 72},
+              {"test": "Alanine Aminotransferase", "value": 50}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-03T11:30", "results": [
+              {"test": "Mean Corpuscular Volume", "value": 96}
+            ]},
+            {"panel": null, "collected": "2024-12-03T11:30", "results": [
+              {"test": "Magnesium", "value": 1.8},
+              {"test": "Gamma Glutamyl Transferase", "value": 150}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-12-03T11:05"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-12-09T10:15",
+              "body": "Regional hospital ED physician record, visit 12/3/2024. Received with the discharge summary.\n\nCC: seeing things, agitated.\n\nHPI: 53 y/o man brought in by his sister, who says since this morning he has been seeing things that aren't there and can't settle. He drinks about a fifth of vodka every day and says his last drink was roughly 18 hours ago. Has tried to stop before. PMH: alcohol use disorder, alcoholic cirrhosis, HTN, thiamine deficiency, depression, GERD. PSH: appendectomy age 22. Home meds: thiamine 100 mg, folic acid 1 mg, MVI, omeprazole 20 mg, amlodipine 5 mg, all daily. Allergies: NKDA. Smokes 1 ppd x 30 years.\n\nTriage: BP 160/100, HR 110, RR 22, T 37.8 C.\n\nExam: Anxious, shaking, sweating. Pupils dilated. Reflexes brisk throughout. Knows who he is, where he is and the date, but keeps glancing around the room and responding to things that aren't there. No focal neuro deficit.\n\nLabs: Na 140, K 4.0, Cl 100, BUN 18, Cr 1.1, glucose 90, Mg 1.8, Ca 9.2. AST 72, ALT 50, GGT 150. MCV 96.\n\nED course: IV thiamine given before any dextrose. Lorazepam IV in repeated doses by withdrawal scale. Magnesium sulfate IV. Fluids.\n\nImpression: Alcohol withdrawal delirium.\nDisposition: Admitted to the medical floor for ongoing withdrawal management."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03b",
+          "kind": "hospital_admission",
+          "start": "2024-12-03T17:40",
+          "end": "2024-12-06T12:30",
+          "service": "Hospital Medicine",
+          "reason": "alcohol withdrawal delirium",
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2024-12-03T18:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2024-12-06T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2024-12-09T10:16",
+              "body": "Regional hospital, medicine service. Admitted 12/3/2024, discharged 12/6/2024.\n\nPrincipal diagnosis: Alcohol withdrawal delirium.\nOther: Severe alcohol use disorder; alcoholic cirrhosis, compensated; hypertension; thiamine deficiency; major depressive disorder; GERD.\n\nCourse: Admitted from the ED with hallucinations, tremor and autonomic hyperactivity about 18 hours after his last drink. Managed with symptom-triggered IV lorazepam on a withdrawal protocol, high-dose IV thiamine for 3 days, IV fluids and magnesium replacement. Hallucinations cleared by the second hospital day and he needed no further lorazepam after the morning of 12/5. No seizures. Blood pressure settled back on amlodipine as withdrawal resolved. Addiction consult offered; he declined residential treatment and took a list of outpatient resources.\n\nDischarge meds (unchanged from home): thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily, omeprazole 20 mg daily, amlodipine 5 mg daily. No benzodiazepines prescribed at discharge.\nAllergies: NKDA.\n\nFollow-up: Primary care within one week."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "telephone",
+          "start": "2024-12-04T09:50",
+          "reason": "family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's sister",
+              "author": "RN",
+              "date": "2024-12-04T09:58",
+              "body": "Sister called (listed as his emergency contact). Kevin was taken to the ED yesterday after he stopped drinking and started seeing things; he was admitted. She wanted us to know. She sounded worried - says she has been through this kind of thing with their father. Explained we will get the records and want to see him within a week of discharge. She will call when he's out. Routed to PCP."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

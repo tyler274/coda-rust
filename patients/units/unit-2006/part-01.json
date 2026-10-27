@@ -1,0 +1,275 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002006",
+      "given": "Matthew",
+      "family": "O'Connell",
+      "birth_date": "1976-05-18",
+      "address_line": "27 Pine Hollow Lane",
+      "phone": "+1-508-555-0193",
+      "email": "matthew.oconnell@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker with hypertension, gout and recurrent kidney stones who joined in 2020. Course: right supraspinatus tear (2021, re-injured 2024), allopurinol-induced interstitial nephritis (2021), ureteral stones (2022, 2025), clear cell renal cell carcinoma treated by left partial nephrectomy (2023), and flail chest with hypoxemic respiratory failure after a scaffold fall (2026). Sparse outside records.",
+      "events": [
+        {
+          "id": "2020-08-24a",
+          "kind": "telephone",
+          "start": "2020-08-24T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2020-08-24T10:20", "body": "Caller Matthew O'Connell, 44, lives in Westhampton. His old PCP retired over the summer and he wants a doctor he can actually reach. Works construction, early starts, asked for a first visit late morning or early afternoon. Explained the membership and that insurance still covers labs and imaging. Booked new patient visit 9/9 at 1:00. Will sign the release so we can get his old chart. Takes two blood pressure pills, will bring the bottles."}
+          ]
+        },
+        {
+          "id": "2020-09-09a",
+          "kind": "establish_care",
+          "start": "2020-09-09T13:00",
+          "end": "2020-09-09T13:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2014-06-01", "note": "on lisinopril and hydrochlorothiazide from prior practice"},
+            {"label": "Gout", "action": "history", "onset": "2017-01-01", "note": "no urate-lowering therapy"},
+            {"label": "Kidney stone", "action": "history", "onset": "2012-01-01", "note": "recurrent nephrolithiasis; prior stones passed without procedures"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "hydrochlorothiazide 12.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 12.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth as needed for pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "pain"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"bp": [132, 82], "weight_kg": 94.0, "height_cm": 180.0, "labs": {"Creatinine": 1.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-09T13:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-09T13:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-09T13:55", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-09-09T13:55", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Construction worker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per week"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-09-09T13:00"}, {"procedure": "Venipuncture", "performed": "2020-09-09T13:55"}],
+          "documents": [
+            {"type": "History and Physical", "title": "New Patient Visit", "author": "PCP", "date": "2020-09-09T13:00", "body": "44M here to establish. Prior PCP retired; records requested.\n\nHPI: Blood pressure treated for about six years, currently lisinopril 10 and HCTZ 12.5 once a day, brought both bottles. Rarely checks at home. Gout for a few years, mostly the big toe, last flare was a while back, never been on a preventive medicine for it. Has passed several kidney stones over the years, all on his own, never needed a scope or lithotripsy. Father had stones too. No chest pain, no shortness of breath with work, no headaches.\n\nPMH: hypertension, gout, recurrent nephrolithiasis.\nPSH: tonsils out as a kid.\nMeds: lisinopril 10 mg daily, HCTZ 12.5 mg daily, acetaminophen 500 mg as needed for aches.\nAllergies: sulfa drugs (does not remember the reaction, was told as a child).\nFH: father recurrent kidney stones; mother hypertension; paternal uncle gout.\nSH: construction, framing and roofing mostly. Quit cigarettes in 2018, about 15 pack-years. Beer once or twice a week. Single, lives in Westhampton.\n\nExam: BP and vitals per flowsheet. Well appearing, muscular. HEENT normal, tonsils absent. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no CVA tenderness. Extremities without edema, no tophi, toe joints quiet. Skin without rash.\n\nPHQ-2 0. AUDIT-C 2.\n\nAssessment/plan:\n1. Hypertension, on two agents, reasonable control in clinic today. Continue. CMP.\n2. Gout, infrequent flares, no ULT. Discussed, he would rather wait. Revisit if flares pick up.\n3. Recurrent nephrolithiasis. Fluids, especially on hot job sites. Call with any flank pain.\n4. Health maintenance: CBC, lipids, one-time HCV and HIV screening today. Flu shot next month. Colon cancer screening will come up at 45.\nFollow up in 6 months or sooner."}
+          ]
+        },
+        {
+          "id": "2020-09-11a",
+          "kind": "portal_message",
+          "start": "2020-09-11T08:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2020-09-11T08:40", "body": "Hi Matthew, your labs from Wednesday look good. Kidney function and potassium are normal on the water pill, blood counts are normal, cholesterol is fine, and the hepatitis C and HIV screens were negative. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2020-09-30a",
+          "kind": "outside_records",
+          "start": "2020-09-30T14:10",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "MA", "date": "2020-09-30T14:10", "body": "Records from prior primary care office received by fax, 38 pages. Med list matches: lisinopril 10 mg, HCTZ 12.5 mg. Problem list hypertension, gout, nephrolithiasis. Sulfa allergy listed, reaction not documented. Old BP readings in the 130s/80s on current regimen. Several ED visits for stones over the years, all passed. Routed to PCP for review."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2020-10-02T07:50", "body": "Reviewed prior records. Consistent with his history. Nothing outstanding. Scanned."}
+          ]
+        },
+        {
+          "id": "2020-10-14a",
+          "kind": "nurse_visit",
+          "start": "2020-10-14T07:30",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-14T07:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-14T07:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2020-10-14T07:30", "body": "In before work for flu vaccine. No egg allergy, no prior reactions. Quadrivalent given IM left deltoid. Tolerated, out the door at 7:50."}
+          ]
+        },
+        {
+          "id": "2021-03-03a",
+          "kind": "pharmacy",
+          "start": "2021-03-03T11:05",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "RN", "date": "2021-03-03T11:05", "body": "Pharmacy request for 90-day supplies of lisinopril 10 mg and hydrochlorothiazide 12.5 mg. Last BP visit 9/2020, labs normal. Approved x90 days with 1 refill. Reminded patient by portal he is due for a BP check this spring."}
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "office_visit",
+          "start": "2021-05-12T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right shoulder pain",
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-08T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-29T09:00"}
+          ],
+          "orders": [{"id": "ortho-2021", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "right shoulder pain and weakness, suspected rotator cuff"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-05-12T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-05-12T13:30", "body": "Right shoulder bothering him since around December, gradually worse. No fall or injury he can name. Hurts most at night, wakes him when he rolls onto it, and anything over his head at work. Feels weaker lifting sheathing overhead. Acetaminophen takes the edge off. No neck pain, no numbness down the arm.\n\nAlso due for BP check: no side effects from his meds, took them this morning.\n\nGot both Pfizer shots at the pharmacy in April, entered from his card.\n\nExam: BP per vitals. R shoulder: tender laterally over the greater tuberosity area. Active abduction painful past about 90 degrees. Passive motion full. Neck full range, no radicular signs. Strength otherwise intact distally, sensation intact.\n\nA/P:\n1. Right shoulder pain, 5 months, night pain and overhead weakness. Picture fits the rotator cuff. Referred to orthopedics for evaluation and imaging. Acetaminophen as needed; avoiding NSAIDs with his stone history and kidneys in mind. Light duty if he can get it.\n2. Hypertension, controlled. Continue lisinopril and HCTZ."}
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "specialist_visit",
+          "start": "2021-06-21T09:15",
+          "service": "Orthopedics",
+          "reason": "right shoulder pain and weakness",
+          "conditions": [
+            {"label": "Rotator cuff tear of right shoulder", "action": "diagnosed", "icd10": "M75.101", "onset": "2021-06-21", "note": "supraspinatus tear on MRI"},
+            {"label": "Chronic right shoulder rotator cuff pathology", "action": "diagnosed", "icd10": "M75.81", "onset": "2020-12-15"}
+          ],
+          "orders": [{"id": "ortho-2021", "action": "done", "date": "2021-06-21T09:15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedic consultation", "author": "orthopedics", "date": "2021-06-24T16:00", "body": "Outside orthopedic surgery, sports and shoulder clinic. Date of service 6/21/2021.\n\nThank you for referring Mr. O'Connell, 45-year-old right-hand-dominant carpenter.\n\nHe describes six months of right shoulder pain with slowly increasing weakness. Night pain disturbs his sleep. Overhead work aggravates it. He recalls no recent trauma.\n\nMeds: lisinopril, hydrochlorothiazide, acetaminophen as needed. Allergies: sulfa.\n\nExam: Tender over the lateral shoulder. Active abduction is limited by pain and he cannot let the arm down smoothly from overhead; the arm drops partway. Passive range of motion is full in all planes. Neurovascularly intact.\n\nMRI right shoulder (obtained through our office): increased signal within the supraspinatus tendon, consistent with a tear.\n\nImpression: right rotator cuff tear, supraspinatus, on a background of chronic cuff pathology.\n\nPlan: formal physical therapy for cuff strengthening and scapular stabilization, 6 to 8 weeks. Acetaminophen for pain. Modify overhead work. Return if not improving; surgical options would be discussed then."}
+          ]
+        },
+        {
+          "id": "2021-07-19a",
+          "kind": "portal_message",
+          "start": "2021-07-19T19:42",
+          "documents": [
+            {"type": "Patient Message", "title": "Shoulder", "author": "patient", "date": "2021-07-19T19:42", "body": "Just an update, the PT is helping. Sleeping through most nights now. Therapist says 3 more weeks. Do I need to come in for my pressure or can it wait till my physical?"},
+            {"type": "Patient Message", "title": "RE: Shoulder", "author": "PCP", "date": "2021-07-20T08:15", "body": "Glad to hear it. Let's see you in late August, I want to recheck your pressure and talk about the gout too since it's been a while. The front desk will reach out."}
+          ]
+        },
+        {
+          "id": "2021-08-25a",
+          "kind": "office_visit",
+          "start": "2021-08-25T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension and gout follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-08-25T13:50", "resulted": "2021-08-26T10:30", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2021-08-25T13:50", "resulted": "2021-08-26T10:30", "results": [{"test": "Uric Acid", "value": 8.6, "unit": "mg/dL"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-08-25T13:15"}, {"procedure": "Venipuncture", "performed": "2021-08-25T13:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-08-25T13:15", "body": "BP and gout follow-up.\n\nGout: two flares of the left big toe since spring, one in April and one in July. Each laid him up about a week, he rested it and iced it, did not call. Hard to work on roofs when it flares.\nShoulder: much better with PT, finishing up the home program.\nBP: on lisinopril and HCTZ, no issues.\n\nExam: BP per vitals. Left 1st MTP normal today, no tophi. Heart and lungs normal. R shoulder: abduction now near full with mild discomfort at the end.\n\nA/P:\n1. Gout, now two flares in four months. Uric acid and kidney function today. If urate is up he is open to allopurinol now.\n2. Hypertension, controlled. Continue.\n3. Right rotator cuff tear, improving with PT."}
+          ]
+        },
+        {
+          "id": "2021-08-27a",
+          "kind": "portal_message",
+          "start": "2021-08-27T12:05",
+          "medications": [
+            {"drug": "allopurinol 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "gout, recurrent flares"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Uric acid result", "author": "PCP", "date": "2021-08-27T12:05", "body": "Matthew, your uric acid came back at 8.6, above the goal of 6, and your kidney function is normal at 1.0. As we discussed, I sent allopurinol 100 mg once a day to your pharmacy. Start it this weekend. Rarely it can cause a serious rash or fever; if you get either, stop it and call us right away. We'll recheck the uric acid in about 6 weeks."},
+            {"type": "Patient Message", "title": "RE: Uric acid result", "author": "patient", "date": "2021-08-27T17:30", "body": "Got it, picking it up tonight."}
+          ]
+        },
+        {
+          "id": "2021-09-19a",
+          "kind": "ed_visit",
+          "start": "2021-09-19T11:20",
+          "end": "2021-09-19T19:40",
+          "service": "Emergency Medicine",
+          "reason": "fatigue, fever and rash",
+          "vitals": [{"time": "2021-09-19T11:25", "temp_c": 37.8, "bp": [135, 85]}],
+          "conditions": [
+            {"label": "Drug-induced acute interstitial nephritis (allopurinol-induced)", "action": "diagnosed", "icd10": "N14.19", "onset": "2021-09-05"}
+          ],
+          "medications": [
+            {"drug": "allopurinol 100 MG Oral Tablet", "action": "stop", "reason": "suspected allopurinol hypersensitivity with interstitial nephritis"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-19T11:50", "results": [{"test": "Creatinine", "value": 2.5}, {"test": "Blood Urea Nitrogen", "value": 40}]},
+            {"panel": null, "collected": "2021-09-19T11:50", "results": [{"test": "C Reactive Protein", "text": "Elevated"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2021-09-19T11:20"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department note", "author": "emergency medicine", "date": "2021-09-21T09:00", "body": "Regional hospital emergency department. Seen 9/19/2021. Brief note faxed to PCP.\n\n45M with HTN, gout, chronic R rotator cuff problem. Two weeks of tiredness, low-grade fevers and a spreading red bumpy rash over trunk and limbs. Had a bad sore throat recently and was given an antibiotic at an urgent care. Was started on allopurinol about three weeks ago. Also on HCTZ and lisinopril. Allergic to sulfa.\n\nT 37.8, BP 135/85. Diffuse maculopapular eruption. Joints without swelling or warmth.\n\nCreatinine 2.5 (prior 1.0), BUN 40. UA: WBC casts, no RBCs. Urine eosinophils positive. CRP elevated.\n\nImpression: acute interstitial nephritis, most likely from allopurinol.\nAllopurinol discontinued, add to allergy list. IV fluids given. Discharged, needs repeat creatinine with PCP in 2-3 days. Return for worsening rash, mouth sores, decreased urine."}
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "telephone",
+          "start": "2021-09-20T08:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ED follow-up call", "author": "RN", "date": "2021-09-20T08:10", "body": "Pt called. Was in the ED yesterday with a rash and fever, told the gout pill hurt his kidneys and to stop it. He has stopped allopurinol. Rash still there but less itchy. Peeing normally, no mouth sores. ED paperwork not here yet, requested. Booked Wed 9/22 with PCP with labs."}
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "office_visit",
+          "start": "2021-09-22T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, kidney function",
+          "allergies": [
+            {"substance": "Allopurinol", "reaction": "Rash", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-22T12:10", "resulted": "2021-09-22T17:20", "results": [{"test": "Creatinine", "value": 1.9}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-22T11:40"}, {"procedure": "Venipuncture", "performed": "2021-09-22T12:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-09-22T11:40", "body": "Post-ED visit. Seen 9/19 for two weeks of fatigue, low fevers and a rash, creatinine 2.5 with WBC casts and positive urine eosinophils; ED attributed it to allopurinol, which I started 8/27. He stopped it that day. Recent sore throat treated with an antibiotic at an urgent care, he can't recall which one.\n\nToday feels better, no fever since Monday. Rash fading on the chest, still faint on the thighs. Urinating normally. Taking his BP meds.\n\nExam: afebrile. Faint blanching macular rash thighs, none on palms, mouth clear. No edema. Heart and lungs normal.\n\nA/P:\n1. Allopurinol-induced acute interstitial nephritis. Allopurinol listed as an allergy, severe: rash, fever, interstitial nephritis. BMP today. Plenty of water.\n2. Gout: no urate-lowering drug for now.\n3. HTN: continue current regimen.\nAddendum 17:30: creatinine 1.9, coming down. Repeat in 3 weeks."}
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "lab_only",
+          "start": "2021-10-13T07:20",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-10-13T07:20", "resulted": "2021-10-13T13:00", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2021-10-13T07:20"}],
+          "documents": [
+            {"type": "Result Note", "title": "Creatinine recheck", "author": "PCP", "date": "2021-10-13T14:30", "body": "Creatinine 1.2, nearly back to his 1.0 baseline. Messaged pt. Recheck with his physical in November."}
+          ]
+        },
+        {
+          "id": "2021-10-20a",
+          "kind": "nurse_visit",
+          "start": "2021-10-20T07:25",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-20T07:30"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-20T07:30"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2021-10-20T07:25", "body": "Flu vaccine, right deltoid. Rash from September is gone per pt. Allergy list reviewed with him: sulfa, allopurinol. Tolerated."}
+          ]
+        },
+        {
+          "id": "2021-11-17a",
+          "kind": "annual_physical",
+          "start": "2021-11-17T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Drug-induced acute interstitial nephritis (allopurinol-induced)", "action": "resolved", "icd10": "N14.19"}
+          ],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-03T16:00"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-11-17T13:45", "resulted": "2021-11-17T18:00", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-11-17T13:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2021-11-17T13:45", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "orders": [{"id": "colo-2022", "action": "placed", "order": "Screening colonoscopy referral", "category": "referral", "to": "Gastroenterology", "reason": "average-risk colorectal cancer screening, age 45"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-11-17T13:00"}, {"procedure": "Venipuncture", "performed": "2021-11-17T13:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-11-17T13:00", "body": "Annual exam, 45M.\n\nInterval: AIN from allopurinol in September, creatinine 2.5 to 1.9 to 1.2. Rash long gone. No gout flares since summer. Shoulder much improved after PT, back to full duty, still sore after a long day of overhead work. Booster at the pharmacy 11/3.\n\nMeds: lisinopril 10, HCTZ 12.5, acetaminophen prn.\nAllergies: sulfa; allopurinol (rash, fever, interstitial nephritis).\nSH: former smoker, quit 2018. Beer on weekends, 1-2. Working full time.\n\nROS negative except as above.\nExam: well. HEENT normal. Neck no nodes. Heart regular. Lungs clear. Abdomen benign, no CVA tenderness. GU deferred. Skin clear. R shoulder good range, mild painful arc.\nPHQ-2: 0.\n\nA/P:\n1. Interstitial nephritis, resolving; creatinine today.\n2. Gout: off ULT, no flares since. Will watch.\n3. HTN controlled.\n4. R rotator cuff tear, improved with PT.\n5. Screening: colonoscopy referral placed, now 45. CMP, CBC, lipids.\nAddendum 18:15: creatinine 1.0, back to baseline. Lipids fine."}
+          ]
+        },
+        {
+          "id": "2021-12-08a",
+          "kind": "portal_message",
+          "start": "2021-12-08T20:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Colonoscopy", "author": "patient", "date": "2021-12-08T20:14", "body": "GI office called, they have me down for January 26. They said I need a ride home, is that true even if I feel fine?"},
+            {"type": "Patient Message", "title": "RE: Colonoscopy", "author": "RN", "date": "2021-12-09T09:02", "body": "Yes, with sedation they require someone to drive you home. They'll send the prep instructions. Remember it's a liquid diet the day before."}
+          ]
+        }
+      ]
+    }
+  ]
+}

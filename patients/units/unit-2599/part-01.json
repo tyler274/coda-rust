@@ -1,0 +1,186 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002599",
+      "given": "Curtis",
+      "family": "Jean-Baptiste",
+      "birth_date": "1995-09-25",
+      "address_line": "27 Kensington Ave, Apt 2",
+      "phone": "+1-917-555-0192",
+      "email": "curtis.jean-baptiste@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher who joined in 2021 healthy apart from frequent childhood respiratory infections. Lupus with arthropathy is diagnosed by rheumatology in 2024 and a C1q gene mutation is found; in June 2026, after a cold and after his last practice visit, he goes to the ED with poststreptococcal glomerulonephritis and is followed by nephrology.",
+      "events": [
+        {
+          "id": "2021-05-11a",
+          "kind": "establish_care",
+          "start": "2021-05-11T15:40",
+          "end": "2021-05-11T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "History of frequent upper respiratory infections", "icd10": "Z87.09", "action": "history", "onset": "2000-01-01", "note": "Frequent colds and sinus infections as a child, per patient"}
+          ],
+          "medications": [
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule (2000 IU) by mouth daily", "dose": {"value": 0.05, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Supplement, self-started"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 79.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-11T16:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-05-11T16:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-05-11T16:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-05-11T16:25", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-05-11T16:25", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-09T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-30T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-05-11T15:40"},
+            {"procedure": "Venipuncture", "performed": "2021-05-11T16:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-05-11T16:30", "body": "25M here to establish. Teaches 2nd grade locally, moved from his old doctor because the office kept losing his messages. No complaints today.\n\nPMH: says he was 'the kid who always had a cold' - lots of colds and sinus infections growing up, a few rounds of antibiotics a year as a child, much less as an adult. Nothing chronic. No hospitalizations.\nPSH: none.\nMeds: vitamin D3 2000 units daily, his own idea, takes it most days.\nAllergies: none to medications.\nFHx: mom has lupus (dx in her mid 30s). Maternal aunt with rheumatoid arthritis. Dad has high blood pressure.\nSH: single, lives alone in an apartment. Never smoked. A drink or two a month. No drugs. Plays pickup basketball on weekends.\nVaccines: COVID primary series done in March through the school district clinic, card reviewed. Thinks he had a tetanus shot 'a few years ago' - will check old records.\n\nROS: negative except as above. No joint pain, rashes, mouth sores, fevers.\n\nExam: vitals as charted, BP fine. Well-appearing. HEENT: TMs clear, oropharynx clear, no ulcers. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abd soft, nontender. Skin: no rashes. Joints: full ROM, no swelling. Neuro grossly normal.\nPHQ-2 0.\n\nA/P: healthy 25M establishing care.\n- Baseline CBC, CMP, lipids. One-time HIV and hep C screening, discussed and he agrees.\n- Records release signed for prior PCP.\n- Family hx of lupus noted; nothing to suggest it in him. Told him what to watch for.\n- Flu shot in the fall.\n- Physical yearly."}
+          ]
+        },
+        {
+          "id": "2021-05-13a",
+          "kind": "portal_message",
+          "start": "2021-05-13T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-05-13T12:10", "body": "Hi Curtis - everything from Tuesday came back normal. Blood counts, kidney and liver numbers, and cholesterol all look good, and the HIV and hepatitis C screens are negative. Nothing to do until your physical next year."}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "outside_records",
+          "start": "2021-06-08T09:30",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2017-08-22T09:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "MA", "date": "2021-06-08T09:30", "body": "Records received from prior primary care practice, 38 pages, covering 2013-2020.\n\nSummary for chart: annual physicals 2016, 2017, 2019 with normal exams. Problem list there: recurrent URIs in childhood (noted as history). No chronic medications. NKDA. Tdap given 08/22/2017. No labs of note; CBC and BMP from 2019 normal.\n\nImmunization history entered. Scanned to media tab."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T15:35"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2021-10-12T15:40", "body": "In after school for flu vaccine. Screening questions negative, no egg or vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid. Tolerated well, waited 15 min. VIS given."}
+          ]
+        },
+        {
+          "id": "2021-11-22a",
+          "kind": "portal_message",
+          "start": "2021-11-22T19:05",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-20T11:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Booster", "author": "patient", "date": "2021-11-22T19:05", "body": "Got my COVID booster Saturday at the pharmacy, Pfizer again. Attaching a picture of the card so you have it."},
+            {"type": "Patient Message", "title": "RE: Booster", "author": "MA", "date": "2021-11-23T08:40", "body": "Thanks Curtis, booster added to your immunization record."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "annual_physical",
+          "start": "2022-06-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-06-21T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-06-21T09:35", "body": "S: First week of summer break, feels good. Only one cold all winter, which he says is a record for a teacher. Still on vitamin D. No joint pain, rash, sores in his mouth. Exercising - basketball twice a week.\nNo smoking, rare alcohol.\n\nO: vitals reviewed and fine. Pleasant, well. Ears, throat clear. Heart regular, no murmur. Lungs clear throughout. Abdomen soft. Skin clear. No synovitis.\nPHQ-2 negative.\n\nA/P: well visit, 26M.\n- Labs were normal last year, nothing due.\n- Tdap current (2017). Flu and COVID in the fall.\n- Sunscreen, seat belt, the usual.\n- See him next summer."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T15:52"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2022-10-18T16:05", "body": "Pt here for both fall shots. Denies fever today, no prior reactions. Flu (quadrivalent) L deltoid IM. Pfizer bivalent booster R deltoid IM. Observed 15 minutes without issue. Pt asked if he could still teach tomorrow - yes."}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "annual_physical",
+          "start": "2023-06-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment Cancelled", "author": "front desk", "date": "2023-06-26T14:15", "body": "Pt called, needs to move his physical, helping a colleague pack up her classroom tomorrow. Rebooked 7/11 at 10:40."}
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "annual_physical",
+          "start": "2023-07-11T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-07-11T11:15", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-11T11:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-07-11T10:40"},
+            {"procedure": "Venipuncture", "performed": "2023-07-11T11:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-07-11T11:20", "body": "27 yo M, yearly visit (moved from last month).\n\nInterval: no illnesses worth mentioning. A little more tired in the spring with report cards but sleeping fine now. Mood good. Vitamin D continues. No joint, skin or mouth complaints.\nSocial unchanged; never smoker, occasional drink.\n\nExam: VS ok. General well. Oropharynx without lesions. CV RRR. Lungs CTA. Abd benign. Ext no edema. Skin no rash.\nPHQ-2: 1.\n\nPlan:\n- CBC and BMP since he mentioned the spring fatigue, mostly for reassurance.\n- Fall vaccines here in October.\n- Back in a year."}
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "portal_message",
+          "start": "2023-07-12T17:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2023-07-12T17:20", "body": "Curtis, your blood count and chemistry panel are normal - no anemia, kidneys and sugar fine. Glad the energy is back."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T15:55"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-17T15:57"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "MA", "date": "2023-10-17T16:10", "body": "Fall vaccines. No contraindications on screening. Flu IM L arm, Moderna 2023-24 COVID IM R arm. VIS sheets given, observed, left without problems."}
+          ]
+        }
+      ]
+    }
+  ]
+}

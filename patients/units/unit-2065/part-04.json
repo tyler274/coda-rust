@@ -1,0 +1,610 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002065",
+      "events": [
+        {
+          "id": "2026-01-01a",
+          "kind": "ed_visit",
+          "start": "2026-01-01T13:50",
+          "end": "2026-01-01T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Nausea, vomiting, right upper quadrant pain",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-01T14:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 2500
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2300
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-01T14:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-01T14:20",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-01T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department note (outside)",
+              "author": "emergency medicine",
+              "date": "2026-01-06T10:15",
+              "body": "Regional hospital emergency department. Date of service 01/01/2026. Faxed to PCP 01/06/2026.\n\n52M with alcohol use disorder, alcoholic liver disease (?cirrhosis), chronic back pain on oxycodone, presents with two days of nausea, emesis and RUQ abdominal pain. Has had a headache this past week and took more than the usual amount of OTC pain reliever, he describes it as \"a few extra.\"\n\nMeds: oxycodone 5-10 mg q6h prn, omeprazole 20 mg daily. Allergies: NKDA.\n\nExam: lethargic, oriented to person and place. Jaundiced skin, icteric sclerae. RUQ tenderness, no rebound, no guarding.\n\nLabs: AST 2500, ALT 2300, T bili 5.2, INR 2.1. Acetaminophen level 30 mcg/mL (ref 10-20).\n\nImpression: acetaminophen hepatotoxicity on background alcoholic liver disease.\nPlan: N-acetylcysteine infusion started in ED. Admit to medicine. Poison center contacted."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-02a",
+          "kind": "portal_message",
+          "start": "2026-01-02T08:05",
+          "reason": "Patient in hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Glenn is in the hospital",
+              "author": "patient",
+              "date": "2026-01-02T08:05",
+              "body": "This is Glenn's wife on his account. He went to the ER yesterday with stomach pain and throwing up and they said his liver is bad from Tylenol he took for a headache. He's admitted and on an IV medicine. Just wanted you to know.\n\nPCP reply 1/2: Thank you for letting me know. I'll ask the hospital for records. Please have him make an appointment with me within a week or so of getting home, and no Tylenol or anything with acetaminophen in it for now."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, acetaminophen toxicity",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "icd10": "T39.1X1A",
+              "action": "diagnosed",
+              "onset": "2026-01-01"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 168
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-01-13T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2026-01-13T08:35",
+              "body": "Seen after his New Year's Day ED visit and admission. ED note received 1/6; no discharge summary yet. By his account he was in about four days, got the IV antidote the whole time, and went home on the 5th once the numbers were coming down. He had a bad headache over Christmas week and took extra OTC acetaminophen on top of his usual drinking, didn't count the pills. Nausea gone, eating, no abdominal pain now. Says he hasn't had a drink since he got out but is vague.\n\nExam: VS as charted. Sclerae anicteric today. Abdomen soft, nontender, no ascites. Alert and oriented x3, no asterixis.\n\nA/P\n1. Acetaminophen toxicity, recovering. Repeat hepatic panel and INR today. No acetaminophen in any form - went through his medicine cabinet list with him, including combination cold products.\n2. Alcohol use disorder with alcoholic liver disease. This was a scare for both of them. Offered referral again; he will think about it this week. AUDIT-C remains 12 for the past year.\n3. Back pain - oxycodone through pain clinic, no change.\nPortal me with how he's doing, recheck labs at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "portal_message",
+          "start": "2026-01-15T17:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests improving",
+              "author": "PCP",
+              "date": "2026-01-15T17:20",
+              "body": "Glenn, good news: your liver enzymes have come way down from the hospital (AST 74, ALT 168), bilirubin is 2.1 and clotting is 1.3. Still healing. Keep away from acetaminophen and alcohol and let's see you in a couple of months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-08a",
+          "kind": "hospital_admission",
+          "start": "2026-03-08T22:10",
+          "end": "2026-03-10T13:30",
+          "service": "Critical Care Medicine",
+          "reason": "Lethargy and shallow breathing",
+          "vitals": [
+            {
+              "time": "2026-03-08T22:15",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 55,
+              "rr": 8,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-08T22:30",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.28
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 65
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 58
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU discharge summary (outside)",
+              "author": "critical care",
+              "date": "2026-03-24T09:40",
+              "body": "Regional hospital, critical care service. Admitted 03/08/2026, discharged 03/10/2026. Received by fax 03/24/2026.\n\nReason for admission: opioid overdose with hypoventilation.\n\nBrief history: 52M with alcohol use disorder, alcoholic liver disease and acetaminophen toxicity in January 2026, on prescribed oxycodone for chronic back pain. Wife brought him to the ED after several hours of worsening drowsiness and slow, shallow breathing. He drinks regularly and denies other drug use.\n\nOn arrival: RR 8, BP 110/70, HR 55, SpO2 89% on room air. Somnolent, rousable to voice.\nABG: pH 7.28 / PaCO2 65 / PaO2 58 / HCO3 24 - acute respiratory acidosis.\n\nCourse: responded to IV naloxone in the ED with improved respiratory effort. Admitted to ICU for monitoring for recurrent sedation; no further naloxone needed after the first night. Breathing and mentation normal by day 2.\n\nDischarge medications: omeprazole 20 mg daily; oxycodone 5-10 mg q6h prn (per outpatient prescriber); NEW naloxone 4 mg nasal spray, use for suspected overdose, call 911.\nAllergies: NKDA.\nFollow-up: PCP within 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T07:15",
+          "reason": "Patient hospitalized",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the hospital",
+              "author": "patient",
+              "date": "2026-03-09T07:15",
+              "body": "Glenn's wife again. Last night he got so sleepy I couldn't keep him awake and his breathing was really slow so I drove him in. They said it was the pain pills and gave him the reversal shot, he's in the ICU being watched but he's talking now.\n\nPCP reply 3/9: I'm so glad you got him there. Please set up a visit for when he's home. I'll be in touch with the hospital team."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, opioid overdose",
+          "conditions": [
+            {
+              "label": "Opioid overdose",
+              "icd10": "T40.2X4A",
+              "action": "diagnosed",
+              "onset": "2026-03-08"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "historical",
+              "sig": "1 spray in one nostril for suspected opioid overdose; call 911; may repeat in other nostril",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Opioid overdose, prescribed at hospital discharge"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-17T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU visit",
+              "author": "PCP",
+              "date": "2026-03-17T08:30",
+              "body": "Here with his wife after the ICU stay 3/8-3/10. No summary in yet; history from both of them. She found him very hard to wake and breathing slowly that evening and brought him in; he got naloxone in the ED and was watched in the ICU. He had taken his usual oxycodone and had been drinking. He says it was not on purpose, denies any thoughts of harming himself, and his wife agrees. He went home with a naloxone nasal spray; she has it in her purse and knows how to use it.\n\nNo breathing problems since. Back pain at baseline.\n\nExam: VS as charted. Alert, oriented, conversant. Lungs clear. Abdomen soft. No icterus today.\n\nPHQ-9 4. AUDIT-C 12.\n\nA/P\n1. Opioid overdose with alcohol on board, 3/8. Naloxone kit at home, reviewed use with wife. Discussed that alcohol plus opioid is what makes this dangerous.\n2. Alcohol use disorder - the conversation was more serious with his wife in the room. He still isn't ready for a program or a medication. I'll keep asking.\n3. Recent acetaminophen toxicity - LFTs next visit.\n4. Requesting ICU summary.\nRTC 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "telephone",
+          "start": "2026-03-19T11:30",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ICU records request",
+              "author": "MA",
+              "date": "2026-03-19T11:30",
+              "body": "Called hospital HIM for the 3/8-3/10 ICU stay; no summary sent yet. Re-faxed our request with signed release. Also asked again for the January discharge summary; told it may not have been dictated yet."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "icd10": "T39.1X1A",
+              "action": "resolved",
+              "onset": "2026-01-01"
+            },
+            {
+              "label": "Opioid overdose",
+              "icd10": "T40.2X4A",
+              "action": "resolved",
+              "onset": "2026-03-08"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T08:10",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-05-12T08:30",
+              "body": "F/u after a rough winter. ICU summary from March is in the chart (received 3/24). No further sedation episodes, naloxone still at home unused. No acetaminophen. Back to work full time. Drinking: says he cut down for a few weeks after March and is \"back to about where I was.\"\n\nNo jaundice, no abdominal swelling, no GI bleeding.\n\nExam: VS as charted. Anicteric. Abdomen soft, no ascites. Lumbar tenderness as before.\n\nA/P\n- Acetaminophen toxicity: recovered; labs today should be back to his baseline. Closing the problem.\n- Opioid overdose 3/2026: no recurrence. Closing as an active problem; kit at home.\n- AUD / alcoholic liver disease with suspected cirrhosis: counseling, declines referral.\n- LBP: unchanged.\nCheck in this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T12:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "May labs",
+              "author": "PCP",
+              "date": "2026-05-14T12:50",
+              "body": "Your liver tests are back to where they were before January. The acetaminophen injury has healed. What's left is the alcohol-related damage we've been watching."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Omeprazole refill",
+              "author": "MA",
+              "date": "2026-06-09T09:40",
+              "body": "Omeprazole 20 mg #90 refill sent. Seen 5/12."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-12a",
+          "kind": "telehealth_visit",
+          "start": "2026-07-12T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vomiting blood",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-07-12T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day video visit",
+              "author": "PCP",
+              "date": "2026-07-12T08:35",
+              "body": "Sunday. His wife texted my phone at 7:50 that he had thrown up blood; video call at 8:10 with both of them at home, identity confirmed.\n\nHe has vomited blood this morning. Drank last night as usual.\n\nOn video: sitting at the kitchen table, speaking in full sentences, answering appropriately.\n\nA/P: Hematemesis in a man with alcoholic liver disease and suspected cirrhosis. Needs emergency evaluation now. Told them to call 911 rather than drive; wife called while we were still on. Not to eat or drink anything. I phoned the ED charge nurse with his history (alcohol use disorder, suspected cirrhosis, acetaminophen toxicity 1/2026, opioid overdose 3/2026, oxycodone and omeprazole, NKDA)."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-12b",
+          "kind": "hospital_admission",
+          "start": "2026-07-12T09:05",
+          "end": "2026-07-21T12:00",
+          "service": "Internal Medicine",
+          "reason": "Hematemesis",
+          "vitals": [
+            {
+              "time": "2026-07-14T21:30",
+              "temp_c": 38.6,
+              "bp": [
+                168,
+                96
+              ],
+              "hr": 122,
+              "rr": 22
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-14T22:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-14T23:10",
+              "text": "EXAM: CT head without contrast.\nINDICATION: Acute confusion and agitation.\nFINDINGS: No intracranial hemorrhage, mass, mass effect or acute territorial infarct. Ventricles and sulci normal for age. Gray-white differentiation preserved. Calvarium intact. Visualized sinuses and mastoids clear.",
+              "conclusion": "Normal noncontrast head CT."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary (outside)",
+              "author": "internal medicine",
+              "date": "2026-07-24T14:20",
+              "body": "Regional hospital, inpatient medicine. Admitted 07/12/2026, discharged 07/21/2026. Received 07/24/2026.\n\nPrincipal problem: hematemesis.\nHospital course complicated by: delirium tremens.\n\nHistory: 53M with alcohol use disorder, alcoholic liver disease with suspected cirrhosis, prior critical care admissions this year (acetaminophen toxicity January, opioid overdose March), chronic back pain on oxycodone, sent in by his PCP after vomiting blood at home. Per wife he drinks a pint of vodka a day; last drink the day of admission.\n\nCourse: treated with IV acid suppression; no further hematemesis after admission. On hospital day 3 (07/14) he became increasingly agitated and confused, trying to get out of bed and saying there were spiders on the walls. T 38.6 C (101.5 F), BP 168/96, HR 122, RR 22. Diaphoretic, fine tremor, disoriented. Electrolytes within normal limits. Noncontrast head CT normal. Treated for delirium tremens with lorazepam and IV thiamine with ICU-level monitoring; delirium cleared over the following days and benzodiazepines were tapered off before discharge.\n\nDischarge condition: alert and oriented, ambulating.\nDischarge medications: omeprazole 20 mg daily; oxycodone 5-10 mg q6h prn (outpatient prescriber).\nAllergies: NKDA.\nFollow-up: PCP in 1 week. Strongly advised alcohol abstinence."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T20:10",
+          "reason": "Home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "He's home",
+              "author": "patient",
+              "date": "2026-07-22T20:10",
+              "body": "Glenn's wife. He came home yesterday. It was a really bad week, he was seeing things and didn't know where he was for a couple days. He's sleeping a lot but ok. They said to see you next week.\n\nPCP reply 7/23: Thank you for the update, I'm relieved he's home. Yes, I want to see him soon, please call the office or reply here and we'll find a time that works. If he has any more bleeding, black stools, confusion or shaking, call 911."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "telephone",
+          "start": "2026-07-28T15:05",
+          "reason": "Post-hospital scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling outreach",
+              "author": "front desk",
+              "date": "2026-07-28T15:05",
+              "body": "Called pt's cell to book post-hospital visit per PCP, discharge summary in chart 7/24. No answer, voicemail left with our number. Portal reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T10:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Omeprazole refill",
+              "author": "MA",
+              "date": "2026-08-11T10:20",
+              "body": "Pharmacy request omeprazole 20 mg #90. Sent per PCP. Still no post-hospital visit on the books; left another message on the portal asking him to call."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

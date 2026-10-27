@@ -1,0 +1,564 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001768",
+      "events": [
+        {
+          "id": "2025-02-18a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up, Crohn disease and anemia",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-02-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-02-18T16:20",
+              "body": "Video visit; she is at home after school, identity verified, consents to video.\n\nCheck-in on chronic issues. Crohn disease steady on infliximab every 6 weeks and mesalamine - 1-2 formed stools daily, no blood, no pain, no skin bumps since last spring. Energy OK through the winter. Taking iron and B12. No fevers or infections this winter despite the classroom germs.\n\nObservations on video: well-appearing, conversational, no distress.\n\nPlan: no changes. Labs at the physical. She will book the physical for late summer or early fall. Call with any flare."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T08:55",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "author": "MA",
+              "date": "2025-03-11T08:55",
+              "body": "Pharmacy renewal for ferrous sulfate 325 mg daily and vitamin B12 1000 mcg daily. Seen by video 2/18. Approved, 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "hospital_admission",
+          "start": "2025-05-22T06:40",
+          "end": "2025-05-25T11:30",
+          "service": "Emergency Medicine / Inpatient Medicine",
+          "reason": "Abdominal pain, vomiting, obstipation",
+          "state": {
+            "weight_kg": 77.8,
+            "labs": {
+              "White Blood Cells": 12.0,
+              "Hemoglobin": 13.2,
+              "Lipase": 32
+            }
+          },
+          "vitals": {
+            "temp_c": 37.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ],
+          "conditions": [
+            {
+              "label": "Small bowel obstruction due to fibrotic stricture secondary to Crohn disease",
+              "icd10": "K50.812",
+              "action": "diagnosed",
+              "onset": "2025-05-20"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "Lipase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T07:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal X-ray, supine and upright",
+              "loinc": "24798-1",
+              "performed": "2025-05-22T07:30",
+              "text": "Supine and upright views of the abdomen. Multiple dilated loops of small bowel with air-fluid levels on the upright view. Little gas in the colon. No free air under the diaphragm. No abnormal calcifications.",
+              "conclusion": "Dilated small bowel with air-fluid levels, consistent with small bowel obstruction."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-05-22T09:10",
+              "text": "Technique: helical CT of the abdomen and pelvis after IV contrast. Findings: dilated, fluid-filled proximal and mid small bowel leading to a short narrowed segment of the distal ileum, beyond which the bowel is decompressed. The narrowed segment shows no mural hyperenhancement. No abscess, no fluid collection, no free air, no pneumatosis. Liver, spleen, pancreas, kidneys and adrenals unremarkable. No adenopathy. Uterus and ovaries unremarkable. No free fluid.",
+              "conclusion": "Small bowel obstruction with transition at a short distal ileal stricture without active inflammatory features, consistent with a fibrotic Crohn stricture. No abscess or perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-22T06:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-22T12:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-05-25T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-05-28T09:00",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 05/22/2025 06:40\n\nHPI: 31 y/o F with Crohn disease, originally diagnosed as ulcerative colitis, on infliximab and mesalamine, presenting with 2 days of escalating abdominal pain with nausea and repeated vomiting, now green. No flatus and no stool since this began. No prior abdominal surgery.\n\nPMH: Crohn disease; iron deficiency anemia; B12 deficiency; erythema nodosum.\nMeds: mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily; infliximab infusions.\nAllergies: NKDA.\nSocial: pack a day for 10 years by her account; quit in 2020. Alcohol rare.\nFH: father Crohn disease.\n\nExam: T 37.8 C. Uncomfortable, actively retching. Abdomen distended, diffusely tender, bowel sounds hyperactive; no peritoneal signs. No hernias.\n\nED course: WBC 12.0, Hgb 13.2, CRP 25 mg/L; BMP and lipase unremarkable; urine hCG negative. Abdominal films: dilated small bowel with air-fluid levels. NG tube placed with bilious return, IV fluids, antiemetic and IV analgesia. CT A/P: obstruction at a short fibrotic-appearing distal ileal stricture, no abscess or perforation. Surgery consulted in the ED.\n\nImpression: small bowel obstruction from a Crohn stricture.\nDisposition: admitted to medicine with surgery and GI following."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-05-28T09:05",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 05/22/2025  Discharged: 05/25/2025\nPrincipal diagnosis: small bowel obstruction due to fibrotic stricture of the distal ileum, secondary to Crohn disease\nOther: Crohn disease on infliximab; iron deficiency anemia; vitamin B12 deficiency\nProcedures: none (no surgery)\n\nCourse: managed nonoperatively with nasogastric decompression, IV fluids and bowel rest. General surgery saw her on admission and agreed with nonoperative care. GI consulted: CT appearance is a fibrotic rather than inflammatory stricture, so no steroids; infliximab schedule unchanged. NG output fell over the first day; she passed flatus on hospital day 2 and stool on day 3. NG removed, clear liquids then low-residue diet advanced without vomiting or pain. Discharged home on day 4.\n\nDischarge medications (unchanged): mesalamine DR 800 mg three times daily; ferrous sulfate 325 mg daily; cyanocobalamin 1000 mcg daily; infliximab every 6 weeks per GI infusion schedule.\nAllergies: NKDA.\n\nInstructions: low-residue diet for now, chew well, avoid raw skins, seeds and nuts. Return for vomiting, distension, inability to pass gas or severe pain.\nFollow-up: PCP within 1-2 weeks; GI as scheduled.\n\nHospital medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-23a",
+          "kind": "telephone",
+          "start": "2025-05-23T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital case manager call",
+              "author": "RN",
+              "date": "2025-05-23T14:10",
+              "body": "Case manager from the admitting hospital called: pt admitted 5/22 with small bowel obstruction related to Crohn disease, being managed without surgery, likely home this weekend. Requesting PCP follow-up within 1-2 weeks. Will call pt after discharge and book."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "telephone",
+          "start": "2025-05-27T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-05-27T10:20",
+              "body": "Transition call after her 5/22-5/25 admission for small bowel obstruction (Crohn stricture, no surgery). Pt home since Sunday. Eating low-residue foods, small meals. Passing gas and had normal BMs yesterday and today. No vomiting, mild soreness only. Taking her usual meds; no new prescriptions. Knows return precautions. Hospital records requested. Visit with PCP booked 6/3. Next infusion per GI schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "office_visit",
+          "start": "2025-06-03T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, small bowel obstruction",
+          "state": {
+            "weight_kg": 76.9,
+            "labs": {
+              "White Blood Cells": 7.2,
+              "Hemoglobin": 12.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Small bowel obstruction due to fibrotic stricture secondary to Crohn disease",
+              "icd10": "K50.812",
+              "action": "resolved",
+              "note": "Resolved without surgery; ileal stricture remains part of Crohn disease"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-03T16:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-03T16:15",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-03T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-06-03T16:20",
+              "body": "TRANSITIONAL CARE VISIT\nAdmission 5/22-5/25 at a regional hospital for small bowel obstruction at a fibrotic distal ileal stricture from Crohn disease. Nonoperative: NG tube, fluids, bowel rest. ED and discharge records reviewed (received 5/28). No medication changes at discharge.\n\nSince home: eating low-residue, small portions, no vomiting. Daily soft BMs, passing gas, no cramping. Back at school as of Monday; tired at the end of the day. Lost a couple of pounds in the hospital.\n\nMeds reconciled: infliximab q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted, afebrile. Abdomen soft, not distended, nontender, normal bowel sounds. Heart and lungs normal.\n\nA/P:\n1. Small bowel obstruction from Crohn stricture - resolved. Stay on low-residue diet; return precautions reviewed again (vomiting, bloating, no gas). GI aware; she sees them in the fall.\n2. Crohn disease - continue current regimen per GI.\n3. Anemia history - CBC today with BMP after the vomiting.\nPhysical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "portal_message",
+          "start": "2025-06-05T11:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Post-hospital labs",
+              "author": "PCP",
+              "date": "2025-06-05T11:30",
+              "body": "Your white count is back to normal, hemoglobin is fine, and your kidney function and electrolytes are normal after all the vomiting. Keep up the low-residue diet and let me know if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "portal_message",
+          "start": "2025-08-12T10:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your physical",
+              "author": "front desk",
+              "date": "2025-08-12T10:00",
+              "body": "Hi Deborah, you are due for your annual physical. We have after-school openings in early September - reply with a day that works. Patient replied: Tuesday the 9th after 3:30 please. Booked 9/9 3:40 pm."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T15:40",
+          "end": "2025-09-09T16:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 78.4,
+            "labs": {
+              "Hemoglobin": 12.6,
+              "Mean Corpuscular Volume": 82,
+              "Ferritin": 31,
+              "Iron": 68,
+              "Total Iron-Binding Capacity": 405,
+              "Vitamin B12": 498
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Ferritin"
+                },
+                {
+                  "test": "Iron"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Vitamin B12"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-09T16:05",
+              "resulted": "2025-09-15T10:00",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-09-09T16:05",
+              "issued": "2025-09-15T10:00",
+              "text": "Liquid-based cytology, satisfactory for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM; HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-09T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-09T16:25",
+              "body": "PREVENTIVE EXAM - 32 y/o\n\nInterval history: May admission for small bowel obstruction from an ileal stricture, managed without surgery. Since then no obstructive symptoms; she has loosened the low-residue diet carefully and tolerates it. Crohn otherwise quiet on infliximab q6 weeks and mesalamine. No leg nodules in over a year. GI visit with colonoscopy scheduled for November.\nWell otherwise. Still vegan, on B12 and iron. Former smoker. PHQ-9 1.\n\nMeds: infliximab 5 mg/kg IV q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted. Well. HEENT normal. Thyroid normal. Heart RRR, no murmur. Lungs clear. Breasts normal. Abdomen soft, nontender, nondistended. Pelvic: normal; Pap and HPV collected. Skin and shins clear. Joints normal.\n\nPlan:\n- Cervical screening: Pap with HPV today.\n- Labs: CBC, iron studies, B12, CMP, lipids.\n- Vaccines: flu and COVID in October; Tdap due next year.\n- Crohn disease with prior stricture: per GI; return precautions known.\nNext visit in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap, HPV and labs",
+              "author": "PCP",
+              "date": "2025-09-16T08:40",
+              "body": "Your Pap is normal and HPV was not detected. Blood count, iron stores, B12, cholesterol, kidney and liver tests are all fine. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:00",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T16:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "author": "RN",
+              "date": "2025-10-07T16:20",
+              "body": "Flu and 2025-26 COVID given (L and R deltoid). Afebrile, no current illness. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "specialist_visit",
+          "start": "2025-11-17T08:00",
+          "end": "2025-11-17T11:30",
+          "service": "Gastroenterology",
+          "reason": "Follow-up Crohn disease after hospitalization",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2025-11-17T10:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Colonoscopy",
+              "loinc": "18746-8",
+              "performed": "2025-11-17T10:00",
+              "text": "Indication: Crohn disease, assessment of disease activity on infliximab. Moderate sedation. Prep good. Perianal inspection unremarkable. Scope advanced to the cecum; the ileocecal valve was traversed and the terminal ileum examined over a short distance. Mucosal inflammation is reduced compared with prior studies. Biopsies taken from the colon.",
+              "conclusion": "Reduced mucosal inflammation compared with prior colonoscopies. Biopsies sent."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-11-17T10:00",
+              "issued": "2025-11-20T15:30",
+              "text": "A-C. Colon, biopsies: colonic mucosa with decreased lamina propria lymphocytic infiltrate and less active inflammation than in prior specimens. No granulomas. No dysplasia.",
+              "conclusion": "Decreased lamina propria inflammation; no granulomas or dysplasia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up and colonoscopy",
+              "author": "gastroenterology",
+              "date": "2025-11-24T10:00",
+              "body": "GI FOLLOW-UP / COLONOSCOPY\nDOS 11/17/2025\n\nReason: assessment of Crohn disease after the May 2025 admission for small bowel obstruction (fibrotic distal ileal stricture, managed nonoperatively).\n\nHistory: this has been a hard few years for her - flares needing two prednisone courses and infliximab, with the interval shortened to every 6 weeks in 11/2023. Over the past year she has done much better: bowel movements normal, no abdominal pain, no obstructive symptoms since discharge.\n\nMeds: mesalamine DR 800 mg TID; ferrous sulfate 325 mg daily; cyanocobalamin 1000 mcg daily. (Infliximab at our infusion center.)\nAllergies: NKDA.\nFH: father Crohn disease; mother RA; paternal aunt hypothyroidism.\nSH: former smoker, rare alcohol, teacher.\n\nColonoscopy today: inflammation reduced compared with previous studies.\nPathology (11/20): decreased lamina propria lymphocytic infiltrate compared with prior specimens; no granulomas, no dysplasia.\n\nImpression: Crohn disease with improving mucosal inflammation on infliximab every 6 weeks; history of fibrotic ileal stricture with obstruction, currently asymptomatic.\n\nPlan:\n- Continue infliximab 5 mg/kg every 6 weeks and mesalamine 800 mg TID.\n- Call promptly for bloating, vomiting, or inability to pass gas.\n- Clinic follow-up in 6 months.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "portal_message",
+          "start": "2025-12-02T19:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Good news from GI",
+              "author": "patient",
+              "date": "2025-12-02T19:15",
+              "body": "Hi, wanted to share - my colonoscopy last month showed a lot less inflammation and the biopsies were good. GI said keep everything the same. First fall in years I haven't had a flare! Did you get their letter?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Good news from GI",
+              "author": "PCP",
+              "date": "2025-12-03T07:40",
+              "body": "We did, and it is wonderful news - thank you for sharing it. Keep doing what you are doing. Let's plan your next visit here for the spring."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,799 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002256",
+      "events": [
+        {
+          "id": "2020-02-25a",
+          "kind": "office_visit",
+          "start": "2020-02-25T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up; trouble with side vision",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-25T14:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-02-25T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-ref-2020",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Progressive loss of peripheral vision; sister with glaucoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2020-02-25T15:05",
+              "body": "Routine BP visit, but the main thing today is vision. Since about last fall he has been clipping door frames and the corner of the kitchen table, and his wife noticed he startles when people approach from the side. Reading and TV are fine. Right eye was done for cataract last June and the central vision there is good. Occasional mild ache around the eyes in dim rooms. No sudden loss of vision, no flashes, no floaters, no headache.\n\nSister has open-angle glaucoma.\n\nExam: vitals as charted. Pupils equal and reactive, no afferent defect. Confrontation fields: he misses fingers in the outer quadrants on both sides. Central acuity with glasses good in each eye. Undilated fundi limited.\n\nA/P\n1. Peripheral field loss, bilateral, gradual. Concern for glaucoma given family history. Ophthalmology referral placed, asked for a prompt appointment. Advised extra caution driving, particularly at intersections, until he is seen.\n2. HTN: at goal. BMP.\n3. HLD, HIV: no change.\nRTC 4-6 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "telephone",
+          "start": "2020-03-24T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication supply and scheduling",
+              "author": "RN",
+              "date": "2020-03-24T11:10",
+              "body": "Called patient re: pandemic office changes. He and his wife are staying home. Has about 6 weeks of all meds; we sent early 90-day fills to mail order so he won't run short. Ophthalmology office called him to postpone his eye appointment, no new date yet. Advised to call us if vision changes suddenly. Spring follow-up will be by video."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Video follow-up, blood pressure",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "author": "PCP",
+              "date": "2020-04-21T10:25",
+              "body": "Video visit from his kitchen, wife helping with the tablet; consent for telehealth given. Home BP readings this month 118-132 / 70-80, pulse 60s. Feels fine, no fever or cough, staying in. Vision about the same, still bumping the occasional door frame. Ophthalmology rescheduled him for May 18.\nAssessment: HTN controlled at home. Field loss pending eye exam. Continue current meds. Will see in person in summer for the wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-18a",
+          "kind": "specialist_visit",
+          "start": "2020-05-18T09:30",
+          "service": "Ophthalmology",
+          "reason": "Peripheral vision loss",
+          "conditions": [
+            {
+              "label": "Primary open-angle glaucoma",
+              "action": "diagnosed",
+              "onset": "2019-09-01",
+              "note": "Bilateral"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "latanoprost 0.05 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "Instill 1 drop in both eyes at bedtime",
+              "dose": {
+                "value": 1,
+                "unit": "drop"
+              },
+              "frequency": "DAILY",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "Primary open-angle glaucoma; prescribed by ophthalmology"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-ref-2020",
+              "action": "done",
+              "date": "2020-05-18T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation",
+              "author": "ophthalmology",
+              "date": "2020-05-26T14:00",
+              "body": "Re: Jerome Toussaint, DOB 01/07/1953. Seen 05/18/2020 at your request.\n\nHe describes roughly eight months of steadily narrowing side vision: walking into furniture at home and, while driving, not noticing people on the sidewalk unless they are right ahead of him. There is an intermittent mild discomfort in both eyes that seems to come on in dim light. He denies any abrupt drop in vision, flashing lights or new floaters. Sister has POAG. Right eye pseudophakic since 06/2019. Medical history of hypertension, hyperlipidemia and HIV on ART. NKDA.\n\nExam: central vision intact in both eyes. Intraocular pressure 27 mm Hg right and 27 mm Hg left by applanation. Anterior segments quiet; right IOL well centered. Dilated fundus: enlarged cupping of both optic discs, no disc hemorrhages, no exudates; maculae and periphery otherwise normal.\nHumphrey 24-2 visual fields: marked peripheral constriction in both eyes with sparing of fixation.\n\nImpression: primary open-angle glaucoma, both eyes, advanced field loss.\nPlan: start latanoprost 0.005% one drop both eyes at bedtime. Recheck pressure in 6 weeks, then every few months. We discussed that lost field does not come back and the importance of nightly drops. He was advised about driving given the field results. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-20a",
+          "kind": "pharmacy",
+          "start": "2020-05-20T16:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy fill notice",
+              "author": "MA",
+              "date": "2020-05-20T16:00",
+              "body": "Fill history update from pharmacy: latanoprost 0.005% 2.5 mL filled 05/19/2020, prescriber ophthalmology. Added to medication list. Consult letter not yet received, will watch for it."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "annual_physical",
+          "start": "2020-07-21T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-07-21T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-07-21T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-07-21T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2020-07-21T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2020-07-21T09:35",
+              "body": "Masked visit. Saw ophthalmology in May: glaucoma in both eyes with significant field loss; on latanoprost nightly, pressure check went well per patient.\n\nHRA: independent in ADLs, wife keeps the calendar. No falls. Mood fine, PHQ-2 0. He has no concerns about his memory today.\nMeds reconciled: lisinopril 20, amlodipine 5, metoprolol succinate 50, atorvastatin 40, aspirin 81, Biktarvy, latanoprost OU qhs.\n\nExam: vitals as charted. Cardiopulmonary exam unremarkable, no edema.\n\nPlan: CMP, CBC, lipids. Lung CT in September. Flu shot in October. Glaucoma per ophthalmology. Next visit in 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "imaging",
+          "start": "2020-09-22T10:00",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2020-09-22T10:00",
+              "text": "Annual screening CT. Comparison 09/2019. No pulmonary nodules. No consolidation, effusion or adenopathy. Cardiac size within normal limits.",
+              "conclusion": "Lung-RADS 1, negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2020",
+              "author": "PCP",
+              "date": "2020-09-23T07:55",
+              "body": "Negative screening CT. Annual repeat."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-06T15:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T15:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "author": "MA",
+              "date": "2020-10-06T15:25",
+              "body": "Curbside flu vaccine clinic. High-dose influenza R deltoid. No reaction. Wife accompanied."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-12a",
+          "kind": "specialist_visit",
+          "start": "2020-11-12T13:00",
+          "service": "Ophthalmology",
+          "reason": "Glaucoma follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology follow-up",
+              "author": "ophthalmology",
+              "date": "2020-11-19T10:00",
+              "body": "Glaucoma follow-up 11/12/2020. Using latanoprost nightly, his wife puts the drops in. Pressures 18 mm Hg right and 18 left, down from 27. Discs unchanged. Repeat fields in the spring. Continue latanoprost. Return 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "office_visit",
+          "start": "2020-11-17T10:00",
+          "end": "2020-11-17T10:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Memory concerns raised by daughter",
+          "state": {
+            "labs": {
+              "Vitamin B12": 520,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-11-17T08:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-11-17T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T08:05",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Vitamin B12"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-11-17T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-11-17T08:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref-2020",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Progressive memory loss, disorientation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit: memory",
+              "author": "PCP",
+              "date": "2020-11-17T11:10",
+              "body": "Here with his daughter, who asked for this visit; fasting labs drawn this morning before the appointment.\n\nShe describes a slow change since around the start of the year: he repeats questions, has trouble working out problems he used to handle easily (the checkbook, a leaky faucet), and twice this fall he got turned around inside the house looking for the bathroom at night. His wife has taken over the bills. He minimizes it, says he just forgets names. No falls, no head injury, no new medicines, no hallucinations, no tremor. Mood flat at times but he denies feeling sad; PHQ-9 3. Mother had Alzheimer's starting in her 70s. HIV suppressed for years per ID.\n\nExam: vitals as charted. Pleasant, a little withdrawn, lets daughter answer. Clearly struggles to recall recent events in conversation; formal testing left to neurology. Cranial nerves grossly normal, strength full, gait normal.\n\nA/P\n1. Progressive cognitive decline over about a year with functional impact. Labs today for reversible contributors: CMP, CBC, B12, TSH. Neurology referral for formal evaluation; daughter will come to that visit. Safety: discussed stove and medication supervision; wife will fill his pill box.\n2. HTN, HLD stable. Glaucoma followed by ophthalmology.\nShort follow-up after neurology."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "portal_message",
+          "start": "2020-11-19T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-11-19T17:20",
+              "body": "Sending this to your proxy account as requested. All of Tuesday's labs are normal: fasting sugar 98, kidney function normal (creatinine 1.0), liver tests normal, blood counts normal, B12 and thyroid normal. That means we have not found a simple fixable cause, which is why the neurology visit matters. Their office should call within two weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2020-11-20T08:02",
+              "body": "Thank you. This is his daughter writing. Neurology called and gave us January 8, the earliest they had. We'll bring the list of things we've noticed."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-24a",
+          "kind": "outside_records",
+          "start": "2020-11-24T09:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-11-10T09:00",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 600
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "<20 copies/mL, not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infectious disease annual note",
+              "author": "infectious disease",
+              "date": "2020-11-24T09:40",
+              "body": "Visit 11/10/2020 (in clinic). Remains adherent on bictegravir/emtricitabine/TAF; daughter now helps with pill organization. Viral load below 20 copies/mL, CD4 600 cells/mm3. We are aware of the cognitive concerns and the planned neurology evaluation; with a decade of continuous suppression, HIV-associated neurocognitive disorder is less likely but neurology will weigh it. Continue regimen. Next visit in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-08a",
+          "kind": "specialist_visit",
+          "start": "2021-01-08T13:30",
+          "service": "Neurology",
+          "reason": "Memory loss",
+          "conditions": [
+            {
+              "label": "Alzheimer disease",
+              "action": "diagnosed",
+              "onset": "2020-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "donepezil hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Alzheimer disease; prescribed by neurology"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref-2020",
+              "action": "done",
+              "date": "2021-01-08T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "author": "neurology",
+              "date": "2021-01-14T15:30",
+              "body": "Reason for consultation: memory decline. Seen 01/08/2021 with his daughter.\n\nMr. Toussaint is a 68-year-old man with treated hypertension and hyperlipidemia, HIV on ART with a viral load undetectable for about ten years, and glaucoma diagnosed by ophthalmology last spring. His daughter reports a year of worsening short-term memory, difficulty reasoning through everyday problems and episodes of disorientation in his own home. He has taken his antiretroviral regimen faithfully.\nMedications: lisinopril, amlodipine, metoprolol succinate, atorvastatin, aspirin, Biktarvy, latanoprost. NKDA.\nFamily history: mother with Alzheimer's disease from age 72.\n\nExam: awake and alert, flat affect with apathy. Struggles to recount recent events and loses track partway through serial sevens. MMSE 20/30. Language fluent. Cranial nerves intact. No weakness, normal tone. Gait normal.\nData reviewed from referring office and ID: CD4 600, HIV RNA <20, CBC normal, fasting glucose 98, creatinine 1.0, liver tests normal, B12 and TSH normal.\n\nImpression: dementia of the Alzheimer type, mild to moderate, with a strong family history. Sustained viral suppression makes HIV-related cognitive disorder unlikely.\nPlan: donepezil 5 mg at bedtime for 4 weeks, then 10 mg if tolerated; our nurse will call. Supervision of medications and finances. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "portal_message",
+          "start": "2021-01-19T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about donepezil",
+              "author": "patient",
+              "date": "2021-01-19T20:15",
+              "body": "Hi, it's his daughter again. Dad started the donepezil last week. Does it matter what time of day he takes it? Mom has been giving it with his bedtime eye drops."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about donepezil",
+              "author": "RN",
+              "date": "2021-01-20T10:40",
+              "body": "Bedtime is how neurology prescribed it, so pairing it with the eye drops is a good routine. Call us if he gets dizzy, vomits, or his pulse on the home cuff runs below 50, since he also takes metoprolol. Neurology's nurse will call about the dose increase in a few weeks."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "outside_records",
+          "start": "2021-02-09T11:30",
+          "medications": [
+            {
+              "drug": "donepezil hydrochloride 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "donepezil hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Alzheimer disease; prescribed by neurology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Neurology nurse telephone note",
+              "author": "neurology",
+              "date": "2021-02-09T11:30",
+              "body": "Spoke with patient's daughter. Four weeks on donepezil 5 mg without side effects. No falls or dizziness. Increasing to 10 mg daily per plan; new prescription sent. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "pharmacy",
+          "start": "2021-03-09T09:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-02-04T10:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-04T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID vaccines from state registry",
+              "author": "MA",
+              "date": "2021-03-09T09:00",
+              "body": "Reconciled state immunization registry: Moderna COVID-19 vaccine doses 02/04/2021 and 03/04/2021 given at a regional vaccination site. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "telehealth_visit",
+          "start": "2021-03-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after neurology",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2021-03-16T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video follow-up",
+              "author": "PCP",
+              "date": "2021-03-16T11:30",
+              "body": "Video visit with patient, wife and daughter on the line. Neurology diagnosed Alzheimer's dementia in January; now on donepezil 10 mg since February, tolerating it. Family thinks he is maybe a little more engaged in the evenings. Home BP 120s-130s/70s, pulse 58-66, no lightheadedness. Both COVID vaccines done.\n\nAssessment and plan:\n- Alzheimer's disease on donepezil: continue; watch pulse given metoprolol plus donepezil, home readings fine.\n- HTN: controlled.\n- Glaucoma: wife doing the drops nightly.\n- Talked about naming a health care agent; daughter willing. Will formalize at the summer wellness visit.\nRTC July."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "pharmacy",
+          "start": "2021-06-08T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill renewal",
+              "author": "MA",
+              "date": "2021-06-08T14:15",
+              "body": "Mail order requested renewals for atorvastatin 40 and lisinopril 20. Sent, 90 days x 3. Donepezil is through neurology and latanoprost through ophthalmology, both have active refills per fill history."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "specialist_visit",
+          "start": "2021-07-13T09:00",
+          "service": "Neurology",
+          "reason": "Dementia follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "author": "neurology",
+              "date": "2021-07-20T12:00",
+              "body": "Follow-up 07/13/2021 with daughter. On donepezil 10 mg for five months, no side effects now. Family reports he is stable, maybe slightly more interactive. MMSE 20/30, unchanged from January. Neuro exam nonfocal, gait normal. Plan: continue donepezil 10 mg. Discussed home safety and future planning. Return in 12 months or sooner with change."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-27a",
+          "kind": "annual_physical",
+          "start": "2021-07-27T09:20",
+          "end": "2021-07-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit and advance care planning",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-07-27T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-07-27T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-07-27T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2021-07-27T09:20"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2021-07-27T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit with advance care planning",
+              "author": "PCP",
+              "date": "2021-07-27T10:40",
+              "body": "AWV with wife and daughter present.\n\nInterval: neurology follow-up this month, MMSE unchanged at 20, donepezil continues. Glaucoma pressures controlled per ophthalmology. No ED visits.\nFunction: bathes and dresses himself, needs reminders. Wife handles meds and money. No falls. Sleeps well. PHQ-9 2.\n\nExam: vitals as charted. Alert, pleasant, oriented to person and place, not date. Heart regular, lungs clear, no edema. Gait steady.\n\nAdvance care planning (30 min, voluntary, patient participating): he chose his daughter as health care agent, wife as alternate. Health care proxy form completed and scanned. He says he would want treatment for things that can be fixed but not to be kept alive on machines if he no longer recognized his family. MOLST not completed at this time.\n\nPlan: labs. Lung CT in September. Flu and COVID booster in fall when available. Continue all meds. 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "imaging",
+          "start": "2021-09-21T10:30",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2021-09-21T10:30",
+              "text": "Annual low-dose screening CT, comparison 09/2020. No nodules. No airspace disease. No effusion. Heart and mediastinum normal.",
+              "conclusion": "Lung-RADS 1."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2021",
+              "author": "PCP",
+              "date": "2021-09-22T08:30",
+              "body": "Lung-RADS 1 again. Results letter sent to patient and proxy."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID booster",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-12T10:32"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-10-12T10:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T10:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2021-10-12T10:50",
+              "body": "Wife with patient. High-dose influenza L deltoid; Moderna booster (half dose) R deltoid. Eligible by age, more than 6 months since primary series. Tolerated, observed 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "specialist_visit",
+          "start": "2021-11-09T14:00",
+          "service": "Ophthalmology",
+          "reason": "Glaucoma follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology follow-up",
+              "author": "ophthalmology",
+              "date": "2021-11-16T09:00",
+              "body": "Seen 11/09/2021 with his wife. IOP 17 right, 17 left on latanoprost. Optic nerves stable. Visual fields repeated and compared with 2020: stable constriction, no progression. Continue latanoprost at bedtime. Follow up in one year, sooner for any eye pain or vision change."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "outside_records",
+          "start": "2021-11-30T10:10",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-11-16T09:20",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 640
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "<20 copies/mL, not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infectious disease annual note",
+              "author": "infectious disease",
+              "date": "2021-11-30T10:10",
+              "body": "HIV visit 11/16/2021 with daughter. Now on donepezil for Alzheimer's disease; no interactions with bictegravir/emtricitabine/TAF. Adherence supervised by family. CD4 640 cells/mm3, viral load not detected. Continue ART, return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2021-12-14T15:30",
+              "body": "Patient did not arrive for 2:40 follow-up. Called home; wife said the appointment was not on their calendar and apologized. Rebooked for February. Added daughter as second reminder contact."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

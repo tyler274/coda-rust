@@ -1,0 +1,798 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002191",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "specialist_visit",
+          "start": "2024-01-09T09:30",
+          "service": "Cardiology",
+          "reason": "Coronary disease follow-up",
+          "medications": [
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "stop", "reason": "Completed 12 months of dual antiplatelet therapy after STEMI"}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2024-01-12T11:00",
+              "body": "Dear colleague,\n\nSeen 1/9/2024, a little over a year after his inferior STEMI and RCA stent, 17 months after his LAD stent. No angina, no dyspnea, walking daily. Not smoking.\n\nExam: regular rhythm, no gallop, lungs clear, no edema.\n\nPlan: clopidogrel stopped today; aspirin 81 mg indefinitely. Continue metoprolol succinate 25 mg, atorvastatin 40 mg and lisinopril 10 mg. Return in 6 to 12 months.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "outside_records",
+          "start": "2024-02-27T13:30",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-20T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-20T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2024-02-20T09:00", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2024-02-27T13:30",
+              "body": "Dear colleague,\n\nRoutine visit 2/20/2024. Stage 4 CKD, stable for several years now. Hemoglobin in target on darbepoetin every 4 weeks. Phosphorus and PTH acceptable. No changes; 6-month follow-up.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "office_visit",
+          "start": "2024-03-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and CAD follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.9}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2024-03-05T10:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-05T10:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-05T10:00"},
+            {"procedure": "Venipuncture", "performed": "2024-03-05T10:20"}
+          ],
+          "orders": [
+            {"id": "fit-2024", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "Colorectal cancer screening, colonoscopy 2014 normal"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-03-05T10:30",
+              "body": "Off clopidogrel since January per cardiology, on aspirin alone. Fourteen months without a cigarette. Walking. No chest pain.\n\nColon screening: colonoscopy 2014 was normal; due now. Given his heart and kidneys he prefers a FIT kit to a prep and sedation - reasonable. Kit given with instructions.\n\nExam: per flowsheet. Heart regular, lungs clear, no edema. Feet intact.\n\nPlan: A1c and BMP today. FIT. Same meds."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "lab_only",
+          "start": "2024-03-19T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {"panel": null, "collected": "2024-03-16T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2024", "action": "done", "date": "2024-03-19T09:00"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2024-03-20T08:30",
+              "body": "FIT negative. Repeat yearly. Letter mailed to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "office_visit",
+          "start": "2024-06-18T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 92.0},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-06-18T14:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-06-18T14:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-18T14:00", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-18T13:40"},
+            {"procedure": "Venipuncture", "performed": "2024-06-18T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-06-18T14:10",
+              "body": "Summer check. Doing his walks early before the heat. No angina. Sugars mostly 130s-160s. Podiatry every 3 months, no new spots.\n\nExam: per flowsheet. Heart regular. Lungs clear. No edema.\n\nPlan: lipids, A1c, UACR, CBC. RSV vaccine at the pharmacy this fall now that he qualifies. Wellness visit October."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "outside_records",
+          "start": "2024-08-27T11:15",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2024-08-27T11:15",
+              "body": "Exam 8/22/2024, dilated. Cataracts slowly progressing, acuity 20/30 each eye with correction; not yet affecting daily activity. No diabetic retinopathy. Annual recall."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-10T14:30",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-03T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-03T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2024-09-03T09:00", "results": [{"test": "Phosphorus"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2024-09-10T14:30",
+              "body": "Dear colleague,\n\nSeen 9/3/2024. CKD 4, unchanged. Potassium acceptable. Hemoglobin in range. Continue current regimen.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "pharmacy",
+          "start": "2024-09-24T09:30",
+          "reason": "RSV vaccine at pharmacy",
+          "immunizations": [{"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-09-20T15:00"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2024-09-24T09:30",
+              "body": "RSV vaccine, adjuvanted, single dose given 9/20/2024, right deltoid."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T09:45"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T09:47"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-10-08T09:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T09:45"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Former smoker, quit 2022, 40 pack-years"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-10-08T10:05",
+              "body": "AWV, age 72. Independent. No falls. Still driving, daytime only now. PHQ-2 0. Hearing: asks people to repeat more in groups, declines audiology for now.\n\nPreventive: flu and COVID today; RSV given at pharmacy last month. FIT negative in March, next in spring. Lung CT November. Eye exam August.\n\nNo smoking for nearly two years.\n\nRTC winter."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T08:15",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-11-12T08:15", "text": "Annual low-dose CT chest. Comparison 11/07/2023. No pulmonary nodules. No consolidation or effusion. Coronary stents.", "conclusion": "Lung-RADS 1, negative."}
+          ],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-11-12T08:15"}],
+          "documents": []
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "ed_visit",
+          "start": "2024-12-20T21:10",
+          "end": "2024-12-20T23:40",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath",
+          "state": {"bp": [138, 82], "weight_kg": 97.0, "labs": {"N-terminal Pro-B-Type Natriuretic Peptide": 8640, "Creatinine": 3.4, "Potassium": 4.9, "Blood Urea Nitrogen": 61}},
+          "conditions": [
+            {"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2024-12-13"}
+          ],
+          "vitals": [
+            {"time": "2024-12-20T21:15", "bp": [138, 82], "hr": 104, "rr": 26, "spo2": 89, "temp_c": 36.8}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-12-20T21:30", "results": [{"test": "N-terminal Pro-B-Type Natriuretic Peptide", "value": 8640}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-20T21:30", "results": [{"test": "Creatinine", "value": 3.4}, {"test": "Potassium", "value": 4.9}, {"test": "Sodium"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2024-12-20T21:35", "text": "Portable AP chest. Bilateral perihilar airspace opacities in a butterfly distribution with interstitial septal lines at both bases. Cardiac silhouette enlarged. No pneumothorax.", "conclusion": "Pulmonary edema."},
+            {"study": "12-lead ECG", "performed": "2024-12-20T21:20", "text": "Sinus rhythm, rate 104, regular. Voltage criteria for left ventricular hypertrophy. No acute ST elevation.", "conclusion": "Sinus rhythm with left ventricular hypertrophy."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2024-12-20T21:10"}],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2024-12-26T09:30",
+              "body": "Regional hospital emergency department, 12/20/2024.\n\n72 y/o man with CAD (inferior STEMI 2022 with RCA stent, earlier LAD stent), stage 4 CKD, tertiary hyperparathyroidism treated with surgery, anemia of CKD on darbepoetin, and long-standing type 2 diabetes with a past right foot osteomyelitis. His daughter brought him in for a week of worsening breathlessness. He can no longer lie flat and has been sleeping sitting up in his recliner, and he wakes at night short of breath. He gets winded walking short distances now. No fever, cough or chest pain. No recent medication changes. Uses no alcohol or tobacco. Per his daughter he has been more tired, his feet and ankles swell more as the day goes on, and he is up at night to urinate. Eating less, but no weight loss, nausea or vomiting.\n\nExam: HR 104 and regular, BP 138/82. Short of breath, using accessory muscles. End-expiratory crackles at both lung bases; no wheeze or rhonchi. Apical impulse displaced, S1 soft, S3 at the apex. JVD visible with the head of the bed at 45 degrees. Pitting edema 2+ to mid-shin both legs. Abdomen soft, non-tender, no liver or spleen enlargement. Neuro intact.\n\nChest x-ray: perihilar opacities in a butterfly pattern with septal lines. ECG: sinus rhythm with LVH.\nNT-proBNP 8,640 pg/mL. Creatinine 3.4 mg/dL, potassium 4.9 mmol/L.\n\nTreatment: IV furosemide, supplemental oxygen, upright positioning.\nDisposition: admitted to cardiology with acute decompensated heart failure.\n\nNKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20b",
+          "kind": "hospital_admission",
+          "start": "2024-12-20T23:40",
+          "end": "2024-12-24T13:00",
+          "service": "Cardiology",
+          "reason": "Acute decompensated heart failure",
+          "state": {"weight_kg": 93.0, "bp": [128, 74]},
+          "medications": [
+            {"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "stop", "reason": "Dose increased"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Heart failure with reduced ejection fraction"},
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Heart failure with reduced ejection fraction"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-22T05:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-24T05:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-21T05:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2024-12-21T11:00", "text": "Left ventricle dilated with akinesis of the inferior wall and global hypokinesis of the remaining segments. Estimated ejection fraction 30%. Left ventricular wall thickness mildly increased. Right ventricle normal in size with low-normal function. No significant valve disease. No pericardial effusion. Compared with 12/24/2022, ejection fraction has declined from 45%.", "conclusion": "Dilated left ventricle with EF 30% and inferior akinesis."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "cardiology",
+              "date": "2024-12-27T10:45",
+              "body": "Admitted 12/20/2024 from the ED, discharged 12/24/2024.\n\nDiagnosis: new heart failure with reduced ejection fraction, acute decompensation; ischemic cardiomyopathy after prior inferior MI.\n\nCourse: diuresed with IV furosemide, about 4 kg net, with orthopnea and edema resolved by day 3 and room air saturations normal. Echo: dilated LV, EF 30%, inferior akinesis (EF 45% in 2022). Creatinine stayed near 3.4 through diuresis; potassium 4.9 on admission and stable. Moved to oral furosemide on day 3. Metoprolol succinate increased.\n\nDischarge weight 93 kg - weigh every morning; call for a gain of more than 1 kg in a day or 2 kg in a week.\n\nDischarge medications:\n- furosemide 40 mg every morning - NEW\n- metoprolol succinate 50 mg daily - INCREASED from 25 mg\n- aspirin 81 mg daily\n- atorvastatin 40 mg daily\n- lisinopril 10 mg daily\n- insulin glargine 24 units at bedtime\n- sevelamer carbonate 800 mg with meals\n- calcitriol 0.25 mcg daily\n- darbepoetin per nephrology\n- nitroglycerin 0.4 mg SL as needed\n- acetaminophen as needed\nNKDA. Low-salt diet, 2 g sodium.\n\nFollow-up: PCP within 7 days with BMP; heart failure clinic 2-3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-26a",
+          "kind": "telephone",
+          "start": "2024-12-26T10:00",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2024-12-26T10:00",
+              "body": "TCM call, discharged 12/24 with new heart failure. Pt and daughter on speaker. Breathing much better, sleeping in bed again with two pillows. Weighing each morning: 93.1 and 92.9 kg. Furosemide every morning, urinating a lot in the first few hours. New metoprolol dose picked up. Daughter is cooking low-salt. Visit 12/30 confirmed; BMP that day. ED record received and routed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "office_visit",
+          "start": "2024-12-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, heart failure",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-30T11:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-12-30T11:00"},
+            {"procedure": "Venipuncture", "performed": "2024-12-30T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2024-12-30T11:35",
+              "body": "Seen with daughter after admission 12/20-12/24 for new HFrEF, EF 30% (down from 45% after the 2022 MI), pulmonary edema, diuresed 4 kg. Discharge summary and ED note reviewed.\n\nSince home: sleeping flat on two pillows, no night-time gasping. Ankles down. Walks the length of the house fine, slower on the porch steps. Daily weights steady around 93. No chest pain.\n\nMeds reconciled with the discharge list: furosemide 40 qAM new; metoprolol succinate now 50; rest unchanged.\n\nExam: per flowsheet. JVP not elevated at 45 degrees. Lungs clear at the bases. Heart regular, no gallop today. Trace ankle edema.\n\nA/P\n1. HFrEF, ischemic, compensated now - furosemide 40, metoprolol 50, lisinopril 10. BMP today on the diuretic. Heart failure clinic mid-January. Daily weights, 2 g sodium, call parameters reviewed.\n2. CKD 4 - BMP, results to nephrology.\n3. CAD - aspirin, statin.\n4. DM2 - glargine 24; watch for lows with less appetite."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "specialist_visit",
+          "start": "2025-01-21T10:00",
+          "service": "Cardiology",
+          "reason": "Heart failure clinic",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Heart failure clinic",
+              "author": "cardiology",
+              "date": "2025-01-24T13:00",
+              "body": "Dear colleague,\n\nSeen 1/21/2025, four weeks after admission for new HFrEF, EF 30%, ischemic. NYHA class II now. Weight stable at home. No orthopnea.\n\nExam: euvolemic, no S3, lungs clear, no edema.\n\nPlan: continue furosemide 40 mg daily, metoprolol succinate 50 mg daily, lisinopril 10 mg daily, aspirin, atorvastatin. Daily weights. Return in 3 months; sooner for weight gain or breathlessness.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.6}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2025-03-11T10:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-11T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-11T09:40"},
+            {"procedure": "Venipuncture", "performed": "2025-03-11T10:00"}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "Annual colorectal cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-03-11T10:10",
+              "body": "Doing well after the winter admission. Weights at home 92-93. Sleeping flat. Walking again, shorter loops. Off cigarettes over two years.\n\nExam: per flowsheet. No JVD. Lungs clear. Heart regular. No edema.\n\nPlan: A1c, BMP. FIT kit handed to him. Same meds. Nephrology this month."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "lab_only",
+          "start": "2025-03-25T09:10",
+          "reason": "FIT returned",
+          "labs": [
+            {"panel": null, "collected": "2025-03-22T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2025", "action": "done", "date": "2025-03-25T09:10"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2025-03-25T16:00",
+              "body": "FIT negative again. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "outside_records",
+          "start": "2025-04-01T14:10",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-25T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-25T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2025-03-25T09:00", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2025-04-01T14:10",
+              "body": "Dear colleague,\n\nSeen 3/25/2025, his first visit since the December heart failure admission. Kidney function held through diuresis and is at his CKD 4 baseline on furosemide 40 mg. Potassium acceptable with lisinopril. Hemoglobin in target on darbepoetin. Phosphorus and PTH fine. No changes.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 91.0},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-06-17T14:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-06-17T14:20", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-17T14:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-17T14:00"},
+            {"procedure": "Venipuncture", "performed": "2025-06-17T14:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-06-17T14:30",
+              "body": "Steady. Weights at home around 91. No orthopnea, ankles fine by evening. Sugars 120s-150s. HF clinic in April, no changes.\n\nExam: per flowsheet. Lungs clear, heart regular, no edema. Feet intact.\n\nPlan: yearly lipids, UACR, A1c, BMP. Same meds. Eye exam August, wellness visit October."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "outside_records",
+          "start": "2025-07-22T12:00",
+          "reason": "Cardiology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Heart failure clinic",
+              "author": "cardiology",
+              "date": "2025-07-22T12:00",
+              "body": "Dear colleague,\n\nSeen 7/15/2025. Heart failure stable, NYHA II, euvolemic on exam with no edema. No angina. Continue furosemide 40 mg, metoprolol succinate 50 mg, lisinopril 10 mg, aspirin and atorvastatin. Return in 6 months.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "outside_records",
+          "start": "2025-08-26T10:40",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2025-08-26T10:40",
+              "body": "Dilated exam 8/20/2025. Cataracts moderate; he is not bothered enough to consider surgery yet. No diabetic retinopathy either eye. One-year recall."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"weight_kg": 89.0},
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-07T09:25"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-07T09:27"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-10-07T09:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-07T09:25"}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Former smoker, quit 2022, 40 pack-years"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-10-07T09:40",
+              "body": "AWV, age 73. Independent, daughter visits twice a week now. No falls. PHQ-2 0.\n\nWeight a couple of kg under June; he thinks he's just eating less and watching salt. Will keep an eye on it.\n\nPreventive: flu and COVID today. RSV done 2024. FIT negative in March. Lung CT in November, ordered. Eye exam August, no retinopathy.\n\nRTC 6 weeks to recheck weight."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "imaging",
+          "start": "2025-11-04T08:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-11-04T08:30", "text": "Annual low-dose CT chest. Comparison 11/12/2024. No pulmonary nodules. No consolidation, effusion or adenopathy. Coronary stents.", "conclusion": "Lung-RADS 1, negative."}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-11-04T08:30"}],
+          "documents": []
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight loss, flank pain, blood in urine",
+          "state": {"weight_kg": 86.0},
+          "conditions": [
+            {"label": "Unintentional weight loss", "action": "diagnosed", "onset": "2025-06-01"},
+            {"label": "Hematuria, unspecified", "icd10": "R31.9", "action": "diagnosed", "onset": "2025-11-01"}
+          ],
+          "measure": ["bp", "hr", "weight_kg", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-11-18T10:40", "results": [{"test": "Urine Blood", "text": "Large"}, {"test": "Urine Red Blood Cells", "value": 38}, {"test": "Urine Protein", "text": "2+"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-18T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-18T10:40", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2025-11-18T10:20"},
+            {"procedure": "Venipuncture", "performed": "2025-11-18T10:40"}
+          ],
+          "orders": [
+            {"id": "urology-2025", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "Gross hematuria, left flank pain, weight loss"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Weight loss and hematuria",
+              "author": "PCP",
+              "date": "2025-11-18T11:00",
+              "body": "Weight is down about 6 kg since spring without trying. Over the past month an on-and-off ache in the left flank, and twice he has seen pink-red urine, no clots, no burning. No fever. Appetite smaller. No chest pain, breathing at his baseline, weights not swinging with fluid.\n\nExam: per flowsheet - weight 86 kg. Lungs clear. Heart regular. Abdomen soft, non-tender; I can't feel a mass lying flat. No CVA tenderness today. No edema.\n\nUrinalysis in office: large blood, many red cells, no signs of infection.\n\nA/P\n1. Visible hematuria with flank pain and weight loss in a 73 y/o former heavy smoker - needs urologic evaluation soon; urology referral placed as urgent, office called to get him in before the holidays.\n2. Unintentional weight loss - as above; lung CT 2 weeks ago was negative.\n3. HFrEF, CKD 4 - stable; BMP and CBC today."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "specialist_visit",
+          "start": "2025-12-23T09:00",
+          "service": "Urology",
+          "reason": "Weight loss, flank pain, hematuria",
+          "state": {"labs": {"Hemoglobin": 12.5, "White Blood Cells": 7.5, "Platelets": 250, "Creatinine": 3.1, "Calcium": 10.8}},
+          "conditions": [
+            {"label": "Malignant neoplasm of left kidney, except renal pelvis", "icd10": "C64.2", "action": "diagnosed", "onset": "2025-12-23"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-23T09:20", "results": [{"test": "Hemoglobin", "value": 12.5}, {"test": "White Blood Cells", "value": 7.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-23T09:20", "results": [{"test": "Creatinine", "value": 3.1}, {"test": "Calcium", "value": 10.8}]},
+            {"panel": "Urinalysis", "collected": "2025-12-23T09:20", "results": [{"test": "Urine Blood", "text": "Moderate"}, {"test": "Urine Red Blood Cells", "value": 22}]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2025-12-23T12:30", "text": "CT of the abdomen and pelvis after IV contrast, with IV hydration before and after per renal protocol. Left kidney: heterogeneously enhancing solid mass arising from the lower pole, 7.0 cm in greatest dimension. Renal vein and IVC patent without tumor thrombus. Right kidney small, no mass, no hydronephrosis. No retroperitoneal or pelvic lymphadenopathy. Liver, adrenal glands, pancreas and spleen unremarkable. No osseous lesions. Lung bases clear.", "conclusion": "7 cm enhancing left renal mass consistent with renal cell carcinoma. No evidence of metastatic disease."}
+          ],
+          "orders": [{"id": "urology-2025", "action": "done", "date": "2025-12-23T09:00"}],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Urology consultation",
+              "author": "urology",
+              "date": "2025-12-30T14:00",
+              "body": "Dear colleague,\n\nThank you for sending Mr. Dabrowski, 73, seen 12/23/2025 for weight loss he did not intend, intermittent flank pain on the left and blood in the urine. Background of CKD stage 4 from diabetic nephropathy, ischemic HFrEF with EF 30%, two coronary stents, and a 40 pack-year smoking history, quit 2022.\n\nExam: a firm mass is palpable in the left flank; it is not tender. No lymph nodes enlarged.\n\nLabs: hemoglobin 12.5 g/dL, WBC 7,500/uL, platelets 250,000/uL, creatinine 3.1 mg/dL, calcium 10.8 mg/dL. Urinalysis with red cells.\n\nCT abdomen with contrast the same day (hydration protocol given his kidney function): 7 cm left renal mass, no evidence of spread.\n\nAssessment: left renal cell carcinoma, clinically localized.\n\nPlan: with stage 4 CKD, removing the whole kidney would likely leave him on dialysis, so I recommend a robotic left partial nephrectomy to save as much kidney as possible. Surgical risk is higher with his heart function, and I have asked cardiology for a pre-operative assessment. Nephrology aware. Aspirin may continue.\n\nNKDA.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T15:30",
+          "reason": "Question about surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney surgery",
+              "author": "patient",
+              "date": "2026-01-06T15:30",
+              "body": "The urologist wants to take part of my left kidney out. My daughter and I want to know if you think that's the right thing with my heart. Can we talk before I see the heart doctor next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney surgery",
+              "author": "PCP",
+              "date": "2026-01-06T17:05",
+              "body": "Hi Stan. I read the urologist's letter. A tumor that size should come out, and taking only part of the kidney is the right way to protect what kidney function you have. Your heart makes surgery riskier, which is exactly why they asked cardiology to weigh in first. I've booked you a visit with me on 1/20, after the cardiology appointment, so you, your daughter and I can go over everything together."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "specialist_visit",
+          "start": "2026-01-13T10:00",
+          "service": "Cardiology",
+          "reason": "Pre-operative assessment",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Pre-operative cardiology assessment",
+              "author": "cardiology",
+              "date": "2026-01-15T09:00",
+              "body": "Dear colleagues,\n\nSeen 1/13/2026 before planned robotic left partial nephrectomy. Ischemic cardiomyopathy, EF 30%, compensated, NYHA II. No angina. Stents in LAD (2022) and RCA (2022). Euvolemic on exam.\n\nAssessment: elevated but acceptable perioperative cardiac risk for a necessary cancer operation. No further testing would change management.\n\nRecommendations: continue aspirin through surgery; continue metoprolol succinate including the morning of surgery; hold furosemide and lisinopril the morning of surgery and resume when eating and pressure allows; careful fluid balance; telemetry post-op.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative discussion",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-20T13:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2026-01-20T13:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2026-01-20T13:20"},
+            {"procedure": "Venipuncture", "performed": "2026-01-20T13:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-op visit",
+              "author": "PCP",
+              "date": "2026-01-20T13:55",
+              "body": "Seen with daughter to talk through the planned partial nephrectomy (2/10). Urology and cardiology letters reviewed together. He understands the cancer is confined to the kidney on CT, that the operation aims to cure it, and that his heart and kidneys raise the risk. He wants to proceed. Daughter will stay with him after.\n\nNo chest pain, weights stable, sleeping flat.\n\nExam: per flowsheet. Lungs clear. Heart regular. No edema.\n\nPlan: BMP and A1c for the surgical team. Furosemide and lisinopril held morning of surgery as cardiology advised."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "hospital_admission",
+          "start": "2026-02-10T06:00",
+          "end": "2026-02-13T12:00",
+          "service": "Urology",
+          "reason": "Robotic left partial nephrectomy",
+          "state": {"labs": {"Creatinine": 3.5, "Hemoglobin": 11.6, "Blood Urea Nitrogen": 57}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-11T05:30", "results": [{"test": "Creatinine", "value": 3.9}, {"test": "Potassium"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-13T05:30", "results": [{"test": "Creatinine", "value": 3.5}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-11T05:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2026-02-10T10:45", "text": "Specimen: left kidney, lower pole, partial nephrectomy. Gross: well-circumscribed golden-yellow tumor, 7.0 cm in greatest dimension, with a rim of normal parenchyma. Microscopic: clear cell renal cell carcinoma, ISUP grade 2. No sarcomatoid or rhabdoid features. Tumor confined to the kidney; no perinephric fat or renal sinus invasion. Surgical margins negative.", "conclusion": "Clear cell renal cell carcinoma, 7.0 cm, ISUP grade 2, margins negative, pT1b."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "urology",
+              "date": "2026-02-17T11:00",
+              "body": "Admitted 2/10/2026 for robotic left partial nephrectomy; discharged 2/13/2026.\n\nOperation: robot-assisted left lower pole partial nephrectomy. Uncomplicated. Minimal blood loss, no transfusion.\n\nPathology: clear cell renal cell carcinoma, 7.0 cm, ISUP grade 2, margins negative, pT1b.\n\nCourse: telemetry without events. Creatinine peaked at 3.9 on day 1 and was 3.5 at discharge. Fluids managed with cardiology input; furosemide and lisinopril resumed day 2. Walking the halls by day 1. Drain removed day 2.\n\nDischarge medications: unchanged home list - aspirin 81 mg, metoprolol succinate 50 mg, furosemide 40 mg, lisinopril 10 mg, atorvastatin 40 mg, insulin glargine 24 units at bedtime, sevelamer carbonate 800 mg with meals, calcitriol 0.25 mcg, darbepoetin per nephrology, nitroglycerin as needed, acetaminophen 650 mg every 6 hours as needed for incision pain.\nNKDA.\n\nFollow-up: urology clinic in 4 weeks; PCP for kidney labs in about 4 to 8 weeks; surveillance imaging in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "telephone",
+          "start": "2026-02-16T10:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-02-16T10:20",
+              "body": "Called after discharge 2/13. Sore at the port sites, acetaminophen enough. Urine clear, no blood. Eating small meals, sugars 120s-180s, no lows. Weights 84-85. Breathing fine. Daughter staying through the week. Urology visit 3/10 booked. PCP visit set for mid-April with labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "specialist_visit",
+          "start": "2026-03-10T14:00",
+          "service": "Urology",
+          "reason": "Post-operative visit",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Urology post-operative visit",
+              "author": "urology",
+              "date": "2026-03-13T10:00",
+              "body": "Dear colleague,\n\nSeen 3/10/2026, four weeks after robotic left partial nephrectomy. Incisions healed. No hematuria since surgery. Flank pain gone. Pathology reviewed with him: clear cell RCC, 7.0 cm, grade 2, negative margins, pT1b, no adjuvant treatment indicated.\n\nSurveillance: CT chest and renal ultrasound in July (non-contrast given his kidneys), then every 6 months for the first years.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "office_visit",
+          "start": "2026-04-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after kidney surgery",
+          "state": {"weight_kg": 84.0, "bp": [124, 72], "labs": {"Calcium": 9.6, "Creatinine": 3.5, "Hemoglobin A1c": 7.4}},
+          "conditions": [
+            {"label": "Hematuria, unspecified", "icd10": "R31.9", "action": "resolved", "onset": "2025-11-01"},
+            {"label": "Unintentional weight loss", "action": "resolved", "onset": "2025-06-01"}
+          ],
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-16T09:40", "results": [{"test": "Creatinine", "value": 3.5}, {"test": "Calcium", "value": 9.6}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-16T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2026-04-16T09:40", "results": [{"test": "Hemoglobin A1c", "value": 7.4}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2026-04-16T09:20"},
+            {"procedure": "Venipuncture", "performed": "2026-04-16T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op follow-up",
+              "author": "PCP",
+              "date": "2026-04-16T10:00",
+              "body": "Two months after robotic L partial nephrectomy for clear cell RCC, 7.0 cm, grade 2, margins negative, pT1b. Urology visit in March: healed, surveillance imaging in July. No blood in the urine since surgery. Flank ache gone. Appetite better; weight steady at 84, no further loss since February.\n\nHeart: no orthopnea, no edema, weights flat. No chest pain.\n\nExam: per flowsheet. Port sites healed. Lungs clear. Heart regular. No edema. Feet intact.\n\nLabs today: creatinine 3.5 (was 3.1 before surgery), calcium 9.6.\n\nA/P\n1. L renal cell carcinoma s/p partial nephrectomy - urology surveillance July. Hematuria resolved; weight loss has stopped, off the active list.\n2. CKD 4 - creatinine a notch higher after losing kidney tissue, as expected. Copy to nephrology.\n3. HFrEF, CAD - stable on current regimen.\n4. DM2 - A1c today, glargine 24.\n5. Plan to see him in the summer; front desk to call him with a date once his July imaging is set."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-17a",
+          "kind": "portal_message",
+          "start": "2026-04-17T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "author": "PCP",
+              "date": "2026-04-17T12:15",
+              "body": "Stan, A1c 7.4 - the best it's been in years. Kidney number 3.5, a little higher than before surgery as we expected, and calcium is normal. Blood count is fine. I've sent these to your kidney doctor."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "90-day refills",
+              "author": "MA",
+              "date": "2026-05-19T09:30",
+              "body": "Mail-order pharmacy requests 90-day refills: furosemide 40, metoprolol succinate 50, lisinopril 10, atorvastatin 40, glargine pens and pen needles. Last visit 4/16. Approved by PCP and sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "portal_message",
+          "start": "2026-06-23T19:05",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Summer appointment",
+              "author": "patient",
+              "date": "2026-06-23T19:05",
+              "body": "My daughter is taking me to the lake for two weeks in July after my scans. Can I set up my next checkup for after that? Feeling good."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Summer appointment",
+              "author": "front desk",
+              "date": "2026-06-24T08:40",
+              "body": "Hi Mr. Dabrowski, enjoy the lake! The fall schedule opens next month; we'll call you when you're back to set a date."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "imaging",
+          "start": "2026-07-21T10:00",
+          "reason": "Renal cell carcinoma surveillance",
+          "reports": [
+            {"study": "CT chest", "performed": "2026-07-21T10:00", "text": "Non-contrast CT chest. Comparison low-dose CT 11/04/2025. No pulmonary nodules or masses. No mediastinal or hilar adenopathy. No pleural effusion. Coronary stents. No osseous lesions.", "conclusion": "No evidence of metastatic disease in the chest."},
+            {"study": "Renal ultrasound", "performed": "2026-07-21T11:00", "text": "Left kidney: postsurgical change at the lower pole after partial nephrectomy, no solid mass, no fluid collection, no hydronephrosis. Right kidney small and echogenic, consistent with chronic kidney disease, no mass, no hydronephrosis. Bladder unremarkable.", "conclusion": "Expected post-partial nephrectomy appearance of the left kidney. No recurrence."}
+          ],
+          "documents": []
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "outside_records",
+          "start": "2026-07-28T13:00",
+          "reason": "Urology surveillance letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Urology surveillance",
+              "author": "urology",
+              "date": "2026-07-28T13:00",
+              "body": "Dear colleague,\n\nMr. Dabrowski's 6-month surveillance after left partial nephrectomy for pT1b clear cell RCC: CT chest 7/21/2026 shows no metastatic disease; renal ultrasound shows expected post-operative change without recurrence. He is well, with no hematuria. Next imaging in 6 months.\n\nUrology"
+            },
+            {
+              "type": "Result Note",
+              "title": "Filed",
+              "author": "PCP",
+              "date": "2026-07-29T08:20",
+              "body": "Surveillance imaging clear. Filed; will review with him at his next visit."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

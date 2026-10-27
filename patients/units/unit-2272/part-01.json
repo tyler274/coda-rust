@@ -1,0 +1,649 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002272",
+   "given": "Bernard",
+   "family": "Bennett",
+   "birth_date": "1955-07-03",
+   "address_line": "84 Fernwood Lane",
+   "phone": "+1-617-555-0122",
+   "email": "bernard.bennett@example.test",
+   "marital_status": "married",
+   "summary": "Retired construction foreman and former 40 pack-year smoker who joins in 2019 with hypertension, stage 2 CKD, BPH, lumbar spondylosis and a urethral stricture. Over seven years he collects chronic bronchitis, Paget disease of the left tibia, JAK2-positive primary myelofibrosis on ruxolitinib, age-related cognitive decline, a resolved L4 radiculopathy, stricture-related hematuria, carotid sinus hypersensitivity, and an ICU stay for hypertensive emergency complicated by nitroprusside cyanide toxicity.",
+   "events": [
+    {
+     "id": "2019-08-27a",
+     "kind": "telephone",
+     "start": "2019-08-27T10:12",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient request",
+       "author": "front desk",
+       "date": "2019-08-27T10:12",
+       "body": "Mr. Bennett phoned about membership. Wife saw our flyer at the library. Old doctor retiring at the end of the year. Wants to transfer before then. Went over the membership agreement and fee; mailed packet. Scheduled new patient visit 9/17 at 9:00. Release signed by fax for prior primary care and for the urologist he saw this month."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-10a",
+     "kind": "outside_records",
+     "start": "2019-09-10T14:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "outside primary care",
+       "date": "2019-09-10T14:30",
+       "body": "Records received from prior primary care office, 41 pages.\n\nProblem list on their summary: hypertension; chronic kidney disease stage 2 (albumin in the urine on yearly checks, creatinine around 1.1); BPH with urinary symptoms; lumbar osteoarthritis with radiating leg pain in the past; urethral stricture; tobacco use; remote appendectomy (age 34).\n\nMedications: hydrochlorothiazide 25 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg at bedtime, acetaminophen 500 mg as needed.\n\nAllergies: none known.\n\nHealth maintenance: screening colonoscopy 2014, normal, repeat in 10 years. Tdap not documented.\n\nAlso enclosed: outside urology operative note 8/12/2019. Cystoscopy with dilation of a bulbar urethral stricture under anesthesia for a weak stream; bladder unremarkable; uncomplicated, voiding well at discharge.\n\nFiled for review at the new patient visit."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-17a",
+     "kind": "establish_care",
+     "start": "2019-09-17T09:00",
+     "end": "2019-09-17T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2009-06-01"
+      },
+      {
+       "label": "Chronic kidney disease, stage 2",
+       "action": "history",
+       "onset": "2016-01-01"
+      },
+      {
+       "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+       "action": "history",
+       "onset": "2014-01-01"
+      },
+      {
+       "label": "Lumbar spondylosis with radiculopathy",
+       "icd10": "M47.26",
+       "action": "history",
+       "onset": "2011-01-01"
+      },
+      {
+       "label": "Urethral stricture, male",
+       "icd10": "N35.919",
+       "action": "history",
+       "onset": "2019-06-01"
+      },
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "diagnosed",
+       "onset": "1979-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension, CKD"
+      },
+      {
+       "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth at bedtime",
+       "dose": {
+        "value": 0.4,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "BPH"
+      },
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for back pain",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Low back pain"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       84
+      ],
+      "weight_kg": 94.0,
+      "height_cm": 178.0,
+      "labs": {
+       "Creatinine": 1.08,
+       "Microalbumin/Creatinine Ratio": 52,
+       "Prostate Specific Antigen": 2.1,
+       "Hemoglobin A1c": 5.6
+      }
+     },
+     "vitals": {
+      "bp": [
+       134,
+       84
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Occasional, 1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired construction foreman"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-17T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-17T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-17T10:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-17T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Prostate Specific Antigen"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-09-17T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2019-09-17T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-09-17T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2019",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "64 y/o, 40 pack-years, current smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-17T10:05",
+       "body": "64M new to the practice, transferring from a retiring PCP. Records reviewed (see outside records 9/10).\n\nHTN: on HCTZ 25 and lisinopril 10 for about ten years. Doesn't check at home. No headaches, chest pain, SOB.\nCKD 2: told of protein in the urine a few years back, creatinine has been ~1.1. No NSAIDs other than an occasional ibuprofen years ago; uses Tylenol now.\nBPH: tamsulosin at night, gets up once. Stream weak through the spring, which turned out to be the stricture; urology dilated it 8/12 and he says the stream is the best it's been in years.\nBack: lumbar arthritis, decades of hauling and framing. Had pain down a leg years ago that settled. Now just stiffness in the mornings, Tylenol a few times a week.\n\nPSH: appendectomy at 34. Cysto with urethral dilation 8/2019.\nFH: father MI at 68. Mother had dementia, difficult behaviors toward the end. Older brother has Paget disease of bone.\nSH: married. Retired foreman. Smokes about a pack a day since his early twenties, 40 pack-years. Has quit twice for a few weeks. Beer a couple of times a month.\nAllergies: NKDA.\n\nExam: BP 134/84. Well-appearing, heavyset. HEENT ok. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear, no wheeze. Abd soft, nontender, no masses or organomegaly. Ext no edema. Back: mild paraspinal tenderness low lumbar, SLR negative both sides, strength and reflexes symmetric.\n\nA/P\n1. HTN, at goal on current regimen. Continue. CMP today.\n2. CKD stage 2 with albuminuria. Already on ACE inhibitor. UACR, CMP.\n3. BPH / urethral stricture, voiding well post dilation. PSA today with his agreement after talking through pros and cons.\n4. Lumbar spondylosis, stable. Acetaminophen PRN, avoid NSAIDs given kidneys.\n5. Tobacco: long talk. Not ready to set a date but will think about it over the holidays. Eligible for yearly low-dose CT screening, ordered.\n6. HM: Tdap today. HCV and HIV once. Colonoscopy 2014 normal, due 2024. Flu shot when the high-dose arrives.\n\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-19a",
+     "kind": "portal_message",
+     "start": "2019-09-19T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2019-09-19T16:40",
+       "body": "Hi Mr. Bennett, your labs are back. Kidney function is about where your old records had it, and the urine protein is mildly up, same as before. Blood count, liver tests, cholesterol, sugar and PSA all look fine. Hepatitis C and HIV screens negative. Nothing to change. The lung CT scheduling office should call you this week."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-01a",
+     "kind": "nurse_visit",
+     "start": "2019-10-01T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2019-10-01T11:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-01T11:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Vaccine",
+       "author": "RN",
+       "date": "2019-10-01T11:30",
+       "body": "High-dose flu given L deltoid, lot recorded. No prior reactions. Tolerated well, waited 15 min. VIS given."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-22a",
+     "kind": "imaging",
+     "start": "2019-10-22T13:00",
+     "orders": [
+      {
+       "id": "ldct-2019",
+       "action": "done",
+       "date": "2019-10-22T13:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2019-10-22T13:00",
+       "text": "Indication: Baseline lung cancer screening. 64-year-old current smoker, 40 pack-years.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodules. No consolidation or mass. Airways patent. No pleural effusion. Heart size normal. No mediastinal or hilar lymphadenopathy. Visualized upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "Low-dose CT chest",
+       "author": "radiology",
+       "date": "2019-10-22T16:20",
+       "body": "Baseline screening low-dose CT: no nodules, no mass, no other significant findings. Lung-RADS 1. Next annual screen recommended."
+      },
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2019-10-23T08:15",
+       "body": "Negative baseline screen. Let pt know by portal. Repeat next fall. Keep working on the cigarettes."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-09a",
+     "kind": "pharmacy",
+     "start": "2019-12-09T09:05",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Mail-order refill request",
+       "author": "MA",
+       "date": "2019-12-09T09:05",
+       "body": "Mail-order pharmacy requesting 90-day supplies of HCTZ 25, lisinopril 10, tamsulosin 0.4 under our name now that he's transferred. Pended per protocol, BMP 9/17 ok. Sent."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-10a",
+     "kind": "office_visit",
+     "start": "2020-03-10T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure and kidney follow-up",
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-03-10T14:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-03-10T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2020-03-10T15:00",
+       "body": "S: 6 mo f/u HTN/CKD. Taking meds, no side effects. Voiding fine since the dilation. Back the same.\nThis winter he has had a cough most mornings bringing up white phlegm, clears after the first cigarette and coffee. No fever, no blood, no weight loss. Says his father had the same smoker's cough.\nTobacco: still ~1 ppd. With the virus in the news and grandkids around, he says this is the time. Picked Monday 4/6. Wants to do it cold turkey, declined patch or meds.\n\nO: vitals as charted. Lungs with a few coarse sounds that clear with cough, no wheeze. Heart RRR. No edema.\n\nA/P\nHTN at goal, continue. BMP today.\nCKD 2 stable.\nMorning productive cough in a smoker, likely tobacco related. Quitting is the treatment. Screening CT in October was clean. Call if any blood, fever or weight loss.\nTobacco cessation counseling >3 min, quit date 4/6. Will check in by phone after.\nRTC 6 mo or sooner."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       84
+      ]
+     }
+    },
+    {
+     "id": "2020-04-20a",
+     "kind": "telephone",
+     "start": "2020-04-20T11:00",
+     "conditions": [
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "resolved",
+       "onset": "1979-01-01",
+       "note": "quit 2020-04-06"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "diagnosed",
+       "onset": "2020-04-06"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Smoking cessation check-in",
+       "author": "RN",
+       "date": "2020-04-20T11:10",
+       "body": "Called as planned. Quit on 4/6 and has not had one since, two weeks today. Irritable the first week, chewing gum and walking the dog. Cough a bit worse the first days, now easing. Encouraged. Quitline number given again. Updated smoking status to former. PCP aware."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-12a",
+     "kind": "office_visit",
+     "start": "2020-05-12T10:00",
+     "appointment": "cancelled",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Routine follow-up",
+     "documents": [
+      {
+       "type": "Scheduling Note",
+       "title": "Appointment cancelled",
+       "author": "front desk",
+       "date": "2020-05-08T09:30",
+       "body": "Office converting non-urgent visits during the pandemic. Pt was only coming to review the quit, which RN already covered. He is fine to skip; will see him for the Medicare welcome visit in August."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-11a",
+     "kind": "annual_physical",
+     "start": "2020-08-11T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Welcome to Medicare preventive visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-08-11T10:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-08-11T10:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-11T10:20",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+       "performed": "2020-08-11T09:30"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2020-08-11T09:50"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2020-08-11T09:50",
+       "text": "Sinus rhythm, rate 74. PR 168 ms, QRS 92 ms, QTc 418 ms. Normal axis. No ST or T wave abnormality.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us-2020",
+       "action": "placed",
+       "order": "Abdominal aortic aneurysm screening ultrasound",
+       "category": "imaging",
+       "reason": "Male 65-75, ever smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Initial Preventive Physical Exam",
+       "author": "PCP",
+       "date": "2020-08-11T10:30",
+       "body": "Welcome to Medicare visit. Turned 65 last month.\n\nStill off cigarettes since April, four months. Morning cough lighter.\nFunction: independent, drives, does the household projects. No falls. Hearing and vision fine by his report, sees the eye doctor for readers. Lives with wife, one level ranch, no stairs inside.\nDepression screen negative. Alcohol unchanged, rare.\nAdvance directive: wife is health care proxy, will bring a copy.\n\nExam: vitals as charted. Heart RRR, lungs clear today. Abd benign, no bruit. Ext no edema. Gait normal, rises from chair without hands.\nECG baseline: normal sinus.\n\nPlan\n- BP and kidneys stable on the same meds. Labs today.\n- AAA screening ultrasound, one time, ordered.\n- Lung CT due October-November.\n- Shingrix two-dose series this fall with flu shot.\n- Colonoscopy due 2024.\n- RTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-25a",
+     "kind": "imaging",
+     "start": "2020-08-25T08:40",
+     "orders": [
+      {
+       "id": "aaa-us-2020",
+       "action": "done",
+       "date": "2020-08-25T08:40"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2020-08-25T08:40",
+       "text": "Indication: AAA screening, male former smoker age 65.\nLimited ultrasound of the abdominal aorta. The aorta is normal in caliber throughout, maximum diameter 2.0 cm infrarenal. No aneurysm. Iliac bifurcation not well seen due to bowel gas.",
+       "conclusion": "No abdominal aortic aneurysm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2020-08-26T07:50",
+       "body": "Aorta 2.0 cm, normal. No further screening needed. Letter to pt."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and zoster vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-06T10:45"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2020-10-06T10:47"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T10:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Vaccines",
+       "author": "RN",
+       "date": "2020-10-06T10:55",
+       "body": "Masked visit. High-dose flu R deltoid, Shingrix #1 L deltoid. Warned about a sore arm and feeling run down for a day or two with the shingles shot. Dose 2 due Feb-April, reminder set."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-17a",
+     "kind": "imaging",
+     "start": "2020-11-17T12:15",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2020-11-17T12:15",
+       "text": "Indication: Annual lung cancer screening. Former smoker, quit 2020, 40 pack-years.\nComparison: 10/22/2019.\nFindings: No pulmonary nodules. No consolidation. No pleural effusion. Normal heart size. No adenopathy.",
+       "conclusion": "Lung-RADS 1. Return to annual screening."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2020-11-18T12:30",
+       "body": "Annual screen negative, Lung-RADS 1. Pt notified via portal."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

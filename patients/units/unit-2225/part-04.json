@@ -1,0 +1,1241 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002225",
+   "events": [
+    {
+     "id": "2025-01-21a",
+     "kind": "office_visit",
+     "start": "2025-01-21T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-21T13:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-01-21T13:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "C Reactive Protein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-01-21T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-01-21T13:55",
+       "body": "Routine. Quiet few months. Angina now and then on the steeper streets, unchanged since cardiology. Belly ok if he keeps meals small. Nocturia once. No headaches or visual symptoms. Rheum letter from Nov received - unchanged.\n\nVitals charted. Heart regular, lungs clear, abdomen soft and nontender, soft L groin bruit, no edema.\n\nAll problems stable. BMP, ESR/CRP. Vascular CTA in May. RTC 5 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-14a",
+     "kind": "hospital_admission",
+     "start": "2025-02-14T06:40",
+     "end": "2025-02-20T12:00",
+     "service": "Emergency Medicine",
+     "reason": "Severe crampy abdominal pain, vomiting, obstipation",
+     "conditions": [
+      {
+       "label": "Intestinal obstruction",
+       "icd10": "K56.609",
+       "action": "diagnosed",
+       "onset": "2025-02-13",
+       "note": "Adhesive small-bowel obstruction; laparotomy with release of a single band, no resection"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-02-14T06:50",
+       "bp": [
+        100,
+        60
+       ],
+       "hr": 110,
+       "rr": 20,
+       "temp_c": 38.3,
+       "spo2": 96
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-02-14T07:05",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 18.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-14T07:05",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-02-14T07:05",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 4.5
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-02-14T08:30",
+       "text": "INDICATION: small-bowel obstruction on radiographs, worsening hemodynamics.\nFINDINGS: Multiple dilated fluid-filled small-bowel loops with a transition point in the right lower quadrant; collapsed distal ileum and colon. No free intraperitoneal air. Bowel wall enhancement preserved. Small volume of free fluid between loops. Infrarenal aortic aneurysm without periaortic stranding. Postsurgical changes of appendectomy and cholecystectomy.",
+       "conclusion": "Small-bowel obstruction with a right lower quadrant transition point, likely adhesive. No free air.",
+       "issued": "2025-02-14T08:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-03-20T10:40",
+       "body": "EMERGENCY DEPARTMENT RECORD\nArrival 02/14/2025 06:40\n\nCC: severe crampy abdominal pain x 12 h with vomiting, no flatus or stool.\n\nHPI: 72 y/o man with HTN, hyperlipidemia, CAD, GCA on chronic prednisone, BPH, remote appendectomy and cholecystectomy. Past history also includes ischemic colitis (2023) and cholesterol embolization (2024). Pain began overnight, cramping, severe. Vomited several times. Has not passed gas or had a bowel movement since onset.\n\nMeds: aspirin 81, atorvastatin 40, lisinopril 20, amlodipine 5, prednisone 10, tamsulosin 0.4. NKDA.\n\nVitals: HR 110, BP 100/60, T 38.3 C (101 F).\nExam: abdomen distended and tympanic, high-pitched hyperactive bowel sounds throughout. \n\nLabs: WBC 18.0, Hb 13.2, platelets 250, lactate 4.5, creatinine 1.2, electrolytes normal.\nAbdominal radiograph: dilated small-bowel loops with air-fluid levels, no free air under the diaphragm.\n\nCourse in ED: NG tube, IV crystalloid. Over the following hour heart rate rose and pressure fell despite fluids. CT obtained urgently (see report). General surgery consulted at bedside; taken to the OR.\n\nDx: small-bowel obstruction with clinical deterioration."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "general surgery",
+       "date": "2025-03-20T10:40",
+       "body": "DISCHARGE SUMMARY\nAdmit 02/14/2025  Discharge 02/20/2025\nService: general surgery\n\nDiagnosis: adhesive small-bowel obstruction.\nProcedure 02/14/2025: exploratory laparotomy, lysis of a single adhesive band in the right lower quadrant. Bowel congested at the band, pinked up and was viable after release; no resection.\n\nCourse: stress-dose hydrocortisone around surgery given chronic prednisone, then back to prednisone 10 mg. NG removed day 2. Diet advanced from day 3, bowel function returned. Lactate normalized post-op. Lisinopril and amlodipine held while pressures were soft, resumed on day 4. Incision clean.\n\nDischarge meds: unchanged home list - aspirin 81, atorvastatin 40, lisinopril 20, amlodipine 5, prednisone 10, tamsulosin 0.4.\nNKDA.\nFollow-up: surgery clinic 2 weeks for staples; PCP 1-2 weeks. No lifting over 10 lb for 6 weeks.\n\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-02-24a",
+     "kind": "telephone",
+     "start": "2025-02-24T09:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pt call - recent hospitalization",
+       "author": "RN",
+       "date": "2025-02-24T09:15",
+       "body": "Pt called. Was in the hospital 2/14-2/20 for a bowel blockage and had surgery to cut a band of scar tissue, no bowel removed. Home since Thursday, eating soft foods, bowels moving, incision dry. No fever. A friend is driving him. We had not been notified. Discharge paperwork not received - he will bring his copy. Scheduled post-hospital visit Thurs 2/27. Records request sent to hospital."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-27a",
+     "kind": "office_visit",
+     "start": "2025-02-27T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 71.0
+     },
+     "conditions": [
+      {
+       "label": "Intestinal obstruction",
+       "icd10": "K56.609",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-27T10:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-02-27T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-02-27T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-02-27T10:45",
+       "body": "Post-discharge after adhesive SBO with laparotomy 2/14 (outside hospital, released one band, no resection). Brought his discharge instructions; formal summary not yet received.\n\nFeeling better daily. Eating small meals, no vomiting, bowels moving every day, passing gas. Pain only at the incision, managing with acetaminophen. No fever. Staples out at surgery clinic next week. Back on all usual meds including prednisone 10.\n\nWeight 71 (75 in Sept). Afebrile, vitals charted.\nMidline incision clean, dry, staples intact, no erythema. Abdomen soft, appropriately tender near the wound, bowel sounds normal.\n\nA/P\n1. SBO s/p laparotomy and adhesiolysis - resolved, recovering.\n2. Weight down with the admission - small frequent meals, add protein.\n3. Meds unchanged.\nBMP, CBC today. RTC as scheduled in June."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-20a",
+     "kind": "outside_records",
+     "start": "2025-03-20T10:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hospital records received",
+       "author": "front desk",
+       "date": "2025-03-20T10:40",
+       "body": "ED record and surgical discharge summary for 2/14-2/20/25 received after second request. Scanned, routed to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Records review",
+       "author": "PCP",
+       "date": "2025-03-21T08:10",
+       "body": "Reviewed. Matches his account: adhesive band, viable bowel, no resection. Stress-dose steroids peri-op. No med changes."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-13a",
+     "kind": "specialist_visit",
+     "start": "2025-05-13T14:30",
+     "service": "Vascular Surgery",
+     "reason": "AAA surveillance",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-05-13T12:45",
+       "text": "EXAM: CT angiography abdomen and pelvis.\nFINDINGS: Infrarenal abdominal aortic aneurysm measuring 5.5 cm maximal diameter (4.9 cm by ultrasound 08/2024). Infrarenal neck length and angulation suitable for endovascular repair. Common iliac arteries of normal caliber. Mesenteric origins with calcified plaque, unchanged, without high-grade stenosis. Small left femoral arteriovenous fistula. Postoperative changes of recent laparotomy. No bowel obstruction.",
+       "conclusion": "Infrarenal AAA 5.5 cm, anatomy suitable for endovascular repair."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Vascular surgery follow-up",
+       "author": "vascular surgery",
+       "date": "2025-05-19T15:00",
+       "body": "VASCULAR SURGERY - 05/13/2025\n\nAAA surveillance. Had laparotomy for adhesive SBO in February, recovered. No back or abdominal pain.\n\nCTA today: infrarenal AAA now 5.5 cm. Anatomy suitable for EVAR.\n\nAssessment: AAA at repair threshold.\nPlan: elective endovascular aneurysm repair, scheduled for late July once he is further out from the laparotomy. Pre-procedure cardiology review. Stress-dose steroid plan for the day of surgery. Discussed renal protection given the cholesterol emboli last year.\n\nVascular Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-06-12a",
+     "kind": "office_visit",
+     "start": "2025-06-12T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease follow-up before EVAR",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 73.0
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-06-12T09:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-06-12T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-06-12T09:30",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "C Reactive Protein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-06-12T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-06-12T09:40",
+       "body": "Recovered from February surgery, weight back up to 73. Walking a mile most mornings. EVAR set for 7/25; cardiology cleared him by phone, he says. Angina unchanged, rare.\n\nVitals charted, BP at goal. Heart regular, lungs clear, healed midline scar, abdomen soft. Soft L groin bruit. No edema.\n\nA/P: stable. Labs before the procedure, copies to vascular. Continue meds. Prednisone continue, steroid plan per surgeon. RTC after EVAR."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-25a",
+     "kind": "procedure_visit",
+     "start": "2025-07-25T07:00",
+     "end": "2025-07-26T11:00",
+     "service": "Vascular Surgery",
+     "reason": "Endovascular repair of abdominal aortic aneurysm"
+    },
+    {
+     "id": "2025-08-01a",
+     "kind": "hospital_admission",
+     "start": "2025-08-01T19:10",
+     "end": "2025-08-12T13:00",
+     "service": "Emergency Medicine",
+     "reason": "Sudden severe periumbilical pain one week after EVAR",
+     "conditions": [
+      {
+       "label": "Acute mesenteric ischemia",
+       "icd10": "K55.069",
+       "action": "diagnosed",
+       "onset": "2025-08-01",
+       "note": "One week after EVAR; nonviable ileal segment resected"
+      },
+      {
+       "label": "Acute kidney injury",
+       "icd10": "N17.9",
+       "action": "diagnosed",
+       "onset": "2025-08-01"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-08-01T19:15",
+       "bp": [
+        150,
+        90
+       ],
+       "hr": 105,
+       "rr": 22,
+       "temp_c": 37.8,
+       "spo2": 95
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-08-01T19:30",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 16.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.0
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-08-01T19:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.8
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 18
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-08-01T19:30",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 5.0
+        },
+        {
+         "test": "pH of Arterial blood",
+         "loinc": "2744-1",
+         "unit": "[pH]",
+         "value": 7.32
+        },
+        {
+         "test": "Carbon dioxide partial pressure in Arterial blood",
+         "loinc": "2019-8",
+         "unit": "mm[Hg]",
+         "value": 32
+        },
+        {
+         "test": "Bicarbonate in Arterial blood",
+         "loinc": "1960-4",
+         "unit": "mmol/L",
+         "value": 18
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-08-12T06:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.3
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 1.3
+      }
+     },
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-08-01T20:20",
+       "text": "INDICATION: acute abdominal pain, 1 week post EVAR.\nFINDINGS: Bifurcated aortic endograft in place. Aneurysm sac without contrast extravasation, periaortic hematoma or stranding to suggest leak or rupture. Several small-bowel loops show wall thickening with intramural gas (pneumatosis intestinalis). No portal venous gas. No free air. Colon unremarkable. Small amount of free fluid.",
+       "conclusion": "No evidence of endograft leak or aneurysm rupture. Small-bowel wall thickening with pneumatosis intestinalis, concerning for bowel ischemia."
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-08-18T11:30",
+       "body": "EMERGENCY DEPARTMENT\nArrival 08/01/2025 19:10\n\nCC: sudden severe periumbilical pain x 12 hours.\n\nHPI: 73 y/o man, one week after elective EVAR (7/25), with prior ischemic colitis and cholesterol embolism. Pain began abruptly this morning around the umbilicus, constant, no position helps.\n\nPMH: HTN, HLD, CAD, GCA on prednisone, BPH, AAA s/p EVAR, ischemic colitis, cholesterol embolism, adhesive SBO s/p laparotomy 2/2025.\nMeds: aspirin, atorvastatin, lisinopril; amlodipine 5, prednisone 10, tamsulosin 0.4. NKDA.\n\nVitals: BP 150/90, HR 105, RR 22, T 37.8 C (100 F).\nExam: distended abdomen, diffusely tender with guarding, hypoactive bowel sounds. Rectal: no blood.\n\nLabs: WBC 16.0, Hb 12, lactate 5, creatinine 1.8 (baseline 1.2). ABG pH 7.32 / PaCO2 32 / HCO3 18.\nCT A/P with contrast: no leak or rupture of the repaired aneurysm; small-bowel wall thickening and pneumatosis intestinalis.\n\nImpression: acute mesenteric ischemia with lactic acidosis and AKI.\nPlan: fluids, broad-spectrum antibiotics, stress-dose steroid, emergent general surgery and vascular surgery consults. To OR."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "general surgery",
+       "date": "2025-08-18T11:30",
+       "body": "DISCHARGE SUMMARY\nAdmit 08/01/2025  Discharge 08/12/2025\n\nPrincipal diagnosis: acute mesenteric ischemia with ileal infarction, one week after endovascular AAA repair.\nSecondary: lactic acidosis, resolved; acute kidney injury, improving.\n\nProcedures: 08/01/2025 exploratory laparotomy, resection of a nonviable segment of ileum with primary stapled anastomosis.\nPathology: segment of small intestine with transmural ischemic necrosis; viable margins.\n\nCourse: stress-dose hydrocortisone perioperatively then back to prednisone 10. Lactate cleared within 24 hours. Creatinine peaked at 1.8 and was 1.3 at discharge. Lisinopril held through the stay and restarted on the day of discharge. Diet advanced slowly; tolerating small meals at discharge, bowels moving. Midline wound healing.\n\nDischarge medications: aspirin 81 mg, atorvastatin 40 mg, lisinopril 20 mg, amlodipine 5 mg, prednisone 10 mg, tamsulosin 0.4 mg nightly.\nAllergies: NKDA.\n\nFollow-up: PCP 1 week with BMP; surgery clinic 2 weeks; vascular surgery with CTA in 3 months.\n\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-08-18a",
+     "kind": "outside_records",
+     "start": "2025-08-18T11:30",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2025-08-01T22:40",
+       "issued": "2025-08-05T15:00",
+       "text": "SPECIMEN: small intestine (ileum), segmental resection.\nGROSS: segment of small bowel with dusky, thinned wall.\nMICROSCOPIC: transmural coagulative necrosis with hemorrhage and mucosal sloughing; intramural gas spaces. Proximal and distal margins with viable mucosa.",
+       "conclusion": "Small intestine with transmural ischemic necrosis. Margins viable."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hospital records received",
+       "author": "front desk",
+       "date": "2025-08-18T11:30",
+       "body": "ED note, discharge summary and pathology for 8/1-8/12/25 admission received. Pt's post-hospital visit is 8/21. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-21a",
+     "kind": "office_visit",
+     "start": "2025-08-21T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 67.0
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-08-21T11:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.3
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-08-21T11:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2025-08-21T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-08-21T11:30",
+       "body": "TCM visit after admission 8/1-8/12: acute mesenteric ischemia one week after EVAR, ileal resection with primary anastomosis, AKI and lactic acidosis. Records reviewed.\n\nHe is tired but improving. Eating 5-6 small meals, mostly soft. Bowels moving daily, loose-ish, no blood. Wound sore, no drainage. Walking around the house and to the mailbox. No fever. A friend from church is bringing meals twice a week.\n\nWeight 67 (73 in June). Vitals charted, afebrile.\nMidline wound healing well, no erythema or drainage. Abdomen soft, mildly tender near the incision, bowel sounds present.\nCr 1.3 today, same as discharge.\n\nA/P\n1. Acute mesenteric ischemia s/p ileal resection - recovering. Surgery clinic next week.\n2. AKI - improving, lisinopril back on at discharge. BMP 3 weeks.\n3. Weight loss after two abdominal surgeries this year - small frequent meals with protein, recheck weight in 6 weeks.\n4. GCA - prednisone 10 continued.\n5. AAA s/p EVAR - vascular CTA in November."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-11a",
+     "kind": "lab_only",
+     "start": "2025-09-11T08:15",
+     "state": {
+      "labs": {
+       "Creatinine": 1.2
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-09-11T08:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP",
+       "author": "PCP",
+       "date": "2025-09-11T14:00",
+       "body": "Cr 1.2, back to baseline. K normal."
+      },
+      {
+       "type": "Patient Communication",
+       "title": "Kidney function",
+       "author": "PCP",
+       "date": "2025-09-11T14:05",
+       "body": "Your kidney function is back to your usual. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-07a",
+     "kind": "annual_physical",
+     "start": "2025-10-07T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 69.0
+     },
+     "conditions": [
+      {
+       "label": "Acute kidney injury",
+       "icd10": "N17.9",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-10-07T09:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-10-07T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-10-07T09:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-07T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "C Reactive Protein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-10-07T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-07T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2025-10-07T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-07T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2025-10-07T09:50",
+       "body": "AWV. Two laparotomies this year (Feb adhesive SBO; Aug mesenteric ischemia after EVAR with ileal resection). Now 8 weeks out from the second.\n\nEnergy returning. Eating well in small portions, weight up to 69. Bowels formed most days. Walking 20-30 min. Has skipped tutoring this fall.\nFunctional: independent with ADLs; a friend helped with shopping in August, now drives again. No falls. Recall and clock normal.\nPHQ-9 4: some frustration with the year, sleep ok, enjoys his puzzles and the Sunday paper.\n\nExam: vitals charted. Heart regular, no murmur. Lungs clear. Midline scar well healed. Abdomen soft, nontender. No edema.\n\nA/P\n- AKI resolved (Cr 1.2 in Sept).\n- HTN at goal. CAD stable.\n- AAA s/p EVAR - CTA Nov.\n- GCA - pred 10. Rheum visit due, he'll call them.\n- Flu and COVID given today.\nRTC 2-3 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-18a",
+     "kind": "specialist_visit",
+     "start": "2025-11-18T13:30",
+     "service": "Vascular Surgery",
+     "reason": "Post-EVAR surveillance",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-11-18T11:50",
+       "text": "EXAM: CT angiography abdomen and pelvis, post EVAR.\nFINDINGS: Bifurcated endograft in expected position with good proximal and distal seal. No endoleak on arterial or delayed phases. Aneurysm sac 5.4 cm (5.5 cm pre-repair). Limbs patent. Postoperative changes of small-bowel resection with intact anastomosis, no obstruction. Small left femoral arteriovenous fistula.",
+       "conclusion": "Endograft in good position without endoleak. Sac 5.4 cm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Vascular surgery follow-up",
+       "author": "vascular surgery",
+       "date": "2025-12-01T09:00",
+       "body": "VASCULAR SURGERY - 11/18/2025\n\nPost-EVAR surveillance, 4 months after repair, complicated by acute mesenteric ischemia requiring ileal resection one week post-op. Recovering well. No abdominal or back pain.\n\nCTA: endograft in good position, no endoleak, sac 5.4 cm.\n\nPlan: repeat imaging in 12 months. Continue aspirin and statin. Groin fistula unchanged, observation.\n\nVascular Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "office_visit",
+     "start": "2025-12-09T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2025-12-10a",
+     "kind": "telephone",
+     "start": "2025-12-10T09:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2025-12-10T09:30",
+       "body": "Called about yesterday's missed appt. Pt apologized, had it written for the wrong week in his planner. Rebooked for 1/13."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-13a",
+     "kind": "office_visit",
+     "start": "2026-01-13T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 70.0
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-13T10:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-13T10:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "C Reactive Protein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-01-13T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-01-13T10:55",
+       "body": "Doing well. Weight 70, eating normally in smaller portions. Bowels regular. Back to some tutoring. Angina rare. Saw rheum in December, nothing changed per pt; letter not received. Vascular CTA in Nov fine, letter in chart.\n\nVitals charted, BP at goal. Heart regular, lungs clear, abdomen soft and nontender, well-healed scar. Soft L groin bruit.\n\nA/P: all stable on aspirin, atorvastatin 40, lisinopril 20, amlodipine 5, prednisone 10, tamsulosin. BMP, ESR/CRP. RTC 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-05a",
+     "kind": "hospital_admission",
+     "start": "2026-02-05T16:25",
+     "end": "2026-02-17T12:00",
+     "service": "Critical Care",
+     "reason": "Sudden tearing chest pain radiating to the back",
+     "conditions": [
+      {
+       "label": "Aortic dissection",
+       "icd10": "I71.010",
+       "action": "diagnosed",
+       "onset": "2026-02-05",
+       "note": "Type A, root to descending thoracic aorta; ascending/hemiarch replacement with valve resuspension"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-02-05T16:30",
+       "bp": [
+        180,
+        100
+       ],
+       "hr": 98,
+       "rr": 24,
+       "temp_c": 36.9,
+       "spo2": 94
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-02-05T16:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.0
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 12.0
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-05T16:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        }
+       ],
+       "resulted": "2026-02-05T17:25"
+      },
+      {
+       "panel": null,
+       "collected": "2026-02-05T16:40",
+       "results": [
+        {
+         "test": "Troponin I",
+         "loinc": "10839-9",
+         "unit": "ng/mL",
+         "text": "<0.04"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-02-05T16:50",
+       "text": "Portable AP chest. Widened mediastinum. Lungs clear. No pneumothorax. No effusion.",
+       "conclusion": "Widened mediastinum."
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2026-02-05T16:35",
+       "text": "Sinus rhythm. No ST elevation or depression. No Q waves.",
+       "conclusion": "No acute ischemic changes."
+      },
+      {
+       "study": "CT chest",
+       "performed": "2026-02-05T17:20",
+       "text": "EXAM: CT angiography chest.\nFINDINGS: Intimal flap beginning just above the aortic valve, extending through the ascending aorta and arch into the descending thoracic aorta, ending above the abdominal endograft. No pericardial effusion. Lungs clear.",
+       "conclusion": "Acute type A aortic dissection from the sinotubular junction into the descending thoracic aorta.",
+       "issued": "2026-02-05T17:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "cardiac surgery",
+       "date": "2026-03-12T14:10",
+       "body": "DISCHARGE SUMMARY\nAdmit 02/05/2026  Discharge 02/17/2026\nServices: critical care, cardiac surgery\n\nPrincipal diagnosis: acute type A aortic dissection.\n\nPresentation: 73 y/o man with CAD, GCA on chronic prednisone, AAA s/p EVAR (7/2025), prior mesenteric ischemia with ileal resection and cholesterol embolism. Two hours of sudden severe tearing chest pain through to the back with shortness of breath. BP 180/100 right arm, 160/90 left. Diastolic murmur best at the right second intercostal space. Weak femoral pulses. Diaphoretic, anxious.\nLabs: Hb 14, WBC 12.0, platelets 250, creatinine 1.2, troponin I <0.04 ng/mL. CXR widened mediastinum. ECG without ST changes or Q waves. CTA: dissection from just above the aortic valve through the arch into the descending thoracic aorta.\n\nProcedure 02/05/2026: emergency replacement of the ascending aorta and hemiarch with aortic valve resuspension. Intraoperative TEE: moderate aortic regurgitation before repair, trivial after resuspension.\n\nCourse: ICU 4 days, extubated day 1. Stress-dose hydrocortisone then prednisone 10 mg resumed. Blood pressure and heart rate control with IV agents, then oral metoprolol succinate added. Femoral pulses palpable post-op. Creatinine stable. Ambulating independently at discharge.\n\nDischarge medications: aspirin 81 mg daily, atorvastatin 40 mg daily, lisinopril 20 mg daily, amlodipine 5 mg daily, metoprolol succinate 50 mg daily (NEW), prednisone 10 mg daily, tamsulosin 0.4 mg nightly, oxycodone 5 mg/acetaminophen 325 mg 1 tab every 6 h as needed for pain, #20 (NEW, short course).\nAllergies: NKDA.\n\nFollow-up: cardiac surgery clinic 4-6 weeks; PCP 1-2 weeks; sternal precautions 8 weeks; CTA chest in 3-6 months. BP goal under 130/80.\n\nCardiac Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-02-18a",
+     "kind": "telephone",
+     "start": "2026-02-18T11:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pt call - hospital discharge",
+       "author": "RN",
+       "date": "2026-02-18T11:00",
+       "body": "Pt called. Admitted 2/5 for a tear in the aorta, had emergency open heart surgery to replace part of it, home yesterday. One new heart pill and pain pills. Feeling sore but ok, no fever, incision dry. Pharmacy confirms new fill 2/17: metoprolol succinate 50 mg daily, prescribed by cardiac surgery, plus oxycodone-acetaminophen #20. No hospital records yet; requested. Post-hospital visit booked 2/24."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-24a",
+     "kind": "office_visit",
+     "start": "2026-02-24T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up after aortic dissection repair",
+     "vitals": {
+      "bp": [
+       128,
+       76
+      ],
+      "hr": 64
+     },
+     "measure": [
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "bp": [
+       126,
+       76
+      ],
+      "weight_kg": 66.0
+     },
+     "medications": [
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Aortic dissection repair, BP and heart rate control (cardiac surgery)"
+      },
+      {
+       "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Post-sternotomy pain"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-24T10:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-02-24T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-02-24T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2026-02-24T10:50",
+       "body": "Post-discharge after acute type A aortic dissection 2/5, emergency ascending aorta/hemiarch replacement with valve resuspension, home 2/17. Hospital summary not yet received; history from pt, his discharge med sheet and pharmacy.\n\nSore chest, better each day. Used the oxycodone the first few nights, now just at bedtime or not at all. Walking short loops indoors. Appetite fair. No fever, no shortness of breath, no leg swelling. Bowels ok.\n\nBP 128/76, HR 64. Weight 66.\nSternotomy healing, edges together, no erythema or drainage, sternum stable. Heart regular, no murmur heard. Lungs clear. Femoral pulses palpable. No edema.\n\nA/P\n1. Type A aortic dissection s/p repair - recovering. Cardiac surgery clinic in March. Sternal precautions.\n2. HTN - goal under 130/80; there on lisinopril 20, amlodipine 5, plus new metoprolol succinate 50 (added to our list).\n3. Pain - oxycodone-APAP short course from the hospital, taper off; acetaminophen alone otherwise.\n4. GCA - prednisone 10 continues.\nBMP, CBC today. RTC 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-12a",
+     "kind": "outside_records",
+     "start": "2026-03-12T14:10",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hospital records received",
+       "author": "front desk",
+       "date": "2026-03-12T14:10",
+       "body": "Discharge summary for 2/5-2/17/26 received after second request. No operative note included. Routed to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Records review",
+       "author": "PCP",
+       "date": "2026-03-13T07:50",
+       "body": "Summary reviewed, consistent with pt account and our reconciliation. Intra-op TEE moderate AR pre repair, trivial after. BP and HR goals noted."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-09a",
+     "kind": "office_visit",
+     "start": "2026-04-09T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after aortic surgery",
+     "vitals": {
+      "bp": [
+       126,
+       76
+      ],
+      "hr": 62
+     },
+     "measure": [
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 68.0
+     },
+     "medications": [
+      {
+       "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "No longer needed"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-04-09T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-09T09:50",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-09T09:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "C Reactive Protein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-04-09T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-04-09T10:00",
+       "body": "Two months after type A dissection repair. Saw cardiac surgery 3/19 - he says they were pleased, CT of the chest in the summer; their note isn't here yet.\n\nFeels stronger. Walking 15-20 min outdoors. Sternum only aches if he sleeps on his side. Off the oxycodone for over a month. No chest pain like before, no exertional tightness on his walks so far, no dyspnea, no lightheadedness on the metoprolol. Nocturia once. Appetite good.\n\nBP 126/76, HR 62. Weight 68.\nSternotomy well healed. Heart regular, no murmur. Lungs clear. Abdomen soft. Femoral and pedal pulses palpable. No edema. Temporal arteries nontender.\n\nA/P\n1. Aortic dissection s/p repair - at BP and HR goals. Continue metoprolol succinate 50, lisinopril 20, amlodipine 5. CTA chest per cardiac surgery.\n2. CAD - aspirin, atorvastatin 40.\n3. AAA s/p EVAR - vascular imaging November.\n4. GCA - prednisone 10, rheum due for a visit again later this year.\n5. Oxycodone-APAP off the list.\nCBC, BMP, ESR/CRP today. Follow-up in 3 months - he'll call to schedule once he knows his cardiac surgery imaging date."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-10a",
+     "kind": "portal_message",
+     "start": "2026-04-10T12:15",
+     "documents": [
+      {
+       "type": "Patient Communication",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2026-04-10T12:15",
+       "body": "Russ, your blood count and kidney function are fine (creatinine 1.2, your usual), and the inflammation markers are normal. No changes. Let us know your scan date and we'll set up the summer visit around it."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-04a",
+     "kind": "outside_records",
+     "start": "2026-05-04T15:30",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiac surgery follow-up letter",
+       "author": "cardiac surgery",
+       "date": "2026-05-04T15:30",
+       "body": "CARDIAC SURGERY CLINIC - 03/19/2026\n\nSix weeks after emergency ascending aorta and hemiarch replacement with aortic valve resuspension for acute type A dissection. Recovering well. Mild sternal soreness only.\n\nBP and heart rate at goal. Sternum stable, incision healed. No murmur. Femoral pulses palpable.\n\nPlan: continue metoprolol succinate 50 mg, lisinopril, amlodipine; BP under 130/80. Sternal precautions through early April. CTA chest in about 4 months. Return after imaging.\n\nCardiac Surgery"
+      },
+      {
+       "type": "Outside Records",
+       "title": "Filed",
+       "author": "front desk",
+       "date": "2026-05-04T15:35",
+       "body": "Cardiac surgery letter (3/19 visit) received by fax, scanned and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "pharmacy",
+     "start": "2026-06-16T09:40",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2026-06-16T09:40",
+       "body": "Pharmacy refill request: metoprolol succinate 50 mg, original Rx from cardiac surgery has no refills left. Routed to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Refill",
+       "author": "PCP",
+       "date": "2026-06-16T12:05",
+       "body": "Refilled metoprolol succinate 50 mg daily, 90 days x 1. Same dose."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-21a",
+     "kind": "portal_message",
+     "start": "2026-07-21T19:20",
+     "documents": [
+      {
+       "type": "Patient Communication",
+       "title": "Summer appointment",
+       "author": "patient",
+       "date": "2026-07-21T19:20",
+       "body": "Hello, I got a reminder that I'm due for my 3 month visit. My chest CT with the surgeons isn't scheduled yet, they said they'd call. Should I wait until after that or come in anyway? Feeling good, walking 2 miles now. - Russ"
+      },
+      {
+       "type": "Patient Communication",
+       "title": "Re: Summer appointment",
+       "author": "front desk",
+       "date": "2026-07-22T09:10",
+       "body": "Hi Mr. Graves, glad you're feeling well. Either is fine with the doctor. Give us a call or reply here when you have the CT date and we'll find a time for you."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

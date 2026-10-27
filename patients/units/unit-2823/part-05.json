@@ -1,0 +1,642 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002823",
+   "events": [
+    {
+     "id": "2024-01-08a",
+     "kind": "ed_visit",
+     "start": "2024-01-08T08:10",
+     "end": "2024-01-08T12:40",
+     "service": "Emergency Medicine",
+     "reason": "Left wrist injury after fall",
+     "conditions": [
+      {
+       "label": "Fracture of distal end of radius",
+       "action": "diagnosed",
+       "onset": "2024-01-08",
+       "note": "left, low-trauma fall from standing"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2024-01-10T09:00",
+       "body": "EMERGENCY DEPARTMENT NOTE - 01/08/2024 08:10\n\nCC: left wrist pain after a fall.\n\nHPI: 69F slipped on ice in her driveway this morning while getting the paper, fell from standing onto an outstretched left hand. No head strike, no LOC. Immediate wrist pain and deformity. No other injuries.\n\nPMH: osteoporosis on alendronate, T2DM, HTN, CKD 3b, RA, severe COPD, GERD, vulvar SCC treated 2023. Meds include prednisone 10 mg daily and methotrexate weekly.\nAllergies: NKDA.\n\nExam: Vitals within normal limits. Dinner-fork deformity of the left wrist, skin intact, radial pulse 2+, sensation intact in median, ulnar and radial distributions. No snuffbox tenderness. Elbow and shoulder non-tender.\n\nImaging: left wrist X-ray, 3 views - displaced, dorsally angulated fracture of the distal radius metaphysis; ulnar styloid intact; no other fracture.\n\nED course: hematoma block, closed reduction and sugar-tong splint. Post-reduction films improved alignment. Neurovascularly intact after splinting.\n\nImpression: displaced left distal radius fracture, low-energy mechanism (fragility fracture).\nDisposition: home; orthopedics follow-up this week for operative planning; acetaminophen for pain (avoid NSAIDs given CKD); elevate. Notify PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-12a",
+     "kind": "procedure_visit",
+     "start": "2024-01-12T07:00",
+     "end": "2024-01-12T14:00",
+     "service": "Orthopedic Surgery",
+     "reason": "Open reduction and internal fixation, left distal radius",
+     "documents": [
+      {
+       "type": "Operative Note",
+       "title": "Operative report - left distal radius ORIF",
+       "author": "orthopedics",
+       "date": "2024-01-15T10:30",
+       "body": "OPERATIVE NOTE\nDate of surgery: 01/12/2024\nPreoperative/postoperative diagnosis: displaced left distal radius fracture.\nProcedure: open reduction and internal fixation, left distal radius, volar locking plate.\nAnesthesia: regional block with sedation.\nFindings: dorsally angulated extra-articular distal radius fracture, osteoporotic bone. Anatomic reduction obtained via volar approach; plate and screws placed under fluoroscopy with good position.\nEBL minimal. No complications. Splint applied. Discharged same day.\nPlan: elevation, finger motion, follow-up 2 weeks for wound check, then therapy. Osteoporosis management to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-16a",
+     "kind": "telephone",
+     "start": "2024-01-16T11:40",
+     "orders": [
+      {
+       "id": "dxa-2024",
+       "action": "placed",
+       "order": "DXA bone density, hip and spine",
+       "category": "imaging",
+       "reason": "Fragility fracture on alendronate"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-op check-in",
+       "author": "PCP",
+       "date": "2024-01-16T11:55",
+       "body": "Spoke with Beverly 4 days after her wrist plating. Pain controlled with acetaminophen, fingers warm and moving, sleeping propped up. Husband helping with meds and meals; she cannot open the inhaler easily one-handed, he loads it for her. Discussed that a break from a standing-height fall means her bones are fragile despite alendronate. Ordered a repeat bone density test before her visit next month so we can plan from fresh numbers."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-13a",
+     "kind": "imaging",
+     "start": "2024-02-13T10:30",
+     "reports": [
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2024-02-13T10:30",
+       "text": "DXA of the lumbar spine (L1-L4) and right hip (left forearm not scanned, recent hardware). Comparison 4/2020. Lumbar spine L1-L4 T-score -2.8. Hip measured; the lumbar spine remains the lowest site.",
+       "conclusion": "Osteoporosis. Lumbar spine T-score -2.8, the lowest site."
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2024",
+       "action": "done",
+       "date": "2024-02-13T10:30"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-26a",
+     "kind": "office_visit",
+     "start": "2024-02-26T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Osteoporosis follow-up after fragility fracture",
+     "conditions": [
+      {
+       "label": "Osteoporosis",
+       "action": "resolved",
+       "note": "reclassified with fragility fracture"
+      },
+      {
+       "label": "Postmenopausal osteoporosis with current fragility fracture, left forearm",
+       "icd10": "M80.032A",
+       "action": "diagnosed",
+       "onset": "2024-01-08"
+      }
+     ],
+     "state": {
+      "bp": [
+       138,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 8.7,
+       "Glucose": 166
+      }
+     },
+     "vitals": {
+      "bp": [
+       138,
+       84
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-26T10:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-02-26T10:45",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2024-02-26T10:45",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-02-26T10:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.7
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-26T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Osteoporosis",
+       "author": "PCP",
+       "date": "2024-02-26T10:50",
+       "body": "S: Follow-up for bones after the January left distal radius fracture (fell on ice from standing, ORIF 1/12). Splint off, starting hand therapy exercises from ortho. Still taking alendronate weekly as instructed since 2020; calcium three times a day and D3 daily. No other falls. No new back pain.\n\nMeds: unchanged list reviewed.\nFHx/SHx unchanged: mother and maternal aunt with osteoporosis (aunt broke a hip); never smoker, a glass or two of wine a week.\n\nO: BP 138/84. Other vitals as charted. Well-appearing. Left wrist: healed volar incision, mild stiffness, good finger motion. Lungs distant. Heart regular. Exam otherwise unremarkable.\n\nData: DXA 2/13 - lumbar spine T -2.8, unchanged from 2020.\n\nA/P: Postmenopausal and glucocorticoid-related osteoporosis, now with a fragility fracture of the left forearm. Continue alendronate 70 mg weekly with calcium and vitamin D. Fall prevention reviewed: ice cleats and a lit path to the mailbox, grab bars, slow rises, no throw rugs. Husband now takes in the paper.\nT2DM A1c today. BP at goal.\nRTC summer."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-18a",
+     "kind": "specialist_visit",
+     "start": "2024-03-18T09:00",
+     "service": "Gynecologic Oncology",
+     "reason": "Vulvar cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology surveillance visit",
+       "author": "gynecologic oncology",
+       "date": "2024-03-20T12:00",
+       "body": "One-year surveillance after radical local excision and SLNB for stage IB vulvar SCC. Interval wrist fracture with ORIF noted. No vulvar symptoms. Exam: scar well healed, no lesions; groins negative; no leg swelling. NED. Next visit 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-25a",
+     "kind": "specialist_visit",
+     "start": "2024-03-25T15:00",
+     "service": "Orthopedic Surgery",
+     "reason": "Left distal radius fracture follow-up",
+     "conditions": [
+      {
+       "label": "Fracture of distal end of radius",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic follow-up",
+       "author": "orthopedics",
+       "date": "2024-03-27T09:30",
+       "body": "Ortho follow-up 3/25/2024, 10 weeks after volar plate ORIF left distal radius. Minimal pain. Wrist motion nearly full, grip improving with home exercises. X-ray: healed fracture, hardware intact and in good position. Discharged from orthopedic follow-up; return as needed. Hardware does not need removal."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-18a",
+     "kind": "imaging",
+     "start": "2024-06-18T09:00",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2024-06-18T09:00",
+       "text": "Bilateral screening mammogram with tomosynthesis. Comparisons 2022, 2020, 2018. Scattered fibroglandular densities. No suspicious findings. Stable bilaterally.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "office_visit",
+     "start": "2024-07-16T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and CKD follow-up",
+     "state": {
+      "labs": {
+       "Microalbumin/Creatinine Ratio": 260
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-07-16T11:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-07-16T11:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2024-07-16T11:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-16T11:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 260
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-07-16T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-07-16T11:35",
+       "body": "Doing ok. Wrist back to normal for daily tasks. Mammogram negative in June. February A1c 8.7. Hot weather slows her down; no flares. Feet fine.\n\nVitals as charted. Lungs distant. Regular. No edema.\n\nPlan: BMP, CBC, LFTs, urine albumin today. Continue meds. AWV October with flu/COVID."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-16a",
+     "kind": "specialist_visit",
+     "start": "2024-09-16T10:00",
+     "service": "Gynecologic Oncology",
+     "reason": "Vulvar cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology surveillance visit",
+       "author": "gynecologic oncology",
+       "date": "2024-09-18T14:00",
+       "body": "18-month surveillance, FIGO IB vulvar SCC treated 3/2023. No complaints. Vulva: scar supple, no new lesions. Inguinal regions without adenopathy. No evidence of recurrence. Moving to annual visits after next year if she remains clear; next in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-01a",
+     "kind": "annual_physical",
+     "start": "2024-10-01T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-10-01T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-10-01T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-10-01T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-10-01T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Parathyroid Hormone, Intact"
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-01T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-01T10:02"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-10-01T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-01T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-10-01T10:15",
+       "body": "AWV, subsequent.\n\nInterval: left distal radius fragility fracture 1/2024, ORIF, healed. Gyn onc surveillance clear in September. No admissions.\n\nFunctional: independent; uses the rail; ice cleats bought for winter. One fall this year (the January one). Her husband's health has been slipping and she is doing more of the driving and appointments for him. Sleep ok. PHQ-2 1.\n\nExam: vitals as charted. Lungs distant, no wheeze. Regular. Feet with intact monofilament and pulses.\n\nPlan: labs. Flu (high-dose) and updated COVID today. Discussed the shingles vaccine - she wants to wait until after the winter. Mammogram current. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "specialist_visit",
+     "start": "2024-10-22T09:30",
+     "service": "Nephrology",
+     "reason": "CKD follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2024-10-25T08:45",
+       "body": "Nephrology follow-up, 10/22/2024.\n\nCKD 3b, slow progression; creatinine now 1.7 range, UACR 260 in July. Secondary HPT stable on D3, phosphorus normal. Hemoglobin near 11. Fragility wrist fracture this year on alendronate; filtration still allows it, but we are close to the threshold where it should stop. BP controlled.\n\nPlan: no changes. Labs every 6 months. Return 1 year.\n\nOutside Nephrology Group"
+      }
+     ]
+    },
+    {
+     "id": "2024-11-12a",
+     "kind": "specialist_visit",
+     "start": "2024-11-12T13:00",
+     "service": "Rheumatology",
+     "reason": "Rheumatoid arthritis follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-11-15T10:10",
+       "body": "RA visit 11/12/2024. No active synovitis. Wrist fracture healed. Methotrexate dose reviewed against renal function; creatinine stable, will keep 15 mg weekly with close lab monitoring. Prednisone 10 mg daily unchanged. 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "outside_records",
+     "start": "2024-12-10T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2024-12-10T09:00",
+       "body": "Diabetic eye exam 12/3/2024, dilated. Corrected VA 20/30 OU. Mild cataracts. No diabetic retinopathy. No macular edema. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-16a",
+     "kind": "pharmacy",
+     "start": "2024-12-16T09:05",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request: fluticasone-salmeterol",
+       "author": "MA",
+       "date": "2024-12-16T09:40",
+       "body": "Mail-order pharmacy requesting renewal of fluticasone-salmeterol 250/50 DPI, 3 inhalers. Last renewal 12/2023. Approved per PCP standing protocol for chronic meds, 1 year. Pt notified via portal."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

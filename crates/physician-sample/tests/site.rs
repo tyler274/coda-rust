@@ -23,6 +23,7 @@ fn test_lock() -> &'static Mutex<()> {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_recorded_practice_is_visible() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -156,6 +157,7 @@ async fn the_recorded_practice_is_visible() {
 /// New conversation, send, then a reload without `?chat=`: the workspace
 /// lists the chat the physician started, titled by its first message.
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -209,6 +211,49 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     );
 
     let message = "Review the discharge summary before the follow-up visit";
+    // Save confirms itself beside the composer, and an edit clears the mark.
+    let notice =
+        r#"document.querySelector('.composer-actions .composer-notice')?.textContent ?? ''"#;
+    let saved = browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => {{
+                [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click();
+                const started = Date.now();
+                const poll = () => {{
+                    const text = {notice};
+                    if (text === 'Saved' || text === 'Not saved' || Date.now() - started > 10000) resolve(text);
+                    else setTimeout(poll, 50);
+                }};
+                poll();
+            }}, 100);
+        }})"#,
+            serde_json::to_string(message).unwrap()
+        ))
+        .await;
+    assert_eq!(
+        saved.pointer("/result/result/value"),
+        Some(&serde_json::json!("Saved")),
+        "Save gave no confirmation: {saved}"
+    );
+    let edited = browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, box.value + ' ');
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => resolve({notice}), 200);
+        }})"#
+        ))
+        .await;
+    assert_eq!(
+        edited.pointer("/result/result/value"),
+        Some(&serde_json::json!("")),
+        "an edit left the Saved mark: {edited}"
+    );
     browser
         .eval(&format!(
             r#"new Promise(resolve => {{
@@ -338,7 +383,171 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         .await;
 }
 
+/// Two tabs on one chat: a tab holding older text than the other tab's save
+/// is fenced (Not saved, the server keeps the newer text), a reopened chat
+/// shows its saved draft, and a save still running when the physician opens
+/// another chat never marks that chat.
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let address = server.address;
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let chat = "chat-draft-fence";
+    let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
+    let server_draft = || async {
+        reqwest::get(format!(
+            "http://{address}/physician-state/drafts/{patient}/{chat}"
+        ))
+        .await
+        .unwrap()
+        .json::<serde_json::Value>()
+        .await
+        .unwrap()
+    };
+    let chrome = chromium();
+    let mut tab_a = CdpBrowser::launch(&chrome, &chat_url).await;
+    let mut tab_b = CdpBrowser::launch(&chrome, &chat_url).await;
+    for tab in [&mut tab_a, &mut tab_b] {
+        tab.wait_for_text(
+            "What would you like Coda to review?",
+            Duration::from_secs(20),
+        )
+        .await;
+    }
+
+    // A types first, so whenever its read of the (empty) draft lands, A's
+    // text stays the edit of revision 0.
+    tab_a.type_composer("Older text from tab A").await;
+    tab_b.type_composer("Newer text from tab B").await;
+    assert_eq!(tab_b.save_composer().await, "Saved");
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 1, "text": "Newer text from tab B"})
+    );
+    assert_eq!(
+        tab_a.save_composer().await,
+        "Not saved",
+        "the stale tab overwrote the newer save"
+    );
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 1, "text": "Newer text from tab B"}),
+        "a refused save wrote the stale text"
+    );
+    assert_eq!(
+        tab_a.composer().await.0,
+        "Older text from tab A",
+        "a refused save dropped the stale tab's text"
+    );
+    drop(tab_b);
+
+    // Reopened, the chat shows its saved draft and saves over revision 1.
+    tab_a.navigate(&chat_url).await;
+    let started = Instant::now();
+    while tab_a.composer().await.0 != "Newer text from tab B" {
+        assert!(
+            started.elapsed() < Duration::from_secs(20),
+            "the reopened chat did not show its saved draft: {:?}",
+            tab_a.composer().await
+        );
+        tokio::time::sleep(Duration::from_millis(60)).await;
+    }
+
+    // Hold the next save in flight, open another chat, then let it land.
+    tab_a
+        .call(
+            "Fetch.enable",
+            serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
+        )
+        .await;
+    tab_a.type_composer("Edited after reopening").await;
+    tab_a
+        .eval("[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click()")
+        .await;
+    let put = tab_a.held_request("PUT").await;
+    let saving = tab_a
+        .eval("[document.querySelector('.composer-actions .composer-notice')?.textContent ?? '', [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').disabled]")
+        .await;
+    assert_eq!(
+        saving.pointer("/result/result/value"),
+        Some(&serde_json::json!(["Saving…", true])),
+        "a running save showed no Saving mark or left Save enabled: {saving}"
+    );
+    tab_a
+        .eval("document.querySelector('button.sidebar-new-conversation').click()")
+        .await;
+    let started = Instant::now();
+    while new_chat(&mut tab_a).await == chat {
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "New conversation did not open"
+        );
+        tokio::time::sleep(Duration::from_millis(30)).await;
+    }
+    assert_eq!(
+        tab_a.composer().await,
+        (String::new(), String::new()),
+        "the new chat showed the other chat's draft or its Saving mark"
+    );
+    tab_a.release(&put).await;
+    // The save lands on the server for its own chat ...
+    let started = Instant::now();
+    while server_draft().await["revision"] != 2 {
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "the held save never landed"
+        );
+        tab_a.eval("0").await;
+        for request in std::mem::take(&mut tab_a.paused) {
+            tab_a.release(&request).await;
+        }
+        tokio::time::sleep(Duration::from_millis(30)).await;
+    }
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 2, "text": "Edited after reopening"})
+    );
+    // ... and its answer never marks the chat now shown.
+    for _ in 0..10 {
+        tab_a.eval("0").await;
+        for request in std::mem::take(&mut tab_a.paused) {
+            tab_a.release(&request).await;
+        }
+        assert_eq!(
+            tab_a.composer().await,
+            (String::new(), String::new()),
+            "another chat's save marked this chat"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    tab_a.call("Fetch.disable", serde_json::json!({})).await;
+}
+
+async fn new_chat(browser: &mut CdpBrowser) -> String {
+    browser
+        .eval("new URL(location.href).searchParams.get('chat') ?? ''")
+        .await
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .unwrap_or_default()
+        .to_owned()
+}
+
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -435,6 +644,7 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects() {
     use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -574,6 +784,7 @@ fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) ->
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     use base64::Engine;
 
@@ -728,6 +939,7 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignment() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -962,6 +1174,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_interact() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -1069,6 +1282,7 @@ async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_int
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -1357,15 +1571,21 @@ struct CdpBrowser {
     user_data_dir: PathBuf,
     stream: TcpStream,
     next_id: u64,
+    /// `Fetch.requestPaused` events not yet handled, oldest first.
+    paused: Vec<serde_json::Value>,
 }
 
 impl CdpBrowser {
     async fn launch(chrome: &std::path::Path, initial_url: &str) -> Self {
+        // One profile per browser, even with two open at once.
+        static NEXT_PROFILE: std::sync::atomic::AtomicUsize =
+            std::sync::atomic::AtomicUsize::new(0);
         let user_data_dir = env::temp_dir().join(format!(
             "coda-cdp-profile-{}-{}",
             std::process::id(),
-            Instant::now().elapsed().as_nanos()
+            NEXT_PROFILE.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
         ));
+        let _ = fs::remove_dir_all(&user_data_dir);
         fs::create_dir_all(&user_data_dir).unwrap();
         let mut child = Command::new(chrome)
             .env_remove("LD_LIBRARY_PATH")
@@ -1413,6 +1633,7 @@ impl CdpBrowser {
             user_data_dir,
             stream,
             next_id: 1,
+            paused: Vec::new(),
         };
         browser.call("Page.enable", serde_json::json!({})).await;
         browser.call("Runtime.enable", serde_json::json!({})).await;
@@ -1487,6 +1708,90 @@ impl CdpBrowser {
             if message.get("id").and_then(|v| v.as_u64()) == Some(id) {
                 return message;
             }
+            if message.get("method").and_then(|m| m.as_str()) == Some("Fetch.requestPaused") {
+                self.paused.push(message["params"].clone());
+            }
+        }
+    }
+
+    /// Lets every held draft read go on, and returns the first held request
+    /// with `method`, waiting up to ten seconds for it.
+    async fn held_request(&mut self, method: &str) -> serde_json::Value {
+        let started = Instant::now();
+        loop {
+            // A cheap call drains pending events into `paused`.
+            self.eval("0").await;
+            let mut found = None;
+            for request in std::mem::take(&mut self.paused) {
+                if found.is_none() && request["request"]["method"] == method {
+                    found = Some(request);
+                } else if request["request"]["method"] == "GET" {
+                    self.release(&request).await;
+                } else {
+                    self.paused.push(request);
+                }
+            }
+            if let Some(request) = found {
+                return request;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "no {method} request was held"
+            );
+            tokio::time::sleep(Duration::from_millis(30)).await;
+        }
+    }
+
+    /// Lets one held request go on to the server.
+    async fn release(&mut self, request: &serde_json::Value) {
+        self.call(
+            "Fetch.continueRequest",
+            serde_json::json!({ "requestId": request["requestId"] }),
+        )
+        .await;
+    }
+
+    /// Types `text` into the composer as the physician would.
+    async fn type_composer(&mut self, text: &str) {
+        self.eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => resolve(true), 100);
+        }})"#,
+            serde_json::to_string(text).unwrap()
+        ))
+        .await;
+    }
+
+    /// The composer's text, and the mark beside it.
+    async fn composer(&mut self) -> (String, String) {
+        let value = self
+            .eval("[document.querySelector('textarea.composer')?.value ?? null, document.querySelector('.composer-actions .composer-notice')?.textContent ?? '']")
+            .await;
+        let pair = &value["result"]["result"]["value"];
+        (
+            pair[0].as_str().unwrap_or("<no composer>").to_owned(),
+            pair[1].as_str().unwrap_or_default().to_owned(),
+        )
+    }
+
+    /// Clicks Save and returns the mark it settles on: Saved or Not saved.
+    async fn save_composer(&mut self) -> String {
+        self.eval("[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click()")
+            .await;
+        let started = Instant::now();
+        loop {
+            let (_, mark) = self.composer().await;
+            if mark == "Saved" || mark == "Not saved" {
+                return mark;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "Save settled on no mark: {mark:?}"
+            );
+            tokio::time::sleep(Duration::from_millis(50)).await;
         }
     }
 

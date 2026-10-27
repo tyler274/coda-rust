@@ -1,0 +1,1696 @@
+{
+  "unit": "unit-2019",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002019",
+      "given": "Patrick",
+      "family": "Michaud",
+      "birth_date": "1969-02-21",
+      "address_line": "38 Laurel Park Lane",
+      "phone": "+1-978-555-0164",
+      "email": "patrick.michaud@example.test",
+      "summary": "Senior financial analyst with hypertension, hyperlipidemia and biopsy-proven membranous nephropathy followed by outside nephrology, who joined in 2023 and started aspirin for primary prevention in 2024. Last seen January 2025; in October 2025 an outside ED and admission found a left renal vein thrombosis and started apixaban, which the practice learns of only from his message and late records.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:14",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-29T10:14",
+              "author": "front desk",
+              "body": "Caller is looking for a new internist; says his last doctor retired and the replacement group is booking months out. Has high blood pressure, cholesterol, and a kidney condition a nephrologist follows. Membership terms explained, he is fine with them. Commercial PPO card info taken. New patient slot given for Tues 9/12 at 8:00. Asked him to bring all pill bottles and the name of his kidney doctor's office so we can request notes."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:00",
+          "end": "2023-09-12T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2015-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2018-03-01"
+            },
+            {
+              "label": "Nephrotic syndrome secondary to membranous nephropathy",
+              "action": "history",
+              "onset": "2023-02-01",
+              "note": "Biopsy-proven (left kidney, early 2023); followed by outside nephrology",
+              "icd10": "N04.20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension; proteinuria"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              84
+            ],
+            "hr": 82,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 87.5,
+            "height_cm": 179.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T09:10",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 296
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-09-12T09:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.6
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Senior financial analyst"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Outside records request, prior primary care",
+              "category": "procedure",
+              "reason": "establish care"
+            },
+            {
+              "id": "records-nephrology",
+              "action": "placed",
+              "order": "Outside records request, nephrology consult notes",
+              "category": "procedure",
+              "reason": "membranous nephropathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T09:05",
+              "author": "PCP",
+              "body": "54 y/o man establishing care. Prior PCP retired; records release signed today.\n\nHTN about 8 yrs, on lisinopril 20 daily, home cuff readings he describes as low 130s over low 80s. High cholesterol since ~2018 on atorvastatin 40. Early this year swelling and protein in the urine led to a nephrology referral, and he had a needle biopsy of the L kidney in the spring that showed membranous nephropathy. Nephrology kept the lisinopril going for the protein and he sees them every few months; he does not know his last numbers. Swelling much better than it was. No hematuria, no flank pain, no SOB.\n\nPSH: L kidney biopsy 2023, no complications.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily. No OTCs, no supplements.\nAllergies: NKDA.\nFHx: father MI at 58. Mother HTN and type 2 DM. Older brother ischemic stroke at 52.\nSHx: senior financial analyst, long hours at a desk. Never smoker. A drink or two a week.\n\nExam: BP and other vitals in flowsheet. Well appearing. HEENT clear. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear. Abdomen soft, no CVA tenderness. Ext: trace ankle edema bilaterally, no calf asymmetry. Skin normal. Neuro grossly intact.\n\nA/P\n1. Membranous nephropathy with nephrotic syndrome - nephrology managing. CMP, UA today; requesting their notes.\n2. HTN - at goal on lisinopril, continue.\n3. Hyperlipidemia - atorvastatin 40, lipids next spring fasting.\n4. Health maintenance - colonoscopy reportedly done 2021, will confirm from records. One-time hep C and HIV screen and A1c (mother diabetic) today. Shingles and pneumococcal vaccines to plan; flu and COVID when the fall supply is in.\nPHQ-2 negative.\nF/u for a physical in the spring, sooner as needed."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records requests sent",
+              "date": "2023-09-12T11:30",
+              "author": "front desk",
+              "body": "Release faxed to prior primary care office (retired physician's group) and to the outside nephrology group per patient. Asked nephrology for consult notes, biopsy results and recent labs."
+            }
+          ],
+          "state": {
+            "bp": [
+              131,
+              83
+            ],
+            "weight_kg": 87.5,
+            "height_cm": 180.0,
+            "labs": {
+              "Albumin": 3.2,
+              "Creatinine": 1.0,
+              "Hemoglobin A1c": 5.4,
+              "Total Protein": 5.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-09-14T16:40",
+              "author": "PCP",
+              "body": "Hi Patrick, your labs are back. Kidney function is normal. Your albumin is a bit low and there is protein in the urine, which is what we expect with the membranous nephropathy, and it fits with what nephrology is treating. Blood counts normal, sugar normal, and the hepatitis C and HIV screens are negative. I'd like to see your nephrologist's notes when they come so I can track your numbers alongside theirs. Nothing to change for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "outside_records",
+          "start": "2023-10-03T13:20",
+          "reason": "prior primary care records received",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-03-08T09:00",
+              "text": "Specimen: kidney, left, percutaneous needle core biopsy (two cores). Light microscopy: adequate sample with glomeruli showing diffusely thickened capillary walls; no crescents, no proliferation. Tubules and interstitium without significant fibrosis. Vessels unremarkable. Immunofluorescence: granular capillary wall staining for IgG and C3. Electron microscopy: subepithelial electron-dense deposits with foot process effacement.",
+              "conclusion": "Membranous nephropathy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-04-09T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2023-10-03T13:20",
+              "author": "outside primary care",
+              "body": "Received by fax, 22 pages, from patient's former primary care office.\n\nContents: office notes 2017 through 2023; problem list hypertension and hyperlipidemia, with membranous nephropathy added spring 2023 after nephrology referral for edema and proteinuria. Medications lisinopril 20 mg daily, atorvastatin 40 mg daily. Allergies: none known. Screening colonoscopy 04/2021, normal, repeat in 10 years. Tdap 05/2019. A copy of the 03/2023 kidney biopsy pathology report is included and abstracted to the chart.\n\nNephrology's own consult and follow-up notes are not in this packet."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "telephone",
+          "start": "2023-10-10T09:45",
+          "reason": "records follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nephrology records - second request",
+              "date": "2023-10-10T09:45",
+              "author": "front desk",
+              "body": "Called the nephrology group's records line, left a voicemail, re-faxed the release. No notes received yet from them."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T17:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-19T17:25",
+              "author": "RN",
+              "body": "Came after work for flu and the 2023-24 COVID shot. No egg or vaccine reactions in the past, feels well. Flu vaccine IM L deltoid, COVID IM R deltoid. Waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T08:50",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request - lisinopril, atorvastatin",
+              "date": "2023-12-05T08:50",
+              "author": "MA",
+              "body": "Pharmacy e-request for lisinopril 20 mg and atorvastatin 40 mg; prior scripts were from his old doctor and are out of refills. Labs 9/12 reviewed. Routed to PCP.\n\nPCP: approved both, 90-day supply with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "nurse_visit",
+          "start": "2024-01-18T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix and pneumococcal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-01-18T12:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-01-18T12:25"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-01-18T12:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-01-18T12:40",
+              "author": "RN",
+              "body": "Lunch-hour appointment per PCP plan from his new patient visit. Shingrix #1 IM L deltoid. PCV20 IM R deltoid (indicated with his kidney condition). Told him the shingles shot can make him feel achy for a day or two. Second Shingrix due in 2 to 6 months, can be done at his physical in April. Tolerated, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T21:12",
+          "reason": "question about aspirin",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby aspirin?",
+              "date": "2024-03-26T21:12",
+              "author": "patient",
+              "body": "Hi, a coworker my age just started a baby aspirin and it got me thinking, with my dad's heart attack and my brother's stroke should I be on one too? I have my physical next month, happy to wait until then if that's easier. Thanks, Pat"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby aspirin?",
+              "date": "2024-03-27T07:55",
+              "author": "PCP",
+              "body": "Good question and worth a real conversation rather than a quick yes or no. There are pros and cons for someone who hasn't had a heart attack or stroke himself. Let's go through it at the physical on the 23rd. No need to start anything before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "annual_physical",
+          "start": "2024-04-23T07:40",
+          "end": "2024-04-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary prevention of cardiovascular disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              80
+            ],
+            "hr": 69,
+            "rr": 18,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 87.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-23T08:35",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-04-23T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-04-23T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-04-23T08:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lipid-2024",
+              "action": "placed",
+              "order": "Lipid panel, fasting, and CMP",
+              "category": "lab",
+              "reason": "hyperlipidemia; membranous nephropathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-04-23T08:30",
+              "author": "PCP",
+              "body": "55 y/o M, annual exam. Feels well. No chest pain, no exertional symptoms, no dyspnea, no headaches, no urinary changes. Still seeing nephrology; he thinks his protein is \"coming down\" but no copies; their notes never arrived here despite two requests.\n\nMeds lisinopril 20, atorvastatin 40. NKDA.\nFamily: father MI 58, brother ischemic stroke 52, mother HTN/DM2.\n\nExam: vitals per flowsheet. Alert, well. Eyes, ears, throat normal. Thyroid not enlarged. No carotid bruits. Heart regular, no murmur or gallop. Lungs clear throughout. Abdomen soft, nontender, no masses. Trace edema at both ankles. Skin no lesions of concern. Normal gait.\n\nAspirin, from his portal question: talked through primary prevention at his age and family history. Benefit for someone without known vascular disease is small; GI bleeding and other bleeding risk is real and not trivial. He has no ulcer or bleeding history and is not on anything else that thins the blood. He would like to take it. Start aspirin 81 mg daily; stop and call with black stools or any bleeding. Revisit at a 6 wk check.\n\nProstate screening: discussed; he wants a PSA. Drawn today.\n\nOther: lipids and CMP fasting next month (order in). Shingrix #2 today. Colonoscopy 2021 normal, next 2031. PHQ-2 0.\n\nF/u ~6 weeks, BP and aspirin check."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prostate Specific Antigen": 0.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-26a",
+          "kind": "portal_message",
+          "start": "2024-04-26T12:05",
+          "reason": "PSA result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "PSA result",
+              "date": "2024-04-26T12:05",
+              "author": "PCP",
+              "body": "Patrick, your PSA came back low and normal for your age. Nothing more needed on that for now. Remember the fasting labs at the end of May."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "lab_only",
+          "start": "2024-05-29T07:15",
+          "reason": "fasting lipids and CMP",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-05-29T07:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 225
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 145
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-29T07:15",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "lipid-2024",
+              "action": "done",
+              "date": "2024-05-29T07:15"
+            }
+          ],
+          "state": {
+            "labs": {
+              "High Density Lipoprotein": 45,
+              "Low Density Lipoprotein": 100,
+              "Total Cholesterol": 190,
+              "Triglycerides": 225
+            }
+          }
+        },
+        {
+          "id": "2024-06-06a",
+          "kind": "office_visit",
+          "start": "2024-06-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after starting aspirin",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 86.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-06T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-06-06T16:25",
+              "author": "PCP",
+              "body": "Six weeks into aspirin 81 for primary prevention. Takes it every morning with the lisinopril and statin, hasn't missed. No complaints at all: no stomach upset, no black stools, no nosebleeds or easy bruising.\n\nBP 132/84, HR 78. BMI 27.\nFasting labs 5/29: TC 190, HDL 45, LDL 100, TG 225. Albumin still low, creatinine normal, as before.\n\nNo distress. Heart regular. Lungs clear. Trace ankle edema, unchanged.\n\nA/P: Tolerating aspirin, continue. BP reasonable on lisinopril 20. Lipids reviewed with him; staying on atorvastatin 40. Back in the fall for BP, flu shot then."
+            }
+          ],
+          "measure": [
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "outside_records",
+          "start": "2024-08-20T10:30",
+          "reason": "research study letter received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Clinical trial enrollment notice",
+              "date": "2024-08-20T10:30",
+              "author": "outside research center",
+              "body": "To the primary care physician:\n\nYour patient Patrick Michaud (DOB 02/21/1969) has consented to and enrolled in a randomized, double-blind study of an investigational antihypertensive agent given in addition to his usual blood pressure treatment. Neither the participant nor study staff know his assignment. Please continue his current medications, including lisinopril. Study visits include blood pressure checks and safety labs at our site.\n\nAllergies on file with us: none known.\n\nIf he has a hospitalization or any new medication, we would be grateful for a call to the study coordinator at 413-555-0132. Unblinding for clinical need is available 24 hours a day through the same number.\n\nStudy coordinator, outside clinical research center"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "office_visit",
+          "start": "2024-10-16T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 87.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-16T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-16T08:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-16T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-16T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-16T08:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "date": "2024-10-16T09:10",
+              "author": "PCP",
+              "body": "Here for his BP check. Problems: hypertension, hyperlipidemia, membranous nephropathy (nephrology following).\n\nSince August he is in a blinded trial of a new BP drug run by an outside research center; takes the study capsule along with his own lisinopril, atorvastatin and aspirin and says he hasn't missed doses. Has been watching salt, cooking more at home. Denies chest pain, breathlessness or lightheadedness.\n\nBP 132/84. Other vitals flowsheet.\nExam: comfortable, heart and lungs normal, abdomen benign, no new findings.\n\nAssessment/plan\n- HTN: same reading as June; no change, the trial team is also checking him. Study medication noted (blinded).\n- Membranous nephropathy: BMP and UA today for potassium and creatinine on the ACE inhibitor.\n- Lipids: on atorvastatin 40.\n- Flu and 2024-25 COVID vaccines given.\nNext visit after the new year."
+            }
+          ],
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "portal_message",
+          "start": "2024-10-18T13:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from Wednesday",
+              "date": "2024-10-18T13:30",
+              "author": "PCP",
+              "body": "Potassium and kidney function are fine on the lisinopril. Urine still shows protein at the same level as last year, no blood. Nothing to change. Please let the trial team know these were drawn here in case they want copies."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results from Wednesday",
+              "date": "2024-10-18T18:02",
+              "author": "patient",
+              "body": "Will do, thanks. Sore arm from the two shots but otherwise good."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-26a",
+          "kind": "pharmacy",
+          "start": "2024-11-26T09:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - atorvastatin, lisinopril",
+              "date": "2024-11-26T09:05",
+              "author": "MA",
+              "body": "Mail-order pharmacy request, 90 days each of atorvastatin 40 and lisinopril 20. Seen 10/16, labs current. Sent per protocol, PCP cosign."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "office_visit",
+          "start": "2025-01-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and kidney follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              82
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 87.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-07T16:10",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-01-07T16:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-07T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-01-07T16:20",
+              "author": "PCP",
+              "body": "Routine recheck. Busy year-end at work, otherwise no new symptoms. Continues in the blinded BP study; their last check was fine per him. Last nephrology visit in the fall, he says no changes were made. Still no notes from that office in our chart.\n\nMeds: lisinopril 20, atorvastatin 40, aspirin 81, plus blinded study medication.\nNKDA.\n\nVitals in flowsheet, BP in his usual range.\nExam: NAD. Heart RRR. Lungs clear. Trace bilateral ankle edema, symmetric, unchanged from prior. No calf tenderness.\n\nA/P\n1. HTN: stable, continue current regimen.\n2. Membranous nephropathy: CMP, UA today. Asked him to bring or forward his nephrology results.\n3. Hyperlipidemia: atorvastatin 40, repeat fasting lipids late spring.\n4. Aspirin tolerated.\nReturn in about 4 months."
+            }
+          ],
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "portal_message",
+          "start": "2025-01-09T11:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your visit",
+              "date": "2025-01-09T11:20",
+              "author": "PCP",
+              "body": "Hi Patrick, labs look like they did in the fall: kidney function and potassium normal, albumin on the low side and protein in the urine as before. Keep doing what you're doing. Front desk will reach out about a spring appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "portal_message",
+          "start": "2025-05-13T09:30",
+          "reason": "overdue follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time to schedule your follow-up",
+              "date": "2025-05-13T09:30",
+              "author": "MA",
+              "body": "Hello Mr. Michaud, Dr. asked that we see you about now for a blood pressure visit and fasting labs. Reply here or call the office and we'll find a time that works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time to schedule your follow-up",
+              "date": "2025-05-14T22:47",
+              "author": "patient",
+              "body": "Thanks, it's audit season and I'm swamped. I'll call once things quiet down, probably July."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T08:40",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - lisinopril, atorvastatin",
+              "date": "2025-06-17T08:40",
+              "author": "MA",
+              "body": "Mail-order request for lisinopril 20 and atorvastatin 40. Last visit 01/07/25; follow-up not yet booked (reminder sent 5/13). Routed.\n\nPCP: 90 days each sent. Please ask him again to schedule; BMP is due."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "ed_visit",
+          "start": "2025-10-14T09:35",
+          "end": "2025-10-14T15:20",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain and gross hematuria with left leg and scrotal swelling",
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "hr": 88,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-14T10:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Large"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Too numerous to count"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ng/mL FEU",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 300
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 30
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 190
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 400
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 270
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-10-14T12:10",
+              "text": "Indication: left flank pain, hematuria, nephrotic syndrome. Technique: CT of the abdomen and pelvis after IV contrast with portal venous and delayed phases. Findings: Occlusive filling defect within the left renal vein consistent with thrombus. Left kidney otherwise unremarkable in size and enhancement; no hydronephrosis. Right kidney normal; right renal vein patent. IVC opacifies normally and is patent. No renal or ureteral stones. Liver, spleen, pancreas and adrenals unremarkable. Bowel normal in caliber. No free fluid. Bladder unremarkable. Bones without acute finding.",
+              "conclusion": "Left renal vein thrombosis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-14T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency department record",
+              "date": "2025-11-18T14:05",
+              "author": "emergency medicine",
+              "body": "Outside emergency department, date of service 10/14/2025. Received by fax 11/18/2025.\n\nCC: L flank pain, blood in urine, L leg and scrotal swelling.\n\nHPI: 56M with HTN, HLD, nephrotic syndrome, prior MI and stroke, presents with 2 days of L flank pain and grossly bloody urine. Has noticed the L leg and scrotum getting progressively more swollen over the same period. PMH notable for HTN and recent diagnosis of nephrotic syndrome from membranous nephropathy.\n\nPSH: L percutaneous renal biopsy.\nHome meds: lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFHx: father MI 58, mother HTN and DM2, older brother ischemic stroke at 52.\nSocial: never smoker, social alcohol 1-2/wk, works as a senior financial analyst.\n\nVS: BP 145/90, P 88, afebrile.\nExam: uncomfortable but nontoxic. L lower extremity markedly enlarged vs R with pitting edema up to the mid-thigh. Scrotal edema. Heart regular. Lungs clear.\n\nData: UA 3+ protein, RBC TNTC. Albumin 2.1. Cr 1.2. D-dimer elevated. Cholesterol 300, LDL 190, HDL 30.\nCT A/P with contrast: L renal vein thrombosis.\n\nED course / MDM: Renal vein thrombosis in the setting of nephrotic syndrome. Heparin started per weight-based protocol. Admitted to medicine.\n\nDx: Left renal vein thrombosis; nephrotic syndrome.\nDisposition: admitted."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 2.1,
+              "Creatinine": 1.2,
+              "High Density Lipoprotein": 30,
+              "Low Density Lipoprotein": 190,
+              "Total Cholesterol": 300,
+              "Total Protein": 4.6,
+              "Triglycerides": 400
+            }
+          },
+          "measure": [
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-10-14b",
+          "kind": "hospital_admission",
+          "start": "2025-10-14T15:20",
+          "end": "2025-10-17T12:30",
+          "service": "Hospital Medicine",
+          "reason": "left renal vein thrombosis",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-14T16:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-17T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2025-11-18T14:06",
+              "author": "hospital medicine",
+              "body": "Admission 10/14/2025 - discharge 10/17/2025. Received 11/18/2025.\n\nPrincipal diagnosis: left renal vein thrombosis.\nSecondary: nephrotic syndrome due to membranous nephropathy; hypertension; hyperlipidemia.\nAllergies: no known drug allergies.\n\nHospital course: Admitted from the ED after CT showed thrombus in the left renal vein. Treated with IV unfractionated heparin, then transitioned to apixaban. Nephrology consulted while inpatient; nephrotic syndrome is active again and further treatment will be decided in their clinic. Aspirin had been taken for primary prevention only and was stopped now that he is fully anticoagulated. Lisinopril and atorvastatin unchanged. Stable for discharge on hospital day 3.\n\nDischarge medications:\n- apixaban 10 mg twice daily through 10/20/2025, then 5 mg twice daily (new)\n- lisinopril 20 mg daily (continue)\n- atorvastatin 40 mg daily (continue)\n- aspirin 81 mg daily - STOP\n\nFollow-up: outpatient nephrology within 1-2 weeks (arranged). Primary care within 2 weeks.\nPatient informed his research study team of the admission."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T19:18",
+          "reason": "patient reports hospitalization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital last week",
+              "date": "2025-10-21T19:18",
+              "author": "patient",
+              "body": "Hi, wanted you to know I was admitted for a few days last week. Blood clot in the vein of my left kidney, they think from the nephrotic thing flaring. I'm on Eliquis now twice a day and they told me to stop the baby aspirin. Kidney doctor saw me in the hospital and I see her again next week. Can you get the paperwork from the hospital? -Pat"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital last week",
+              "date": "2025-10-22T07:48",
+              "author": "PCP",
+              "body": "Patrick, I'm glad you're home and sorry you went through that. We'll request the hospital records today. Please book a visit with me in the next couple of weeks so we can go over everything together and do labs, and bring the discharge papers. Keep taking the apixaban exactly as written and don't miss doses."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Was in the hospital last week",
+              "date": "2025-10-22T21:30",
+              "author": "patient",
+              "body": "Will do. Nephrology has me coming in a lot right now, I'll call your office once that settles."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T10:10",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital records request",
+              "date": "2025-10-22T10:10",
+              "author": "front desk",
+              "body": "Faxed request to the hospital's HIM department for ED note, imaging, labs and discharge summary, admission 10/14-10/17/25. Release on file from patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "telephone",
+          "start": "2025-11-04T14:30",
+          "reason": "records request follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital records - follow-up",
+              "date": "2025-11-04T14:30",
+              "author": "front desk",
+              "body": "Nothing back from hospital HIM after 2 weeks. Called; told the first fax was not on file. Sent again with release. Also left patient a voicemail that we still have no post-hospital visit on the schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T14:05",
+          "reason": "hospital records received",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital records received",
+              "date": "2025-11-18T14:20",
+              "author": "MA",
+              "body": "Received by fax from the hospital: ED record 10/14/25, CT abdomen/pelvis report, labs, discharge summary 10/17/25 (14 pages). Indexed to the encounter dates and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T08:55",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - lisinopril, atorvastatin",
+              "date": "2026-01-20T08:55",
+              "author": "MA",
+              "body": "Request for lisinopril 20 mg and atorvastatin 40 mg, 90 days. Pharmacy profile also shows apixaban 5 mg BID filled monthly from another prescriber. No office visit since 01/2025. Routed to PCP.\n\nPCP: 90-day supplies sent. He needs a visit before the next refill; please call him."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T12:40",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling a physical",
+              "date": "2026-06-09T12:40",
+              "author": "patient",
+              "body": "Sorry for being so slow on this. I'd like to come in for a full physical and catch up on everything since the hospital. Early morning works best, any day after Labor Day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling a physical",
+              "date": "2026-06-10T09:15",
+              "author": "front desk",
+              "body": "You're booked Thursday 9/10 at 7:30 AM for a physical with follow-up from your hospital stay. Please bring your current medication bottles, including anything from nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "annual_physical",
+          "start": "2026-09-10T07:30",
+          "reason": "annual physical and post-hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Nephrotic syndrome secondary to membranous nephropathy|N04.20": {
+        "code": "N04.20",
+        "display": "Nephrotic syndrome with diffuse membranous glomerulonephritis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ng/mL FEU",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

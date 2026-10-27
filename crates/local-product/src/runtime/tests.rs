@@ -1,3 +1,6 @@
+#[path = "tests/reply.rs"]
+mod reply_tests;
+
 use super::delivery::{Delivery, DeliveryState};
 use super::*;
 
@@ -305,10 +308,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
             .cloned()
             .collect()
     };
-    let first = Delivery {
-        scope: scope.clone(),
-        input_id: "first".into(),
-    };
+    let first = Delivery::chat_turn(scope.clone(), "first".into());
     let page = store.dispatch_due(100, Some(&start)).await.unwrap();
     assert_eq!(ours(&page), vec![first.clone()]);
     // Successful publication suppresses republish until the retry hint passes.
@@ -331,10 +331,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         store.delivery_state(&first).await.unwrap(),
         DeliveryState::Settled
     );
-    let second = Delivery {
-        scope: scope.clone(),
-        input_id: "second".into(),
-    };
+    let second = Delivery::chat_turn(scope.clone(), "second".into());
     assert_eq!(
         ours(&store.dispatch_due(100, Some(&start)).await.unwrap()),
         vec![second.clone()]
@@ -401,10 +398,7 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
         .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
         .await
         .unwrap();
-    let turn = Delivery {
-        scope: scope.clone(),
-        input_id: "turn".into(),
-    };
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
     for failure in 1..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
         store.retry_delivery(&claim).await.unwrap();
@@ -489,10 +483,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
         .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
         .await
         .unwrap();
-    let turn = Delivery {
-        scope: scope.clone(),
-        input_id: "turn".into(),
-    };
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
     // Pending work is not failed: nothing to try again.
     let pending = store.conversation(&scope).await.unwrap();
     assert_eq!(
@@ -615,10 +606,7 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
         .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32])
         .await
         .unwrap();
-    let delivery = Delivery {
-        scope: scope.clone(),
-        input_id: "turn".into(),
-    };
+    let delivery = Delivery::chat_turn(scope.clone(), "turn".into());
     let claim = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
     store.dispatched(&delivery, 60).await.unwrap();
     // Expire lease and dispatch hint at the storage owner instead of sleeping
@@ -809,4 +797,456 @@ async fn chat_list_orders_by_activity_before_its_limit() {
             .iter()
             .all(|s| s.practice != practice)
     );
+}
+
+/// Allows or refuses every publication, without the auth owner's tables.
+struct Gate(bool);
+#[async_trait]
+impl Authority for Gate {
+    async fn check(&mut self, _: &Scope) -> Result<(), String> {
+        Ok(())
+    }
+    async fn lock_publication(
+        &mut self,
+        _: &PublicationTransaction,
+        _: &Scope,
+        hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        if self.0 && hash.is_some() {
+            Ok(())
+        } else {
+            Err("physician authority changed".into())
+        }
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn chat_drafts_save_under_a_revision_fence_for_one_physician() {
+    use chat_draft::{ChatDraft, ChatDraftSaved};
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = Scope {
+        practice: uuid::Uuid::new_v4().to_string(),
+        physician: "physician".into(),
+        workspace: "workspace".into(),
+        chat: "draft".into(),
+    };
+    let hash = [7_u8; 32];
+    let draft = |revision, text: &str| ChatDraft {
+        revision,
+        text: text.into(),
+    };
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(0, ""));
+
+    // A refused authority writes nothing, even the first save.
+    assert!(
+        store
+            .save_chat_draft(&scope, 0, "refused", &hash, &mut Gate(false))
+            .await
+            .is_err()
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(0, ""));
+    assert!(
+        store
+            .save_chat_draft(&scope, 0, "short hash", &[1; 4], &mut Gate(true))
+            .await
+            .is_err()
+    );
+
+    let saved = |d| ChatDraftSaved::Saved(d);
+    assert_eq!(
+        store
+            .save_chat_draft(&scope, 0, "first", &hash, &mut Gate(true))
+            .await
+            .unwrap(),
+        saved(draft(1, "first"))
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(1, "first"));
+    assert_eq!(
+        store
+            .save_chat_draft(&scope, 1, "second", &hash, &mut Gate(true))
+            .await
+            .unwrap(),
+        saved(draft(2, "second"))
+    );
+    // Both a second opening save and a save at an old revision are stale and
+    // answer the current draft without writing.
+    for stale in [0, 1, 3] {
+        assert_eq!(
+            store
+                .save_chat_draft(&scope, stale, "stale", &hash, &mut Gate(true))
+                .await
+                .unwrap(),
+            ChatDraftSaved::Conflict(draft(2, "second"))
+        );
+    }
+    assert!(
+        store
+            .save_chat_draft(&scope, 2, "refused", &hash, &mut Gate(false))
+            .await
+            .is_err()
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(2, "second"));
+    // Two saves naming the same revision: exactly one wins.
+    let (a, b) = tokio::join!(
+        async {
+            store
+                .save_chat_draft(&scope, 2, "a", &hash, &mut Gate(true))
+                .await
+        },
+        async {
+            store
+                .save_chat_draft(&scope, 2, "b", &hash, &mut Gate(true))
+                .await
+        },
+    );
+    let outcomes = [a.unwrap(), b.unwrap()];
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|o| matches!(o, ChatDraftSaved::Saved(_)))
+            .count(),
+        1,
+        "{outcomes:?}"
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap().revision, 3);
+
+    // Another physician, another chat and another workspace see nothing.
+    for other in [
+        Scope {
+            physician: "colleague".into(),
+            ..scope.clone()
+        },
+        Scope {
+            chat: "chat-other".into(),
+            ..scope.clone()
+        },
+        Scope {
+            workspace: "workspace-other".into(),
+            ..scope.clone()
+        },
+    ] {
+        assert_eq!(store.chat_draft(&other).await.unwrap(), draft(0, ""));
+    }
+    let empty = Scope {
+        physician: " ".into(),
+        ..scope.clone()
+    };
+    assert!(store.chat_draft(&empty).await.is_err());
+    // Drafts never create chat work.
+    assert!(store.conversation(&scope).await.is_err());
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
+    use entities::command;
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    // A rerun keeps the column and the existing receipts.
+    store.migrate().await.unwrap();
+    let scope = Scope {
+        practice: uuid::Uuid::new_v4().to_string(),
+        physician: "physician".into(),
+        workspace: "workspace".into(),
+        chat: "chat".into(),
+    };
+    let input = |key: &str, text: &str| Input {
+        key: key.into(),
+        text: text.into(),
+        timezone: "UTC".into(),
+    };
+    let stored = |key: &str| {
+        let store = store.clone();
+        let practice = scope.practice.clone();
+        let key = key.to_owned();
+        async move {
+            command::Entity::find_by_id((practice, "physician".to_owned(), key))
+                .one(&store.db)
+                .await
+                .unwrap()
+                .unwrap()
+        }
+    };
+    assert_eq!(
+        store
+            .accept(&scope, &input("old", "old text"))
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    assert_eq!(
+        store
+            .accept(&scope, &input("new", "new text"))
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    let fresh = stored("old").await;
+    assert!(fresh.accepted_at > 0);
+    assert_eq!(fresh.command["input"]["text"], "old text");
+    // Age one receipt past the window; the other was accepted just now.
+    command::ActiveModel {
+        practice: sea_orm::Unchanged(fresh.practice.clone()),
+        physician: sea_orm::Unchanged(fresh.physician.clone()),
+        key: sea_orm::Unchanged(fresh.key.clone()),
+        command: sea_orm::Unchanged(fresh.command.clone()),
+        accepted_at: Set(fresh.accepted_at - receipt::RECEIPT_FULL_SECONDS - 1),
+    }
+    .update(&store.db)
+    .await
+    .unwrap();
+    assert!(
+        store
+            .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 0)
+            .await
+            .is_err()
+    );
+    assert!(store.compact_receipts(-1, 10).await.is_err());
+    // Older test rows elsewhere in this database may share the batch.
+    while stored("old").await.command.get("sha256").is_none() {
+        assert!(
+            store
+                .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 1000)
+                .await
+                .unwrap()
+                > 0
+        );
+    }
+    let compacted = stored("old").await;
+    let keys: Vec<_> = compacted
+        .command
+        .as_object()
+        .unwrap()
+        .keys()
+        .cloned()
+        .collect();
+    assert_eq!(keys, ["salt", "sha256"]);
+    assert!(!str::contains(&compacted.command.to_string(), "old text"));
+    assert_eq!(stored("new").await.command["input"]["text"], "new text");
+
+    // The digest still recognizes the exact command and refuses a different
+    // one under the same key; the conversation keeps the authored text.
+    assert_eq!(
+        store
+            .accept(&scope, &input("old", "old text"))
+            .await
+            .unwrap(),
+        Accepted::Duplicate
+    );
+    assert!(
+        store
+            .accept(&scope, &input("old", "other text"))
+            .await
+            .is_err()
+    );
+    let mut other_chat = scope.clone();
+    other_chat.chat = "other-chat".into();
+    assert!(
+        store
+            .accept(&other_chat, &input("old", "old text"))
+            .await
+            .is_err()
+    );
+    let conversation = store.conversation(&scope).await.unwrap();
+    assert_eq!(conversation.revision, 2);
+    assert_eq!(conversation.messages[0].text, "old text");
+    // A reduced receipt is never reduced again.
+    store
+        .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 1000)
+        .await
+        .unwrap();
+    assert_eq!(stored("old").await.command, compacted.command);
+
+    // Try again's receipt compares the same way once reduced.
+    let resume_scope = Scope {
+        chat: "resume-chat".into(),
+        ..scope.clone()
+    };
+    let hash = vec![9_u8; 32];
+    store
+        .accept_authorized(&resume_scope, &input("turn", "turn text"), hash.clone())
+        .await
+        .unwrap();
+    let claim = store.claim(&resume_scope, 60).await.unwrap().unwrap();
+    store.interrupt(&claim, true).await.unwrap();
+    let failed = store.conversation(&resume_scope).await.unwrap();
+    assert_eq!(failed.status, "failed");
+    let run = failed.attempts.last().unwrap().id.clone();
+    assert!(matches!(
+        store
+            .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
+            .await
+            .unwrap(),
+        Resumed::Pending { .. }
+    ));
+    let resume = stored("resume").await;
+    command::ActiveModel {
+        practice: sea_orm::Unchanged(resume.practice.clone()),
+        physician: sea_orm::Unchanged(resume.physician.clone()),
+        key: sea_orm::Unchanged(resume.key.clone()),
+        command: sea_orm::Unchanged(resume.command.clone()),
+        accepted_at: Set(0),
+    }
+    .update(&store.db)
+    .await
+    .unwrap();
+    while stored("resume").await.command.get("sha256").is_none() {
+        store
+            .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 1000)
+            .await
+            .unwrap();
+    }
+    assert_eq!(
+        store
+            .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
+            .await
+            .unwrap(),
+        Resumed::Duplicate
+    );
+    assert_eq!(
+        store
+            .resume_authorized(&resume_scope, "resume", hash, &failed.work, "other-run")
+            .await
+            .unwrap(),
+        Resumed::Refused
+    );
+    // A reply revision's receipt compares the same way once reduced.
+    let reply_scope = Scope {
+        chat: "reply".into(),
+        ..scope.clone()
+    };
+    store.open_draft(&reply_scope, "Reply text.").await.unwrap();
+    let revise = reply::RevisionInput {
+        key: "revise".into(),
+        expected_revision: 1,
+        instruction: "Shorter.".into(),
+        timezone: "UTC".into(),
+    };
+    assert_eq!(
+        store
+            .accept_revision(&reply_scope, &revise, vec![9; 32], vec![])
+            .await
+            .unwrap(),
+        reply::RevisionAccepted::New
+    );
+    let row = stored("revise").await;
+    command::ActiveModel {
+        practice: sea_orm::Unchanged(row.practice.clone()),
+        physician: sea_orm::Unchanged(row.physician.clone()),
+        key: sea_orm::Unchanged(row.key.clone()),
+        command: sea_orm::Unchanged(row.command.clone()),
+        accepted_at: Set(0),
+    }
+    .update(&store.db)
+    .await
+    .unwrap();
+    while stored("revise").await.command.get("sha256").is_none() {
+        store
+            .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 1000)
+            .await
+            .unwrap();
+    }
+    assert_eq!(
+        store
+            .accept_revision(&reply_scope, &revise, vec![9; 32], vec![])
+            .await
+            .unwrap(),
+        reply::RevisionAccepted::Duplicate
+    );
+    let collision = reply::RevisionInput {
+        instruction: "Longer.".into(),
+        ..revise.clone()
+    };
+    assert!(
+        store
+            .accept_revision(&reply_scope, &collision, vec![9; 32], vec![])
+            .await
+            .is_err()
+    );
+    let draft = store.draft(&reply_scope).await.unwrap().unwrap();
+    assert_eq!(draft.input.as_ref(), Some(&revise));
+    // Settle the revision so other suites' recovery sweeps never pick it up.
+    store
+        .save_draft(
+            &reply_scope,
+            1,
+            "Physician text.",
+            &[9; 32],
+            &mut Gate(true),
+        )
+        .await
+        .unwrap();
+
+    // Settle the work so other suites' restart sweeps never pick it up.
+    let (tx, mut state, _) = store.locked(&resume_scope).await.unwrap();
+    state.status = "completed".into();
+    Store::save(tx, &resume_scope, &state).await.unwrap();
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state.status = "completed".into();
+    Store::save(tx, &scope, &state).await.unwrap();
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn migration_dates_existing_receipts_and_keeps_their_commands() {
+    use entities::command;
+    use sea_orm::ConnectionTrait;
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let (base, _) = url.rsplit_once('/').unwrap();
+    let name = format!("runtime_upgrade_{}", uuid::Uuid::new_v4().simple());
+    let admin = Database::connect(format!("{base}/postgres")).await.unwrap();
+    admin
+        .execute_unprepared(&format!("CREATE DATABASE {name}"))
+        .await
+        .unwrap();
+    let upgraded = format!("{base}/{name}");
+    // The schema as it stood before this migration: the recorded tables, and
+    // one receipt written by the previous code.
+    let before = Database::connect(&upgraded).await.unwrap();
+    before
+        .execute_unprepared(include_str!("../runtime.sql"))
+        .await
+        .unwrap();
+    before
+        .execute_unprepared(
+            r#"INSERT INTO physician_runtime_commands (practice, physician, key, command)
+               VALUES ('p', 'd', 'k', '{"scope": {}, "input": {"text": "kept"}}')"#,
+        )
+        .await
+        .unwrap();
+    before.close().await.unwrap();
+    let store = Store::connect(&upgraded).await.unwrap();
+    store.migrate().await.unwrap();
+    store.migrate().await.unwrap();
+    let row = command::Entity::find_by_id(("p".to_owned(), "d".to_owned(), "k".to_owned()))
+        .one(&store.db)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(row.command["input"]["text"], "kept");
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs() as i64;
+    assert!((now - row.accepted_at).abs() < 300, "{}", row.accepted_at);
+    // Not old enough yet: the 90 days count from the migration.
+    store
+        .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 10)
+        .await
+        .unwrap();
+    let row = command::Entity::find_by_id(("p".to_owned(), "d".to_owned(), "k".to_owned()))
+        .one(&store.db)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(row.command["input"]["text"], "kept");
+    drop(store);
+    admin
+        .execute_unprepared(&format!("DROP DATABASE {name} WITH (FORCE)"))
+        .await
+        .unwrap();
 }

@@ -1,0 +1,713 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002272",
+   "events": [
+    {
+     "id": "2024-02-21a",
+     "kind": "specialist_visit",
+     "start": "2024-02-21T09:50",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "state": {
+      "weight_kg": 91.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-02-21T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.9
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.4
+        },
+        {
+         "test": "Platelets",
+         "value": 93
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2024-02-23T13:40",
+       "body": "Hematology visit 2/21/2024. PMF, JAK2+, ruxolitinib 5 mg BID since 5/2023.\nNo new complaints. Weight up to 91.5 kg. Spleen tip ~4 cm below costal margin, unchanged.\nCBC: stable cytopenias, at his baseline.\nPlan: same dose. 3-month follow-up. PA renewal due in May, our office will handle.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-03-19a",
+     "kind": "office_visit",
+     "start": "2024-03-19T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BP follow-up; memory concerns",
+     "state": {
+      "bp": [
+       148,
+       92
+      ]
+     },
+     "vitals": {
+      "bp": [
+       146,
+       90
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-03-19T14:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-03-19T13:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "Memory complaints over a year"
+      },
+      {
+       "id": "fit-2024",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-03-19T14:40",
+       "body": "Wife came in with him today, and asked to talk about memory.\n\nHer account: over roughly the past year he misplaces his keys and glasses, blanks on the names of people they've met recently at church, and sometimes hunts for a word mid-sentence. He agrees, a bit embarrassed, says the old names are all there. He still does the bills, nothing late; fills his own pill box and hasn't missed doses by her count. Drives locally without getting lost. Sleep: up earlier than he used to, not tired in the day. Mood ok. Mother had dementia, which is why she's worried.\n\nBP: 146/90 here. Home cuff he says mostly 130s/80s, no log with him.\n\nExam: alert, pleasant, gives a coherent history. Oriented. Recalls 2 of 3 words at 5 minutes, third with a cue. Clock drawing normal. Neuro nonfocal. Heart/lungs at baseline.\n\nA/P\n1. Memory complaints over a year, mostly recall and names, function intact. Refer neurology for a fuller evaluation; they'll decide on labs and testing.\n2. HTN: above goal today. Hasn't been this high here before. Wants to try cutting salt and bring home readings before adding anything. Recheck at the fall visit.\n3. CKD 2: BMP today.\n4. Colon screening: due by date (last 2014). Talked through colonoscopy vs FIT given his platelets; he prefers FIT. Kit given.\n5. PMF per heme.\nRTC Sept for AWV."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-08a",
+     "kind": "lab_only",
+     "start": "2024-04-08T10:00",
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "done",
+       "date": "2024-04-08T10:00"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-04-05T07:00",
+       "resulted": "2024-04-08T10:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "MA",
+       "date": "2024-04-08T13:15",
+       "body": "FIT negative. Letter mailed per PCP: repeat in one year."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-24a",
+     "kind": "specialist_visit",
+     "start": "2024-04-24T10:00",
+     "service": "Neurology",
+     "reason": "Memory concerns",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "conditions": [
+      {
+       "label": "Age-related cognitive decline",
+       "icd10": "R41.81",
+       "action": "diagnosed",
+       "onset": "2023-04-01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "done",
+       "date": "2024-04-24T10:00"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-04-24T11:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-04-24T11:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.6
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.1
+        },
+        {
+         "test": "Platelets",
+         "value": 90
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-24T11:15",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2024-05-01T12:00",
+       "body": "Outside neurology practice\nSeen 04/24/2024\nRe: Bernard Bennett, 68-year-old man\n\nReason: memory.\n\nMr. Bennett comes with his wife, who first noticed the change. Over about a year he has lost track of where he puts his keys, struggles to come up with names of people he has just met, and now and then cannot find the word he wants. He keeps up with community activities, pays the household bills on time and manages his own medications. His sleep has shifted earlier; he does not feel tired during the day.\n\nContext: primary myelofibrosis diagnosed a year ago (ruxolitinib), Paget disease of the left tibia treated in 2022, chronic bronchitis, hypertension, CKD stage 2, BPH, urethral stricture, lumbar spondylosis. Former smoker. Mother had dementia.\nMeds: hydrochlorothiazide 25, lisinopril 10, tamsulosin 0.4, ruxolitinib 5 BID, vitamin D, acetaminophen PRN. NKDA.\n\nExam: Alert and oriented to person, place and time. MMSE 28/30, both points lost on delayed recall. Language fluent, naming intact on formal testing. Cranial nerves, motor, sensory, reflexes, coordination and gait normal.\n\nLabs today: electrolytes, TSH and B12 normal. CBC unchanged from the counts his hematologist follows.\n\nImpression: Age-related cognitive decline. The pattern (retrieval of names and recent placements, preserved function, near-normal screening score) fits normal aging rather than a neurodegenerative process at this time.\n\nPlan: Reassurance. Regular exercise, social engagement, sleep regularity, good blood pressure control. Return in six months to reassess.\n\nNeurology"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.9,
+       "Vitamin B12": 540
+      }
+     }
+    },
+    {
+     "id": "2024-05-02a",
+     "kind": "portal_message",
+     "start": "2024-05-02T09:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Neurologist",
+       "author": "patient",
+       "date": "2024-05-02T09:30",
+       "body": "This is his wife writing on Bernard's account. The neurologist said it's normal aging and his score was 28 out of 30. We were relieved. She wants him back in October. Should we still worry because of his mother?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Neurologist",
+       "author": "PCP",
+       "date": "2024-05-02T17:15",
+       "body": "Good news, and I read her letter the same way. A family history raises the question but doesn't decide it; that's why the recheck in October makes sense. The best things he can do are what she said: keep moving, keep busy with people, and get the blood pressure down. Thank you for coming with him."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-06a",
+     "kind": "pharmacy",
+     "start": "2024-05-06T14:00",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Ruxolitinib PA renewal",
+       "author": "MA",
+       "date": "2024-05-06T14:00",
+       "body": "Specialty pharmacy notice: ruxolitinib PA renewed by hematology, valid to 5/2025. No action needed here. Med list unchanged."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-22a",
+     "kind": "specialist_visit",
+     "start": "2024-05-22T11:10",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-05-22T10:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.8
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.0
+        },
+        {
+         "test": "Platelets",
+         "value": 87
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2024-05-24T10:30",
+       "body": "PMF follow-up, 5/22/2024. Doing well. Saw neurology in April for memory, told age-related. No fevers, sweats, bone pain beyond his known leg. Spleen unchanged.\nCBC stable. Continue ruxolitinib 5 mg twice daily. Next in August. Hematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-08-21a",
+     "kind": "specialist_visit",
+     "start": "2024-08-21T09:20",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-08-21T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.9
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.2
+        },
+        {
+         "test": "Platelets",
+         "value": 92
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-08-21T09:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2024-08-23T15:00",
+       "body": "Hematology, 8/21/2024. Primary myelofibrosis, 15 months on ruxolitinib. Asymptomatic. Exam unchanged, spleen about 4 cm below the costal margin.\nCBC: hemoglobin and platelets at his usual level. CMP unremarkable.\nNo changes. Return November. Hematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-10a",
+     "kind": "annual_physical",
+     "start": "2024-09-10T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-09-10T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-09-10T09:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-10T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Prostate Specific Antigen"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-09-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-09-10T09:55",
+       "body": "AWV.\nInterval: neurology in April, age-related cognitive decline, recheck there in October. FIT negative in April. Heme stable on ruxolitinib.\nHRA: independent with ADLs and IADLs, wife handles the calendar but he does the bills. No falls. PHQ-2 0. Former smoker. Walks most days.\nBP: brought a few home numbers on his phone, 128-142 over 78-88. Here as charted, above goal again. He'd rather not add a pill yet; salt cut back. Will keep watching.\nExam: vitals as charted. Lungs few scattered wheezes, baseline. Heart regular. Spleen tip palpable. No edema.\nPlan: BMP, UACR, lipids, A1c, PSA. Flu and COVID next month. CT in November. Neuro in October. RTC December for BP."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-30a",
+     "kind": "telephone",
+     "start": "2024-09-30T10:35",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Right thigh pain",
+       "author": "RN",
+       "date": "2024-09-30T10:45",
+       "body": "Pt reports about a week of aching in the front of the right thigh, sometimes toward the inside of the knee. Worse going up the hill on his walk, settles when he stops. No fall, no back injury. No numbness in the groin or seat area, bladder and bowels normal, no fever. Has his neurology recheck next Monday 10/7 and would like to bring it up there. Discussed with PCP: fine to wait for neuro; acetaminophen up to 1,000 mg three times a day, no ibuprofen. Call or go to ED for weakness that worsens quickly, loss of bladder or bowel control, or numbness between the legs. Pt verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-07a",
+     "kind": "specialist_visit",
+     "start": "2024-10-07T14:00",
+     "service": "Neurology",
+     "reason": "Right anterior thigh pain and weakness",
+     "conditions": [
+      {
+       "label": "Lumbar radiculopathy",
+       "action": "diagnosed",
+       "onset": "2024-09-22",
+       "note": "right L4 territory"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-lspine-2024",
+       "action": "placed",
+       "order": "MRI lumbar spine without contrast",
+       "category": "imaging",
+       "reason": "Suspected right lumbar radiculopathy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up",
+       "author": "neurology",
+       "date": "2024-10-14T09:30",
+       "body": "Neurology follow-up 10/07/2024, Mr. Bennett, 69.\nBooked as a six-month memory recheck; today's visit was taken up by a new leg problem.\n\nFor two weeks he has had a dull ache in the front of the right thigh that sometimes runs toward the inner knee. Walking uphill brings it on and rest relieves it. The right leg feels weaker getting up from a chair or stepping up onto a curb. No bowel or bladder incontinence, no saddle numbness, no back trauma. Long history of lumbar arthritis. Blood pressure has been running high at his primary care visits.\n\nMeds: hydrochlorothiazide, lisinopril, tamsulosin, ruxolitinib, vitamin D, acetaminophen. NKDA.\n\nExam: Right knee extension 4/5; hip flexion and ankle dorsiflexion/plantarflexion full. Right patellar reflex reduced relative to the left; ankle jerks symmetric. Pinprick and light touch diminished over the right anterior thigh and medial shin. Straight leg raise negative bilaterally. Gait slightly guarded.\n\nImpression: Right lumbar radiculopathy, L4 distribution, on a background of lumbar spondylosis. No red flags.\n\nPlan: MRI lumbar spine without contrast. Acetaminophen as he is using. Will call with results and arrange therapy. Memory recheck deferred to next visit.\n\nNeurology"
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-08T10:25"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T10:27"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T10:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Vaccines",
+       "author": "RN",
+       "date": "2024-10-08T10:35",
+       "body": "HD trivalent flu L deltoid; 2024-25 COVID R deltoid. Pressure held 2 min each. Walking with a slight limp, says the neurologist is getting an MRI of his back."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-18a",
+     "kind": "imaging",
+     "start": "2024-10-18T16:30",
+     "orders": [
+      {
+       "id": "mri-lspine-2024",
+       "action": "done",
+       "date": "2024-10-18T16:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI lumbar spine without contrast",
+       "performed": "2024-10-18T16:30",
+       "text": "Indication: right anterior thigh pain and knee extension weakness.\nTechnique: Multiplanar multisequence MRI of the lumbar spine without contrast.\nAlignment: normal lordosis, no listhesis. Vertebral body heights preserved. No fracture. Conus terminates at L1, normal.\nL1-L2, L2-L3: mild disc desiccation, no stenosis.\nL3-L4: disc desiccation and height loss with a right subarticular disc bulge and facet hypertrophy narrowing the right lateral recess, contacting the traversing right L4 nerve root. No significant central canal stenosis. Foramina patent.\nL4-L5: disc degeneration and facet arthropathy, mild bilateral foraminal narrowing without root contact.\nL5-S1: disc degeneration and facet arthropathy, no stenosis.\nParaspinal soft tissues unremarkable.",
+       "conclusion": "Multilevel lumbar degenerative disease L3-S1. Right L3-L4 lateral recess narrowing contacting the traversing right L4 root."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "MRI lumbar spine (ordered by neurology)",
+       "author": "radiology",
+       "date": "2024-10-21T08:00",
+       "body": "Copy to PCP. Right L3-L4 lateral recess narrowing with contact of the right L4 root; multilevel degenerative change; no central stenosis or fracture."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-30a",
+     "kind": "outside_records",
+     "start": "2024-10-30T11:00",
+     "orders": [
+      {
+       "id": "pt-2024",
+       "action": "placed",
+       "order": "Physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "Right L4 radiculopathy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology letter",
+       "author": "neurology",
+       "date": "2024-10-30T11:00",
+       "body": "Neurology, telephone follow-up 10/29/2024.\nMRI reviewed with Mr. Bennett: degenerative narrowing at right L3-L4 touching the L4 root, matching his exam. Pain a little better. Plan: physical therapy, referral sent to an outpatient PT clinic near home; continue acetaminophen. Return to clinic in about three months, sooner if weakness progresses. Memory recheck at that visit.\nNeurology"
+      }
+     ]
+    },
+    {
+     "id": "2024-11-12a",
+     "kind": "specialist_visit",
+     "start": "2024-11-12T08:00",
+     "service": "Physical Therapy",
+     "reason": "Right L4 radiculopathy",
+     "orders": [
+      {
+       "id": "pt-2024",
+       "action": "done",
+       "date": "2024-11-12T08:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Physical therapy evaluation, moderate complexity",
+       "performed": "2024-11-12T08:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 3
+      }
+     ],
+     "documents": [
+      {
+       "type": "Therapy Note",
+       "title": "Physical Therapy Evaluation",
+       "author": "physical therapy",
+       "date": "2024-11-14T12:00",
+       "body": "Outpatient PT initial evaluation 11/12/2024.\nDx: right lumbar radiculopathy (L4), lumbar spondylosis. Referred by neurology.\nPt reports anterior thigh ache now 3/10, mostly on hills and stairs. Goal: walk the dog up the hill without stopping.\nObjective: lumbar flexion WFL, extension limited and reproduces mild thigh ache. Right quad 4/5, left 5/5. Sit to stand x5 slowed. Balance fair.\nPlan: 2x/week for 4 weeks: neural mobility, core and quad strengthening, graded walking program, home exercise program issued.\nPhysical therapist"
+      }
+     ]
+    },
+    {
+     "id": "2024-11-19a",
+     "kind": "imaging",
+     "start": "2024-11-19T10:45",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2024-11-19T10:45",
+       "text": "Indication: Annual lung cancer screening. Former smoker, 40 pack-years, quit 2020.\nComparison: 11/14/2023.\nFindings: 3 mm solid right upper lobe nodule, unchanged. No new nodules. No consolidation or effusion. Heart and mediastinum normal.",
+       "conclusion": "Lung-RADS 2. Stable 3 mm right upper lobe nodule. Annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2024-11-20T07:30",
+       "body": "Nodule same size as last year. Lung-RADS 2. Pt informed."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-20a",
+     "kind": "specialist_visit",
+     "start": "2024-11-20T13:30",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-11-20T13:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.7
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.5
+        },
+        {
+         "test": "Platelets",
+         "value": 89
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2024-11-22T10:05",
+       "body": "Hematology 11/20/2024. PMF on ruxolitinib 5 mg BID. In physical therapy for a pinched nerve in the back, improving. No constitutional symptoms. Spleen stable on exam.\nCBC stable. Continue. Return February.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-03a",
+     "kind": "office_visit",
+     "start": "2024-12-03T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-12-03T15:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-12-03T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-12-03T16:00",
+       "body": "BP recheck.\nLeg: PT twice a week, thigh ache mostly gone, can do the hill again. MRI showed a pinched L4 root, neuro following.\nBP: here as charted, still above goal. Home readings he reports in the 130s. Taking all meds. Not keen on another pill; we agreed to recheck in the spring with a written home log.\nExam: Lungs baseline wheezes. Heart RRR. No edema. Right quad strength near full.\nA/P: HTN above goal in office, home reportedly better, home log. CKD 2 BMP today. Radiculopathy improving with PT. RTC 3-4 mo."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
