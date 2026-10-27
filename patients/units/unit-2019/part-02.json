@@ -1,0 +1,219 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002019",
+      "events": [
+        {
+          "id": "2024-01-18a",
+          "kind": "nurse_visit",
+          "start": "2024-01-18T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix and pneumococcal vaccines",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-01-18T12:25"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-01-18T12:26"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-01-18T12:25"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-01-18T12:40",
+              "body": "Lunch-hour appointment per PCP plan from his new patient visit. Shingrix #1 IM L deltoid. PCV20 IM R deltoid (indicated with his kidney condition). Told him the shingles shot can make him feel achy for a day or two. Second Shingrix due in 2 to 6 months, can be done at his physical in April. Tolerated, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T21:12",
+          "reason": "question about aspirin",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby aspirin?",
+              "author": "patient",
+              "date": "2024-03-26T21:12",
+              "body": "Hi, a coworker my age just started a baby aspirin and it got me thinking, with my dad's heart attack and my brother's stroke should I be on one too? I have my physical next month, happy to wait until then if that's easier. Thanks, Pat"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby aspirin?",
+              "author": "PCP",
+              "date": "2024-03-27T07:55",
+              "body": "Good question and worth a real conversation rather than a quick yes or no. There are pros and cons for someone who hasn't had a heart attack or stroke himself. Let's go through it at the physical on the 23rd. No need to start anything before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "annual_physical",
+          "start": "2024-04-23T07:40",
+          "end": "2024-04-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Primary prevention of cardiovascular disease"}
+          ],
+          "state": {"labs": {"Prostate Specific Antigen": 0.7}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-04-23T08:35", "results": [{"test": "Prostate Specific Antigen"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-04-23T08:25"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-04-23T07:40"},
+            {"procedure": "Immunization administration", "performed": "2024-04-23T08:25"}
+          ],
+          "orders": [
+            {"id": "lipid-2024", "action": "placed", "order": "Lipid panel, fasting, and CMP", "category": "lab", "reason": "hyperlipidemia; membranous nephropathy"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-04-23T08:30",
+              "body": "55 y/o M, annual exam. Feels well. No chest pain, no exertional symptoms, no dyspnea, no headaches, no urinary changes. Still seeing nephrology; he thinks his protein is \"coming down\" but no copies; their notes never arrived here despite two requests.\n\nMeds lisinopril 20, atorvastatin 40. NKDA.\nFamily: father MI 58, brother ischemic stroke 52, mother HTN/DM2.\n\nExam: vitals per flowsheet. Alert, well. Eyes, ears, throat normal. Thyroid not enlarged. No carotid bruits. Heart regular, no murmur or gallop. Lungs clear throughout. Abdomen soft, nontender, no masses. Trace edema at both ankles. Skin no lesions of concern. Normal gait.\n\nAspirin, from his portal question: talked through primary prevention at his age and family history. Benefit for someone without known vascular disease is small; GI bleeding and other bleeding risk is real and not trivial. He has no ulcer or bleeding history and is not on anything else that thins the blood. He would like to take it. Start aspirin 81 mg daily; stop and call with black stools or any bleeding. Revisit at a 6 wk check.\n\nProstate screening: discussed; he wants a PSA. Drawn today.\n\nOther: lipids and CMP fasting next month (order in). Shingrix #2 today. Colonoscopy 2021 normal, next 2031. PHQ-2 0.\n\nF/u ~6 weeks, BP and aspirin check."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-26a",
+          "kind": "portal_message",
+          "start": "2024-04-26T12:05",
+          "reason": "PSA result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "PSA result",
+              "author": "PCP",
+              "date": "2024-04-26T12:05",
+              "body": "Patrick, your PSA came back low and normal for your age. Nothing more needed on that for now. Remember the fasting labs at the end of May."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "lab_only",
+          "start": "2024-05-29T07:15",
+          "reason": "fasting lipids and CMP",
+          "state": {"labs": {"Total Cholesterol": 190, "High Density Lipoprotein": 45, "Low Density Lipoprotein": 100, "Triglycerides": 225}},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-05-29T07:15", "results": [
+              {"test": "Total Cholesterol", "value": 190},
+              {"test": "High Density Lipoprotein", "value": 45},
+              {"test": "Low Density Lipoprotein", "value": 100},
+              {"test": "Triglycerides", "value": 225}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-05-29T07:15", "results": [{"test": "Albumin"}, {"test": "Creatinine"}]}
+          ],
+          "orders": [{"id": "lipid-2024", "action": "done", "date": "2024-05-29T07:15"}]
+        },
+        {
+          "id": "2024-06-06a",
+          "kind": "office_visit",
+          "start": "2024-06-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after starting aspirin",
+          "vitals": {"bp": [132, 84], "hr": 78},
+          "measure": ["rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-06-06T16:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-06-06T16:25",
+              "body": "Six weeks into aspirin 81 for primary prevention. Takes it every morning with the lisinopril and statin, hasn't missed. No complaints at all: no stomach upset, no black stools, no nosebleeds or easy bruising.\n\nBP 132/84, HR 78. BMI 27.\nFasting labs 5/29: TC 190, HDL 45, LDL 100, TG 225. Albumin still low, creatinine normal, as before.\n\nNo distress. Heart regular. Lungs clear. Trace ankle edema, unchanged.\n\nA/P: Tolerating aspirin, continue. BP reasonable on lisinopril 20. Lipids reviewed with him; staying on atorvastatin 40. Back in the fall for BP, flu shot then."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "outside_records",
+          "start": "2024-08-20T10:30",
+          "reason": "research study letter received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Clinical trial enrollment notice",
+              "author": "outside research center",
+              "date": "2024-08-20T10:30",
+              "body": "To the primary care physician:\n\nYour patient Patrick Michaud (DOB 02/21/1969) has consented to and enrolled in a randomized, double-blind study of an investigational antihypertensive agent given in addition to his usual blood pressure treatment. Neither the participant nor study staff know his assignment. Please continue his current medications, including lisinopril. Study visits include blood pressure checks and safety labs at our site.\n\nAllergies on file with us: none known.\n\nIf he has a hospitalization or any new medication, we would be grateful for a call to the study coordinator at 413-555-0132. Unblinding for clinical need is available 24 hours a day through the same number.\n\nStudy coordinator, outside clinical research center"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "office_visit",
+          "start": "2024-10-16T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {"bp": [132, 84]},
+          "measure": ["hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-10-16T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Urinalysis", "collected": "2024-10-16T08:50", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-16T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-16T08:46"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-16T08:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-16T08:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "author": "PCP",
+              "date": "2024-10-16T09:10",
+              "body": "Here for his BP check. Problems: hypertension, hyperlipidemia, membranous nephropathy (nephrology following).\n\nSince August he is in a blinded trial of a new BP drug run by an outside research center; takes the study capsule along with his own lisinopril, atorvastatin and aspirin and says he hasn't missed doses. Has been watching salt, cooking more at home. Denies chest pain, breathlessness or lightheadedness.\n\nBP 132/84. Other vitals flowsheet.\nExam: comfortable, heart and lungs normal, abdomen benign, no new findings.\n\nAssessment/plan\n- HTN: same reading as June; no change, the trial team is also checking him. Study medication noted (blinded).\n- Membranous nephropathy: BMP and UA today for potassium and creatinine on the ACE inhibitor.\n- Lipids: on atorvastatin 40.\n- Flu and 2024-25 COVID vaccines given.\nNext visit after the new year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "portal_message",
+          "start": "2024-10-18T13:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from Wednesday",
+              "author": "PCP",
+              "date": "2024-10-18T13:30",
+              "body": "Potassium and kidney function are fine on the lisinopril. Urine still shows protein at the same level as last year, no blood. Nothing to change. Please let the trial team know these were drawn here in case they want copies."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results from Wednesday",
+              "author": "patient",
+              "date": "2024-10-18T18:02",
+              "body": "Will do, thanks. Sore arm from the two shots but otherwise good."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-26a",
+          "kind": "pharmacy",
+          "start": "2024-11-26T09:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - atorvastatin, lisinopril",
+              "author": "MA",
+              "date": "2024-11-26T09:05",
+              "body": "Mail-order pharmacy request, 90 days each of atorvastatin 40 and lisinopril 20. Seen 10/16, labs current. Sent per protocol, PCP cosign."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

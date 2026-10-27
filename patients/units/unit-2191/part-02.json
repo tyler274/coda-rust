@@ -1,0 +1,634 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002191",
+      "events": [
+        {
+          "id": "2018-01-03a",
+          "kind": "office_visit",
+          "start": "2018-01-03T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pneumonia",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-01-03T10:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-01-03T10:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2018-01-03T10:20"},
+            {"procedure": "Venipuncture", "performed": "2018-01-03T10:50"}
+          ],
+          "orders": [
+            {"id": "cxr-followup-2018", "action": "placed", "order": "Chest X-ray, 2 views", "category": "imaging", "reason": "Follow-up of right lower lobe pneumonia"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2018-01-03T11:00",
+              "body": "Seen 10 days after admission for RLL pneumonia, discharged 12/24. Discharge summary reviewed: ceftriaxone/azithro inpatient, no antibiotics at discharge. A glucose drop from 228 to 112 after the hospital's morning glargine was noted, no symptoms, attributed to the insulin.\n\nNow: cough much better, a little sputum in the mornings, no fever. Energy coming back. Home sugars 120s-160s on his usual bedtime glargine, no lows. Med list reconciled against the discharge list, no changes. Smoked a few cigarettes since getting home; we talked about it.\n\nExam: afebrile, sat normal on room air. Few crackles R base, otherwise clear. Heart regular. No edema.\n\nA/P: CAP, resolving. CBC and BMP today. Follow-up 2-view CXR mid-February. Smoking - strongly advised to use this as the moment to quit; he'll think about it. Nephrology visit later this month."
+            }
+          ]
+        },
+        {
+          "id": "2018-01-23a",
+          "kind": "outside_records",
+          "start": "2018-01-23T15:20",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-01-17T09:15", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2018-01-17T09:15", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact", "value": 412}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2018-01-23T15:20",
+              "body": "Dear colleague,\n\nMr. Dabrowski came in on 1/17/2018, recovering from his December pneumonia. Kidney function back at his baseline after the admission, CKD stage 4. PTH is up again, 412, calcium normal. Continue calcitriol and sevelamer as they are, and we will repeat calcium, phosphorus and PTH at a 6-month visit.\n\nMedications unchanged. NKDA.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2018-02-14a",
+          "kind": "imaging",
+          "start": "2018-02-14T09:30",
+          "reason": "Follow-up chest x-ray",
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2018-02-14T09:30", "text": "PA and lateral chest. Comparison outside film 12/20/2017. Interval clearing of the right lower lobe opacity. Lungs clear. No effusion. Heart size normal. Bones unremarkable.", "conclusion": "Resolved right lower lobe pneumonia. No acute disease."}
+          ],
+          "orders": [{"id": "cxr-followup-2018", "action": "done", "date": "2018-02-14T09:30"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Chest x-ray reviewed",
+              "author": "PCP",
+              "date": "2018-02-14T16:40",
+              "body": "Pneumonia cleared on follow-up film. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2018-03-06a",
+          "kind": "pharmacy",
+          "start": "2018-03-06T13:00",
+          "reason": "Shingles vaccine at pharmacy",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2018-03-03T11:00"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2018-03-06T13:00",
+              "body": "Community pharmacy immunization notice: recombinant zoster vaccine dose 1 of 2 given 3/3/2018, left deltoid. Dose 2 due in 2 to 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-03-20a",
+          "kind": "office_visit",
+          "start": "2018-03-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.9}},
+          "conditions": [{"label": "Community-acquired pneumonia", "action": "resolved", "onset": "2017-12-18"}],
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2018-03-20T14:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-03-20T14:00"},
+            {"procedure": "Venipuncture", "performed": "2018-03-20T14:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2018-03-20T14:30",
+              "body": "Back to himself after the pneumonia. Follow-up film clear. Had his first shingles shot at the pharmacy. Sugars fine. Smoking back to usual.\n\nExam: lungs clear today, heart regular, no edema, feet intact.\n\nA/P: pneumonia resolved, off the list. DM - A1c today. HTN, CKD as before. Nephrology wants labs every 6 months, next in June."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-12a",
+          "kind": "pharmacy",
+          "start": "2018-06-12T10:10",
+          "reason": "Shingles vaccine dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2018-06-09T10:30"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2018-06-12T10:10",
+              "body": "Recombinant zoster vaccine dose 2 of 2 given 6/9/2018, right deltoid. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-22a",
+          "kind": "specialist_visit",
+          "start": "2018-06-22T09:30",
+          "service": "Nephrology",
+          "reason": "CKD follow-up, weakness and bone pain",
+          "state": {"bp": [145, 90], "labs": {"Calcium": 11.2, "Phosphorus": 5.8, "Creatinine": 3.4, "Parathyroid Hormone, Intact": 800, "Hemoglobin": 10.4, "Blood Urea Nitrogen": 54}},
+          "conditions": [
+            {"label": "Tertiary hyperparathyroidism", "icd10": "E21.2", "action": "diagnosed", "onset": "2018-06-22"}
+          ],
+          "vitals": {"bp": [145, 90]},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-06-22T10:00", "results": [{"test": "Calcium", "value": 11.2}, {"test": "Creatinine", "value": 3.4}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2018-06-22T10:00", "results": [{"test": "Phosphorus", "value": 5.8}, {"test": "Parathyroid Hormone, Intact", "value": 800}]}
+          ],
+          "orders": [
+            {"id": "neck-us-2018", "action": "placed", "order": "Neck ultrasound", "category": "imaging", "reason": "Hypercalcemia, elevated PTH, neck mass"},
+            {"id": "endosurg-2018", "action": "placed", "order": "Endocrine surgery referral", "category": "referral", "to": "Endocrine surgery", "reason": "Tertiary hyperparathyroidism"}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology consultation letter",
+              "author": "nephrology",
+              "date": "2018-06-27T12:00",
+              "body": "Dear colleague,\n\nI saw Mr. Dabrowski on 6/22/2018 for his scheduled CKD visit, his first since January. For the last few months he has felt generally weak and has had aching in his bones. No falls or injuries.\n\nBP 145/90. On exam there is a firm, non-tender mass low in the neck, which I could not feel at earlier visits.\n\nLabs today: calcium 11.2 mg/dL, phosphorus 5.8 mg/dL, creatinine 3.4 mg/dL (eGFR about 19), PTH 800 pg/mL.\n\nImpression: hypercalcemia with markedly elevated PTH after years of secondary hyperparathyroidism of CKD: tertiary hyperparathyroidism, with a palpable gland likely.\n\nPlan: neck ultrasound; referral to endocrine surgery for evaluation for parathyroidectomy. Continue sevelamer. We will keep calcitriol at the current dose until surgery is decided. He should keep up fluids.\n\nMedications: insulin glargine 24 units at bedtime, lisinopril 10 mg daily, atorvastatin 40 mg daily, sevelamer carbonate 800 mg three times daily with meals, calcitriol 0.25 mcg daily, aspirin 81 mg daily, acetaminophen as needed.\nAllergies: NKDA.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2018-06-28a",
+          "kind": "telephone",
+          "start": "2018-06-28T12:40",
+          "reason": "Nephrology findings",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: parathyroid",
+              "author": "PCP",
+              "date": "2018-06-28T12:40",
+              "body": "Called pt after reading the nephrology letter. Explained the parathyroid glands are overactive and pushing his calcium up, likely why he aches. He has the ultrasound booked for next week and is waiting to hear from the surgeons. Moved his July visit up so we can go over it."
+            }
+          ]
+        },
+        {
+          "id": "2018-07-05a",
+          "kind": "imaging",
+          "start": "2018-07-05T13:15",
+          "reason": "Neck ultrasound",
+          "reports": [
+            {"study": "Thyroid ultrasound", "performed": "2018-07-05T13:15", "text": "Ultrasound of the neck. Thyroid gland normal in size and echotexture, no thyroid nodules. Posterior to the lower pole of the right thyroid lobe is a well-defined hypoechoic oval structure measuring 2.4 cm, consistent with an enlarged parathyroid gland. A second hypoechoic structure posterior to the lower pole of the left lobe measures 1.1 cm, also consistent with parathyroid tissue. No cervical lymphadenopathy.", "conclusion": "Enlarged right inferior parathyroid gland 2.4 cm and left inferior parathyroid 1.1 cm. Normal thyroid."}
+          ],
+          "orders": [{"id": "neck-us-2018", "action": "done", "date": "2018-07-05T13:15"}],
+          "documents": []
+        },
+        {
+          "id": "2018-07-10a",
+          "kind": "office_visit",
+          "start": "2018-07-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, hyperparathyroidism",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2018-07-10T09:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Lipid Panel", "collected": "2018-07-10T09:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-07-10T08:40"},
+            {"procedure": "Venipuncture", "performed": "2018-07-10T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2018-07-10T09:20",
+              "body": "Here to go over the parathyroid news. Still achy in the hips, shins and back, tired by midafternoon. No kidney stones that he knows of. No falls.\n\nUltrasound 7/5: enlarged R inferior parathyroid 2.4 cm and a smaller L inferior gland; thyroid normal. Endocrine surgery consult set for August.\n\nExam: neck - firm nodule low R side, non-tender. Heart regular, lungs clear. No edema.\n\nA/P\n1. Tertiary hyperparathyroidism with hypercalcemia - surgery consult pending. Fluids, avoid calcium supplements.\n2. DM2 - A1c, UACR, lipids today.\n3. Bone pain - acetaminophen as before. Reminded him: no ibuprofen or naproxen with his kidneys.\n4. CKD 4, HTN, CAD - unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-09a",
+          "kind": "specialist_visit",
+          "start": "2018-08-09T14:00",
+          "service": "Endocrine Surgery",
+          "reason": "Parathyroidectomy evaluation",
+          "orders": [{"id": "endosurg-2018", "action": "done", "date": "2018-08-09T14:00"}],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrine surgery consultation",
+              "author": "endocrine surgery",
+              "date": "2018-08-14T10:30",
+              "body": "Dear colleague,\n\nThank you for sharing the care of Mr. Dabrowski, seen 8/9/2018 at the request of his nephrologist. He has stage 4 CKD from diabetes with years of secondary hyperparathyroidism, now with calcium 11.2, phosphorus 5.8 and PTH 800, and several months of weakness and bone aching.\n\nExam: palpable right inferior neck nodule, non-tender. Vocal quality normal.\n\nImaging: ultrasound shows a 2.4 cm right inferior gland and a 1.1 cm left inferior gland. Sestamibi scan done here shows uptake in more than one gland, strongest at the right inferior position.\n\nAssessment: tertiary hyperparathyroidism with multigland disease.\n\nRecommendation: subtotal parathyroidectomy with bilateral neck exploration, leaving a remnant of the most normal-appearing gland. Risks reviewed including hoarseness, low calcium afterward and persistence or recurrence. He would like to go ahead; surgery scheduled 9/12. Aspirin may continue.\n\nEndocrine Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2018-09-12a",
+          "kind": "procedure_visit",
+          "start": "2018-09-12T07:30",
+          "end": "2018-09-13T12:00",
+          "service": "Endocrine Surgery",
+          "reason": "Subtotal parathyroidectomy",
+          "state": {"labs": {"Calcium": 8.7, "Parathyroid Hormone, Intact": 48}},
+          "conditions": [
+            {"label": "Tertiary hyperparathyroidism", "icd10": "E21.2", "action": "resolved", "onset": "2018-06-22"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2018-09-13T06:00", "results": [{"test": "Parathyroid Hormone, Intact", "value": 48}, {"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 8.7}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2018-09-12T10:30", "text": "Specimens: right inferior parathyroid, right superior parathyroid, left inferior parathyroid, and a portion of the left superior parathyroid. Gross: four pieces of tan-brown soft tissue, the largest 2.4 cm (right inferior). Microscopic: hypercellular parathyroid tissue with chief cell hyperplasia and reduced stromal fat in each specimen. No atypia. Frozen sections confirmed parathyroid tissue.", "conclusion": "Parathyroid hyperplasia, multiple glands, consistent with tertiary hyperparathyroidism. No malignancy."}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative and discharge note",
+              "author": "endocrine surgery",
+              "date": "2018-09-17T09:00",
+              "body": "Procedure 9/12/2018: bilateral neck exploration with subtotal parathyroidectomy. All four glands identified and enlarged. Right inferior, right superior and left inferior glands removed; about half of the left superior gland left in place with its blood supply and marked with a clip. Intraoperative PTH fell appropriately. Recurrent laryngeal nerves seen and preserved. Estimated blood loss minimal.\n\nOvernight observation. Voice normal. Morning PTH 48 pg/mL, calcium 8.7 mg/dL without tingling or cramping. Discharged 9/13 on his usual medications including calcitriol 0.25 mcg daily; nephrology to adjust. Watch for numbness around the mouth or hand cramps.\n\nPathology: multigland parathyroid hyperplasia, benign.\n\nFollow-up: surgical clinic in 2 weeks; calcium with his PCP in about 10 days."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-25a",
+          "kind": "office_visit",
+          "start": "2018-09-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-parathyroidectomy check",
+          "state": {"labs": {"Calcium": 9.2}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-09-25T11:20", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-09-25T11:00"},
+            {"procedure": "Venipuncture", "performed": "2018-09-25T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op follow-up",
+              "author": "PCP",
+              "date": "2018-09-25T11:40",
+              "body": "Two weeks out from subtotal parathyroidectomy. Neck sore for a few days, now fine. No tingling, no cramps. Voice normal. Says the bone aching is already a little better.\n\nOp note and path reviewed: multigland hyperplasia, benign; remnant of L superior left in place.\n\nExam: incision clean and healing, no swelling. Chvostek negative.\n\nA/P: s/p subtotal parathyroidectomy for tertiary HPT - calcium today; resolve from active list. Calcitriol per nephrology. Flu shot next month at nurse visit."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-09a",
+          "kind": "nurse_visit",
+          "start": "2018-10-09T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2018-10-09T09:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-09T09:20"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2018-10-09T09:25",
+              "body": "High-dose influenza, L deltoid. No issues. He mentioned feeling run-down lately; booked with PCP in November."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-06a",
+          "kind": "imaging",
+          "start": "2018-11-06T08:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2018-11-06T08:30", "text": "Annual low-dose CT chest. Comparison 11/14/2017. Interval resolution of the prior right lower lobe pneumonia is reflected by clear lung bases. No nodules. No pleural effusion. Surgical clips in the lower neck from recent parathyroid surgery.", "conclusion": "Lung-RADS 1, negative."}
+          ],
+          "documents": []
+        },
+        {
+          "id": "2018-11-13a",
+          "kind": "office_visit",
+          "start": "2018-11-13T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue",
+          "state": {"labs": {"Hemoglobin": 9.5, "Creatinine": 3.8}},
+          "medications": [
+            {"drug_text": "ibuprofen 200 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets by mouth as needed for pain (self-directed, over the counter)", "dose": {"value": 400, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Knee and bone pain"},
+            {"drug_text": "ibuprofen 200 MG Oral Tablet", "action": "stop", "reason": "CKD stage 4, rising creatinine"}
+          ],
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-11-13T13:50", "results": [{"test": "Hemoglobin", "value": 9.5}, {"test": "Mean Corpuscular Volume"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-11-13T13:50", "results": [{"test": "Creatinine", "value": 3.8}, {"test": "Potassium"}, {"test": "Calcium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-11-13T13:20"},
+            {"procedure": "Venipuncture", "performed": "2018-11-13T13:50"}
+          ],
+          "orders": [
+            {"id": "heme-2018", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "Anemia with fatigue and dizziness"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Fatigue",
+              "author": "PCP",
+              "date": "2018-11-13T14:10",
+              "body": "Several months of feeling worn out, can't finish the leaf raking he used to do in an afternoon. Gets lightheaded standing up sometimes. No chest pain, no black or bloody stools, no bleeding anywhere. Appetite a bit off.\n\nOn review of what he takes at home: he's been using over-the-counter ibuprofen, 2 tabs a few times a week, since the summer for knees and the bone aching. Didn't think of it as a medicine.\n\nExam: pale. BP per flowsheet, no orthostatic drop on standing. Heart regular, lungs clear. No edema.\n\nLabs today: Hgb 9.5, down from his usual low 11s-12. Creatinine 3.8, higher than his baseline around 3.\n\nA/P\n1. Anemia, worse - likely kidney related but he's due a proper workup; referred to hematology. Copy to nephrology.\n2. CKD 4 with higher creatinine on NSAIDs - stop all ibuprofen. Acetaminophen only. Repeat with hematology labs.\n3. Fatigue - as above."
+            }
+          ]
+        },
+        {
+          "id": "2018-12-24a",
+          "kind": "specialist_visit",
+          "start": "2018-12-24T10:00",
+          "service": "Hematology",
+          "reason": "Anemia evaluation",
+          "state": {"labs": {"Hemoglobin": 9.2, "Mean Corpuscular Volume": 89, "Creatinine": 3.9}},
+          "conditions": [
+            {"label": "Anemia in chronic kidney disease", "icd10": "D63.1", "action": "diagnosed", "onset": "2018-11-13"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-12-24T10:30", "results": [{"test": "Hemoglobin", "value": 9.2}, {"test": "Mean Corpuscular Volume", "value": 89}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-12-24T10:30", "results": [{"test": "Creatinine", "value": 3.9}]},
+            {"panel": "Iron Studies", "collected": "2018-12-24T10:30", "results": [{"test": "Ferritin"}, {"test": "Transferrin Saturation"}, {"test": "Iron"}]},
+            {"panel": null, "collected": "2018-12-24T10:30", "results": [
+              {"test": "Reticulocytes", "loinc": "17849-1", "unit": "%", "value": 0.4},
+              {"test": "Thyroid Stimulating Hormone", "value": 1.84},
+              {"test": "Vitamin B12", "value": 512},
+              {"test": "Folate", "value": 13.6},
+              {"test": "Stool occult blood", "loinc": "2335-8", "text": "Negative"}
+            ]}
+          ],
+          "orders": [{"id": "heme-2018", "action": "done", "date": "2018-12-24T10:00"}],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Hematology consultation",
+              "author": "hematology",
+              "date": "2018-12-31T14:00",
+              "body": "Dear colleague,\n\nThank you for asking us to see Mr. Dabrowski, 66, on 12/24/2018. He has diabetic nephropathy with CKD stage 4 and had a subtotal parathyroidectomy in September for tertiary hyperparathyroidism.\n\nFor a few months he has had low energy, tires quickly with activity and is occasionally dizzy. His appetite is down and food tastes metallic to him. He stopped over-the-counter NSAIDs last month because of his kidney numbers. No bleeding. He continues to smoke and drinks socially.\n\nExam: conjunctival pallor. Vibration sense reduced at both feet. No lymphadenopathy or splenomegaly.\n\nResults: hemoglobin 9.2 g/dL, MCV 89 fL, reticulocyte count 0.4%, creatinine 3.9 mg/dL (eGFR about 16). Ferritin, transferrin saturation, TSH, B12 and folate are within normal limits. Stool guaiac negative. Peripheral smear: normocytic, normochromic red cells without abnormal forms; white cells and platelets unremarkable.\n\nImpression: hypoproliferative normocytic anemia with replete iron and no evidence of bleeding, hemolysis or a marrow process: anemia of chronic kidney disease.\n\nRecommendation: an erythropoiesis-stimulating agent is reasonable once his kidney function settles off NSAIDs; I have shared this with his nephrologist, who will decide timing and dosing. No further hematology follow-up needed unless the picture changes.\n\nMedications reviewed: insulin glargine, lisinopril, atorvastatin, sevelamer, calcitriol, aspirin, acetaminophen. NKDA.\n\nHematology"
+            }
+          ]
+        },
+        {
+          "id": "2019-01-08a",
+          "kind": "office_visit",
+          "start": "2019-01-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia and diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.0}},
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with diabetic polyneuropathy", "action": "diagnosed", "onset": "2018-12-24"}
+          ],
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2019-01-08T10:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-01-08T10:00"},
+            {"procedure": "Venipuncture", "performed": "2019-01-08T10:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2019-01-08T10:40",
+              "body": "Hematology letter reviewed: anemia of CKD, iron/B12/folate/TSH normal, stool negative, smear unremarkable. They have handed the ESA question to nephrology.\n\nStill tired. Off ibuprofen since November. No bleeding.\n\nFeet: he says they feel 'like they're asleep' at the bottoms, mostly at night. Exam today: monofilament reduced at 4 of 10 sites on each foot, vibration reduced at both great toes, ankle jerks diminished. Skin intact, no calluses. DP faint but present.\n\nA/P\n1. Anemia of CKD - added to list. Nephrology to consider ESA.\n2. Diabetic polyneuropathy - new on exam, foot care reviewed: daily foot checks, no barefoot walking, properly fitting shoes.\n3. DM2 - A1c today.\n4. CKD 4 - off NSAIDs, nephrology in March."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-19a",
+          "kind": "portal_message",
+          "start": "2019-02-19T19:30",
+          "reason": "Refill question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2019-02-19T19:30",
+              "body": "Hi, the pharmacy says my atorvastatin and lisinopril have no refills left. Can you send new ones? Also I need more pen needles. Thanks, Stan"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "MA",
+              "date": "2019-02-20T08:50",
+              "body": "Hi Stan, atorvastatin, lisinopril and pen needles were sent this morning with a year of refills. Let us know if the pharmacy has any trouble."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "outside_records",
+          "start": "2019-03-19T11:45",
+          "reason": "Nephrology letter",
+          "state": {"labs": {"Creatinine": 3.3, "Parathyroid Hormone, Intact": 142, "Phosphorus": 4.8}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-03-12T09:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-03-12T09:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2019-03-12T09:20", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2019-03-19T11:45",
+              "body": "Dear colleague,\n\nSeen 3/12/2019. Six months after subtotal parathyroidectomy, calcium is normal and PTH has come down to a range appropriate for stage 4 CKD. Creatinine has improved from 3.9 in December to the low 3s off ibuprofen. Hemoglobin remains in the mid 9s. I discussed the hematology recommendation with him; he would like to hold off on injections for now and recheck. We will revisit at the next visit.\n\nMedications unchanged, including calcitriol 0.25 mcg daily and sevelamer with meals.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2019-04-23a",
+          "kind": "office_visit",
+          "start": "2019-04-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "state": {"weight_kg": 95.5},
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-04-23T09:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2019-04-23T09:45",
+              "body": "Spring check. Nephrology letter reviewed. Energy so-so. Feet still numb at night. Sugars 140s-170s. Smoking about a pack.\n\nExam: per flowsheet. Feet: intact skin, no pressure areas. Lungs clear.\n\nA/P: DM2 with CKD and neuropathy - continue glargine 24 units. HTN and CAD - no changes. Anemia - nephrology following. Labs at next visit in July."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-16a",
+          "kind": "office_visit",
+          "start": "2019-07-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-07-17a",
+          "kind": "telephone",
+          "start": "2019-07-17T09:10",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit",
+              "author": "front desk",
+              "date": "2019-07-17T09:10",
+              "body": "Called re: missed visit yesterday. Pt said he was helping his daughter move and forgot. Rebooked 7/30."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-30a",
+          "kind": "office_visit",
+          "start": "2019-07-30T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.3}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-07-30T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2019-07-30T09:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2019-07-30T09:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-07-30T08:40"},
+            {"procedure": "Venipuncture", "performed": "2019-07-30T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2019-07-30T09:20",
+              "body": "Rescheduled from 7/16. Spent the month helping his daughter move house, lots of takeout, sugars up into the 180s-200s. No lows. Still tired most afternoons.\n\nExam: per flowsheet. Heart regular. Lungs clear. Feet: reduced monofilament as before, no ulcers. \n\nPlan: fasting labs today. Glargine 24 units continued. Eye exam due next month. Fall wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-27a",
+          "kind": "outside_records",
+          "start": "2019-08-27T15:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2019-08-27T15:00",
+              "body": "Dilated exam 8/21/2019. VA 20/25 OD, 20/30 OS corrected. Mild nuclear sclerosis both eyes, stable. Retinal exam: no diabetic retinopathy, no macular edema. Updated glasses prescription given. Next exam one year."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "outside_records",
+          "start": "2019-09-17T10:30",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-09-10T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2019-09-10T09:00", "results": [{"test": "Phosphorus"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2019-09-17T10:30",
+              "body": "Dear colleague,\n\nMr. Dabrowski was seen 9/10/2019. Stage 4 CKD, stable. Calcium and phosphorus in range. Hemoglobin has not recovered; we will discuss starting an ESA at the January visit after a repeat CBC and iron studies.\n\nMedications unchanged. NKDA.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "annual_physical",
+          "start": "2019-10-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2019-10-08T10:30"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2019-10-08T10:00"},
+            {"procedure": "Immunization administration", "performed": "2019-10-08T10:30"}
+          ],
+          "orders": [
+            {"id": "ldct-2019", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2019-10-08T10:45",
+              "body": "AWV. Lives alone, independent in ADLs and IADLs, still drives. Daughter checks on him weekly. No falls, though he's more careful on stairs since the feet went numb. PHQ-2 1 (a few days of low energy, not low mood). Health care proxy form: daughter, signed copy scanned today.\n\nPreventive: flu today (high-dose). Lung CT ordered for November. Eye exam August, no retinopathy. Shingles series done 2018. PPSV23 2015, PCV13 2017. Colonoscopy due 2024.\n\nCounseling: tobacco - still smoking, offered varenicline vs patch, declined both for now. Alcohol 1-2 per week.\n\nNext chronic disease visit in December."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-05a",
+          "kind": "imaging",
+          "start": "2019-11-05T08:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2019-11-05T08:00", "text": "Annual low-dose CT chest. Comparison 11/06/2018. No pulmonary nodules. Lungs clear. No effusion or adenopathy.", "conclusion": "Lung-RADS 1. Continue annual screening."}
+          ],
+          "orders": [{"id": "ldct-2019", "action": "done", "date": "2019-11-05T08:00"}],
+          "documents": []
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "portal_message",
+          "start": "2019-12-10T20:15",
+          "reason": "Fatigue question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Still tired",
+              "author": "patient",
+              "date": "2019-12-10T20:15",
+              "body": "Doc, I'm still dragging most days. Is this the blood count thing? My kidney appointment isn't until January 7. Should I come in sooner?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Still tired",
+              "author": "PCP",
+              "date": "2019-12-11T07:50",
+              "body": "Stan, it very likely is the anemia from your kidneys. Nephrology planned to talk about the injections that raise the blood count at that January visit, and it's worth having that conversation then. If you get chest pain, short of breath, black stools or feel faint, call us the same day and we'll see you. Otherwise keep the 1/7 appointment and I'll look for their letter."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-17a",
+          "kind": "office_visit",
+          "start": "2019-12-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2019-12-17T15:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-17T15:20"},
+            {"procedure": "Venipuncture", "performed": "2019-12-17T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2019-12-17T15:45",
+              "body": "Follow-up after his portal message. Tired but no chest pain, no dyspnea beyond baseline, no bleeding. Lung CT November clear.\n\nExam: pale conjunctivae. Heart regular. Lungs clear. Feet without lesions.\n\nPlan: A1c today. Nephrology 1/7 for anemia treatment decision. Glargine and other meds unchanged."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

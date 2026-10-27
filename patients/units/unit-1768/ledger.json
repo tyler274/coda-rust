@@ -1,0 +1,4423 @@
+{
+  "unit": "unit-1768",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001768",
+      "given": "Deborah",
+      "family": "Shapiro",
+      "birth_date": "1993-06-24",
+      "address_line": "58 Pomeroy Terrace, Apt 2",
+      "phone": "+1-347-555-0102",
+      "email": "deborah.shapiro@example.test",
+      "marital_status": "single",
+      "summary": "Elementary art teacher who joined in 2021 with undiagnosed bloody diarrhea; colonoscopy first called it ulcerative colitis, later revised to Crohn disease with a perianal fistula, treated with mesalamine, two prednisone courses and infliximab. Iron deficiency anemia and dietary B12 deficiency on a vegan diet, three bouts of erythema nodosum, and a 2025 admission for small bowel obstruction from a fibrotic ileal stricture managed without surgery.",
+      "events": [
+        {
+          "id": "2021-04-08a",
+          "kind": "telephone",
+          "start": "2021-04-08T11:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2021-04-08T11:20",
+              "author": "front desk",
+              "body": "Caller is a 27 y/o woman looking for a new primary care home; her old office stopped taking her plan's tier. Teaches art at an elementary school, needs late-afternoon or school-vacation slots when possible. Main concern: blood in her stool on and off since around the holidays, with cramping and some weight loss. Denies passing out, vomiting blood or severe pain right now. Advised that if bleeding gets heavy, she gets lightheaded, or pain becomes severe she should go to the ED. Booked new patient visit April 20, 9:00. Sent the records release form to her email."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "establish_care",
+          "start": "2021-04-20T09:00",
+          "end": "2021-04-20T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; bloody diarrhea and weight loss",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              71
+            ],
+            "hr": 64,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 80.6,
+            "height_cm": 165.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-04-20T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 79
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-04-20T09:55",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school art teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-04-20T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2021",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Rectal bleeding with diarrhea and weight loss, about 4 months"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-04-20T09:50",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\nCC: establishing care; blood with bowel movements since about December.\n\nHPI: 27 y/o elementary art teacher. Roughly 4 months of loose stools, on bad days 4-5 a day, some nights she wakes to go. Bright red blood mixed in more often than not. Crampy lower belly pain before BMs that eases after. Her jeans are looser; she thinks she is down several pounds since fall without trying. No fevers she has measured. No travel, no antibiotics before this started, no one at home sick. She has not had a colonoscopy or seen GI. She switched to a fully vegan diet late last year and wondered at first if that was the cause.\n\nPMH: none. PSH: none. Meds: none, no supplements. Allergies: no known drug allergies.\nFamily: father has Crohn disease. Mother rheumatoid arthritis. Paternal aunt hypothyroid.\nSocial: lives alone in an apartment in town. Smoked about a pack a day for 10 years, quit in October, using no nicotine now. Drinks 1-2 a month. Vegan since late 2020.\n\nROS: + fatigue, mild. No chest pain, no syncope, no rash, no joint swelling, no urinary symptoms.\n\nExam: vitals as charted. Thin-appearing but well. Conjunctivae slightly pale. Mouth: no ulcers. Heart RRR, no murmur. Lungs clear. Abdomen soft, nondistended, no mass, no organomegaly. Rectal deferred to GI. Skin without rash. Joints without swelling.\n\nA/P:\n1. Chronic bloody diarrhea with weight loss in a 27 y/o with a father who has Crohn disease. Inflammatory bowel disease is the main concern. CBC, CMP today. Referral to GI placed as urgent; she knows to call or go in for heavy bleeding, fever or severe pain.\n2. Possible anemia (pale conjunctivae) - CBC today. Iron studies once GI has seen her.\n3. Former smoker, 10 pack-years, quit 6 months ago. Congratulated. No cessation aids needed.\n4. Health maintenance: requesting old records (Pap, vaccines). PHQ-2 1.\n\nRTC after GI visit, about 2-3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Albumin": 3.5,
+              "Hemoglobin": 10.8,
+              "Mean Corpuscular Volume": 79
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-04-21a",
+          "kind": "portal_message",
+          "start": "2021-04-21T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-04-21T16:40",
+              "author": "PCP",
+              "body": "Hi Deborah, your blood count shows anemia. With the bleeding you described, that fits with blood loss, and it is one more reason to get you in with GI soon. Your kidney and liver tests look fine; albumin is at the low end of normal. Once GI has seen you we will check your iron levels at a follow-up here. GI's office should call you this week; let us know if you have not heard by Monday."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "outside_records",
+          "start": "2021-05-04T10:15",
+          "reason": "Prior practice records",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2019-07-16T10:00",
+              "text": "Specimen adequate for evaluation; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-09-10T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-11-13T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-03-18T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2016-08-22T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-13T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-06T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2021-05-04T10:15",
+              "author": "MA",
+              "body": "Received 14 pages from her previous primary care office. Abstracted:\n- Pap July 2019: negative (NILM).\n- HPV vaccine series x3 completed 2007-2008.\n- Tdap August 2016.\n- COVID vaccine (Pfizer) 2/13/21 and 3/6/21, given at the school district's staff clinic; card copy included.\n- Problem list at that office: none. Meds: none. NKDA.\nEntered into immunization record. Original pages scanned under Media."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-03a",
+          "kind": "specialist_visit",
+          "start": "2021-06-03T08:00",
+          "end": "2021-06-03T11:30",
+          "service": "Gastroenterology",
+          "reason": "Bloody diarrhea, abdominal pain, weight loss",
+          "conditions": [
+            {
+              "label": "Ulcerative colitis",
+              "action": "diagnosed",
+              "onset": "2021-06-03",
+              "note": "Rectum to splenic flexure, with pseudopolyps"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "mesalamine 800 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Ulcerative colitis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 82
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-27T14:00",
+              "results": [
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-27T14:00",
+              "results": [
+                {
+                  "test": "C. difficile toxin A and B",
+                  "loinc": "34713-8",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Colonoscopy",
+              "loinc": "18746-8",
+              "performed": "2021-06-03T10:20",
+              "text": "Indication: hematochezia, diarrhea, weight loss. Moderate sedation. Prep good. Scope advanced to the cecum; terminal ileum intubated and normal over the examined length. From the rectum proximally to the splenic flexure the mucosa is continuously inflamed: erythema, loss of vascular pattern, friability and scattered ulcerations, with several swollen pseudopolyps. The colon proximal to the splenic flexure is normal. Biopsies taken from the involved segments and from the right colon.",
+              "conclusion": "Continuous colitis from the rectum to the splenic flexure with pseudopolyps, consistent with ulcerative colitis. Biopsies pending."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-06-03T10:20",
+              "text": "A. Rectum and sigmoid, biopsies: colonic mucosa with chronic active inflammation, crypt distortion and crypt abscesses; the inflammation is confined to the mucosa and submucosa. No granulomas. No dysplasia.\nB. Descending colon, biopsies: similar changes.\nC. Right colon, biopsies: colonic mucosa without significant abnormality.",
+              "conclusion": "Chronic colitis limited to mucosa and submucosa, distal colon; right colon unremarkable. No dysplasia.",
+              "issued": "2021-06-08T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2021-06-03T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2021",
+              "action": "done",
+              "date": "2021-06-03T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation and colonoscopy",
+              "date": "2021-06-11T09:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY - CONSULTATION\nDate of service: 06/03/2021\nReferred by: primary care\n\nThank you for sending Ms. Shapiro, 27, for evaluation of rectal bleeding.\n\nShe describes about six months of intermittent bloody diarrhea with crampy abdominal pain and weight loss. At worst she has six bowel movements a day and is getting up at night to go. No fevers. No prior GI evaluation. Recent stool culture and C. diff toxin, sent by our office the week before, were negative.\n\nPMH: none prior to this. Meds: none. Allergies: NKDA.\nFH: father with Crohn disease; mother RA.\nSH: former smoker (1 ppd x 10 years, quit 10/2020). Rare alcohol. Teacher.\n\nExam: well-appearing. Abdomen soft, mild tenderness in the left lower quadrant, no rebound, no guarding. No perianal disease.\n\nLabs today: Hgb 10.2, ESR 45, CRP 25 mg/L, albumin 3.2.\n\nColonoscopy (same day): continuous inflammation with ulceration from the rectum to the splenic flexure, pseudopolyps, normal proximal colon and terminal ileum. Pathology (resulted 6/8): chronic colitis confined to the mucosa and submucosa, no granulomas.\n\nImpression: ulcerative colitis, left-sided. Anemia, likely blood loss plus inflammation.\n\nPlan:\n- Mesalamine DR 800 mg PO three times daily; prescription sent.\n- Expect improvement over 4-8 weeks; call for worsening bleeding, fever or more than 8 stools a day.\n- Anemia: suggest iron studies with her PCP once the colitis settles.\n- Follow up with us in about 6 months, sooner as needed.\n\nAllergies: NKDA.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.2,
+              "Hemoglobin": 10.2,
+              "Mean Corpuscular Volume": 78,
+              "Red Cell Distribution Width": 15.2
+            }
+          }
+        },
+        {
+          "id": "2021-06-11b",
+          "kind": "telephone",
+          "start": "2021-06-11T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI consult received",
+              "date": "2021-06-11T15:20",
+              "author": "MA",
+              "body": "GI consult letter, colonoscopy and pathology for 6/3 received by fax and routed to PCP. PCP reviewed: ulcerative colitis, on mesalamine from GI; add to problem list; anemia follow-up visit here in August as planned. Pt notified that we have the records."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "portal_message",
+          "start": "2021-06-14T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about new medication",
+              "date": "2021-06-14T19:05",
+              "author": "patient",
+              "body": "Hi, GI started me on mesalamine three times a day. School is out in a couple weeks but right now the midday dose is hard because I'm in the classroom straight through lunch some days. Is it OK to take it at like 7, 3 and 10 instead of with meals? Also is it vegan? Sorry, weird question. Thanks, Deborah"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about new medication",
+              "date": "2021-06-15T12:30",
+              "author": "PCP",
+              "body": "Not a weird question at all. Spacing it 7 am, 3 pm and bedtime is fine; the tablets can be taken with or without food, just swallow them whole. The inactive ingredients vary by manufacturer - your pharmacist can check the brand they stock. If GI wants a different schedule they will tell you, but this works. Glad you got in to see them."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "office_visit",
+          "start": "2021-08-17T15:40",
+          "reason": "Follow-up anemia, colitis",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "portal_message",
+          "start": "2021-08-19T10:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2021-08-19T10:10",
+              "author": "front desk",
+              "body": "Hi Deborah, we missed you at your follow-up on Tuesday afternoon. Please call or reply here to reschedule; the doctor would like to recheck your blood count and iron. Patient replied same day: so sorry, teacher setup week, totally forgot. Will call once the school year settles."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:00",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "date": "2021-10-12T16:10",
+              "author": "RN",
+              "body": "Walk-in for seasonal flu vaccine. No fever today, no prior reactions. Quadrivalent flu given IM left deltoid, lot recorded. VIS given. Tolerated well. Reminded her she is overdue for her anemia follow-up; she says she feels more tired lately and will book this week."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-22a",
+          "kind": "office_visit",
+          "start": "2021-11-22T15:30",
+          "end": "2021-11-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, shortness of breath on exertion, dizziness",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2021-11-22"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (65 mg elemental iron) by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 66,
+            "temp_c": 37.0,
+            "spo2": 96,
+            "weight_kg": 77.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 600
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 278
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 11.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-22T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-22T16:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-22T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-11-22T16:10",
+              "author": "PCP",
+              "body": "S: Back for the overdue anemia visit. For about 2 months she has been wiped out by the end of the school day, short of breath climbing the two flights to her classroom, and gets dizzy standing up from the floor after working with the kids. No chest pain, no fainting. Bowels: much better since GI started mesalamine in June, 1-2 formed BMs most days, rare streak of blood. Still strictly vegan, now about a year, and takes no vitamins or supplements. Periods regular, not heavy.\n\nMeds: mesalamine DR 800 mg TID (GI). NKDA.\n\nO: Vitals as charted, weight down a bit from April. Pale skin and pale conjunctivae. Heart: regular, soft systolic murmur at the left sternal border, not heard in April. Lungs clear. Abdomen soft, nontender. No edema.\n\nLabs drawn this morning (resulted at 1 pm): Hgb 9.2, MCV 74. Iron 30, TIBC 600, ferritin 8. B12 in range, toward the low end. Folate normal.\n\nA/P:\n1. Iron deficiency anemia, microcytic - from colitis blood loss plus a vegan diet with little absorbable iron. Start ferrous sulfate 325 mg (65 mg elemental) once daily. No need to separate it from the mesalamine; keep it away from tea/coffee and with vitamin C if she can. Recheck CBC and ferritin in 2 months. Discussed IV iron if she cannot tolerate pills or does not respond.\n2. Systolic murmur - soft, flow-type with Hgb of 9; listen again once the anemia corrects.\n3. Ulcerative colitis - improved on mesalamine, followed by GI.\n4. Vegan diet - B12 low-normal; talked about a B12 source. Recheck at her physical.\n5. COVID booster given today.\n\nRTC 2 months. ED if chest pain, fainting or heavy bleeding."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.6,
+            "labs": {
+              "Ferritin": 8,
+              "Folate": 11.4,
+              "Hemoglobin": 9.2,
+              "Iron": 30,
+              "Mean Corpuscular Volume": 74,
+              "Red Cell Distribution Width": 16.8,
+              "Total Iron-Binding Capacity": 600,
+              "Vitamin B12": 268
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "telephone",
+          "start": "2021-11-23T13:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Iron teaching call",
+              "date": "2021-11-23T13:45",
+              "author": "RN",
+              "body": "Called pt per PCP to review iron. Take 1 tab daily, ideally on an empty stomach or with a small amount of food if it upsets her stomach; avoid taking with coffee or tea; stools may turn dark green or black from the iron, which is expected - but red blood or tarry, sticky stools with dizziness should be reported. Constipation is common; increase fluids. She picked it up last night. Questions answered. Lab recheck to be scheduled for late January."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "portal_message",
+          "start": "2021-12-20T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron question",
+              "date": "2021-12-20T20:30",
+              "author": "patient",
+              "body": "Hi Doctor, quick question. I've been taking the iron every morning with orange juice like the nurse said. My stomach is a little crampy for an hour after but it passes. Is it OK to switch to night? I'm on break now and noticing it more. Also feeling less dizzy on the stairs already!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron question",
+              "date": "2021-12-21T08:15",
+              "author": "PCP",
+              "body": "Yes, bedtime is fine, and taking it with a small snack is OK if the cramping bothers you. Great to hear the stairs are easier. See you in late January with labs."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-25a",
+          "kind": "office_visit",
+          "start": "2022-01-25T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 74,
+            "spo2": 96,
+            "weight_kg": 79.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-01-25T07:50",
+              "resulted": "2022-01-25T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 79
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-01-25T07:50",
+              "resulted": "2022-01-25T11:40",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 50
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 14
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 458
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-01-25T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: iron deficiency anemia",
+              "date": "2022-01-25T16:15",
+              "author": "PCP",
+              "body": "Iron f/u. Taking ferrous sulfate nightly, missed a few doses over break. Energy clearly better, stairs at school no longer winding her, dizziness gone. Some constipation, manageable. Colitis quiet - formed stools, no blood in weeks. Still vegan.\n\nVitals as charted. Color better. Heart regular, murmur not appreciated today. Lungs clear. Abd soft, nontender.\n\nLabs this AM: Hgb and ferritin both up from November, still below normal. MCV rising.\n\nA/P: IDA responding to oral iron. Continue daily. Recheck CBC/iron at the physical in May. B12 then too. UC per GI, on mesalamine.\nPhysical in May."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.4,
+            "labs": {
+              "Ferritin": 15,
+              "Hemoglobin": 10.7,
+              "Iron": 52,
+              "Mean Corpuscular Volume": 78,
+              "Red Cell Distribution Width": 15.6,
+              "Total Iron-Binding Capacity": 470
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "portal_message",
+          "start": "2022-02-22T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab copies",
+              "date": "2022-02-22T18:30",
+              "author": "patient",
+              "body": "Could you post my January blood counts so I can show my GI at the next visit? I'd like to keep my own folder of results."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab copies",
+              "date": "2022-02-23T09:05",
+              "author": "MA",
+              "body": "Hi Deborah, your January CBC and iron results are now released in the Results section of the portal, and we faxed a copy to your GI office as well."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "pharmacy",
+          "start": "2022-03-08T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: ferrous sulfate",
+              "date": "2022-03-08T09:30",
+              "author": "MA",
+              "body": "Pharmacy fax requesting refill of ferrous sulfate 325 mg, #90. On med list, last OV 1/25/22. Approved per protocol with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "annual_physical",
+          "start": "2022-05-24T15:30",
+          "end": "2022-05-24T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              79
+            ],
+            "hr": 68,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 79.8,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-24T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-05-24T16:20",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 65
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 19
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 425
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-24T16:20",
+              "resulted": "2022-05-25T14:10",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 182
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-24T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-24T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-24T16:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-24T16:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-05-24T15:55",
+              "text": "Liquid-based preparation. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2022-05-31T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-05-24T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-05-24T16:15",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL - 28F\n\nInterval: doing well overall. Energy much improved on iron. For the last few weeks her stools have been looser again, 2-3 a day, no blood, no night waking. She sent GI a message and they said to keep the mesalamine going and call if it worsens; next GI visit is in the fall.\nDiet: vegan, no B12 or other supplement still. Exercise: walks most evenings.\nGYN: regular cycles. Last Pap 2019 normal - due today.\nMood fine, PHQ-9 2. Former smoker, no relapse. Alcohol rare.\n\nCurrent meds: mesalamine DR 800 mg TID (GI); ferrous sulfate 325 mg daily. NKDA.\nFH: father Crohn disease, mother RA, paternal aunt hypothyroidism.\n\nExam: vitals as charted. Well. HEENT normal, no oral ulcers. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Breasts without masses. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix normal appearing, Pap collected. Skin clear, shins normal. Joints normal. Neuro grossly normal.\n\nA/P:\n1. Health maintenance: Pap today. One-time HIV and hepatitis C screening today. Lipids. Tdap 2016, current. COVID vaccinated with booster. Flu in the fall.\n2. Iron deficiency anemia - CBC, iron studies today. Continue iron.\n3. Ulcerative colitis - mild loosening of stools, GI aware; she will call them if bleeding or more frequent stools.\n4. Vegan diet - B12 today; she would rather take a pill than injections if low.\n\nWill message results."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.2,
+            "labs": {
+              "Ferritin": 21,
+              "Hemoglobin": 11.6,
+              "Iron": 64,
+              "Mean Corpuscular Volume": 81,
+              "Red Cell Distribution Width": 14.3,
+              "Total Iron-Binding Capacity": 430,
+              "Vitamin B12": 182
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-05-26a",
+          "kind": "telephone",
+          "start": "2022-05-26T12:20",
+          "conditions": [
+            {
+              "label": "Vitamin B12 deficiency (dietary)",
+              "action": "diagnosed",
+              "onset": "2022-05-25",
+              "note": "Strict vegan diet, no supplement",
+              "icd10": "E53.8"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "vitamin B12 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (1000 mcg) by mouth daily",
+              "dose": {
+                "value": 1000,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Dietary vitamin B12 deficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results: B12 low",
+              "date": "2022-05-26T12:20",
+              "author": "PCP",
+              "body": "Called pt with results. B12 182, low (was low-normal in November) - dietary, from a strict vegan diet with no supplement. No numbness, tingling, balance trouble or memory change per her. Hgb now in the normal range and ferritin up again, iron is working. Lipids, CMP fine. HIV and hep C negative.\nPlan: cyanocobalamin 1000 mcg by mouth daily (sent to pharmacy; vegan formulations are easy to find). Recheck B12 in 3-6 months, at the latest with next physical. Continue iron. Pap pending."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-02a",
+          "kind": "portal_message",
+          "start": "2022-06-02T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2022-06-02T08:50",
+              "author": "PCP",
+              "body": "Your Pap smear is normal. Routine schedule from here; we will talk about timing at your next physical. Enjoy the end of the school year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stomach getting worse",
+              "date": "2022-09-27T21:10",
+              "author": "patient",
+              "body": "Hi, since the start of the school year my stomach has gotten worse. Up to 5 or 6 loose BMs a day, sometimes a little blood, cramping on the right side, and I've lost about 5 lbs. I'm still taking the mesalamine every day. My GI appointment isn't until the end of November. Should I be doing something sooner?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stomach getting worse",
+              "date": "2022-09-28T07:45",
+              "author": "PCP",
+              "body": "Thanks for telling me. I have sent a note to your GI office asking them to move you up or call you about a plan in the meantime; please also call them directly today since they manage the mesalamine. If you have a fever, can't keep fluids down, have a lot of blood, or the pain becomes severe, go to the ED. Update: I spoke with GI - the date you hold is their soonest colonoscopy slot, you are on their cancellation list, and their nurse will call you about a plan until then."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T16:10",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2022-10-11T16:25",
+              "author": "RN",
+              "body": "Here for seasonal vaccines. Afebrile, feels OK aside from her bowels (GI aware, colonoscopy late November). Flu quadrivalent IM L deltoid; Pfizer bivalent COVID booster IM R deltoid. VIS reviewed. Waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "specialist_visit",
+          "start": "2022-11-29T08:00",
+          "end": "2022-11-29T12:00",
+          "service": "Gastroenterology",
+          "reason": "Abdominal pain, diarrhea, weight loss",
+          "conditions": [
+            {
+              "label": "Ulcerative colitis",
+              "action": "resolved",
+              "note": "Diagnosis revised to Crohn disease"
+            },
+            {
+              "label": "Crohn disease",
+              "action": "diagnosed",
+              "onset": "2022-11-29",
+              "note": "Colonic skip lesions, granulomas, perianal fistula; initially labeled ulcerative colitis"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 8 tablets (40 mg) by mouth daily, then decrease by 1 tablet each week until off",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Crohn disease flare"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              72
+            ],
+            "hr": 61,
+            "temp_c": 36.7,
+            "weight_kg": 76.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-29T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 83
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T08:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T08:05",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 40
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Colonoscopy",
+              "loinc": "18746-8",
+              "performed": "2022-11-29T10:30",
+              "text": "Indication: worsening diarrhea, abdominal pain, weight loss in a patient carrying a diagnosis of ulcerative colitis. Moderate sedation. Prep adequate. Perianal inspection: external opening of a draining fistula. Scope advanced to the cecum and terminal ileum. Discontinuous areas of inflamed mucosa with erythema and ulceration in the colon, separated by segments of normal-appearing mucosa. Biopsies from inflamed and normal-appearing segments.",
+              "conclusion": "Patchy colitis with intervening normal mucosa and a perianal fistula, favoring Crohn disease. Biopsies sent."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-11-29T10:30",
+              "text": "A-D. Colon, multiple sites, biopsies: chronic active colitis, patchy, with noncaseating granulomas in two of four sites; intervening biopsies with minimal change. No dysplasia.",
+              "conclusion": "Chronic active colitis with noncaseating granulomas, consistent with Crohn disease.",
+              "issued": "2022-12-02T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2022-11-29T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up and colonoscopy",
+              "date": "2022-12-06T10:30",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY - FOLLOW-UP VISIT\nDate of service: 11/29/2022\n\nMs. Shapiro returns, last seen here June 2021 for what was labeled left-sided ulcerative colitis, with iron deficiency anemia since diagnosed by her PCP in November 2021.\n\nShe reports six months of intermittent abdominal pain and diarrhea with steady weight loss, much worse over the last two months: up to six loose stools daily, sometimes with blood. Taking mesalamine 800 mg TID reliably, plus iron and B12.\n\nFH: father with Crohn disease. SH: former smoker, quit 2020.\n\nExam: afebrile. Weight down from last visit. Abdomen: tender in the right lower quadrant, no rebound or guarding. Perianal exam: a draining fistula.\nLabs: Hgb 11.2, WBC 9.5, CRP 24 mg/L, ESR 40.\nColonoscopy today: skip areas of inflamed colon between normal segments; perianal fistula. Pathology 12/2: noncaseating granulomas.\n\nImpression: Crohn disease of the colon with perianal fistula. The earlier picture read as ulcerative colitis; with skip lesions, granulomas and fistulizing disease, we are revising the diagnosis to Crohn disease.\n\nPlan:\n1. Prednisone 40 mg daily, decrease 5 mg each week to off over 8 weeks.\n2. Start infliximab 5 mg/kg IV (weeks 0, 2, 6, then every 8 weeks) - preferred with the fistula. Before the first dose we need QuantiFERON, hepatitis B surface antigen, core antibody and surface antibody; we have asked her PCP's office to draw these. Recommend inactivated vaccines (pneumococcal, recombinant zoster) before starting; no live vaccines on therapy.\n3. Continue mesalamine 800 mg TID for now.\n4. Continue oral iron and B12.\n5. Return 2-3 months after induction.\n\nAllergies: NKDA.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "weight_kg": 76.5,
+            "labs": {
+              "Hemoglobin": 11.2,
+              "White Blood Cells": 9.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "telephone",
+          "start": "2022-12-07T09:40",
+          "orders": [
+            {
+              "id": "prebiologic-labs-2022",
+              "action": "placed",
+              "order": "Pre-biologic screening labs (QuantiFERON, hepatitis B serologies)",
+              "category": "lab",
+              "reason": "Before infliximab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI request: pre-biologic labs",
+              "date": "2022-12-07T09:40",
+              "author": "RN",
+              "body": "GI nurse called: pt starting infliximab early January, asks us to draw QuantiFERON, HBsAg, anti-HBc and anti-HBs, results faxed to them. Also asking for pneumococcal and Shingrix before first infusion if possible. Orders entered per PCP. Called pt - coming tomorrow AM for labs, will book nurse visit for vaccines."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "lab_only",
+          "start": "2022-12-08T07:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-08T07:45",
+              "resulted": "2022-12-10T11:00",
+              "results": [
+                {
+                  "test": "Quantiferon-TB Gold",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-08T07:45",
+              "resulted": "2022-12-09T09:20",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-08T07:45",
+              "resulted": "2022-12-09T09:20",
+              "results": [
+                {
+                  "test": "Hepatitis B core antibody, total",
+                  "loinc": "16933-4",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-08T07:45",
+              "resulted": "2022-12-09T09:20",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Reactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-08T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prebiologic-labs-2022",
+              "action": "done",
+              "date": "2022-12-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Lab Note",
+              "title": "Lab draw",
+              "date": "2022-12-08T07:50",
+              "author": "MA",
+              "body": "Venipuncture R antecubital, one attempt. QuantiFERON tubes shaken and kept at room temp per protocol, sent with courier. Hep B panel sent. Pt tolerated well. Results to be faxed to GI on return."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "portal_message",
+          "start": "2022-12-12T19:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Nervous about infliximab",
+              "date": "2022-12-12T19:55",
+              "author": "patient",
+              "body": "Hi Doctor, honestly I'm a little freaked out. Crohn's like my dad, and now an IV drug every two months. I read about infections and lymphoma. Did my tests come back OK? Is it safe for me to be around 25 seven-year-olds all winter? The prednisone is helping already, which is good."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Nervous about infliximab",
+              "date": "2022-12-13T07:30",
+              "author": "PCP",
+              "body": "Very understandable to feel this way. Your TB test and hepatitis B tests are fine - no TB exposure, no hepatitis B, and you are immune from your childhood shots; GI has the results. Infliximab is a standard and effective treatment for Crohn disease with a fistula, and the serious risks are uncommon; GI will go over them in detail. Classroom life is fine. Hand-washing, your yearly flu shot (done) and COVID boosters (done) help, and you should call us with any fever. Next step here: the pneumonia vaccine and the first shingles shot at a nurse visit next week, both non-live and safe before infliximab. We are here for questions anytime."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "nurse_visit",
+          "start": "2022-12-20T15:50",
+          "reason": "Vaccines before biologic therapy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-12-20T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-12-20T15:55"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-12-20T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "PCV20 and Shingrix #1",
+              "date": "2022-12-20T16:10",
+              "author": "RN",
+              "body": "Pre-infliximab vaccines per PCP and GI. On prednisone taper (now 35 mg). Afebrile. PCV20 IM L deltoid. Shingrix dose 1 IM R deltoid. Explained sore arm/fatigue for 1-2 days possible with Shingrix. Dose 2 due in 1-2 months; she will get it at her February visit. No reaction during 15-min observation."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "specialist_visit",
+          "start": "2023-01-05T08:30",
+          "end": "2023-01-05T11:00",
+          "service": "Gastroenterology — Infusion Center",
+          "reason": "Infliximab induction",
+          "medications": [
+            {
+              "drug_text": "infliximab 100 MG Injection",
+              "action": "historical",
+              "sig": "5 mg/kg IV infusion at weeks 0, 2 and 6, then every 8 weeks",
+              "dose": {
+                "value": 5,
+                "unit": "mg/kg"
+              },
+              "frequency": "Q8W",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Crohn disease with perianal fistula"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infusion center: infliximab induction summary",
+              "date": "2023-02-24T13:00",
+              "author": "gastroenterology",
+              "body": "IBD INFUSION CENTER - INDUCTION SUMMARY\nPatient: Deborah Shapiro\nDrug: infliximab 5 mg/kg IV (400 mg, dosed on weight 78 kg)\nDoses: #1 01/05/2023, #2 01/19/2023, #3 02/16/2023. Each infused over 2 hours with standard premedication per center protocol.\nScreening on file: QuantiFERON negative 12/2022; HBsAg and anti-HBc nonreactive, anti-HBs reactive.\nTolerance: no infusion reactions. Vital signs stable before, during and after each infusion.\nMaintenance: every 8 weeks; next infusion 04/13/2023.\nAllergies: NKDA.\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "telephone",
+          "start": "2023-01-10T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance letter",
+              "date": "2023-01-10T14:05",
+              "author": "front desk",
+              "body": "Letter from her PPO received by fax: prior authorization for infliximab approved by the plan through January 2024, requested by GI. Scanned to chart. No action needed from us; FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "portal_message",
+          "start": "2023-01-20T16:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Infusion #2",
+              "date": "2023-01-20T16:45",
+              "author": "patient",
+              "body": "Second infusion done yesterday, no problems, just tired from sitting there 2+ hours. Bathroom trips are way down already. Do I need a note for school for the half-days on infusion days? The next one is a Thursday in February."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Infusion #2",
+              "date": "2023-01-23T08:10",
+              "author": "PCP",
+              "body": "Wonderful to hear. Yes - a letter for your principal stating you need medical leave for scheduled infusions every 8 weeks is attached; let me know if they need a different format."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up Crohn disease, anemia; Shingrix #2",
+          "vitals": {
+            "bp": [
+              106,
+              75
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 78.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-07T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-02-07T16:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 31
+                },
+                {
+                  "test": "Iron",
+                  "value": 50
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 391
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-07T16:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-07T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-02-07T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-02-07T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-02-07T16:20",
+              "author": "PCP",
+              "body": "Subjective: here after the Crohn diagnosis change and first two infliximab infusions (third due 2/16). Prednisone taper finished around January 24. Stools now 1-2 a day and formed, no blood for about a month, no cramping. Gained back some weight. No infusion problems. Still on iron, B12, mesalamine.\n\nObjective: vitals as charted, afebrile. Well. Heart regular without murmur. Lungs clear. Abdomen soft and nontender. No rash on the legs.\n\nAssessment/Plan:\nCrohn disease - doing well on infliximab after steroid course, managed by GI.\nIron deficiency anemia - CBC and ferritin today.\nB12 deficiency on supplement - recheck at the physical.\nOn a biologic - Shingrix #2 today completes the series; PCV20 done. Labs today include liver tests.\nF/u at physical late summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.8,
+            "labs": {
+              "Ferritin": 33,
+              "Hemoglobin": 12.1,
+              "Iron": 70,
+              "Mean Corpuscular Volume": 82,
+              "Total Iron-Binding Capacity": 400
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "pharmacy",
+          "start": "2023-04-18T10:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills: ferrous sulfate, vitamin B12",
+              "date": "2023-04-18T10:20",
+              "author": "MA",
+              "body": "eRx renewal requests from her pharmacy for ferrous sulfate 325 mg daily and cyanocobalamin 1000 mcg daily. Both active, last visit 2/7/23. Sent 90-day supplies x 3 refills per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-25a",
+          "kind": "office_visit",
+          "start": "2023-05-25T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Painful red bumps on shins",
+          "vitals": {
+            "bp": [
+              124,
+              77
+            ],
+            "hr": 80,
+            "temp_c": 36.6,
+            "weight_kg": 80.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-05-25T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2023",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Tender shin nodules in a patient with Crohn disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute visit: shin nodules",
+              "date": "2023-05-25T16:20",
+              "author": "PCP",
+              "body": "CC: sore red lumps on both shins x3 days.\n\nStarted suddenly on Monday, a couple at first, now more. Tender to touch and with pants rubbing. No injury, no new meds or products, no fever. Bowels fine. Last infliximab mid-April, next early June.\n\nExam: afebrile. Several tender, warm, erythematous nodules on the anterior lower legs bilaterally, none ulcerated. No joint swelling. Abdomen soft, nontender.\n\nA/P: tender shin nodules in a Crohn patient on infliximab - suspect erythema nodosum, want dermatology to confirm and look for other triggers. Referral sent as urgent. Leg elevation, cool compresses, avoid tight pants in the meantime. Messaged GI as FYI. Call if fever, ulceration or spreading redness."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-05a",
+          "kind": "specialist_visit",
+          "start": "2023-06-05T10:00",
+          "service": "Dermatology",
+          "reason": "Painful nodules on shins",
+          "conditions": [
+            {
+              "label": "Erythema nodosum",
+              "action": "diagnosed",
+              "onset": "2023-05-22",
+              "note": "Isolated; no other cause found",
+              "icd10": "L52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              79
+            ],
+            "hr": 79,
+            "temp_c": 37.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-05T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 79
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-05T10:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 40
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-05T10:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-05T10:40",
+              "results": [
+                {
+                  "test": "Antistreptolysin O titer",
+                  "loinc": "5370-2",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-06-05T11:15",
+              "text": "PA and lateral views. Lungs clear. No hilar or mediastinal adenopathy. Heart size normal. No pleural effusion. Bones unremarkable.",
+              "conclusion": "Normal chest radiograph."
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2023",
+              "action": "done",
+              "date": "2023-06-05T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2023-06-12T09:15",
+              "author": "dermatology",
+              "body": "DERMATOLOGY CONSULT\nVisit date: June 5, 2023\nReason for referral: tender nodules, lower legs\n\nHistory: 29-year-old woman with Crohn disease (originally labeled ulcerative colitis) and iron deficiency anemia. Two weeks of painful red bumps on the shins that came on abruptly and have multiplied. No travel, no sick contacts, no new sexual partners. Her bowel disease is quiet on infliximab and mesalamine.\nMedications: mesalamine DR 800 mg three times daily; ferrous sulfate 325 mg daily; cyanocobalamin 1000 mcg daily; infliximab every 8 weeks (GI).\nAllergies: NKDA.\nFamily history: father Crohn disease, mother rheumatoid arthritis, paternal aunt hypothyroidism.\nSocial: does not smoke.\n\nExam: vital signs normal. Multiple 2-3 cm tender erythematous subcutaneous nodules over both anterior lower legs. No ulceration. No joint swelling. Abdomen nontender.\n\nWorkup: WBC 9.0, Hgb 13.2, ESR 40, CRP 2.5 mg/dL, ASO titer negative. Chest x-ray normal - no hilar adenopathy.\n\nAssessment: erythema nodosum. No streptococcal, pulmonary or drug trigger identified; occurring alongside inflammatory bowel disease.\n\nPlan: supportive care - rest, leg elevation, compression stockings when up and about. Lesions typically settle over 3-6 weeks without scarring. Her GI team should know, as flares of the skin and gut can travel together. Return if recurrent or ulcerating.\n\nDermatology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.2,
+              "White Blood Cells": 9.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-06-26a",
+          "kind": "portal_message",
+          "start": "2023-06-26T11:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "date": "2023-06-26T11:00",
+              "author": "patient",
+              "body": "Just an update - the bumps on my legs are fading, they look like old bruises now and barely hurt. Derm said that's how it goes. Summer break is helping, I can put my feet up!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg update",
+              "date": "2023-06-26T15:40",
+              "author": "PCP",
+              "body": "That is exactly how they should fade. Thanks for letting me know. See you at your physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T09:30",
+          "end": "2023-08-22T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Erythema nodosum",
+              "action": "resolved",
+              "icd10": "L52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              82
+            ],
+            "hr": 68,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 82.0,
+            "height_cm": 164.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 83
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-08-22T10:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 41
+                },
+                {
+                  "test": "Iron",
+                  "value": 79
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 385
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 21
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:15",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 453
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T10:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-22T10:10",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT, age 30\n\nSummer was good - taught a week of art camp, otherwise resting. Bowels normal on infliximab every 8 weeks plus mesalamine. No bleeding, no abdominal pain, weight back up. The shin nodules from June are fully gone, no new ones. Taking iron and B12 daily. Mood good. No smoking. Alcohol rare.\n\nMeds: infliximab q8 weeks (GI infusion), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted. Healthy-appearing. HEENT clear, no oral lesions. Neck supple. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no mass. Perianal deferred (GI following). Skin: shins clear, no nodules or discoloration; no suspicious moles on a quick look. No joint swelling.\n\nA/P:\n- Crohn disease, in remission on infliximab - GI follows.\n- Erythema nodosum - resolved.\n- Iron deficiency anemia - CBC and iron today.\n- B12 deficiency, dietary - level today on supplement.\n- On immunosuppression: flu and updated COVID vaccine in the fall (nurse visit). PCV20 and Shingrix complete. Pap 2022 normal; plan cervical screening again in 2025.\n- Labs: CBC, ferritin/iron, B12, CMP.\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.6,
+            "labs": {
+              "Ferritin": 36,
+              "Hemoglobin": 12.8,
+              "Iron": 74,
+              "Mean Corpuscular Volume": 83,
+              "Red Cell Distribution Width": 13.4,
+              "Total Iron-Binding Capacity": 390,
+              "Vitamin B12": 452
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2023-08-24T12:10",
+              "author": "PCP",
+              "body": "Good news on your labs: blood count is normal now, iron stores are adequate, B12 is back in a healthy range on the supplement, and your kidney and liver tests are normal. Keep taking iron and B12 as you are. Have a great start to the school year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:00",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Seasonal vaccines",
+              "date": "2023-10-10T16:20",
+              "author": "RN",
+              "body": "Flu (quadrivalent, IM L arm) and 2023-24 COVID (Pfizer, IM R arm) given. On infliximab - inactivated/mRNA vaccines only, confirmed. Afebrile. Observed 15 minutes, fine. Pt mentions some looser stools the last couple of weeks; advised to let GI know."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "portal_message",
+          "start": "2023-11-13T20:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bumps are back + stomach",
+              "date": "2023-11-13T20:45",
+              "author": "patient",
+              "body": "The red bumps on my shins came back last week, same as in June. And for about 6 weeks my stomach has been off again - diarrhea, cramping, and I've lost weight (about 10 lbs?). I had my infusion on schedule. Should I go back to derm or GI or you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bumps are back + stomach",
+              "date": "2023-11-14T07:55",
+              "author": "PCP",
+              "body": "This sounds like a Crohn flare with the skin coming along for the ride, so GI is the right first stop - I have messaged them this morning and asked for a prompt visit. Same advice as before for the legs: elevate, compression. Go to the ED for fever, vomiting, severe pain or heavy bleeding. Update: GI has you on November 29; they will call sooner if they have an opening."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "specialist_visit",
+          "start": "2023-11-29T09:00",
+          "service": "Gastroenterology",
+          "reason": "Leg nodules, abdominal pain, diarrhea, weight loss",
+          "conditions": [
+            {
+              "label": "Erythema nodosum",
+              "action": "diagnosed",
+              "onset": "2023-11-08",
+              "note": "Recurrent, with Crohn flare",
+              "icd10": "L52"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 8 tablets (40 mg) by mouth daily, then decrease by 1 tablet each week until off",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Crohn disease flare"
+            },
+            {
+              "drug_text": "infliximab 100 MG Injection",
+              "action": "stop",
+              "reason": "Interval shortened"
+            },
+            {
+              "drug_text": "infliximab 100 MG Injection",
+              "action": "historical",
+              "sig": "5 mg/kg IV infusion every 6 weeks",
+              "dose": {
+                "value": 5,
+                "unit": "mg/kg"
+              },
+              "frequency": "Q6W",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Crohn disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              71
+            ],
+            "hr": 79,
+            "temp_c": 36.6,
+            "weight_kg": 76.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-29T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-29T09:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-29T09:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-22T13:00",
+              "results": [
+                {
+                  "test": "Fecal calprotectin",
+                  "loinc": "38445-3",
+                  "unit": "ug/g",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-22T13:00",
+              "results": [
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-22T13:00",
+              "results": [
+                {
+                  "test": "C. difficile toxin A and B",
+                  "loinc": "34713-8",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology visit: flare",
+              "date": "2023-12-05T11:20",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY CLINIC NOTE\nDate of service: 11/29/2023\nDx: Crohn disease of the colon with perianal fistula (diagnosis revised from ulcerative colitis 11/2022), on infliximab 5 mg/kg q8 weeks since 01/2023.\n\nInterval history: the shin nodules have returned over the past 3 weeks, and for 2 months she has had intermittent abdominal pain and diarrhea with an unintentional loss of 5 kg. Infusions on time.\n\nExam: tender erythematous nodules, 2-3 cm, over the anterior shins. Abdomen: right lower quadrant tenderness, no rebound or guarding.\n\nData: Hgb 10.2, MCV 72, CRP 24 mg/L, ESR 45, fecal calprotectin 250 ug/g. Stool culture and C. diff toxin (sent 11/22) negative.\n\nAssessment: Crohn flare with recurrent erythema nodosum, with partial loss of response on standard-interval infliximab. Microcytic anemia, iron deficiency again with the flare.\n\nPlan:\n1. Prednisone 40 mg daily, taper by 5 mg weekly.\n2. Shorten infliximab to every 6 weeks at 5 mg/kg, beginning with the next infusion; prior auth submitted.\n3. Continue mesalamine 800 mg TID.\n4. Continue oral iron and B12; PCP to recheck CBC after the flare.\n5. Clinic in 3 months.\n\nMedications reviewed: mesalamine DR 800 mg TID; ferrous sulfate 325 mg daily; cyanocobalamin 1000 mcg daily; infliximab (infusion center).\nAllergies: NKDA.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "weight_kg": 76.8,
+            "labs": {
+              "Ferritin": 11,
+              "Hemoglobin": 10.2,
+              "Iron": 34,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 16.1,
+              "Total Iron-Binding Capacity": 480
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "telephone",
+          "start": "2023-12-11T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance approval faxed",
+              "date": "2023-12-11T10:30",
+              "author": "front desk",
+              "body": "Fax from the PPO: infliximab every-6-week dosing approved (GI's request). Copy scanned. Pt called our office asking if her prednisone refills come from us - told her GI wrote it and to call them; she said she has enough for the taper."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after Crohn flare",
+          "conditions": [
+            {
+              "label": "Erythema nodosum",
+              "action": "resolved",
+              "icd10": "L52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              76
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 77.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-16T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 77
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 277
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-01-16T16:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                },
+                {
+                  "test": "Iron",
+                  "value": 34
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 443
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-01-16T16:15",
+              "author": "PCP",
+              "body": "Seen for follow-up of the November Crohn flare. GI started a second prednisone taper and moved infliximab to every 6 weeks; she is on the last week of the taper (5 mg) and had her first 6-week infusion before the holidays. Stools down to 2 a day, mostly formed, no blood. Appetite back, weight up a little. Shin bumps faded by mid-December and have not returned.\n\nMeds reviewed: infliximab q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily, prednisone taper finishing.\n\nExam: vitals as charted. Comfortable. Conjunctivae pink. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Legs: shins clear.\n\nImpression and plan:\n- Crohn disease, improving after flare. GI managing.\n- Erythema nodosum - resolved again.\n- Iron deficiency anemia with flare - CBC and iron today; continue oral iron.\n- B12 on supplement.\nNext: physical in late summer; sooner if flare."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.2,
+            "labs": {
+              "Ferritin": 14,
+              "Hemoglobin": 11.0,
+              "Iron": 45,
+              "Mean Corpuscular Volume": 76,
+              "Red Cell Distribution Width": 15.3,
+              "Total Iron-Binding Capacity": 460
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "portal_message",
+          "start": "2024-01-18T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-01-18T12:40",
+              "author": "PCP",
+              "body": "Your hemoglobin is recovering after the flare (up from 10.2 at GI) and iron stores are on the low side again, which is expected after the bleeding. Keep taking the iron daily; we will recheck at your physical. Glad you are feeling better."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "pharmacy",
+          "start": "2024-03-05T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "date": "2024-03-05T09:10",
+              "author": "MA",
+              "body": "Renewal request: ferrous sulfate 325 mg and cyanocobalamin 1000 mcg, 90-day supply. Pt also asked by phone whether we refill mesalamine - no, GI prescribes; pharmacy told to send that request to GI. Iron and B12 approved x 4."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-26a",
+          "kind": "office_visit",
+          "start": "2024-04-26T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Painful nodules on lower legs, low-grade fevers",
+          "vitals": {
+            "bp": [
+              115,
+              83
+            ],
+            "hr": 89,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 79.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-26T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Recurrent painful leg nodules"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute visit",
+              "date": "2024-04-26T16:00",
+              "author": "PCP",
+              "body": "Painful lumps on both lower legs for about 3 weeks, deeper than last time. Along with them, low-grade evening temperatures, achy joints, and more tiredness than usual. About a week ago she had a sore throat and cough that went away on its own. Bowels have been fine. Infliximab on schedule.\n\nExam: vitals as charted. Tender, warm, poorly defined red nodules on both anterior shins. No joint swelling or warmth. Throat clear today. Lungs clear. Abdomen benign.\n\nAssessment: likely another bout of erythema nodosum; recent throat illness noted.\nPlan: dermatology referral, they have a slot in 3 weeks. Supportive measures as before. Messaged GI. Call for higher fevers or worsening."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-17a",
+          "kind": "specialist_visit",
+          "start": "2024-05-17T13:30",
+          "service": "Dermatology",
+          "reason": "Painful deep nodules on lower legs",
+          "conditions": [
+            {
+              "label": "Erythema nodosum",
+              "action": "diagnosed",
+              "onset": "2024-04-05",
+              "note": "Recurrent",
+              "icd10": "L52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              77
+            ],
+            "hr": 71,
+            "temp_c": 37.0,
+            "weight_kg": 79.0,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-05-17T13:50",
+              "results": [
+                {
+                  "test": "Rapid Strep A Antigen",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "done",
+              "date": "2024-05-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "date": "2024-05-24T08:45",
+              "author": "dermatology",
+              "body": "DERMATOLOGY - RETURN VISIT\nDOS 5/17/2024\n\nMs. Shapiro is a 30-year-old with Crohn disease, seen here in June 2023 for erythema nodosum, with another episode last fall during a Crohn flare. She now has six weeks of painful, deep nodules on the lower legs with low-grade fevers, joint aches and occasional fatigue. The spots came on abruptly and are tender enough that jeans and long walks are uncomfortable. No insect bites, no medication changes, no new skin products. About a month ago she had a sore throat and cough that cleared without treatment.\n\nMeds: infliximab every 6 weeks, mesalamine, ferrous sulfate, cyanocobalamin. NKDA.\n\nExam: BMI 29. Several poorly demarcated, warm, erythematous plaques and subcutaneous nodules along the anterior shins; some are beginning to fade with a yellowish tinge. Oral and genital mucosa clear. No active joint swelling.\n\nRapid strep antigen in clinic: negative.\n\nAssessment: recurrent erythema nodosum, likely related to her inflammatory bowel disease; the preceding throat illness may have contributed, though strep testing is negative now.\n\nPlan: supportive care as before (elevation, compression, rest). Lesions in the fading stage should keep resolving over the next few weeks. Will copy GI. Return as needed.\n\nDermatology"
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T17:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Legs",
+              "date": "2024-06-11T17:25",
+              "author": "patient",
+              "body": "FYI the leg nodules are almost gone and the fevers stopped a couple weeks ago. Joints feel normal. Thanks for getting me in with derm. Last day of school is next week!"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:40",
+          "end": "2024-09-10T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Erythema nodosum",
+              "action": "resolved",
+              "icd10": "L52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 80,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 79.7,
+            "height_cm": 164.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 77
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-09-10T16:25",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 30
+                },
+                {
+                  "test": "Iron",
+                  "value": 62
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 406
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T16:25",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 514
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T16:25",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-10T16:20",
+              "author": "PCP",
+              "body": "PHYSICAL (31F)\n\nSince last physical: Crohn flare in November with recurrent EN, second prednisone taper, infliximab now every 6 weeks; another EN episode in April-May (derm). Since June: no nodules, no fevers, joints fine. Bowels 1-2 formed a day, no blood, no pain. Back in the classroom last week, energy decent.\nNo smoking since 2020. Alcohol rare. Vegan, on B12.\nMood: PHQ-9 2, GAD-7 3 - some first-week-of-school stress, otherwise fine.\n\nMedications: infliximab 5 mg/kg q6 weeks (GI), mesalamine DR 800 mg three times daily, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted. Well. Eyes, ears, throat normal. No lymphadenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Skin: shins clear. Joints without synovitis.\n\nA/P:\n1. Preventive: Pap 2022 normal - co-test next year. Flu and COVID vaccines at an October nurse visit. Tdap good until 2026.\n2. Crohn disease on infliximab - quiet; GI follows.\n3. Erythema nodosum - resolved.\n4. Iron deficiency anemia - CBC and iron today.\n5. B12 deficiency - level today.\n6. Labs: CBC, iron studies, B12, CMP.\nFollow-up in about 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.5,
+            "labs": {
+              "Ferritin": 27,
+              "Hemoglobin": 12.4,
+              "Iron": 66,
+              "Mean Corpuscular Volume": 81,
+              "Red Cell Distribution Width": 13.7,
+              "Total Iron-Binding Capacity": 410,
+              "Vitamin B12": 515
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-09-12T13:05",
+              "author": "PCP",
+              "body": "All of your results look good: hemoglobin 12-range, iron stores improving, B12 healthy, kidney and liver tests normal. No changes. October nurse visit for flu and COVID shots whenever it suits your schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:05",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "date": "2024-10-08T16:25",
+              "author": "RN",
+              "body": "2024-25 flu (trivalent) L deltoid, 2024-25 COVID (Pfizer) R deltoid. Last infliximab infusion last week, no fever or illness today. No issues with past vaccines. Observed 15 min without problem."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "telephone",
+          "start": "2024-12-03T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior auth renewal",
+              "date": "2024-12-03T11:15",
+              "author": "front desk",
+              "body": "PPO letter: infliximab authorization (every 6 weeks) renewed through 12/2025 at GI's request. Scanned. Pt called to confirm we got it - yes, and GI has it too."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up, Crohn disease and anemia",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-02-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-02-18T16:20",
+              "author": "PCP",
+              "body": "Video visit; she is at home after school, identity verified, consents to video.\n\nCheck-in on chronic issues. Crohn disease steady on infliximab every 6 weeks and mesalamine - 1-2 formed stools daily, no blood, no pain, no skin bumps since last spring. Energy OK through the winter. Taking iron and B12. No fevers or infections this winter despite the classroom germs.\n\nObservations on video: well-appearing, conversational, no distress.\n\nPlan: no changes. Labs at the physical. She will book the physical for late summer or early fall. Call with any flare."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T08:55",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "date": "2025-03-11T08:55",
+              "author": "MA",
+              "body": "Pharmacy renewal for ferrous sulfate 325 mg daily and vitamin B12 1000 mcg daily. Seen by video 2/18. Approved, 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "hospital_admission",
+          "start": "2025-05-22T06:40",
+          "end": "2025-05-25T11:30",
+          "service": "Emergency Medicine / Inpatient Medicine",
+          "reason": "Abdominal pain, vomiting, obstipation",
+          "conditions": [
+            {
+              "label": "Small bowel obstruction due to fibrotic stricture secondary to Crohn disease",
+              "action": "diagnosed",
+              "onset": "2025-05-20",
+              "icd10": "K50.812"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              74
+            ],
+            "hr": 77,
+            "rr": 17,
+            "temp_c": 37.8,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 79
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T07:05",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 32
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T07:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal X-ray, supine and upright",
+              "loinc": "24798-1",
+              "performed": "2025-05-22T07:30",
+              "text": "Supine and upright views of the abdomen. Multiple dilated loops of small bowel with air-fluid levels on the upright view. Little gas in the colon. No free air under the diaphragm. No abnormal calcifications.",
+              "conclusion": "Dilated small bowel with air-fluid levels, consistent with small bowel obstruction."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-05-22T09:10",
+              "text": "Technique: helical CT of the abdomen and pelvis after IV contrast. Findings: dilated, fluid-filled proximal and mid small bowel leading to a short narrowed segment of the distal ileum, beyond which the bowel is decompressed. The narrowed segment shows no mural hyperenhancement. No abscess, no fluid collection, no free air, no pneumatosis. Liver, spleen, pancreas, kidneys and adrenals unremarkable. No adenopathy. Uterus and ovaries unremarkable. No free fluid.",
+              "conclusion": "Small bowel obstruction with transition at a short distal ileal stricture without active inflammatory features, consistent with a fibrotic Crohn stricture. No abscess or perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-22T06:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-22T12:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-05-25T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2025-05-28T09:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 05/22/2025 06:40\n\nHPI: 31 y/o F with Crohn disease, originally diagnosed as ulcerative colitis, on infliximab and mesalamine, presenting with 2 days of escalating abdominal pain with nausea and repeated vomiting, now green. No flatus and no stool since this began. No prior abdominal surgery.\n\nPMH: Crohn disease; iron deficiency anemia; B12 deficiency; erythema nodosum.\nMeds: mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily; infliximab infusions.\nAllergies: NKDA.\nSocial: pack a day for 10 years by her account; quit in 2020. Alcohol rare.\nFH: father Crohn disease.\n\nExam: T 37.8 C. Uncomfortable, actively retching. Abdomen distended, diffusely tender, bowel sounds hyperactive; no peritoneal signs. No hernias.\n\nED course: WBC 12.0, Hgb 13.2, CRP 25 mg/L; BMP and lipase unremarkable; urine hCG negative. Abdominal films: dilated small bowel with air-fluid levels. NG tube placed with bilious return, IV fluids, antiemetic and IV analgesia. CT A/P: obstruction at a short fibrotic-appearing distal ileal stricture, no abscess or perforation. Surgery consulted in the ED.\n\nImpression: small bowel obstruction from a Crohn stricture.\nDisposition: admitted to medicine with surgery and GI following."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-05-28T09:05",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 05/22/2025  Discharged: 05/25/2025\nPrincipal diagnosis: small bowel obstruction due to fibrotic stricture of the distal ileum, secondary to Crohn disease\nOther: Crohn disease on infliximab; iron deficiency anemia; vitamin B12 deficiency\nProcedures: none (no surgery)\n\nCourse: managed nonoperatively with nasogastric decompression, IV fluids and bowel rest. General surgery saw her on admission and agreed with nonoperative care. GI consulted: CT appearance is a fibrotic rather than inflammatory stricture, so no steroids; infliximab schedule unchanged. NG output fell over the first day; she passed flatus on hospital day 2 and stool on day 3. NG removed, clear liquids then low-residue diet advanced without vomiting or pain. Discharged home on day 4.\n\nDischarge medications (unchanged): mesalamine DR 800 mg three times daily; ferrous sulfate 325 mg daily; cyanocobalamin 1000 mcg daily; infliximab every 6 weeks per GI infusion schedule.\nAllergies: NKDA.\n\nInstructions: low-residue diet for now, chew well, avoid raw skins, seeds and nuts. Return for vomiting, distension, inability to pass gas or severe pain.\nFollow-up: PCP within 1-2 weeks; GI as scheduled.\n\nHospital medicine"
+            }
+          ],
+          "state": {
+            "weight_kg": 77.8,
+            "labs": {
+              "Hemoglobin": 13.2,
+              "Lipase": 32,
+              "White Blood Cells": 12.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-23a",
+          "kind": "telephone",
+          "start": "2025-05-23T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital case manager call",
+              "date": "2025-05-23T14:10",
+              "author": "RN",
+              "body": "Case manager from the admitting hospital called: pt admitted 5/22 with small bowel obstruction related to Crohn disease, being managed without surgery, likely home this weekend. Requesting PCP follow-up within 1-2 weeks. Will call pt after discharge and book."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "telephone",
+          "start": "2025-05-27T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-05-27T10:20",
+              "author": "RN",
+              "body": "Transition call after her 5/22-5/25 admission for small bowel obstruction (Crohn stricture, no surgery). Pt home since Sunday. Eating low-residue foods, small meals. Passing gas and had normal BMs yesterday and today. No vomiting, mild soreness only. Taking her usual meds; no new prescriptions. Knows return precautions. Hospital records requested. Visit with PCP booked 6/3. Next infusion per GI schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "office_visit",
+          "start": "2025-06-03T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, small bowel obstruction",
+          "conditions": [
+            {
+              "label": "Small bowel obstruction due to fibrotic stricture secondary to Crohn disease",
+              "action": "resolved",
+              "note": "Resolved without surgery; ileal stricture remains part of Crohn disease",
+              "icd10": "K50.812"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              77
+            ],
+            "hr": 59,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 77.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-03T16:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 80
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-03T16:15",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-03T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-06-03T16:20",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\nAdmission 5/22-5/25 at a regional hospital for small bowel obstruction at a fibrotic distal ileal stricture from Crohn disease. Nonoperative: NG tube, fluids, bowel rest. ED and discharge records reviewed (received 5/28). No medication changes at discharge.\n\nSince home: eating low-residue, small portions, no vomiting. Daily soft BMs, passing gas, no cramping. Back at school as of Monday; tired at the end of the day. Lost a couple of pounds in the hospital.\n\nMeds reconciled: infliximab q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted, afebrile. Abdomen soft, not distended, nontender, normal bowel sounds. Heart and lungs normal.\n\nA/P:\n1. Small bowel obstruction from Crohn stricture - resolved. Stay on low-residue diet; return precautions reviewed again (vomiting, bloating, no gas). GI aware; she sees them in the fall.\n2. Crohn disease - continue current regimen per GI.\n3. Anemia history - CBC today with BMP after the vomiting.\nPhysical in September."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.9,
+            "labs": {
+              "Hemoglobin": 12.3,
+              "White Blood Cells": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "portal_message",
+          "start": "2025-06-05T11:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Post-hospital labs",
+              "date": "2025-06-05T11:30",
+              "author": "PCP",
+              "body": "Your white count is back to normal, hemoglobin is fine, and your kidney function and electrolytes are normal after all the vomiting. Keep up the low-residue diet and let me know if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "portal_message",
+          "start": "2025-08-12T10:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your physical",
+              "date": "2025-08-12T10:00",
+              "author": "front desk",
+              "body": "Hi Deborah, you are due for your annual physical. We have after-school openings in early September - reply with a day that works. Patient replied: Tuesday the 9th after 3:30 please. Booked 9/9 3:40 pm."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T15:40",
+          "end": "2025-09-09T16:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 79,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 78.9,
+            "height_cm": 165.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 82
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 35
+                },
+                {
+                  "test": "Iron",
+                  "value": 69
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 412
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 17
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 535
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-09T16:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-09T16:05",
+              "resulted": "2025-09-15T10:00",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-09-09T16:05",
+              "text": "Liquid-based cytology, satisfactory for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM; HPV negative.",
+              "issued": "2025-09-15T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-09T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-09T16:25",
+              "author": "PCP",
+              "body": "PREVENTIVE EXAM - 32 y/o\n\nInterval history: May admission for small bowel obstruction from an ileal stricture, managed without surgery. Since then no obstructive symptoms; she has loosened the low-residue diet carefully and tolerates it. Crohn otherwise quiet on infliximab q6 weeks and mesalamine. No leg nodules in over a year. GI visit with colonoscopy scheduled for November.\nWell otherwise. Still vegan, on B12 and iron. Former smoker. PHQ-9 1.\n\nMeds: infliximab 5 mg/kg IV q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted. Well. HEENT normal. Thyroid normal. Heart RRR, no murmur. Lungs clear. Breasts normal. Abdomen soft, nontender, nondistended. Pelvic: normal; Pap and HPV collected. Skin and shins clear. Joints normal.\n\nPlan:\n- Cervical screening: Pap with HPV today.\n- Labs: CBC, iron studies, B12, CMP, lipids.\n- Vaccines: flu and COVID in October; Tdap due next year.\n- Crohn disease with prior stricture: per GI; return precautions known.\nNext visit in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.4,
+            "labs": {
+              "Ferritin": 31,
+              "Hemoglobin": 12.6,
+              "Iron": 68,
+              "Mean Corpuscular Volume": 82,
+              "Total Iron-Binding Capacity": 405,
+              "Vitamin B12": 498
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap, HPV and labs",
+              "date": "2025-09-16T08:40",
+              "author": "PCP",
+              "body": "Your Pap is normal and HPV was not detected. Blood count, iron stores, B12, cholesterol, kidney and liver tests are all fine. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:00",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "date": "2025-10-07T16:20",
+              "author": "RN",
+              "body": "Flu and 2025-26 COVID given (L and R deltoid). Afebrile, no current illness. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "specialist_visit",
+          "start": "2025-11-17T08:00",
+          "end": "2025-11-17T11:30",
+          "service": "Gastroenterology",
+          "reason": "Follow-up Crohn disease after hospitalization",
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 73,
+            "weight_kg": 78.0
+          },
+          "reports": [
+            {
+              "study": "Colonoscopy",
+              "loinc": "18746-8",
+              "performed": "2025-11-17T10:00",
+              "text": "Indication: Crohn disease, assessment of disease activity on infliximab. Moderate sedation. Prep good. Perianal inspection unremarkable. Scope advanced to the cecum; the ileocecal valve was traversed and the terminal ileum examined over a short distance. Mucosal inflammation is reduced compared with prior studies. Biopsies taken from the colon.",
+              "conclusion": "Reduced mucosal inflammation compared with prior colonoscopies. Biopsies sent."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-11-17T10:00",
+              "text": "A-C. Colon, biopsies: colonic mucosa with decreased lamina propria lymphocytic infiltrate and less active inflammation than in prior specimens. No granulomas. No dysplasia.",
+              "conclusion": "Decreased lamina propria inflammation; no granulomas or dysplasia.",
+              "issued": "2025-11-20T15:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2025-11-17T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up and colonoscopy",
+              "date": "2025-11-24T10:00",
+              "author": "gastroenterology",
+              "body": "GI FOLLOW-UP / COLONOSCOPY\nDOS 11/17/2025\n\nReason: assessment of Crohn disease after the May 2025 admission for small bowel obstruction (fibrotic distal ileal stricture, managed nonoperatively).\n\nHistory: this has been a hard few years for her - flares needing two prednisone courses and infliximab, with the interval shortened to every 6 weeks in 11/2023. Over the past year she has done much better: bowel movements normal, no abdominal pain, no obstructive symptoms since discharge.\n\nMeds: mesalamine DR 800 mg TID; ferrous sulfate 325 mg daily; cyanocobalamin 1000 mcg daily. (Infliximab at our infusion center.)\nAllergies: NKDA.\nFH: father Crohn disease; mother RA; paternal aunt hypothyroidism.\nSH: former smoker, rare alcohol, teacher.\n\nColonoscopy today: inflammation reduced compared with previous studies.\nPathology (11/20): decreased lamina propria lymphocytic infiltrate compared with prior specimens; no granulomas, no dysplasia.\n\nImpression: Crohn disease with improving mucosal inflammation on infliximab every 6 weeks; history of fibrotic ileal stricture with obstruction, currently asymptomatic.\n\nPlan:\n- Continue infliximab 5 mg/kg every 6 weeks and mesalamine 800 mg TID.\n- Call promptly for bloating, vomiting, or inability to pass gas.\n- Clinic follow-up in 6 months.\n\nGastroenterology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "portal_message",
+          "start": "2025-12-02T19:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Good news from GI",
+              "date": "2025-12-02T19:15",
+              "author": "patient",
+              "body": "Hi, wanted to share - my colonoscopy last month showed a lot less inflammation and the biopsies were good. GI said keep everything the same. First fall in years I haven't had a flare! Did you get their letter?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Good news from GI",
+              "date": "2025-12-03T07:40",
+              "author": "PCP",
+              "body": "We did, and it is wonderful news - thank you for sharing it. Keep doing what you are doing. Let's plan your next visit here for the spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "telephone",
+          "start": "2026-01-13T10:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Infliximab authorization",
+              "date": "2026-01-13T10:50",
+              "author": "front desk",
+              "body": "Pt called worried her infliximab infusion would be delayed because the old authorization ended in December. Called the GI office: renewal already approved by the PPO through 12/2026, infusion this Friday as planned. Pt informed, relieved. Approval letter faxed to us for the chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "pharmacy",
+          "start": "2026-02-24T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "date": "2026-02-24T09:05",
+              "author": "MA",
+              "body": "Renewal requests: ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. Last physical 9/9/25. Approved 90-day x 1; reminder sent to book spring follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "office_visit",
+          "start": "2026-04-13T15:40",
+          "end": "2026-04-13T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up: Crohn disease, iron deficiency, B12",
+          "vitals": {
+            "bp": [
+              121,
+              71
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-13T16:15",
+              "resulted": "2026-04-14T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 81
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-04-13T16:15",
+              "resulted": "2026-04-14T07:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 36
+                },
+                {
+                  "test": "Iron",
+                  "value": 62
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 378
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-13T16:15",
+              "resulted": "2026-04-14T09:10",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 507
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-13T16:15",
+              "resulted": "2026-04-14T07:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-04-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-04-13T16:10",
+              "author": "PCP",
+              "body": "Spring check-in, first in-person visit since September.\n\nDoing well. Crohn disease quiet: one to two normal BMs a day, no blood, no cramping, no bloating or vomiting since last May's admission. No skin nodules. Infliximab every 6 weeks at the GI infusion center (last one 3 weeks ago), mesalamine three times a day, iron and B12 daily - occasionally forgets the midday mesalamine. GI visit planned for May. Energy good; teaching a spring mural project. Still not smoking.\n\nMeds: infliximab 5 mg/kg IV q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. Allergies: none known.\n\nExam: vitals as charted. Well. Conjunctivae pink. Heart regular, no murmur. Lungs clear. Abdomen soft, nondistended, nontender, normal bowel sounds. Shins clear. No edema.\n\nAssessment/Plan:\n1. Crohn disease, quiet on infliximab and mesalamine; prior ileal stricture without symptoms. Continue per GI.\n2. Iron deficiency anemia - CBC, iron studies today; continue ferrous sulfate.\n3. Dietary B12 deficiency - B12 today; continue.\n4. On infliximab - CMP today. Flu and COVID again in the fall; Tdap due this year, will give at the September visit.\nReturn in September."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.2,
+            "labs": {
+              "Ferritin": 35,
+              "Hemoglobin": 12.9,
+              "Iron": 72,
+              "Mean Corpuscular Volume": 83,
+              "Total Iron-Binding Capacity": 395,
+              "Vitamin B12": 540,
+              "White Blood Cells": 6.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs from Monday",
+              "date": "2026-04-14T12:20",
+              "author": "PCP",
+              "body": "Hi Deborah - all good: hemoglobin normal, iron stores healthy, B12 healthy, kidney and liver tests normal. Same plan. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T08:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: ferrous sulfate, cyanocobalamin",
+              "date": "2026-05-19T08:45",
+              "author": "MA",
+              "body": "Pharmacy renewal request for ferrous sulfate 325 mg and vitamin B12 1000 mcg. Seen 4/13/26, labs normal. Approved 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T14:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "date": "2026-07-21T14:30",
+              "author": "patient",
+              "body": "Hi! I have an appointment in September but I can't remember the day. Teachers go back the last week of August so I'd like it to be after 3:30 if possible. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "date": "2026-07-22T09:15",
+              "author": "front desk",
+              "body": "Hi Deborah, you are booked Monday, September 14 at 3:45 pm, which should work after school. You'll get a reminder a few days before. Enjoy the rest of your summer!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T15:45",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Erythema nodosum|L52": {
+        "code": "L52",
+        "display": "Erythema nodosum",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Small bowel obstruction due to fibrotic stricture secondary to Crohn disease|K50.812": {
+        "code": "K50.812",
+        "display": "Crohn's disease of both small and large intestine with intestinal obstruction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Vitamin B12 deficiency (dietary)|E53.8": {
+        "code": "E53.8",
+        "display": "Deficiency of other specified B group vitamins",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "infliximab 100 MG Injection": {
+        "code": "310994",
+        "display": "infliximab 100 MG Injection",
+        "ingredient": "infliximab",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "mesalamine 800 MG Delayed Release Oral Tablet": {
+        "code": "833234",
+        "display": "mesalamine 800 MG Delayed Release Oral Tablet",
+        "ingredient": "mesalamine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Antistreptolysin O titer": {
+        "code": "5370-2",
+        "display": "Streptolysin O Ab [Units/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "C. difficile toxin A and B": {
+        "code": "34713-8",
+        "display": "Clostridioides difficile toxin A+B [Presence] in Stool",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fecal calprotectin": {
+        "code": "38445-3",
+        "display": "Calprotectin [Mass/mass] in Stool",
+        "unit": "ug/g",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B core antibody, total": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stool culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Abdominal X-ray, supine and upright": {
+        "code": "24798-1",
+        "display": "XR Abdomen Supine and Upright",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Colonoscopy": {
+        "code": "18746-8",
+        "display": "Colonoscopy study",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

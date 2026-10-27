@@ -1,0 +1,658 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002823",
+   "events": [
+    {
+     "id": "2023-01-23a",
+     "kind": "portal_message",
+     "start": "2023-01-23T21:02",
+     "orders": [
+      {
+       "id": "gyn-referral-2023",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Gynecology",
+       "reason": "Vulvar symptoms, patient request"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Referral request",
+       "author": "patient",
+       "date": "2023-01-23T21:02",
+       "body": "This is a little embarrassing to write. I've had irritation and itching in the private area for a few months and it's uncomfortable to sit. I would rather see a gynecologist than come in for this, is that ok? I haven't seen one since my hysterectomy."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Referral request",
+       "author": "PCP",
+       "date": "2023-01-24T07:50",
+       "body": "Not embarrassing at all, and I'm glad you wrote. I've placed a gynecology referral and marked it to be seen soon. If you notice bleeding, a sore that won't heal, or a lump in the groin before then, let me know right away and I'll see you myself."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-15a",
+     "kind": "specialist_visit",
+     "start": "2023-02-15T10:15",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Vulvar irritation and enlarging discolored lesion",
+     "orders": [
+      {
+       "id": "gyn-referral-2023",
+       "action": "done",
+       "date": "2023-02-15T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology consultation",
+       "author": "gynecology",
+       "date": "2023-02-17T12:00",
+       "body": "GYNECOLOGY NEW PATIENT VISIT - 2/15/2023\nReferred by: primary care\n\nHPI: 69 yo, s/p TAH at 52 for fibroids, with several months of vulvar itching and a raw, sensitive feeling; sitting for long periods and walking any distance are uncomfortable. She also noticed a patch of discolored skin that has gotten bigger. Put off coming in out of embarrassment. Denies discharge, bleeding or recent sexual activity. On methotrexate and long-term prednisone for RA; recently evaluated by endocrinology for steroid side effects. Last Pap more than a decade ago (none needed after benign hysterectomy). Diabetes; blood pressure well controlled.\n\nMeds: per PCP list (metformin, glyburide, lisinopril, amlodipine, HCTZ, omeprazole, prednisone, methotrexate, fluticasone-salmeterol, albuterol, aspirin, alendronate, calcium, D3).\nAllergies: NKDA.\n\nExam: External genitalia - 1.5 cm pale, thickened plaque with slightly irregular borders on the right labium majus. No ulceration. Remainder of the vulva without lesions. Vaginal cuff well healed. No inguinal lymphadenopathy bilaterally.\n\nProcedure: After informed consent and local anesthesia, 4 mm punch biopsy of the plaque. Hemostasis with silver nitrate. Tolerated well.\n\nAssessment: Vulvar plaque, rule out VIN or invasive carcinoma in an immunosuppressed patient.\nPlan: pathology to follow; will call her with results. Topical care instructions given.\n\nOutside OB/GYN group"
+      }
+     ]
+    },
+    {
+     "id": "2023-02-21a",
+     "kind": "outside_records",
+     "start": "2023-02-21T15:30",
+     "conditions": [
+      {
+       "label": "Malignant neoplasm of vulva",
+       "icd10": "C51.9",
+       "action": "diagnosed",
+       "onset": "2023-02-15",
+       "note": "squamous cell carcinoma, right labium majus"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gynonc-referral-2023",
+       "action": "placed",
+       "order": "Gynecologic oncology referral",
+       "category": "referral",
+       "to": "Gynecologic Oncology",
+       "reason": "Invasive vulvar squamous cell carcinoma"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-02-15T10:40",
+       "issued": "2023-02-21T14:00",
+       "text": "Specimen: skin, right labium majus, punch biopsy (4 mm).\nGross: one tan-white cylinder of skin, 0.4 x 0.4 x 0.3 cm, entirely submitted.\nMicroscopic: invasive keratinizing squamous cell carcinoma arising in thickened squamous epithelium. Tumor extends to the deep edge of the biopsy; depth of invasion cannot be fully assessed on this sample.",
+       "conclusion": "Right labium majus, punch biopsy: invasive keratinizing squamous cell carcinoma."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Vulvar biopsy pathology",
+       "author": "gynecology",
+       "date": "2023-02-21T15:30",
+       "body": "Pathology from 2/15 vulvar punch biopsy received from gynecology: invasive keratinizing squamous cell carcinoma. Gynecology has referred her to gynecologic oncology and spoke with the patient this afternoon. Our referral also placed so it is tracked here. Flagged to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-22a",
+     "kind": "telephone",
+     "start": "2023-02-22T12:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call to patient about biopsy",
+       "author": "PCP",
+       "date": "2023-02-22T12:50",
+       "body": "Called Beverly after gyn told her the biopsy showed cancer. She was teary but clear. Explained what squamous cell cancer of the vulva generally means, that the lesion is small and the groin felt normal, and that the next step is gyn oncology to plan surgery. Gyn onc consult is set for 3/6. Husband on the line part of the time. Offered a visit with me anytime; she will call. Discussed holding methotrexate around surgery - gyn onc and rheum will coordinate."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-06a",
+     "kind": "specialist_visit",
+     "start": "2023-03-06T14:00",
+     "service": "Gynecologic Oncology",
+     "reason": "Vulvar squamous cell carcinoma",
+     "orders": [
+      {
+       "id": "gynonc-referral-2023",
+       "action": "done",
+       "date": "2023-03-06T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology consultation",
+       "author": "gynecologic oncology",
+       "date": "2023-03-09T10:00",
+       "body": "GYNECOLOGIC ONCOLOGY CONSULTATION\nDate: 03/06/2023\n\n69-year-old with biopsy-proven invasive keratinizing SCC of the right labium majus. Lesion 1.5 cm, unifocal, more than 2 cm from the midline structures. Groins clinically negative. Comorbidities: severe COPD with two intubations in 2021, CKD 3b, poorly controlled T2DM, RA on methotrexate and prednisone 10 mg daily.\n\nPlan: radical local excision of the right vulvar lesion with 1-2 cm margins and right inguinal sentinel lymph node biopsy (lateral lesion). Anesthesia pre-op evaluation given her lung disease. Stress-dose steroids peri-operatively. Hold methotrexate the week before and after surgery (rheumatology agrees). Hold metformin day of surgery.\n\nAllergies: none known.\n\nGynecologic Oncology, regional cancer center"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "procedure_visit",
+     "start": "2023-03-21T07:30",
+     "end": "2023-03-21T17:00",
+     "service": "Gynecologic Oncology",
+     "reason": "Radical local excision of vulvar cancer with sentinel node biopsy",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-03-21T09:30",
+       "issued": "2023-03-27T16:00",
+       "text": "A. Right vulva, radical local excision (oriented): invasive keratinizing squamous cell carcinoma, greatest dimension 1.5 cm, depth of invasion 2.1 mm. No lymphovascular invasion. Margins negative; closest peripheral margin 11 mm, deep margin clear. Background squamous epithelium with hyperplasia.\nB. Right inguinal sentinel lymph nodes (2): two lymph nodes, negative for carcinoma on H&E and immunostains (0/2).\nPathologic stage: pT1b pN0. FIGO 2021 stage IB.",
+       "conclusion": "Invasive keratinizing SCC of the right vulva, 1.5 cm, DOI 2.1 mm, margins negative, 0/2 sentinel nodes; FIGO IB."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Operative Note",
+       "title": "Operative report and pathology summary",
+       "author": "gynecologic oncology",
+       "date": "2023-03-30T11:00",
+       "body": "OPERATIVE REPORT - 03/21/2023\nProcedure: radical local excision, right vulva; right inguinal sentinel lymph node biopsy with radiotracer and blue dye.\nAnesthesia: general (LMA), stress-dose hydrocortisone given. Extubated in the OR without difficulty.\nFindings: 1.5 cm plaque right labium majus; excised with 1.5 cm gross margins. Two sentinel nodes identified in the right groin.\nEBL 50 mL. No complications. Observed overnight for her lung disease, discharged home the next day on usual medications; methotrexate to resume 1 week post-op.\n\nPATHOLOGY (finalized 3/27): invasive keratinizing SCC, 1.5 cm, depth of invasion 2.1 mm, no LVSI, margins negative (closest 11 mm), sentinel nodes 0/2. FIGO stage IB.\n\nPlan: no adjuvant treatment indicated. Surveillance exams every 6 months for 2 years, then every 6-12 months. Post-op visit in 2 weeks at the cancer center."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "office_visit",
+     "start": "2023-04-11T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after vulvar surgery; diabetes",
+     "state": {
+      "weight_kg": 77.0,
+      "labs": {
+       "Hemoglobin A1c": 8.8,
+       "Creatinine": 1.65,
+       "Glucose": 171
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-11T13:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-11T13:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2023-04-11T13:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-11T13:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.8
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-11T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-04-11T13:50",
+       "body": "Three weeks after radical local excision and right groin sentinel node biopsy for a stage IB vulvar SCC. Op note and path reviewed: margins clear, nodes 0/2, no further treatment, surveillance with gyn onc. Post-op check at the cancer center went well.\n\nShe reports soreness at the incision, improving; groin site healed; walking more each day. No fever. MTX resumed. Breathing at baseline - no flare around surgery.\n\nExam: vitals as charted. Lungs distant without wheeze. Groin incision clean and dry. (Vulvar site deferred to gyn onc.)\n\nA/P: Vulvar SCC, stage IB, s/p excision - surveillance per gyn onc. T2DM - A1c today. CKD - BMP. RTC June."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "office_visit",
+     "start": "2023-06-20T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and CKD follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-06-20T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-06-20T11:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2023-06-20T11:00",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-06-20T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2023-06-20T11:10",
+       "body": "Routine follow-up. Healed from surgery and back to gardening from a stool. April A1c 8.8. Weight down a bit since last year. BP fine. No COPD flares. MTX labs today; copied to rheum.\n\nExam unremarkable for her: distant breath sounds, regular rhythm, no edema, feet intact.\n\nPlan: continue meds; AWV in September."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-18a",
+     "kind": "specialist_visit",
+     "start": "2023-09-18T09:30",
+     "service": "Gynecologic Oncology",
+     "reason": "Vulvar cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology surveillance visit",
+       "author": "gynecologic oncology",
+       "date": "2023-09-21T13:00",
+       "body": "Surveillance visit, 6 months after radical local excision and right inguinal SLNB for FIGO IB vulvar SCC. Asymptomatic. Exam: well-healed vulvar scar without lesions or thickening; groins without adenopathy; no lymphedema. No evidence of disease. Return 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "annual_physical",
+     "start": "2023-09-26T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-26T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-26T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-26T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-26T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-26T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-26T10:05",
+       "body": "Subsequent AWV.\n\nYear in review: vulvar SCC found in February, excised in March, stage IB, no evidence of disease at gyn onc last week. No hospitalizations. Prednisone and MTX unchanged.\n\nFunction: independent in ADLs; uses rail on stairs; no falls this year. Lives with husband. Vision: early cataracts, followed. Hearing ok. PHQ-2 0.\n\nExam: vitals as charted. Lungs distant. Heart regular. Feet: sensation intact to monofilament, pulses present, no lesions.\n\nPrevention: mammogram due 2024. Colonoscopy 2016 normal. Flu, updated COVID and the new RSV vaccine at a nurse visit in October - she is a good candidate with her lung disease. Labs today.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T13:00",
+     "reason": "Influenza, COVID-19 and RSV vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-10T13:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T13:07"
+      },
+      {
+       "vaccine": "RSV, unspecified",
+       "date": "2023-10-10T13:09"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T13:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2023-10-10T13:25",
+       "body": "Three vaccines today per PCP: high-dose influenza and RSV in the left deltoid (separated by more than an inch), updated COVID in the right deltoid. Screening questions negative. Pt tolerated well. Observed 15 min. Expect a sore arm; acetaminophen ok."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-24a",
+     "kind": "specialist_visit",
+     "start": "2023-10-24T10:00",
+     "service": "Nephrology",
+     "reason": "CKD follow-up",
+     "state": {
+      "labs": {
+       "Parathyroid Hormone, Intact": 172
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-10-24T10:45",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 172
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2023-10-27T09:00",
+       "body": "Nephrology 10/24/2023. CKD 3b, creatinine 1.6-1.7 this year. Vulvar SCC treated surgically in March. PTH 172 today, calcium and phosphorus normal - secondary HPT stable on vitamin D3. Hemoglobin about 11, no ESA. Potassium normal on lisinopril. Reviewed sick-day rules again (hold metformin, lisinopril and HCTZ if vomiting or unable to drink). Return 1 year.\n\nOutside Nephrology Group"
+      }
+     ]
+    },
+    {
+     "id": "2023-11-14a",
+     "kind": "specialist_visit",
+     "start": "2023-11-14T14:30",
+     "service": "Rheumatology",
+     "reason": "Rheumatoid arthritis follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2023-11-17T08:40",
+       "body": "RA follow-up 11/14/2023. Methotrexate held around vulvar surgery in March, resumed without flare. Joints: no synovitis. Patient again declines a prednisone reduction for now. Monitoring labs fine. Continue methotrexate 15 mg weekly, prednisone 10 mg daily. 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "outside_records",
+     "start": "2023-12-12T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2023-12-12T09:00",
+       "body": "Dilated diabetic eye examination 12/5/2023. Corrected VA 20/30 OD, 20/25 OS. Cataracts mild, stable. Fundus: no diabetic retinopathy, maculae flat. Return in one year."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

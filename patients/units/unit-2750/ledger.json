@@ -1,0 +1,1490 @@
+{
+  "unit": "unit-2750",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002750",
+      "given": "Holly",
+      "family": "Kaminski",
+      "birth_date": "1980-10-03",
+      "address_line": "27 Hawthorne Ridge Road",
+      "phone": "+1-617-555-0182",
+      "email": "holly.kaminski@example.test",
+      "marital_status": "married",
+      "summary": "Healthy marketing manager who joined in 2022 with a prior right ovarian detorsion and a mother with breast cancer; last seen at her December 2023 physical. Since then gynecology started a combined pill for perimenopausal symptoms, gastroenterology diagnosed functional dyspepsia, and in July 2026 she had a left ovarian torsion detorsed laparoscopically.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T10:14",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-08-29T10:14",
+              "author": "front desk",
+              "body": "Caller is moving her primary care to us; a coworker recommended the practice. Went over the membership agreement and that labs and specialists still bill her PPO. She signed up online while on the phone. New-patient visit set for 9/20 at 8:00. She will sign the release so we can get her old records. Mentioned she has no current meds and no allergies."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T14:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request sent",
+              "date": "2022-09-06T14:40",
+              "author": "front desk",
+              "body": "Signed release on file. Requested last 5 years of office notes, labs, imaging and immunizations from her prior primary care office. They said 7 to 10 business days."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "outside_records",
+          "start": "2022-09-16T11:05",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-06-04T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-10T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-16T11:05",
+              "author": "front desk",
+              "body": "42 pages received from her previous primary care office, covering 2017 through early 2022. Abstracted for the PCP:\n- Yearly physicals, mostly unremarkable. No chronic medications.\n- Pap testing done at her own gynecologist; the last result in the packet is from 2021, normal.\n- Screening mammogram in 2021 (age 41): negative, no follow-up needed.\n- Past surgery: laparoscopic detorsion of the right ovary, done before these records begin; the ovary was kept. Two vaginal deliveries.\n- Immunizations: Tdap 6/2019; Pfizer COVID series 4/2021 and booster 12/2021. Entered into our record.\n- Allergies: none known.\nFull packet scanned under Media."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "establish_care",
+          "start": "2022-09-20T08:00",
+          "end": "2022-09-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {
+              "label": "History of ovarian torsion",
+              "action": "history",
+              "note": "Right ovary, treated by laparoscopic detorsion before joining; ovary preserved",
+              "icd10": "Z87.42"
+            },
+            {
+              "label": "Family history of breast cancer",
+              "action": "diagnosed",
+              "note": "Mother, diagnosed at 54"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 79,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 70.4,
+            "height_cm": 167.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 317
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T08:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 203
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 118
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Wine with dinner most nights, usually one glass"
+            },
+            {
+              "item": "Occupation",
+              "value": "Senior marketing manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2022-09-20T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening; mother with breast cancer at 54"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-20T08:00",
+              "author": "PCP",
+              "body": "Establishing care. 41 yo woman, marketing manager, feels well, no complaints today. Wanted a doctor she could actually reach.\n\nPMH: nothing chronic. Remote right ovarian torsion, laparoscopic detorsion, ovary kept, no problems since.\nPSH: as above. SVD x2.\nMeds: none. No supplements.\nAllergies: none known.\nGyn: sees her own gynecologist for Paps; last one 2021, normal per records. Periods monthly. Never used the pill. Mammogram 2021 negative.\nFH: mother breast cancer at 54. Father type 2 diabetes. No colon or ovarian cancer that she knows of.\nSH: married, two kids, works long hours. Never smoked. A glass of wine with dinner most nights. Exercise is sporadic at best.\nROS: negative in full.\n\nExam: vitals as charted. Well appearing. HEENT clear, thyroid smooth without nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, well-healed laparoscopy scars. Extremities warm, no swelling. Skin no worrisome lesions. Mood bright.\n\nA/P\n1. Health maintenance: CBC, CMP, lipids, A1c (dad's diabetes). One-time HIV and hep C screens, she agrees. Mammogram ordered for this fall. Tdap current (2019). Flu and the new bivalent COVID booster next month at a nurse appointment.\n2. FH breast cancer, mother at 54: on the list; yearly mammography.\n3. Hx right ovarian torsion: noted, nothing to do.\n4. Alcohol: AUDIT-C 4. Talked about keeping it to a few nights a week. She was receptive.\nPhysical next year."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0,
+            "height_cm": 167.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "portal_message",
+          "start": "2022-09-21T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your lab results",
+              "date": "2022-09-21T16:20",
+              "author": "PCP",
+              "body": "Hi Holly, everything came back fine. Blood counts, kidney and liver tests and sugar (A1c) are normal. The LDL cholesterol is flagged slightly high at 118, but your HDL (good cholesterol) is excellent and your overall risk is low, so nothing to treat; we will recheck next year. HIV and hepatitis C screens negative. Nothing to change. The mammogram order is in; the imaging center will call you to book."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "temp_c": 36.5
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T12:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T12:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T12:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-11T12:30",
+              "author": "RN",
+              "body": "On her lunch hour for flu and bivalent COVID per PCP plan. Afebrile, no recent illness, no prior vaccine reactions. Flu IM left deltoid, Pfizer bivalent IM right deltoid. Waited 15 minutes, no problems. VIS given. Told her a sore arm or a tired day is common."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "imaging",
+          "start": "2022-10-24T07:45",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-24T07:45",
+              "text": "Outside imaging center. Bilateral screening mammogram with tomosynthesis, compared with a prior study from 2021. Breast tissue is scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcification in either breast. Skin and nipples unremarkable. No change from the prior exam.",
+              "conclusion": "BI-RADS 1: negative. Routine yearly screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-24T07:45"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "portal_message",
+          "start": "2022-10-26T09:10",
+          "reason": "Mammogram result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2022-10-26T09:10",
+              "author": "PCP",
+              "body": "Your mammogram was normal, no change from last year. Next one in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T20:42",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2023-05-22T20:42",
+              "author": "patient",
+              "body": "Hi, could I get a printout of my vaccines? Work is asking for it before a conference trip. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2023-05-23T09:05",
+              "author": "MA",
+              "body": "Hi Holly, your immunization record is attached as a PDF. It shows Tdap, your COVID doses and last fall's flu shot. Let us know if they need anything on letterhead."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2023-06-12T08:31",
+              "author": "front desk",
+              "body": "Pt cancelled tomorrow's check-in, product launch week. Says she feels fine and will just come in for her physical later in the year. Offered video, she declined for now."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T12:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T12:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-10-17T12:15",
+              "author": "RN",
+              "body": "Flu and 2023-24 COVID vaccine. No fever or illness; did fine with last year's doses. Flu left deltoid, COVID right deltoid. Observed 15 min, tolerated well. Reminded her the physical is due in December; she booked it at checkout."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-12-07a",
+          "kind": "annual_physical",
+          "start": "2023-12-07T07:40",
+          "end": "2023-12-07T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; questions about breast cancer risk",
+          "vitals": {
+            "bp": [
+              115,
+              77
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 72.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-07T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-07T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-12-07T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 85
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-07T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-12-07T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-07T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Yearly screening; family history of breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-12-07T07:40",
+              "author": "PCP",
+              "body": "Annual exam. 43 yo. No new symptoms. What's on her mind this year is her own breast cancer risk; her mother's diagnosis at 54 has been on her mind, and she wants to know if there's anything she should be doing differently.\n\nRisk history: first period at 12. Two pregnancies, two vaginal births, nursed each baby about six months. Has never taken birth control pills. No breast biopsies. No lumps, skin change or nipple discharge.\nHabits: wine with dinner most evenings, one glass, sometimes two on weekends. Not exercising; work and kids eat the day.\nMeds: none. Allergies: none known.\n\nExam: BMI 26. Vitals as charted. Thyroid normal. Heart and lungs unremarkable. Breasts: examined sitting and supine, symmetric, no palpable masses, no skin or nipple changes, no axillary or supraclavicular nodes. Abdomen benign. No swelling of the legs. Skin fine.\n\nA/P\n1. Breast cancer risk: one first-degree relative, diagnosed after 50. Explained this nudges her risk up a little over average but does not meet criteria for a genetics referral or extra imaging. Her own history (early pregnancies, breastfeeding, no pill use) is on the favorable side. The things she controls: alcohol is the big one (each daily drink adds risk), regular exercise (aim 150 min/week), and keeping weight steady. She wants to try to cut wine to weekends and start walking at lunch. Mammogram ordered, due next month.\n2. Health maintenance: CBC, CMP, lipids, A1c today. Flu and COVID done in October. Pap is through her gynecologist. Colon screening starts at 45; we'll take that up in two years.\n3. PHQ-2 negative. AUDIT-C 4, as above.\nReturn in a year, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "portal_message",
+          "start": "2023-12-08T13:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2023-12-08T13:55",
+              "author": "PCP",
+              "body": "Labs from yesterday are all normal, very similar to last year. A1c normal. Nice work on the walking plan; the imaging center has your mammogram order."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "date": "2023-12-08T19:12",
+              "author": "patient",
+              "body": "Great, thank you! Booked the mammogram for mid January."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "imaging",
+          "start": "2024-01-16T08:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-01-16T08:10",
+              "text": "Outside imaging center. Two-view bilateral digital screening mammogram with tomosynthesis. Comparison October 2022 and 2021. Scattered areas of fibroglandular density. No new or suspicious mass, no suspicious grouped calcifications, no distortion. Axillae unremarkable on the views obtained.",
+              "conclusion": "BI-RADS 1: negative. Return to yearly screening.",
+              "issued": "2024-01-17T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-01-16T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram normal",
+              "date": "2024-01-18T08:45",
+              "author": "PCP",
+              "body": "Holly, the mammogram is normal again. Same plan, once a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "specialist_visit",
+          "start": "2024-03-11T10:30",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Hot flashes, night sweats, poor sleep, irregular periods",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78,
+            "weight_kg": 71.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-11T11:05",
+              "resulted": "2024-03-12T14:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "unit": "u[IU]/mL",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-11T11:05",
+              "resulted": "2024-03-12T14:00",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "unit": "m[IU]/mL",
+                  "value": 45
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation letter",
+              "date": "2024-03-19T09:20",
+              "author": "gynecology",
+              "body": "Outside gynecology group. Visit date 3/11/2024.\n\nDear colleague,\nI saw Ms. Kaminski, 43, a few months after her physical with you. For roughly half a year she has had hot flashes, waking soaked at night, and broken sleep, and her periods have become unpredictable, anywhere from three to six and a half weeks apart and lighter than they used to be. No racing heart, shakiness or weight loss. She takes nothing regularly. NKDA. She had a laparoscopic right ovarian detorsion years ago. Two vaginal deliveries. Never smoker; drinks socially. Her mother went through menopause at 45 and later had breast cancer at 54; her father has type 2 diabetes.\n\nBP 130/85, pulse 78, BMI 26. Thyroid normal size, nontender; no eye findings of thyroid disease. Breast, abdominal and pelvic exams normal.\n\nLabs: TSH 2.5 (normal). FSH 45, consistent with the menopausal transition.\n\nImpression: perimenopause with bothersome vasomotor symptoms and cycle irregularity. Thyroid not a factor.\n\nPlan: we discussed options. As a healthy nonsmoker under 50 with normal blood pressure, she is a reasonable candidate for a low-dose combined pill, which should settle both the flashes and the cycles. Her mother's breast cancer was reviewed; a single postmenopausal relative is not a contraindication. Started norethindrone acetate 1 mg / ethinyl estradiol 20 mcg, one daily, 28-day packs with the usual hormone-free week. Reviewed clot warning signs. Recheck in a year, sooner if needed.\n\nThank you for letting me share in her care."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T07:58",
+          "reason": "Gynecology letter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw gyn",
+              "date": "2024-03-20T07:58",
+              "author": "patient",
+              "body": "FYI I saw the gynecologist last week for the hot flashes. She put me on a low dose pill. Already sleeping a bit better. Just wanted you to know!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw gyn",
+              "date": "2024-03-20T12:41",
+              "author": "PCP",
+              "body": "Thanks for letting me know, I have her letter. Glad the nights are better already. Any calf pain or swelling, chest pain or sudden shortness of breath on the pill, get seen right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-08a",
+          "kind": "portal_message",
+          "start": "2024-07-08T21:16",
+          "reason": "Upper abdominal discomfort",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stomach question",
+              "date": "2024-07-08T21:16",
+              "author": "patient",
+              "body": "Since around May I've had this dull ache in my upper stomach and bloating after I eat, on and off. Not terrible, just annoying. I tried the store brand omeprazole for two weeks in June and honestly can't tell if it did anything. No vomiting, no black stool, weight is not down (wish it were). I'd rather go straight to a GI doctor if that's ok since my plan doesn't need a referral."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stomach question",
+              "date": "2024-07-09T07:32",
+              "author": "PCP",
+              "body": "That's fine with me, and you're welcome to come in first if you'd like an exam. What you describe doesn't sound dangerous. Reasons not to wait: vomiting, black or bloody stool, trouble swallowing, losing weight without trying, or pain that wakes you or becomes severe. Please ask the GI office to send us their note."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "specialist_visit",
+          "start": "2024-09-03T13:20",
+          "service": "Gastroenterology",
+          "reason": "Upper abdominal discomfort and postprandial bloating",
+          "vitals": {
+            "bp": [
+              117,
+              75
+            ],
+            "hr": 77,
+            "weight_kg": 78.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-03T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 323
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-03T14:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-03T14:10",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 32
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-03T14:10",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-03T14:25",
+              "results": [
+                {
+                  "test": "Helicobacter pylori Breath Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation letter",
+              "date": "2024-09-10T10:05",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology practice. Visit date 9/3/2024.\n\nReason: four months of upper abdominal discomfort and bloating.\n\nHistory: 43-year-old woman, followed by gynecology for menopausal transition symptoms, who self-referred. Since spring she has had an intermittent dull, gnawing ache in the upper abdomen with bloating that builds after meals. It is not sharp or crampy, has nothing to do with exertion, and is not tied to her bowels. No weight loss, vomiting, black stools or vomiting blood. She took omeprazole over the counter for two weeks in June; whether it helped is unclear to her.\n\nPMH: perimenopause; prior right ovarian torsion with laparoscopic detorsion.\nMedications: multivitamin daily; combined oral contraceptive (norethindrone acetate/ethinyl estradiol 1/20).\nAllergies: NKDA.\nFamily history: mother with breast cancer at 54; father with type 2 diabetes. No GI cancers.\nSocial: never smoker; wine with dinner most nights; senior marketing manager.\n\nExam: BMI 28; vitals within normal limits. Abdomen soft, no tenderness, no mass or organomegaly. Otherwise unremarkable.\n\nData: CBC, comprehensive metabolic panel, lipase and celiac serology (tTG IgA) normal. Urea breath test for H. pylori negative.\n\nAssessment: functional dyspepsia, postprandial distress pattern. Under 60 with no alarm features, so endoscopy is not indicated now. The earlier two-week acid suppression trial was too short to judge.\n\nPlan: omeprazole 20 mg once daily 30 minutes before breakfast for eight weeks. Smaller, lower-fat meals; less wine at night. Telehealth follow-up after the course."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0,
+            "labs": {
+              "Lipase": 31
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "portal_message",
+          "start": "2024-09-11T12:05",
+          "reason": "Gastroenterology letter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI note",
+              "date": "2024-09-11T12:05",
+              "author": "PCP",
+              "body": "Hi Holly, the GI note came through. All the bloodwork and the breath test were normal, which is reassuring. Their plan (eight weeks of omeprazole before breakfast, smaller meals) is what I would have suggested. Let me know how you're doing once the course is done."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI note",
+              "date": "2024-09-11T19:40",
+              "author": "patient",
+              "body": "Will do, thanks. Day 8 and I think it's a little better already."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-12T16:40",
+          "service": "Gastroenterology",
+          "reason": "Follow-up functional dyspepsia",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2024-11-15T11:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology practice. Video follow-up 11/12/2024.\n\nMs. Kaminski finished eight weeks of omeprazole 20 mg before breakfast. The upper abdominal ache is mostly gone and bloating happens only after large dinners. No new symptoms, no alarm features.\n\nAssessment: functional dyspepsia, much improved.\nPlan: stop the daily omeprazole. She may take 20 mg for a few days at a time if symptoms flare. Meal-size habits to continue. Return as needed. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "portal_message",
+          "start": "2024-11-25T10:00",
+          "reason": "Physical due",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your yearly physical",
+              "date": "2024-11-25T10:00",
+              "author": "front desk",
+              "body": "Hi Holly, our records show your annual physical is due in December. Reply here or call to pick a time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your yearly physical",
+              "date": "2024-11-26T22:03",
+              "author": "patient",
+              "body": "December is a zoo at work. Can I do it after the holidays? I'll reach out in January."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your yearly physical",
+              "date": "2024-11-27T08:15",
+              "author": "front desk",
+              "body": "Of course. Just message us when you're ready."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "specialist_visit",
+          "start": "2025-03-18T09:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Annual gynecologic exam",
+          "vitals": {
+            "bp": [
+              117,
+              77
+            ],
+            "weight_kg": 77.8
+          },
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-03-18T09:20",
+              "text": "Liquid-based cervical cytology with high-risk HPV co-testing. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2025-03-24T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology annual visit letter",
+              "date": "2025-03-26T14:10",
+              "author": "gynecology",
+              "body": "Outside gynecology group. Visit date 3/18/2025.\n\nMs. Kaminski returned for her yearly exam, one year on the 1/20 combined pill. Hot flashes are rare now, she sleeps through most nights, and her bleeding comes on schedule during the pill-free week. No headaches, leg swelling or breakthrough bleeding.\n\nBP normal today. Breast and pelvic exams normal. Pap with HPV co-test collected; result NILM, HPV negative.\n\nPlan: continue norethindrone acetate/ethinyl estradiol 1/20 daily. Revisit around 50 or sooner if anything changes. Next routine screening per guidelines. NKDA."
+            }
+          ],
+          "measure": [
+            "bp",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "portal_message",
+          "start": "2025-11-10T10:00",
+          "reason": "Physical overdue",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Checking in about your physical",
+              "date": "2025-11-10T10:00",
+              "author": "front desk",
+              "body": "Hi Holly, it's been almost two years since your last physical with us. We'd love to get you in. Reply with a few days that work, or call the office."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "ed_visit",
+          "start": "2026-07-28T09:35",
+          "end": "2026-07-29T11:20",
+          "service": "Emergency Medicine",
+          "reason": "Sudden severe lower abdominal pain with nausea",
+          "vitals": [
+            {
+              "time": "2026-07-28T09:40",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 104,
+              "rr": 18,
+              "temp_c": 37.0,
+              "weight_kg": 82.0,
+              "height_cm": 167.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-28T09:55",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-28T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 337
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-28T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-07-28T09:55",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-07-28T11:05",
+              "text": "Transabdominal and transvaginal pelvic ultrasound with color and spectral flow imaging. Uterus normal in size and contour; endometrium thin and uniform. Left ovary enlarged at 6.2 x 4.9 x 4.4 cm, with follicles displaced to the periphery. No venous flow is detected in the left ovary and arterial flow is diminished. No discrete adnexal mass. Right ovary normal in size and appearance with normal arterial and venous flow. No free fluid.",
+              "conclusion": "Enlarged left ovary with absent venous and diminished arterial flow, consistent with left ovarian torsion in this clinical setting. Normal right ovary."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-28T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-08-04T09:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 7/28/2026.\n\nHPI: 45-year-old woman with prior right ovarian torsion (laparoscopic detorsion) and perimenopause on a combined pill, here with abrupt severe lower abdominal pain since about 6:30 this morning, now constant and severe, with nausea. She has had milder on-and-off lower belly pain over the past week. No vomiting, fever, dysuria or frequency. LMP two weeks ago; cycles regular.\nMeds: norethindrone acetate/ethinyl estradiol 1/20 daily, multivitamin. Allergies: NKDA.\nPSH: right ovarian detorsion, laparoscopic; vaginal delivery x2.\nSH: never smoker, wine with dinner most nights, marketing manager.\n\nExam: T 37.0 C, BP 122/78, HR 104, RR 18. Weight 82 kg, height 167 cm, BMI 29. Uncomfortable, holding still. Abdomen soft, focal left lower quadrant tenderness, no rebound, no guarding. Heart tachycardic, regular. Lungs clear.\n\nED course: urine hCG negative. CBC, BMP and urinalysis unremarkable. Morphine 4 mg IV and ondansetron 4 mg IV with relief of nausea and partial relief of pain. Pelvic ultrasound: enlarged left ovary with absent venous and reduced arterial flow, no mass, right ovary normal.\n\nMDM: given her history and the imaging, left ovarian torsion is the leading diagnosis. Gynecology called and saw her at the bedside; taken to the OR for laparoscopy.\n\nDisposition: admitted to gynecology."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative report",
+              "date": "2026-08-04T09:31",
+              "author": "gynecology",
+              "body": "Regional hospital. Date of surgery 7/28/2026.\n\nPreoperative diagnosis: suspected left ovarian torsion.\nPostoperative diagnosis: left ovarian torsion.\nProcedure: diagnostic laparoscopy with detorsion of the left ovary.\nAnesthesia: general endotracheal.\nEBL: minimal.\n\nFindings: the left ovary was enlarged, edematous and dusky, twisted twice (720 degrees) on its pedicle. After untwisting, color returned within several minutes and the ovary was judged viable and left in place. No ovarian mass or cyst requiring removal. Right ovary and both fallopian tubes normal. Uterus normal. Upper abdomen unremarkable.\n\nDescription: umbilical entry, pneumoperitoneum, two lower ports under direct vision. Adnexa inspected, left adnexa untwisted with atraumatic graspers, reperfusion observed. Pelvis irrigated. Ports removed under vision, fascia closed at the umbilicus, skin closed with absorbable suture and skin glue.\n\nCondition: stable to recovery. Patient tolerated the procedure well."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2026-08-04T09:32",
+              "author": "gynecology",
+              "body": "Regional hospital. Admitted 7/28/2026, discharged 7/29/2026.\n\nDiagnosis: left ovarian torsion, treated by laparoscopic detorsion; ovary preserved.\nHospital course: uneventful overnight stay after surgery. Pain controlled on oral medication by morning, eating and walking, voiding without difficulty. Vitals normal at discharge.\n\nDischarge medications:\n- acetaminophen 1000 mg by mouth every 8 hours for 5 days\n- ibuprofen 600 mg by mouth every 6 hours as needed with food, up to 5 days\n- continue norethindrone acetate/ethinyl estradiol 1/20 daily\n- continue multivitamin\nAllergies: NKDA.\n\nInstructions: no heavy lifting for two weeks; may shower. Return for fever, worsening pain, heavy bleeding or redness at incisions. Gynecology office visit in two weeks. Copy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "portal_message",
+          "start": "2026-07-31T18:47",
+          "reason": "Recent emergency surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Had surgery this week",
+              "date": "2026-07-31T18:47",
+              "author": "patient",
+              "body": "Hi, wanted to let you know I ended up in the ER Tuesday with really bad pain, and it was my left ovary twisted this time. They untwisted it laparoscopically the same day and saved the ovary. Home since Wednesday and doing ok, sore. I have a follow-up with my gynecologist on the 11th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Had surgery this week",
+              "date": "2026-08-01T09:22",
+              "author": "PCP",
+              "body": "Oh no, I'm sorry, and really glad they saved it. Rest up. I'll watch for the hospital records. If you want a check-in before your gyn appointment, or anything feels off (fever, worse pain, a red or draining incision), message or call and we'll see you the same day."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04b",
+          "kind": "telephone",
+          "start": "2026-08-04T14:20",
+          "reason": "Post-hospital check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call after hospital records received",
+              "date": "2026-08-04T14:20",
+              "author": "RN",
+              "body": "Hospital ED record, operative report and discharge summary arrived today and are scanned to the chart for the PCP. Called pt: sore but improving, using the acetaminophen and only occasional ibuprofen, incisions look fine to her, no fever. Gyn post-op visit is on 8/11. Reminded her she is overdue for a physical; she will call once she is back on her feet."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T14:15",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Postoperative visit after laparoscopic left ovarian detorsion",
+          "vitals": {
+            "bp": [
+              112,
+              76
+            ],
+            "hr": 57,
+            "temp_c": 36.4
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology postoperative letter",
+              "date": "2026-08-17T15:40",
+              "author": "gynecology",
+              "body": "Outside gynecology group. Visit date 8/11/2026.\n\nTwo weeks after laparoscopic detorsion of the left ovary. Pain has resolved and she stopped the acetaminophen and ibuprofen after four days. Back at work. No fever, no abnormal bleeding.\n\nExam: afebrile, vitals normal. Port sites clean, dry and healed. Abdomen soft and nontender.\n\nPlan: no activity restrictions. Continue norethindrone acetate/ethinyl estradiol 1/20. Annual visit in the spring. NKDA."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "History of ovarian torsion|Z87.42": {
+        "code": "Z87.42",
+        "display": "Personal history of other diseases of the female genital tract",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

@@ -1,0 +1,3106 @@
+{
+  "unit": "unit-1999",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001999",
+      "given": "Kevin",
+      "family": "Shapiro",
+      "birth_date": "1971-01-29",
+      "address_line": "41 Pomeroy Meadow Road, Apt 3",
+      "phone": "+1-774-555-0110",
+      "email": "kevin.shapiro@example.test",
+      "marital_status": "single",
+      "summary": "Former construction laborer on Medicaid with severe alcohol use disorder and compensated alcoholic cirrhosis who joins the practice in August 2024. Three withdrawal-delirium admissions in eleven months lead to acamprosate and an outpatient addiction program, after which he reports abstinence.",
+      "events": [
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T10:14",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2024-08-12T10:14",
+              "author": "front desk",
+              "body": "Caller wants to transfer his primary care here. Says his old office is too far now that he is living in Easthampton and he has no car most days. Medicaid card on file, plan is accepted. His sister may drive him to appointments. Offered the 8/20 new patient slot at 9:00, he took it. Records release form emailed for his former PCP office. Reminded him to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T09:00",
+          "end": "2024-08-20T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Alcohol use disorder, severe",
+              "action": "history",
+              "onset": "2009-06-01",
+              "icd10": "F10.20"
+            },
+            {
+              "label": "Alcoholic cirrhosis of liver",
+              "action": "history",
+              "onset": "2021-03-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Thiamine deficiency",
+              "action": "history",
+              "onset": "2021-03-01",
+              "icd10": "E51.9"
+            },
+            {
+              "label": "Major depressive disorder, single episode, unspecified",
+              "action": "history",
+              "onset": "2018-01-01",
+              "icd10": "F32.9"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "history",
+              "onset": "2017-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "thiamine 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thiamine deficiency"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "GERD"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              84
+            ],
+            "hr": 61,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 74.0,
+            "height_cm": 178.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 96
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.09
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 82
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T10:10",
+              "resulted": "2024-08-21T16:20",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 150
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About 750 mL vodka daily for 15 years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed, formerly construction laborer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2024-08-20T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-20T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-08-20T10:00"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-08-20T10:00"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-08-20T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hep-referral-2024",
+              "action": "placed",
+              "order": "Hepatology referral",
+              "category": "referral",
+              "to": "Hepatology",
+              "reason": "alcoholic cirrhosis, establish specialty follow-up"
+            },
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "current smoker, 30 pack-years"
+            },
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "date": "2024-08-20T10:40",
+              "author": "PCP",
+              "body": "53M new to me, transferring from a prior primary care office (records requested). Came alone today.\n\nHe is straightforward about drinking: roughly a fifth of vodka a day for about fifteen years. Has tried to quit on his own several times; each time he got shaky and sweaty and went back to it within a day or two. Never been through a detox unit or a program. Not interested in cutting down right now, though he says he knows where it is heading - his father drank, had cirrhosis, and died at 61. Last drink was last night.\n\nKnown problems per patient and pill bottles: alcohol use disorder, alcoholic cirrhosis (told by the old office a few years ago, no specialist), hypertension, thiamine deficiency, depression, reflux. Appendix out at 22. No other surgery.\n\nMeds: thiamine 100 daily, folic acid 1 mg daily, a multivitamin, omeprazole 20 daily, amlodipine 5 daily. Says he takes them most days. NKDA.\n\nFamily: father as above. Mother has high blood pressure and type 2 diabetes. One sister, who has anxiety; she is the person he leans on.\n\nSocial: lives alone in an apartment in town. Worked construction as a laborer for years, out of work now. Smokes a pack a day, has since his early twenties, ~30 pack-years. No other drugs.\n\nMood: low on and off for years, given a depression diagnosis at the old office. Sleep is broken, energy poor. Denies any thoughts of harming himself. PHQ-9 9. Does not want an antidepressant, 'I've got enough pills.' AUDIT-C 12.\n\nROS: no jaundice he has noticed, no belly swelling, no black stools or vomiting blood, no confusion. Heartburn controlled on omeprazole.\n\nExam: thin, alert, smells of tobacco. BP 134/84. Wt 74 kg, ht 178 cm. Anicteric. No asterixis, no tremor at rest today. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no ascites, liver edge not felt, healed RLQ scar. No spider angiomata seen, no palmar erythema. No leg swelling. Oriented, fluent, appropriate.\n\nA/P\n1. Severe alcohol use disorder. Long talk about the risks, including withdrawal if he stops abruptly - he should call us or go to the ED if he gets confused, sees things, or shakes badly. He is not ready for treatment; door is open.\n2. Alcoholic cirrhosis, never seen hepatology. CMP, GGT, CBC, PT/INR today. Referring to hepatology for staging and surveillance. Hep B surface Ag/Ab, hep C, HIV today. Starting hep A and hep B series today along with PCV20.\n3. HTN at goal on amlodipine 5. Continue.\n4. Thiamine deficiency - continue thiamine, folate, MVI.\n5. Depression, mild by PHQ. Declines medication. Will recheck at visits.\n6. GERD - continue omeprazole.\n7. Tobacco - advised to quit, not ready, declines nicotine replacement. Qualifies for lung screening; low-dose CT ordered.\n8. Colon screening never done - FIT kit given.\n\nReturn in about 3 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 74.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Alanine Aminotransferase": 50,
+              "Alkaline Phosphatase": 85,
+              "Aspartate Aminotransferase": 72,
+              "Bilirubin, Total": 1.2,
+              "Gamma Glutamyl Transferase": 150,
+              "Magnesium": 1.8,
+              "Mean Corpuscular Volume": 96
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T08:35",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-08-22T08:35",
+              "author": "PCP",
+              "body": "Hi Kevin, your blood work from Tuesday is back. Your liver enzymes (AST 72, ALT 50, GGT 150) are elevated in the pattern we see with heavy alcohol use, which fits what we talked about. Bilirubin 1.2 is borderline. Blood clotting test, blood counts, kidneys and cholesterol are fine, magnesium is at the low end of normal (1.8). Hepatitis B, hepatitis C and HIV tests are all negative - you are not immune to hepatitis B, which is why we started that vaccine. The hepatology office should call you to set up a visit. Second hep B shot is due in about 4 weeks; the front desk can book a nurse visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "outside_records",
+          "start": "2024-08-29T14:02",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2024-08-29T14:02",
+              "author": "outside primary care",
+              "body": "Received by fax, 22 pages: office notes 2019 to 2024 from his previous primary care practice.\n\nProblem list as they kept it: alcohol dependence, alcoholic cirrhosis, hypertension, thiamine deficiency, major depression, GERD. Past surgical: appendectomy.\nMedications: thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily, omeprazole 20 mg daily, amlodipine 5 mg daily.\nAllergies: none known.\nImmunizations: Tdap 2019. No pneumococcal or hepatitis vaccines on record.\nNotes repeatedly document heavy daily alcohol use with counseling given and declined. Visits were irregular, often a year apart.\n\nAbstracted to chart; nothing new. Original in media tab."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "nurse_visit",
+          "start": "2024-09-19T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-19T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-09-19T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "date": "2024-09-19T13:45",
+              "author": "RN",
+              "body": "In for second dose of the two-dose hep B series. No problems after the first one. Given IM left deltoid, lot recorded. Tolerated. Hep B series now complete. Hep A #2 due February. He has not returned the FIT kit yet - reminded him, says it is on his kitchen table."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "lab_only",
+          "start": "2024-09-24T11:00",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-23T07:00",
+              "resulted": "2024-09-24T15:10",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-09-24T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2024-09-25T09:12",
+              "author": "MA",
+              "body": "FIT negative. Per PCP, repeat in one year. Letter mailed to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "imaging",
+          "start": "2024-09-26T08:20",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-09-26T08:20",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: Current smoker, 30 pack-years, age 53. Asymptomatic.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nComparison: None.\nFindings: No pulmonary nodules. No consolidation or effusion. Airways patent. Heart size normal; no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. The visualized upper abdomen is limited by technique. No aggressive osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-09-26T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT reviewed",
+              "date": "2024-09-27T12:30",
+              "author": "PCP",
+              "body": "Baseline lung screening CT negative, Lung-RADS 1. Repeat next September. Portal note sent; also used it as another nudge to quit smoking."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "specialist_visit",
+          "start": "2024-10-08T14:00",
+          "service": "Hepatology",
+          "reason": "alcoholic cirrhosis",
+          "orders": [
+            {
+              "id": "hep-referral-2024",
+              "action": "done",
+              "date": "2024-10-08T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology consultation",
+              "date": "2024-10-11T09:40",
+              "author": "hepatology",
+              "body": "Outside hepatology group - new patient consultation, seen 10/8/2024. Letter to the referring primary care physician.\n\nThank you for sending this 53-year-old man with a known diagnosis of alcohol-related cirrhosis made at his previous practice, never previously seen by a liver specialist. He drinks roughly 750 mL of vodka daily and smokes a pack per day. He has had no jaundice, ascites, encephalopathy or GI bleeding. Other history: hypertension, reflux, depression, thiamine deficiency, remote appendectomy. Medications: thiamine, folic acid, multivitamin, omeprazole 20 mg, amlodipine 5 mg. No known drug allergies.\n\nOn examination he was alert without asterixis, anicteric, abdomen soft without fluid wave or splenomegaly.\n\nYour recent labs: AST 72, ALT 50, bilirubin 1.2, albumin and INR normal, platelets normal, GGT 150. Viral hepatitis screen negative; I see hepatitis A and B vaccination is underway, which I appreciate.\n\nImpression: compensated alcohol-related cirrhosis, Child-Pugh class A.\n\nRecommendations:\n1. Complete abstinence is the single most important thing for his liver. We discussed this directly.\n2. Liver ultrasound now for hepatocellular carcinoma surveillance and every 6 months thereafter.\n3. Screening upper endoscopy for varices - scheduled with our endoscopy unit.\n4. Avoid NSAIDs; acetaminophen no more than 2 g daily.\n5. Follow-up here in about 6 to 8 months.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "imaging",
+          "start": "2024-10-17T10:15",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2024-10-17T10:15",
+              "text": "ULTRASOUND ABDOMEN, COMPLETE\nIndication: Alcohol-related cirrhosis; hepatocellular carcinoma surveillance.\nComparison: None available.\nLiver: Coarsened echotexture with a nodular surface contour, consistent with cirrhosis. No focal hepatic lesion. Main portal vein patent with normal direction of flow on color imaging.\nGallbladder: No stones or wall thickening. Common bile duct 4 mm.\nPancreas: Visualized portions unremarkable.\nSpleen: 10.8 cm, normal in size.\nKidneys: Normal size and echogenicity bilaterally; no hydronephrosis.\nAorta: Normal caliber where seen.\nNo ascites.",
+              "conclusion": "Cirrhotic liver morphology without focal lesion. No ascites. Normal spleen size. Patent portal vein."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver ultrasound received",
+              "date": "2024-10-18T08:05",
+              "author": "PCP",
+              "body": "Hepatology's surveillance US: cirrhotic liver, no mass, no ascites, spleen normal. They will repeat in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T15:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T15:15"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-10-22T15:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-22T15:30",
+              "author": "RN",
+              "body": "Here for seasonal shots. Agreed to start the shingles series too after the PCP's suggestion at intake. Influenza L deltoid, COVID R deltoid, Shingrix R deltoid lower site. Warned the shingles shot can make him feel achy for a day or two. Observed 15 min, no reaction. Shingrix #2 in 2 to 6 months - will pair with hep A #2 in February."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "procedure_visit",
+          "start": "2024-11-14T08:30",
+          "service": "Hepatology",
+          "reason": "variceal screening endoscopy",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "date": "2024-11-18T11:20",
+              "author": "gastroenterology",
+              "body": "Outside endoscopy unit, procedure date 11/14/2024. Copy to primary care.\n\nProcedure: Esophagogastroduodenoscopy.\nIndication: Screening for esophageal varices in compensated alcohol-related cirrhosis.\nSedation: Monitored anesthesia care. Tolerated well.\nAllergies: NKDA.\n\nFindings:\nEsophagus: Normal mucosa throughout. No varices. No esophagitis. Z-line regular.\nStomach: Normal; no portal hypertensive gastropathy, no gastric varices.\nDuodenum: Normal to the second portion.\nNo biopsies taken.\n\nImpression: Normal EGD. No esophageal or gastric varices. Reflux without esophagitis on current PPI.\n\nPlan: No beta-blocker indicated. Repeat variceal screening per hepatology, typically in 2 to 3 years if he continues to drink, sooner if anything changes. Continue omeprazole."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "ed_visit",
+          "start": "2024-12-03T11:05",
+          "end": "2024-12-03T17:40",
+          "service": "Emergency Medicine",
+          "reason": "hallucinations and agitation",
+          "conditions": [
+            {
+              "label": "Alcohol withdrawal delirium",
+              "action": "diagnosed",
+              "onset": "2024-12-03",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-12-03T11:10",
+              "bp": [
+                160,
+                100
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-03T11:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-03T11:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-03T11:30",
+              "results": [
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 96
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 49.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-03T11:30",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                },
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-12-03T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-12-09T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED physician record, visit 12/3/2024. Received with the discharge summary.\n\nCC: seeing things, agitated.\n\nHPI: 53 y/o man brought in by his sister, who says since this morning he has been seeing things that aren't there and can't settle. He drinks about a fifth of vodka every day and says his last drink was roughly 18 hours ago. Has tried to stop before. PMH: alcohol use disorder, alcoholic cirrhosis, HTN, thiamine deficiency, depression, GERD. PSH: appendectomy age 22. Home meds: thiamine 100 mg, folic acid 1 mg, MVI, omeprazole 20 mg, amlodipine 5 mg, all daily. Allergies: NKDA. Smokes 1 ppd x 30 years.\n\nTriage: BP 160/100, HR 110, RR 22, T 37.8 C.\n\nExam: Anxious, shaking, sweating. Pupils dilated. Reflexes brisk throughout. Knows who he is, where he is and the date, but keeps glancing around the room and responding to things that aren't there. No focal neuro deficit.\n\nLabs: Na 140, K 4.0, Cl 100, BUN 18, Cr 1.1, glucose 90, Mg 1.8, Ca 9.2. AST 72, ALT 50, GGT 150. MCV 96.\n\nED course: IV thiamine given before any dextrose. Lorazepam IV in repeated doses by withdrawal scale. Magnesium sulfate IV. Fluids.\n\nImpression: Alcohol withdrawal delirium.\nDisposition: Admitted to the medical floor for ongoing withdrawal management."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03b",
+          "kind": "hospital_admission",
+          "start": "2024-12-03T17:40",
+          "end": "2024-12-06T12:30",
+          "service": "Hospital Medicine",
+          "reason": "alcohol withdrawal delirium",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-12-03T18:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-12-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-12-09T10:16",
+              "author": "hospital medicine",
+              "body": "Regional hospital, medicine service. Admitted 12/3/2024, discharged 12/6/2024.\n\nPrincipal diagnosis: Alcohol withdrawal delirium.\nOther: Severe alcohol use disorder; alcoholic cirrhosis, compensated; hypertension; thiamine deficiency; major depressive disorder; GERD.\n\nCourse: Admitted from the ED with hallucinations, tremor and autonomic hyperactivity about 18 hours after his last drink. Managed with symptom-triggered IV lorazepam on a withdrawal protocol, high-dose IV thiamine for 3 days, IV fluids and magnesium replacement. Hallucinations cleared by the second hospital day and he needed no further lorazepam after the morning of 12/5. No seizures. Blood pressure settled back on amlodipine as withdrawal resolved. Addiction consult offered; he declined residential treatment and took a list of outpatient resources.\n\nDischarge meds (unchanged from home): thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily, omeprazole 20 mg daily, amlodipine 5 mg daily. No benzodiazepines prescribed at discharge.\nAllergies: NKDA.\n\nFollow-up: Primary care within one week."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "telephone",
+          "start": "2024-12-04T09:50",
+          "reason": "family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's sister",
+              "date": "2024-12-04T09:58",
+              "author": "RN",
+              "body": "Sister called (listed as his emergency contact). Kevin was taken to the ED yesterday after he stopped drinking and started seeing things; he was admitted. She wanted us to know. She sounded worried - says she has been through this kind of thing with their father. Explained we will get the records and want to see him within a week of discharge. She will call when he's out. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "office_visit",
+          "start": "2024-12-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Alcohol withdrawal delirium",
+              "action": "resolved",
+              "onset": "2024-12-03",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 60,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 73.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-11T14:55",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-11T14:55",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-12-11T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-11T14:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2024-12-11T15:30",
+              "author": "PCP",
+              "body": "Post-discharge visit. Sister drove him and sat in.\n\nAdmitted 12/3 to 12/6 for alcohol withdrawal delirium after stopping abruptly - discharge summary reviewed. He remembers little of the first day. Hallucinations gone. Sleep poor. He started drinking again two days after he got home, 'less than before', which by his description is still most of a bottle. No seizures, no falls, no vomiting blood, no black stools.\n\nMeds unchanged: thiamine, folic acid, MVI, omeprazole 20, amlodipine 5.\n\nExam: Vitals as charted. Alert, calm, no tremor today, no asterixis. Anicteric. Abdomen soft, no fluid. Normal gait.\n\nA/P\n- Alcohol withdrawal delirium, resolved. He now knows what stopping cold can do. Very clear advice: do not stop suddenly on his own; if he wants to stop, call us first so it is done safely, or go to the ED. Sister heard this too.\n- AUD severe - still not ready for a program. Gave him the hospital's resource list back and the number for the regional recovery line.\n- Cirrhosis - CMP and Mg today. Hepatology follow-up is set for spring.\n- HTN fine.\n- Recheck in about 2 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T11:42",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2025-01-21T11:42",
+              "author": "MA",
+              "body": "Electronic refill request from his pharmacy for amlodipine 5 mg and omeprazole 20 mg, 90-day supplies. Last visit 12/11, on current med list. Sent per protocol, 1 refill each. Pharmacy asked whether thiamine/folate/MVI can be billed to his plan - they are covered as prescriptions; new scripts sent for all three so his copay goes away."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "office_visit",
+          "start": "2025-02-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, cirrhosis and blood pressure",
+          "vitals": {
+            "bp": [
+              137,
+              85
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 73.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-18T11:15",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-18T11:15",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-02-18T11:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T11:15",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 158
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-18T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-18T11:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-18T11:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2025-02-18T11:05"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-18T11:06"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-18T11:40",
+              "author": "PCP",
+              "body": "Routine follow-up. Doing about the same. Drinking daily, says he hasn't tried to stop since December 'because of what happened.' Still a pack a day. Mood flat but he is getting out to his sister's for dinner most Sundays. No confusion, no belly swelling, no bleeding. Heartburn quiet.\n\nExam: BP and weight as charted - pressure is fine on amlodipine. No tremor. Anicteric, abdomen soft, no ascites. No edema.\n\nPlan:\n- AUD: we talked again about treatment, including medication-assisted options. He wants to think about it.\n- Cirrhosis: CMP, CBC, INR, GGT today. Hepatology ultrasound due in May.\n- Hep A #2 and Shingrix #2 given today - both series complete.\n- Smoking: not ready.\n- HTN: amlodipine 5, no change.\nBack in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "ed_visit",
+          "start": "2025-04-01T20:15",
+          "end": "2025-04-02T01:30",
+          "service": "Emergency Medicine",
+          "reason": "agitation, disorientation, hallucinations",
+          "conditions": [
+            {
+              "label": "Delirium tremens",
+              "action": "diagnosed",
+              "onset": "2025-04-01",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-01T20:20",
+              "bp": [
+                175,
+                95
+              ],
+              "hr": 120,
+              "temp_c": 39.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-01T20:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-04-01T20:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-01T20:40",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-01T20:30",
+              "text": "Sinus tachycardia, rate about 120. Normal axis. PR, QRS and QT intervals normal for rate. No ST elevation or depression. No arrhythmia.",
+              "conclusion": "Sinus tachycardia. Otherwise normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-01T20:15"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-04-01T20:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-04-09T13:05",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, date of service 4/1/2025, evening.\n\nChief complaint: confused and agitated, seeing and feeling bugs.\n\nHistory (from sister, patient unable to give a reliable account): 54-year-old man with alcohol use disorder, seen in this ED in December 2024 for withdrawal delirium. She says he has gone 72 hours without a drink, which is not like him. Now restless, not making sense, says bugs are crawling on the walls and on him.\nPMH per records: AUD, alcoholic cirrhosis, HTN, thiamine deficiency, MDD, GERD; appendectomy. Meds: thiamine, folic acid, multivitamin, omeprazole 20 mg, amlodipine 5 mg. Allergies: NKDA.\n\nVitals: T 39.2 C (102.5 F), BP 175/95, HR 120.\nExam: Drenched in sweat, coarse tremor, jumps at any noise or touch. Disoriented. Neck supple. Lungs clear. Abdomen soft.\n\nLabs: Na 140, K 3.9, Cl 100, HCO3 24, BUN 18, Cr 1.0, glucose 150, Mg 1.8. AST 72, ALT 50, alk phos 85, total bilirubin 1.2.\nECG: sinus tachycardia, nothing else.\n\nTreatment: IV thiamine, IV lorazepam in escalating doses per protocol, IV fluids, magnesium. Blood cultures, urinalysis and chest film sent for the fever.\n\nAssessment: Delirium tremens. Fever, tachycardia and hyperglycemia most consistent with withdrawal; infection being excluded.\nDisposition: ICU."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "hospital_admission",
+          "start": "2025-04-02T01:30",
+          "end": "2025-04-07T13:10",
+          "service": "Critical Care",
+          "reason": "delirium tremens",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-01T21:00",
+              "resulted": "2025-04-06T21:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-01T21:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-01T21:20",
+              "text": "PORTABLE AP CHEST\nIndication: Fever, delirium.\nLungs are clear without focal consolidation. No pleural effusion or pneumothorax. Cardiomediastinal silhouette within normal limits. No acute bony abnormality.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-02T02:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-04-07T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-04-09T13:06",
+              "author": "hospital medicine",
+              "body": "Regional hospital. Admitted 4/2/2025 (from ED 4/1), discharged 4/7/2025.\n\nDiagnoses: Delirium tremens. Stress hyperglycemia. Sinus tachycardia due to alcohol withdrawal. Background: severe alcohol use disorder, compensated alcoholic cirrhosis, hypertension, thiamine deficiency, MDD, GERD.\n\nHospital course: Three days in the medical ICU on a symptom-triggered lorazepam protocol, which needed high doses on day 1 and tapered off by day 3. High-dose IV thiamine, IV fluids, magnesium repletion. Fever workup unrevealing: portable chest film clear, urinalysis negative, blood cultures no growth at 5 days; fever resolved within 48 hours as withdrawal settled. Glucose 150 on arrival attributed to stress; no diabetes history. Transferred to the floor on day 4, oriented, eating, walking. Social work met with him and his sister; he declined residential treatment.\n\nDischarge medications (no changes): thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily, omeprazole 20 mg daily, amlodipine 5 mg daily. No sedatives at discharge.\nAllergies: NKDA.\n\nFollow-up: PCP within 7 days. Consider hemoglobin A1c as an outpatient."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-02b",
+          "kind": "telephone",
+          "start": "2025-04-02T10:25",
+          "reason": "family call, patient in ICU",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from sister",
+              "date": "2025-04-02T10:31",
+              "author": "RN",
+              "body": "Sister called - Kevin is in the ICU again since last night, the same withdrawal problem but worse, he had a fever. She is not sure why he stopped this time. She is exhausted. Gave her our number for when he's discharged and told her the hospital will send records. Offered her the PCP's message line if she has questions. Routed to PCP to flag for TCM visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "office_visit",
+          "start": "2025-04-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Delirium tremens",
+              "action": "resolved",
+              "onset": "2025-04-01",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              77
+            ],
+            "hr": 69,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 75.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-10T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-10T09:50",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-04-10T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-10T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU visit",
+              "date": "2025-04-10T10:15",
+              "author": "PCP",
+              "body": "Seen 3 days after discharge from his second withdrawal admission, this time ICU with DTs (4/1 to 4/7). Records reviewed: fever workup negative, glucose 150 called stress.\n\nHe says he quit because he 'wanted to see if he could', no plan, no warning to anyone. Back to drinking since Tuesday, though he says less. Shaky in the mornings. Sister with him again, upset.\n\nExam: Vitals as charted. Fine tremor of the hands, oriented, no asterixis, no jaundice. Lungs clear. Abdomen soft without fluid.\n\nA/P\n- DTs, resolved. Second withdrawal admission in four months; this one more severe. Explained that each episode tends to be worse than the last. He listened.\n- Severe AUD: offered referral to an outpatient addiction program and discussed medication to reduce cravings. He is 'not there yet'. Will keep asking.\n- Stress hyperglycemia in hospital - BMP today; A1c at his physical.\n- Cirrhosis - US in May per hepatology.\n- Same meds. Return in 2 to 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "imaging",
+          "start": "2025-05-13T09:40",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-05-13T09:40",
+              "text": "ULTRASOUND ABDOMEN\nIndication: Cirrhosis, 6-month HCC surveillance.\nComparison: 10/17/2024.\nLiver: Coarse, heterogeneous echotexture with mildly nodular contour, unchanged. No discrete hepatic mass. Portal vein patent with hepatopetal flow.\nGallbladder: Normal, no stones.\nBile ducts: Not dilated.\nSpleen: 11.0 cm.\nKidneys: Unremarkable.\nNo free fluid.",
+              "conclusion": "Stable cirrhotic morphology. No focal liver lesion. No ascites. Spleen normal in size."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Surveillance US",
+              "date": "2025-05-14T07:55",
+              "author": "PCP",
+              "body": "Surveillance ultrasound unchanged, no lesion, no ascites. Copy to hepatology on file."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T13:20",
+          "service": "Hepatology",
+          "reason": "cirrhosis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology follow-up",
+              "date": "2025-06-13T16:00",
+              "author": "hepatology",
+              "body": "Outside hepatology group, follow-up visit 6/10/2025.\n\nSince we met he has had two admissions for complicated alcohol withdrawal (December and April), the second in the ICU. He continues to drink daily. No ascites, jaundice, confusion or bleeding.\n\nMedications: thiamine, folic acid, multivitamin, omeprazole 20 mg, amlodipine 5 mg. NKDA.\nExam: Anicteric. No asterixis. Abdomen soft, no shifting dullness.\nData: May ultrasound without focal lesion or ascites. Endoscopy in November without varices. February labs: AST around 70, ALT around 50, bilirubin 1.3, normal INR and albumin, platelets normal.\n\nAssessment: Compensated alcohol-related cirrhosis, Child-Pugh A, with ongoing heavy drinking.\nPlan: I told him plainly that continued drinking is the main threat to his liver and that withdrawal itself is now dangerous for him; any attempt to stop should be medically supervised. I support whatever addiction treatment his primary care team can arrange; acamprosate would be my preference over naltrexone given his liver. Ultrasound again in 6 months. Return in 6 to 8 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "telephone",
+          "start": "2025-07-23T11:10",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach",
+              "date": "2025-07-23T11:16",
+              "author": "front desk",
+              "body": "Called about yesterday's missed 3 pm visit. He said his ride fell through and he forgot to call. Offered a video visit so he doesn't need transport; booked 8/5 at 10:30. Sent the video link instructions to his email."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "telehealth_visit",
+          "start": "2025-08-05T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, alcohol use and mood",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-08-05T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-08-05T11:00",
+              "author": "PCP",
+              "body": "Video visit from his apartment; verified name and DOB. Sister not present.\n\nHe is drinking about the same, every day. No attempts to stop since April. Mood 'so-so'; sleeps poorly, no thoughts of self-harm. I raised an antidepressant again and he still prefers not to. He did read the hepatology letter and knows the specialist suggested a craving medication - says maybe in the fall.\n\nNo jaundice he's noticed, no swelling, no confusion, no bleeding. Taking his meds.\n\nAssessment and plan:\n- Severe AUD, precontemplative to contemplative. Reviewed the safe-stopping plan again: call us first, do not stop cold.\n- MDD, mild symptoms, declines medication.\n- Cirrhosis compensated. Labs and physical in September.\n- HTN - no home cuff; will check in person."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T08:40",
+          "end": "2025-09-09T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              76
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 74.0,
+            "height_cm": 177.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T09:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-09T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 223
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-09T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-09-09T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-09T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 151
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-09T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-09T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening"
+            },
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-09T10:10",
+              "author": "PCP",
+              "body": "Annual exam, 54M.\n\nInterval: two withdrawal admissions (12/2024 withdrawal delirium, 4/2025 DTs with ICU stay). Still drinking a fifth a day. Smokes 1 ppd. Hepatology following cirrhosis - compensated, no varices on last year's EGD, ultrasounds clean.\n\nPHQ-9 8, no SI. AUDIT-C 12.\nROS otherwise negative: no chest pain, no shortness of breath, no change in bowels, no blood in stool, no urinary symptoms, no weight loss.\n\nMeds: thiamine 100, folic acid 1, MVI, omeprazole 20, amlodipine 5. NKDA.\n\nExam: Vitals as charted. Thin, alert. HEENT unremarkable, dentition fair. Neck supple, no nodes, no thyroid enlargement. Heart regular, no murmur. Lungs clear, no wheeze. Abdomen soft, nontender, no ascites, no organomegaly palpable. No spider angiomas. Skin warm and dry. Extremities without edema. Neuro: alert and oriented, no tremor, no asterixis, gait steady.\n\nAssessment/plan:\n- Health maintenance: CMP, CBC, lipids, INR, GGT, Mg, and A1c (hyperglycemia in the hospital in April). FIT kit given. Repeat low-dose CT ordered. Flu and COVID boosters when they arrive next month. Vaccine series otherwise done (PCV20, hep A, hep B, Shingrix).\n- Severe AUD: same conversation; he says he is 'thinking about the medicine.' Reminded him about the safe-stopping plan.\n- Cirrhosis, HTN, GERD, thiamine deficiency, MDD: stable, no changes.\n- Tobacco: advised to quit; declines patch or other aids.\nFollow-up in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "portal_message",
+          "start": "2025-09-10T17:45",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-09-10T17:45",
+              "author": "PCP",
+              "body": "Kevin - labs from your physical are back. A1c 5.4, so no sign of diabetes; the high sugar in April was from the stress of being so sick. Liver enzymes are about where they have been, which tells me the liver is still under strain from alcohol. Cholesterol, blood counts, clotting and kidney numbers all fine. Don't forget the stool card and the CT on the 23rd."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "imaging",
+          "start": "2025-09-23T07:50",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-09-23T07:50",
+              "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING (annual)\nIndication: Current smoker, 30 pack-years.\nTechnique: Low-dose noncontrast helical CT of the chest.\nComparison: 9/26/2024.\nFindings: Lungs: no nodules; no consolidation, effusion or pneumothorax. Central airways clear. Heart normal in size. No mediastinal, hilar or axillary adenopathy. Bones: no suspicious lesion.",
+              "conclusion": "Lung-RADS 1, negative. Next annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-09-23T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual LDCT",
+              "date": "2025-09-24T08:10",
+              "author": "PCP",
+              "body": "Annual screening CT negative again (Lung-RADS 1). Due 9/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "lab_only",
+          "start": "2025-09-30T10:30",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-29T07:30",
+              "resulted": "2025-09-30T14:45",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-09-30T14:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT 2025",
+              "date": "2025-10-01T09:00",
+              "author": "MA",
+              "body": "FIT negative. Results letter mailed. Next one due fall 2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T14:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T14:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T14:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Seasonal vaccines",
+              "date": "2025-10-14T14:25",
+              "author": "RN",
+              "body": "Flu (L arm) and 2025-26 COVID (R arm) given, VIS reviewed, no prior reactions. Waited 15 minutes without issue. He mentioned he is 'cutting back a little' - passed to PCP and reminded him to call before trying to stop."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-02a",
+          "kind": "ed_visit",
+          "start": "2025-11-02T13:35",
+          "end": "2025-11-02T19:50",
+          "service": "Emergency Medicine",
+          "reason": "acting strangely, agitation, sweating",
+          "conditions": [
+            {
+              "label": "Delirium tremens",
+              "action": "diagnosed",
+              "onset": "2025-11-02",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-02T13:40",
+              "bp": [
+                160,
+                100
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-02T14:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-02T14:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-02T14:00",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 2.5
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-11-02T13:50",
+              "text": "Regular narrow-complex rhythm with P waves preceding each QRS, rate about 120. Intervals normal. No acute ST-T changes. No ectopy.",
+              "conclusion": "Sinus tachycardia, no other abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-11-02T13:35"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-11-02T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-11-10T09:20",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Seen Sunday 11/2/2025 early afternoon.\n\nPresenting problem: odd behavior, agitation, shaking, heavy sweating.\n\nHistory: Third visit to this department in 11 months for the same pattern (December 2024 withdrawal delirium, April 2025 DTs requiring ICU). His sister reports he stopped drinking three days ago and has been acting strangely since. She says he has tried to stop many times over the years, and this looks just like the last two times. Patient is disoriented to time and place and describes small animals moving around the room.\nKnown history: alcohol use disorder, alcoholic cirrhosis, HTN, thiamine deficiency, MDD, GERD; appendectomy. Medications: thiamine 100 mg, folic acid 1 mg, MVI, omeprazole 20 mg, amlodipine 5 mg daily. NKDA.\n\nVitals on arrival: BP 160/100, HR 120, T 38.9 C (102 F), RR 22.\nExam: Anxious, in constant motion, pupils dilated, coarse tremor of both hands with arms outstretched. Diaphoretic. Lungs clear. Abdomen soft, nontender.\n\nResults: Na 140, K 3.9, Cl 102, HCO3 24, BUN 18, Cr 1.0, glucose 150, Mg 1.8, phos 2.5, Ca 9.2. AST 72, ALT 50, total bilirubin 1.8.\nECG: sinus tachycardia only.\n\nManagement: IV thiamine, symptom-triggered IV lorazepam, fluids, magnesium. Cultures, UA and chest radiograph for fever.\n\nImpression: Delirium tremens, recurrent.\nDisposition: Medical ICU."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-02b",
+          "kind": "hospital_admission",
+          "start": "2025-11-02T19:50",
+          "end": "2025-11-07T11:45",
+          "service": "Critical Care",
+          "reason": "delirium tremens",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-02T14:20",
+              "resulted": "2025-11-07T14:20",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-11-02T14:30",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-02T14:45",
+              "text": "AP PORTABLE CHEST\nClinical: Fever, withdrawal.\nComparison: 4/1/2025.\nNo airspace opacity. No effusion. Heart size normal. No pneumothorax.",
+              "conclusion": "Clear chest. No change from prior."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-02T20:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-07T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-11-10T09:21",
+              "author": "hospital medicine",
+              "body": "Regional hospital. Admission 11/2/2025, discharge 11/7/2025.\n\nPrincipal: Delirium tremens (third complicated withdrawal in 11 months).\nSecondary: Stress hyperglycemia; sinus tachycardia from withdrawal; severe alcohol use disorder; compensated alcoholic cirrhosis; hypertension; thiamine deficiency; MDD; GERD.\n\nCourse: ICU for 3 days on symptom-triggered IV lorazepam, which was weaned by day 3, with high-dose IV thiamine, fluids and magnesium. Fever resolved by day 2; chest film clear, UA negative, blood cultures no growth at 5 days. Moved to the medical floor on day 4. Bilirubin 1.8 on admission, attributed to the acute illness on a background of cirrhosis; no encephalopathy. Addiction medicine consulted. This time he says he wants help staying stopped; he and his sister were given referral information for an outpatient program and asked to see primary care promptly to arrange it and discuss anti-craving medication.\n\nDischarge medications (unchanged): thiamine 100 mg daily, folic acid 1 mg daily, multivitamin 1 tab daily, omeprazole 20 mg daily, amlodipine 5 mg daily.\nAllergies: none known.\n\nFollow-up: PCP within one week; hepatology as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "office_visit",
+          "start": "2025-11-12T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, alcohol use disorder",
+          "conditions": [
+            {
+              "label": "Delirium tremens",
+              "action": "resolved",
+              "onset": "2025-11-02",
+              "icd10": "F10.231"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "acamprosate calcium 333 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (666 mg) by mouth three times daily",
+              "dose": {
+                "value": 666,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Alcohol use disorder, maintenance of abstinence"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              85
+            ],
+            "hr": 83,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 73.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-12T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-12T14:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aod-referral",
+              "action": "placed",
+              "order": "Outpatient addiction treatment program referral",
+              "category": "referral",
+              "to": "Addiction medicine",
+              "reason": "severe alcohol use disorder after third withdrawal admission"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-11-12T14:45",
+              "author": "PCP",
+              "body": "Five days out from his third withdrawal admission (11/2 to 11/7, DTs again, ICU). Discharge summary and ED record reviewed. Sister came.\n\nDifferent tone today. He has not had a drink since he went in - now about two weeks counting the three days before - and says he is done: 'I can't do that again.' Cravings are strong in the afternoons. Sleeping badly. No hallucinations, no tremor since discharge. Mood low but hopeful, no SI.\n\nExam: Vitals as charted. Calm, oriented, no tremor, no asterixis. Anicteric. Abdomen soft, no ascites.\n\nA/P\n1. Severe AUD, early abstinence after three complicated withdrawals. He wants treatment. Starting acamprosate 666 mg three times a day (renal function normal on recent labs; BMP today to confirm) - chosen over naltrexone because of the cirrhosis, as hepatology also suggested. Referral placed to an outpatient addiction program; he agreed to group and individual counseling there. Discussed that a slip should not mean stopping cold again - call us.\n2. Delirium tremens, resolved.\n3. MDD - counseling through the program; still declines an antidepressant.\n4. Cirrhosis - next surveillance US in December, hepatology in January.\n5. HTN, GERD, thiamine deficiency - unchanged.\nSee me in 2 months, or sooner if any slip."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "pharmacy",
+          "start": "2025-11-19T10:05",
+          "reason": "prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Acamprosate prior authorization",
+              "date": "2025-11-19T10:05",
+              "author": "MA",
+              "body": "Pharmacy faxed us on 11/13 - his plan requires prior auth for acamprosate. Submitted 11/13 with diagnosis and the hospital records. Approval came back today, 12 months. Pharmacy notified; they had already dispensed a short supply. Patient told by phone, he picked up the full fill this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "outside_records",
+          "start": "2025-12-04T15:30",
+          "reason": "addiction program intake",
+          "orders": [
+            {
+              "id": "aod-referral",
+              "action": "done",
+              "date": "2025-12-04T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outpatient addiction program intake letter",
+              "date": "2025-12-04T15:30",
+              "author": "addiction medicine",
+              "body": "Outpatient addiction treatment program - intake summary to referring primary care, intake completed 12/1/2025.\n\nThank you for referring Mr. Shapiro. He completed intake with our counselor and addiction medicine clinician. He reports no alcohol since late October, confirmed by his sister, who attended. Diagnosis: alcohol use disorder, severe. Co-occurring depressive symptoms noted; he prefers counseling to medication at this time.\n\nCurrent medications reviewed: acamprosate 666 mg three times daily, thiamine 100 mg, folic acid 1 mg, multivitamin, omeprazole 20 mg, amlodipine 5 mg. Allergies: NKDA.\n\nPlan: intensive outpatient groups three mornings a week for 8 weeks, then weekly individual counseling. Continue acamprosate as prescribed by you. We will send updates if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "imaging",
+          "start": "2025-12-09T11:00",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-12-09T11:00",
+              "text": "ABDOMINAL ULTRASOUND, LIMITED TO LIVER SURVEILLANCE AND SPLEEN\nIndication: Alcoholic cirrhosis, surveillance.\nComparison: 5/13/2025.\nLiver: Nodular margin and coarse parenchyma consistent with known cirrhosis; no focal lesion identified. Hepatopetal flow in a patent main portal vein.\nSpleen: 10.9 cm, normal.\nAscites: None.\nGallbladder and bile ducts: Unremarkable.",
+              "conclusion": "No focal hepatic lesion. No ascites. Normal spleen. Unchanged cirrhotic liver."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "December liver US",
+              "date": "2025-12-10T08:20",
+              "author": "PCP",
+              "body": "Liver ultrasound stable - no lesion, no fluid. Next per hepatology in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, alcohol use disorder and cirrhosis",
+          "vitals": {
+            "bp": [
+              125,
+              82
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 74.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-13T10:35",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-13T10:35",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 196
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 96
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-13T10:35",
+              "resulted": "2026-01-14T13:30",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 112
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol since late October 2025 per patient"
+            },
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-13T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-13T10:50",
+              "author": "PCP",
+              "body": "Two-month check after starting acamprosate.\n\nNo alcohol since the end of October, by his account, and his sister (in the waiting room) backs that up. Finishing the intensive groups at the program this month, then weekly counseling. Taking acamprosate three times a day, misses the midday dose now and then. Some loose stools the first couple of weeks, gone now. Cravings 'a lot less.' Sleep still rough but better. PHQ-9 6, no SI. Still smoking a pack a day; says one thing at a time.\n\nExam: BP, pulse and weight as charted, weight steady. Alert, bright, no tremor. Anicteric. Abdomen soft, no ascites. No edema.\n\nA/P\n- Severe AUD, abstinent ~2.5 months on acamprosate plus program. Real progress, told him so. Continue 666 mg TID.\n- Cirrhosis: CMP, CBC, GGT today. Hepatology later this month.\n- MDD: improving with counseling; no medication.\n- HTN controlled on amlodipine.\n- Tobacco: not ready; revisit once sobriety is steadier.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 45,
+              "Aspartate Aminotransferase": 61,
+              "Gamma Glutamyl Transferase": 112
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "portal_message",
+          "start": "2026-01-14T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver numbers improving",
+              "date": "2026-01-14T16:05",
+              "author": "PCP",
+              "body": "Good news, Kevin. Your liver enzymes are the best I've seen them: AST 61 (it has sat in the 70s), ALT 45 (around 50 before), GGT 112 (around 150 before). That is your liver responding to not drinking. Blood counts and kidney tests normal. Keep going."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "specialist_visit",
+          "start": "2026-01-27T09:30",
+          "service": "Hepatology",
+          "reason": "cirrhosis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology follow-up",
+              "date": "2026-01-30T12:15",
+              "author": "hepatology",
+              "body": "Outside hepatology group, visit 1/27/2026.\n\nInterval: a third admission for delirium tremens in November 2025, after which he started acamprosate through his primary care physician and joined an outpatient addiction program. He reports complete abstinence since late October. No decompensating events.\n\nMedications: acamprosate 666 mg three times daily, thiamine 100 mg, folic acid 1 mg, multivitamin, omeprazole 20 mg, amlodipine 5 mg. NKDA.\nExam: Anicteric, no asterixis, no ascites, no stigmata of decompensation.\nLabs 1/13: AST 61, ALT 45, GGT 112; December ultrasound without focal lesion or ascites.\n\nAssessment: Compensated alcohol-related cirrhosis, Child-Pugh A, now with sustained early abstinence and improving enzymes.\nPlan: Continue abstinence and acamprosate. Surveillance ultrasound in June. Repeat variceal screening endoscopy in late 2026 or 2027 if he remains abstinent. Follow-up in 6 to 8 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "portal_message",
+          "start": "2026-02-24T19:22",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-02-24T19:22",
+              "author": "patient",
+              "body": "hi doc, almost out of the acamprosate and the stomach pill (omeprazole). same pharmacy. also 4 months no drinking as of this week. thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-02-25T08:15",
+              "author": "PCP",
+              "body": "Both sent to your pharmacy, 90 days with a refill. Four months is a big deal - well done. See you in April."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, alcohol use disorder, cirrhosis, hypertension",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 66,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 73.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-14T14:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 54
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 97
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-14T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-04-14T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-14T14:40",
+              "resulted": "2026-04-15T15:50",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 88
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-14T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-14T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-14T15:05",
+              "author": "PCP",
+              "body": "Routine follow-up.\n\nStill not drinking - five and a half months. Weekly counseling at the program, and a peer support meeting on weekends. Acamprosate three times a day, no side effects now. Mood better, PHQ-9 5, no SI. Smoking unchanged at a pack a day; he asked what the options are and I went through them; he wants to wait until summer.\n\nNo jaundice, swelling, confusion or bleeding. Heartburn controlled.\n\nMeds: acamprosate 666 mg TID, thiamine 100, folic acid 1, MVI, omeprazole 20, amlodipine 5. NKDA.\n\nExam: Vitals as charted - BP at goal, weight stable. Well-appearing. No tremor or asterixis. Sclerae anicteric. Heart regular. Lungs clear. Abdomen soft, nontender, no ascites. No edema.\n\nA/P\n1. Severe AUD, sustained abstinence on acamprosate with counseling. Continue.\n2. Compensated alcoholic cirrhosis - CMP, CBC, INR, GGT, Mg today. Hepatology has the June ultrasound scheduled.\n3. HTN - continue amlodipine 5.\n4. MDD - improving, continue counseling.\n5. GERD, thiamine deficiency - no change.\n6. Tobacco - will revisit; he knows to message me when he's ready.\n7. Lung CT and FIT due in the fall.\nFollow-up in about 5 months, sooner if needed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 41,
+              "Aspartate Aminotransferase": 54,
+              "Bilirubin, Total": 1.1,
+              "Gamma Glutamyl Transferase": 88,
+              "Magnesium": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "portal_message",
+          "start": "2026-04-16T12:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "April labs",
+              "date": "2026-04-16T12:40",
+              "author": "PCP",
+              "body": "Kevin, your labs keep moving the right way: AST 54, ALT 41, GGT 88, bilirubin 1.1, magnesium 1.9. Clotting and blood counts are normal. Nothing to change. Proud of you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: April labs",
+              "date": "2026-04-16T18:02",
+              "author": "patient",
+              "body": "thanks. showed my sister"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T09:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - amlodipine, thiamine, folic acid, multivitamin",
+              "date": "2026-05-19T09:30",
+              "author": "MA",
+              "body": "Pharmacy e-request for amlodipine 5 mg, thiamine 100 mg, folic acid 1 mg and multivitamin, 90-day each. Seen 4/14, all on the active list. Approved per refill protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "imaging",
+          "start": "2026-06-16T10:20",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2026-06-16T10:20",
+              "text": "LIVER ULTRASOUND FOR SURVEILLANCE\nIndication: Cirrhosis, alcohol-related, hepatocellular carcinoma screening.\nComparison: 12/9/2025.\nLiver: Nodular surface contour and coarse echotexture of cirrhosis, unchanged. No focal mass. Portal vein patent, flow toward the liver.\nSpleen: 10.7 cm.\nGallbladder: No calculi.\nNo ascites.",
+              "conclusion": "No focal hepatic lesion. No ascites. Stable cirrhotic appearance and normal spleen size."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hepatology surveillance ultrasound",
+              "date": "2026-06-18T13:10",
+              "author": "front desk",
+              "body": "Outside ultrasound report (ordered by hepatology) received by fax and filed to the imaging section."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T10:12",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2026-08-11T10:12",
+              "author": "patient",
+              "body": "need to book my next checkup. tuesdays are best, my sister is off"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2026-08-11T11:30",
+              "author": "front desk",
+              "body": "Hi Kevin, you're booked for Tuesday 9/22 at 1:30 with your doctor. We'll send a reminder the day before."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Alcohol use disorder, severe|F10.20": {
+        "code": "F10.20",
+        "display": "Alcohol dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcohol withdrawal delirium|F10.231": {
+        "code": "F10.231",
+        "display": "Alcohol dependence with withdrawal delirium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Delirium tremens|F10.231": {
+        "code": "F10.231",
+        "display": "Alcohol dependence with withdrawal delirium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, single episode, unspecified|F32.9": {
+        "code": "F32.9",
+        "display": "Major depressive disorder, single episode, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Thiamine deficiency|E51.9": {
+        "code": "E51.9",
+        "display": "Thiamine deficiency, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "acamprosate calcium 333 MG Delayed Release Oral Tablet": {
+        "code": "835726",
+        "display": "acamprosate calcium 333 MG Delayed Release Oral Tablet",
+        "ingredient": "acamprosate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "thiamine 100 MG Oral Tablet": {
+        "code": "313323",
+        "display": "thiamine 100 MG Oral Tablet",
+        "ingredient": "thiamine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\""
+    ]
+  }
+}

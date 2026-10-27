@@ -1,0 +1,755 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001941",
+   "events": [
+    {
+     "id": "2024-08-13a",
+     "kind": "telephone",
+     "start": "2024-08-13T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "cancel physical",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancellation",
+       "author": "front desk",
+       "date": "2024-08-13T08:20",
+       "body": "Pt cancelled her 8/20 annual - in-service days were moved up and she has training all week. Offered fall dates; she'll call back once her schedule settles. Reminder set for October."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-20a",
+     "kind": "annual_physical",
+     "start": "2024-08-20T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "nurse_visit",
+     "start": "2024-10-22T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-22T15:55"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-22T15:57"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-22T15:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine visit",
+       "author": "RN",
+       "date": "2024-10-22T16:05",
+       "body": "Trivalent flu IM L deltoid and 2024-25 Pfizer COVID IM R deltoid. Tolerated. Reminded her she still owes us a physical - she'd like to wait until winter break. Front desk to call."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-17a",
+     "kind": "portal_message",
+     "start": "2024-12-17T21:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "headaches and fatigue",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Headaches",
+       "author": "patient",
+       "date": "2024-12-17T21:10",
+       "body": "Hi, I've been getting headaches most days for the past few weeks and I'm wiped out by the end of the school day, more than usual even for December. I don't normally get headaches. No vision changes. Could I come in once break starts? I never rescheduled my physical either. - Angela"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Headaches",
+       "author": "RN",
+       "date": "2024-12-18T08:05",
+       "body": "Hi Angela, we have Monday 12/23 at 10:30 with your doctor - booked you. If you get a sudden severe headache, weakness, numbness or trouble speaking before then, call 911. Otherwise see you Monday."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-23a",
+     "kind": "office_visit",
+     "start": "2024-12-23T10:30",
+     "end": "2024-12-23T11:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "headaches, fatigue, elevated blood pressure",
+     "state": {
+      "bp": [
+       168,
+       100
+      ]
+     },
+     "vitals": {
+      "bp": [
+       168,
+       100
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2024-12-23",
+       "note": "secondary cause suspected; renal artery imaging ordered"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-12-23T11:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-12-23T11:20",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-12-23T11:20",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 1.84
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-12-23T11:10",
+       "results": [
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine Blood"
+        },
+        {
+         "test": "Urine Glucose"
+        },
+        {
+         "test": "Urine Specific Gravity"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-12-23T10:55",
+       "text": "Sinus rhythm, rate in the 70s. Normal axis. PR, QRS and QT intervals normal. No voltage criteria for LVH. No ST or T wave abnormality.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cta-renal",
+       "action": "placed",
+       "order": "CT angiography, abdomen and pelvis (renal arteries)",
+       "category": "imaging",
+       "reason": "hypertension with abdominal bruit, evaluate renal arteries"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-12-23T10:30"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2024-12-23T10:55"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-12-23T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Headaches, High Blood Pressure",
+       "author": "PCP",
+       "date": "2024-12-23T11:40",
+       "body": "CC: headaches and tiredness for several weeks.\n\nHPI: 33 y/o teacher, healthy, last seen 8/2023 with normal BP. Over the past several weeks she has had near-daily dull headaches and is unusually tired. MA found her pressure high on rooming, and I rechecked both arms after she'd sat 5 min: 168/100 right and left. She has had no chest pain, no shortness of breath, no palpitations. No vision change, no focal weakness. No meds, no OTC decongestants or NSAIDs, no supplements, no energy drinks. Not on hormonal contraception.\n\nFHx: mother hypertensive from about age 32; father ischemic stroke at 48; paternal uncle with renal artery stenosis.\nSHx: never smoker, no alcohol, active, exercises most days.\nAllergies: NKDA.\n\nExam: BP 168/100 both arms. BMI 23. Comfortable. Fundi: sharp discs, normal vessels, no hemorrhages or exudates. Neck: supple, no thyromegaly. Heart regular, no murmur or gallop. Lungs clear. Abdomen: soft, nontender, there is a bruit on the right near the umbilicus. No palpable masses. Ext: radial and femoral pulses equal, no delay, no edema. Neuro nonfocal.\nECG in office: normal.\nPHQ-2 0.\n\nA/P:\n1. Hypertension, new, stage 2 range. Young, lean, active, no meds - and an abdominal bruit plus that family history (uncle with renal artery stenosis). A renovascular cause such as fibromuscular dysplasia has to be excluded first.\n - BMP, UA, TSH, lipids today.\n - CT angiogram of the renal arteries ordered; will need prior auth.\n - Start home BP monitoring, twice daily for a week, bring the log. Lower sodium, keep exercising.\n - Holding off on medication until imaging is back; she prefers to start with lifestyle and I think that's reasonable for a couple of weeks.\n2. Headaches - likely pressure-related. Return precautions reviewed (thunderclap headache, neuro symptoms, chest pain - go to ED).\nPhysical exam overdue; will fold preventive items in at a later visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-26a",
+     "kind": "portal_message",
+     "start": "2024-12-26T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Monday's results",
+       "author": "PCP",
+       "date": "2024-12-26T10:00",
+       "body": "Hi Angela - your kidney function, electrolytes, thyroid, cholesterol and urine test are all normal. That's reassuring, but it doesn't rule out a problem with the arteries to the kidneys, so the CT angiogram is still the important next step. We're working on the insurance approval and will call you to schedule. Keep the BP log going."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-03a",
+     "kind": "telephone",
+     "start": "2025-01-03T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "prior authorization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior auth - CT angiogram",
+       "author": "MA",
+       "date": "2025-01-03T11:30",
+       "body": "BCBS prior authorization for CTA abdomen/pelvis (renal artery protocol) submitted 12/26 with visit note and BP readings. Approved today, auth valid 60 days. Pt scheduled at outside imaging center Wed 1/8 at 7:30 AM. Creatinine from 12/23 sent with the order. Pt aware, no contrast allergy, told to hydrate."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-08a",
+     "kind": "imaging",
+     "start": "2025-01-08T07:30",
+     "service": "Radiology",
+     "reason": "renal artery CT angiogram",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-01-08T07:45",
+       "issued": "2025-01-08T15:20",
+       "text": "EXAM: CT angiography of the abdomen and pelvis, renal artery protocol, with IV contrast. Arterial-phase thin sections with multiplanar and 3D reconstructions.\nINDICATION: 33-year-old woman with new hypertension and abdominal bruit.\nFINDINGS: The abdominal aorta is normal in caliber with no aneurysm or dissection. Single renal artery on each side. Both main renal arteries show a beaded contour in their mid and distal segments, with alternating short segments of narrowing and dilation. No renal artery aneurysm. No dissection flap. The celiac axis, superior and inferior mesenteric arteries and iliac arteries are normal. Kidneys are normal in size and enhance symmetrically, with no infarct, scarring or hydronephrosis. Adrenal glands normal. Liver, spleen, pancreas and bowel unremarkable. No free fluid.\n",
+       "conclusion": "Beaded appearance of both main renal arteries, consistent with multifocal fibromuscular dysplasia. Normal kidneys. No aneurysm or dissection."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cta-renal",
+       "action": "done",
+       "date": "2025-01-08T07:45"
+      }
+     ]
+    },
+    {
+     "id": "2025-01-09a",
+     "kind": "telephone",
+     "start": "2025-01-09T12:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "CT angiogram result",
+     "conditions": [
+      {
+       "label": "Fibromuscular dysplasia",
+       "action": "diagnosed",
+       "onset": "2025-01-08",
+       "note": "multifocal, both renal arteries on CTA"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cardiology-referral",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "fibromuscular dysplasia of renal arteries with hypertension; vascular evaluation"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Result call - CTA",
+       "author": "PCP",
+       "date": "2025-01-09T12:10",
+       "body": "Called pt on her lunch break with the CTA result. Both renal arteries have the beaded look of multifocal fibromuscular dysplasia. Kidneys themselves look normal, no aneurysm.\n\nExplained what FMD is (a non-atherosclerotic condition of the artery wall, much more common in women, can affect other arteries too), and that it fits the high pressures. Given her uncle, she is not completely surprised.\n\nPlan: referral to cardiology (vascular medicine) for FMD evaluation, including whether other arteries are involved. Keep the home log, low sodium. She will send her BP log through the portal.\nReferral placed, records to go with it."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "telephone",
+     "start": "2025-02-25T09:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "records request from cardiology",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records to cardiology",
+       "author": "front desk",
+       "date": "2025-02-25T09:45",
+       "body": "Cardiology office called for the referral packet ahead of her consult on 3/24. Faxed 12/23 note, labs, ECG and CTA report. They have also scheduled her for head and neck imaging and labs on 3/10 per their protocol."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-10a",
+     "kind": "imaging",
+     "start": "2025-03-10T08:00",
+     "service": "Radiology",
+     "reason": "CT angiogram head and neck, ordered by cardiology",
+     "reports": [
+      {
+       "study": "CT angiography head and neck",
+       "loinc": "37498-3",
+       "performed": "2025-03-10T08:15",
+       "issued": "2025-03-10T16:40",
+       "text": "EXAM: CT angiography of the head and neck with IV contrast, with multiplanar and 3D reconstructions.\nINDICATION: Fibromuscular dysplasia of the renal arteries; screening of cervical and intracranial vessels.\nFINDINGS: Aortic arch normal with conventional branching. Right internal carotid artery: in its mid to distal cervical segment there are alternating areas of narrowing and dilation. No dissection or pseudoaneurysm. Left internal carotid artery, both common carotid arteries and both vertebral arteries are normal. Intracranial: the circle of Willis is intact with no aneurysm, no stenosis and no vascular malformation. The brain parenchyma on source images is unremarkable.\n",
+       "conclusion": "Alternating narrowing and dilation of the right internal carotid artery, consistent with fibromuscular dysplasia. No intracranial aneurysm. No dissection."
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-03-10T09:10",
+       "resulted": "2025-03-14T12:00",
+       "results": [
+        {
+         "test": "Plasma Renin Activity",
+         "value": 8.6
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-10T09:10",
+       "resulted": "2025-03-14T12:00",
+       "results": [
+        {
+         "test": "Aldosterone",
+         "value": 26
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-10T09:10",
+       "results": [
+        {
+         "test": "Hepatitis B Surface Antigen",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-10T09:10",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-10T09:10",
+       "results": [
+        {
+         "test": "Antinuclear Antibodies",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-10T09:10",
+       "resulted": "2025-03-13T12:00",
+       "results": [
+        {
+         "test": "Neutrophil cytoplasmic antibodies screen",
+         "loinc": "35279-9",
+         "text": "Indeterminate"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2025-03-24a",
+     "kind": "specialist_visit",
+     "start": "2025-03-24T13:00",
+     "service": "Cardiology",
+     "reason": "fibromuscular dysplasia consultation",
+     "vitals": {
+      "bp": [
+       160,
+       100
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Renal artery stenosis",
+       "icd10": "I70.1",
+       "action": "diagnosed",
+       "onset": "2025-03-24"
+      },
+      {
+       "label": "Renovascular hypertension",
+       "icd10": "I15.0",
+       "action": "diagnosed",
+       "onset": "2024-12-23",
+       "note": "secondary hypertension due to renal artery stenosis"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "resolved",
+       "note": "reclassified as renovascular hypertension"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cardiology-referral",
+       "action": "done",
+       "date": "2025-03-24T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation - Vascular Medicine",
+       "author": "cardiology",
+       "date": "2025-03-28T10:30",
+       "body": "OUTSIDE CARDIOLOGY GROUP - VASCULAR MEDICINE CLINIC\nDate of service: 03/24/2025\nRe: Angela Duffy, DOB 05/06/1991\nReferred by: primary care, for fibromuscular dysplasia of the renal arteries\n\nThank you for sending Ms. Duffy, a 33-year-old science teacher you saw in December for new hypertension, at which time an abdominal bruit led to a renal CTA showing beading of both main renal arteries.\n\nSince then the headaches have persisted. For about the past month she has also noticed a pulsing, whooshing noise in the right ear, in time with her heartbeat. She has had some neck stiffness off and on. A pharmacy machine read high when she checked it in February. No visual loss, no transient weakness or numbness, no speech trouble. No flank pain.\nReview of systems: no asthma, sinus problems, blood in the urine, or skin changes; no fevers, rashes, numbness or tingling in the extremities, or coughing up blood.\n\nMedications: none. Allergies: NKDA.\nFamily history: mother with hypertension from age 32; father with ischemic stroke at 48; paternal uncle with renal artery stenosis.\nSocial: never smoker, no alcohol. Teaches high school science.\n\nExam: BP 160/100 mmHg in each arm. Well appearing. There is a bruit over the right carotid. Heart regular, no murmur. Lungs clear. Abdomen soft. Peripheral pulses symmetric. Neurologic examination normal - cranial nerves intact, strength and sensation normal, gait normal.\n\nData:\n- Renal CTA 01/08/2025 (reviewed): beaded mid-distal main renal arteries on both sides, typical of multifocal FMD; kidneys normal.\n- CTA head and neck 03/10/2025: alternating narrowing and dilation of the right internal carotid artery; no intracranial aneurysm; no dissection.\n- Labs 03/10/2025: plasma renin activity 8.6 ng/mL/h (high); aldosterone 26 ng/dL (high). Hepatitis B surface antigen negative, hepatitis C antibody nonreactive, ANA negative. ANCA reported as indeterminate; with imaging this typical of FMD I would not pursue it further.\n\nImpression:\n1. Multifocal fibromuscular dysplasia involving both renal arteries and the right internal carotid artery.\n2. Renal artery stenosis from FMD, with secondary (renovascular) hypertension - high renin and aldosterone support this.\n\nRecommendations:\n- Low-sodium diet, continue regular exercise, home BP log twice daily.\n- Blood pressure management to continue through primary care.\n- Return to vascular clinic for follow-up; we will review her pressures and the renal arteries then.\n\nThank you for the referral.\nCardiology / Vascular Medicine\nAllergies: NKDA"
+      }
+     ]
+    },
+    {
+     "id": "2025-03-31a",
+     "kind": "telephone",
+     "start": "2025-03-31T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "review of cardiology consult",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cardiology letter reviewed",
+       "author": "PCP",
+       "date": "2025-03-31T16:20",
+       "body": "Vascular cardiology consult from 3/24 reviewed. FMD involves both renal arteries and the right ICA, no intracranial aneurysm; renin and aldosterone high. Problem list updated: renal artery stenosis and renovascular hypertension (replaces the essential hypertension entry). Called pt - she had read the letter in her portal. Continues low sodium and home log; BP management stays with us. She'll book a visit over the summer once school's out."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-17a",
+     "kind": "portal_message",
+     "start": "2025-06-17T20:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "scheduling",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Summer appointment",
+       "author": "patient",
+       "date": "2025-06-17T20:30",
+       "body": "School's out Friday. I was supposed to come back in to go over my blood pressure after the cardiology visit - what's open after Labor Day? I'm away most of July and August. My log is still running high most days."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Summer appointment",
+       "author": "front desk",
+       "date": "2025-06-18T09:00",
+       "body": "Booked you Monday 9/8 at 3:45 with your doctor. If readings get much higher or you get chest pain, vision changes or a bad headache, call us right away and we'll see you sooner."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-08a",
+     "kind": "office_visit",
+     "start": "2025-09-08T15:45",
+     "end": "2025-09-08T16:25",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "persistently elevated blood pressure",
+     "state": {
+      "bp": [
+       160,
+       100
+      ]
+     },
+     "vitals": {
+      "bp": [
+       160,
+       100
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-09-08T15:55",
+       "resulted": "2025-09-08T16:05",
+       "results": [
+        {
+         "test": "Pregnancy Test, Urine",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth once daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "renovascular hypertension"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-09-08T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hypertension Follow-up",
+       "author": "PCP",
+       "date": "2025-09-08T16:40",
+       "body": "S: Back for BP. Has stuck with lower sodium and kept up running all spring and summer, and her home numbers have not come down. Still some headaches here and there, still tired at times. No chest pain, no new neuro symptoms. Taking nothing. Saw vascular cardiology in March (letter reviewed): multifocal FMD of both renal arteries and the right ICA, renal artery stenosis with renovascular hypertension, BP care through us.\n\nO: BP 160/100 in both arms. HR and weight as charted. Abdomen: high-pitched bruit just to the right of the midline. Heart regular. Lungs clear. No edema.\nUrine hCG negative today.\n\nA/P:\n1. Renovascular hypertension from FMD-related renal artery stenosis - not at goal on lifestyle alone. Time for medication. Pregnancy test negative; amlodipine 5 mg daily, start tonight. Reviewed ankle swelling, flushing, headache in first week. Home log, recheck at the flu visit and see me in about 2 months with a BMP.\n2. FMD - follows with vascular cardiology; she'll book their follow-up.\n3. Flu/COVID next month."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-29a",
+     "kind": "portal_message",
+     "start": "2025-09-29T18:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "medication check-in",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Amlodipine",
+       "author": "patient",
+       "date": "2025-09-29T18:50",
+       "body": "Three weeks on the amlodipine. No swelling or anything. Home numbers are still high most days. When is the flu clinic this year?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Amlodipine",
+       "author": "RN",
+       "date": "2025-09-30T08:30",
+       "body": "Thanks for the update. Glad it's agreeing with you. Please keep logging and bring the cuff to your vaccine visit so we can check it against ours. We booked you 10/14 at 4:00 for flu and COVID."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines and BP check",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T16:10"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-10-14T16:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines and BP check",
+       "author": "RN",
+       "date": "2025-10-14T16:25",
+       "body": "Flu (trivalent) L deltoid, 2025-26 COVID R deltoid. No reactions.\nBP check on amlodipine 5 mg: office reading as charted, still above goal. Her home cuff read within a few points of ours - validated. Taking the med every morning. Message to PCP; follow-up 11/10 already booked."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-10a",
+     "kind": "office_visit",
+     "start": "2025-11-10T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure follow-up",
+     "state": {
+      "bp": [
+       154,
+       98
+      ]
+     },
+     "vitals": {
+      "bp": [
+       154,
+       98
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "dose increased"
+      },
+      {
+       "drug": "amlodipine 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth once daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "renovascular hypertension"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-11-10T16:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-11-10T15:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-11-10T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - BP Follow-up",
+       "author": "PCP",
+       "date": "2025-11-10T16:10",
+       "body": "BP f/u, renovascular HTN (FMD). On amlodipine 5 mg daily x 2 months, taking it. No edema, no flushing. Home log averages similar to today's office reading.\n\nBP 154/98. Heart RRR. No ankle edema.\n\nA/P: Better but not at goal. Increase amlodipine to 10 mg daily (new Rx, 90 days; told her to finish the 5s by taking two). BMP today. Has not yet scheduled vascular follow-up - nudged her to call them. Recheck at her physical; she wants that over February/March break."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-12a",
+     "kind": "portal_message",
+     "start": "2025-11-12T12:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab result",
+       "author": "PCP",
+       "date": "2025-11-12T12:40",
+       "body": "Kidney function and potassium are normal. Carry on with the 10 mg dose."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

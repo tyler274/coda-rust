@@ -1,0 +1,654 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002191",
+      "given": "Stanley",
+      "family": "Dabrowski",
+      "birth_date": "1952-03-10",
+      "address_line": "47 Alden Street",
+      "phone": "+1-774-555-0170",
+      "email": "stanley.dabrowski@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired construction foreman with long-standing type 2 diabetes, diabetic CKD stage 4, CAD and hypertension who joins in 2015. Course runs through CAP, tertiary hyperparathyroidism with parathyroidectomy, anemia of CKD on darbepoetin, right foot osteomyelitis, LAD stent then inferior STEMI, HFrEF, and a left renal cell carcinoma treated by partial nephrectomy in 2026.",
+      "events": [
+        {
+          "id": "2015-08-24a",
+          "kind": "telephone",
+          "start": "2015-08-24T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2015-08-24T10:12",
+              "body": "Mr. Dabrowski phoned about joining. Moved his care because his old doctor is retiring at the end of the summer. Has a kidney doctor already and wants to keep that group. Gave membership info and set up a new patient slot for 9/16. Release signed over the phone script, faxed form to the prior office for the last 3 years of notes, labs, imaging and immunizations."
+            }
+          ]
+        },
+        {
+          "id": "2015-09-02a",
+          "kind": "outside_records",
+          "start": "2015-09-02T14:30",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "prior primary care",
+              "date": "2015-09-02T14:30",
+              "body": "Transfer summary, prior internal medicine office, for Stanley Dabrowski, DOB 03/10/1952.\n\nProblems: Type 2 diabetes since about 1997, on basal insulin. Diabetic kidney disease, stage 4, followed by outside nephrology. Hypertension. Coronary artery disease: treadmill test 2012 abnormal, managed medically, no catheterization; aspirin since. Hyperlipidemia. Osteoarthritis both knees; left knee arthroscopy this spring with an outside orthopedic group. Smoker, about a pack a day.\n\nMedications: insulin glargine 24 units at bedtime; lisinopril 10 mg daily; atorvastatin 40 mg daily; sevelamer carbonate 800 mg with each meal; calcitriol 0.25 mcg daily; acetaminophen 650 mg up to four times daily as needed; aspirin 81 mg daily. Metformin was stopped in 2013 when his kidney function declined.\n\nAllergies: none known.\n\nHealth maintenance: colonoscopy 2014, normal, 10-year interval. Td 2012. No pneumococcal vaccine on file.\n\nLast labs in the packet: creatinine in the high 2s, A1c in the high 7s."
+            }
+          ]
+        },
+        {
+          "id": "2015-09-16a",
+          "kind": "establish_care",
+          "start": "2015-09-16T09:00",
+          "end": "2015-09-16T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with diabetic chronic kidney disease", "action": "history", "onset": "1997-06-01"},
+            {"label": "Chronic kidney disease, stage 4", "action": "history", "onset": "2013-01-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2005-01-01"},
+            {"label": "Coronary artery disease", "action": "history", "onset": "2012-05-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2005-01-01"},
+            {"label": "Bilateral primary osteoarthritis of knee", "action": "history", "onset": "2010-01-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "history", "onset": "1972-01-01"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "[iU]"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension, diabetic kidney disease"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia, CAD"},
+            {"drug_text": "sevelamer carbonate 800 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth with each meal", "dose": {"value": 800, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "CKD, phosphorus"},
+            {"drug_text": "calcitriol 0.00025 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily", "dose": {"value": 0.25, "unit": "ug"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "CKD mineral bone disease"},
+            {"drug_text": "acetaminophen 325 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets by mouth every 6 hours as needed for pain", "dose": {"value": 650, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Knee osteoarthritis"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per week"},
+            {"item": "Occupation", "value": "Retired construction foreman"}
+          ],
+          "state": {"bp": [146, 88], "weight_kg": 94.0, "height_cm": 178.0, "labs": {"Creatinine": 2.7, "Hemoglobin A1c": 7.8, "Hemoglobin": 12.4, "Microalbumin/Creatinine Ratio": 640, "Potassium": 4.9, "Phosphorus": 4.8, "Low Density Lipoprotein": 84, "Glucose": 156, "Blood Urea Nitrogen": 44}},
+          "vitals": {"bp": [146, 88], "weight_kg": 94.0, "height_cm": 178.0},
+          "measure": ["hr", "spo2", "temp_c", "rr"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2015-09-16T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2015-09-16T10:10", "results": [{"test": "Hemoglobin", "value": 12.4}]},
+            {"panel": null, "collected": "2015-09-16T10:10", "results": [{"test": "Hemoglobin A1c", "value": 7.8}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Phosphorus"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": "Lipid Panel", "collected": "2015-09-16T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, high MDM", "performed": "2015-09-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2015-09-16T10:10"}
+          ],
+          "orders": [
+            {"id": "ldct-2015", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Current smoker, 40 pack-years"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2015-09-16T10:40",
+              "body": "63 y/o retired construction foreman establishing care. Prior PCP retiring. Records from that office reviewed before the visit.\n\nDiabetes: dx around 1997. Was on metformin until 2013, off since the kidneys slipped. Now glargine 24 units at bedtime, no other diabetes meds. Checks fingersticks most mornings, reports 140s-170s, no lows he's noticed.\n\nKidneys: stage 4 diabetic kidney disease, sees outside nephrology every 6 months or so. They manage the sevelamer and calcitriol. Knows to keep away from ibuprofen and the like.\n\nHeart: CAD on a stress test in 2012, medical management, no cath. No chest pain now. Walks the dog around the block, no limit he's noticed.\n\nBP on lisinopril 10. Lipids on atorvastatin 40.\n\nKnees: both arthritic, L scoped this spring, still sore on stairs. Tylenol helps.\n\nPSH: L knee arthroscopy 2015.\nFH: father MI at 62. Mother type 2 diabetes and kidney disease. Paternal uncle lung cancer.\nSH: divorced, lives alone in Ludlow, daughter close by. Retired from construction, ran crews as a foreman. Smokes about a pack a day, roughly 40 pack-years, not ready to quit but will think about it. 1-2 beers a week.\nAllergies: NKDA.\n\nExam: BP 146/88. Wt 94 kg, ht 178 cm. Well appearing, raspy voice. No JVD. Heart regular, no murmur. Lungs clear, few scattered expiratory sounds that clear with cough. Abd soft. Ext: no edema, crepitus both knees, no effusion. Feet: skin intact, monofilament intact bilaterally, DP palpable.\n\nA/P\n1. Type 2 DM with CKD 4: glargine 24 qhs. A1c, CMP, UACR today.\n2. CKD 4: per nephrology. Phosphorus today, will forward.\n3. HTN: above goal today, recheck next visit before any change.\n4. CAD, stable: aspirin, statin.\n5. Hyperlipidemia: lipids today.\n6. Tobacco: counseled, precontemplative. Meets criteria for annual low-dose CT; ordered and he agrees.\n7. OA knees: acetaminophen.\n8. HM: colonoscopy 2014 normal. Hep C and HIV screen today. Flu and pneumococcal at a nurse visit in October.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2015-09-18a",
+          "kind": "portal_message",
+          "start": "2015-09-18T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2015-09-18T16:20",
+              "body": "Stanley, your labs are back. Kidney function is in the range your kidney doctor has been following, and the A1c is 7.8, which is reasonable for you. Cholesterol is at goal on the atorvastatin. Hemoglobin is a little low, which goes along with the kidney disease. Hepatitis C and HIV screens were negative. I'll send a copy to nephrology. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2015-10-07a",
+          "kind": "nurse_visit",
+          "start": "2015-10-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2015-10-07T11:05"},
+            {"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2015-10-07T11:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2015-10-07T11:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2015-10-07T11:15",
+              "body": "Here per PCP plan from new patient visit. Flu vaccine L deltoid, PPSV23 R deltoid. Screening questions negative. Tolerated, waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2015-11-10a",
+          "kind": "imaging",
+          "start": "2015-11-10T08:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2015-11-10T08:30", "text": "Low-dose non-contrast CT of the chest, baseline screening exam. Lungs: no nodules. Airways patent. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Upper abdomen unremarkable on limited images.", "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2015", "action": "done", "date": "2015-11-10T08:30"}],
+          "documents": []
+        },
+        {
+          "id": "2015-11-12a",
+          "kind": "portal_message",
+          "start": "2015-11-12T09:05",
+          "reason": "CT result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening CT",
+              "author": "PCP",
+              "date": "2015-11-12T09:05",
+              "body": "Your screening CT shows no lung nodules. We'll repeat it next November. The best thing you can do for your lungs is still to stop smoking; my door is open whenever you want help with that."
+            }
+          ]
+        },
+        {
+          "id": "2015-12-08a",
+          "kind": "office_visit",
+          "start": "2015-12-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2015-12-08T14:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2015-12-08T14:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2015-12-08T14:20"},
+            {"procedure": "Venipuncture", "performed": "2015-12-08T14:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2015-12-08T15:10",
+              "body": "S: 3 mo f/u DM, CKD, HTN. Doing fine. Morning sugars 130-160. No lows. Knees about the same. Still smoking, cut back a little on his own.\n\nO: vitals per flowsheet. Heart RRR. Lungs clear. No edema. Feet intact.\n\nA/P: DM2 with CKD 4 - A1c and BMP today, glargine unchanged. HTN - pressure noted, he prefers to keep the current regimen for now. CAD stable. Next nephrology visit in January. RTC 3-4 mo."
+            }
+          ]
+        },
+        {
+          "id": "2016-01-26a",
+          "kind": "outside_records",
+          "start": "2016-01-26T13:00",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2016-01-19T09:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Bicarbonate"}]},
+            {"panel": null, "collected": "2016-01-19T09:30", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact", "value": 164}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2016-01-19T09:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2016-01-26T13:00",
+              "body": "Dear colleague,\n\nI saw Mr. Dabrowski on 1/19/2016 for his diabetic kidney disease, CKD stage 4. He feels well. Creatinine is in his usual range and potassium is acceptable on lisinopril. Phosphorus is controlled on sevelamer with meals; PTH 164 on calcitriol 0.25 mcg, which is fine for his stage. Hemoglobin is mildly reduced and we will follow it.\n\nWe reviewed avoiding NSAIDs and holding lisinopril on sick days with vomiting or diarrhea.\n\nCurrent medications: insulin glargine 24 units at bedtime, lisinopril 10 mg daily, atorvastatin 40 mg daily, sevelamer carbonate 800 mg three times daily with meals, calcitriol 0.25 mcg daily, aspirin 81 mg daily, acetaminophen as needed.\nAllergies: NKDA.\n\nFollow-up in 6 months.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2016-03-22a",
+          "kind": "office_visit",
+          "start": "2016-03-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.1}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2016-03-22T11:00", "results": [{"test": "Hemoglobin A1c", "value": 8.1}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2016-03-22T10:40"},
+            {"procedure": "Venipuncture", "performed": "2016-03-22T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2016-03-22T11:20",
+              "body": "Winter was long, less walking, more snacking by his account. Sugars running a bit higher in the mornings, 150s-180s. No hypoglycemia. Nephrology letter from January reviewed, stable.\n\nExam: BP and weight per flowsheet. Lungs clear. Heart regular. No edema.\n\nPlan: A1c today. Talked about getting back out walking now that the weather is turning. Smoking: still about a pack, not interested in medication. Back in 4 months with fasting lipids and urine."
+            }
+          ]
+        },
+        {
+          "id": "2016-03-24a",
+          "kind": "portal_message",
+          "start": "2016-03-24T12:30",
+          "reason": "A1c result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "author": "PCP",
+              "date": "2016-03-24T12:30",
+              "body": "A1c came back 8.1, up a bit from the fall. Fits with the winter you described. Let's see where it lands in July once you're walking again."
+            }
+          ]
+        },
+        {
+          "id": "2016-05-03a",
+          "kind": "pharmacy",
+          "start": "2016-05-03T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Glargine pens refill",
+              "author": "MA",
+              "date": "2016-05-03T09:40",
+              "body": "Pharmacy fax for glargine pens and pen needles, 90-day supply. Last office visit 3/22. Pended for PCP, approved, sent."
+            }
+          ]
+        },
+        {
+          "id": "2016-07-12a",
+          "kind": "office_visit",
+          "start": "2016-07-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, kidney and lipid follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.7}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2016-07-12T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2016-07-12T08:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2016-07-12T08:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2016-07-12T08:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2016-07-12T08:20"},
+            {"procedure": "Venipuncture", "performed": "2016-07-12T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2016-07-12T09:05",
+              "body": "Fasting today. Back to walking most evenings, a mile or so with the dog. Morning sugars mostly 130s now. Knees ache after yard work, acetaminophen does the job.\n\nExam: vitals per flowsheet. Lungs clear, heart regular, no edema. Feet: no calluses, monofilament intact, pulses palpable.\n\nA/P: DM2 with CKD 4 - labs today incl. A1c, CMP, CBC, UACR, lipids. Copy to nephrology (seeing them later this month). HTN on lisinopril 10. CAD no symptoms. Eye exam due, will book with his optometrist. RTC fall for preventive visit and flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2016-07-28a",
+          "kind": "outside_records",
+          "start": "2016-07-28T15:10",
+          "reason": "Nephrology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2016-07-28T15:10",
+              "body": "Dear colleague,\n\nMr. Dabrowski returned on 7/25/2016. Thank you for forwarding your July labs, which we used in place of a repeat draw. Kidney function is unchanged, CKD stage 4. Albuminuria persists at a level consistent with diabetic nephropathy. Phosphorus and potassium acceptable. No changes to sevelamer or calcitriol.\n\nBlood pressure in our office was mildly above target; continue lisinopril 10 mg, home readings would help.\n\nReturn in 6 months.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2016-08-23a",
+          "kind": "outside_records",
+          "start": "2016-08-23T11:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2016-08-23T11:00",
+              "body": "Patient: Stanley Dabrowski. Exam 8/17/2016, dilated.\nVisual acuity 20/25 OD, 20/25 OS with correction.\nIOP normal both eyes.\nFundus: no diabetic retinopathy either eye. No macular edema.\nImpression: diabetes without retinopathy. Recommend annual dilated exam."
+            }
+          ]
+        },
+        {
+          "id": "2016-10-04a",
+          "kind": "annual_physical",
+          "start": "2016-10-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preventive visit",
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2016-10-04T09:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2016-10-04T09:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2016-10-04T10:00"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2016-10-04T09:20"},
+            {"procedure": "Immunization administration", "performed": "2016-10-04T10:00"},
+            {"procedure": "Venipuncture", "performed": "2016-10-04T09:55"}
+          ],
+          "orders": [
+            {"id": "ldct-2016", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "author": "PCP",
+              "date": "2016-10-04T10:15",
+              "body": "Preventive visit, age 64. Feels about the same as last year. Turns 65 in March and has his Medicare paperwork started.\n\nROS negative except chronic knee ache. PHQ-2 0.\n\nExam: well appearing. HEENT unremarkable. Neck supple, no masses. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Ext no edema. Skin no concerning lesions. Feet intact.\n\nHealth maintenance: colonoscopy 2014 normal. Eye exam August, no retinopathy. Flu shot given today. PPSV23 done last fall. Lung screening CT due next month, ordered. Smoking cessation: discussed again, he wants to try cutting down first.\n\nChronic problems reviewed and stable per recent nephrology note. A1c and BMP today. RTC early winter."
+            }
+          ]
+        },
+        {
+          "id": "2016-11-08a",
+          "kind": "imaging",
+          "start": "2016-11-08T08:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2016-11-08T08:00", "text": "Annual low-dose non-contrast CT chest. Comparison 11/10/2015. No pulmonary nodules. No consolidation, effusion or pneumothorax. Mediastinum unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening."}
+          ],
+          "orders": [{"id": "ldct-2016", "action": "done", "date": "2016-11-08T08:00"}],
+          "documents": []
+        },
+        {
+          "id": "2016-12-13a",
+          "kind": "office_visit",
+          "start": "2016-12-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2016-12-13T15:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2016-12-13T15:25",
+              "body": "Quick check. CT from November clear, reviewed with him. October A1c and kidney numbers steady. No complaints except the cold on his knees. Still smoking, maybe 3/4 pack.\n\nExam: lungs clear, heart regular, no edema.\n\nPlan: same meds. Refills sent for lisinopril, atorvastatin and aspirin. Will see after his Medicare starts for the welcome visit."
+            }
+          ]
+        },
+        {
+          "id": "2017-02-07a",
+          "kind": "telephone",
+          "start": "2017-02-07T10:30",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance change",
+              "author": "front desk",
+              "date": "2017-02-07T10:30",
+              "body": "Pt called to say Medicare and his supplement start 3/1. Will bring cards in. Asked to book the Welcome to Medicare visit in April, done."
+            }
+          ]
+        },
+        {
+          "id": "2017-03-28a",
+          "kind": "office_visit",
+          "start": "2017-03-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and kidney follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.6, "Creatinine": 2.9, "Hemoglobin": 11.9}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2017-03-28T11:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2017-03-28T11:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2017-03-28T11:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2017-03-28T11:00"},
+            {"procedure": "Venipuncture", "performed": "2017-03-28T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2017-03-28T11:40",
+              "body": "Turned 65 this month. Nephrology saw him in January (letter pending). Says they told him the numbers drifted a touch. Sugars fine. No chest pain, no shortness of breath beyond his baseline smoker's wind on hills.\n\nExam: per flowsheet. Lungs clear. Heart regular. No edema.\n\nA/P: CKD 4 with slow drift - BMP and CBC today, results to nephrology. DM - A1c. HTN - lisinopril 10. Welcome to Medicare visit next month."
+            }
+          ]
+        },
+        {
+          "id": "2017-04-25a",
+          "kind": "annual_physical",
+          "start": "2017-04-25T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare visit",
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2017-04-25T09:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2017-04-25T09:25"}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2017-04-25T09:25", "text": "Sinus rhythm, rate 74. Normal axis. PR, QRS and QT intervals normal. No pathologic Q waves. No acute ST changes.", "conclusion": "Normal sinus rhythm, no acute abnormality."}
+          ],
+          "orders": [
+            {"id": "aaa-us-2017", "action": "placed", "order": "Abdominal aortic aneurysm screening ultrasound", "category": "imaging", "reason": "Male 65-75, ever smoker"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Initial Preventive Physical Examination",
+              "author": "PCP",
+              "date": "2017-04-25T09:50",
+              "body": "Welcome to Medicare visit.\n\nFunctional: independent with everything, drives, does his own shopping and cooking. No falls in the past year. Hearing OK in one-on-one conversation, misses some in crowds. Vision corrected, eye exam yearly. Home safety reviewed - has railings, no throw rugs.\n\nMood: PHQ-2 0.\nAdvance directive: none; daughter would be his health care proxy, gave him the form to take home.\n\nExam: per flowsheet, otherwise unchanged from last visit.\n\nScreening ECG today: sinus, no acute change.\nPreventive plan written out for him: AAA ultrasound (ordered), annual lung CT in November, flu each fall, PCV13 this fall, shingles vaccine when the new one is available at his pharmacy, colonoscopy not due until 2024, eye exam yearly.\n\nSmoking: advised to quit, he's willing to try nicotine gum on his own. Not ready for a quit date."
+            }
+          ]
+        },
+        {
+          "id": "2017-05-09a",
+          "kind": "imaging",
+          "start": "2017-05-09T10:15",
+          "reason": "AAA screening",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2017-05-09T10:15", "text": "Limited ultrasound of the abdominal aorta for aneurysm screening. The aorta is visualized from the diaphragm to the bifurcation. Maximum diameter 2.1 cm in the infrarenal segment. No focal dilation. Common iliac arteries normal caliber. Both kidneys are small and echogenic, consistent with known chronic kidney disease; no hydronephrosis.", "conclusion": "No abdominal aortic aneurysm. Small echogenic kidneys."}
+          ],
+          "orders": [{"id": "aaa-us-2017", "action": "done", "date": "2017-05-09T10:15"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "AAA ultrasound reviewed",
+              "author": "PCP",
+              "date": "2017-05-10T08:15",
+              "body": "Aorta normal caliber, no aneurysm. One-time screen complete. Kidney appearance fits with known CKD. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2017-06-20a",
+          "kind": "outside_records",
+          "start": "2017-06-20T14:00",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2017-06-13T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2017-06-13T09:00", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact", "value": 238}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2017-06-20T14:00",
+              "body": "Dear colleague,\n\nFollow-up for Mr. Dabrowski on 6/13/2017. CKD stage 4 from diabetic nephropathy; creatinine a little higher than last year but within the stage. PTH has risen to 238; calcium normal, phosphorus at the upper end on sevelamer. We will continue calcitriol 0.25 mcg and recheck at the next visit. Hemoglobin is drifting down slowly and remains above any treatment threshold.\n\nI encouraged him to stop smoking.\n\nMedications unchanged. Allergies: NKDA.\n\nNext visit in January.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2017-07-18a",
+          "kind": "office_visit",
+          "start": "2017-07-18T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2017-07-18T14:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Lipid Panel", "collected": "2017-07-18T14:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2017-07-18T13:40"},
+            {"procedure": "Venipuncture", "performed": "2017-07-18T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2017-07-18T14:20",
+              "body": "Summer follow-up. Tried the nicotine gum, didn't like the taste, back to about a pack a day. Sugars fine, a couple of readings in the 200s after a family cookout. No lows.\n\nExam: per flowsheet. Heart regular. Lungs clear. Feet intact, no ulcers.\n\nPlan: A1c, UACR and lipids today. Nephrology letter from June reviewed: PTH rising, they are following. Eye appointment in August. Back in fall for flu and pneumonia shot."
+            }
+          ]
+        },
+        {
+          "id": "2017-08-29a",
+          "kind": "outside_records",
+          "start": "2017-08-29T10:20",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2017-08-29T10:20",
+              "body": "Dilated exam 8/24/2017. Best corrected acuity 20/25 each eye. Lens: early nuclear changes, not visually significant. Retina: no hemorrhages, exudates or neovascularization; no diabetic retinopathy. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2017-10-10a",
+          "kind": "nurse_visit",
+          "start": "2017-10-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2017-10-10T10:35"},
+            {"vaccine": "Pneumococcal conjugate PCV13", "date": "2017-10-10T10:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2017-10-10T10:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2017-10-10T10:45",
+              "body": "High-dose flu L deltoid. PCV13 R deltoid (PPSV23 was 10/2015). No reactions during observation. Reminded him the shingles vaccine is coming to pharmacies soon."
+            }
+          ]
+        },
+        {
+          "id": "2017-11-07a",
+          "kind": "office_visit",
+          "start": "2017-11-07T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Creatinine": 3.0, "Hemoglobin": 11.6}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2017-11-07T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2017-11-07T10:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2017-11-07T09:40"},
+            {"procedure": "Venipuncture", "performed": "2017-11-07T10:00"}
+          ],
+          "orders": [
+            {"id": "ldct-2017", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2017-11-07T10:20",
+              "body": "Fall check. No new issues. Annual lung CT due, ordered for next week. Sugars stable. Knees worse in the cold, acetaminophen 2-3 times a day.\n\nExam: heart regular, lungs clear, no edema, feet without lesions.\n\nPlan: BMP and A1c. Continue current regimen. Due for diabetes visit in February."
+            }
+          ]
+        },
+        {
+          "id": "2017-11-14a",
+          "kind": "imaging",
+          "start": "2017-11-14T08:15",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2017-11-14T08:15", "text": "Annual low-dose CT chest. Comparison 11/08/2016. No lung nodules or masses. No airspace disease. No adenopathy.", "conclusion": "Lung-RADS 1. Return to annual screening."}
+          ],
+          "orders": [{"id": "ldct-2017", "action": "done", "date": "2017-11-14T08:15"}],
+          "documents": []
+        },
+        {
+          "id": "2017-12-20a",
+          "kind": "telephone",
+          "start": "2017-12-20T17:45",
+          "reason": "Hospital admission notice",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Daughter calling",
+              "author": "RN",
+              "date": "2017-12-20T17:45",
+              "body": "Daughter called: father admitted this afternoon to the regional hospital with pneumonia after two days of fever and a bad cough. She wanted us to know. Advised we'll request records and set up a follow-up after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2017-12-20b",
+          "kind": "hospital_admission",
+          "start": "2017-12-20T14:10",
+          "end": "2017-12-24T11:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Community-acquired pneumonia",
+          "conditions": [
+            {"label": "Community-acquired pneumonia", "action": "diagnosed", "onset": "2017-12-18"}
+          ],
+          "vitals": [
+            {"time": "2017-12-20T14:20", "temp_c": 38.6, "hr": 98, "rr": 22, "bp": [132, 78], "spo2": 93}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2017-12-22T06:00", "results": [{"test": "Glucose", "value": 228}]},
+            {"panel": null, "collected": "2017-12-22T11:40", "results": [{"test": "Glucose", "value": 112}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2017-12-20T14:50", "text": "PA and lateral chest. Patchy consolidation in the right lower lobe. No pleural effusion. No pneumothorax. Heart size normal. Mediastinum unremarkable.", "conclusion": "Right lower lobe pneumonia."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2017-12-27T09:30",
+              "body": "Regional hospital, inpatient medicine service.\nAdmitted 12/20/2017, discharged 12/24/2017.\n\nDiagnosis: community-acquired pneumonia, right lower lobe.\n\nPresentation: 65 y/o man with diabetes, CKD stage 4, CAD and hypertension, a current smoker, with two days of fever, productive cough and shortness of breath. On arrival febrile and breathing a little fast but with stable pressures. Chest film showed right lower lobe consolidation.\n\nCourse: Treated with IV ceftriaxone and azithromycin for the full stay; afebrile by day 3 and no discharge antibiotic needed. His home glargine was held on admission and he was managed on a hospital regimen of glargine given each morning with sliding-scale correction, glucose checks every 6 hours. On hospital day 3 (12/22), a few hours after the morning glargine, nursing noted his glucose had come down from 228 to 112 mg/dL with no change in his fluids or what he was eating. He was awake and had no symptoms. Exam was otherwise normal and showed no lipodystrophy at injection sites or any sign of an insulin overdose. The team felt the drop reflected the expected action of the insulin dose; no treatment needed and no further drops. Renal function at his baseline throughout.\n\nDischarge medications: resume home regimen unchanged - insulin glargine 24 units at bedtime, lisinopril 10 mg daily, atorvastatin 40 mg daily, sevelamer carbonate 800 mg with meals, calcitriol 0.25 mcg daily, aspirin 81 mg daily, acetaminophen as needed.\nAllergies: NKDA.\n\nFollow-up: PCP within 1-2 weeks; repeat chest x-ray in 6-8 weeks. Smoking cessation advised."
+            }
+          ]
+        },
+        {
+          "id": "2017-12-27a",
+          "kind": "telephone",
+          "start": "2017-12-27T11:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2017-12-27T11:15",
+              "body": "Called pt 3 days after discharge. Feeling better, cough looser, no fever. Back on his usual glargine at bedtime, morning sugars 120s-150s, no lows. Eating OK. Has all his meds. Discharge summary received today and routed to PCP. Follow-up booked 1/3."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

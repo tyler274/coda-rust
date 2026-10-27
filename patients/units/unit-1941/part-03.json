@@ -1,0 +1,303 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001941",
+   "events": [
+    {
+     "id": "2026-02-09a",
+     "kind": "pharmacy",
+     "start": "2026-02-09T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Refill request - amlodipine",
+       "author": "MA",
+       "date": "2026-02-09T10:15",
+       "body": "Pharmacy e-request for amlodipine 10 mg, no refills left on the November Rx. Renewed per protocol, #90 with 1 refill. Pt has physical 3/12."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-12a",
+     "kind": "annual_physical",
+     "start": "2026-03-12T09:30",
+     "end": "2026-03-12T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical and blood pressure follow-up",
+     "state": {
+      "bp": [
+       162,
+       98
+      ]
+     },
+     "vitals": {
+      "bp": [
+       162,
+       98
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-03-12T10:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-03-12T10:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-03-12T10:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cardiology-return",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "renovascular hypertension from FMD not controlled on amlodipine 10 mg"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2026-03-12T09:30"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-03-12T09:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-03-12T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical and Hypertension Follow-up",
+       "author": "PCP",
+       "date": "2026-03-12T10:45",
+       "body": "PREVENTIVE VISIT + PROBLEM VISIT\n\n34 y/o, on February/March break. Problems: multifocal FMD (both renal arteries, right ICA), renal artery stenosis with renovascular hypertension. Meds: amlodipine 10 mg daily - takes it every morning, no side effects. NKDA.\n\nInterval: still some headaches. Home readings run about where ours do despite the higher dose. Never got the vascular follow-up booked - their office lost the referral request, she says.\nHealth maintenance: Pap/HPV 2022 normal, next 2027. HIV/HCV screened 2021. Vaccines current for the season.\nSHx: never smoker, no alcohol, running less this winter.\n\nExam: BP 162/98 (rechecked, similar). Weight stable, BMI ~23. Well. Fundi normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal. Skin normal.\nPHQ-9: 2.\n\nA/P:\n1. Renovascular HTN / renal artery stenosis from FMD - uncontrolled on full-dose amlodipine. She needs vascular cardiology back in the loop now; new referral sent today and I asked our referral coordinator to confirm the appointment. Continue amlodipine 10 mg. Home log.\n2. FMD with carotid involvement - no new neuro symptoms. Reviewed stroke warning signs.\n3. Preventive - CBC, CMP, lipids today. Pap not due. Flu/COVID in the fall.\nReturn once cardiology has seen her."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-16a",
+     "kind": "portal_message",
+     "start": "2026-03-16T11:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "results and referral",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Labs and cardiology",
+       "author": "PCP",
+       "date": "2026-03-16T11:50",
+       "body": "Your blood count, kidney and liver tests and cholesterol are all normal. Our referral coordinator confirmed vascular cardiology received the referral; their first opening is June 10 and you're on their cancellation list. Keep the amlodipine going and keep logging."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Labs and cardiology",
+       "author": "patient",
+       "date": "2026-03-16T19:05",
+       "body": "Thank you! June 10 works since school will be out. Will keep logging."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-10a",
+     "kind": "specialist_visit",
+     "start": "2026-06-10T10:00",
+     "service": "Cardiology",
+     "reason": "fibromuscular dysplasia follow-up",
+     "vitals": {
+      "bp": [
+       164,
+       98
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-06-10T10:45",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.9
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-06-10T10:45",
+       "resulted": "2026-06-13T12:00",
+       "results": [
+        {
+         "test": "Plasma Renin Activity",
+         "value": 9.1
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cardiology-return",
+       "action": "done",
+       "date": "2026-06-10T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up - Vascular Medicine",
+       "author": "cardiology",
+       "date": "2026-06-15T14:00",
+       "body": "OUTSIDE CARDIOLOGY GROUP - VASCULAR MEDICINE CLINIC\nDate of service: 06/10/2026\nRe: Angela Duffy, DOB 05/06/1991\n\nMs. Duffy returns, now 35, for multifocal fibromuscular dysplasia (both renal arteries, right internal carotid) with renal artery stenosis and renovascular hypertension, hypertensive since late 2024. Since we saw her in March 2025 her PCP started amlodipine, now 10 mg daily, which she takes faithfully. Even so her home systolic readings sit between 160 and 170 and the headaches continue. She is occasionally lightheaded. Otherwise her review of systems is unremarkable.\n\nShe has no personal history of heart disease, diabetes or high cholesterol. Never smoker, no alcohol.\nMedications: amlodipine 10 mg daily. Allergies: NKDA.\n\nExam: BP 164/98. No focal neurologic deficits. Bruits are heard over both flanks. Heart regular. Lungs clear.\n\nLabs today: creatinine 0.9 mg/dL. Plasma renin activity 9.1 ng/mL/h, elevated.\n\nAssessment: renovascular hypertension from FMD-related renal artery stenosis, worsening despite adherence to amlodipine 10 mg, with persistently high renin.\n\nPlan:\n- Renal angiography with balloon angioplasty, which is the treatment of choice for renal FMD when pressure stays uncontrolled. Risks, benefits and alternatives discussed; she would like to proceed. Being scheduled at the regional hospital catheterization lab.\n- Continue amlodipine 10 mg until then.\n- We will send the procedure report.\n\nCardiology / Vascular Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "telephone",
+     "start": "2026-06-16T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "cardiology letter filed",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Outside letter received",
+       "author": "RN",
+       "date": "2026-06-16T13:00",
+       "body": "Vascular cardiology follow-up letter from 6/10 received and filed for PCP. Plan per cardiology: renal angiography with angioplasty, scheduling through their office. No action needed from us at this time. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-28a",
+     "kind": "procedure_visit",
+     "start": "2026-07-28T07:30",
+     "end": "2026-07-28T15:30",
+     "service": "Cardiology",
+     "reason": "renal angiography and angioplasty",
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Renal Angiography and Right Renal Artery Angioplasty",
+       "author": "cardiology",
+       "date": "2026-07-31T09:15",
+       "body": "REGIONAL HOSPITAL - CARDIAC CATHETERIZATION LABORATORY\nProcedure date: 07/28/2026\nPatient: Angela Duffy, DOB 05/06/1991\nIndication: renovascular hypertension from multifocal fibromuscular dysplasia, uncontrolled on amlodipine 10 mg.\nAllergies: NKDA.\n\nProcedures: selective bilateral renal angiography; translesional pressure measurement; balloon angioplasty of the right renal artery.\nAccess: right common femoral artery, ultrasound-guided, 6 French sheath. Moderate sedation.\n\nFindings:\n- Right renal artery: beaded mid and distal main renal artery typical of multifocal FMD, with a significant translesional pressure gradient.\n- Left renal artery: beaded mid segment without a significant gradient.\n- No aneurysm or dissection.\n\nIntervention: right renal artery balloon angioplasty without stent. After angioplasty the beading was smoothed and the gradient resolved. No dissection on final images.\nClosure: closure device to the femoral site, hemostasis achieved.\nComplications: none. Estimated blood loss minimal.\n\nDisposition: observed in recovery, femoral site clean, ambulating; discharged home the same afternoon.\n\nDischarge medications: aspirin 81 mg daily (new); continue amlodipine 10 mg daily.\nFollow-up: renal artery duplex ultrasound in about one month at the vascular clinic, then clinic visit to decide on medication adjustment. Home BP log.\nCopy to primary care."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-31a",
+     "kind": "telephone",
+     "start": "2026-07-31T15:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "procedure report filed",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Procedure report received",
+       "author": "front desk",
+       "date": "2026-07-31T15:10",
+       "body": "Catheterization lab report from 7/28 (renal angiography, right renal artery angioplasty) received by fax and filed. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "portal_message",
+     "start": "2026-08-11T20:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "update after angioplasty",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "After the procedure",
+       "author": "patient",
+       "date": "2026-08-11T20:20",
+       "body": "Hi - just wanted you to know the angioplasty went fine and the groin site is healed. Cardiology has me on a baby aspirin now plus the amlodipine. My ultrasound with them is the end of the month. Should I be doing anything differently with you in the meantime?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: After the procedure",
+       "author": "RN",
+       "date": "2026-08-12T08:40",
+       "body": "Great to hear, Angela. We received the procedure report. Keep taking your medicines the way cardiology listed and keep your home log. They'll decide on any changes after the ultrasound - please let us know what they say, and message us if you get dizzy or your readings drop low."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

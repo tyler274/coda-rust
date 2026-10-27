@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002639",
+      "events": [
+        {
+          "id": "2026-02-13a",
+          "kind": "ed_visit",
+          "start": "2026-02-13T09:31",
+          "end": "2026-02-13T13:55",
+          "service": "Emergency Medicine",
+          "reason": "Sudden severe upper back pain",
+          "vitals": [
+            {"time": "2026-02-13T09:36", "bp": [88, 40], "hr": 112, "temp_c": 36.7, "rr": 22, "spo2": 97}
+          ],
+          "conditions": [
+            {"label": "Dissection of ascending aorta", "icd10": "I71.010", "action": "diagnosed", "onset": "2026-02-13", "note": "acute type A, root through ascending aorta into proximal arch"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-13T09:50", "results": [{"test": "Hemoglobin", "value": 14.6}, {"test": "White Blood Cells", "value": 9.4}, {"test": "Platelets", "value": 231}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-13T09:50", "results": [{"test": "Sodium", "value": 139}, {"test": "Potassium", "value": 4.1}, {"test": "Creatinine", "value": 0.96}, {"test": "Glucose", "value": 96}]},
+            {"panel": null, "collected": "2026-02-13T09:50", "results": [{"test": "Troponin I, High Sensitivity", "value": 4}]}
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-02-13T09:58",
+              "text": "Portable AP chest. The mediastinum is widened. Lungs are clear. No pneumothorax. No pleural effusion. Bony thorax intact.",
+              "conclusion": "Widened mediastinum."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-02-13T10:40",
+              "text": "CT angiography of the chest with IV contrast, dissection protocol.\nAn intimal flap begins at the aortic root and extends through the ascending aorta into the proximal aortic arch. Aortic root measures 4.2 cm. The descending thoracic aorta is normal in caliber without a flap. No pericardial effusion. No mediastinal hematoma beyond the aortic wall. Lungs clear; no pleural effusion.",
+              "conclusion": "Acute type A aortic dissection from the aortic root into the proximal arch."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-02-13T09:31"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-02-17T10:30",
+              "body": "OUTSIDE HOSPITAL ED -- PHYSICIAN NOTE\nArrived by ambulance 02/13/2026 09:31\n\nChief complaint: acute upper back pain.\n\nHPI: 28-year-old man with Marfan syndrome and a known thoracic aortic root aneurysm, followed for aortic regurgitation since 2024 and seen here in 2025 for a lens problem in his right eye. Brought in after abrupt, severe pain between the shoulder blades that started while he was sitting at his desk. He calls it sharp and ripping.\n\nMeds: metoprolol succinate 50 mg, lisinopril 10 mg, aspirin 81 mg daily. NKDA.\nPSH: dental extraction 2024.\nFHx: father with Marfan, aortic root replaced at 38; paternal uncle died suddenly at 31, thought to be dissection; sister with Marfan.\nSocial: never smoker; rare alcohol; graduate student.\n\nExam: Temp 36.7 C. BP 88/40 right arm, 112/44 left arm. HR 112. Tall, thin, limbs and fingers disproportionately long. Heart: high-pitched early diastolic decrescendo murmur, loudest at the left sternal border. Lungs clear.\n\nCourse: two large-bore IVs. Portable chest film with a wide mediastinum. Cardiothoracic surgery at the tertiary center called before CT. CT angiogram: acute type A dissection from the root into the proximal arch. CBC, BMP and high-sensitivity troponin within normal limits. Aspirin held. Accepted in transfer by cardiac surgery; left by critical care transport at 13:55.\n\nDiagnosis: acute type A aortic dissection.\nAllergies: NKDA.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-13b",
+          "kind": "hospital_admission",
+          "start": "2026-02-13T15:10",
+          "end": "2026-02-20T11:30",
+          "service": "Cardiac Surgery",
+          "reason": "Acute type A aortic dissection",
+          "procedures": [
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-02-20T10:30"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth every 8 hours as needed for incision pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "Post-sternotomy pain"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary -- Cardiac Surgery",
+              "author": "cardiac surgery",
+              "date": "2026-02-23T08:15",
+              "body": "TERTIARY CARE CENTER -- CARDIAC SURGERY DISCHARGE SUMMARY\nAdmitted 02/13/2026 (transfer from outside ED). Discharged 02/20/2026.\n\nPrincipal diagnosis: acute type A aortic dissection.\nBackground: Marfan syndrome (FBN1); aortic root aneurysm 4.2 cm; chronic severe aortic regurgitation; mitral valve prolapse with mild MR; bilateral ectopia lentis.\n\nOperation 02/13/2026: emergency valve-sparing aortic root replacement (reimplantation) with hemiarch replacement, via median sternotomy, under cardiopulmonary bypass with circulatory arrest for the hemiarch. Native aortic valve preserved. Intraoperative TEE after repair: trace aortic regurgitation, LVEF 55%.\n\nHospital course: extubated postoperative day 1. ICU through day 2, then step-down. Chest tubes out day 3. Pain controlled with oral acetaminophen. Ambulating independently by day 4. Uneventful recovery.\n\nDischarge medications:\n- metoprolol succinate ER 50 mg daily\n- lisinopril 10 mg daily\n- aspirin 81 mg daily (resumed)\n- acetaminophen 1000 mg every 8 hours as needed for pain\n\nAllergies: NKDA.\n\nInstructions: sternal precautions -- no lifting over 10 lb, no pushing or pulling, no driving for 6 weeks. Keep the incision clean and dry. Referral placed to outpatient cardiac rehabilitation. Cardiac surgery clinic in about 5 weeks. Primary care within 2 weeks. Call or return for fever, wound drainage, chest or back pain, or shortness of breath.\n\nCardiac surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "telephone",
+          "start": "2026-02-23T10:45",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-02-23T10:45",
+              "body": "Spoke with pt, staying with his parents for now. Home since Friday after emergency aortic root/hemiarch repair for a type A dissection. Pain 3/10, using acetaminophen once or twice a day. Incision dry, no redness or drainage. No fever. Walking around the house several times a day. Has all 3 heart meds plus Tylenol, reviewed against discharge list -- matches. Knows sternal precautions. Parents driving him. Booked with PCP 3/3, surgery clinic letter says late March. Reviewed when to call 911."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after aortic dissection repair",
+          "conditions": [
+            {"label": "Thoracic aortic aneurysm without rupture", "action": "resolved", "note": "aortic root replaced 2/13/2026"},
+            {"label": "Nonrheumatic aortic (valve) insufficiency", "icd10": "I35.1", "action": "resolved", "note": "valve-sparing repair 2/13/2026; trace residual AR"}
+          ],
+          "state": {"bp": [116, 70], "weight_kg": 77.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2026-03-03T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-03-03T11:25",
+              "body": "Hospital follow-up. Discharge summary and outside ED record reviewed.\n2/13 sudden ripping interscapular pain at his desk; outside ED: BP 88/40 R, 112/44 L, HR 112, new early diastolic murmur, wide mediastinum on CXR; CTA type A dissection root to proximal arch. Transferred, emergency valve-sparing root reimplantation + hemiarch the same evening. TEE afterward trace AR, EF 55%. Home 2/20.\n\nNow: dad drove him in. Sore at the sternum, acetaminophen a couple times a day. Walking 15-20 min twice daily. First cardiac rehab session was yesterday. No fever, no wound drainage, no new back or chest pain, no shortness of breath.\nMeds: metoprolol succinate 50, lisinopril 10, aspirin 81, acetaminophen PRN. Matches the discharge list.\n\nExam: looks tired but well. BP and HR as charted -- pulse pressure normal now. Sternotomy incision intact, edges together, no erythema or drainage; sternum stable. Heart regular, I don't hear the old diastolic murmur. Lungs clear. No edema. Weight down a few pounds from the hospital stay.\n\nA/P\n1. Type A aortic dissection s/p valve-sparing root + hemiarch replacement -- recovering on schedule. Updated the problem list: root aneurysm and AR marked resolved with the repair; dissection kept. Continue meds. Sternal precautions until 6 weeks. Surgery clinic 3/25.\n2. Marfan syndrome / MVP / ectopia lentis -- unchanged.\n3. Spent time on how he's coping -- shaken, but has family around; he knows to reach out.\nSee me again in about 5-6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "specialist_visit",
+          "start": "2026-03-25T13:30",
+          "service": "Cardiac Surgery",
+          "reason": "Postoperative visit",
+          "measure": ["bp", "hr"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiac Surgery Postoperative Visit",
+              "author": "cardiac surgery",
+              "date": "2026-03-30T09:10",
+              "body": "Cardiac surgery clinic, 03/25/2026.\n\nSix weeks after emergency valve-sparing aortic root replacement with hemiarch for acute type A dissection. Progressing well in cardiac rehabilitation. Minimal sternal discomfort; off acetaminophen most days.\n\nExam: sternotomy healed, sternum stable. Regular rhythm. Lungs clear.\n\nPlan: may advance activity per cardiac rehab and resume driving. Lifelong avoidance of heavy lifting and straining (isometric exertion). Continue metoprolol succinate 50 mg, lisinopril 10 mg, aspirin 81 mg. Surveillance CT angiogram of the chest at about 6 months after surgery; ongoing care with his cardiologist.\nAllergies: NKDA.\n\nCardiac surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "office_visit",
+          "start": "2026-04-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after aortic repair",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-10T14:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-10T14:35", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-10T14:00"},
+            {"procedure": "Venipuncture", "performed": "2026-04-10T14:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-04-10T14:50",
+              "body": "8 wk out from the type A repair. Surgery clinic 3/25: healed, cleared to drive and progress through rehab, CTA around August.\n\nDrove himself today. Back in his own apartment. Rehab 3x/week, says he feels better than he did before the surgery -- more energy on the stairs. Not taking acetaminophen anymore. No chest or back pain, no palpitations, no swelling. Thesis defense pushed to summer, his advisor has been flexible.\nMeds: metoprolol succinate 50, lisinopril 10, aspirin 81. NKDA.\n\nExam: well. Sternotomy well healed. RRR, soft systolic click at the apex, no diastolic murmur. Lungs clear. No edema.\n\nA/P: s/p aortic dissection repair, doing well. BMP and CBC today. Keep cardiology and CTA in summer. Annual physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "portal_message",
+          "start": "2026-04-13T08:25",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-04-13T08:25",
+              "body": "Hi Silas -- kidney function, potassium and blood counts from Friday are all normal, including your hemoglobin after the surgery. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T11:00",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request",
+              "author": "RN",
+              "date": "2026-05-19T11:00",
+              "body": "Pharmacy requesting 90-day refills: metoprolol succinate ER 50 mg, lisinopril 10 mg, aspirin EC 81 mg. Last BMP 4/10 normal. Approved per standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "imaging",
+          "start": "2026-07-08T07:40",
+          "service": "Radiology",
+          "reason": "Surveillance after aortic repair",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-07-08T07:40",
+              "text": "CT angiography of the chest with IV contrast.\nComparison: 02/13/2026.\nPostoperative changes of aortic root replacement and hemiarch graft. Graft intact, without contrast leak or pseudoaneurysm. Native distal aortic arch and descending thoracic aorta normal in caliber, no residual dissection flap. Sternotomy wires intact. No pericardial or pleural effusion. Lungs clear.",
+              "conclusion": "Intact aortic root and hemiarch repair. No residual dissection."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Outside CT angiogram received",
+              "author": "MA",
+              "date": "2026-07-21T15:00",
+              "body": "Surveillance CTA chest from 7/8 received with the cardiology letter. Scanned to Media and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "specialist_visit",
+          "start": "2026-07-16T10:00",
+          "service": "Cardiology",
+          "reason": "Follow-up after aortic repair",
+          "measure": ["bp", "hr"],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-07-16T10:00",
+              "text": "Comparison: 08/20/2025 and intraoperative TEE 02/13/2026.\nStatus post valve-sparing aortic root replacement. Native trileaflet aortic valve with trace aortic regurgitation. Root graft well seated.\nLV normal size, LVEF 55%.\nMitral valve prolapse with mild MR.\nRV normal. No pericardial effusion.",
+              "conclusion": "Trace AR after valve-sparing root replacement. LVEF 55%. MVP with mild MR."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "author": "cardiology",
+              "date": "2026-07-21T14:30",
+              "body": "OUTSIDE CARDIOLOGY GROUP -- FOLLOW-UP\nDate of service: 07/16/2026\n\nFive months after emergency valve-sparing root and hemiarch replacement for type A dissection. Finished cardiac rehab. Feels well, no chest or back pain.\n\nCTA 7/8: repair intact, no residual dissection, distal aorta normal caliber.\nEcho today: trace AR, LVEF 55%, MVP with mild MR.\n\nPlan: continue metoprolol succinate 50 mg, lisinopril 10 mg and aspirin 81 mg daily. Lifelong activity restrictions as discussed. Yearly imaging of the aorta, alternating echo and CTA. Return in 12 months.\nAllergies: NKDA.\n\nCardiology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

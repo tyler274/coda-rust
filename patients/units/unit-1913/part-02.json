@@ -1,0 +1,469 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001913",
+      "events": [
+        {
+          "id": "2020-06-22a",
+          "kind": "office_visit",
+          "start": "2020-06-22T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 78,
+            "rr": 16
+          },
+          "measure": [
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Mitral valve prolapse",
+              "action": "diagnosed",
+              "note": "Clinical diagnosis from click and late systolic murmur; echo via cardiology"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2020-06-22T14:05",
+              "text": "Rate 76. Sinus rhythm. PR, QRS and QT intervals normal. Normal axis. No significant ST-segment or T-wave changes. No ectopy on the tracing.",
+              "conclusion": "Normal sinus rhythm. Normal ECG.",
+              "issued": "2020-06-22T14:30"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-06-22T14:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-06-22T14:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-22T14:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2020",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Suspected mitral valve prolapse with palpitations; please evaluate and obtain echocardiogram"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-06-22T13:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2020-06-22T14:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-06-22T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Palpitations",
+              "author": "PCP",
+              "date": "2020-06-22T13:40",
+              "body": "CC: heart \"skipping\"\n\nS: 23 yo F, MLIS student, seen in person (masked, screened at door). Since around the new year she has been noticing her heart flutter or skip a beat, a few times a week, lasting seconds. Not tied to anything she can identify. No chest pain, no shortness of breath, no lightheadedness, has never passed out. No caffeine beyond one tea a day. No meds, no supplements, no stimulants. NKDA. Never smoker, no alcohol.\nFHx relevant: mother has MVP with mild MR; maternal grandmother had a murmur that was never looked into. Father HTN.\n\nO: BP 120/75, HR 78, RR 16. Thin, comfortable.\nNeck: no JVD, thyroid not enlarged.\nCV: regular. High-pitched click in systole followed by a mid-to-late systolic murmur, loudest at the apex, carrying toward the left axilla. Standing to squatting, the murmur becomes softer. No gallop.\nLungs clear. No edema.\nECG in office: sinus rhythm, normal intervals, no meaningful ST-T change (see tracing).\n\nA/P:\n1. Palpitations with a midsystolic click and late systolic murmur that behaves the way prolapse does, plus a mother with MVP. Working diagnosis: mitral valve prolapse, added to problem list. Needs an echo to confirm and to look at the degree of regurgitation. Referral to cardiology placed for consult and echo.\n2. CBC, BMP and TSH today to rule out the usual non-cardiac contributors.\nReassured. Call or message if she faints, has chest pain with exertion, or palpitations that last minutes. F/u after cardiology."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          }
+        },
+        {
+          "id": "2020-06-25a",
+          "kind": "portal_message",
+          "start": "2020-06-25T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-06-25T08:50",
+              "body": "Good morning. Thyroid, blood counts and electrolytes are all normal, so nothing there is driving the palpitations. Cardiology should be calling you to set up the consult and the echo."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-04a",
+          "kind": "telephone",
+          "start": "2020-08-04T11:25",
+          "reason": "Cardiology referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral follow-up",
+              "author": "front desk",
+              "date": "2020-08-04T11:25",
+              "body": "Pt called, has not heard from cardiology. Called the cardiology office: referral was received in June, they are booking new non-urgent consults into January because of the COVID backlog. Pt given their number to get on the cancellation list. She is fine with waiting, symptoms unchanged. FYI to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral follow-up - PCP",
+              "author": "PCP",
+              "date": "2020-08-04T13:10",
+              "body": "Reviewed. Stable, no red flags. OK to wait for January. Call sooner with syncope or exertional symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T16:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2020-10-06T16:15",
+              "body": "Afebrile, no symptoms on COVID screen. Quadrivalent flu vaccine 0.5 mL IM, left deltoid. VIS given. Tolerated well, waited 15 min in the car per current protocol, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-09a",
+          "kind": "portal_message",
+          "start": "2020-11-09T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cancel physical",
+              "author": "patient",
+              "date": "2020-11-09T19:12",
+              "body": "Hi, I need to cancel my physical tomorrow. My roommate tested positive and I'm quarantining. I feel totally fine. Can I just do it next fall since I'm seeing cardiology in January anyway?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cancel physical",
+              "author": "front desk",
+              "date": "2020-11-10T08:05",
+              "body": "Cancelled. Sorry to hear about your roommate. We'll plan on next September; you'll get a reminder. Message us if you develop any symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-10a",
+          "kind": "annual_physical",
+          "start": "2020-11-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-01-04a",
+          "kind": "specialist_visit",
+          "start": "2021-01-04T10:00",
+          "service": "Cardiology",
+          "reason": "Palpitations, suspected mitral valve prolapse",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2020",
+              "action": "done",
+              "date": "2021-01-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "author": "cardiology",
+              "date": "2021-03-09T14:22",
+              "body": "OUTSIDE CARDIOLOGY GROUP - CONSULTATION\nDate of service: 01/04/2021\nReferring: primary care physician\nReason: palpitations, murmur\n\nDear colleague,\n\nThank you for asking us to see Ms. O'Leary, a 24-year-old graduate student whom you saw this past June for palpitations. She describes skipped and fluttering beats that tend to come on when she is sitting still, such as reading or studying, and that settle when she is up and moving. Since your visit she has also noticed an occasional vague discomfort in the chest, not exertional. No syncope.\n\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: mother with MVP and mild MR; maternal grandmother with an uninvestigated murmur; father with hypertension.\nSocial: nonsmoker, abstains from alcohol.\n\nVital signs were normal.\nOn auscultation there is a 2/6 high-pitched mid-systolic click with a late-systolic murmur at the apex. I do not appreciate radiation. The remainder of the exam is unremarkable.\n\nTransthoracic echocardiogram (performed today in our lab): the mitral leaflets billow into the left atrium during systole, consistent with mitral valve prolapse. Left ventricular size and systolic function normal. No pericardial effusion.\n\nImpression: mitral valve prolapse, symptomatic with benign-sounding palpitations and atypical chest discomfort.\n\nPlan: reassurance and education. Avoid excess caffeine and stimulants. No medication at this time. We will see her back in about a year, sooner if she develops exertional symptoms or syncope.\n\nSincerely,\nCardiology\n\n[Received by fax 03/09/2021 after records request]"
+            }
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "portal_message",
+          "start": "2021-02-22T20:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology visit",
+              "author": "patient",
+              "date": "2021-02-22T20:31",
+              "body": "Hi! Just wanted to let you know I finally saw cardiology in January and had the echo. They said it is MVP like my mom and not to worry, and to come back in a year. Did they send you anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cardiology visit",
+              "author": "PCP",
+              "date": "2021-02-23T07:58",
+              "body": "Thanks for the update, glad it was reassuring. We don't have their note yet; my staff will request it today."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "MA",
+              "date": "2021-02-23T09:40",
+              "body": "Faxed request to the outside cardiology office for the 1/4/21 consult and echo. Signed release on file."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "pharmacy",
+          "start": "2021-04-20T14:00",
+          "reason": "COVID-19 vaccine dose 1",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "pharmacy",
+          "start": "2021-05-11T14:15",
+          "reason": "COVID-19 vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T14:15"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "annual_physical",
+          "start": "2021-09-14T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-09-14T10:40",
+              "issued": "2021-09-21T11:30",
+              "text": "Liquid-based cervical cytology. Satisfactory for evaluation, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "NILM."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-14T10:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-14T10:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-14T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-09-14T10:15",
+              "body": "Annual exam - 24F\n\nFirst physical since 2019 (2020 cancelled for a quarantine). Interval: saw cardiology 1/2021, echo showed MVP, letter in chart, no meds, yearly follow-up there. Still gets the flutters while sitting and reading, a few times a week, unchanged; now and then a vague chest discomfort that passes. No fainting. COVID vaccine series done in spring at a pharmacy.\n\nMeds none. NKDA. No tobacco or alcohol. Second year of the MLIS, working in a university special collections room.\n\nExam: vitals stable, BMI 19. Heart: midsystolic click with a late systolic murmur at the apex, as expected. Lungs clear. Abdomen benign. Pelvic: normal, Pap obtained. Skin fine.\n\nPHQ-2 0.\n\nPlan\n1. MVP - stable, followed by cardiology. Keep that annual visit.\n2. Health maintenance: Pap today (due). Flu shot given. Will look for the COVID booster recommendation for her age group.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "portal_message",
+          "start": "2021-09-22T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "RN",
+              "date": "2021-09-22T13:05",
+              "body": "Your Pap from 9/14 is normal. Next one in 2024."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T17:30",
+          "reason": "COVID-19 booster",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-07T17:30"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "specialist_visit",
+          "start": "2022-06-28T11:00",
+          "service": "Cardiology",
+          "reason": "Telehealth follow-up, mitral valve prolapse"
+        },
+        {
+          "id": "2022-06-28b",
+          "kind": "portal_message",
+          "start": "2022-06-28T18:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "FYI cardiology",
+              "author": "patient",
+              "date": "2022-06-28T18:44",
+              "body": "FYI I had a video follow-up with cardiology today. Same palpitations at rest, nothing new. They want to repeat the echo at some point and they'll call me. No new meds."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: FYI cardiology",
+              "author": "RN",
+              "date": "2022-06-29T08:30",
+              "body": "Thank you for letting us know, Abigail. We'll note it in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "annual_physical",
+          "start": "2022-09-13T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-13T15:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-13T14:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-13T15:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-13T14:30",
+              "body": "PREVENTIVE VISIT\n\nAbigail, 25, here for yearly. Still in the MLIS program, now part-time, and working more hours at the university library.\n\nCardiac: video follow-up with cardiology in June per patient (no note from them in our chart). She says they found things the same and plan a repeat echo; she has not had it yet. Palpitations still at rest, come and go, not with exercise, resolve on their own. Denies fainting, fevers, weight loss.\n\nMeds: none. Allergies: NKDA. Social: never smoker, no alcohol or drugs.\n\nExam: well. BMI ~19. Neck no JVD. Heart: click and late systolic murmur at apex, unchanged. Lungs clear. No edema. Abdomen soft.\n\nPHQ-2 1.\n\nAssessment\n- MVP, followed by cardiology.\n- Wellness. Flu vaccine today; bivalent COVID booster at the pharmacy when convenient. Pap current (2021). Lipids 2019 were fine.\n\nNext physical 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "pharmacy",
+          "start": "2022-10-18T12:10",
+          "reason": "COVID-19 bivalent booster",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T12:10"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

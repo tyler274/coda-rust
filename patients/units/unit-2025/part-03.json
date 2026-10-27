@@ -1,0 +1,551 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002025",
+   "events": [
+    {
+     "id": "2026-01-20a",
+     "kind": "office_visit",
+     "start": "2026-01-20T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-20T08:55",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-20T08:55",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L",
+         "value": 0.8
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-01-20T08:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-01-20T08:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - follow-up",
+       "author": "PCP",
+       "date": "2026-01-20T09:15",
+       "body": "Routine follow-up. Left eye vision has settled; retina office in November said attached, acuity 20/50 on that side, which he notices mostly reading fine print. No chest pressure, still walks daily. No nosebleeds. CPAP nightly, new mask last month. Thirst and nocturia unchanged, once a night. Mood steady; psychiatry saw him in October.\n\nMeds unchanged: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, ezetimibe 10, lisinopril 20, lithium 300 bid, amiloride 5, NTG prn (never used).\n\nExam: vitals as charted. Heart regular, lungs clear, no edema. No tremor.\n\nA/P: CAD, HTN, lipids, OSA stable. Lithium level, BMP and TSH today. Oncology CT next month (last of the yearly scans). Next visit in spring."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lithium labs",
+       "author": "PCP",
+       "date": "2026-01-20T15:50",
+       "body": "Lithium 0.8. BMP and TSH normal. To psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "outside_records",
+     "start": "2026-02-19T11:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-02-17T12:40",
+       "results": [
+        {
+         "test": "Carcinoembryonic antigen",
+         "loinc": "2039-6",
+         "unit": "ng/mL",
+         "value": 1.5
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2026-02-17T08:15",
+       "text": "CT chest with contrast, comparison 02/18/2025. Lungs clear, no nodules. No adenopathy. Coronary stent. No effusion.",
+       "conclusion": "No evidence of metastatic disease."
+      },
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2026-02-17T08:15",
+       "text": "Unchanged postsurgical appearance after right hemicolectomy. No anastomotic mass. Solid organs unremarkable. No adenopathy or ascites.",
+       "conclusion": "No evidence of recurrence."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Oncology three-year surveillance",
+       "author": "oncology",
+       "date": "2026-02-19T11:00",
+       "body": "Medical oncology, 02/17/2026. Three years after right hemicolectomy for stage IIA ascending colon adenocarcinoma. Well. CT chest/abdomen/pelvis without recurrence; this completes imaging surveillance. CEA 1.5. Plan: annual visit with CEA through year 5; colonoscopy due 2027 with GI."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "pharmacy",
+     "start": "2026-03-10T10:25",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill requests",
+       "author": "MA",
+       "date": "2026-03-10T10:25",
+       "body": "Pharmacy refill requests received for lisinopril 20, atorvastatin 40, ezetimibe 10, amiloride 5 and metoprolol succinate 50, 90-day supplies. Sent per protocol, PCP signed. Lithium is filled by psychiatry. Isosorbide still has refills from cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-07a",
+     "kind": "hospital_admission",
+     "start": "2026-04-07T13:45",
+     "end": "2026-04-10T12:30",
+     "service": "Neurology",
+     "reason": "Acute ischemic stroke, right lateral medulla",
+     "conditions": [
+      {
+       "label": "Cerebral infarction, unspecified",
+       "icd10": "I63.9",
+       "action": "diagnosed",
+       "onset": "2026-04-07",
+       "note": "Right lateral medullary (Wallenberg) syndrome"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "clopidogrel 75 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily with aspirin for 21 days, then stop",
+       "dose": {
+        "value": 75,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute ischemic stroke"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose increased after stroke"
+      },
+      {
+       "drug": "atorvastatin 80 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 80,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Ischemic stroke, coronary artery disease"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-04-07T13:50",
+       "bp": [
+        160,
+        90
+       ],
+       "hr": 88,
+       "rr": 16
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-07T14:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-04-07T14:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-04-07T14:00",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-07T14:00",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity",
+         "value": 6
+        },
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L",
+         "value": 0.7
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-04-08T05:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 68
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-08T05:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 5.4
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-04-07T14:10",
+       "text": "No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Posterior fossa limited by streak artifact without visible abnormality.",
+       "conclusion": "No acute intracranial hemorrhage."
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2026-04-07T13:58",
+       "text": "Sinus rhythm, rate 88. Normal axis and intervals. No acute ST changes. No Q waves.",
+       "conclusion": "Sinus rhythm, no acute changes."
+      },
+      {
+       "study": "MRI brain without contrast",
+       "performed": "2026-04-07T19:30",
+       "text": "Diffusion-weighted imaging shows restricted diffusion in the right lateral medulla with corresponding ADC hypointensity, consistent with acute infarction. No other diffusion abnormality. No hemorrhage on susceptibility imaging. No mass. Ventricles normal. Flow voids preserved.",
+       "conclusion": "Acute infarct of the right lateral medulla."
+      },
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2026-04-08T11:00",
+       "text": "Normal left ventricular size and wall thickness. LVEF 55%. No left ventricular thrombus. Normal right ventricle. No significant valve disease. Agitated saline study at rest and with cough negative for interatrial shunt.",
+       "conclusion": "LVEF 55%, no thrombus, negative bubble study."
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record - dizziness and dysphagia",
+       "author": "emergency medicine",
+       "date": "2026-04-10T15:00",
+       "body": "Regional hospital ED, 04/07/2026, arrival 13:45.\n\nCC: dizzy, vomiting, can't swallow well, face numb.\n\nHPI: 61-year-old man with CAD and a prior MI with LAD stent, who was in this ED in September for a left retinal detachment. Since about 7 this morning he has had the sudden onset of spinning dizziness with nausea and repeated vomiting, then trouble getting food and liquids down, and numbness of the right side of his face, the same side he feels he is falling toward. He waited, hoping it was a virus.\n\nPMH: CAD s/p PCI, stable angina, HTN, hyperlipidemia, bipolar I on lithium, lithium nephrogenic DI, OSA on CPAP, stage IIA colon cancer s/p right hemicolectomy, left retinal detachment repaired 09/2025.\nMeds: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, ezetimibe 10, lisinopril 20, lithium carbonate 300 twice daily, amiloride 5. NKDA.\nSocial: never smoker, social alcohol, office manager. Family: father MI at 55, paternal uncle stroke at 60.\n\nVitals: BP 160/90, HR 88, RR 16.\nExam: alert, oriented, speech mildly hoarse. Right eyelid droops and the right pupil is smaller than the left. Pinprick and temperature sense reduced over the right face and over the left arm, trunk and leg. Strength full in all limbs. Tandem gait not possible, sways to the right. Soft palate weak on the right with the uvula pulled to the left. No carotid bruits. NIHSS 3.\n\nCT head: no hemorrhage. Last known well about 7 hours earlier, outside the window for thrombolysis. CTA head and neck: no large vessel occlusion and no significant stenosis. Neurology at bedside. NPO pending swallow evaluation. MRI brain with diffusion ordered.\n\nImpression: acute posterior circulation stroke, clinically a right lateral medullary syndrome.\nDisposition: admitted to the stroke unit."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge summary - lateral medullary stroke",
+       "author": "neurology",
+       "date": "2026-04-13T09:20",
+       "body": "Regional hospital stroke service. Admitted 04/07/2026, discharged 04/10/2026.\n\nDiagnosis: acute ischemic stroke of the right lateral medulla (right lateral medullary syndrome).\n\nCourse: MRI on arrival day confirmed an acute right lateral medullary infarct, no hemorrhage. CTA head/neck without occlusion or significant stenosis. Telemetry for 72 hours: sinus rhythm throughout, no atrial fibrillation. TTE: LVEF 55%, no thrombus, bubble study negative. LDL 68, A1c 5.4. Lithium 0.7; lithium and amiloride continued with fluids monitored, sodium stayed normal. Blood pressure allowed to run higher for 24 hours, then lisinopril resumed.\nSwallow: speech pathology bedside and video swallow on day 1 showed delayed swallow with some pooling; started on puree with thin liquids by cup; advanced to regular diet by day 3 with chin tuck and small bites. Nausea and vertigo settled by day 2.\nGait: PT, walking with supervision and then independently in the hallway with mild sway; outpatient PT recommended. Residual right facial numbness and left-sided pain/temperature change.\n\nDischarge medications:\nNEW clopidogrel 75 mg daily with aspirin for 21 days total (last dose 04/28/2026), then aspirin alone\nCHANGED atorvastatin 80 mg nightly (was 40)\nCONTINUE aspirin 81, ezetimibe 10, metoprolol succinate 50, isosorbide mononitrate ER 30, lisinopril 20, lithium carbonate 300 twice daily, amiloride 5, NTG prn\nAllergies: NKDA.\n\nFollow-up: PCP within 7-10 days; stroke neurology clinic in about 8 weeks; outpatient PT. No driving until cleared by neurology. Call 911 for any new weakness, speech or vision change."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-13a",
+     "kind": "telephone",
+     "start": "2026-04-13T10:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2026-04-13T10:40",
+       "body": "Transitional care call, 3 days after discharge for a right lateral medullary stroke. Records from the hospital received this morning and given to PCP. He is home, eating regular food slowly and tucking his chin as taught, no choking. Dizziness mild, mostly turning quickly. Walking in the house without a cane. Has clopidogrel and the new atorvastatin 80 from the pharmacy, old 40s set aside. Knows clopidogrel ends 4/28. Not driving. Visit with PCP Friday 4/17 confirmed; outpatient PT has not called yet, will follow up."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-17a",
+     "kind": "office_visit",
+     "start": "2026-04-17T13:00",
+     "end": "2026-04-17T13:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up after stroke",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-04-17T13:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "lab-2026-04-24",
+       "action": "placed",
+       "order": "BMP, hepatic panel, lithium level",
+       "category": "lab",
+       "reason": "Atorvastatin dose increase; lithium monitoring"
+      },
+      {
+       "id": "pt-referral-2026",
+       "action": "placed",
+       "order": "Outpatient physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "Gait imbalance after brainstem stroke"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital visit - stroke",
+       "author": "PCP",
+       "date": "2026-04-17T14:20",
+       "body": "TCM visit, 10 days after the onset of a right lateral medullary (Wallenberg) infarct, admitted 4/7-4/10. Hospital records reviewed in full: MRI acute right lateral medullary infarct, CTA without significant stenosis, telemetry without AF, echo LVEF 55% with negative bubble, LDL 68, A1c 5.4. Out of the window for lytics.\n\nSince home: swallowing better each day, still careful with dry bread and takes small sips. Vertigo only with quick head turns. Right side of the face feels \"asleep\", and hot water feels lukewarm on his left hand. Walks unaided but drifts to the right on uneven ground. Voice back to normal. Mood: rattled, \"three big things in three years\", but sleeping, not hopeless.\n\nMeds reconciled with his bottles: aspirin 81, clopidogrel 75 through 4/28, atorvastatin 80 (new), ezetimibe 10, metoprolol succinate 50, isosorbide mononitrate ER 30, lisinopril 20, lithium 300 bid, amiloride 5, NTG prn.\n\nExam: vitals as charted. Mild right ptosis and smaller right pupil. Decreased pinprick right face. Palate elevates, slightly less on the right. Strength full. Finger-nose intact; tandem gait unsteady, sways with feet together and eyes closed. Swallowed water without cough. Heart regular, lungs clear.\n\nA/P\n1. Acute ischemic stroke, right lateral medulla, recovering. Dual antiplatelet through 4/28 then aspirin alone; atorvastatin 80 with ezetimibe. BP today above goal on the diastolic side, first reading after a rushed arrival; home log for two weeks, goal under 130/80. Outpatient PT referral placed (hospital referral never reached him). Stroke neurology about 8 weeks out; no driving until they clear him.\n2. Dysphagia, improving: continue the hospital's strategies; call for coughing with meals or fevers.\n3. CAD, HTN: no chest symptoms; same regimen.\n4. Lithium/NDI: level 0.7 in hospital; recheck with BMP and liver panel next Friday (statin dose up).\n5. Mood: watching given the stress; he'll tell psychiatry and me if sleep or mood shifts.\n\nFollow-up visit late summer; will message with results."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-24a",
+     "kind": "lab_only",
+     "start": "2026-04-24T07:40",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-24T07:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-04-24T07:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-24T07:40",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L",
+         "value": 0.8
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-04-24T07:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "lab-2026-04-24",
+       "action": "done",
+       "date": "2026-04-24T15:30"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-27a",
+     "kind": "portal_message",
+     "start": "2026-04-27T09:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent labs",
+       "author": "PCP",
+       "date": "2026-04-27T09:10",
+       "body": "Hi Patrick, Friday's labs are all fine: kidney function, sodium and potassium normal, liver tests normal on the higher atorvastatin, and lithium 0.8. Reminder that tomorrow is your last clopidogrel tablet; keep taking the aspirin every day after that. Has PT called you?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your recent labs",
+       "author": "patient",
+       "date": "2026-04-27T18:40",
+       "body": "Thanks. Last clopidogrel is in the pill box for tomorrow. PT starts May 5. Swallowing is almost normal now."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-05a",
+     "kind": "outside_records",
+     "start": "2026-05-07T12:15",
+     "orders": [
+      {
+       "id": "pt-referral-2026",
+       "action": "done",
+       "date": "2026-05-07T12:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Physical therapy evaluation",
+       "author": "physical therapy",
+       "date": "2026-05-07T12:15",
+       "body": "Outpatient physical therapy, initial evaluation 05/05/2026. Referred by primary care for gait imbalance after a right lateral medullary stroke (04/2026). Independent with ADLs, no device. Strength full throughout. Static balance good; sways right with narrow stance and eyes closed, tandem walking with several step-offs, mild gaze-provoked dizziness with quick head turns. Knee osteoarthritis noted, tolerates exercise. Plan: twice weekly for 6-8 weeks, balance and vestibular-ocular training, home program. Goals: safe community walking on uneven ground, return to daily walks outdoors."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-10a",
+     "kind": "outside_records",
+     "start": "2026-06-12T10:20",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Stroke neurology follow-up",
+       "author": "neurology",
+       "date": "2026-06-12T10:20",
+       "body": "Outside stroke neurology clinic, 06/10/2026. Two months after an acute right lateral medullary infarct. Swallowing back to normal, diet unrestricted. Mild residual numbness of the right face and reduced temperature sense on the left side of the body. Vertigo resolved. Gait nearly normal; in PT, now walking outdoors daily. Mood good.\nExam: subtle right ptosis and miosis; decreased pinprick right face; strength and coordination normal; tandem gait with one step-off.\nMeds: aspirin 81; clopidogrel completed 04/28; atorvastatin 80, ezetimibe 10; cardiac medicines, lithium and amiloride unchanged.\nImpression: recovering right lateral medullary stroke, no recurrence. Continue aspirin and high-intensity statin with ezetimibe; blood pressure under 130/80 at home. Cleared to resume driving. Return in 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "pharmacy",
+     "start": "2026-07-14T09:50",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2026-07-14T09:50",
+       "body": "Pharmacy request for atorvastatin 80 mg, 90-day supply; hospital prescription had 30 days plus one refill. Sent per protocol, PCP signed. Patient also asked about an extra CPAP mask cushion; DME order form faxed."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "portal_message",
+     "start": "2026-08-11T12:25",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Follow-up appointment",
+       "author": "patient",
+       "date": "2026-08-11T12:25",
+       "body": "Hi, I think I'm due for my follow-up. PT finished last week and I'm back to walking the long loop. Anything in September works, mornings best."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Follow-up appointment",
+       "author": "front desk",
+       "date": "2026-08-11T15:05",
+       "body": "You're booked Thursday 9/10 at 9:00 with your doctor. Lithium and BMP can be drawn that morning; no need to fast."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-10a",
+     "kind": "office_visit",
+     "start": "2026-09-10T09:00",
+     "reason": "Routine follow-up after stroke; lithium monitoring",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

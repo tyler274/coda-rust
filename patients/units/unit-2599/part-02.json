@@ -1,0 +1,397 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002599",
+      "events": [
+        {
+          "id": "2024-04-23a",
+          "kind": "office_visit",
+          "start": "2024-04-23T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mouth sores, rash on elbows, joint pain",
+          "medications": [
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 8 hours as needed for joint pain", "dose": {"value": 400, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "chronic", "reason": "Joint pain"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-23T16:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-04-23T16:40", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2024-04-23T16:40", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]},
+            {"panel": null, "collected": "2024-04-23T16:40", "resulted": "2024-04-26T09:10", "results": [{"test": "Antinuclear Antibodies", "text": "Positive, titer 1:320, speckled pattern"}]}
+          ],
+          "orders": [
+            {"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "Oral ulcers, elbow rash, inflammatory-sounding joint pain; mother with lupus"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-23T16:00"},
+            {"procedure": "Venipuncture", "performed": "2024-04-23T16:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-04-23T16:45", "body": "CC: sores in mouth, spots on elbows, achy hands and knees.\n\nHPI: 28M, healthy until about early March. Since then keeps getting painful sores inside his mouth that come and go, and red sore patches on the backs of both elbows - thought it was from leaning on desks. Separately, bouts of pain and some puffiness in his fingers and both knees, better if he rests them, worse after a day on his feet or basketball. Has been taking ibuprofen 400 mg (two of the OTC ones) up to three times a day on bad days, helps some. No fever. No genital sores. No eye redness. No chest pain or trouble breathing. Urine looks normal to him.\nHe brought up his mom's lupus himself - worried.\n\nMeds: vitamin D3 2000 units daily; ibuprofen as above.\nNKDA.\n\nExam: vitals in flowsheet, afebrile.\nMouth: two shallow aphthous ulcers on the buccal mucosa, one on the tongue edge.\nSkin: several erythematous maculopapular lesions over both elbows, a few mm each, tender.\nGU: no ulcers (pt agreeable to check).\nJoints: MCPs, PIPs and knees without effusion or synovitis today, full ROM. \nHeart/lungs normal.\n\nA/P: oral ulcers, rash, and intermittent inflammatory-sounding arthralgia in a young man whose mother has SLE. Concern for a connective tissue process, lupus at the top of the list.\n- CBC, CMP, UA, ANA today.\n- Rheumatology referral placed now, will not wait for the ANA.\n- OK to keep using ibuprofen as needed, with food.\n- Salt water rinses for the mouth.\n- Will call with results."}
+          ]
+        },
+        {
+          "id": "2024-04-26a",
+          "kind": "portal_message",
+          "start": "2024-04-26T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results and referral", "author": "PCP", "date": "2024-04-26T12:30", "body": "Hi Curtis, your blood counts, kidney and liver tests and urine are all normal. The ANA came back positive at 1:320. That test is a screen, not a diagnosis by itself, but with your symptoms and family history it makes the rheumatology visit more important. The referral is in; their office should reach out. If you don't hear from them in a week, let us know and we'll push."},
+            {"type": "Patient Message", "title": "RE: Lab results and referral", "author": "patient", "date": "2024-04-26T20:14", "body": "Thanks. They called already, first opening is June 19. Is that ok or should I be worried?"},
+            {"type": "Patient Message", "title": "RE: Lab results and referral", "author": "PCP", "date": "2024-04-29T07:55", "body": "June is reasonable since your blood and urine tests look good. Ask to be on their cancellation list. If you get fevers, chest pain, swelling in your legs or a big change in your urine before then, message me right away."}
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "specialist_visit",
+          "start": "2024-06-19T10:00",
+          "service": "Rheumatology",
+          "reason": "Rheumatology consultation",
+          "conditions": [
+            {"label": "Systemic lupus erythematosus with arthropathy", "icd10": "M32.19", "action": "diagnosed", "onset": "2024-03-01"}
+          ],
+          "medications": [
+            {"drug": "hydroxychloroquine sulfate 200 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily with food", "dose": {"value": 200, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Systemic lupus erythematosus"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-06-19T11:00", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 48}]},
+            {"panel": null, "collected": "2024-06-19T11:00", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 62}]},
+            {"panel": "CBC with Differential", "collected": "2024-06-19T11:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Lymphocytes %"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-19T11:00", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Urinalysis", "collected": "2024-06-19T11:00", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "rheum-referral", "action": "done", "date": "2024-06-19T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Consultation", "author": "rheumatology", "date": "2024-06-24T10:20", "body": "OUTSIDE RHEUMATOLOGY GROUP - CONSULTATION\nDate of service: 06/19/2024\nReferring: primary care physician\nAllergies: NKDA\n\nThank you for asking us to see Mr. Jean-Baptiste, a 28-year-old teacher, for oral ulcers, a rash and joint pain.\n\nHistory: For roughly three months he has had recurring painful sores in the mouth and painful spots over the elbows. He also describes flares of pain and swelling in the small joints of the fingers and in both knees, which settle with rest. No genital ulcers, no photosensitive facial rash noticed, no pleuritic pain. He had many respiratory infections as a child. Current medications: vitamin D3 2000 IU daily, ibuprofen 400 mg up to every 8 hours as needed. Never smoker, minimal alcohol. Mother has SLE, onset at 34; a maternal aunt has RA; father hypertensive.\n\nExamination: Several erythematous maculopapular lesions over both elbows. Aphthous ulcers on the oral mucosa. No genital ulcers. No active synovitis on today's joint count. Cardiopulmonary exam unremarkable.\n\nData: ANA positive 1:320 speckled (your office, April). Today ESR 48 mm/h (elevated). C3 62 mg/dL, low (ref 90-180). CBC, CMP and urinalysis unremarkable.\n\nImpression: Systemic lupus erythematosus with mucocutaneous involvement and inflammatory arthropathy. Hypocomplementemia noted. Given the early childhood history of frequent infections and the strong family history, I have sent genetic testing for complement gene variants.\n\nPlan:\n1. Start hydroxychloroquine 200 mg daily. Baseline retinal exam within the year.\n2. Continue vitamin D3. Ibuprofen as needed is acceptable for now; keep doses modest.\n3. Return in two months with labs; will review genetics then.\n\nSincerely,\nRheumatology"}
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "telephone",
+          "start": "2024-06-24T10:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outside Letter Filed", "author": "MA", "date": "2024-06-24T10:30", "body": "Rheumatology consult letter received by fax and routed to PCP. Problem list and med list updated per letter (SLE with arthropathy; hydroxychloroquine 200 mg daily prescribed by rheumatology)."},
+            {"type": "Telephone Encounter", "title": "PCP review", "author": "PCP", "date": "2024-06-24T17:05", "body": "Reviewed. Agree. Will see him in the fall once rheum has the genetics back."}
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "specialist_visit",
+          "start": "2024-08-21T09:20",
+          "service": "Rheumatology",
+          "reason": "Rheumatology follow-up",
+          "conditions": [
+            {"label": "Complement C1q deficiency", "icd10": "D84.1", "action": "diagnosed", "onset": "2024-08-21", "note": "C1q gene mutation on genetic testing"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-08-21T10:00", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 31}]},
+            {"panel": null, "collected": "2024-08-21T10:00", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 66}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-21T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-21T10:00", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Follow-up", "author": "rheumatology", "date": "2024-08-26T14:00", "body": "OUTSIDE RHEUMATOLOGY GROUP - FOLLOW-UP NOTE\nDate of service: 08/21/2024\nAllergies: NKDA\nMedications: hydroxychloroquine 200 mg daily, vitamin D3 2000 IU daily, ibuprofen 400 mg as needed.\n\nCurtis returns two months into hydroxychloroquine. Taking it daily without GI upset. Mouth ulcers much less frequent; elbow lesions fading. Hands and knees ache less, ibuprofen a few times a week at most.\n\nExam: residual faint macules on the elbows, no ulcers today, no synovitis.\n\nLabs today: ESR 31 mm/h. C3 66 mg/dL (still low). CBC and CMP normal.\n\nGenetics: the complement panel identified a mutation in the C1q gene. Inherited C1q deficiency is strongly associated with lupus and with susceptibility to encapsulated bacterial infections, which fits his childhood history.\n\nAssessment: SLE with arthropathy, improving on hydroxychloroquine. Complement C1q deficiency.\n\nRecommendations to primary care:\n- Pneumococcal vaccination (PCV20) and meningococcal vaccination, both MenACWY and MenB series, given the complement deficiency.\n- Baseline hydroxychloroquine eye exam; I have referred him to ophthalmology.\n- He may wish to share the genetic result with his family; genetic counseling information given.\n\nFollow-up in 6 months with labs.\n\nRheumatology"}
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "portal_message",
+          "start": "2024-08-26T16:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Rheumatology letter / vaccines", "author": "PCP", "date": "2024-08-26T16:10", "body": "Curtis - I got the letter from your rheumatologist about the C1q result. That gene change explains a lot, including all those infections as a kid. She wants you to have a pneumonia vaccine and two meningitis vaccines, each as a series. Let's do the first doses at a visit in early October with your flu shot. The front desk will set it up."},
+            {"type": "Patient Message", "title": "RE: Rheumatology letter / vaccines", "author": "patient", "date": "2024-08-26T21:30", "body": "Ok sounds good. After school works best."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "specialist_visit",
+          "start": "2024-09-10T14:00",
+          "service": "Ophthalmology",
+          "reason": "Baseline hydroxychloroquine retinal screening",
+          "documents": [
+            {"type": "Consult Note", "title": "Ophthalmology - Hydroxychloroquine Baseline Exam", "author": "ophthalmology", "date": "2024-09-16T11:45", "body": "OUTSIDE OPHTHALMOLOGY PRACTICE\nExam date: 09/10/2024\nReason: baseline screening, hydroxychloroquine 200 mg daily started 06/2024 for SLE.\nAllergies: NKDA\n\nVA cc 20/20 OD, 20/20 OS. Pupils equal, no APD. IOP normal both eyes. Anterior segment quiet. Dilated fundus: healthy optic nerves, maculae flat with normal foveal reflex, vessels and periphery normal.\nSD-OCT macula: normal parafoveal architecture both eyes.\nHumphrey 10-2 visual fields: reliable and full both eyes.\n\nImpression: normal baseline exam, no evidence of hydroxychloroquine retinopathy.\nPlan: rescreen as directed by rheumatology; at this dose annual screening is typically resumed after 5 years of use.\n\nOphthalmology"}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lupus follow-up and vaccines",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-10-08T16:15"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2024-10-08T16:16"},
+            {"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2024-10-08T16:17"},
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:18"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-10-08T15:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-10-08T16:25", "body": "First visit with me since the lupus diagnosis. Rheum and eye letters reviewed - SLE with arthropathy, C1q deficiency on genetics, hydroxychloroquine since June, baseline eye exam normal.\n\nHe feels a lot better. No mouth sores for about a month. Elbows clearing. Knees bother him only after long days standing. Ibuprofen maybe once a week. Taking hydroxychloroquine every evening.\n\nExam: vitals fine. Mouth clear. Faint flat pink marks on both elbows. Joints without swelling. Heart and lungs normal.\n\nA/P:\n1. SLE with arthropathy - improving on HCQ, managed by rheum. Next rheum visit February.\n2. Complement C1q deficiency - vaccines per rheum today: PCV20, MenACWY #1, MenB #1. Flu as well. MenACWY #2 and MenB #2 due in 8 weeks, nurse visit early December.\n3. Fever over 101 or a stiff neck should be a same-day call, given the complement deficiency - reviewed with him.\n4. Physical next summer."}
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "portal_message",
+          "start": "2024-10-29T18:40",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-26T10:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "COVID shot", "author": "patient", "date": "2024-10-29T18:40", "body": "FYI got the new COVID vaccine at the pharmacy on Saturday. Arm was sore but fine otherwise."},
+            {"type": "Patient Message", "title": "RE: COVID shot", "author": "MA", "date": "2024-10-30T09:05", "body": "Recorded, thank you. Reminder that your second meningitis shots are scheduled 12/3."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "nurse_visit",
+          "start": "2024-12-03T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "MenACWY and MenB second doses",
+          "immunizations": [
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2024-12-03T15:45"},
+            {"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2024-12-03T15:46"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Meningococcal Vaccines", "author": "RN", "date": "2024-12-03T16:00", "body": "Dose 2 of each meningococcal series per PCP plan (complement deficiency). No reaction to October doses beyond a sore arm. Afebrile by report. MenACWY IM R deltoid, MenB-4C IM L deltoid. Observed 15 min. Both series complete."}
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "specialist_visit",
+          "start": "2025-02-19T08:40",
+          "service": "Rheumatology",
+          "reason": "Rheumatology follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-02-19T09:20", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 22}]},
+            {"panel": null, "collected": "2025-02-19T09:20", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 74}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-19T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-02-19T09:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2025-02-19T09:20", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Follow-up", "author": "rheumatology", "date": "2025-02-24T13:10", "body": "OUTSIDE RHEUMATOLOGY GROUP\nDate of service: 02/19/2025\nDx: SLE with arthropathy; C1q deficiency.\nMeds: hydroxychloroquine 200 mg daily; vitamin D3; ibuprofen prn. NKDA.\n\nInterval: no new skin lesions, no oral ulcers since early fall. Knees ache occasionally after standing all day; no swelling. Completed pneumococcal and meningococcal vaccines with PCP.\n\nExam: skin clear, oral mucosa normal, no synovitis.\n\nLabs: ESR 22. C3 74, improving. CBC, CMP and UA within normal limits.\n\nPlan: continue hydroxychloroquine at the current dose. Return 6 months with labs."}
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T10:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2025-03-11T10:25", "body": "Electronic request from pt's pharmacy for hydroxychloroquine 200 mg. Prescriber is rheumatology. Pharmacy told to send to rheum office; pt notified through portal so he isn't caught short."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "annual_physical",
+          "start": "2025-06-17T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-06-17T09:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-06-17T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-06-17T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-06-17T09:55", "body": "Yearly visit. 29M.\n\nHow he's doing: best year in a while. Lupus quiet - no sores, no rashes, joints fine most days. HCQ daily, vitamin D, ibuprofen maybe twice a month. Rheum labs in February were good and he has seen the letter. No infections this winter beyond a short cold.\n\nSocial: still teaching 2nd grade, summer starting. Never smoker. Alcohol rare.\n\nExam: VS reviewed. NAD. Mouth: no ulcers. Neck: no LAD. Heart RRR. Lungs clear. Abd soft. Skin: elbows clear now. MSK: no synovitis. \nPHQ-2: 0.\n\nAssessment and plan:\n- Health maintenance: lipids today (last 2021). Rheum is drawing CBC/CMP/UA, no need to duplicate.\n- SLE with arthropathy: per rheum; next visit August.\n- C1q deficiency: PCV20 and both meningococcal series done.\n- Fall flu and COVID with us.\n- Return next spring."}
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "portal_message",
+          "start": "2025-06-18T13:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Cholesterol", "author": "PCP", "date": "2025-06-18T13:00", "body": "Cholesterol panel is normal. Enjoy the summer, Curtis."}
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "specialist_visit",
+          "start": "2025-08-20T09:00",
+          "service": "Rheumatology",
+          "reason": "Rheumatology follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-08-20T09:40", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 19}]},
+            {"panel": null, "collected": "2025-08-20T09:40", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 77}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-20T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-20T09:40", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2025-08-20T09:40", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Follow-up", "author": "rheumatology", "date": "2025-08-25T08:50", "body": "OUTSIDE RHEUMATOLOGY GROUP\nVisit 08/20/2025\nSLE with arthropathy, C1q deficiency. On hydroxychloroquine 200 mg daily, vitamin D3, ibuprofen occasionally. NKDA.\n\nWell through the summer. No mucocutaneous lesions. Rare knee discomfort. Adherent; no visual complaints.\n\nExam unremarkable; no rash, ulcers or synovitis.\n\nESR 19. C3 77. CBC, CMP, UA normal.\n\nStable on current therapy. No changes. Next visit in 6 months with the same labs."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T15:40"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-14T15:42"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Seasonal Vaccines", "author": "MA", "date": "2025-10-14T15:55", "body": "Seasonal flu (trivalent) given IM left deltoid and 2025-26 Moderna COVID IM right deltoid. Screening negative. Pt tolerated both, observed per protocol."}
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "specialist_visit",
+          "start": "2026-02-18T08:30",
+          "service": "Rheumatology",
+          "reason": "Rheumatology follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-02-18T09:05", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 24}]},
+            {"panel": null, "collected": "2026-02-18T09:05", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 72}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-18T09:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-02-18T09:05", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2026-02-18T09:05", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Follow-up", "author": "rheumatology", "date": "2026-02-23T15:30", "body": "OUTSIDE RHEUMATOLOGY GROUP\nDate of service: 02/18/2026\nProblems: SLE with arthropathy; complement C1q deficiency.\nMedications: hydroxychloroquine 200 mg daily; vitamin D3 2000 IU daily; ibuprofen 400 mg as needed. NKDA.\n\nDoing well over the winter. No ulcers or rash. Joint symptoms minimal.\n\nExam: normal skin and mucosa; joints without swelling or tenderness.\n\nResults: ESR 24, C3 72 mg/dL. CBC and CMP normal. Urinalysis negative for blood and protein.\n\nPlan: unchanged. Hydroxychloroquine continues. Six-month follow-up."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "annual_physical",
+          "start": "2026-05-12T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-12T16:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-05-12T16:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-05-12T15:50"},
+            {"procedure": "Venipuncture", "performed": "2026-05-12T16:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-05-12T16:35", "body": "Subjective: 30 in September. Came in a bit earlier than usual this year since summer is booked up. Feels well. Lupus has been quiet for well over a year - occasional knee ache, ibuprofen a couple of times a month, no mouth sores or rash. HCQ every night. Rheum in February: stable. No serious infections. Sleeping ok, school year winding down.\nMeds: hydroxychloroquine 200 mg daily, vitamin D3 2000 IU daily, ibuprofen 400 mg prn.\nNKDA. Never smoker, alcohol 1-2 a month.\n\nObjective: vitals reviewed, normal. Well appearing. Oropharynx clear. Neck without adenopathy. Heart: regular, no rub or murmur. Lungs clear. Abdomen soft, nontender. Extremities: no edema. Skin: no malar or discoid lesions, elbows clear. Joints: no effusions.\nPHQ-2 0.\n\nAssessment/Plan:\n1. Preventive: CBC, CMP and lipids today. Vaccines current; flu and COVID in October.\n2. SLE with arthropathy - stable on HCQ, rheum follows every 6 months.\n3. C1q deficiency - vaccinated. Reviewed again: high fever or stiff neck means a same-day call.\n4. Return in a year, or sooner as needed."}
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T11:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs", "author": "PCP", "date": "2026-05-14T11:45", "body": "Hi Curtis, blood counts, kidney function, liver tests and cholesterol all came back normal. Have a good end of the school year."}
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "portal_message",
+          "start": "2026-05-26T17:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Cold", "author": "patient", "date": "2026-05-26T17:20", "body": "Hi, I've had a cold since Saturday, scratchy throat and stuffy nose, half my class has had it. No fever. Anything I should do differently because of my lupus or the complement thing?"},
+            {"type": "Patient Message", "title": "RE: Cold", "author": "RN", "date": "2026-05-26T17:58", "body": "Hi Curtis, this sounds like the virus going around. Fluids, rest when you can, saline spray and throat lozenges are fine. Keep taking your hydroxychloroquine. Because of your complement deficiency, please call us the same day for a temperature of 101 or higher, a stiff neck, a rash that doesn't fade, or if you feel much worse instead of better after a week."},
+            {"type": "Patient Message", "title": "RE: Cold", "author": "patient", "date": "2026-05-26T19:02", "body": "Will do, thanks."}
+          ]
+        },
+        {
+          "id": "2026-06-06a",
+          "kind": "ed_visit",
+          "start": "2026-06-06T13:05",
+          "end": "2026-06-06T18:40",
+          "service": "Emergency Medicine",
+          "reason": "Dark urine and swelling around the eyes",
+          "vitals": {"bp": [145, 90]},
+          "measure": ["hr", "spo2"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2026-06-06T13:40", "resulted": "2026-06-06T14:25", "results": [
+              {"test": "Urine Color", "text": "Dark brown"},
+              {"test": "Urine Specific Gravity", "value": 1.025},
+              {"test": "Urine pH", "value": 6.0},
+              {"test": "Urine Protein", "text": "2+"},
+              {"test": "Urine Blood", "text": "3+"},
+              {"test": "Urine White Blood Cells", "text": "2-5"},
+              {"test": "Urine Red Blood Cells", "text": "Dysmorphic RBCs present"}
+            ]},
+            {"panel": null, "collected": "2026-06-06T13:40", "resulted": "2026-06-06T14:50", "results": [{"test": "Urine RBC casts", "loinc": "33804-6", "text": "Present"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-06T13:45", "resulted": "2026-06-06T14:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-06T13:45", "resulted": "2026-06-06T14:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-06-06T13:45", "resulted": "2026-06-08T14:20", "results": [{"test": "Antistreptolysin O titer", "loinc": "5370-2", "unit": "[IU]/mL", "value": 480}]}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-06-08T09:15", "body": "REGIONAL MEDICAL CENTER - EMERGENCY DEPARTMENT\nVisit: 06/06/2026, arrived 13:05, discharged 18:40\nPCP: on file\nAllergies: NKDA\n\nChief complaint: urine looks like cola, puffy eyes.\n\nHPI: 30-year-old man with SLE (on hydroxychloroquine) and a history of frequent upper respiratory infections since childhood. For two days his urine has been dark, like cola, and his eyelids have been swollen, worse in the mornings. Had a cold with sore throat that cleared about a week ago. No burning with urination. No injury, no heavy exercise.\n\nHome meds per patient: hydroxychloroquine 200 mg daily, ibuprofen 400 mg q8h as needed for joints, vitamin D3 2000 IU daily.\nSocial: teacher, never smoker, alcohol socially.\n\nTriage vitals: BP 145/90. Afebrile. HR and SpO2 per flowsheet.\n\nExam: Alert, comfortable. Mild periorbital edema on both sides. Pharynx without exudate. Heart regular. Lungs clear. Abdomen soft, no CVA tenderness. No leg edema. No rash.\n\nUrinalysis: dark brown, SG 1.025, pH 6.0, protein 2+, blood 3+, RBCs dysmorphic, RBC casts present, WBC 2-5/hpf, no bacteria, no crystals.\nBMP and CBC unremarkable for him. ASO titer sent, pending at discharge.\n\nMDM: Nephritic picture - hematuria with dysmorphic cells and RBC casts, proteinuria, edema and elevated BP - about a week after an upper respiratory infection. Favor poststreptococcal glomerulonephritis. Lupus nephritis is the other consideration given his SLE; nephrology to follow. Kidney function preserved; not admitted.\n\nDiagnosis: Poststreptococcal glomerulonephritis.\n\nDisposition: home. Hold ibuprofen until seen by nephrology. Low-salt diet. Nephrology appointment arranged. Return for decreased urine output, worsening swelling, shortness of breath or severe headache.\n\nAddendum 06/08: ASO 480 IU/mL (elevated). Forwarded to nephrology."}
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "portal_message",
+          "start": "2026-06-08T07:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Went to the ER Saturday", "author": "patient", "date": "2026-06-08T07:40", "body": "Wanted you to know I went to the ER Saturday. My pee was really dark and my eyes were swollen. They said it's probably a kidney inflammation from strep after that cold, not the lupus, but they're not 100% sure. I have a kidney doctor appointment on the 24th. They told me to stop the ibuprofen for now."},
+            {"type": "Patient Message", "title": "RE: Went to the ER Saturday", "author": "PCP", "date": "2026-06-08T12:50", "body": "Thanks for telling me, Curtis. I have the ER record now. Keep the nephrology appointment on the 24th, and let your rheumatologist know as well. Skip the ibuprofen as they said. If your urine output drops, the swelling gets worse, you get short of breath or have a bad headache, go back to the ER. Happy to see you here any time if you want to go over it."},
+            {"type": "Patient Message", "title": "RE: Went to the ER Saturday", "author": "patient", "date": "2026-06-08T18:15", "body": "Will do. Swelling already a little better today. I'll wait and see what the kidney doctor says."}
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "specialist_visit",
+          "start": "2026-06-24T10:30",
+          "service": "Nephrology",
+          "reason": "Nephrology consultation after ED visit",
+          "vitals": {"bp": [134, 86]},
+          "measure": ["hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-06-24T11:10", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 58}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-24T11:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Urinalysis", "collected": "2026-06-24T11:10", "results": [{"test": "Urine Blood", "text": "2+"}, {"test": "Urine Protein", "text": "1+"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Consultation", "author": "nephrology", "date": "2026-06-29T10:00", "body": "OUTSIDE NEPHROLOGY ASSOCIATES - NEW PATIENT CONSULTATION\nDate of service: 06/24/2026\nReferred from: emergency department, 06/06/2026\nAllergies: NKDA\n\nReason: acute nephritic presentation after an upper respiratory infection.\n\nHistory: 30M with SLE with arthropathy and complement C1q deficiency, on hydroxychloroquine, seen in the ED on 6/6 with two days of cola-colored urine and periorbital swelling a week after a cold. Since then the swelling has gone and the urine has lightened to amber. Off ibuprofen since the ED visit. No dyspnea, no reduced urine output.\n\nMeds: hydroxychloroquine 200 mg daily, vitamin D3 2000 IU daily. (Ibuprofen stopped.)\n\nExam: BP 134/86. No periorbital or peripheral edema. Heart regular, lungs clear.\n\nData: ED urinalysis with 3+ blood, 2+ protein, dysmorphic RBCs and RBC casts. ASO 480 IU/mL (elevated). Today: creatinine normal; C3 58 mg/dL (low); UA blood 2+, protein 1+.\n\nAssessment: Poststreptococcal glomerulonephritis, resolving clinically. Preserved renal function. Low C3 is expected in this setting and he also runs low at baseline from his lupus and C1q deficiency, so it will be interpreted against his own prior values. Lupus nephritis remains on the differential if hematuria or proteinuria persist beyond the expected course; no biopsy indicated now.\n\nPlan:\n1. Avoid NSAIDs - ibuprofen discontinued. Joint symptom management deferred to rheumatology.\n2. Limit salt while BP is above goal.\n3. Repeat UA, BMP and C3 in 6-8 weeks.\n4. Copy to rheumatology and primary care.\n\nNephrology"}
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "telephone",
+          "start": "2026-06-29T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outside Letter Filed", "author": "MA", "date": "2026-06-29T10:15", "body": "Nephrology consult note received by fax, scanned and sent to PCP inbox."}
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "specialist_visit",
+          "start": "2026-08-12T09:45",
+          "service": "Nephrology",
+          "reason": "Nephrology follow-up",
+          "vitals": {"bp": [124, 78]},
+          "measure": ["hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-08-12T10:20", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 70}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-12T10:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Urinalysis", "collected": "2026-08-12T10:20", "results": [{"test": "Urine Blood", "text": "1+"}, {"test": "Urine Protein", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Follow-up", "author": "nephrology", "date": "2026-08-17T14:30", "body": "OUTSIDE NEPHROLOGY ASSOCIATES - FOLLOW-UP\nDate of service: 08/12/2026\nAllergies: NKDA\nMedications: hydroxychloroquine 200 mg daily, vitamin D3 2000 IU daily.\n\nFeels well. Urine looks normal to him. No swelling. Has stayed off ibuprofen.\n\nBP 124/78. No edema.\n\nLabs: creatinine normal. C3 70 mg/dL, back toward his usual range. UA: blood 1+, protein negative.\n\nAssessment: poststreptococcal glomerulonephritis, improving as expected; proteinuria resolved, microscopic blood fading. BP at goal.\n\nPlan: recheck UA and BMP in 3 months. Return sooner for gross hematuria or swelling. Continue to avoid NSAIDs.\n\nNephrology"}
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "telephone",
+          "start": "2026-08-17T15:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outside Letter Filed", "author": "MA", "date": "2026-08-17T15:00", "body": "Nephrology follow-up note received and scanned. Routed to PCP."}
+          ]
+        }
+      ]
+    }
+  ]
+}

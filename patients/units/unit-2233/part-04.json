@@ -1,0 +1,219 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002233",
+      "events": [
+        {
+          "id": "2026-01-15a",
+          "kind": "ed_visit",
+          "start": "2026-01-15T13:40",
+          "end": "2026-01-15T17:10",
+          "service": "Emergency Medicine",
+          "reason": "headache, confusion, difficulty walking after a fall",
+          "conditions": [{"label": "Chronic subdural hematoma", "icd10": "I62.03", "action": "diagnosed", "onset": "2025-12-25"}],
+          "vitals": [
+            {"time": "2026-01-15T13:50", "bp": [145, 85], "hr": 78, "rr": 16, "temp_c": 36.8, "spo2": 97}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-15T14:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-15T14:05", "results": [{"test": "Sodium"}, {"test": "Creatinine"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-01-15T14:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2026-01-15T14:30", "text": "Non-contrast CT of the head. A crescent-shaped extra-axial collection along the left cerebral convexity is hyperdense relative to brain. It exerts mass effect with rightward midline shift. Ventricles enlarged as on prior imaging. No intraparenchymal hemorrhage. No skull fracture.", "conclusion": "Left convexity subdural hematoma with midline shift."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-01-15T13:40"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-01-15T17:05", "body": "Emergency department, 1/15/2026.\n\nCC: headache, confusion, trouble walking.\n\n75-year-old man with NPH and Parkinson disease dementia, prior falls and day-to-day cognitive swings, brought by his daughter. Two weeks of headache that keeps getting worse, on-and-off confusion and more trouble walking; over the last few days he has been sleepier than usual. He fell about three weeks ago without passing out and did not see anyone for it.\n\nPMH: NPH, PD dementia, Parkinson disease, Mobitz I AV block, HTN, T2DM, hyperlipidemia, CKD 3, BPH s/p TURP.\nMeds: hydrochlorothiazide 12.5 mg, metformin 1000 mg BID, tamsulosin 0.4 mg, lisinopril 20 mg, atorvastatin 40 mg. No anticoagulant or antiplatelet. NKDA.\n\nBP 145/85, HR 78, RR 16.\nExam: awake, disoriented to time. Mild weakness on the right side. Right pupil reacts sluggishly.\n\nCT head: crescent-shaped hyperdense collection over the left convexity with midline shift.\nCBC, BMP and INR sent.\n\nImpression: Chronic subdural hematoma, left.\nNeurosurgery consulted. Admitted to neurosurgical service."}
+          ]
+        },
+        {
+          "id": "2026-01-15b",
+          "kind": "hospital_admission",
+          "start": "2026-01-15T17:10",
+          "end": "2026-01-20T12:30",
+          "service": "Neurosurgery",
+          "reason": "left chronic subdural hematoma",
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-01-15T18:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-01-20T11:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "neurosurgery", "date": "2026-01-21T08:45", "body": "Admitted 1/15/2026, discharged 1/20/2026.\n\nDiagnosis: Left chronic subdural hematoma after a fall.\n\nHospital course: 75M with NPH, Parkinson disease dementia and Mobitz I block presented with two weeks of headache, fluctuating confusion and gait decline about three weeks after a fall, with mild right-sided weakness. CT showed a left convexity chronic subdural hematoma with midline shift. Taken for burr-hole evacuation on 1/16 without complication. Headache settled; confusion improved toward his baseline per daughter. Walking at his usual pace at discharge.\n\nDischarge medications (unchanged from home): lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, metformin 1000 mg twice daily, atorvastatin 40 mg at bedtime, tamsulosin 0.4 mg at bedtime.\nAllergies: NKDA.\n\nFollow-up: neurosurgery clinic in about 5 weeks with CT head; primary care in 2-4 weeks. Return for new headache, worsening confusion, weakness or another fall."}
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "telephone",
+          "start": "2026-01-22T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-01-22T10:30", "body": "Spoke with daughter. Home since 1/20. Headache gone. Eating and sleeping. Taking his usual five meds, no new ones. Incision clean and dry. Neurosurgery follow-up booked late February. Scheduled PCP visit 2/13. Reviewed reasons to call 911."}
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "office_visit",
+          "start": "2026-02-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after subdural hematoma",
+          "conditions": [
+            {"label": "Chronic kidney disease, stage 3a", "action": "resolved", "note": "restaged 3b"},
+            {"label": "Chronic kidney disease, stage 3b", "action": "diagnosed", "onset": "2026-02-13"}
+          ],
+          "state": {"bp": [138, 82], "labs": {"Creatinine": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-13T11:05", "resulted": "2026-02-13T15:40", "results": [{"test": "Creatinine", "value": 1.9}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-13T11:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2026-02-13T11:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2026-02-13T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital follow-up", "author": "PCP", "date": "2026-02-13T16:30", "body": "With daughter and wife.\nAdmitted 1/15-1/20 for L chronic SDH about 3 weeks after an unwitnessed fall; burr-hole evacuation 1/16. Discharge summary reviewed.\nSince home: no headache. Daughter says his thinking is back to how it was before the fall - good mornings, foggier afternoons. Walking at his usual shuffle. No further falls. Taking the same five medications.\nExam: alert, oriented to person and place. Scalp incision healed. Pupils equal and reactive. Strength symmetric, right side now equal to left. Rest tremor, shuffling gait as at baseline. Heart irregular at times, no murmur. Lungs clear. No edema.\nA/P:\n1. Chronic SDH s/p evacuation - recovered to baseline. Neurosurgery f/u with CT 2/24. No antiplatelets.\n2. Falls - home safety revisited.\n3. HTN - acceptable on lisinopril + HCTZ.\n4. CKD - creatinine has climbed over the past year (about 1.6 last fall and in the hospital); recheck today.\n\nAddendum 4:30 pm: creatinine 1.9 today, eGFR now under 45 - CKD restaged 3b. Same medications; recheck in 3 months.\n5. DM - A1c today.\n6. PD dementia, NPH, Mobitz I - unchanged.\nAdvance directive: still none on file - urged the family again given the hospitalization.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "portal_message",
+          "start": "2026-02-17T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2026-02-17T12:40", "body": "Results from Friday: blood count normal, sodium and potassium normal. Kidney function is lower than last fall - creatinine 1.9 - so I have changed the stage of his kidney disease on his chart to 3b. We will keep his medicines the same and recheck in a few months. A1c about the same. Please keep him off ibuprofen and naproxen."}
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "specialist_visit",
+          "start": "2026-02-24T14:15",
+          "service": "Neurosurgery",
+          "reason": "postoperative follow-up",
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2026-02-24T13:30", "text": "Comparison 1/15/2026. Postoperative change from a left burr hole. The left convexity subdural collection is much smaller. No midline shift. No new hemorrhage. Ventricles enlarged as before.", "conclusion": "Much smaller left subdural collection after evacuation; midline shift resolved."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurosurgery follow-up", "author": "neurosurgery", "date": "2026-02-26T09:10", "body": "Neurosurgery clinic, 2/24/2026. Five weeks after left burr-hole evacuation of a chronic subdural hematoma. Family reports he is back to his baseline. Incision well healed. Strength equal both sides. CT today: much smaller collection, no midline shift. No further imaging planned unless new symptoms. Discharged from neurosurgery follow-up. NKDA."}
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T09:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Lisinopril and HCTZ refills", "author": "MA", "date": "2026-03-17T09:30", "body": "Pharmacy request for lisinopril 20 mg and hydrochlorothiazide 12.5 mg, 90 days x 3. Seen 2/13. Sent."}
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "ed_visit",
+          "start": "2026-04-08T19:20",
+          "end": "2026-04-09T01:45",
+          "service": "Emergency Medicine",
+          "reason": "dizziness and palpitations",
+          "vitals": [
+            {"time": "2026-04-08T19:30", "bp": [130, 80], "hr": 56, "rr": 16, "temp_c": 36.6, "spo2": 97}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-08T19:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-08T19:50", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-04-08T19:40", "text": "Sinus P waves at a regular rate. Every third P wave is not followed by a QRS (3:2 conduction). On this strip the PR of conducted beats does not clearly lengthen before the blocked beat. Narrow QRS. Repeat tracing after vagal maneuvers: some P waves that were previously blocked now conduct, with a long PR interval.", "conclusion": "Second-degree AV block with 3:2 conduction."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-04-08T19:20"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-04-09T01:40", "body": "Emergency department, 4/8/2026.\n\nCC: dizziness, palpitations.\n\n75-year-old man with known Mobitz I second-degree AV block, PD dementia, NPH and recent SDH evacuation, back with several weeks of intermittent dizziness and a fluttering feeling in the chest. No chest pain, shortness of breath or fainting.\n\nMeds: lisinopril 20 mg, hydrochlorothiazide 12.5 mg, metformin 1000 mg twice daily, atorvastatin 40 mg, tamsulosin 0.4 mg at bedtime. No AV-nodal blocking drugs. NKDA.\n\nBP 130/80, HR 56, RR 16.\nIrregular pulse. Lungs clear. No edema.\n\nECG: second-degree AV block, every third P wave non-conducted; PR of conducted beats not clearly progressive on this tracing. After vagal maneuvers, some previously blocked P waves conducted with a prolonged PR.\nBMP and CBC unremarkable.\n\nImpression: Second-degree AV block in a patient with known type I block; symptoms intermittent, hemodynamically stable.\nDisposition: discharged home with family. Outpatient cardiology follow-up advised. Return for fainting, chest pain or worsening dizziness."}
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "portal_message",
+          "start": "2026-04-10T08:20",
+          "documents": [
+            {"type": "Patient Message", "title": "ER visit", "author": "patient", "date": "2026-04-10T08:20", "body": "This is his daughter. Dad was in the ER Wednesday night for dizzy spells, they said his heart block was acting up and sent him home and told us to see cardiology. Should we call cardiology ourselves?"},
+            {"type": "Patient Message", "title": "RE: ER visit", "author": "PCP", "date": "2026-04-10T13:05", "body": "Thanks for letting me know - I have the ER record. Yes, please call the cardiology office he saw last July and ask for a follow-up about the ER visit. If he faints, has chest pain or the dizziness gets worse, go straight back to the ER."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T14:10",
+          "documents": [
+            {"type": "Refill Request", "title": "Metformin refill", "author": "MA", "date": "2026-05-19T14:10", "body": "Pharmacy request for metformin 1000 mg BID, 90 days. Sent with 1 refill; note to family to book a follow-up visit."}
+          ]
+        },
+        {
+          "id": "2026-07-11a",
+          "kind": "ed_visit",
+          "start": "2026-07-11T08:05",
+          "end": "2026-07-11T11:30",
+          "service": "Emergency Medicine",
+          "reason": "found unresponsive, chest pain",
+          "vitals": [
+            {"time": "2026-07-11T08:10", "bp": [90, 60], "hr": 52, "rr": 22, "temp_c": 36.7}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-11T08:20", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 7.8}, {"test": "Platelets", "value": 210}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-11T08:20", "results": [{"test": "Creatinine", "value": 2.1}, {"test": "Blood Urea Nitrogen", "value": 44}, {"test": "Potassium", "value": 4.5}]},
+            {"panel": null, "collected": "2026-07-11T08:20", "results": [{"test": "Troponin I, High Sensitivity", "text": "Elevated"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-07-11T08:12", "text": "Low-voltage QRS complexes in limb and precordial leads. Beat-to-beat alternation of QRS amplitude (electrical alternans).", "conclusion": "Low voltage with electrical alternans."},
+            {"study": "Transthoracic echocardiogram", "performed": "2026-07-11T08:40", "text": "Limited bedside study. Large circumferential pericardial effusion. Right ventricular diastolic collapse and right atrial collapse. Dilated inferior vena cava without respiratory variation. Left ventricular systolic function grossly preserved.", "conclusion": "Large pericardial effusion with echocardiographic tamponade."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-07-11T08:05"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-07-11T11:25", "body": "Emergency department, 7/11/2026.\n\nCC: found unresponsive.\n\n75-year-old man with Parkinson disease, PD dementia, NPH and prior AV block, found unresponsive at home by a neighbor. He cannot give a history. The neighbor says he had complained on and off of chest pain over the past week.\n\nMeds (per pharmacy list): lisinopril 20 mg, hydrochlorothiazide 12.5 mg, metformin 1000 mg twice daily, atorvastatin 40 mg, tamsulosin 0.4 mg at bedtime. NKDA.\n\nAfebrile. BP 90/60, HR 52, RR 22.\nExam: jugular veins distended, heart sounds distant, extremities cold.\n\nLabs: Hgb 13.2, WBC 7.8, platelets 210. Creatinine 2.1 (baseline 1.9), BUN 44, K 4.5. Troponin I elevated.\nECG: low-voltage QRS, electrical alternans.\nBedside echo: large pericardial effusion with tamponade physiology.\n\nHis son arrived shortly after; he does not know what his father would want regarding invasive procedures and there is no advance directive on file. Risks and benefits of drainage discussed with the son, who agreed to proceed.\n\nImpression: Cardiac tamponade.\nCourse: Cardiology performed emergent subxiphoid pericardiocentesis in the ED, 650 mL removed, drain left in place, blood pressure improved after drainage. Admitted to cardiology step-down."}
+          ]
+        },
+        {
+          "id": "2026-07-11b",
+          "kind": "hospital_admission",
+          "start": "2026-07-11T11:30",
+          "end": "2026-07-16T13:00",
+          "service": "Cardiology",
+          "reason": "cardiac tamponade after pericardiocentesis",
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2026-07-13T10:00", "text": "Follow-up study after pericardial drain removal. Trace residual pericardial fluid. No chamber collapse. Normal inferior vena cava size with respiratory variation. Left ventricular systolic function normal.", "conclusion": "Trace residual pericardial effusion, no tamponade."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-07-11T12:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-07-16T11:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "cardiology", "date": "2026-07-17T09:30", "body": "Admitted 7/11/2026, discharged 7/16/2026.\n\nDiagnosis: Cardiac tamponade from a large pericardial effusion; cause not established.\n\nCourse: Found unresponsive at home after a week of intermittent chest pain; hypotensive with JVD, distant heart sounds and electrical alternans; echo with large effusion and tamponade. Emergent subxiphoid pericardiocentesis in the ED drained 650 mL; consent from his son. Troponin I elevated on arrival and trended down after drainage. Drain removed after 48 hours. Repeat echo 7/13: trace residual fluid, no tamponade. Pericardial fluid culture: no growth. Cytology: no malignant cells. Mental status returned to his baseline per family.\n\nDischarge medications (unchanged): lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, metformin 1000 mg twice daily, atorvastatin 40 mg at bedtime, tamsulosin 0.4 mg at bedtime.\nAllergies: NKDA.\n\nFollow-up: cardiology clinic in about 4 weeks with echo. Primary care after discharge. Family encouraged to complete a health care proxy."}
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "telephone",
+          "start": "2026-07-20T11:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-07-20T11:15", "body": "Called son after discharge summary received. Home since 7/16. No chest pain or shortness of breath reported. Same five medications. Cardiology appointment 8/12 with echo. Family will call to set up a primary care visit after that. Reminded about the health care proxy form."}
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "specialist_visit",
+          "start": "2026-08-12T10:45",
+          "service": "Cardiology",
+          "reason": "follow-up after pericardiocentesis",
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2026-08-12T10:00", "text": "Complete study. No pericardial effusion. Normal left ventricular size and systolic function. Normal right ventricular size and function. No significant valvular disease. Normal inferior vena cava with respiratory variation.", "conclusion": "No reaccumulation of pericardial effusion."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up", "author": "cardiology", "date": "2026-08-14T15:20", "body": "Cardiology clinic, 8/12/2026, with his son. One month after pericardiocentesis for tamponade (650 mL, culture and cytology negative, cause not established). No chest pain or breathlessness per family. Known Mobitz I block.\n\nMeds: lisinopril 20 mg, hydrochlorothiazide 12.5 mg, metformin 1000 mg twice daily, atorvastatin 40 mg, tamsulosin 0.4 mg. NKDA.\n\nEcho today: no pericardial effusion.\n\nPlan: No further echo unless symptoms recur. Continue to avoid AV-nodal blockers. Return as needed."}
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "pharmacy",
+          "start": "2026-08-19T16:00",
+          "documents": [
+            {"type": "Refill Request", "title": "Tamsulosin and atorvastatin refills", "author": "MA", "date": "2026-08-19T16:00", "body": "Pharmacy fax for tamsulosin 0.4 mg and atorvastatin 40 mg, 90 days. Sent. Left message for family that he is due for a visit."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,641 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001999",
+      "events": [
+        {
+          "id": "2024-12-11a",
+          "kind": "office_visit",
+          "start": "2024-12-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {"label": "Alcohol withdrawal delirium", "icd10": "F10.231", "action": "resolved", "onset": "2024-12-03"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-12-11T14:55", "results": [
+              {"test": "Aspartate Aminotransferase"}
+            ]},
+            {"panel": null, "collected": "2024-12-11T14:55", "results": [
+              {"test": "Magnesium"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-12-11T14:20"},
+            {"procedure": "Venipuncture", "performed": "2024-12-11T14:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2024-12-11T15:30",
+              "body": "Post-discharge visit. Sister drove him and sat in.\n\nAdmitted 12/3 to 12/6 for alcohol withdrawal delirium after stopping abruptly - discharge summary reviewed. He remembers little of the first day. Hallucinations gone. Sleep poor. He started drinking again two days after he got home, 'less than before', which by his description is still most of a bottle. No seizures, no falls, no vomiting blood, no black stools.\n\nMeds unchanged: thiamine, folic acid, MVI, omeprazole 20, amlodipine 5.\n\nExam: Vitals as charted. Alert, calm, no tremor today, no asterixis. Anicteric. Abdomen soft, no fluid. Normal gait.\n\nA/P\n- Alcohol withdrawal delirium, resolved. He now knows what stopping cold can do. Very clear advice: do not stop suddenly on his own; if he wants to stop, call us first so it is done safely, or go to the ED. Sister heard this too.\n- AUD severe - still not ready for a program. Gave him the hospital's resource list back and the number for the regional recovery line.\n- Cirrhosis - CMP and Mg today. Hepatology follow-up is set for spring.\n- HTN fine.\n- Recheck in about 2 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T11:42",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2025-01-21T11:42",
+              "body": "Electronic refill request from his pharmacy for amlodipine 5 mg and omeprazole 20 mg, 90-day supplies. Last visit 12/11, on current med list. Sent per protocol, 1 refill each. Pharmacy asked whether thiamine/folate/MVI can be billed to his plan - they are covered as prescriptions; new scripts sent for all three so his copay goes away."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "office_visit",
+          "start": "2025-02-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, cirrhosis and blood pressure",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-02-18T11:15", "results": [
+              {"test": "Albumin"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-18T11:15", "results": [
+              {"test": "Platelets"}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-02-18T11:15", "results": [
+              {"test": "Prothrombin Time-International Normalized Ratio"}
+            ]},
+            {"panel": null, "collected": "2025-02-18T11:15", "results": [
+              {"test": "Gamma Glutamyl Transferase"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Hepatitis A, adult", "date": "2025-02-18T11:05"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-02-18T11:06"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-18T10:40"},
+            {"procedure": "Immunization administration", "performed": "2025-02-18T11:05"},
+            {"procedure": "Venipuncture", "performed": "2025-02-18T11:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-18T11:40",
+              "body": "Routine follow-up. Doing about the same. Drinking daily, says he hasn't tried to stop since December 'because of what happened.' Still a pack a day. Mood flat but he is getting out to his sister's for dinner most Sundays. No confusion, no belly swelling, no bleeding. Heartburn quiet.\n\nExam: BP and weight as charted - pressure is fine on amlodipine. No tremor. Anicteric, abdomen soft, no ascites. No edema.\n\nPlan:\n- AUD: we talked again about treatment, including medication-assisted options. He wants to think about it.\n- Cirrhosis: CMP, CBC, INR, GGT today. Hepatology ultrasound due in May.\n- Hep A #2 and Shingrix #2 given today - both series complete.\n- Smoking: not ready.\n- HTN: amlodipine 5, no change.\nBack in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "ed_visit",
+          "start": "2025-04-01T20:15",
+          "end": "2025-04-02T01:30",
+          "service": "Emergency Medicine",
+          "reason": "agitation, disorientation, hallucinations",
+          "conditions": [
+            {"label": "Delirium tremens", "icd10": "F10.231", "action": "diagnosed", "onset": "2025-04-01"}
+          ],
+          "vitals": [
+            {"time": "2025-04-01T20:20", "bp": [175, 95], "hr": 120, "temp_c": 39.2}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-01T20:40", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 3.9},
+              {"test": "Chloride", "value": 100},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Blood Urea Nitrogen", "value": 18},
+              {"test": "Creatinine", "value": 1.0},
+              {"test": "Glucose", "value": 150}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-04-01T20:40", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 72},
+              {"test": "Alanine Aminotransferase", "value": 50},
+              {"test": "Alkaline Phosphatase", "value": 85},
+              {"test": "Bilirubin, Total", "value": 1.2}
+            ]},
+            {"panel": null, "collected": "2025-04-01T20:40", "results": [
+              {"test": "Magnesium", "value": 1.8}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-01T20:30",
+              "text": "Sinus tachycardia, rate about 120. Normal axis. PR, QRS and QT intervals normal for rate. No ST elevation or depression. No arrhythmia.",
+              "conclusion": "Sinus tachycardia. Otherwise normal ECG."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-04-01T20:15"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-04-01T20:30"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-04-09T13:05",
+              "body": "Regional hospital ED, date of service 4/1/2025, evening.\n\nChief complaint: confused and agitated, seeing and feeling bugs.\n\nHistory (from sister, patient unable to give a reliable account): 54-year-old man with alcohol use disorder, seen in this ED in December 2024 for withdrawal delirium. She says he has gone 72 hours without a drink, which is not like him. Now restless, not making sense, says bugs are crawling on the walls and on him.\nPMH per records: AUD, alcoholic cirrhosis, HTN, thiamine deficiency, MDD, GERD; appendectomy. Meds: thiamine, folic acid, multivitamin, omeprazole 20 mg, amlodipine 5 mg. Allergies: NKDA.\n\nVitals: T 39.2 C (102.5 F), BP 175/95, HR 120.\nExam: Drenched in sweat, coarse tremor, jumps at any noise or touch. Disoriented. Neck supple. Lungs clear. Abdomen soft.\n\nLabs: Na 140, K 3.9, Cl 100, HCO3 24, BUN 18, Cr 1.0, glucose 150, Mg 1.8. AST 72, ALT 50, alk phos 85, total bilirubin 1.2.\nECG: sinus tachycardia, nothing else.\n\nTreatment: IV thiamine, IV lorazepam in escalating doses per protocol, IV fluids, magnesium. Blood cultures, urinalysis and chest film sent for the fever.\n\nAssessment: Delirium tremens. Fever, tachycardia and hyperglycemia most consistent with withdrawal; infection being excluded.\nDisposition: ICU."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "hospital_admission",
+          "start": "2025-04-02T01:30",
+          "end": "2025-04-07T13:10",
+          "service": "Critical Care",
+          "reason": "delirium tremens",
+          "labs": [
+            {"panel": null, "collected": "2025-04-01T21:00", "results": [
+              {"test": "Blood Culture", "text": "No growth at 5 days"}
+            ], "resulted": "2025-04-06T21:00"},
+            {"panel": "Urinalysis", "collected": "2025-04-01T21:10", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "Negative"},
+              {"test": "Urine Nitrite", "text": "Negative"}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-01T21:20",
+              "text": "PORTABLE AP CHEST\nIndication: Fever, delirium.\nLungs are clear without focal consolidation. No pleural effusion or pneumothorax. Cardiomediastinal silhouette within normal limits. No acute bony abnormality.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-04-02T02:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-04-07T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-04-09T13:06",
+              "body": "Regional hospital. Admitted 4/2/2025 (from ED 4/1), discharged 4/7/2025.\n\nDiagnoses: Delirium tremens. Stress hyperglycemia. Sinus tachycardia due to alcohol withdrawal. Background: severe alcohol use disorder, compensated alcoholic cirrhosis, hypertension, thiamine deficiency, MDD, GERD.\n\nHospital course: Three days in the medical ICU on a symptom-triggered lorazepam protocol, which needed high doses on day 1 and tapered off by day 3. High-dose IV thiamine, IV fluids, magnesium repletion. Fever workup unrevealing: portable chest film clear, urinalysis negative, blood cultures no growth at 5 days; fever resolved within 48 hours as withdrawal settled. Glucose 150 on arrival attributed to stress; no diabetes history. Transferred to the floor on day 4, oriented, eating, walking. Social work met with him and his sister; he declined residential treatment.\n\nDischarge medications (no changes): thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily, omeprazole 20 mg daily, amlodipine 5 mg daily. No sedatives at discharge.\nAllergies: NKDA.\n\nFollow-up: PCP within 7 days. Consider hemoglobin A1c as an outpatient."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-02b",
+          "kind": "telephone",
+          "start": "2025-04-02T10:25",
+          "reason": "family call, patient in ICU",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from sister",
+              "author": "RN",
+              "date": "2025-04-02T10:31",
+              "body": "Sister called - Kevin is in the ICU again since last night, the same withdrawal problem but worse, he had a fever. She is not sure why he stopped this time. She is exhausted. Gave her our number for when he's discharged and told her the hospital will send records. Offered her the PCP's message line if she has questions. Routed to PCP to flag for TCM visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "office_visit",
+          "start": "2025-04-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {"label": "Delirium tremens", "icd10": "F10.231", "action": "resolved", "onset": "2025-04-01"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-10T09:50", "results": [
+              {"test": "Glucose"}
+            ]},
+            {"panel": null, "collected": "2025-04-10T09:50", "results": [
+              {"test": "Magnesium"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-04-10T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-04-10T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU visit",
+              "author": "PCP",
+              "date": "2025-04-10T10:15",
+              "body": "Seen 3 days after discharge from his second withdrawal admission, this time ICU with DTs (4/1 to 4/7). Records reviewed: fever workup negative, glucose 150 called stress.\n\nHe says he quit because he 'wanted to see if he could', no plan, no warning to anyone. Back to drinking since Tuesday, though he says less. Shaky in the mornings. Sister with him again, upset.\n\nExam: Vitals as charted. Fine tremor of the hands, oriented, no asterixis, no jaundice. Lungs clear. Abdomen soft without fluid.\n\nA/P\n- DTs, resolved. Second withdrawal admission in four months; this one more severe. Explained that each episode tends to be worse than the last. He listened.\n- Severe AUD: offered referral to an outpatient addiction program and discussed medication to reduce cravings. He is 'not there yet'. Will keep asking.\n- Stress hyperglycemia in hospital - BMP today; A1c at his physical.\n- Cirrhosis - US in May per hepatology.\n- Same meds. Return in 2 to 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "imaging",
+          "start": "2025-05-13T09:40",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-05-13T09:40",
+              "text": "ULTRASOUND ABDOMEN\nIndication: Cirrhosis, 6-month HCC surveillance.\nComparison: 10/17/2024.\nLiver: Coarse, heterogeneous echotexture with mildly nodular contour, unchanged. No discrete hepatic mass. Portal vein patent with hepatopetal flow.\nGallbladder: Normal, no stones.\nBile ducts: Not dilated.\nSpleen: 11.0 cm.\nKidneys: Unremarkable.\nNo free fluid.",
+              "conclusion": "Stable cirrhotic morphology. No focal liver lesion. No ascites. Spleen normal in size."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Surveillance US",
+              "author": "PCP",
+              "date": "2025-05-14T07:55",
+              "body": "Surveillance ultrasound unchanged, no lesion, no ascites. Copy to hepatology on file."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T13:20",
+          "service": "Hepatology",
+          "reason": "cirrhosis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology follow-up",
+              "author": "hepatology",
+              "date": "2025-06-13T16:00",
+              "body": "Outside hepatology group, follow-up visit 6/10/2025.\n\nSince we met he has had two admissions for complicated alcohol withdrawal (December and April), the second in the ICU. He continues to drink daily. No ascites, jaundice, confusion or bleeding.\n\nMedications: thiamine, folic acid, multivitamin, omeprazole 20 mg, amlodipine 5 mg. NKDA.\nExam: Anicteric. No asterixis. Abdomen soft, no shifting dullness.\nData: May ultrasound without focal lesion or ascites. Endoscopy in November without varices. February labs: AST around 70, ALT around 50, bilirubin 1.3, normal INR and albumin, platelets normal.\n\nAssessment: Compensated alcohol-related cirrhosis, Child-Pugh A, with ongoing heavy drinking.\nPlan: I told him plainly that continued drinking is the main threat to his liver and that withdrawal itself is now dangerous for him; any attempt to stop should be medically supervised. I support whatever addiction treatment his primary care team can arrange; acamprosate would be my preference over naltrexone given his liver. Ultrasound again in 6 months. Return in 6 to 8 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "telephone",
+          "start": "2025-07-23T11:10",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach",
+              "author": "front desk",
+              "date": "2025-07-23T11:16",
+              "body": "Called about yesterday's missed 3 pm visit. He said his ride fell through and he forgot to call. Offered a video visit so he doesn't need transport; booked 8/5 at 10:30. Sent the video link instructions to his email."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "telehealth_visit",
+          "start": "2025-08-05T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, alcohol use and mood",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2025-08-05T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-08-05T11:00",
+              "body": "Video visit from his apartment; verified name and DOB. Sister not present.\n\nHe is drinking about the same, every day. No attempts to stop since April. Mood 'so-so'; sleeps poorly, no thoughts of self-harm. I raised an antidepressant again and he still prefers not to. He did read the hepatology letter and knows the specialist suggested a craving medication - says maybe in the fall.\n\nNo jaundice he's noticed, no swelling, no confusion, no bleeding. Taking his meds.\n\nAssessment and plan:\n- Severe AUD, precontemplative to contemplative. Reviewed the safe-stopping plan again: call us first, do not stop cold.\n- MDD, mild symptoms, declines medication.\n- Cirrhosis compensated. Labs and physical in September.\n- HTN - no home cuff; will check in person."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T08:40",
+          "end": "2025-09-09T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-09T09:40", "results": [
+              {"test": "Aspartate Aminotransferase"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-09T09:40", "results": [
+              {"test": "Hemoglobin"}
+            ]},
+            {"panel": "Lipid Panel", "collected": "2025-09-09T09:40", "results": [
+              {"test": "Low Density Lipoprotein"}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-09-09T09:40", "results": [
+              {"test": "Prothrombin Time-International Normalized Ratio"}
+            ]},
+            {"panel": null, "collected": "2025-09-09T09:40", "results": [
+              {"test": "Hemoglobin A1c", "value": 5.4},
+              {"test": "Gamma Glutamyl Transferase"},
+              {"test": "Magnesium"}
+            ]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 8},
+            {"survey": "AUDIT-C total score", "value": 12}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung cancer screening"},
+            {"id": "fit-2025", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-09T08:40"},
+            {"procedure": "Venipuncture", "performed": "2025-09-09T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-09T10:10",
+              "body": "Annual exam, 54M.\n\nInterval: two withdrawal admissions (12/2024 withdrawal delirium, 4/2025 DTs with ICU stay). Still drinking a fifth a day. Smokes 1 ppd. Hepatology following cirrhosis - compensated, no varices on last year's EGD, ultrasounds clean.\n\nPHQ-9 8, no SI. AUDIT-C 12.\nROS otherwise negative: no chest pain, no shortness of breath, no change in bowels, no blood in stool, no urinary symptoms, no weight loss.\n\nMeds: thiamine 100, folic acid 1, MVI, omeprazole 20, amlodipine 5. NKDA.\n\nExam: Vitals as charted. Thin, alert. HEENT unremarkable, dentition fair. Neck supple, no nodes, no thyroid enlargement. Heart regular, no murmur. Lungs clear, no wheeze. Abdomen soft, nontender, no ascites, no organomegaly palpable. No spider angiomas. Skin warm and dry. Extremities without edema. Neuro: alert and oriented, no tremor, no asterixis, gait steady.\n\nAssessment/plan:\n- Health maintenance: CMP, CBC, lipids, INR, GGT, Mg, and A1c (hyperglycemia in the hospital in April). FIT kit given. Repeat low-dose CT ordered. Flu and COVID boosters when they arrive next month. Vaccine series otherwise done (PCV20, hep A, hep B, Shingrix).\n- Severe AUD: same conversation; he says he is 'thinking about the medicine.' Reminded him about the safe-stopping plan.\n- Cirrhosis, HTN, GERD, thiamine deficiency, MDD: stable, no changes.\n- Tobacco: advised to quit; declines patch or other aids.\nFollow-up in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "portal_message",
+          "start": "2025-09-10T17:45",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-09-10T17:45",
+              "body": "Kevin - labs from your physical are back. A1c 5.4, so no sign of diabetes; the high sugar in April was from the stress of being so sick. Liver enzymes are about where they have been, which tells me the liver is still under strain from alcohol. Cholesterol, blood counts, clotting and kidney numbers all fine. Don't forget the stool card and the CT on the 23rd."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "imaging",
+          "start": "2025-09-23T07:50",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-09-23T07:50",
+              "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING (annual)\nIndication: Current smoker, 30 pack-years.\nTechnique: Low-dose noncontrast helical CT of the chest.\nComparison: 9/26/2024.\nFindings: Lungs: no nodules; no consolidation, effusion or pneumothorax. Central airways clear. Heart normal in size. No mediastinal, hilar or axillary adenopathy. Bones: no suspicious lesion.",
+              "conclusion": "Lung-RADS 1, negative. Next annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "done", "date": "2025-09-23T07:50"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual LDCT",
+              "author": "PCP",
+              "date": "2025-09-24T08:10",
+              "body": "Annual screening CT negative again (Lung-RADS 1). Due 9/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "lab_only",
+          "start": "2025-09-30T10:30",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {"panel": null, "collected": "2025-09-29T07:30", "results": [
+              {"test": "Fecal Immunochemical Test", "text": "Negative"}
+            ], "resulted": "2025-09-30T14:45"}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "done", "date": "2025-09-30T14:45"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT 2025",
+              "author": "MA",
+              "date": "2025-10-01T09:00",
+              "body": "FIT negative. Results letter mailed. Next one due fall 2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T14:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T14:16"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-14T14:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Seasonal vaccines",
+              "author": "RN",
+              "date": "2025-10-14T14:25",
+              "body": "Flu (L arm) and 2025-26 COVID (R arm) given, VIS reviewed, no prior reactions. Waited 15 minutes without issue. He mentioned he is 'cutting back a little' - passed to PCP and reminded him to call before trying to stop."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-02a",
+          "kind": "ed_visit",
+          "start": "2025-11-02T13:35",
+          "end": "2025-11-02T19:50",
+          "service": "Emergency Medicine",
+          "reason": "acting strangely, agitation, sweating",
+          "conditions": [
+            {"label": "Delirium tremens", "icd10": "F10.231", "action": "diagnosed", "onset": "2025-11-02"}
+          ],
+          "vitals": [
+            {"time": "2025-11-02T13:40", "bp": [160, 100], "hr": 120, "rr": 22, "temp_c": 38.9}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-02T14:00", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 3.9},
+              {"test": "Chloride", "value": 102},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Blood Urea Nitrogen", "value": 18},
+              {"test": "Creatinine", "value": 1.0},
+              {"test": "Glucose", "value": 150},
+              {"test": "Calcium", "value": 9.2}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-11-02T14:00", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 72},
+              {"test": "Alanine Aminotransferase", "value": 50},
+              {"test": "Bilirubin, Total", "value": 1.8}
+            ]},
+            {"panel": null, "collected": "2025-11-02T14:00", "results": [
+              {"test": "Magnesium", "value": 1.8},
+              {"test": "Phosphorus", "value": 2.5}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-11-02T13:50",
+              "text": "Regular narrow-complex rhythm with P waves preceding each QRS, rate about 120. Intervals normal. No acute ST-T changes. No ectopy.",
+              "conclusion": "Sinus tachycardia, no other abnormality."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-11-02T13:35"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-11-02T13:50"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-11-10T09:20",
+              "body": "Regional hospital emergency department. Seen Sunday 11/2/2025 early afternoon.\n\nPresenting problem: odd behavior, agitation, shaking, heavy sweating.\n\nHistory: Third visit to this department in 11 months for the same pattern (December 2024 withdrawal delirium, April 2025 DTs requiring ICU). His sister reports he stopped drinking three days ago and has been acting strangely since. She says he has tried to stop many times over the years, and this looks just like the last two times. Patient is disoriented to time and place and describes small animals moving around the room.\nKnown history: alcohol use disorder, alcoholic cirrhosis, HTN, thiamine deficiency, MDD, GERD; appendectomy. Medications: thiamine 100 mg, folic acid 1 mg, MVI, omeprazole 20 mg, amlodipine 5 mg daily. NKDA.\n\nVitals on arrival: BP 160/100, HR 120, T 38.9 C (102 F), RR 22.\nExam: Anxious, in constant motion, pupils dilated, coarse tremor of both hands with arms outstretched. Diaphoretic. Lungs clear. Abdomen soft, nontender.\n\nResults: Na 140, K 3.9, Cl 102, HCO3 24, BUN 18, Cr 1.0, glucose 150, Mg 1.8, phos 2.5, Ca 9.2. AST 72, ALT 50, total bilirubin 1.8.\nECG: sinus tachycardia only.\n\nManagement: IV thiamine, symptom-triggered IV lorazepam, fluids, magnesium. Cultures, UA and chest radiograph for fever.\n\nImpression: Delirium tremens, recurrent.\nDisposition: Medical ICU."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-02b",
+          "kind": "hospital_admission",
+          "start": "2025-11-02T19:50",
+          "end": "2025-11-07T11:45",
+          "service": "Critical Care",
+          "reason": "delirium tremens",
+          "labs": [
+            {"panel": null, "collected": "2025-11-02T14:20", "results": [
+              {"test": "Blood Culture", "text": "No growth at 5 days"}
+            ], "resulted": "2025-11-07T14:20"},
+            {"panel": "Urinalysis", "collected": "2025-11-02T14:30", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "Negative"},
+              {"test": "Urine Nitrite", "text": "Negative"}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-02T14:45",
+              "text": "AP PORTABLE CHEST\nClinical: Fever, withdrawal.\nComparison: 4/1/2025.\nNo airspace opacity. No effusion. Heart size normal. No pneumothorax.",
+              "conclusion": "Clear chest. No change from prior."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-11-02T20:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-11-07T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-11-10T09:21",
+              "body": "Regional hospital. Admission 11/2/2025, discharge 11/7/2025.\n\nPrincipal: Delirium tremens (third complicated withdrawal in 11 months).\nSecondary: Stress hyperglycemia; sinus tachycardia from withdrawal; severe alcohol use disorder; compensated alcoholic cirrhosis; hypertension; thiamine deficiency; MDD; GERD.\n\nCourse: ICU for 3 days on symptom-triggered IV lorazepam, which was weaned by day 3, with high-dose IV thiamine, fluids and magnesium. Fever resolved by day 2; chest film clear, UA negative, blood cultures no growth at 5 days. Moved to the medical floor on day 4. Bilirubin 1.8 on admission, attributed to the acute illness on a background of cirrhosis; no encephalopathy. Addiction medicine consulted. This time he says he wants help staying stopped; he and his sister were given referral information for an outpatient program and asked to see primary care promptly to arrange it and discuss anti-craving medication.\n\nDischarge medications (unchanged): thiamine 100 mg daily, folic acid 1 mg daily, multivitamin 1 tab daily, omeprazole 20 mg daily, amlodipine 5 mg daily.\nAllergies: none known.\n\nFollow-up: PCP within one week; hepatology as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "office_visit",
+          "start": "2025-11-12T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, alcohol use disorder",
+          "conditions": [
+            {"label": "Delirium tremens", "icd10": "F10.231", "action": "resolved", "onset": "2025-11-02"}
+          ],
+          "medications": [
+            {"drug_text": "acamprosate calcium 333 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 2 tablets (666 mg) by mouth three times daily", "dose": {"value": 666, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Alcohol use disorder, maintenance of abstinence"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-12T14:15", "results": [
+              {"test": "Creatinine"}
+            ]}
+          ],
+          "orders": [
+            {"id": "aod-referral", "action": "placed", "order": "Outpatient addiction treatment program referral", "category": "referral", "to": "Addiction medicine", "reason": "severe alcohol use disorder after third withdrawal admission"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-11-12T13:40"},
+            {"procedure": "Venipuncture", "performed": "2025-11-12T14:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-11-12T14:45",
+              "body": "Five days out from his third withdrawal admission (11/2 to 11/7, DTs again, ICU). Discharge summary and ED record reviewed. Sister came.\n\nDifferent tone today. He has not had a drink since he went in - now about two weeks counting the three days before - and says he is done: 'I can't do that again.' Cravings are strong in the afternoons. Sleeping badly. No hallucinations, no tremor since discharge. Mood low but hopeful, no SI.\n\nExam: Vitals as charted. Calm, oriented, no tremor, no asterixis. Anicteric. Abdomen soft, no ascites.\n\nA/P\n1. Severe AUD, early abstinence after three complicated withdrawals. He wants treatment. Starting acamprosate 666 mg three times a day (renal function normal on recent labs; BMP today to confirm) - chosen over naltrexone because of the cirrhosis, as hepatology also suggested. Referral placed to an outpatient addiction program; he agreed to group and individual counseling there. Discussed that a slip should not mean stopping cold again - call us.\n2. Delirium tremens, resolved.\n3. MDD - counseling through the program; still declines an antidepressant.\n4. Cirrhosis - next surveillance US in December, hepatology in January.\n5. HTN, GERD, thiamine deficiency - unchanged.\nSee me in 2 months, or sooner if any slip."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "pharmacy",
+          "start": "2025-11-19T10:05",
+          "reason": "prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Acamprosate prior authorization",
+              "author": "MA",
+              "date": "2025-11-19T10:05",
+              "body": "Pharmacy faxed us on 11/13 - his plan requires prior auth for acamprosate. Submitted 11/13 with diagnosis and the hospital records. Approval came back today, 12 months. Pharmacy notified; they had already dispensed a short supply. Patient told by phone, he picked up the full fill this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "outside_records",
+          "start": "2025-12-04T15:30",
+          "reason": "addiction program intake",
+          "orders": [
+            {"id": "aod-referral", "action": "done", "date": "2025-12-04T15:30"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outpatient addiction program intake letter",
+              "author": "addiction medicine",
+              "date": "2025-12-04T15:30",
+              "body": "Outpatient addiction treatment program - intake summary to referring primary care, intake completed 12/1/2025.\n\nThank you for referring Mr. Shapiro. He completed intake with our counselor and addiction medicine clinician. He reports no alcohol since late October, confirmed by his sister, who attended. Diagnosis: alcohol use disorder, severe. Co-occurring depressive symptoms noted; he prefers counseling to medication at this time.\n\nCurrent medications reviewed: acamprosate 666 mg three times daily, thiamine 100 mg, folic acid 1 mg, multivitamin, omeprazole 20 mg, amlodipine 5 mg. Allergies: NKDA.\n\nPlan: intensive outpatient groups three mornings a week for 8 weeks, then weekly individual counseling. Continue acamprosate as prescribed by you. We will send updates if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "imaging",
+          "start": "2025-12-09T11:00",
+          "reason": "HCC surveillance",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-12-09T11:00",
+              "text": "ABDOMINAL ULTRASOUND, LIMITED TO LIVER SURVEILLANCE AND SPLEEN\nIndication: Alcoholic cirrhosis, surveillance.\nComparison: 5/13/2025.\nLiver: Nodular margin and coarse parenchyma consistent with known cirrhosis; no focal lesion identified. Hepatopetal flow in a patent main portal vein.\nSpleen: 10.9 cm, normal.\nAscites: None.\nGallbladder and bile ducts: Unremarkable.",
+              "conclusion": "No focal hepatic lesion. No ascites. Normal spleen. Unchanged cirrhotic liver."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "December liver US",
+              "author": "PCP",
+              "date": "2025-12-10T08:20",
+              "body": "Liver ultrasound stable - no lesion, no fluid. Next per hepatology in 6 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

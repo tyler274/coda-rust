@@ -1,0 +1,182 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002171",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "hospital_admission",
+          "start": "2024-01-16T06:00",
+          "end": "2024-01-23T13:00",
+          "service": "Cardiac Surgery",
+          "reason": "pericardiectomy for constrictive pericarditis",
+          "medications": [
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "stop", "reason": "dose reduced after pericardiectomy"},
+            {"drug": "furosemide 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "post-pericardiectomy, residual edema"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-01-16T11:30", "text": "Specimen: pericardium, radical pericardiectomy. Gross: multiple fragments of tan-white, firm pericardial tissue up to 7 cm, with gritty calcified areas. Microscopic: dense hyalinized fibrous tissue with dystrophic calcification and sparse chronic inflammation. No granulomas. No malignancy identified.", "conclusion": "Fibrotic, calcified pericardium consistent with constrictive pericarditis. Negative for malignancy."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary, cardiac surgery (outside)", "author": "cardiac surgery", "date": "2024-01-30T10:45", "body": "Regional medical center, cardiac surgery service.\nAdmitted 01/16/2024. Discharged 01/23/2024.\nPatient: Howard Nadeau, 58 y/o M.\nAllergies: penicillin (rash); shellfish (anaphylaxis).\n\nDiagnosis: constrictive pericarditis, radiation-associated (mantle field radiation 2003), confirmed by MRI and catheterization.\n\nProcedure 01/16/2024: radical pericardiectomy via median sternotomy, phrenic nerve to phrenic nerve, without cardiopulmonary bypass. Thick calcified pericardium removed; immediate improvement in RV filling on TEE.\nPathology: fibrotic calcified pericardium, no malignancy.\n\nCourse: extubated the evening of surgery. Chest tubes out day 3. Brief diuresis IV, transitioned back to oral. Atrial rhythm sinus throughout. Walking the halls by day 4. Pain controlled with acetaminophen. Aspirin resumed day 2.\n\nDischarge medications: furosemide 20 mg daily (reduced from 40), amlodipine 5 mg daily, atorvastatin 20 mg daily, aspirin 81 mg daily, calcium carbonate/vitamin D twice daily, leuprolide per urology schedule.\nSternal precautions 6 weeks, no driving 4 weeks. Follow up with cardiology in about 3 months and PCP in 1-2 weeks."}
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "office_visit",
+          "start": "2024-02-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "state": {"weight_kg": 84.3},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-08T11:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-08T11:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-08T10:40"},
+            {"procedure": "Venipuncture", "performed": "2024-02-08T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2024-02-08T11:25", "body": "Two weeks out from pericardiectomy (1/16, discharged 1/23). Discharge summary arrived 1/30 and reviewed.\n\nHe says the stairs are already easier than before surgery. Sternum sore when he coughs or rolls over, uses acetaminophen at night. Sleeping in a recliner the first week, now in bed. Appetite fine. Ankles mostly down. Taking furosemide 20 each morning.\n\nExam: vitals per flowsheet, weight 84 kg, down 6 kg from September. Sternal incision healing well, no drainage or erythema, sternum stable. JVP not elevated. Heart regular, no rub. Lungs clear. Abdomen flat, no fluid wave. Trace ankle edema.\n\nA/P\n1. S/p radical pericardiectomy for radiation-associated constriction, recovering well. BMP and CBC today. Furosemide per cardiology, follow-up there in April.\n2. HTN: BP fine on amlodipine plus the diuretic.\n3. Return to desk work after cardiology clears; sternal precautions until early March.\nShort-term leave paperwork completed for his employer."}
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "portal_message",
+          "start": "2024-03-11T19:20",
+          "reason": "refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill amlodipine", "author": "patient", "date": "2024-03-11T19:20", "body": "Can you send a new amlodipine script to the mail order pharmacy? My insurance switched me to 90 days by mail. Back at work this week, feeling good."},
+            {"type": "Patient Message", "title": "RE: Refill amlodipine", "author": "MA", "date": "2024-03-12T09:05", "body": "Sent amlodipine 5 mg, 90 days with refills, to the mail order pharmacy on file. Glad you're back at it."}
+          ]
+        },
+        {
+          "id": "2024-04-12a",
+          "kind": "outside_records",
+          "start": "2024-04-12T14:45",
+          "reason": "urology letter",
+          "labs": [
+            {"panel": null, "collected": "2024-04-09T08:50", "results": [{"test": "Prostate Specific Antigen", "value": 0.2}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology follow-up letter", "author": "urology", "date": "2024-04-12T14:45", "body": "Outside urology group, office visit 04/09/2024.\nRe: Howard Nadeau.\nHe had a pericardiectomy in January and is recovering. Leuprolide 7.5 mg IM every 28 days was given on schedule around the surgery.\nAllergies: penicillin (rash), shellfish (anaphylaxis).\nPSA 0.2 ng/mL, now low but detectable after prior undetectable values.\nPlan: continue leuprolide. Repeat PSA in 3 months; if rising, consider imaging.\nOutside urology"}
+          ]
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "specialist_visit",
+          "start": "2024-04-18T13:30",
+          "service": "Cardiology",
+          "reason": "follow-up after pericardiectomy",
+          "conditions": [
+            {"label": "Constrictive pericarditis", "icd10": "I31.1", "action": "resolved", "note": "after radical pericardiectomy 01/2024"}
+          ],
+          "medications": [
+            {"drug": "furosemide 20 MG Oral Tablet", "action": "stop", "reason": "edema and ascites resolved after pericardiectomy"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-04-18T13:50", "results": [{"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 62}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-04-18T13:50", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up", "author": "cardiology", "date": "2024-04-23T10:00", "body": "Outside cardiology group. Visit 04/18/2024.\nMr. Nadeau returns three months after radical pericardiectomy for radiation-associated constriction. He climbs two flights at work without stopping, no orthopnea, no swelling for the past month. Taking furosemide 20 mg daily.\nMeds: furosemide 20 mg, amlodipine 5 mg, atorvastatin 20 mg, aspirin 81 mg, calcium/vitamin D, leuprolide (urology).\nAllergies: penicillin (rash), shellfish (anaphylaxis).\nExam: vitals as recorded. JVP normal. No knock. Sternotomy healed. Abdomen without ascites, liver not palpable. No edema.\nLabs: BNP 62. ALT, AST, bilirubin and albumin normal.\nImpression: constrictive pericarditis resolved after pericardiectomy, congestion cleared.\nPlan: stop furosemide. Weigh weekly; call if more than 2 kg up or swelling returns. Echo and visit in one year, sooner if symptoms."}
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "annual_physical",
+          "start": "2024-06-13T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-13T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-13T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-13T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-06-13T09:00", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "25-hydroxy Vitamin D"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-06-13T08:50"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-06-13T08:15"},
+            {"procedure": "Immunization administration", "performed": "2024-06-13T08:50"},
+            {"procedure": "Venipuncture", "performed": "2024-06-13T09:00"}
+          ],
+          "orders": [
+            {"id": "dxa-2024", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "osteopenia on androgen deprivation, 2 years since last"},
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-06-13T09:05", "body": "Annual visit.\n\nInterval: pericardiectomy in January; cardiology took him off furosemide in April and he's had no swelling since. Walking 30 minutes most evenings. Urology letter from April: PSA 0.2, repeat planned in 3 months there. Still on leuprolide.\nMeds: amlodipine 5, atorvastatin 20, aspirin 81, calcium/D twice daily, leuprolide via urology; epi pen at home.\nAllergies: penicillin, shellfish.\nNo smoking. PHQ-9 2.\n\nExam: vitals per flowsheet. Well. Sternotomy scar healed. Heart regular, no rub or knock. Lungs clear. Abdomen soft, no hepatomegaly or fluid. No edema. Skin: no lesions of concern in the old radiation field.\n\nA/P\n1. S/p pericardiectomy, doing well.\n2. HTN controlled on amlodipine alone.\n3. Lipids, CMP, CBC, TSH, vitamin D today.\n4. Osteopenia on ADT: due for DXA, ordered.\n5. Tdap today (last one he can't recall). Lung CT due August, ordered.\n6. Prostate cancer per urology."}
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "imaging",
+          "start": "2024-06-27T10:30",
+          "reason": "bone density",
+          "reports": [
+            {"study": "DXA bone density, hip and spine", "performed": "2024-06-27T10:30", "text": "Lumbar spine L1-L4 and left hip. Indication: androgen deprivation therapy, osteopenia. Comparison 2/10/2022 at an outside facility. Lumbar spine L1-L4 T-score -1.5. Left femoral neck T-score -2.0. Left total hip T-score -1.3.", "conclusion": "Osteopenia, lowest T-score -2.0 at the left femoral neck."}
+          ],
+          "orders": [
+            {"id": "dxa-2024", "action": "done", "date": "2024-06-27T10:30"}
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "portal_message",
+          "start": "2024-07-01T12:40",
+          "reason": "bone density result",
+          "documents": [
+            {"type": "Patient Message", "title": "Bone density and labs", "author": "PCP", "date": "2024-07-01T12:40", "body": "Howard, the bone density scan still shows osteopenia (thinner than average bone, not osteoporosis). The hip number slipped a little since 2022, which is expected on leuprolide. Keep up the calcium/vitamin D and walking. Your June labs were all fine, including vitamin D. We'll recheck the scan in two years."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "imaging",
+          "start": "2024-08-13T15:40",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-08-13T15:40", "text": "Low-dose CT chest without contrast. Comparison 7/11/2023.\nLungs: no nodules. No consolidation.\nPleura: no effusion.\nHeart and mediastinum: interval median sternotomy and pericardiectomy; small residual pericardial calcification posteriorly. Heart size normal. No effusion. No adenopathy.\nUpper abdomen: postsplenectomy.\nBones: sternotomy wires intact. No suspicious osseous lesion.", "conclusion": "Lung-RADS 1. Continue annual screening."}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "done", "date": "2024-08-13T15:40"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result note", "author": "PCP", "date": "2024-08-14T08:20", "body": "Negative screen, Lung-RADS 1; post-surgical change only. Next in a year."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T16:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T16:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2024-10-08T16:45", "body": "Flu (L arm) and 2024-25 COVID (R arm) given. No reactions last year. Observed 15 minutes, fine."}
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "office_visit",
+          "start": "2024-11-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and cholesterol follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-11-20T15:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-11-20T15:45", "body": "Six-month check. Feels well, back to full days at work, walking most evenings. No swelling, no breathlessness. No urology letter here since April; he isn't sure whether the 3-month PSA recheck got done. Asked him to have urology send their notes. Due back to cardiology in January.\n\nExam: vitals per flowsheet. Heart regular. Lungs clear. No edema.\n\nA/P\n- HTN at goal on amlodipine 5.\n- Hyperlipidemia on atorvastatin 20, June LDL acceptable.\n- Prostate cancer per urology.\n- Physical in June."}
+          ]
+        }
+      ]
+    }
+  ]
+}

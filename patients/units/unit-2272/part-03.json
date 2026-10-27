@@ -1,0 +1,573 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002272",
+   "events": [
+    {
+     "id": "2023-02-28a",
+     "kind": "lab_only",
+     "start": "2023-02-28T08:10",
+     "state": {
+      "labs": {
+       "Alkaline Phosphatase": 96
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-02-28T08:10",
+       "results": [
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 96
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2023-03-01T07:40",
+       "body": "Alk phos 96, down from 220 before the infusion. Calcium and creatinine fine. Copy to ortho. Portal msg: the infusion did its job."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-01a",
+     "kind": "portal_message",
+     "start": "2023-03-01T18:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "RE: Result note",
+       "author": "patient",
+       "date": "2023-03-01T18:30",
+       "body": "Thanks doc. Leg aches a lot less than in the fall. I'm still taking the vitamin D. Do I need to see you before the fall?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Result note",
+       "author": "MA",
+       "date": "2023-03-02T09:10",
+       "body": "Hi Mr. Bennett, you're due for your blood pressure check this spring. Booked you for Tuesday 4/11 at 10:20. Reply if that doesn't work."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "office_visit",
+     "start": "2023-04-11T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, early satiety, weight loss; BP follow-up",
+     "state": {
+      "weight_kg": 88.5,
+      "labs": {
+       "Hemoglobin": 9.1,
+       "White Blood Cells": 2.55,
+       "Platelets": 82
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-04-11T11:00",
+       "resulted": "2023-04-11T15:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 2.6
+        },
+        {
+         "test": "Platelets",
+         "value": 84
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-11T11:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2023-04-11T10:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "placed",
+       "order": "Hematology-Oncology referral, urgent",
+       "category": "referral",
+       "to": "Hematology-Oncology",
+       "reason": "Pancytopenia and splenomegaly with weight loss"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-04-11T16:10",
+       "body": "Came for BP but the real story: since around January more tired than he's ever been, naps afternoons. Fills up after half a plate, belt is looser. Wife thinks he's lost weight; scale here confirms, 92-93 all of last year, 88.5 today. No fevers or sweats he's noticed. No bleeding, no black stools. Cough at baseline. Leg better since the infusion.\n\nExam: tired-appearing but comfortable. Conjunctivae a little pale. No lymphadenopathy neck, axillae, groin. Abdomen: spleen edge firm and palpable well below the left costal margin, nontender. Liver not enlarged. Lungs with a few wheezes, his usual. No edema, no petechiae.\n\nCBC this afternoon: Hgb 9.2, WBC 2.6, plt 84. All three lines low, which is new (CBC normal in 9/2021).\n\nA/P\n1. Fatigue, early satiety, weight loss with an enlarged spleen and low counts in all three lines. Needs hematology quickly. Urgent referral placed, called their office myself, they will see him 4/24. Reviewed with pt and wife by phone this afternoon; bleeding and fever precautions.\n2. HTN, CKD 2: BP as charted. BMP today. No changes.\nRTC after heme."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 88.5
+     }
+    },
+    {
+     "id": "2023-04-24a",
+     "kind": "specialist_visit",
+     "start": "2023-04-24T09:30",
+     "service": "Hematology-Oncology",
+     "reason": "Pancytopenia, splenomegaly, fatigue and weight loss",
+     "state": {
+      "weight_kg": 88.0,
+      "labs": {
+       "Hemoglobin": 9.0,
+       "White Blood Cells": 2.5,
+       "Platelets": 80
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Primary myelofibrosis",
+       "icd10": "D47.4",
+       "action": "diagnosed",
+       "onset": "2023-01-01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "done",
+       "date": "2023-04-24T09:30"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-04-24T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.0
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 2.5
+        },
+        {
+         "test": "Platelets",
+         "value": 80
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-24T09:45",
+       "resulted": "2023-05-01T12:00",
+       "results": [
+        {
+         "test": "JAK2 V617F mutation",
+         "loinc": "43399-4",
+         "text": "Detected"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-04-24T11:00",
+       "issued": "2023-05-01T16:00",
+       "text": "Specimen: bone marrow, right posterior iliac crest, aspirate attempt and trephine core.\nAspirate: no particles obtained (dry tap); touch preparations of the core made instead.\nCore: 1.6 cm adequate core. Marrow largely replaced by fibrosis, with clusters of atypical megakaryocytes showing hyperchromatic, cloud-like nuclei. Reduced erythroid and granulocytic elements. Reticulin and trichrome stains confirm increased fibrosis. Dilated sinusoids with intrasinusoidal hematopoiesis. No increase in blasts by CD34. No metastatic carcinoma.\nMolecular studies sent separately.",
+       "conclusion": "Bone marrow: fibrotic myeloproliferative neoplasm, consistent with primary myelofibrosis in the appropriate clinical setting."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology-Oncology Consultation",
+       "author": "hematology-oncology",
+       "date": "2023-05-03T11:30",
+       "body": "Outside hematology-oncology clinic\nDate of consultation: 04/24/2023 (letter includes results through 05/01)\nPatient: Bernard Bennett, DOB 07/03/1955\n\nDear colleague,\nThank you for the urgent referral. Mr. Bennett is 67 and comes with his wife. Over three months he has grown steadily more tired, feels full after small meals, and has lost weight without trying. You found low counts and a large spleen on 4/11.\n\nBackground: hypertension, no prior cancer. Chronic bronchitis and Paget disease of the left tibia (zoledronic acid 12/2022). CKD, BPH, urethral stricture, lumbar spondylosis. Former smoker, 40 pack-years. Meds: hydrochlorothiazide, lisinopril, tamsulosin, vitamin D, acetaminophen PRN. NKDA.\n\nExam: pale, no jaundice. Marked splenomegaly reaching well below the left costal margin. No lymphadenopathy. No hepatomegaly.\n\nLabs today: hemoglobin 9.0 g/dL, WBC 2,500/uL, platelets 80,000/uL. Smear reviewed personally: many teardrop red cells, occasional nucleated red cells and immature granulocytes (leukoerythroblastic picture). No circulating blasts of note.\n\nBone marrow 4/24: the aspirate was a dry tap, so a trephine core was taken in the same sitting. Pathology (5/1): marrow fibrosis with clustered atypical megakaryocytes, consistent with primary myelofibrosis. JAK2 V617F detected. Abdominal ultrasound 4/27: spleen 19 cm, liver normal in size.\n\nImpression: JAK2-positive primary myelofibrosis with symptomatic splenomegaly, constitutional symptoms and cytopenias.\n\nPlan: We discussed the nature of this disease with him and his wife. Given his age and other conditions he is not a candidate for stem cell transplant and we will focus on symptom control. I will see him on 5/10 to start a JAK inhibitor and go over its monitoring. We will do his blood counts here every few weeks at first, then about every three months.\n\nWith thanks,\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2023-04-27a",
+     "kind": "imaging",
+     "start": "2023-04-27T14:00",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2023-04-27T14:00",
+       "text": "Indication: splenomegaly.\nThe spleen is enlarged, measuring 19 cm in craniocaudal length, with homogeneous echotexture and no focal lesion. Liver normal in size and echotexture, no focal lesion. Gallbladder without stones. Common bile duct not dilated. Kidneys normal in size without hydronephrosis. Pancreas partially obscured by bowel gas. No ascites.",
+       "conclusion": "Splenomegaly, 19 cm. Liver normal in size."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "Abdominal ultrasound (ordered by hematology)",
+       "author": "radiology",
+       "date": "2023-04-28T09:00",
+       "body": "Copy to primary care. Spleen 19 cm, homogeneous. Liver normal in size. No ascites."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-10a",
+     "kind": "specialist_visit",
+     "start": "2023-05-10T13:00",
+     "service": "Hematology-Oncology",
+     "reason": "Start JAK inhibitor for primary myelofibrosis",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-05-10T12:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 8.9
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 2.4
+        },
+        {
+         "test": "Platelets",
+         "value": 82
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ruxolitinib 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Primary myelofibrosis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2023-05-12T10:20",
+       "body": "Hematology follow-up 05/10/2023, Mr. Bennett, primary myelofibrosis.\nSymptoms unchanged: tired, early fullness. Counts similar to 4/24.\nWith platelets in the 80s, starting ruxolitinib at 5 mg twice daily. Reviewed common effects: lower blood counts, especially anemia early on, dizziness, bruising, infections including shingles (he has had both Shingrix doses), weight gain, raised cholesterol. Avoid starting strong CYP3A4 inhibitors without checking with us.\nThrough the specialty pharmacy. CBC in 4 weeks, visit in 3 months.\nCurrent medications per patient: HCTZ 25, lisinopril 10, tamsulosin 0.4, vitamin D 1,000 units, acetaminophen as needed, now ruxolitinib 5 mg BID. NKDA.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2023-05-16a",
+     "kind": "pharmacy",
+     "start": "2023-05-16T11:45",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Specialty pharmacy notice",
+       "author": "MA",
+       "date": "2023-05-16T11:45",
+       "body": "Specialty pharmacy faxed confirmation: Part D prior authorization for ruxolitinib approved through 5/2024, prescriber hematology. Copay assistance through a foundation being arranged by heme's office. First fill shipping 5/17. Added to med list as outside prescription. FYI to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-18a",
+     "kind": "portal_message",
+     "start": "2023-05-18T20:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "New pill",
+       "author": "patient",
+       "date": "2023-05-18T20:05",
+       "body": "The blood doctor started me on Jakafi. Is it ok with my blood pressure pills? My wife wants to know if I should still take the vitamin D. Thanks, Bernard"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: New pill",
+       "author": "PCP",
+       "date": "2023-05-19T07:55",
+       "body": "Hi Bernard, yes, ruxolitinib is fine alongside your blood pressure pills, tamsulosin and vitamin D. Keep everything as is. Before you take any new medicine, including antibiotics or antifungals someone else prescribes, ask them to check it against ruxolitinib or call us. I'll keep up with hematology's letters. Hang in there."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-09a",
+     "kind": "specialist_visit",
+     "start": "2023-08-09T10:40",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "state": {
+      "weight_kg": 90.0,
+      "labs": {
+       "Hemoglobin": 9.6,
+       "White Blood Cells": 3.2,
+       "Platelets": 88
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-08-09T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.4
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.1
+        },
+        {
+         "test": "Platelets",
+         "value": 88
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-08-09T10:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2023-08-11T14:00",
+       "body": "Myelofibrosis follow-up, 08/09/2023.\nThree months on ruxolitinib 5 mg BID. Energy noticeably better; early fullness gone; regaining weight, now 90 kg. No bleeding, no infections.\nExam: spleen smaller, edge now palpable below the costal margin but softer and less far down.\nCBC today: counts steady to slightly improved from diagnosis.\nPlan: continue ruxolitinib 5 mg BID. CBC and visit in 3 months. Allergies: NKDA.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "annual_physical",
+     "start": "2023-09-12T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-09-12T10:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-12T10:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-12T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Prostate Specific Antigen"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-12T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-12T10:35",
+       "body": "Wellness visit, a calmer year than the spring.\n- Myelofibrosis: on ruxolitinib via hematology, feels better, eating normally, weight back up. Counts and spleen followed there.\n- Paget: leg pain mostly gone.\n- Cough: same winter pattern, no blood.\n- Function: independent, still driving, small carpentry jobs. No falls. PHQ-2 1 (a little down in the spring, better now).\n- Memory: no concerns raised today.\n- Advance directive reviewed, unchanged.\n\nExam: vitals as charted. Spleen tip palpable. Lungs few wheezes. Heart regular. No edema.\n\nPlan: BMP, UACR, lipids, A1c, PSA (CBC at heme). Flu, updated COVID and RSV at a nurse visit in October. Lung CT November. Colonoscopy due next year, will talk then given his platelets. RTC 6 mo."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-10T11:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T11:06"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-10T11:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Vaccines",
+       "author": "RN",
+       "date": "2023-10-10T11:20",
+       "body": "Inactivated vaccines only (on ruxolitinib; heme ok'd these). HD flu L, updated COVID R, RSV L lower. Firm pressure 2 min each site given platelets; no bruising before leaving."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-14a",
+     "kind": "imaging",
+     "start": "2023-11-14T09:30",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2023-11-14T09:30",
+       "text": "Indication: Annual lung cancer screening. Former smoker, 40 pack-years.\nComparison: 11/17/2022.\nFindings: New 3 mm solid nodule, right upper lobe. No other nodules. No consolidation. No effusion. Heart and mediastinum unremarkable.",
+       "conclusion": "Lung-RADS 2: 3 mm solid right upper lobe nodule, benign appearance or behavior. Continue annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2023-11-15T08:20",
+       "body": "Tiny 3 mm RUL nodule, Lung-RADS 2, routine annual follow-up only. Explained by portal that this size is very common and not a concern; same yearly scan next fall."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-20a",
+     "kind": "specialist_visit",
+     "start": "2023-11-20T14:20",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-11-20T13:55",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.7
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.3
+        },
+        {
+         "test": "Platelets",
+         "value": 91
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2023-11-22T09:15",
+       "body": "Seen 11/20/2023 for primary myelofibrosis on ruxolitinib 5 mg twice daily.\nDoing well. Good appetite, active, no night sweats. Spleen tip about 4 cm below the left costal margin today.\nCBC stable: anemia and thrombocytopenia unchanged, no transfusion need.\nContinue current dose. Return 3 months with CBC.\nNKDA. Hematology-oncology"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

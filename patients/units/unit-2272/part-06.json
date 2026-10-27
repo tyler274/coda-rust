@@ -1,0 +1,635 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002272",
+   "events": [
+    {
+     "id": "2026-02-18a",
+     "kind": "specialist_visit",
+     "start": "2026-02-18T10:20",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-02-18T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.5
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.0
+        },
+        {
+         "test": "Platelets",
+         "value": 93
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2026-02-20T09:50",
+       "body": "Hematology, 2/18/2026. Primary myelofibrosis, nearly three years on ruxolitinib 5 mg BID. No fevers, sweats or weight loss. Spleen tip about 4 cm, unchanged.\nCBC at baseline. Continue. Return in May.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "office_visit",
+     "start": "2026-03-10T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-03-10T15:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-03-10T14:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-03-10T15:20",
+       "body": "BP/CKD visit.\nNo syncope since October. Electric razor, open collars. Cardiology as needed.\nHome readings: forgot the log, recalls mostly 140s.\nBP here as charted, above goal again.\nExam: heart regular, lungs baseline, no edema.\nA/P: HTN above goal for two years now on HCTZ/lisinopril. Talked again about a third agent; he is worried about dizziness after last fall's spell and wants to see a written log first. Log card given, he'll send readings in a month. BMP today. CKD 2 stable. RTC June."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-12a",
+     "kind": "hospital_admission",
+     "start": "2026-04-12T21:30",
+     "end": "2026-04-18T13:00",
+     "service": "Critical Care Medicine",
+     "reason": "Hypertensive emergency",
+     "conditions": [
+      {
+       "label": "Hypertensive emergency",
+       "icd10": "I16.1",
+       "action": "diagnosed",
+       "onset": "2026-04-12"
+      },
+      {
+       "label": "Cyanide toxicity",
+       "icd10": "T65.0X1A",
+       "action": "diagnosed",
+       "onset": "2026-04-12",
+       "note": "from sodium nitroprusside infusion begun 4/12, recognized 4/14"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-04-12T21:35",
+       "bp": [
+        226,
+        128
+       ],
+       "hr": 88,
+       "rr": 18,
+       "spo2": 96,
+       "temp_c": 36.8
+      },
+      {
+       "time": "2026-04-14T21:40",
+       "bp": [
+        145,
+        90
+       ],
+       "hr": 102,
+       "rr": 22,
+       "spo2": 94,
+       "temp_c": 37.0
+      },
+      {
+       "time": "2026-04-18T09:00",
+       "bp": [
+        142,
+        86
+       ],
+       "hr": 76,
+       "rr": 16,
+       "spo2": 96,
+       "temp_c": 36.7
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-12T21:50",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.5
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 40
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-04-12T21:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.7
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.1
+        },
+        {
+         "test": "Platelets",
+         "value": 86
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-14T21:50",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Creatinine",
+         "value": 2.8
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 55
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-14T21:50",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 5.0
+        },
+        {
+         "test": "pH of Arterial blood",
+         "loinc": "2744-1",
+         "unit": "[pH]",
+         "value": 7.35
+        },
+        {
+         "test": "Carbon dioxide partial pressure in Arterial blood",
+         "loinc": "2019-8",
+         "unit": "mm[Hg]",
+         "value": 45
+        },
+        {
+         "test": "Oxygen partial pressure in Arterial blood",
+         "loinc": "2703-7",
+         "unit": "mm[Hg]",
+         "value": 85
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-14T21:55",
+       "resulted": "2026-04-16T14:00",
+       "results": [
+        {
+         "test": "Cyanide, venous blood",
+         "loinc": "5634-1",
+         "unit": "mg/L",
+         "value": 1.1
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-15T06:00",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 1.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-18T06:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.6
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 28
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2026-04-14T21:45",
+       "text": "Sinus tachycardia, rate 102. PR 164 ms, QRS 94 ms, QTc 440 ms. Normal axis. No ST or T wave abnormality.",
+       "conclusion": "Sinus tachycardia, otherwise normal ECG."
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "nitroprusside sodium 0.2 MG/ML Injectable Solution",
+       "action": "historical",
+       "sig": "IV infusion titrated to blood pressure",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Hypertensive emergency"
+      },
+      {
+       "drug_text": "hydroxocobalamin 5000 MG Injection",
+       "action": "historical",
+       "sig": "5 g IV over 15 minutes, once",
+       "dose": {
+        "value": 5,
+        "unit": "g"
+       },
+       "frequency": "ONCE",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Cyanide toxicity"
+      },
+      {
+       "drug_text": "nicardipine hydrochloride 0.2 MG/ML Injectable Solution",
+       "action": "historical",
+       "sig": "IV infusion titrated to blood pressure",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Hypertensive emergency"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2026-04-12T23:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-04-18T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "author": "critical care medicine",
+       "date": "2026-04-20T10:30",
+       "body": "Regional medical center\nAdmitted 04/12/2026, discharged 04/18/2026\nPatient: Bernard Bennett, 70 M\nService: medical ICU, then medicine floor\n\nPrincipal diagnosis: Hypertensive emergency.\nSecondary: Cyanide toxicity from sodium nitroprusside. Acute rise in creatinine on chronic kidney disease with the hypertensive emergency.\nChronic: hypertension, chronic kidney disease, mild neurocognitive disorder, primary myelofibrosis on ruxolitinib, carotid sinus hypersensitivity, chronic bronchitis, BPH, urethral stricture, Paget disease of left tibia, lumbar spondylosis.\nAllergies: NKDA.\n\nCourse:\nHe came to the ED on the evening of 4/12 with a severe headache and a blood pressure of 226/128. Creatinine 2.5, BUN 40. With renal involvement this was treated as a hypertensive emergency and he went to the ICU on a sodium nitroprusside infusion.\n\nAfter about 48 hours on nitroprusside (4/14), nursing reported that he had become steadily more agitated and confused. He described a severe headache and looked flushed, and his wife thought he was breathing harder than normal. BP 145/90, HR 102, RR 22, SpO2 94% on room air. Arterial gas pH 7.35, PaCO2 45, PaO2 85. Na 140, K 4.2, creatinine 2.8 (2.5 on admission), BUN 55, lactate 5 mmol/L. ECG: sinus tachycardia without other abnormality. Venous cyanide sent.\n\nCyanide toxicity was diagnosed clinically. Nitroprusside was stopped, hydroxocobalamin 5 g IV was given, and blood pressure control was switched to a nicardipine infusion. Lactate 1.6 the next morning. Confusion and headache cleared within a day and his wife felt he was back to himself. The cyanide level returned 4/16 at 1.1 mg/L, confirming the diagnosis.\n\nHe transitioned to oral therapy; amlodipine 5 mg daily added to his home regimen. Creatinine improved to 1.6 by discharge. BP at discharge 142/86.\n\nDischarge medications:\n- amlodipine 5 mg daily (NEW)\n- lisinopril 10 mg daily\n- hydrochlorothiazide 25 mg daily\n- tamsulosin 0.4 mg daily\n- ruxolitinib 5 mg twice daily\n- vitamin D3 1,000 units daily\n- acetaminophen 500 mg as needed\n\nFollow-up: primary care within one week with a BMP. Hematology as scheduled.\n\nCritical care / hospital medicine"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "telephone",
+     "start": "2026-04-21T10:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2026-04-21T10:15",
+       "body": "Transitional care call, 2 business days after discharge. Spoke with pt and wife. Home since Saturday. Headache gone, thinking clear, wife agrees. Picked up amlodipine; reviewed full med list against the discharge summary, matches. Home BP this morning 136/82. Visit booked Friday 4/24 with BMP. ED for severe headache, confusion, chest pain or BP over 180."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-24a",
+     "kind": "office_visit",
+     "start": "2026-04-24T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "state": {
+      "bp": [
+       138,
+       84
+      ],
+      "labs": {
+       "Creatinine": 1.4
+      }
+     },
+     "vitals": {
+      "bp": [
+       138,
+       84
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Hypertensive emergency",
+       "icd10": "I16.1",
+       "action": "resolved",
+       "onset": "2026-04-12"
+      },
+      {
+       "label": "Cyanide toxicity",
+       "icd10": "T65.0X1A",
+       "action": "resolved",
+       "onset": "2026-04-12"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-24T10:15",
+       "resulted": "2026-04-24T15:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.4
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-04-24T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2026-04-24T16:00",
+       "body": "TCM visit. Discharge summary reviewed in full.\nAdmitted 4/12-4/18: hypertensive emergency (226/128, creatinine 2.5), treated with nitroprusside in the ICU; at 48 h developed agitation, confusion, headache, flushing and a lactate of 5; cyanide toxicity, confirmed by a level of 1.1. Nitroprusside stopped, hydroxocobalamin, nicardipine, then orals with amlodipine 5 added. Creatinine 2.8 at worst, 1.6 at discharge.\n\nToday: feels himself again, wife agrees he's back to his usual. No headache. Taking all meds including the amlodipine. No dizziness or fainting.\nHome BP 130s/80s.\n\nExam: BP 138/84. Alert, conversational, oriented, at his baseline. Heart regular. Lungs baseline. No edema.\nLab today: creatinine 1.4, potassium normal.\n\nA/P\n1. Hypertensive emergency, resolved. Now on amlodipine 5 + lisinopril 10 + HCTZ 25. Watch for light-headedness given carotid sinus hypersensitivity; so far fine.\n2. Cyanide toxicity from nitroprusside, resolved without lasting deficit. Documented in the problem list so any future admission sees it.\n3. CKD 2 with the creatinine still coming down from the admission. Repeat at June visit.\n4. PMF, heme in May.\nMed reconciliation done. RTC 6-7 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-20a",
+     "kind": "specialist_visit",
+     "start": "2026-05-20T09:00",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-05-20T08:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.7
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.4
+        },
+        {
+         "test": "Platelets",
+         "value": 87
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-20T08:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2026-05-22T10:40",
+       "body": "Hematology, 05/20/2026. Hospitalized in April for hypertensive emergency complicated by nitroprusside cyanide toxicity, recovered. Ruxolitinib continued throughout.\nNow well. Spleen unchanged. CBC at his baseline; creatinine improving.\nContinue ruxolitinib 5 mg twice daily. Return August.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-12a",
+     "kind": "office_visit",
+     "start": "2026-06-12T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure and kidney follow-up",
+     "state": {
+      "bp": [
+       132,
+       80
+      ],
+      "labs": {
+       "Creatinine": 1.15
+      }
+     },
+     "vitals": {
+      "bp": [
+       132,
+       80
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-06-12T10:35",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-06-12T10:35",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-06-12T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-06-12T10:45",
+       "body": "Follow-up after April admission.\nDoing well. No headaches, no dizziness, no fainting. No blood in urine. Walking daily. Memory unchanged per wife. Taking amlodipine, lisinopril, HCTZ, tamsulosin, ruxolitinib, vitamin D.\nHome BP log (finally written down): 124-136 / 74-84.\n\nExam: BP 132/80, at goal for the first time in two years. Heart regular. Lungs scattered wheezes, baseline. Spleen tip palpable, unchanged. No edema. Neuro nonfocal.\n\nA/P\n1. HTN at goal on three agents. Continue amlodipine 5.\n2. CKD 2: creatinine back to 1.2 today. UACR sent.\n3. Carotid sinus hypersensitivity: no recurrence, precautions continue.\n4. PMF: heme following, August visit.\n5. HM: AWV in September, flu and COVID then, FIT due, CT in November.\nRTC September."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "portal_message",
+     "start": "2026-06-16T08:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your results",
+       "author": "PCP",
+       "date": "2026-06-16T08:20",
+       "body": "Hi Bernard, kidney function is back to where it was before the hospital (creatinine 1.2), potassium normal, and the urine protein is in your usual range. Keep doing exactly what you're doing. See you in September."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-21a",
+     "kind": "pharmacy",
+     "start": "2026-07-21T09:15",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2026-07-21T09:15",
+       "body": "Mail-order pharmacy requesting amlodipine 5 mg #90 with refills under our name (hospital script was 30 days with one refill). On med list since April, BMP 6/12 fine. Sent per PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-19a",
+     "kind": "specialist_visit",
+     "start": "2026-08-19T10:10",
+     "service": "Hematology-Oncology",
+     "reason": "Primary myelofibrosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-08-19T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.8
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.3
+        },
+        {
+         "test": "Platelets",
+         "value": 91
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology-oncology",
+       "date": "2026-08-21T14:30",
+       "body": "Hematology 08/19/2026. Primary myelofibrosis on ruxolitinib 5 mg twice daily since May 2023. Feels well, active. No constitutional symptoms. Spleen tip about 4 cm below the costal margin, stable.\nCBC unchanged from his baseline.\nContinue. Return November. NKDA.\nHematology-oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-24a",
+     "kind": "portal_message",
+     "start": "2026-08-24T12:00",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Upcoming visit",
+       "author": "front desk",
+       "date": "2026-08-24T12:00",
+       "body": "Reminder: your follow-up with your primary care physician is Monday, September 14 at 10:20. Please bring your home blood pressure log and a list of any questions."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-14a",
+     "kind": "office_visit",
+     "start": "2026-09-14T10:20",
+     "appointment": "booked",
+     "reason": "Routine follow-up"
+    }
+   ]
+  }
+ ]
+}

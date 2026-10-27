@@ -1,0 +1,179 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002019",
+      "given": "Patrick",
+      "family": "Michaud",
+      "birth_date": "1969-02-21",
+      "address_line": "38 Laurel Park Lane",
+      "phone": "+1-978-555-0164",
+      "email": "patrick.michaud@example.test",
+      "summary": "Senior financial analyst with hypertension, hyperlipidemia and biopsy-proven membranous nephropathy followed by outside nephrology, who joined in 2023 and started aspirin for primary prevention in 2024. Last seen January 2025; in October 2025 an outside ED and admission found a left renal vein thrombosis and started apixaban, which the practice learns of only from his message and late records.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:14",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-29T10:14",
+              "body": "Caller is looking for a new internist; says his last doctor retired and the replacement group is booking months out. Has high blood pressure, cholesterol, and a kidney condition a nephrologist follows. Membership terms explained, he is fine with them. Commercial PPO card info taken. New patient slot given for Tues 9/12 at 8:00. Asked him to bring all pill bottles and the name of his kidney doctor's office so we can request notes."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:00",
+          "end": "2023-09-12T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2015-06-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2018-03-01"},
+            {"label": "Nephrotic syndrome secondary to membranous nephropathy", "icd10": "N04.20", "action": "history", "onset": "2023-02-01", "note": "Biopsy-proven (left kidney, early 2023); followed by outside nephrology"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension; proteinuria"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [131, 83], "weight_kg": 87.5, "height_cm": 180.0, "labs": {"Albumin": 3.2, "Total Protein": 5.7, "Creatinine": 1.0, "Hemoglobin A1c": 5.4}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:10", "results": [{"test": "Albumin"}, {"test": "Creatinine"}, {"test": "Total Protein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T09:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Urinalysis", "collected": "2023-09-12T09:10", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "Negative"}]},
+            {"panel": null, "collected": "2023-09-12T09:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2023-09-12T09:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T09:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Senior financial analyst"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T08:00"}],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "placed", "order": "Outside records request, prior primary care", "category": "procedure", "reason": "establish care"},
+            {"id": "records-nephrology", "action": "placed", "order": "Outside records request, nephrology consult notes", "category": "procedure", "reason": "membranous nephropathy"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T09:05",
+              "body": "54 y/o man establishing care. Prior PCP retired; records release signed today.\n\nHTN about 8 yrs, on lisinopril 20 daily, home cuff readings he describes as low 130s over low 80s. High cholesterol since ~2018 on atorvastatin 40. Early this year swelling and protein in the urine led to a nephrology referral, and he had a needle biopsy of the L kidney in the spring that showed membranous nephropathy. Nephrology kept the lisinopril going for the protein and he sees them every few months; he does not know his last numbers. Swelling much better than it was. No hematuria, no flank pain, no SOB.\n\nPSH: L kidney biopsy 2023, no complications.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily. No OTCs, no supplements.\nAllergies: NKDA.\nFHx: father MI at 58. Mother HTN and type 2 DM. Older brother ischemic stroke at 52.\nSHx: senior financial analyst, long hours at a desk. Never smoker. A drink or two a week.\n\nExam: BP and other vitals in flowsheet. Well appearing. HEENT clear. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear. Abdomen soft, no CVA tenderness. Ext: trace ankle edema bilaterally, no calf asymmetry. Skin normal. Neuro grossly intact.\n\nA/P\n1. Membranous nephropathy with nephrotic syndrome - nephrology managing. CMP, UA today; requesting their notes.\n2. HTN - at goal on lisinopril, continue.\n3. Hyperlipidemia - atorvastatin 40, lipids next spring fasting.\n4. Health maintenance - colonoscopy reportedly done 2021, will confirm from records. One-time hep C and HIV screen and A1c (mother diabetic) today. Shingles and pneumococcal vaccines to plan; flu and COVID when the fall supply is in.\nPHQ-2 negative.\nF/u for a physical in the spring, sooner as needed."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records requests sent",
+              "author": "front desk",
+              "date": "2023-09-12T11:30",
+              "body": "Release faxed to prior primary care office (retired physician's group) and to the outside nephrology group per patient. Asked nephrology for consult notes, biopsy results and recent labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-09-14T16:40",
+              "body": "Hi Patrick, your labs are back. Kidney function is normal. Your albumin is a bit low and there is protein in the urine, which is what we expect with the membranous nephropathy, and it fits with what nephrology is treating. Blood counts normal, sugar normal, and the hepatitis C and HIV screens are negative. I'd like to see your nephrologist's notes when they come so I can track your numbers alongside theirs. Nothing to change for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "outside_records",
+          "start": "2023-10-03T13:20",
+          "reason": "prior primary care records received",
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-05-14T10:00"}],
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2021-04-09T08:30"}],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-03-08T09:00",
+              "text": "Specimen: kidney, left, percutaneous needle core biopsy (two cores). Light microscopy: adequate sample with glomeruli showing diffusely thickened capillary walls; no crescents, no proliferation. Tubules and interstitium without significant fibrosis. Vessels unremarkable. Immunofluorescence: granular capillary wall staining for IgG and C3. Electron microscopy: subepithelial electron-dense deposits with foot process effacement.",
+              "conclusion": "Membranous nephropathy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2023-10-03T13:20",
+              "body": "Received by fax, 22 pages, from patient's former primary care office.\n\nContents: office notes 2017 through 2023; problem list hypertension and hyperlipidemia, with membranous nephropathy added spring 2023 after nephrology referral for edema and proteinuria. Medications lisinopril 20 mg daily, atorvastatin 40 mg daily. Allergies: none known. Screening colonoscopy 04/2021, normal, repeat in 10 years. Tdap 05/2019. A copy of the 03/2023 kidney biopsy pathology report is included and abstracted to the chart.\n\nNephrology's own consult and follow-up notes are not in this packet."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "telephone",
+          "start": "2023-10-10T09:45",
+          "reason": "records follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nephrology records - second request",
+              "author": "front desk",
+              "date": "2023-10-10T09:45",
+              "body": "Called the nephrology group's records line, left a voicemail, re-faxed the release. No notes received yet from them."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-19T17:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-19T17:16"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-19T17:15"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-19T17:25",
+              "body": "Came after work for flu and the 2023-24 COVID shot. No egg or vaccine reactions in the past, feels well. Flu vaccine IM L deltoid, COVID IM R deltoid. Waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T08:50",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request - lisinopril, atorvastatin",
+              "author": "MA",
+              "date": "2023-12-05T08:50",
+              "body": "Pharmacy e-request for lisinopril 20 mg and atorvastatin 40 mg; prior scripts were from his old doctor and are out of refills. Labs 9/12 reviewed. Routed to PCP.\n\nPCP: approved both, 90-day supply with 3 refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

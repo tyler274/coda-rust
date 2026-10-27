@@ -1,0 +1,196 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001768",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after Crohn flare",
+          "state": {"weight_kg": 78.2, "labs": {"Hemoglobin": 11.0, "Mean Corpuscular Volume": 76, "Ferritin": 14, "Iron": 45, "Total Iron-Binding Capacity": 460, "Red Cell Distribution Width": 15.3}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [{"label": "Erythema nodosum", "icd10": "L52", "action": "resolved"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-16T16:10", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "White Blood Cells"}]},
+            {"panel": "Iron Studies", "collected": "2024-01-16T16:10", "results": [{"test": "Ferritin"}, {"test": "Iron"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-16T15:45"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-01-16T16:15",
+              "body": "Seen for follow-up of the November Crohn flare. GI started a second prednisone taper and moved infliximab to every 6 weeks; she is on the last week of the taper (5 mg) and had her first 6-week infusion before the holidays. Stools down to 2 a day, mostly formed, no blood. Appetite back, weight up a little. Shin bumps faded by mid-December and have not returned.\n\nMeds reviewed: infliximab q6 weeks (GI), mesalamine DR 800 mg TID, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily, prednisone taper finishing.\n\nExam: vitals as charted. Comfortable. Conjunctivae pink. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Legs: shins clear.\n\nImpression and plan:\n- Crohn disease, improving after flare. GI managing.\n- Erythema nodosum - resolved again.\n- Iron deficiency anemia with flare - CBC and iron today; continue oral iron.\n- B12 on supplement.\nNext: physical in late summer; sooner if flare."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "portal_message",
+          "start": "2024-01-18T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-01-18T12:40",
+              "body": "Your hemoglobin is recovering after the flare (up from 10.2 at GI) and iron stores are on the low side again, which is expected after the bleeding. Keep taking the iron daily; we will recheck at your physical. Glad you are feeling better."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "pharmacy",
+          "start": "2024-03-05T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "author": "MA",
+              "date": "2024-03-05T09:10",
+              "body": "Renewal request: ferrous sulfate 325 mg and cyanocobalamin 1000 mcg, 90-day supply. Pt also asked by phone whether we refill mesalamine - no, GI prescribes; pharmacy told to send that request to GI. Iron and B12 approved x 4."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-26a",
+          "kind": "office_visit",
+          "start": "2024-04-26T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Painful nodules on lower legs, low-grade fevers",
+          "state": {"weight_kg": 78.6},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "orders": [{"id": "derm-referral-2024", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "Recurrent painful leg nodules"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-04-26T15:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute visit",
+              "author": "PCP",
+              "date": "2024-04-26T16:00",
+              "body": "Painful lumps on both lower legs for about 3 weeks, deeper than last time. Along with them, low-grade evening temperatures, achy joints, and more tiredness than usual. About a week ago she had a sore throat and cough that went away on its own. Bowels have been fine. Infliximab on schedule.\n\nExam: vitals as charted. Tender, warm, poorly defined red nodules on both anterior shins. No joint swelling or warmth. Throat clear today. Lungs clear. Abdomen benign.\n\nAssessment: likely another bout of erythema nodosum; recent throat illness noted.\nPlan: dermatology referral, they have a slot in 3 weeks. Supportive measures as before. Messaged GI. Call for higher fevers or worsening."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-17a",
+          "kind": "specialist_visit",
+          "start": "2024-05-17T13:30",
+          "service": "Dermatology",
+          "reason": "Painful deep nodules on lower legs",
+          "state": {"weight_kg": 79.0},
+          "vitals": {"weight_kg": 79.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "temp_c"],
+          "conditions": [{"label": "Erythema nodosum", "icd10": "L52", "action": "diagnosed", "onset": "2024-04-05", "note": "Recurrent"}],
+          "labs": [
+            {"panel": null, "collected": "2024-05-17T13:50", "results": [{"test": "Rapid Strep A Antigen", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "derm-referral-2024", "action": "done", "date": "2024-05-17T13:30"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "author": "dermatology",
+              "date": "2024-05-24T08:45",
+              "body": "DERMATOLOGY - RETURN VISIT\nDOS 5/17/2024\n\nMs. Shapiro is a 30-year-old with Crohn disease, seen here in June 2023 for erythema nodosum, with another episode last fall during a Crohn flare. She now has six weeks of painful, deep nodules on the lower legs with low-grade fevers, joint aches and occasional fatigue. The spots came on abruptly and are tender enough that jeans and long walks are uncomfortable. No insect bites, no medication changes, no new skin products. About a month ago she had a sore throat and cough that cleared without treatment.\n\nMeds: infliximab every 6 weeks, mesalamine, ferrous sulfate, cyanocobalamin. NKDA.\n\nExam: BMI 29. Several poorly demarcated, warm, erythematous plaques and subcutaneous nodules along the anterior shins; some are beginning to fade with a yellowish tinge. Oral and genital mucosa clear. No active joint swelling.\n\nRapid strep antigen in clinic: negative.\n\nAssessment: recurrent erythema nodosum, likely related to her inflammatory bowel disease; the preceding throat illness may have contributed, though strep testing is negative now.\n\nPlan: supportive care as before (elevation, compression, rest). Lesions in the fading stage should keep resolving over the next few weeks. Will copy GI. Return as needed.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T17:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Legs",
+              "author": "patient",
+              "date": "2024-06-11T17:25",
+              "body": "FYI the leg nodules are almost gone and the fevers stopped a couple weeks ago. Joints feel normal. Thanks for getting me in with derm. Last day of school is next week!"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:40",
+          "end": "2024-09-10T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 79.5, "labs": {"Hemoglobin": 12.4, "Mean Corpuscular Volume": 81, "Ferritin": 27, "Iron": 66, "Total Iron-Binding Capacity": 410, "Vitamin B12": 515, "Red Cell Distribution Width": 13.7}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "conditions": [{"label": "Erythema nodosum", "icd10": "L52", "action": "resolved"}],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}, {"survey": "GAD-7 total score", "value": 3}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T16:25", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Iron Studies", "collected": "2024-09-10T16:25", "results": [{"test": "Ferritin"}, {"test": "Iron"}]},
+            {"panel": null, "collected": "2024-09-10T16:25", "results": [{"test": "Vitamin B12"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T16:25", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Creatinine"}, {"test": "Albumin"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-10T15:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-10T16:20",
+              "body": "PHYSICAL (31F)\n\nSince last physical: Crohn flare in November with recurrent EN, second prednisone taper, infliximab now every 6 weeks; another EN episode in April-May (derm). Since June: no nodules, no fevers, joints fine. Bowels 1-2 formed a day, no blood, no pain. Back in the classroom last week, energy decent.\nNo smoking since 2020. Alcohol rare. Vegan, on B12.\nMood: PHQ-9 2, GAD-7 3 - some first-week-of-school stress, otherwise fine.\n\nMedications: infliximab 5 mg/kg q6 weeks (GI), mesalamine DR 800 mg three times daily, ferrous sulfate 325 mg daily, cyanocobalamin 1000 mcg daily. NKDA.\n\nExam: vitals as charted. Well. Eyes, ears, throat normal. No lymphadenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Skin: shins clear. Joints without synovitis.\n\nA/P:\n1. Preventive: Pap 2022 normal - co-test next year. Flu and COVID vaccines at an October nurse visit. Tdap good until 2026.\n2. Crohn disease on infliximab - quiet; GI follows.\n3. Erythema nodosum - resolved.\n4. Iron deficiency anemia - CBC and iron today.\n5. B12 deficiency - level today.\n6. Labs: CBC, iron studies, B12, CMP.\nFollow-up in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2024-09-12T13:05",
+              "body": "All of your results look good: hemoglobin 12-range, iron stores improving, B12 healthy, kidney and liver tests normal. No changes. October nurse visit for flu and COVID shots whenever it suits your schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:05",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T16:12"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T16:10"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "author": "RN",
+              "date": "2024-10-08T16:25",
+              "body": "2024-25 flu (trivalent) L deltoid, 2024-25 COVID (Pfizer) R deltoid. Last infliximab infusion last week, no fever or illness today. No issues with past vaccines. Observed 15 min without problem."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "telephone",
+          "start": "2024-12-03T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior auth renewal",
+              "author": "front desk",
+              "date": "2024-12-03T11:15",
+              "body": "PPO letter: infliximab authorization (every 6 weeks) renewed through 12/2025 at GI's request. Scanned. Pt called to confirm we got it - yes, and GI has it too."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1945 @@
+{
+  "unit": "unit-2125",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002125/2024-08-27a: allergen \"Sulfamethoxazole-trimethoprim\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002125",
+      "given": "Randall",
+      "family": "Lindqvist",
+      "birth_date": "1970-02-28",
+      "address_line": "63 Ryan Road, Apt 4",
+      "phone": "+1-802-555-0149",
+      "email": "randall.lindqvist@example.test",
+      "marital_status": "single",
+      "summary": "Former construction site supervisor with intermediate-risk AML diagnosed 2023, in remission on maintenance azacitidine/venetoclax at an outside cancer center, with hypertension and chemotherapy-induced neuropathy; joins the practice in 2024. Febrile neutropenia admission in December 2025, ICU stay for severe sepsis in February 2026, and in July 2026 an ICU admission for severe hyponatremia complicated by central pontine myelinolysis with a locked-in state.",
+      "events": [
+        {
+          "id": "2024-08-21a",
+          "kind": "telephone",
+          "start": "2024-08-21T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-21T10:40",
+              "author": "front desk",
+              "body": "Caller is looking to move his primary care here. His old PCP office is cutting hours and he wants a doctor he can reach by text while he's going through cancer treatment. Gets his leukemia care at a cancer center, wants a local doc for everything else. Medicare. Explained membership and that insurance still covers labs and specialists. Booked new patient appt 9/4 at 9:00. He signed a records release over the phone portal; release faxed to his prior PCP office today. Asked him to bring all med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "outside_records",
+          "start": "2024-08-27T14:05",
+          "reason": "prior primary care records",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2016-05-01",
+              "note": "per prior PCP records, on amlodipine"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfamethoxazole-trimethoprim",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Iodinated contrast media",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2020-06-11T08:30"
+            },
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "1977-07-01T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (received)",
+              "date": "2024-08-27T14:05",
+              "author": "outside primary care",
+              "body": "Records packet from the patient's previous primary care office, 38 pages, received by fax.\n\nProblem list on their summary: hypertension, since 2016, on amlodipine 5 mg daily, generally controlled at their visits. Acute myeloid leukemia, followed by an outside oncology program since 2023. Peripheral neuropathy after chemotherapy.\n\nAllergies on their list: sulfamethoxazole-trimethoprim (anaphylaxis); iodinated contrast (hives).\n\nScreening colonoscopy 06/11/2020: normal to the terminal ileum, no polyps, good prep; next screening in 10 years.\nTdap 05/08/2019.\nTonsillectomy as a child.\n\nSocial: former smoker, about 20 pack-years, quit 2019. Construction site supervisor.\n\nLast visit with them was a blood pressure recheck in spring 2024, BP at goal. No other active issues. Scanned and abstracted."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "establish_care",
+          "start": "2024-09-04T09:00",
+          "end": "2024-09-04T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Acute myeloid leukemia, intermediate-risk cytogenetics, in remission",
+              "action": "diagnosed",
+              "onset": "2023-03-14",
+              "note": "outside cancer center; maintenance therapy",
+              "icd10": "C92.01"
+            },
+            {
+              "label": "Chemotherapy-induced peripheral neuropathy",
+              "action": "diagnosed",
+              "onset": "2023-08-01",
+              "icd10": "G62.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug_text": "acyclovir 800 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily (antiviral prophylaxis)",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "antiviral prophylaxis, prescribed by oncology"
+            },
+            {
+              "drug_text": "posaconazole 100 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (300 mg) by mouth daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "antifungal prophylaxis, prescribed by oncology"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "constipation"
+            },
+            {
+              "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for bone pain",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bone pain, prescribed by oncology"
+            },
+            {
+              "drug_text": "azacitidine 100 MG Injection",
+              "action": "historical",
+              "sig": "75 mg/m2 subcutaneously daily on days 1-7 of each 28-day cycle, given at the cancer center",
+              "dose": {
+                "value": 75,
+                "unit": "mg/m2"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "AML maintenance, oncology"
+            },
+            {
+              "drug_text": "venetoclax 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 7 tablets (70 mg) by mouth daily on days 1-14 of each 28-day cycle",
+              "dose": {
+                "value": 70,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "AML maintenance, oncology; dose reduced with posaconazole"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              141,
+              81
+            ],
+            "hr": 69,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 82.5,
+            "height_cm": 179.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-04T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-04T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-04T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-04T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-04T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction site supervisor; not working since 2023"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-04T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-04T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-04T09:00",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n54M transferring primary care. Main reason: wants one doctor he can reach between oncology visits, since the cancer center is an hour each way.\n\nOncologic hx (per pt, cancer center records requested): AML, told intermediate-risk cytogenetics, diagnosed March 2023 after a marrow biopsy. Port placed R chest wall at diagnosis. Inpatient induction then consolidation that year, in remission since. Since early 2024 on maintenance cycles: shots at the infusion center for a week each month plus venetoclax pills for two weeks. Several marrow biopsies so far, all OK per him. Prophylactic acyclovir and posaconazole the whole time. Oxycodone from oncology for bone aches, uses it maybe a few times a month.\n\nNeuropathy: numb, pins-and-needles feeling in both feet since the consolidation chemo in 2023. Not painful enough to want a med. Has learned to look at his feet going down stairs. No falls.\n\nHTN since about 2016, amlodipine 5 for years. No home cuff.\n\nPSH: port 2023, marrow biopsies, tonsillectomy as a kid.\nAllergies: Bactrim, anaphylaxis. IV contrast, hives.\nMeds: reconciled from bottles, see list. Venetoclax 70 mg (7 x 10 mg) days 1-14 is the reduced dose oncology uses with the posaconazole.\nFH: father lung ca, died 68. Mother DM2, HTN. Paternal uncle died at 55 of an acute leukemia, type unknown.\nSH: construction site supervisor, out on disability since the diagnosis. Lives alone, single. Former smoker, ~20 pk-yr, quit 2019. Beer once or twice a week. No drugs.\n\nROS: energy okay between cycles, tired the week of injections. No fevers. Bowels slow on oxycodone days, uses Miralax-type powder. Otherwise negative.\n\nEXAM\nVitals as charted. Well appearing, pleasant.\nHEENT: oropharynx clear, no mucosal lesions. Neck supple, no nodes.\nChest: port R upper chest, skin intact, no erythema or tenderness.\nCV: RRR, no murmur. Lungs clear bilaterally.\nAbd: soft, nontender, no hepatosplenomegaly palpable.\nSkin: no petechiae or bruising.\nNeuro: alert, fluent. Strength 5/5 throughout. Vibration and pinprick reduced in both feet up to the ankles; proprioception at the toes intact. Gait steady.\nExt: no edema.\n\nA/P\n1. AML in remission on maintenance - managed by the cancer center. Records request sent. They run his counts; I'll copy them on my labs.\n2. HTN - at goal on amlodipine 5. Continue, I'll take over refills.\n3. Chemo neuropathy, feet - stable, declines medication. Foot care and fall precautions talked through.\n4. Health maintenance: CMP, lipids, A1c, one-time hep C and HIV today. Colonoscopy 2020 normal per prior records. Tdap 2019. Talked about vaccines for someone on chemo - flu, COVID and Prevnar 20 at a nurse visit next month, Shingrix after that. Qualifies by age and smoking history for a lung screening CT; we agreed to hold off while he's on active leukemia treatment and revisit. PHQ-9 3.\n5. Bowel regimen ok.\n\nRTC 3 months, sooner prn. He has my cell for texting."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              80
+            ],
+            "weight_kg": 83.6,
+            "height_cm": 180.3,
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-06a",
+          "kind": "portal_message",
+          "start": "2024-09-06T16:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-06T16:22",
+              "author": "PCP",
+              "body": "Randall - your labs from Wednesday look good. Kidney and liver tests normal, sugar and A1c normal, cholesterol fine without a medication. Hep C and HIV screens were negative, so those never need repeating unless something changes. The nurse will reach out to set up your vaccine visit. - your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "outside_records",
+          "start": "2024-09-18T11:30",
+          "reason": "cancer center records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology-oncology treatment summary (received)",
+              "date": "2024-09-18T11:30",
+              "author": "hematology-oncology",
+              "body": "OUTSIDE CANCER CENTER - LEUKEMIA PROGRAM\nTreatment summary prepared at the request of the patient's new primary care physician.\n\nDiagnosis: acute myeloid leukemia, intermediate-risk cytogenetics. Diagnosed March 2023 on bone marrow aspirate and biopsy. Right chest wall implanted port placed March 2023.\n\nTreatment:\n- Induction with cytarabine-based intensive chemotherapy, spring 2023. Day-28 marrow: morphologic remission.\n- Consolidation with cytarabine-based cycles, summer-fall 2023. Peripheral neuropathy of the feet developed during consolidation and has persisted.\n- Maintenance since early 2024: azacitidine 75 mg/m2 subcutaneously days 1-7 with venetoclax days 1-14 of each 28-day cycle. Venetoclax 70 mg daily, reduced for concomitant posaconazole.\n\nMost recent marrow (spring 2024): continued morphologic remission.\n\nSupportive medications: acyclovir 800 mg twice daily; posaconazole delayed-release 300 mg daily; oxycodone 5 mg every 6 hours as needed for bone pain; polyethylene glycol as needed.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); iodinated contrast (hives).\n\nOther: hypertension on amlodipine. Former smoker.\n\nPlan: maintenance cycles monthly with counts before each cycle; marrow surveillance periodically. Please call the leukemia nurse line for fever of 100.4 or higher.\n\nAttending hematologist-oncologist, leukemia program"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              124,
+              82
+            ],
+            "hr": 66,
+            "temp_c": 36.5
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-10T13:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-10T13:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-10T13:42"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-10-10T13:44"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2024-10-10T13:30",
+              "author": "RN",
+              "body": "Here for vaccines ordered at his new patient visit. Timed between maintenance cycles; last injection week ended 9/30 and oncology ok'd today. Afebrile, feels well. Allergies reviewed, none to vaccine components.\nGiven: inactivated flu L deltoid; Pfizer COVID 2024-25 formula R deltoid; Prevnar 20 L deltoid, separate site 1 inch below flu.\nTolerated, no reaction in 15 min wait. VIS sheets given. Shingrix series to start at his December visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              88
+            ],
+            "hr": 76,
+            "spo2": 97,
+            "weight_kg": 83.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-12-10T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-12-10T10:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-12-10T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-12-10T10:20",
+              "author": "PCP",
+              "body": "S: 3-month check. Doing alright. Had his December cycle last week, fatigue for a few days then back to normal. Oncology says counts fine, plan unchanged. Taking amlodipine daily. Feet the same, no falls.\n\nO: BP and pulse as charted, weight steady. Alert, comfortable. Mouth clear. Heart regular, lungs clear. No ankle swelling. Port site fine.\n\nA/P:\n- HTN: controlled, no change. Refill sent for 90 days.\n- AML on maintenance: per cancer center.\n- Neuropathy: stable.\n- Shingrix #1 today (recombinant, fine with his treatment). Dose 2 in 2 months, nurse visit.\n\nRecheck spring for a wellness visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "portal_message",
+          "start": "2025-01-22T08:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2025-01-22T08:14",
+              "author": "patient",
+              "body": "Hi, the pharmacy says my amlodipine needs a new script from you since the old doctor's ran out. I have about 5 left. Thanks, Randy L."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2025-01-22T11:02",
+              "author": "RN",
+              "body": "Got it - the 90-day supply with 3 refills went to your pharmacy. It should be there by the end of the day. Your Shingrix #2 is due next month; I put you down for Thursday 2/20 at 2:00."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "nurse_visit",
+          "start": "2025-02-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "vitals": {
+            "bp": [
+              139,
+              76
+            ],
+            "hr": 71,
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-20T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-20T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2025-02-20T14:00",
+              "author": "RN",
+              "body": "Second recombinant zoster dose, R deltoid. Afebrile. After dose 1 he had a sore arm and felt run down for about a day. Series now complete. Observed 15 min, fine on leaving."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "outside_records",
+          "start": "2025-03-26T15:40",
+          "reason": "oncology progress letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Leukemia program follow-up letter (received)",
+              "date": "2025-03-26T15:40",
+              "author": "hematology-oncology",
+              "body": "Dear colleague,\n\nI saw Mr. Lindqvist on 03/19/2025 before his next maintenance cycle. He remains in remission and is tolerating azacitidine with venetoclax with the expected fatigue in the first week and occasional bone aches, for which he uses oxycodone sparingly. Feet unchanged. No infections since his last visit.\n\nExam unremarkable apart from reduced distal sensation in the feet. Port site clean. Counts adequate to proceed.\n\nPlan: continue maintenance, same doses; acyclovir and posaconazole prophylaxis continue. Surveillance marrow in the fall. He knows to call us for any fever.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), iodinated contrast (hives).\n\nAttending, leukemia program"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "annual_physical",
+          "start": "2025-04-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              131,
+              85
+            ],
+            "hr": 68,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 83.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-14T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-14T10:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-04-14T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2025-04-14T09:40",
+              "author": "PCP",
+              "body": "Initial AWV.\n\nInterval: maintenance cycles continue, oncology visit 3/19 reassuring. No hospital stays. BP meds daily.\n\nHealth risk assessment (pt-completed form reviewed): lives alone, independent with daily activities and errands, drives. Hearing fine, vision fine with readers. No falls in the past year; feet numb, is careful on uneven ground. Diet ok, appetite dips in his injection week. Walks most days. Seatbelt, smoke detectors yes.\nPHQ-2: 1. Cognition: conversation and recall normal, no concerns raised.\n\nMeds reviewed, unchanged. Allergies: TMP-SMX anaphylaxis, contrast hives.\n\nExam: vitals as charted. Well. Oral mucosa clear. Lungs clear, heart regular. Abd soft. Feet: skin intact, no calluses or wounds; vibration/pinprick reduced to the ankles both sides, as before.\n\nPrevention:\n- Colon: 2020 colonoscopy normal, next 2030.\n- Lung: LDCT eligible; still deferring during active leukemia therapy, revisit if treatment ends.\n- Vaccines: flu, COVID, PCV20, Shingrix x2 done; Tdap 2019.\n- Labs: CMP, lipids, A1c today.\n\nPersonalized plan given in writing. HTN f/u in the summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "portal_message",
+          "start": "2025-04-16T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your wellness visit",
+              "date": "2025-04-16T17:05",
+              "author": "PCP",
+              "body": "All of Monday's labs came back in the normal range - kidneys, liver, sugar, cholesterol. Nothing to change. Enjoy the spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T12:20",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "date": "2025-06-10T12:20",
+              "author": "MA",
+              "body": "Pharmacy fax: refill request for polyethylene glycol 3350 powder (17 g daily prn), last filled by prior PCP. Pt confirms still using on oxycodone days. Routed to PCP, approved, 1 container x 5 refills sent. Amlodipine has refills on file."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "office_visit",
+          "start": "2025-07-23T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-07-21T09:12",
+              "author": "front desk",
+              "body": "Pt called, Wednesday is in the middle of his injection week at the cancer center. Cancelled and moved to Tue 8/5 at 2:40."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "office_visit",
+          "start": "2025-08-05T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 83.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-05T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-05T14:40",
+              "author": "PCP",
+              "body": "BP f/u, rescheduled around his cycle.\n\nFeeling fine this week. No headaches, chest pain or swelling. Hot summer, staying hydrated. Oncology plans a surveillance marrow in September. Uses oxycodone a couple times a month at most.\n\nVitals as charted; BP at goal. Looks well. Heart and lungs normal. No edema. Port site intact.\n\nPlan: amlodipine 5 unchanged. Flu and COVID shots in early October around his cycle, nurse visit. See me in the winter, text sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "outside_records",
+          "start": "2025-09-24T10:15",
+          "reason": "oncology letter after marrow biopsy",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Leukemia program letter - surveillance marrow (received)",
+              "date": "2025-09-24T10:15",
+              "author": "hematology-oncology",
+              "body": "Dear colleague,\n\nMr. Lindqvist had a surveillance bone marrow aspirate and biopsy on 09/09/2025. It shows continued morphologic remission of his AML. He tolerated the procedure well.\n\nWe reviewed the result with him on 09/17/2025. He remains on maintenance azacitidine with venetoclax 70 mg on days 1-14; acyclovir and posaconazole continue. Next cycle begins this month. Peripheral neuropathy of the feet is stable.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), iodinated contrast (hives).\n\nAttending, leukemia program"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "vitals": {
+            "bp": [
+              141,
+              84
+            ],
+            "hr": 68,
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T15:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Seasonal Vaccines",
+              "date": "2025-10-07T15:20",
+              "author": "RN",
+              "body": "Between cycles, afebrile. Inactivated flu (standard dose) L deltoid, 2025-26 COVID R deltoid. No issues during observation. Reminded him the leukemia line wants a call for any temp 100.4 or above."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "ed_visit",
+          "start": "2025-12-10T13:50",
+          "end": "2025-12-10T19:10",
+          "service": "Emergency Medicine",
+          "reason": "fever and chills for 2 days",
+          "conditions": [
+            {
+              "label": "Chemotherapy-induced neutropenia",
+              "action": "diagnosed",
+              "onset": "2025-12-10",
+              "note": "febrile, ANC 100/uL, 3 weeks after last cycle",
+              "icd10": "D70.1"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-10T13:58",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-10T14:15",
+              "resulted": "2025-12-10T15:02",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 1.0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 10
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 50
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 65
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 18
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 5
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-12-10T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (received)",
+              "date": "2025-12-11T08:30",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nVisit 12/10/2025, arrived 13:50.\n\nCC: fevers and shaking chills x 2 days.\n\nHPI: 55-year-old man with AML in remission on monthly maintenance chemotherapy at an outside cancer center; most recent cycle finished about three weeks ago. Two days of fever with chills at home. Sent in by the leukemia nurse line.\n\nPMH: AML (intermediate-risk cytogenetics), hypertension, chemotherapy-related neuropathy of the feet. PSH: R chest port 2023, bone marrow biopsies (latest September), tonsillectomy.\nMeds: acyclovir 800 mg BID, posaconazole DR 300 mg daily, amlodipine 5 mg daily, polyethylene glycol prn, oxycodone 5 mg q6h prn; maintenance azacitidine/venetoclax per oncology.\nAllergies: SULFAMETHOXAZOLE-TRIMETHOPRIM - anaphylaxis. IODINATED CONTRAST - hives.\nSocial: ex-smoker 20 pk-yr, quit 2019; social alcohol.\nFamily: father lung cancer, mother DM2/HTN, paternal uncle acute leukemia.\n\nTriage: T 38.9 C (102 F), BP 100/60, HR 110, RR 22.\n\nExam: pale. Mucosal ulcerations throughout the mouth. Port site without erythema. Lungs clear. Heart tachycardic, regular. Abdomen soft, nontender. Skin without rash. No other abnormal findings.\n\nLabs: WBC 1.0 K/uL; ANC 0.1 K/uL (100/uL); Hgb 8.2 g/dL; Plt 50 K/uL. Blood cultures x2 (peripheral and port) drawn - pending at time of admission.\n\nMDM: febrile neutropenia after chemotherapy with mucositis. Cefepime 2 g IV given after cultures. Oncology contacted; admit.\n\nDx: Chemotherapy-induced neutropenia with fever. Oral mucositis.\nDisposition: admitted to the oncology service.\n\nED attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10b",
+          "kind": "hospital_admission",
+          "start": "2025-12-10T19:10",
+          "end": "2025-12-15T13:00",
+          "service": "Hematology-Oncology",
+          "reason": "febrile neutropenia",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-10T14:20",
+              "resulted": "2025-12-15T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (received)",
+              "date": "2025-12-16T10:45",
+              "author": "hematology-oncology",
+              "body": "REGIONAL HOSPITAL - ONCOLOGY SERVICE DISCHARGE SUMMARY\nAdmitted 12/10/2025. Discharged 12/15/2025.\n\nPrincipal diagnosis: febrile neutropenia due to chemotherapy (chemotherapy-induced neutropenia).\nSecondary: oral mucositis; AML in remission on maintenance; hypertension; peripheral neuropathy.\n\nCourse: Admitted from the ED on IV cefepime, which was continued. Defervesced on hospital day 2. Blood cultures from the port and a peripheral site had no growth at 5 days. Mouth care and topical measures for mucositis; eating soft foods by discharge. Neutrophil count recovered over the stay and cefepime was stopped. Acyclovir and posaconazole continued throughout.\n\nDischarge condition: stable, afebrile, ambulating.\nDischarge medications: unchanged from home - acyclovir 800 mg BID, posaconazole DR 300 mg daily, amlodipine 5 mg daily, polyethylene glycol prn, oxycodone 5 mg q6h prn. Next maintenance cycle on hold until he sees his oncologist.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), iodinated contrast (hives).\n\nFollow-up: leukemia program in 1 week; primary care within 1 week.\n\nHospitalist, oncology service"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "telephone",
+          "start": "2025-12-17T09:30",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-12-17T09:30",
+              "author": "RN",
+              "body": "Discharge summary in. Called pt. Home since Monday, no fever since the hospital, temp 98.6 this am. Mouth still tender but eating soft food and drinking well. Has all meds, no changes. Oncology appt 12/22. Booked with PCP Fri 12/19 at 10:40."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "office_visit",
+          "start": "2025-12-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 77,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 83.8
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-12-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-12-19T10:40",
+              "author": "PCP",
+              "body": "TCM visit. Admitted 12/10-12/15 for febrile neutropenia three weeks after his November cycle: ANC 100 in the ED, mouth ulcers, cultures negative, cefepime, counts recovered. Summary reviewed.\n\nNow: no fevers at home, checking temp twice a day. Mouth much better, a couple of sore spots left. Appetite returning. Tired but up and about. Taking amlodipine.\n\nExam: vitals as charted, afebrile. Looks tired but well. A few healing shallow ulcers on the buccal mucosa, no thrush. Port clean. Lungs clear, heart regular. No edema.\n\nA/P:\n- Chemotherapy-induced neutropenia, febrile episode, recovered: problem list updated. Oncology sees him Monday and will decide on the next cycle and dosing.\n- Mucositis healing: salt-water rinses, soft diet a few more days.\n- HTN: amlodipine 5, fine.\nMeds reconciled, no changes. Fever precautions reviewed again. F/u per routine, text with any fever."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "outside_records",
+          "start": "2026-01-07T13:10",
+          "reason": "oncology follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Leukemia program letter after admission (received)",
+              "date": "2026-01-07T13:10",
+              "author": "hematology-oncology",
+              "body": "Dear colleague,\n\nI saw Mr. Lindqvist on 12/22/2025 after his admission for febrile neutropenia. He was afebrile, mucositis nearly healed, counts recovered. We discussed the episode at length. He wishes to continue maintenance, and his next cycle of azacitidine with venetoclax started 12/29/2025 at the same doses. Acyclovir and posaconazole continue. He has our fever instructions.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), iodinated contrast (hives).\n\nAttending, leukemia program"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "portal_message",
+          "start": "2026-01-14T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question",
+              "date": "2026-01-14T19:48",
+              "author": "patient",
+              "body": "Back on the shots since the end of Dec. Is there anything I should be doing different so I don't end up in the hospital again? Feel ok right now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question",
+              "date": "2026-01-15T07:55",
+              "author": "PCP",
+              "body": "Good question. Keep doing what you did right: take your temperature any time you feel off, and call the leukemia line right away for 100.4 or higher, day or night. Keep taking the acyclovir and posaconazole every day. Hand washing, avoid sick contacts when your counts are down, and keep up with mouth care. You're up to date on your vaccines. Text me anytime."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "hospital_admission",
+          "start": "2026-02-25T02:40",
+          "end": "2026-03-05T14:00",
+          "service": "Critical Care Medicine",
+          "reason": "severe sepsis with hemodynamic instability",
+          "conditions": [
+            {
+              "label": "Severe sepsis",
+              "action": "diagnosed",
+              "onset": "2026-02-25",
+              "note": "no source identified",
+              "icd10": "R65.20"
+            },
+            {
+              "label": "Hyponatremia",
+              "action": "diagnosed",
+              "onset": "2026-02-25",
+              "note": "sodium 131 on ICU day 3, transient",
+              "icd10": "E87.1"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-25T05:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 136
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-26T05:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-27T05:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Chloride",
+                  "value": 97
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-28T05:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-25T02:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and Hospital Discharge Summary (received)",
+              "date": "2026-03-09T09:20",
+              "author": "critical care medicine",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 02/25/2026 via the ED to the medical ICU. Transferred to the floor 03/02/2026. Discharged home 03/05/2026.\n\nPrincipal diagnosis: severe sepsis with hemodynamic instability, source not identified.\nSecondary: hyponatremia, transient; AML on maintenance therapy; hypertension; chemotherapy-induced peripheral neuropathy; history of chemotherapy-induced neutropenia in December 2025.\n\nHospital course:\nThe patient, 55, with AML in remission on azacitidine/venetoclax maintenance, was admitted in the early morning of 02/25 with sepsis and unstable pressures. He received IV fluid resuscitation and broad-spectrum IV antibiotics and required norepinephrine, which was weaned off over the first days in the unit. No source was identified.\n\nElectrolytes were followed with a morning chemistry each day. Serum sodium, in mEq/L, by ICU day: day 1 (2/25) 136; day 2 (2/26) 142; day 3 (2/27) 131; day 4 (2/28) 139. Daily IV fluid volumes varied over this period; the values were not felt to reflect acute dilution, and there was no hemolysis or laboratory error. Nephrology was consulted for the swings and advised continued daily chemistries and careful fluid choices; sodium remained normal after day 4.\n\nAntibiotics were completed in hospital. Port remained in place. Home prophylaxis continued.\n\nDischarge medications: acyclovir 800 mg BID; posaconazole DR 300 mg daily; amlodipine 5 mg daily; polyethylene glycol 17 g daily prn; oxycodone 5 mg q6h prn. Maintenance chemotherapy on hold pending oncology review.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); iodinated contrast (hives).\n\nFollow-up: PCP within 1 week with a BMP; leukemia program in 2 weeks.\n\nICU attending / hospitalist"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "telephone",
+          "start": "2026-03-09T11:15",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-03-09T11:15",
+              "author": "RN",
+              "body": "Discharge summary received this morning. Reached pt: home since Thursday, weak and sleeping a lot but no fever, eating and drinking ok, no dizziness standing. Taking all meds including amlodipine. Hospital wants a BMP this week. Booked Wed 3/11 10:00 with PCP; will draw at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "office_visit",
+          "start": "2026-03-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Severe sepsis",
+              "action": "resolved",
+              "icd10": "R65.20"
+            },
+            {
+              "label": "Hyponatremia",
+              "action": "resolved",
+              "icd10": "E87.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              83
+            ],
+            "hr": 65,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 83.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-11T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-11T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-11T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-03-11T10:00",
+              "author": "PCP",
+              "body": "TCM, high complexity. ICU 2/25-3/2, home 3/5: severe sepsis, no source found, needed pressors briefly. Sodium bounced around in the unit (136, 142, 131, 139 on the first four mornings) and nephrology followed; normal after that.\n\nToday: worn out, sleeping 10 hours, slowly walking more each day. No fever, chills, cough, urinary symptoms or diarrhea. Mouth fine. Drinking normally, no special fluid habits. Has not had a maintenance cycle since February; oncology visit 3/19.\n\nExam: vitals as charted, afebrile, BP fine on amlodipine. Tired but alert, oriented, conversant. Mucous membranes moist. Port site clean, no tenderness. Lungs clear. Heart regular. Abd soft. No edema. Neuro: nonfocal apart from his known stocking sensory loss.\n\nA/P:\n- Severe sepsis: treated, resolved clinically. Off problem list as active.\n- Hyponatremia during the ICU stay: single low value, resolved there; BMP today to confirm.\n- AML: oncology to decide on restarting maintenance.\n- HTN: continue amlodipine 5.\nMeds reconciled against the discharge list, no changes. Will message BMP result."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-13a",
+          "kind": "portal_message",
+          "start": "2026-03-13T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood test from Wednesday",
+              "date": "2026-03-13T08:40",
+              "author": "PCP",
+              "body": "Your sodium, potassium and kidney numbers are all normal now. No repeat needed from my end. Keep resting and building up your walking."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood test from Wednesday",
+              "date": "2026-03-13T12:06",
+              "author": "patient",
+              "body": "Thanks doc. Getting there."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "outside_records",
+          "start": "2026-04-02T14:30",
+          "reason": "oncology letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Leukemia program letter after ICU stay (received)",
+              "date": "2026-04-02T14:30",
+              "author": "hematology-oncology",
+              "body": "Dear colleague,\n\nSeen 03/19/2026 after his ICU admission for severe sepsis. Recovering, stamina improving. Counts adequate. After discussion he chose to resume maintenance azacitidine with venetoclax at the same doses; cycle restarted 03/23/2026. Prophylaxis unchanged. We will see him before each cycle.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), iodinated contrast (hives).\n\nAttending, leukemia program"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "annual_physical",
+          "start": "2026-04-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              131,
+              87
+            ],
+            "hr": 68,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 85.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-21T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-21T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-21T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-04-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-21T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit (subsequent)",
+              "date": "2026-04-21T09:00",
+              "author": "PCP",
+              "body": "Subsequent AWV.\n\nHard winter: febrile neutropenia admission in December, ICU for sepsis in late February. Back on maintenance since 3/23. Energy about 80% of last fall.\n\nHRA reviewed: still independent at home, drives, no falls. Mood: PHQ-9 5, mostly tiredness and sleep, says spirits are fine, not interested in counseling. Cognition normal in conversation.\n\nMeds and allergies reviewed, unchanged.\n\nExam: vitals as charted. Well appearing. Mouth clear. Port fine. Heart regular, lungs clear. Abd soft. Feet: intact skin; sensory loss to the ankles unchanged.\n\nPrevention: colonoscopy due 2030. Lung CT still deferred during treatment. Vaccines current; flu and COVID again in the fall. CMP, lipids, A1c today.\n\nPlan: BP check in the summer. Written prevention plan updated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "portal_message",
+          "start": "2026-05-20T10:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "amlodipine",
+              "date": "2026-05-20T10:31",
+              "author": "patient",
+              "body": "Last refill on the amlodipine per the bottle. Same pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: amlodipine",
+              "date": "2026-05-20T13:15",
+              "author": "MA",
+              "body": "Renewed for a year and sent. Your April labs were all normal too - the doctor posted the note in your chart. Remember to book your summer BP check."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "office_visit",
+          "start": "2026-07-24T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              71
+            ],
+            "hr": 79,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 83.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-24T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-07-24T13:20",
+              "author": "PCP",
+              "body": "Summer BP check.\n\nDoing well. Cycles running on schedule since March, no fevers or infections. Energy back to about where it was last year. No headaches, chest pain, palpitations or swelling. Using oxycodone rarely. Feet unchanged.\n\nVitals as charted, BP at goal on amlodipine 5. Alert, oriented, fluent, joking about the heat. Heart regular, lungs clear. No edema. Port site clean. Gait steady.\n\nA/P:\n- HTN: controlled, continue amlodipine 5.\n- AML on maintenance, neuropathy: stable, per oncology.\n- Flu and COVID vaccines in the fall.\nNo labs today, April labs normal. Next visit booked for late October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-25a",
+          "kind": "hospital_admission",
+          "start": "2026-07-25T17:30",
+          "service": "Neurology",
+          "reason": "altered mental status and severe hyponatremia",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-25T17:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 112
+                },
+                {
+                  "test": "Chloride",
+                  "value": 81
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-27T17:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2026-07-28T11:15",
+              "text": "Indication: acute unresponsiveness after correction of severe hyponatremia; quadriplegia.\nTechnique: multiplanar multisequence MRI of the brain without intravenous contrast.\nFindings: symmetric T2/FLAIR hyperintensity in the central pons with sparing of the tegmentum. No other signal abnormality in the brainstem, cerebellum or cerebral hemispheres. No acute hemorrhage. No mass effect or midline shift. Ventricles and sulci normal in size for age. Major intracranial flow voids present.",
+              "conclusion": "Symmetric central pontine T2/FLAIR hyperintensity sparing the tegmentum, consistent with central pontine myelinolysis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-07-25T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology ICU Consultation (received)",
+              "date": "2026-08-14T15:05",
+              "author": "neurology",
+              "body": "REGIONAL HOSPITAL - NEUROLOGY CONSULTATION, NEUROSCIENCES ICU\nDate of consultation: 07/28/2026. Copy sent to primary care through case management.\n\nReason for consult: acute unresponsiveness.\n\nHPI: 56-year-old man with AML on maintenance therapy, hospitalized in December 2025 for febrile neutropenia and in February 2026 in the ICU for severe sepsis. Brought in 07/25 with altered mental status; admission serum sodium 112 mEq/L. Treated in the ICU with IV hypertonic saline. Sodium rose to 137 mEq/L over the next 48 hours. On hospital day 3 (07/27) he became acutely unresponsive; he was intubated for inability to breathe on his own and is on mechanical ventilation.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); iodinated contrast (hives).\nHome meds: acyclovir, posaconazole DR, amlodipine, polyethylene glycol prn, oxycodone prn; maintenance azacitidine/venetoclax.\n\nExam (off sedation): eyes open; blinks reliably to command and follows commands with blinks. Complete quadriplegia. No facial movement. No speech. No spontaneous respirations over the ventilator.\n\nImaging: MRI brain 07/28 - symmetric hyperintensity of the central pons sparing the tegmentum.\n\nImpression: central pontine myelinolysis (osmotic demyelination) presenting with a locked-in state, in the setting of severe hyponatremia and its correction.\n\nRecommendations: supportive ICU care and ventilation; communication by blink code with nursing; neurology will follow.\n\nNeurology attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "telephone",
+          "start": "2026-07-29T14:50",
+          "reason": "hospital case management call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from hospital case manager",
+              "date": "2026-07-29T14:50",
+              "author": "RN",
+              "body": "Case manager from the regional hospital ICU called: pt admitted Saturday 7/25 with confusion and a very low sodium, now in the ICU on a ventilator after a neurologic decline on 7/27. They requested our current med list and allergy list and the name of his oncology team. Faxed med list, allergies (TMP-SMX anaphylaxis, contrast hives) and the leukemia program's contact. Asked that the neurology and discharge records be sent to us. PCP informed."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-23a",
+          "kind": "office_visit",
+          "start": "2026-10-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute myeloid leukemia, intermediate-risk cytogenetics, in remission|C92.01": {
+        "code": "C92.01",
+        "display": "Acute myeloblastic leukemia, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chemotherapy-induced neutropenia|D70.1": {
+        "code": "D70.1",
+        "display": "Agranulocytosis secondary to cancer chemotherapy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chemotherapy-induced peripheral neuropathy|G62.0": {
+        "code": "G62.0",
+        "display": "Drug-induced polyneuropathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyponatremia|E87.1": {
+        "code": "E87.1",
+        "display": "Hypo-osmolality and hyponatremia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe sepsis|R65.20": {
+        "code": "R65.20",
+        "display": "Severe sepsis without septic shock",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "acyclovir 800 MG Oral Tablet": {
+        "code": "197313",
+        "display": "acyclovir 800 MG Oral Tablet",
+        "ingredient": "acyclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "azacitidine 100 MG Injection": {
+        "code": "485246",
+        "display": "azacitidine 100 MG Injection",
+        "ingredient": "azacitidine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "oxycodone hydrochloride 5 MG Oral Tablet": {
+        "code": "1049621",
+        "display": "oxycodone hydrochloride 5 MG Oral Tablet",
+        "ingredient": "oxycodone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "posaconazole 100 MG Delayed Release Oral Tablet": {
+        "code": "1482908",
+        "display": "posaconazole 100 MG Delayed Release Oral Tablet",
+        "ingredient": "posaconazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "venetoclax 10 MG Oral Tablet": {
+        "code": "1747572",
+        "display": "venetoclax 10 MG Oral Tablet",
+        "ingredient": "venetoclax",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}
