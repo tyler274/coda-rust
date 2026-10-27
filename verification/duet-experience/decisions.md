@@ -502,6 +502,11 @@ map; Page and state inventory), with later decisions winning.
   refresh's old limit to people who opened Duet in the last 7 days (B7) is the
   same question and is also left out.
 
+- **Your practice writes back in Duet (Dev 2026-10-26).** Decided as the ideal:
+  a physician's approved reply to you arrives in Duet's thread, marked as from
+  your practice. It joins the graph later as a connected graph
+  ([connected care](../connected-care/README.md#decided-not-yet-drawn)).
+
 ## Left out on purpose
 
 - The operator's AI switch and the daily message allowance (north-star.md, cost
