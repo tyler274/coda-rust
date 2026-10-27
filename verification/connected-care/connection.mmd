@@ -21,8 +21,9 @@ stateDiagram-v2
 %% shared physician: the patient leaves the practice = duet: your Leave on your practice goes through
 %% shared physician: the patient's account is deleted = duet: your Delete account on your account goes through
 %%
-%% The live feed: each change to what the patient shares reaches the practice while connected.
-%% shared physician: a shared Duet record arrives = duet: new records arrive | duet: a record is corrected | duet: clinical records arrive from your phone's health app | duet: a clinical record changes in your phone's health app | duet: your phone's readings arrive | duet: a reading is deleted in your phone's health app | duet: you answer a Check-in about your doctor's plan
+%% The live feed: each change to what the patient shares reaches the practice while connected,
+%% including notes and medications they enter (Dev 2026-10-25).
+%% shared physician: a shared Duet record arrives = duet: new records arrive | duet: a record is corrected | duet: clinical records arrive from your phone's health app | duet: a clinical record changes in your phone's health app | duet: your phone's readings arrive | duet: a reading is deleted in your phone's health app | duet: you answer a Check-in about your doctor's plan | duet: add a note | duet: change the note | duet: delete the note | duet: save the proposed note | duet: add a medication | duet: confirm a medication from your records | duet: change the medication | duet: mark the medication stopped | duet: delete the medication | duet: Duet saves a note as you asked | duet: Duet changes the note as you asked | duet: Duet deletes the note as you asked | duet: Duet saves the proposed note as you asked | duet: Duet adds a medication as you asked | duet: Duet confirms a medication from your records as you asked | duet: Duet changes the medication as you asked | duet: Duet marks the medication stopped as you asked | duet: Duet deletes the medication as you asked
 %% For my doctor stays in Duet until the patient sends it; it arrives like a message from them (Dev 2026-10-26).
 %% shared physician: the patient sends For my doctor = duet: your Send to my practice on For my doctor goes through
 %% outside physician: by the patient through Duet
