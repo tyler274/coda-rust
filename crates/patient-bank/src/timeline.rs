@@ -255,32 +255,35 @@ impl<'a> Timeline<'a> {
         }
     }
 
-    /// The allergy list's entries in the order recorded, each concept once.
+    /// The allergy list's entries in the order recorded.
     pub fn allergies(&self, catalog: &'a Catalog) -> Vec<Allergy<'a>> {
         let mut list: Vec<Allergy> = Vec::new();
         for ev in &self.events {
             for (index, item) in ev.allergies.iter().enumerate() {
                 let (category, negates) = catalog.allergy_class(item);
-                let again = list
-                    .iter()
-                    .any(|a| a.item.substance == item.substance && a.refuted.is_none());
-                if again {
-                    continue;
-                }
-                if negates.is_none() {
-                    for a in list.iter_mut().filter(|a| a.refuted.is_none()) {
-                        if a.negates == Some(category) {
-                            a.refuted = Some(ev.start);
+                let refuted = match negates {
+                    // ruled out from the start by an allergy already listed, even
+                    // one recorded at the same visit
+                    Some(none_of) => list
+                        .iter()
+                        .any(|a| a.negates.is_none() && catalog.allergy_class(a.item).0 == none_of)
+                        .then_some(ev.start),
+                    None => {
+                        for a in list.iter_mut().filter(|a| a.refuted.is_none()) {
+                            if a.negates == Some(category) {
+                                a.refuted = Some(ev.start);
+                            }
                         }
+                        None
                     }
-                }
+                };
                 list.push(Allergy {
                     event: ev,
                     index,
                     item,
                     recorded: ev.start,
                     negates,
-                    refuted: None,
+                    refuted,
                 });
             }
         }

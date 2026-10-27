@@ -250,7 +250,10 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
             .map(num)
             .filter(|x| *x != 0.0)
     };
-    let open = |lab: &Lab, t: &str| at(t).is_some_and(|i| lab.results[i].value.is_none());
+    // a result is answered by a value or by text ("not calculated")
+    let open = |lab: &Lab, t: &str| {
+        at(t).is_some_and(|i| lab.results[i].value.is_none() && lab.results[i].text.is_none())
+    };
     // A calculated value is released with the last of its inputs.
     let released = |lab: &Lab, inputs: &[&str]| -> Option<Stamp> {
         inputs
@@ -281,23 +284,28 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
     // A stated calculated test fixes one of its open inputs: the one its level
     // moves, else the last. Plan which before anything is filled, so that input is
     // solved from the stated test, not read from its own level.
-    let mut known: Vec<&str> = (lab.results.iter())
+    // Only a number solves; a text answer ("not calculated") is left as written.
+    let mut numbers: Vec<&str> = (lab.results.iter())
         .filter(|r| r.value.is_some())
+        .map(|r| r.test.as_str())
+        .collect();
+    let answered: Vec<&str> = (lab.results.iter())
+        .filter(|r| r.text.is_some())
         .map(|r| r.test.as_str())
         .collect();
     let mut plan: Vec<(&Identity, usize)> = Vec::new();
     for id in IDENTITIES.iter().rev() {
-        if !known.contains(&id.test) || id.inputs.iter().any(|t| at(t).is_none()) {
+        if !numbers.contains(&id.test) || id.inputs.iter().any(|t| at(t).is_none()) {
             continue;
         }
         let unknown: Vec<usize> = (0..id.inputs.len())
-            .filter(|&k| !known.contains(&id.inputs[k]))
+            .filter(|&k| !numbers.contains(&id.inputs[k]) && !answered.contains(&id.inputs[k]))
             .collect();
         let Some(&last) = unknown.last() else {
             continue;
         };
         plan.push((id, id.moves.filter(|m| unknown.contains(m)).unwrap_or(last)));
-        known.extend(id.inputs);
+        numbers.extend(id.inputs.iter().filter(|t| !answered.contains(t)));
     }
     let solved: Vec<&str> = plan.iter().map(|(id, k)| id.inputs[*k]).collect();
     let diff_open: Vec<&str> = DIFFERENTIAL

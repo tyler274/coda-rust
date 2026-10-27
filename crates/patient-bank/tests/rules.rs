@@ -850,6 +850,20 @@ fn a_stated_calculated_test_fixes_its_open_input_and_every_lab_formula_holds() {
     };
     assert!(!disagrees(140), "TG/f with f = 8 is Martin-Hopkins");
     assert!(disagrees(60), "no lab's formula puts LDL 60 here");
+
+    // a result answered in text stays text: no number is solved into it
+    let withheld = lipids(json!([{"test": "Total Cholesterol", "value": 260},
+        {"test": "High Density Lipoprotein", "value": 38},
+        {"test": "Triglycerides", "value": 640},
+        {"test": "Low Density Lipoprotein", "text": "Not calculated (triglycerides >400 mg/dL)"}]));
+    let (p, errors) = measure::apply(&seed(), &withheld, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    let ldl = p.events[0].labs[0]
+        .results
+        .iter()
+        .find(|r| r.test == "Low Density Lipoprotein")
+        .expect("ldl");
+    assert!(ldl.value.is_none() && ldl.text.is_some(), "{ldl:?}");
 }
 
 #[test]
@@ -913,6 +927,21 @@ fn no_known_drug_allergies_ends_when_a_drug_allergy_is_recorded() {
             .iter()
             .any(|e| e.contains("while \"Penicillin\" is on the allergy list")),
         "{errors:?}"
+    );
+    // the same contradiction inside one visit leaves no known drug allergies inactive
+    let same = patient(json!([visit(
+        "e1",
+        "2024-01-03T09:00",
+        json!({"allergies": [allergy("Penicillin", None), allergy("No known drug allergies", None)]})
+    )]));
+    assert_eq!(
+        nkda_status(&same, "2024-03-01T00:00").as_deref(),
+        Some("inactive")
+    );
+    assert!(
+        errors_for(seed(), same)
+            .iter()
+            .any(|e| e.contains("while \"Penicillin\" is on the allergy list"))
     );
     // an allergen the catalog lacks says what kind it is
     let errors = errors_for(seed(), chart(allergy("Dust mites", None)));

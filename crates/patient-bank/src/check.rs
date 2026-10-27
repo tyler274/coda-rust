@@ -288,7 +288,7 @@ fn check_allergies(mrn: &str, tl: &Timeline, catalog: &Catalog, errors: &mut Vec
     for nk in list.iter().filter(|a| a.negates.is_some()) {
         let listed = list.iter().find(|a| {
             a.negates.is_none()
-                && a.recorded < nk.recorded
+                && a.recorded <= nk.recorded
                 && Some(catalog.allergy_class(a.item).0) == nk.negates
         });
         if let Some(a) = listed {
