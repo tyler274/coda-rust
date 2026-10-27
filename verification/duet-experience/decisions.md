@@ -480,7 +480,9 @@ map; Page and state inventory), with later decisions winning.
   menu, with or without AI; you can't edit connected records (north-star.md,
   You). Confirming a medication from your records marks it as one you take;
   the record never changes. These show under What I take (confirmed by me)
-  (north-star.md, The page).
+  (north-star.md, The page). Each is a command under the one receipt rule:
+  it changes your note or medication only once Duet accepts it, and only an
+  accepted change reaches your practice.
 - When you ask in conversation, Duet saves or changes them right away, and its
   message shows exactly what it saved, with Undo (Dev 2026-10-26).
 - Duet may propose a dated note from what you tell it, in your words and

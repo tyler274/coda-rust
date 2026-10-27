@@ -197,9 +197,9 @@ stateDiagram-v2
 %% own from what you tell it; a proposal saves nothing until you save it. A saved note is a dated record
 %% entered by you, kept apart from Duet's private understanding; Duet reads it, For my doctor can hold it,
 %% and while you're connected it flows to your practice. One note and one medication stand for each.
-%% event add a note | by you | needs DIn, AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You write a dated note in You; it is a record entered by you.
-%% event change the note | by you | needs DIn, NoteSaved, TCur | reason: only a saved note changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit your note; its date and history stay yours.
-%% event delete the note | by you | needs DIn, NoteSaved, TCur | reason: only a saved note is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The note goes, including Undo on Duet's message; what was already sent keeps what it showed.
+%% event add a note | by you | command on the note: Add, clicked while DIn | needs AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You write a dated note in You; it is a record entered by you.
+%% event change the note | by you | command on the note: Save, clicked while DIn | needs NoteSaved, TCur | reason: only a saved note changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit your note; its date and history stay yours.
+%% event delete the note | by you | command on the note: Delete, clicked while DIn | needs NoteSaved, TCur | reason: only a saved note is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The note goes, including Undo on Duet's message; what was already sent keeps what it showed.
 %% event Duet saves a note as you asked | by Duet's AI | needs RWriting | reason: a reply saves a note when your current message asks for it (Dev 2026-10-26) | Duet saves the note and its message shows exactly what it saved, with Undo.
 %% event Duet changes the note as you asked | by Duet's AI | needs RWriting, NoteSaved | reason: a reply changes a note when your current message asks for it (Dev 2026-10-26) | Duet changes your note and shows what changed.
 %% event Duet deletes the note as you asked | by Duet's AI | needs RWriting, NoteSaved | reason: a reply deletes a note when your current message asks for it (Dev 2026-10-26) | Duet deletes your note and says so.
@@ -209,11 +209,11 @@ stateDiagram-v2
 %% event save the proposed note | by you | command on the proposed note: Save, clicked while DIn | needs NpReady, TCur | reason: only a waiting proposal saves; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You save it as proposed or as you edited it.
 %% event Duet saves the proposed note as you asked | by Duet's AI | needs RWriting, NpReady | reason: a reply saves a proposal only when your current message asks for it (Dev 2026-10-26) | You said yes in words; Duet saves the proposed note as Save would.
 %% event dismiss the proposed note | by you | command on the proposed note: Dismiss, clicked while DIn | needs NpReady, TCur | reason: only a waiting proposal is dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The proposal goes; nothing was saved.
-%% event add a medication | by you | needs DIn, AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You add a medication you take; it shows under What I take (confirmed by me).
-%% event confirm a medication from your records | by you | needs DIn, RecHave, TCur | reason: only a medication in your records is confirmed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You mark a medication from your records as one you take; the record itself never changes.
-%% event change the medication | by you | needs DIn, MdTaking, MdStopped, TCur | reason: only a medication of yours changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change its dose, schedule or notes.
-%% event mark the medication stopped | by you | needs DIn, MdTaking, TCur | reason: only a medication you take is stopped; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | It stays in your medications, marked stopped with the date, and leaves What I take (Dev 2026-10-26).
-%% event delete the medication | by you | needs DIn, MdTaking, MdStopped, TCur | reason: only a medication of yours is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | For a mistake: it leaves your medications; a medication in your records stays there.
+%% event add a medication | by you | command on the medication: Add, clicked while DIn | needs AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You add a medication you take; it shows under What I take (confirmed by me).
+%% event confirm a medication from your records | by you | command on the medication: Confirm, clicked while DIn | needs RecHave, TCur | reason: only a medication in your records is confirmed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You mark a medication from your records as one you take; the record itself never changes.
+%% event change the medication | by you | command on the medication: Save, clicked while DIn | needs MdTaking, MdStopped, TCur | reason: only a medication of yours changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change its dose, schedule or notes.
+%% event mark the medication stopped | by you | command on the medication: Stop, clicked while DIn | needs MdTaking, TCur | reason: only a medication you take is stopped; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | It stays in your medications, marked stopped with the date, and leaves What I take (Dev 2026-10-26).
+%% event delete the medication | by you | command on the medication: Delete, clicked while DIn | needs MdTaking, MdStopped, TCur | reason: only a medication of yours is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | For a mistake: it leaves your medications; a medication in your records stays there.
 %% event Duet adds a medication as you asked | by Duet's AI | needs RWriting | reason: a reply adds a medication when your current message asks for it (Dev 2026-10-26) | Duet adds it and its message shows exactly what it saved, with Undo.
 %% event Duet confirms a medication from your records as you asked | by Duet's AI | needs RWriting, RecHave | reason: a reply confirms a medication when your current message asks for it (Dev 2026-10-26) | Duet marks it as one you take and says so.
 %% event Duet changes the medication as you asked | by Duet's AI | needs RWriting, MdTaking, MdStopped | reason: a reply changes a medication when your current message asks for it (Dev 2026-10-26) | Duet changes it and shows what changed.
@@ -242,7 +242,7 @@ stateDiagram-v2
 %% Duet explains the plan faithfully and never invents or amends it. When the connection ends, the
 %% last plan stays, marked no longer updated.
 %% event your doctor's plan arrives or changes | by your practice's records | needs PrcConn | reason: documented care reaches Duet only through the current connection and consent | A documented care decision or open item arrives or changes with its source, author, date and status; Duet shows it as "your doctor's plan". An undecided suggestion stays an unconfirmed suggestion until the source records a decision. Unfinished work that read the earlier plan looks again before it publishes.
-%% event you answer a Check-in about your doctor's plan | by you | needs DIn, TCur, PrcConn, DpCurrent, CaOpen | reason: answers flow only while connected, about a plan that is current, to a Check-in Duet delivered, so no other conversation crosses; newer Terms wait for your acceptance first | Your reply to a Check-in that follows your doctor's plan goes to the practice with what you share, for its next review, never as an alert on its own.
+%% event you answer a Check-in about your doctor's plan | by you | needs DIn, TCur, PrcConn, DpCurrent, CaOpen, CaOpenHeld | reason: answers flow only while connected, about a plan that is current, to a Check-in posted in the thread, so no other conversation crosses; newer Terms wait for your acceptance first | Your reply to a Check-in that follows your doctor's plan goes to the practice with what you share, for its next review, never as an alert on its own.
 %%
 %% Your practice's appointments: while connected, the practice's schedule gives
 %% appointment context beside any date you gave yourself. Conflicting dates both stay visible and never
@@ -290,7 +290,6 @@ stateDiagram-v2
 %% event {read} loads in part | by Duet | What loaded shows with one quiet line and Retry; never read as empty.
 %% event {read} fails to load | by Duet | What was shown stays with one quiet line and Retry; with nothing shown, it says it couldn't load, with Retry. Never a false empty state.
 %% event retry {read} | by you | needs DIn, RdKept@{key}, RdFailed@{key} | reason: only a read that shows a problem offers Retry | You read it again; what is shown stays.
-%% event the supporting information loads with a newer version | by Duet | needs RdLoading@source | reason: only supporting information being read loads | The exact cited version shows, with a note that a newer version exists (E5).
 %% events your shared data changes = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app | your phone's readings arrive | a reading is deleted in your phone's health app | you answer a Check-in about your doctor's plan | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication | Duet saves a note as you asked | Duet changes the note as you asked | Duet deletes the note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked | Duet confirms a medication from your records as you asked | Duet changes the medication as you asked | Duet marks the medication stopped as you asked | Duet deletes the medication as you asked
 
   state "Duet" as App {
@@ -688,14 +687,29 @@ stateDiagram-v2
         }
         --
         %% Only your answer to a delivered Check-in about your doctor's plan crosses to the practice;
-        %% the rest of your conversation never does. Which Check-in follows the plan is data.
+        %% the rest of your conversation never does. Which Check-in follows the plan is data. A question
+        %% is answerable once it is in the thread: one delivered while Duet writes waits with Duet's own
+        %% message and becomes answerable when the reply ends, however it ends (Dev 2026-10-26).
         state "A Check-in waiting for your answer" as CkAns {
           [*] --> CaNone
           state "No Check-in waiting for an answer" as CaNone
+          state "A delivered Check-in waits to post" as CaHeld
           state "A delivered Check-in waits for your answer" as CaOpen
-          CaNone --> CaOpen : Duet delivers the Check-in
-          CaOpen --> CaOpen : Duet delivers the Check-in
+          state "A Check-in waits for your answer, and a newer one waits to post" as CaOpenHeld
+          CaNone --> CaOpen : Duet delivers the Check-in [unless Duet is writing]
+          %% when not RWriting | reason: you answer only a question you can see in the thread
+          CaNone --> CaHeld : Duet delivers the Check-in [while Duet is writing]
+          %% when RWriting | reason: while Duet writes, its own message waits for the reply to end (Dev 2026-10-26)
+          CaOpen --> CaOpenHeld : Duet delivers the Check-in [while Duet is writing]
+          %% when RWriting | reason: while Duet writes, its own message waits for the reply to end (Dev 2026-10-26)
+          CaHeld --> CaOpen : Duet posts in the thread
+          CaHeld --> CaOpen : Duet stops writing early
+          CaOpenHeld --> CaOpen : Duet posts in the thread
+          CaOpenHeld --> CaOpen : Duet stops writing early
           CaOpen --> CaNone : you answer a Check-in about your doctor's plan
+          CaOpenHeld --> CaHeld : you answer a Check-in about your doctor's plan
+          %% never CheckInHeldOnlyWhileWaiting: A delivered Check-in waits to post & Nothing waiting to post -- A Check-in waits to post only among what waits for the reply to end.
+          %% never NewerCheckInHeldOnlyWhileWaiting: A Check-in waits for your answer, and a newer one waits to post & Nothing waiting to post -- A Check-in waits to post only among what waits for the reply to end.
         }
         --
         state "Your Plan" as Plan {
@@ -1071,6 +1085,14 @@ stateDiagram-v2
           %% receipt the Plan
         }
         --
+        state "Your command on your note" as MyNoteRc {
+          %% receipt the note
+        }
+        --
+        state "Your command on your medication" as MedRc {
+          %% receipt the medication
+        }
+        --
         state "Your command on the insight" as InsightRc {
           %% receipt the insight
         }
@@ -1204,11 +1226,18 @@ stateDiagram-v2
           [*] --> CoNone
           state "The conversation itself" as CoNone
           state "Supporting information open" as CoSource {
-            [*] --> SrcRead
             state "The supporting information read" as SrcRead {
               %% use read as source: read = the supporting information
-              state "Showing the exact cited version, with a note that a newer one exists" as SrcNewer
-              RdLoading --> SrcNewer : the supporting information loads with a newer version
+            }
+            --
+            %% It always shows the exact version the reply cited, never a newer one in its place; a load
+            %% may find that a newer one exists, and the note stays through a later failed refresh (C6, E5).
+            state "The cited version" as SrcVersion {
+              [*] --> SvLatest
+              state "No newer version known" as SvLatest
+              state "A note that a newer version exists" as SvNewer
+              SvLatest --> SvNewer : the supporting information loads / may note a newer version
+              SvLatest --> SvNewer : the supporting information loads in part / may note a newer version
             }
           }
           CoNone --> CoSource : open supporting information
