@@ -78,9 +78,17 @@ pub struct Work {
     pub status: Status,
     /// Provider evidence, including late usage and failures.
     pub records: Vec<Record>,
-    /// Exact physician-source observation pinned at admission.
+    /// Exact physician-source observation this work currently pins: from
+    /// admission, replaced by each refresh.
     #[serde(default)]
     pub sources: Vec<crate::physician_sources::SourceRevision>,
+    /// Source observation version of `sources`.
+    #[serde(default)]
+    pub sources_version: u64,
+    /// Each time a finish found the sources moved, in order, with the
+    /// earlier revisions, so the record shows what the work could read when.
+    #[serde(default)]
+    pub refreshes: Vec<crate::physician_sources::SourceRefresh>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct Target {
@@ -266,6 +274,8 @@ impl PhysicianSession {
                 status: Status::Active,
                 records: vec![],
                 sources: vec![],
+                sources_version: 0,
+                refreshes: vec![],
                 request: Request {
                     model: binding.model.clone(),
                     options: json!({"effort": binding.effort}),
@@ -327,6 +337,60 @@ impl PhysicianSession {
             Ok(t.revision)
         })
     }
+    /// Opens trusted, server-owned reply work's first saved draft at the
+    /// first revision. The caller holds the physician publication fence.
+    /// Opening again leaves an existing draft, its edits and revision unchanged.
+    pub fn open_reply_draft(
+        &mut self,
+        workspace: &str,
+        target: &str,
+        text: &str,
+    ) -> Result<u64, String> {
+        if [workspace, target, text]
+            .iter()
+            .any(|s| s.trim().is_empty())
+        {
+            return Err("invalid reply draft".into());
+        }
+        if let Some((revision, _, _)) = self.draft(workspace, target) {
+            return Ok(revision);
+        }
+        self.change(|state| {
+            if state
+                .targets
+                .iter()
+                .any(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)
+            {
+                return Err("reply target exists without a draft".into());
+            }
+            state.targets.push(Target {
+                workspace: workspace.into(),
+                id: target.into(),
+                owner: None,
+                revision: 1,
+                open: true,
+                turns: vec![],
+                draft: Some(text.into()),
+                restore_text: None,
+                opened_at: unix_now(),
+            });
+            Ok(1)
+        })
+    }
+    /// The latest reply revision admitted on this draft and its status.
+    pub fn reply_run(&self, workspace: &str, target: &str) -> Option<(String, Status)> {
+        self.state
+            .work
+            .iter()
+            .rev()
+            .find(|w| {
+                w.owner.is_none()
+                    && w.surface == Surface::ReplyRevision
+                    && w.workspace == workspace
+                    && w.target == target
+            })
+            .map(|w| (w.id.clone(), w.status.clone()))
+    }
     /// Admits an already assembled immutable reply revision request. The caller
     /// binds target to the asking physician and exact reply work identity.
     pub fn revise(
@@ -365,16 +429,20 @@ impl PhysicianSession {
                 status: Status::Active,
                 records: vec![],
                 sources: vec![],
+                sources_version: 0,
+                refreshes: vec![],
             };
             state.work.push(work.clone());
             Ok(work)
         })
     }
-    /// Pins the exact source observation before the first dispatch. A source
-    /// candidate cannot name two different revisions within one observation.
+    /// Pins the exact source observation at `version` before the first
+    /// dispatch. A source candidate cannot name two different revisions
+    /// within one observation.
     pub fn pin_sources(
         &mut self,
         key: &Work,
+        version: u64,
         sources: Vec<crate::physician_sources::SourceRevision>,
     ) -> Result<Work, String> {
         self.change(|state| {
@@ -383,15 +451,42 @@ impl PhysicianSession {
             if !work.records.is_empty() {
                 return Err("source observation already dispatched".into());
             }
-            let mut ids = std::collections::HashSet::new();
-            for source in &sources {
-                source.validate()?;
-                if source.workspace != work.workspace || !ids.insert(source.candidate_id.clone()) {
-                    return Err("invalid source observation scope".into());
-                }
-            }
+            scoped(&work.workspace, &sources)?;
             work.sources = sources;
+            work.sources_version = version;
             Ok(work.clone())
+        })
+    }
+    /// Re-pins active work whose sources moved before it finished, keeping
+    /// the change on the work. Returns the recorded refresh, or `None` when
+    /// the observation is still the pinned one or nothing readable changed.
+    pub fn refresh_sources(
+        &mut self,
+        key: &Work,
+        version: u64,
+        sources: Vec<crate::physician_sources::SourceRevision>,
+    ) -> Result<Option<crate::physician_sources::SourceRefresh>, String> {
+        self.change(|state| {
+            check(state, key)?;
+            let work = work_mut(state, key)?;
+            if version == work.sources_version {
+                return Ok(None);
+            }
+            scoped(&work.workspace, &sources)?;
+            let mut refresh = crate::physician_sources::SourceRefresh::between(
+                work.sources_version,
+                &work.sources,
+                version,
+                &sources,
+            );
+            work.sources = sources;
+            work.sources_version = version;
+            if refresh.is_empty() {
+                return Ok(None);
+            }
+            refresh.after_records = work.records.len();
+            work.refreshes.push(refresh.clone());
+            Ok(Some(refresh))
         })
     }
     /// Closes this physician reply target. Active revisions fail and cannot
@@ -541,6 +636,21 @@ fn check(state: &State, key: &Work) -> Result<(), String> {
     }
     Ok(())
 }
+/// One workspace's sources, each candidate once.
+fn scoped(
+    workspace: &str,
+    sources: &[crate::physician_sources::SourceRevision],
+) -> Result<(), String> {
+    let mut ids = std::collections::HashSet::new();
+    for source in sources {
+        source.validate()?;
+        if source.workspace != workspace || !ids.insert(source.candidate_id.clone()) {
+            return Err("invalid source observation scope".into());
+        }
+    }
+    Ok(())
+}
+
 fn work_mut<'a>(state: &'a mut State, key: &Work) -> Result<&'a mut Work, String> {
     state
         .work

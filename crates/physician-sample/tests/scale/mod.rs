@@ -872,3 +872,60 @@ pub fn submit(workspace: &str, chat: &str, text: &str) -> Value {
         }
     })
 }
+
+/// Builds the physician page once per test binary (wasm32 + wasm-bindgen)
+/// into `target/physician-web`, the directory `PHYSICIAN_SITE_DIR` names
+/// for a spawned site. Browser journeys on this stack call it.
+pub fn page_dir() -> PathBuf {
+    static SITE: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+    SITE.get_or_init(|| {
+        let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let target = std::env::temp_dir().join("coda-physician-wasm");
+        let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
+        let mut cargo = Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+        cargo.env_clear();
+        for key in [
+            "PATH",
+            "HOME",
+            "USER",
+            "RUSTUP_HOME",
+            "CARGO_HOME",
+            "RUSTUP_TOOLCHAIN",
+            "TMPDIR",
+            "LD_LIBRARY_PATH",
+        ] {
+            if let Some(value) = std::env::var_os(key) {
+                cargo.env(key, value);
+            }
+        }
+        let status = cargo
+            .current_dir(&workspace)
+            .env("CARGO_TARGET_DIR", &target)
+            .args([
+                "build",
+                "-p",
+                "physician-app",
+                "--target",
+                "wasm32-unknown-unknown",
+                "--features",
+                "web",
+            ])
+            .status()
+            .expect("cargo build");
+        assert!(status.success(), "physician-app wasm build failed");
+        let site = workspace.join("target/physician-web");
+        std::fs::create_dir_all(&site).unwrap();
+        let bindgen = std::env::var_os("WASM_BINDGEN")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| "wasm-bindgen".into());
+        let status = Command::new(bindgen)
+            .args(["--target", "web", "--out-dir"])
+            .arg(&site)
+            .arg(&wasm)
+            .status()
+            .expect("wasm-bindgen 0.2.129 is required to build the physician page");
+        assert!(status.success(), "wasm-bindgen failed");
+        site.canonicalize().expect("page directory")
+    })
+    .clone()
+}

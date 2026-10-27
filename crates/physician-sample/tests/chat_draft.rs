@@ -106,7 +106,7 @@ async fn put_chat_draft(
     )
 }
 
-/// The composer's Save on a hosted site: saved through one instance, read
+/// The composer's autosave on a hosted site: saved through one instance, read
 /// through the other, fenced by revision, and owned by one physician.
 #[tokio::test]
 async fn chat_draft_saves_on_one_site_and_reads_on_the_other() {
@@ -220,4 +220,78 @@ async fn chat_draft_saves_on_one_site_and_reads_on_the_other() {
         .await
         .unwrap();
     assert_eq!(status, 401);
+}
+
+/// The composer's explicit conflict decisions and post-Send clear across two
+/// instances. Retry names exactly the conflicting revision the physician was
+/// shown: it wins while that is current and conflicts again, with the newest
+/// draft, once another instance moved it. A lost save answer is reconciled
+/// by reading the matching text, not by writing it again. A post-Send clear
+/// over a revision another instance has since replaced is refused, so the
+/// newer text is never cleared automatically.
+#[tokio::test]
+async fn retry_names_the_shown_revision_and_a_clear_never_erases_newer_text() {
+    let Some(running) = Running::start().await else {
+        return;
+    };
+    let workspace = physician_sample::WORKSPACE_IDS[0];
+    let path = format!("/physician-state/drafts/{workspace}/chat-decisions");
+    let (a, b, session) = (&running.hosts[0], &running.hosts[1], &running.session);
+
+    // A and B both read revision 0; A's autosave lands first.
+    let saved = put_chat_draft(a, session, &path, 0, "From tab A").await;
+    assert_eq!(saved.0, 200, "{}\n{}", saved.1, running.logs());
+    // B's stale autosave conflicts and is shown A's draft at revision 1.
+    let conflict = put_chat_draft(b, session, &path, 0, "From tab B").await;
+    assert_eq!(
+        conflict,
+        (
+            409,
+            json!({"outcome": "conflict", "current": {"revision": 1, "text": "From tab A"}})
+        )
+    );
+    // A moves the draft again before B chooses.
+    let saved = put_chat_draft(a, session, &path, 1, "From tab A, again").await;
+    assert_eq!(saved.1["revision"], 2);
+    // B's Retry names the revision it was shown (1): another conflict, now
+    // showing revision 2. Nothing is overwritten.
+    let again = put_chat_draft(b, session, &path, 1, "From tab B").await;
+    assert_eq!(
+        again,
+        (
+            409,
+            json!({"outcome": "conflict", "current": {"revision": 2, "text": "From tab A, again"}})
+        )
+    );
+    // Retry over the newly shown revision 2 replaces it.
+    let retried = put_chat_draft(b, session, &path, 2, "From tab B").await;
+    assert_eq!(retried, (200, json!({"revision": 3, "text": "From tab B"})));
+    let (_, read) = support::get_json(a, &path, session).await;
+    assert_eq!(read, json!({"revision": 3, "text": "From tab B"}));
+
+    // A lost answer: B's save landed (revision 4) but B never heard. B's
+    // next read shows its own text at revision 4, so it rebases instead of
+    // writing the same text again.
+    let landed = put_chat_draft(b, session, &path, 3, "Sent soon").await;
+    assert_eq!(landed.1["revision"], 4);
+    let (_, read) = support::get_json(b, &path, session).await;
+    assert_eq!(read, json!({"revision": 4, "text": "Sent soon"}));
+
+    // B sends "Sent soon" and clears over revision 4; meanwhile A saved
+    // newer text (revision 5). The clear is refused; the newer text stays.
+    let newer = put_chat_draft(a, session, &path, 4, "Sent soon, plus A's note").await;
+    assert_eq!(newer.1["revision"], 5);
+    let clear = put_chat_draft(b, session, &path, 4, "").await;
+    assert_eq!(
+        clear,
+        (
+            409,
+            json!({"outcome": "conflict", "current": {"revision": 5, "text": "Sent soon, plus A's note"}})
+        )
+    );
+    let (_, read) = support::get_json(b, &path, session).await;
+    assert_eq!(
+        read,
+        json!({"revision": 5, "text": "Sent soon, plus A's note"})
+    );
 }

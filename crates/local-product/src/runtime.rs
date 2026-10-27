@@ -32,6 +32,8 @@ pub mod receipt;
 pub mod recovery;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Versioned patient source observations: a stand-in source owner.
+pub mod sources;
 #[cfg(test)]
 mod tests;
 use entities::{command, conversation};
@@ -277,6 +279,12 @@ impl Store {
             index.if_not_exists();
             tx.execute(&index).await?;
         }
+        let mut source_versions = schema.create_table_from_entity(entities::source_version::Entity);
+        source_versions.if_not_exists();
+        tx.execute(&source_versions).await?;
+        let mut sources = schema.create_table_from_entity(entities::source::Entity);
+        sources.if_not_exists();
+        tx.execute(&sources).await?;
         // Receipts older than this column get the migration's time, so the
         // 90-day reduction counts from when it could first see them. `now()`
         // is stable, so Postgres stores it once instead of rewriting rows.

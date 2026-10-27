@@ -15,7 +15,7 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 Where a change belongs, and how the dev shell, Doppler, and CI fit, is [AGENTS.md](AGENTS.md).
 
 Agent VM and sandbox recipes live in [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/deploy).
-This repository continues to own its Nix toolchain and dev-container setup.
+This repository owns the Coda toolchain, dev-container setup and repository hook described below.
 
 ## Start
 
@@ -60,6 +60,19 @@ cargo run -p physician-sample
 `CODA_LOCAL_MODEL_EXECUTION=api` still calls OpenAI Responses and requires `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
 
 A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the sample server and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
+
+### Unattended development
+
+`nix develop .#agent` uses the same locked toolchain as the default shell,
+without Cursor or automatic Doppler credential discovery/loading. Use
+`nix develop .#agent --command <command>` for builds, tests and Git commits;
+the existing commit checks then run inside that environment.
+
+[`.openinspect/setup.sh`](.openinspect/setup.sh) materializes this profile using
+Nix supplied by the sandbox image. Machine installation, persistent command paths,
+agent CLIs and sandbox lifecycle belong to
+[Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
+The hook prepares the store; subsequent commands still enter the Nix shell.
 
 ### Dev container
 

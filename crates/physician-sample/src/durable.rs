@@ -59,18 +59,18 @@ impl DurableChat {
         Ok(accepted)
     }
 
-    /// Saves a revision and its exact source observation before queueing it.
-    /// Duplicate and refused commands never publish another wakeup.
+    /// Saves a revision, pinning the workspace's current source observation
+    /// from the runtime source store, before queueing it. Duplicate and
+    /// refused commands never publish another wakeup.
     pub async fn accept_revision(
         &self,
         scope: &Scope,
         input: &RevisionInput,
         session_hash: Vec<u8>,
-        sources: Vec<local_product::physician_sources::SourceRevision>,
     ) -> Result<RevisionAccepted, String> {
         let accepted = self
             .store
-            .accept_revision(scope, input, session_hash, sources)
+            .accept_revision(scope, input, session_hash)
             .await
             .map_err(|e| e.to_string())?;
         if accepted != RevisionAccepted::New {

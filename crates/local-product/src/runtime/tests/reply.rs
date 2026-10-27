@@ -68,7 +68,7 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     let first = input("first", 1);
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32], vec![])
+            .accept_revision(&scope, &first, vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::Refused
@@ -80,14 +80,14 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32], vec![])
+            .accept_revision(&scope, &first, vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::New
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32], vec![])
+            .accept_revision(&scope, &first, vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::Duplicate
@@ -96,13 +96,13 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     collision.instruction = "Different".into();
     assert!(
         store
-            .accept_revision(&scope, &collision, vec![7; 32], vec![])
+            .accept_revision(&scope, &collision, vec![7; 32])
             .await
             .is_err()
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &input("busy", 1), vec![7; 32], vec![])
+            .accept_revision(&scope, &input("busy", 1), vec![7; 32])
             .await
             .unwrap(),
         RevisionAccepted::Refused
@@ -138,7 +138,7 @@ async fn reply_publication_requires_evidence_authority_and_current_revision() {
     let (store, scope) = setup().await;
     store.open_draft(&scope, "Original").await.unwrap();
     store
-        .accept_revision(&scope, &input("first", 1), vec![7; 32], vec![])
+        .accept_revision(&scope, &input("first", 1), vec![7; 32])
         .await
         .unwrap();
     let claim = store
@@ -221,7 +221,7 @@ async fn reply_history_keeps_completed_attempts_append_only() {
     let mut completed = Vec::new();
     for (index, key) in ["first", "second", "third"].iter().enumerate() {
         store
-            .accept_revision(&scope, &input(key, index as u64 + 1), vec![7; 32], vec![])
+            .accept_revision(&scope, &input(key, index as u64 + 1), vec![7; 32])
             .await
             .unwrap();
         let claim = store
@@ -272,7 +272,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
     store.open_draft(&scope, "Original").await.unwrap();
     let first = input("first", 1);
     store
-        .accept_revision(&scope, &first, vec![7; 32], vec![])
+        .accept_revision(&scope, &first, vec![7; 32])
         .await
         .unwrap();
     let late = store
@@ -301,7 +301,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
         .await
         .unwrap();
     store
-        .accept_revision(&scope, &input("second", 2), vec![7; 32], vec![])
+        .accept_revision(&scope, &input("second", 2), vec![7; 32])
         .await
         .unwrap();
     let second = store
@@ -397,7 +397,7 @@ async fn earlier_revisions_read_in_archive_order_not_key_order() {
     for (index, key) in keys.iter().enumerate() {
         let revision = index as u64 + 1;
         store
-            .accept_revision(&scope, &input(key, revision), vec![7; 32], vec![])
+            .accept_revision(&scope, &input(key, revision), vec![7; 32])
             .await
             .unwrap();
         store
@@ -434,7 +434,7 @@ async fn earlier_revisions_read_in_archive_order_not_key_order() {
     for (index, key) in ["other-1", "other-2"].iter().enumerate() {
         let revision = index as u64 + 1;
         store
-            .accept_revision(&other, &input(key, revision), vec![7; 32], vec![])
+            .accept_revision(&other, &input(key, revision), vec![7; 32])
             .await
             .unwrap();
         store
@@ -482,4 +482,97 @@ fn reply_delivery_preserves_legacy_chat_wire_shape() {
         serde_json::from_value::<Delivery>(serde_json::to_value(&revision).unwrap()).unwrap(),
         revision
     );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn authorized_opening_is_idempotent_scoped_and_fenced_by_authority() {
+    let (store, scope) = setup().await;
+    let session = [7_u8; 32];
+    // Revoked authority opens nothing and leaves no row behind.
+    assert!(
+        store
+            .open_draft_authorized(&scope, "Original", &session, &mut TestAuthority(false))
+            .await
+            .unwrap()
+            .is_none()
+    );
+    assert!(store.draft(&scope).await.unwrap().is_none());
+    assert!(
+        store
+            .open_draft_authorized(&scope, " ", &session, &mut TestAuthority(true))
+            .await
+            .is_err()
+    );
+
+    // Concurrent openers agree on exactly one revision-1 draft.
+    let (mut a, mut b) = (TestAuthority(true), TestAuthority(true));
+    let (first, second) = tokio::join!(
+        store.open_draft_authorized(&scope, "Original", &session, &mut a),
+        store.open_draft_authorized(&scope, "Racing text", &session, &mut b)
+    );
+    let (first, second) = (first.unwrap().unwrap(), second.unwrap().unwrap());
+    assert_eq!((first.revision, second.revision), (1, 1));
+    assert_eq!(first.text, second.text);
+    let opened = first.text.clone();
+
+    // A physician edit and an accepted revision survive reopening unchanged.
+    let saved = store
+        .save_draft(&scope, 1, "Edited", &session, &mut TestAuthority(true))
+        .await
+        .unwrap();
+    assert_eq!(saved, 2);
+    assert_eq!(
+        store
+            .accept_revision(&scope, &input("kept", 2), vec![7; 32])
+            .await
+            .unwrap(),
+        RevisionAccepted::New
+    );
+    let reopened = store
+        .open_draft_authorized(&scope, "Original", &session, &mut TestAuthority(true))
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(reopened.revision, 2);
+    assert_eq!(reopened.text, "Edited");
+    assert_eq!(reopened.restore_text.as_deref(), Some(opened.as_str()));
+    assert_eq!(
+        reopened.input.as_ref().map(|i| i.key.as_str()),
+        Some("kept")
+    );
+    // Revoked authority cannot even read through the opener once it exists.
+    assert!(
+        store
+            .open_draft_authorized(&scope, "Original", &session, &mut TestAuthority(false))
+            .await
+            .unwrap()
+            .is_none()
+    );
+
+    // Another physician and another workspace each get their own draft.
+    let mut other_physician = scope.clone();
+    other_physician.physician = "other".into();
+    let mut other_workspace = scope.clone();
+    other_workspace.workspace = "other-workspace".into();
+    for other in [&other_physician, &other_workspace] {
+        let draft = store
+            .open_draft_authorized(other, "Original", &session, &mut TestAuthority(true))
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!((draft.revision, draft.text.as_str()), (1, "Original"));
+    }
+    assert_eq!(store.draft(&scope).await.unwrap().unwrap().text, "Edited");
+
+    // Save still refuses an arbitrary reply that was never opened.
+    let mut missing = scope.clone();
+    missing.chat = "never-opened".into();
+    assert!(
+        store
+            .save_draft(&missing, 1, "Invented", &session, &mut TestAuthority(true))
+            .await
+            .is_err()
+    );
+    assert!(store.draft(&missing).await.unwrap().is_none());
 }
