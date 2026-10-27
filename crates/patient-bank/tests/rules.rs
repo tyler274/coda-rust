@@ -516,6 +516,33 @@ fn the_practice_last_saw_the_patient_on_the_seeds_day() {
 }
 
 #[test]
+fn care_after_the_last_visit_leaves_the_practice_lists_alone() {
+    let body = "Doing well. BP fine today. Continue current plan.";
+    let ed = |extra: serde_json::Value| {
+        let mut ev = json!({"id": "e2", "kind": "ed_visit", "start": "2026-08-05T14:00",
+            "documents": [{"type": "ED Notes", "author": "emergency medicine",
+            "body": "Seen for wheezing, treated and sent home."}]});
+        for (k, v) in extra.as_object().expect("object") {
+            ev[k] = v.clone();
+        }
+        ev
+    };
+    let lists = |extra| {
+        let p = patient(json!([
+            visit("e1", "2026-07-20T09:00", note(body)),
+            ed(extra)
+        ]));
+        errors_for(seed(), p)
+            .iter()
+            .any(|e| e.contains("lists do not change"))
+    };
+    assert!(!lists(json!({})));
+    assert!(lists(
+        json!({"conditions": [{"label": "Iron deficiency anemia", "action": "diagnosed"}]})
+    ));
+}
+
+#[test]
 fn check_keeps_everything_before_today_but_booked_visits() {
     let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
     let has = |events: serde_json::Value, what: &str| {

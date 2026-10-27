@@ -64,7 +64,9 @@ the terminology cache, the bank and the schema live under the ignored
   writes each author a `taken.md` from every other chart.
 - **The check.** `check` holds chronology and codes only: the patient matches
   the seed, every label is the catalog's, nothing is after today but pending
-  results and booked visits, nothing stops, resolves or closes before it started,
+  results and booked visits, the last held practice visit is the seed's
+  `last_seen` and nothing after it changes the practice's lists, a visit is booked
+  only when the seed says so, nothing stops, resolves or closes before it started,
   results come after their draw, and lab arithmetic is what an analyzer reports.
   It does not judge how a chart reads; the author's reread of `chart.txt` does.
 - **Numbers.** `measure` makes every number the chart shows, at `check`, and
