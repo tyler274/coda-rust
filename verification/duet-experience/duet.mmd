@@ -1397,15 +1397,15 @@ stateDiagram-v2
       PrcEnded --> PrcNone : delete your account
     }
     --
-    %% What your sources sent: kept through any disconnect, gone only with your account (F1, F2). Notes
+    %% The records your sources sent (readings are measurements, not records): kept through any
+    %% disconnect, gone only with your account (F1, F2). Notes
     %% and medications you enter are records in You too (ENG-52) and open without this; it decides only
     %% what a source-backed step, like confirming a medication from your records, can act on.
     state "Records from your sources" as Rec {
       [*] --> RecNone
-      state "Nothing from your sources yet" as RecNone
+      state "No records from your sources yet" as RecNone
       state "Records from your sources kept" as RecHave
       RecNone --> RecHave : records come in
-      RecNone --> RecHave : your phone's readings arrive
       RecHave --> RecNone : the deletion finishes
     }
     --
