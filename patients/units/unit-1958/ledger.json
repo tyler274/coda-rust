@@ -1,0 +1,1737 @@
+{
+  "unit": "unit-1958",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001958",
+      "given": "Priya",
+      "family": "Iyer",
+      "birth_date": "1997-08-03",
+      "address_line": "212 Lincoln Ave, Apt 2B",
+      "phone": "+1-413-555-0171",
+      "email": "priya.iyer@example.test",
+      "marital_status": "single",
+      "summary": "Healthy architecture PhD candidate who joined in September 2024 and developed fevers, weight loss and arthralgias that winter. Rheumatology diagnosed Takayasu arteritis in March 2025 and treated with prednisone and methotrexate; she relapsed on the taper in early 2026, after her last practice visit.",
+      "events": [
+        {
+          "id": "2024-08-26a",
+          "kind": "telephone",
+          "start": "2024-08-26T11:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2024-08-26T11:20",
+              "author": "front desk",
+              "body": "Caller is starting her third year of a doctoral program at the university and wants a primary care doctor in town; she has been going home to her old practice for checkups. Membership explained, she is on the student health PPO, which we can bill for labs. Booked new patient physical 9/17 at 9:00. Records release form emailed to her for her previous office."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-10T14:05",
+          "reason": "records from prior primary care",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2024-09-10T14:05",
+              "author": "front desk",
+              "body": "Received 11 pages from the patient's previous primary care office (visits 2018 to 2023).\n\nContents: annual exams, all unremarkable. No chronic problems listed. No medications. Allergies: none known. Cervical cytology 2022: negative for intraepithelial lesion or malignancy. Immunization record: childhood series complete, HPV series complete, Tdap 2021, COVID primary series and boosters through 2023.\n\nFiled to chart for the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "establish_care",
+          "start": "2024-09-17T09:00",
+          "end": "2024-09-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              77
+            ],
+            "hr": 78,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 58.7,
+            "height_cm": 159.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student (PhD candidate in architecture)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-17T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T09:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T09:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2024-09-17T10:00",
+              "author": "PCP",
+              "body": "27 y/o woman establishing care. Third-year PhD student in architecture at the university, lives in Amherst, studio-heavy schedule. Previously saw a family doctor near her parents; records reviewed.\n\nNo complaints today. Sleeps about 7 hours, walks everywhere, cooks most meals.\n\nPMH: none. PSH: none. Meds: none, no supplements. Allergies: none known.\nFH: father has high blood pressure. A maternal aunt has lupus. No early heart disease or cancers she knows of.\nSH: never smoked. Alcohol a drink or two a month. No drugs. Single.\nGyn: regular cycles. Last Pap 2022, normal per records.\nImmunizations: up to date per prior office; Tdap 2021.\n\nROS negative across systems.\n\nExam: vitals as recorded. Well appearing. HEENT unremarkable, thyroid not enlarged, no nodes. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Extremities warm, no edema. Mood and affect normal.\nPHQ-9: 2.\n\nAssessment/plan:\n1. Adult preventive exam. Baseline CBC, CMP, lipids, TSH. Offered one-time HIV and hepatitis C screening, she agreed.\n2. Flu and updated COVID given today, tolerated.\n3. Cervical screening due 2025.\nFollow up yearly or as needed. She has the clinic number and portal."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.5,
+            "height_cm": 160.0,
+            "labs": {
+              "Hemoglobin A1c": 5.1,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2024-09-19T16:40",
+              "author": "PCP",
+              "body": "Hi Priya, everything from Tuesday came back normal: blood counts, kidney and liver tests, thyroid, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to change. Nice to meet you, and reach out any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "portal_message",
+          "start": "2025-02-13T21:15",
+          "reason": "fevers and fatigue",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling Run Down",
+              "date": "2025-02-13T21:15",
+              "author": "patient",
+              "body": "Hi, I've been feeling off since around early December. I get fevers on and off, up to about 100.5 at night, and I'm exhausted all the time. I've also lost weight without trying, my jeans are loose. My wrists and knees ache too. I thought it was a virus and finals but it hasn't gone away. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling Run Down",
+              "date": "2025-02-14T07:50",
+              "author": "PCP",
+              "body": "Yes, two months of this is worth a proper look. I have an opening Tuesday morning at 8:30 and I'll hold it for you. If you get a fever above 102, a new rash, shortness of breath or anything that scares you before then, call the office."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "office_visit",
+          "start": "2025-02-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fevers, fatigue, weight loss",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 80,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 54.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-19T15:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-19T15:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-19T15:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-19T15:30",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 56
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-19T15:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-20T11:00",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T09:10",
+              "resulted": "2025-02-20T11:00",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-18T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-18T09:20",
+              "author": "PCP",
+              "body": "S: Here for about ten weeks of feeling unwell, starting early December. Evening fevers off and on, highest she has seen 100.5. Wiped out by mid-afternoon, napping, which is not her. Clothes looser; weight down about 10 lb since September by our scale. Achy wrists and knees, both sides, worse in the morning but no clear stiffness over an hour, no swelling she has noticed. No rash, mouth sores, hair loss, eye redness or pain. No cough, dysuria, diarrhea. No night sweats soaking the sheets. No travel outside the area, no tick bites she knows of, no sick contacts. LMP 2 weeks ago, regular. Not on any meds.\nMood fine, more frustrated than down. PHQ-2 0.\n\nO: BP 128/80 left arm, temp normal this morning. Thin, tired appearing, not toxic. No conjunctival pallor. Oropharynx clear. No cervical, axillary or inguinal nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, no hepatosplenomegaly. Wrists and knees without swelling, warmth or effusion; full range of motion, mild tenderness at both wrists. Skin without rash.\n\nA: Subacute fevers, fatigue, weight loss and arthralgias in a young woman, with an aunt who has lupus. Infection, autoimmune or inflammatory disease, thyroid, less likely malignancy.\nP: CBC, CMP, ESR, CRP, TSH, ANA, RF today. Will call her with results. Keep a fever log. Low threshold to call."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "telephone",
+          "start": "2025-02-20T12:10",
+          "reason": "results and referral",
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "fevers, weight loss, arthralgias, ESR 74, CRP 56"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "date": "2025-02-20T12:10",
+              "author": "PCP",
+              "body": "Called pt with labs. CBC and chemistries normal, thyroid normal. Sed rate 74 and CRP 56, both clearly up. ANA and RF negative, which makes lupus and RA less likely but doesn't settle it. Discussed that something inflammatory is going on and I want rheumatology to see her soon. Urgent referral placed; our staff will push for an appointment within two weeks. She agreed. Told her to call sooner for high fevers or new symptoms."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduled",
+              "date": "2025-02-21T10:35",
+              "author": "front desk",
+              "body": "Rheumatology accepted the urgent referral, appt Fri 3/7 at 10:00. Pt notified by phone, she will bring a list of her fever readings."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-07a",
+          "kind": "specialist_visit",
+          "start": "2025-03-07T10:00",
+          "service": "Rheumatology",
+          "reason": "fevers, weight loss, arthralgias, elevated inflammatory markers",
+          "conditions": [
+            {
+              "label": "Takayasu arteritis",
+              "action": "diagnosed",
+              "onset": "2024-12-02",
+              "icd10": "M31.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 5 tablets (50 mg) by mouth every morning with food; taper as directed by rheumatology",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Takayasu arteritis"
+            },
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 6 tablets (15 mg) by mouth once a week on the same day each week",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Takayasu arteritis"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "on methotrexate"
+            },
+            {
+              "drug": "cholecalciferol 0.025 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (1000 units) by mouth daily",
+              "dose": {
+                "value": 1000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bone protection on prednisone"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              150,
+              90
+            ],
+            "hr": 79,
+            "temp_c": 36.6,
+            "weight_kg": 53.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-07T10:40",
+              "results": [
+                {
+                  "test": "Urine hCG",
+                  "loinc": "2106-3",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-03-07T14:30",
+              "text": "CT ANGIOGRAM OF THE CHEST\nIndication: suspected large-vessel vasculitis; diminished left arm pulses, arm pressure difference.\nTechnique: Helical CT through the chest during the arterial phase after IV contrast, with multiplanar and 3D reformats. No immediate reaction.\nFindings: The left subclavian artery is narrowed in its proximal portion, with smooth, circumferential thickening of the vessel wall. The ascending aorta, arch and descending thoracic aorta are normal in caliber. The brachiocephalic and left common carotid origins are patent. Pulmonary arteries opacify normally without filling defect. Heart size is normal, no pericardial effusion. Lungs are clear. No pleural effusion. No enlarged mediastinal or hilar nodes. Visualized upper abdomen unremarkable. No acute osseous finding.",
+              "conclusion": "Narrowing of the left subclavian artery with arterial wall thickening, compatible with large-vessel vasculitis in this clinical setting. Aorta otherwise normal in caliber.",
+              "issued": "2025-03-07T17:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "done",
+              "date": "2025-03-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Consultation",
+              "date": "2025-03-12T09:30",
+              "author": "rheumatology",
+              "body": "Outside rheumatology consultation, date of service 03/07/2025. Received and scanned 03/12/2025.\n\nReason for referral: three months of fevers, fatigue and weight loss with arthralgias; ESR 74 and CRP 56 at her primary care office 02/18, ANA and RF negative.\n\nHistory: Since early December she has had evening temperatures to the low 100s, steady tiredness, about 10 pounds of weight loss, and achy wrists and knees. Previously well. No prior medical or surgical history. No medications. No known drug allergies. Family history notable for SLE in a maternal aunt and hypertension in her father. Never smoker, drinks rarely. Doctoral student in architecture.\n\nExamination: Blood pressure 150/90 on the right arm and 130/80 on the left. Pulses at the left brachial and radial arteries are reduced compared with the right. A bruit is heard over the left subclavian region. No synovitis. No rash or oral ulcers. Heart regular without murmur. Lungs clear. Temporal arteries normal.\n\nData: inflammatory markers elevated as above. Urine pregnancy test negative today. CT angiogram of the chest obtained this afternoon shows a narrowed left subclavian artery with a thickened vessel wall.\n\nImpression: Takayasu arteritis, active, with left subclavian involvement, in a 27-year-old woman with constitutional symptoms and arthralgias.\n\nPlan:\n- Prednisone 50 mg each morning, about 1 mg/kg, for four weeks, then a gradual taper I will direct at each visit.\n- Methotrexate 15 mg once weekly as a steroid-sparing agent, with folic acid 1 mg daily. We discussed that methotrexate can harm a pregnancy and that she must avoid becoming pregnant while taking it; she understands. Keep alcohol to a minimum.\n- Vitamin D3 1000 units daily and adequate dietary calcium while on prednisone.\n- CBC and CMP every 4 to 8 weeks.\n- Referral to cardiology for a baseline cardiac and aortic evaluation.\n- Blood pressures should be taken on the right arm.\n- Return in 3 months, sooner for new arm, chest or neurologic symptoms.\n\nMedications at end of visit: prednisone 50 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily.\nAllergies: NKDA.\n\nThank you for this referral. Outside rheumatology."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside Records Reviewed",
+              "date": "2025-03-12T12:15",
+              "author": "PCP",
+              "body": "Rheumatology letter and CTA report reviewed. Takayasu arteritis, on prednisone 50, methotrexate 15 weekly, folic acid and D3. Problem and med lists updated. Right arm for all BPs going forward; flag added to chart. Will see her in about a month."
+            }
+          ],
+          "measure": [
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T19:05",
+          "reason": "questions after rheumatology diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New Diagnosis Questions",
+              "date": "2025-03-12T19:05",
+              "author": "patient",
+              "body": "Hi, I don't know if rheumatology sent you anything yet. They think I have Takayasu arteritis and started me on prednisone and methotrexate. I'm trying to read about it and it's a lot. Is it ok to have a glass of wine at a friend's birthday? And should I still see you or does rheum handle everything now?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New Diagnosis Questions",
+              "date": "2025-03-13T08:10",
+              "author": "PCP",
+              "body": "I got their letter yesterday and read it closely. I'm sorry this is a lot to take in. The rheumatologist will steer the vasculitis treatment, and I'll stay your doctor for everything else, including vaccines that matter more now that your immune system is turned down. On alcohol: an occasional single drink is generally considered acceptable on weekly methotrexate, but less is better for your liver, and your rheumatologist asked you to keep it minimal. Let's meet in about four weeks so I can see how the prednisone is treating you. The front desk will reach out to book."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-11a",
+          "kind": "office_visit",
+          "start": "2025-04-11T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after vasculitis diagnosis",
+          "vitals": {
+            "bp": [
+              123,
+              76
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 56.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-11T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-11T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-04-11T14:35"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-04-11T14:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-04-11T14:40",
+              "author": "PCP",
+              "body": "Five weeks into treatment for Takayasu arteritis per rheumatology. Fevers stopped within the first week of prednisone. Energy better. Wrists and knees barely bother her. Side effects: hungry all the time, trouble falling asleep if she takes the prednisone late, face a little fuller. Takes it at breakfast now. Methotrexate on Sundays, a little queasy Monday morning. Taking folic acid and D3. No arm pain with use, no chest pain, no vision change, no headache.\n\nBP right arm as charted. Weight up about 2 kg from February. Comfortable. Mild facial fullness. Heart regular. Lungs clear. No edema.\n\nA/P:\n1. Takayasu arteritis, on prednisone 50 mg and methotrexate 15 mg weekly, responding. Rheumatology directs taper; next visit there in June. Cardiology consult booked for May.\n2. Immunosuppressed: PCV20 and first Shingrix today. Second Shingrix in 2 to 3 months. No live vaccines while on this regimen. Flu and COVID again in the fall.\n3. Steroid effects: prednisone in the morning, eat regular meals, keep walking.\nBP right arm only. Recheck with me in the fall or sooner."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              78
+            ],
+            "weight_kg": 55.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "specialist_visit",
+          "start": "2025-05-08T13:30",
+          "service": "Cardiology",
+          "reason": "baseline cardiac and aortic evaluation, Takayasu arteritis",
+          "vitals": {
+            "bp": [
+              124,
+              79
+            ],
+            "hr": 76,
+            "spo2": 96
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-05-08T13:45",
+              "text": "TRANSTHORACIC ECHOCARDIOGRAM\nIndication: Takayasu arteritis, baseline.\nLeft ventricle normal in size and wall thickness, normal systolic function, estimated ejection fraction 60%. No regional wall motion abnormality. Normal diastolic filling. Right ventricle normal in size and function. Atria normal in size. Aortic valve trileaflet, opens normally, no aortic regurgitation. Mitral, tricuspid and pulmonic valves structurally normal. Aortic root and proximal ascending aorta normal in dimension. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Normal echocardiogram. EF 60%. Normal aortic root, no aortic regurgitation."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2025-05-13T10:20",
+              "author": "cardiology",
+              "body": "Outside cardiology consultation, seen 05/08/2025, sent at the request of her rheumatologist.\n\n27-year-old woman with Takayasu arteritis diagnosed in March with left subclavian narrowing on CT angiography, now on prednisone and weekly methotrexate. She feels much better. No chest pain, palpitations, exertional breathlessness, presyncope or arm discomfort with use.\n\nMeds: prednisone (tapering), methotrexate 15 mg weekly, folic acid 1 mg, vitamin D3 1000 units. NKDA.\n\nExam: right arm pressure in the normal range today; left arm reading lower, as expected with the subclavian lesion. Regular rhythm, no murmur, no diastolic murmur of aortic insufficiency. Lungs clear. No edema.\n\nEchocardiogram today: normal LV size and function, EF 60%, trileaflet aortic valve without regurgitation, normal aortic root.\n\nAssessment: Takayasu arteritis without cardiac or aortic root involvement at baseline.\nPlan: follow up in one year, sooner for symptoms. Repeat vascular imaging per rheumatology. Pressures should continue to be measured on the right arm.\n\nThank you for allowing us to participate in her care. Outside cardiology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "specialist_visit",
+          "start": "2025-06-12T09:00",
+          "service": "Rheumatology",
+          "reason": "Takayasu arteritis follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "taper"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (20 mg) by mouth every morning with food; continue taper as directed",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Takayasu arteritis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 83,
+            "weight_kg": 55.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-12T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-12T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-12T08:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-12T08:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2025-06-16T11:05",
+              "author": "rheumatology",
+              "body": "Outside rheumatology follow-up, seen 06/12/2025.\n\nTakayasu arteritis, three months into treatment. No fevers since March. Energy close to normal. No arm fatigue or pain, no lightheadedness, no headache or visual change. Some insomnia and appetite increase on prednisone, improving as the dose comes down. Tolerating methotrexate with mild nausea the morning after.\n\nExam: right arm pressure normal; left arm pulses still reduced. Left subclavian bruit persists. No synovitis.\n\nLabs today: ESR 24, CRP 9 (down from 74 and 56). CBC and CMP normal, liver enzymes normal.\n\nAssessment: responding well.\nPlan: prednisone now 20 mg daily, continue taper toward 5 mg by fall. Methotrexate 15 mg weekly and folic acid unchanged. Vitamin D3 continues. Labs every 8 weeks. Return in four months.\n\nMeds: prednisone 20 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\n\nOutside rheumatology."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication List Updated",
+              "date": "2025-06-16T13:00",
+              "author": "RN",
+              "body": "Rheum follow-up note received. Prednisone dose on our list changed to 20 mg daily per their letter. PCP aware. Pt reminded by portal that 2nd Shingrix is due, nurse visit booked 7/8."
+            }
+          ],
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "nurse_visit",
+          "start": "2025-07-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-07-08T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-07-08T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunization",
+              "date": "2025-07-08T10:50",
+              "author": "RN",
+              "body": "Second recombinant zoster dose given IM left deltoid. First dose 4/11, she had a sore arm and felt tired the next day. Feels well today, no fever. Observed 15 minutes, no reaction. Series complete. VIS provided."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T08:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Fall Vaccines",
+              "date": "2025-10-07T09:05",
+              "author": "RN",
+              "body": "Inactivated flu vaccine L deltoid and 2025-26 COVID vaccine R deltoid. Screening questions negative; on prednisone and methotrexate, no live vaccines. Tolerated, waited 15 minutes. She cancelled her August follow-up for a studio deadline; rebooked as her physical in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "specialist_visit",
+          "start": "2025-10-16T09:30",
+          "service": "Rheumatology",
+          "reason": "Takayasu arteritis follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "taper"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (5 mg) by mouth every morning",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Takayasu arteritis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              77
+            ],
+            "hr": 90,
+            "weight_kg": 55.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-16T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-16T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-16T09:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-16T09:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2025-10-21T14:40",
+              "author": "rheumatology",
+              "body": "Outside rheumatology follow-up, seen 10/16/2025.\n\nDoing well. No constitutional symptoms. No arm claudication, chest pain, headache or visual symptoms. Back in the studio full time. Methotrexate tolerated.\n\nExam: right arm pressure normal. Left radial pulse remains diminished. No synovitis.\n\nLabs: ESR 14, CRP 3, both normal. CBC and CMP normal.\n\nAssessment: Takayasu arteritis in clinical and laboratory remission on low-dose prednisone and methotrexate.\nPlan: prednisone 5 mg daily, hold here for now. Continue methotrexate 15 mg weekly, folic acid and vitamin D3. Labs every 8 to 12 weeks. Cardiology review and repeat imaging around the one-year mark. Return in 5 months, sooner for any return of fevers, arm pain or fatigue.\n\nMeds: prednisone 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\n\nOutside rheumatology."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication List Updated",
+              "date": "2025-10-21T15:10",
+              "author": "RN",
+              "body": "Rheumatology note filed. Prednisone on our list updated to 5 mg daily. No other changes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "portal_message",
+          "start": "2025-12-05T13:25",
+          "reason": "scheduling physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical and Pap",
+              "date": "2025-12-05T13:25",
+              "author": "patient",
+              "body": "Hi, I'm booked for my physical on January 30. Am I due for a Pap? My last one was in 2022 I think. Also do I need to fast for the bloodwork?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical and Pap",
+              "date": "2025-12-05T16:00",
+              "author": "MA",
+              "body": "Hi Priya, yes, you're due and we'll do the Pap at that visit. No need to fast, just drink water. See you on the 30th."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-30a",
+          "kind": "annual_physical",
+          "start": "2026-01-30T09:30",
+          "end": "2026-01-30T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              80
+            ],
+            "hr": 76,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 58.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-30T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-30T10:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-30T10:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-30T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2026-01-30T09:55",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2026-02-03T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-01-30T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-01-30T10:15",
+              "author": "PCP",
+              "body": "28 y/o here for yearly exam. Takayasu arteritis dx 3/2025, managed by rheumatology; in remission at her October rheum visit on prednisone 5 mg and methotrexate 15 mg weekly. Next rheum visit in March, cardiology around then too.\n\nInterval: feeling like herself. Working on her dissertation proposal. No fevers. No arm heaviness or pain with use, no chest pain, no lightheadedness, headaches or vision change. Sleeping better since the dose came down. Mild nausea the day after methotrexate, manageable. Missed one weekly dose over the holidays.\n\nMeds: prednisone 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\nSH: never smoker, rare drink. Exercise is walking, some yoga.\nGyn: regular cycles. Aware of the methotrexate pregnancy precautions from rheum.\nPHQ-9: 3.\n\nExam: BP right arm as charted. Weight back to about her pre-illness baseline. Well appearing. HEENT normal. No thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear. Abdomen benign. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin: no striae, no rash. Extremities without edema.\n\nA/P:\n1. Preventive: Pap today. Flu, COVID, PCV20 and Shingrix done in 2025. Tdap 2021.\n2. Takayasu arteritis on low-dose prednisone and methotrexate: stable per patient and rheum notes. Rheum follows markers.\n3. On long-term prednisone: A1c and lipids with today's labs. Continue D3.\nCBC, CMP, lipids, A1c today. I'll send results through the portal. Follow up with me in about 6 months, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "portal_message",
+          "start": "2026-02-04T08:20",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results From Your Physical",
+              "date": "2026-02-04T08:20",
+              "author": "PCP",
+              "body": "Priya, good news across the board. Your Pap is normal. Blood counts, kidney and liver tests are normal, which is reassuring on methotrexate. Your A1c is normal and cholesterol is fine, so the prednisone isn't pushing your sugar. The front desk will help you book a follow-up for late summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T14:00",
+          "service": "Cardiology",
+          "reason": "Takayasu arteritis follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 81,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-09T13:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 98
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-03-09T11:00",
+              "text": "CT ANGIOGRAM OF THE CHEST\nIndication: Takayasu arteritis, worsening arm symptoms. Comparison: CT angiogram 03/07/2025.\nTechnique: Arterial-phase helical CT of the chest after IV contrast with multiplanar and 3D reformats.\nFindings: The aortic arch is narrowed. Both proximal subclavian arteries are narrowed; on the prior study only the left was involved. Ascending and descending thoracic aorta normal in caliber. Pulmonary arteries opacify normally. Heart size normal, no pericardial effusion. Lungs clear, no pleural effusion. No enlarged mediastinal or hilar nodes. No acute osseous finding.",
+              "conclusion": "Narrowing of the aortic arch and proximal subclavian arteries, progressed since 03/07/2025.",
+              "issued": "2026-03-09T13:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2026-03-11T16:30",
+              "author": "cardiology",
+              "body": "Outside cardiology follow-up, seen 03/09/2026. Copy to primary care and rheumatology.\n\nShe returns a year after her rheumatology diagnosis of Takayasu arteritis, earlier than planned because she has not felt well. For several weeks: tiredness that does not lift, low-grade temperatures, and arm pain that builds as she uses them. Both arms feel heavy doing housework, and holding her arms up to brush her hair has become hard. She has lost weight without trying and has some diffuse muscle aching. She denies jaw pain with chewing, any loss of vision, and headaches.\n\nMeds per patient: prednisone 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\n\nExam: BP 138/82 in the right arm; a left arm pressure could not be obtained. Left radial pulse weak. Right brachial pulse diminished. No carotid, subclavian or abdominal bruits heard today. Heart regular, no murmur. Lungs clear.\n\nData: ESR 98. CT angiography today shows narrowing of the aortic arch and of both proximal subclavian arteries, worse than March 2025.\n\nAssessment: Takayasu arteritis with active disease and anatomic progression despite low-dose prednisone and methotrexate. No aortic valve involvement clinically.\nPlan: I spoke with her rheumatologist today and she will be seen this month to intensify treatment. Right arm pressures only. Cardiology follow-up in 6 months, sooner for chest pain, neurologic or visual symptoms.\n\nOutside cardiology."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "portal_message",
+          "start": "2026-03-16T20:40",
+          "reason": "vasculitis flare",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flare Update",
+              "date": "2026-03-16T20:40",
+              "author": "patient",
+              "body": "Hi, I wanted you to know the vasculitis is acting up again. My arms have been getting heavy and I've had low fevers. Cardiology did a new scan and said it's worse. I see rheumatology on Friday. I'm pretty discouraged."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flare Update",
+              "date": "2026-03-17T07:45",
+              "author": "PCP",
+              "body": "Thank you for telling me, and I'm sorry. I read the cardiology letter. Relapses as the steroid comes down are common with this disease and there are good next options; Friday is the right place to sort that out. Before then, if you get chest pain, new weakness, trouble speaking or seeing, go to the emergency department. I'm here if you want to talk any of this through."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "specialist_visit",
+          "start": "2026-03-20T10:30",
+          "service": "Rheumatology",
+          "reason": "Takayasu arteritis relapse",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-20T11:15",
+              "results": [
+                {
+                  "test": "Quantiferon-TB Gold",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-20T11:15",
+              "results": [
+                {
+                  "test": "Hepatitis B surface antigen",
+                  "loinc": "5196-1",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-20T11:15",
+              "results": [
+                {
+                  "test": "Hepatitis B core antibody, total",
+                  "loinc": "16933-4",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2026-03-24T09:50",
+              "author": "rheumatology",
+              "body": "Outside rheumatology visit, seen 03/20/2026.\n\nReason: relapse of Takayasu arteritis, seen urgently after her cardiology visit 03/09 (ESR 98; CT angiogram with aortic arch and bilateral proximal subclavian narrowing, progressed).\n\nShe has had several weeks of fatigue, low fevers, arm heaviness with use and some weight loss on prednisone 5 mg and methotrexate 15 mg weekly. No headache, visual symptoms or jaw pain. Adherent apart from a missed methotrexate dose in December.\n\nExam: right arm pressure recorded; left arm not obtainable. Weak left radial pulse, diminished right brachial pulse. No synovitis.\n\nPre-biologic screening drawn today: QuantiFERON negative, hepatitis B surface antigen and core antibody nonreactive.\n\nAssessment: relapsing Takayasu arteritis with progression on imaging.\nPlan:\n- Prednisone increased to 40 mg daily, with a slower taper I will set at follow-up.\n- Add tocilizumab 162 mg subcutaneously once weekly; prior authorization submitted by our office, first dose taught in clinic once approved.\n- Continue methotrexate 15 mg weekly and folic acid 1 mg daily; continue vitamin D3.\n- CBC, CMP and lipids 4 weeks after starting tocilizumab, then every 8 weeks.\n- Return in 6 weeks.\n\nMeds at end of visit: prednisone 40 mg daily, tocilizumab 162 mg SC weekly (pending approval), methotrexate 15 mg weekly, folic acid 1 mg daily, vitamin D3 1000 units daily. NKDA.\n\nOutside rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T12:05",
+          "reason": "appointment confirmation",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment Reminder",
+              "date": "2026-08-10T12:05",
+              "author": "front desk",
+              "body": "Reminder: follow-up with your primary care physician on Friday, September 11, 2026 at 11:00 AM. Reply to confirm or call us to reschedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment Reminder",
+              "date": "2026-08-10T18:30",
+              "author": "patient",
+              "body": "Confirmed, thank you. I'll bring my updated med list from rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-11a",
+          "kind": "office_visit",
+          "start": "2026-09-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Takayasu arteritis|M31.4": {
+        "code": "M31.4",
+        "display": "Aortic arch syndrome [Takayasu]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Hepatitis B core antibody, total": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B surface antigen": {
+        "code": "5196-1",
+        "display": "Hepatitis B virus surface Ag [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine hCG": {
+        "code": "2106-3",
+        "display": "Choriogonadotropin [Presence] in Urine",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

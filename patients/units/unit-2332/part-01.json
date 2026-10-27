@@ -1,0 +1,287 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002332",
+      "given": "Peter",
+      "family": "Bowen",
+      "birth_date": "1948-08-10",
+      "address_line": "58 Pelham Road",
+      "phone": "+1-603-555-0164",
+      "email": "peter.bowen@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired math teacher with treated hypertension, hyperlipidemia, knee osteoarthritis and a history of cerebral small vessel disease who joined the practice in 2022. Neurology diagnosed normal pressure hydrocephalus in December 2024; by June 2026 his gait, memory and continence are worse with falls, and a neurosurgery tap-test evaluation is pending.",
+      "events": [
+        {
+          "id": "2022-08-09a",
+          "kind": "telephone",
+          "start": "2022-08-09T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-08-09T10:20",
+              "body": "Mr. Bowen phoned about membership; his previous doctor retired this spring and he has been without a PCP since. Medicare, retired. Membership packet emailed. New patient appointment made for Tue 8/23 at 9:00. Asked him to bring his medication bottles and the name of his last office so we can send for records."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T09:00",
+          "end": "2022-08-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "note": "longstanding, controlled on amlodipine"},
+            {"label": "Hyperlipidemia", "action": "diagnosed", "note": "on atorvastatin"},
+            {"label": "Bilateral primary osteoarthritis of knee", "action": "diagnosed", "note": "acetaminophen as needed"},
+            {"label": "Cerebral small vessel disease", "icd10": "I67.9", "action": "history", "note": "history of, per patient and prior care; no images on file"}
+          ],
+          "medications": [
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "atorvastatin 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Cerebral small vessel disease"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth as needed for knee pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Knee osteoarthritis"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [132, 78], "weight_kg": 80.0, "height_cm": 175.0, "labs": {"Low Density Lipoprotein": 88, "High Density Lipoprotein": 52, "Triglycerides": 120}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "1-2 glasses of wine per month"},
+            {"item": "Occupation", "value": "Retired high school mathematics teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-23T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-23T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-23T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-08-23T09:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "orders": [
+            {"id": "aaa-us", "action": "placed", "order": "Ultrasound abdominal aorta, AAA screening", "category": "imaging", "reason": "one-time AAA screen, former smoker age 74"},
+            {"id": "prior-records", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "new patient"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-08-23T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-08-23T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-23T11:40",
+              "body": "74M here to establish. Old PCP retired; he came alone, drove himself.\n\nPMH: HTN for many years, on amlodipine, says home readings are usually in the 120s-130s. High cholesterol on atorvastatin. Both knees arthritic for a long time, worse on stairs and after yard work; takes Tylenol 500 when they act up, maybe a few times a week. Was told by a previous doctor that he has small vessel changes in the brain, which is why he takes the baby aspirin. No stroke or TIA symptoms that he knows of.\nPSH: L inguinal hernia repair 2020. No other operations.\nMeds: amlodipine 5 daily, atorvastatin 20 daily, ASA 81 daily, acetaminophen 500 prn. Brought the bottles; matches.\nAllergies: none.\nFH: Father had Alzheimer disease starting around 78, died at 82. Mother had high blood pressure and a stroke at 80. One older brother with type 2 DM.\nSH: Taught high school math for his whole career, retired. Widowed, lives on his own in the house in Amherst. A daughter lives nearby. Smoked for years, about 30 pack-years, stopped around 2006. Wine once or twice a month. Walks most mornings.\n\nROS: No chest pain, no shortness of breath, no palpitations. No headaches. Bowels and bladder fine. Memory \"as good as ever.\" Mood good.\n\nExam: vitals per flowsheet. Well appearing, pleasant, sharp historian. HEENT unremarkable. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear. Abd soft, nontender, no pulsatile mass. Knees with bony enlargement and crepitus both sides, no effusion, full extension. Gait normal. Neuro: CN intact, strength 5/5, reflexes symmetric.\n\nPHQ-2: 0.\n\nA/P\n1. HTN: at goal on amlodipine 5. Continue.\n2. Hyperlipidemia / hx cerebral small vessel disease: continue atorvastatin 20 and aspirin 81. Lipids today.\n3. Knee OA: acetaminophen as needed, keep walking.\n4. Health maintenance: CMP, CBC, lipids, hep C screen today. Former smoker, 74 -> one-time aortic ultrasound ordered. Quit >15 yrs, no lung CT. Will look at old records for colonoscopy history. Flu, PCV20 and Tdap in early October at a nurse visit.\nRecords release signed. Follow up in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "portal_message",
+          "start": "2022-08-26T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab work",
+              "author": "PCP",
+              "date": "2022-08-26T08:15",
+              "body": "Hi Mr. Bowen, all of your blood work from Tuesday came back fine. Kidney and liver tests normal, blood counts normal, hepatitis C screen negative. Your LDL cholesterol is in a good range on the atorvastatin. No changes. The ultrasound scheduler should be calling you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "outside_records",
+          "start": "2022-09-06T14:00",
+          "orders": [
+            {"id": "prior-records", "action": "done", "date": "2022-09-06T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2022-09-06T14:00",
+              "body": "Summary of care, prior primary care office (closed practice), covering visits 2014 through spring 2022.\nProblems: essential hypertension; hyperlipidemia; osteoarthritis, both knees; history of cerebral small vessel disease.\nSurgery: left inguinal hernia repair, 2020, uncomplicated.\nMedications: amlodipine 5 mg daily; atorvastatin 20 mg daily; aspirin 81 mg daily; acetaminophen 500 mg as needed.\nAllergies: NKDA.\nScreening: colonoscopy 2016, normal, no polyps; no repeat advised given age.\nImmunizations on file: none in the last several years recorded.\n\nScanned to chart. Reviewed by PCP: consistent with our history."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "nurse_visit",
+          "start": "2022-10-06T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-06T13:35"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-10-06T13:37"},
+            {"vaccine": "Tdap", "date": "2022-10-06T13:39"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-06T13:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-06T13:50",
+              "body": "Here for vaccines per PCP plan. Screening questions negative, no prior reactions. High-dose flu L deltoid, PCV20 R deltoid, Tdap L deltoid (lower site). VIS sheets given. Waited 15 min, no issues. Told him to expect a sore arm."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T11:00",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-11-08T11:00",
+              "text": "LIMITED ULTRASOUND, ABDOMINAL AORTA. Indication: AAA screening, male former smoker. Technique: grayscale and color imaging of the abdominal aorta from the diaphragm to the bifurcation and proximal common iliac arteries. Findings: The aorta is normal in caliber throughout, measuring up to 2.1 cm in the proximal segment and 1.8 cm distally, outer wall to outer wall. No focal dilation. Common iliac arteries normal in caliber. No periaortic fluid.",
+              "conclusion": "Normal caliber abdominal aorta. No aneurysm."
+            }
+          ],
+          "orders": [
+            {"id": "aaa-us", "action": "done", "date": "2022-11-08T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "AAA screen result",
+              "author": "PCP",
+              "date": "2022-11-09T07:45",
+              "body": "Aorta normal size. No aneurysm. One-time screen complete, no repeat needed. Released to patient portal with comment."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "office_visit",
+          "start": "2023-02-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-02-16T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-02-16T12:05",
+              "body": "S: Six month check. Doing well over the winter, walking at the mall when it's icy. Knees about the same, Tylenol a couple times a week. Takes his pills every morning with coffee. No dizziness on standing. No chest symptoms.\nO: BP and weight per vitals, BP fine. Heart regular, no murmur. Lungs clear. No ankle swelling. Knees with crepitus, no effusion. Walks normally.\nA/P: HTN controlled on amlodipine 5. Lipids at goal on atorvastatin 20 in August. Knee OA stable. Nothing to change. AWV in late summer with labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "pharmacy",
+          "start": "2023-05-16T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day refill request",
+              "author": "MA",
+              "date": "2023-05-16T09:10",
+              "body": "Pharmacy request for 90-day supplies of amlodipine 5 mg and atorvastatin 20 mg. Last seen 2/16. Sent per protocol with 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "annual_physical",
+          "start": "2023-08-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-23T09:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-23T09:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-23T09:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2023-08-23T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-08-23T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-08-23T10:15",
+              "body": "Annual wellness visit. Turned 75 earlier this month.\n\nHealth risk assessment reviewed. Independent with all daily activities, still drives, does his own shopping and bills. No falls in the past year. Hearing and vision adequate; mentions his eye doctor says cataracts are coming along and will need surgery \"in a year or so.\" Home has railings on the stairs. Uses a seatbelt. No firearms in the home.\nMood: PHQ-2 0. Memory: no concerns from him; conversation fluent and detailed, he corrected my arithmetic on his pack-years.\nAdvance directive: daughter is health care proxy, form on file at home, will bring a copy.\n\nExam: vitals as recorded. Heart RRR. Lungs clear. Abdomen benign. Knees: bilateral crepitus, no effusion. Gait steady. Neuro grossly intact.\n\nPlan\n- HTN, lipids: continue amlodipine 5, atorvastatin 20, ASA 81. CMP, CBC, lipids today.\n- Knees: acetaminophen prn.\n- Vaccines: flu and COVID this October; start Shingrix then, second dose 2 months later.\n- Colon screening: colonoscopy 2016 normal, no further at his age.\n- Personalized prevention plan printed for him."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-25T16:40",
+              "body": "Peter, your labs from Wednesday are all within normal range, cholesterol included. Nothing to change. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-12T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-12T14:07"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-10-12T14:09"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-12T14:05"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-12T14:25",
+              "body": "Flu (high dose) L arm, COVID 2023-24 R arm, Shingrix #1 R arm lower. Counseled that Shingrix can cause a day or two of aches. Dose #2 due in 2 months, appointment made for 12/12. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "nurse_visit",
+          "start": "2023-12-12T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-12-12T11:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-12-12T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "author": "RN",
+              "date": "2023-12-12T11:30",
+              "body": "Shingrix second dose L deltoid. After the first he felt tired for a day and his arm ached, nothing more. Series complete."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

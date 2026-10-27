@@ -1,0 +1,86 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001700",
+      "events": [
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, planning pregnancy",
+          "state": {"weight_kg": 57.4},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "medications": [{"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "stop", "reason": "patient stopped on her own"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-03-11T16:00"}],
+          "documents": [{"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-03-11T16:35",
+            "body": "S: Here to check in, they have been trying to conceive since the fall. On review of meds she tells me she stopped the metoprolol sometime in November, maybe earlier, because she felt tired on it and was not sure it was OK while trying to get pregnant. No palpitations, no racing, no breathlessness, no orthopnea since. Still on prenatal vitamin and folic acid. Has not been back to cardiology since last June.\n\nO: vitals as charted, pulse regular. Heart regular with the apical diastolic rumble. Lungs clear. No edema.\n\nA/P\n1. Rheumatic mitral stenosis, asymptomatic, sinus rhythm by exam. Off metoprolol for several months without symptoms. Taking it off her list for now. Asked her to message cardiology about stopping it and about her pregnancy plans, and to call right away for palpitations.\n2. Preconception: folic acid, prenatal vitamin. Let OB and cardiology know as soon as she has a positive test.\nRTC for physical in the summer."}]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T07:45",
+          "documents": [{"type": "Patient Message", "title": "Visit summary", "author": "MA", "date": "2025-03-12T07:45",
+            "body": "Hi Maricel, attached is your after-visit summary from yesterday. Your medication list now shows only the prenatal vitamin and folic acid. The doctor asked that you send a note to your cardiologist about the metoprolol. Let us know if you need their number."}]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "portal_message",
+          "start": "2025-06-30T06:55",
+          "conditions": [{"label": "Uncomplicated pregnancy without urinary tract infection", "icd10": "Z34.81", "action": "diagnosed", "onset": "2025-05-23", "note": "G2P1, LMP 5/23/2025, EDD 2/27/2026"}],
+          "orders": [{"id": "cards-ref-preg", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "rheumatic mitral stenosis, new pregnancy"}],
+          "documents": [{"type": "Patient Message", "title": "Positive test!", "author": "patient", "date": "2025-06-30T06:55",
+            "body": "Good morning! I took a pregnancy test this morning and it was positive. My last period started May 23. I already called my OB and they can see me in two weeks. Is there anything I should do for my heart?"},
+            {"type": "Patient Message", "title": "RE: Positive test!", "author": "PCP", "date": "2025-06-30T12:10",
+            "body": "Congratulations! Keep up the prenatal vitamin and folic acid. Please tell your OB about the mitral valve at your first visit. I have put in a referral back to cardiology so they can see you early in the pregnancy, their office should call you. If you get short of breath, can't lie flat, or feel your heart racing, call us or go to the ER."}]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "telephone",
+          "start": "2025-07-14T14:30",
+          "documents": [{"type": "Telephone Encounter", "title": "Records request from OB", "author": "front desk", "date": "2025-07-14T14:30",
+            "body": "Outside OB office called requesting PMH, med list, cardiology and ED notes for new prenatal patient. Release on file. Faxed problem list, med list, 2023 ED record, 2023 cardiology consult, last labs."}]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "telephone",
+          "start": "2025-08-19T10:10",
+          "documents": [{"type": "Telephone Encounter", "title": "Cardiology referral status", "author": "MA", "date": "2025-08-19T10:10",
+            "body": "Checked referral status for cardiology. Their scheduler says they left her two voicemails in July. Called pt, left a message with the cardiology scheduling number and asked her to call them."}]
+        },
+        {
+          "id": "2025-10-12a",
+          "kind": "portal_message",
+          "start": "2025-10-12T18:20",
+          "immunizations": [{"vaccine": "Influenza, unspecified", "date": "2025-10-10T11:00"}],
+          "documents": [{"type": "Patient Message", "title": "Flu shot at OB", "author": "patient", "date": "2025-10-12T18:20",
+            "body": "Hi, just letting you know I had my 20 week visit Friday and everything was normal so far. I asked the OB if I should wait until after the baby for the flu shot because I was nervous about it, but she explained it is safe in pregnancy and protects the baby too, so I got it there. I was worried because the kids at school get so sick in the winter. You can put it in my record. I had one with you two years ago."},
+            {"type": "Patient Message", "title": "RE: Flu shot at OB", "author": "RN", "date": "2025-10-12T19:05",
+            "body": "Thanks for letting us know, added to your immunization record as given at your OB office 10/10. Good choice. Did cardiology ever reach you to schedule?"},
+            {"type": "Patient Message", "title": "RE: RE: Flu shot at OB", "author": "patient", "date": "2025-10-13T07:30",
+            "body": "Not yet, I keep missing their calls during school. I will try again."}]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "specialist_visit",
+          "start": "2025-12-03T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit, 28 weeks",
+          "conditions": [{"label": "Alpha-thalassemia", "icd10": "D56.0", "action": "diagnosed", "onset": "2025-12-03", "note": "as listed by OB during evaluation of fetal effusions"}],
+          "reports": [{"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2025-12-03T09:45", "text": "Single live intrauterine pregnancy, gestational age 27 weeks 5 days by early dating. Fetal cardiac activity present. Fetal biometry within the expected range for dates. Fetal ascites present. Bilateral fetal pleural effusions. Small fetal pericardial effusion. Amniotic fluid volume normal. Placenta posterior, no previa.", "conclusion": "Fetal ascites, bilateral pleural effusions and a small pericardial effusion with normal fluid and normal growth."}],
+          "documents": [{"type": "Consult Note", "title": "Obstetrics Prenatal Visit, 28 weeks", "author": "obstetrics", "date": "2025-12-08T15:40",
+            "body": "Obstetrics and Gynecology, prenatal visit\nDate of visit: 12/03/2025\ncc: primary care physician\n\n31 y/o G2P1 at 27w5d by early ultrasound, with rheumatic mitral stenosis and alpha-thalassemia trait, here for her routine third-trimester visit. She feels well, no complaints, no recent illness, no trauma. Glucose screening normal, no maternal diabetes. Antibody screen negative; no alloimmunization.\n\nLabs: Toxoplasma, CMV and parvovirus B19 serologies negative. Cell-free DNA screening earlier in pregnancy low risk, no chromosomal abnormality.\n\nUltrasound today: fetal ascites, bilateral fetal pleural effusions and a small pericardial effusion. Amniotic fluid normal. Growth appropriate.\n\nAssessment/Plan:\n- Fetal effusions as above, infectious and immune causes not supported by the workup to date. With maternal alpha-thalassemia trait, fetal alpha-thalassemia is a leading concern. Problem list: alpha-thalassemia.\n- Neonatology consulted today.\n- Maternal peripheral blood smear sent.\n- Maternal-fetal medicine to follow closely.\n- Medications: prenatal vitamin, folic acid 1 mg. NKDA.\n\nDiscussed findings with patient and partner at length."}]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "telephone",
+          "start": "2025-12-05T12:15",
+          "documents": [{"type": "Telephone Encounter", "title": "Patient call after ultrasound", "author": "RN", "date": "2025-12-05T12:15",
+            "body": "Pt called crying, says her scan Wednesday showed fluid around the baby and the OB thinks it may be the thalassemia. Wants to talk to her doctor. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "PCP callback", "author": "PCP", "date": "2025-12-05T17:30",
+            "body": "Called back, spoke 20 min. We have not received the OB note yet. She explained the ultrasound findings as she understands them, and that the OB, the high-risk pregnancy team and the newborn doctors are all involved. Listened, answered what I could, encouraged her to write down questions for the specialists. She feels well herself, no breathlessness or palpitations. She has support from her partner. Will watch for the OB letter. Told her she can message any time."}]
+        }
+      ]
+    }
+  ]
+}

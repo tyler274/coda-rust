@@ -1,0 +1,616 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001984",
+      "given": "Patrick",
+      "family": "Carlson",
+      "birth_date": "1974-02-10",
+      "address_line": "31 Mill Valley Road",
+      "phone": "+1-603-555-0156",
+      "email": "patrick.carlson@example.test",
+      "marital_status": "married",
+      "summary": "Construction site supervisor with long-standing hypertension who joins in 2020, then accumulates metabolic syndrome, prediabetes turning to type 2 diabetes, heavy smoking and an alcohol use disorder he minimizes. Adherence falls off after 2023; an ED visit for severe hypertension finds hypertensive retinopathy, and his last two visits are about missed medicines.",
+      "events": [
+        {
+          "id": "2020-08-04a",
+          "kind": "telephone",
+          "start": "2020-08-04T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2020-08-04T10:12",
+              "body": "Caller is a 46 yo man looking for a new primary care doctor; his wife pushed him to call. Previous PCP retiring at the end of the summer. Reviewed membership and what insurance still covers (labs, imaging, specialists, meds). He wants an early appointment, works construction, on site by 6:30. New patient visit booked 8/11 at 7:30 AM. Asked him to bring his medication bottles and sign a records release for the old office."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-11a",
+          "kind": "establish_care",
+          "start": "2020-08-11T07:30",
+          "end": "2020-08-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; hypertension",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2016-06-01",
+              "note": "per patient and prior practice, treated about four years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for headache",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "headache, over the counter"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              88
+            ],
+            "weight_kg": 94.5,
+            "height_cm": 180.0,
+            "labs": {
+              "Low Density Lipoprotein": 150,
+              "High Density Lipoprotein": 35,
+              "Triglycerides": 175,
+              "Total Cholesterol": 220,
+              "Creatinine": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-11T08:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-11T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-11T08:15",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction site supervisor"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-08-11T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-08-11T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-08-11T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-08-11T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Outside records request, prior primary care",
+              "category": "procedure",
+              "reason": "establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-08-11T08:40",
+              "body": "NEW PATIENT\n\n46 yo M establishing care. Prior PCP retiring. Main issue is blood pressure: told he had high BP around 2016, started on lisinopril and later HCTZ added. Takes both most mornings, admits he misses some. No home cuff. Uses ibuprofen 200 mg, one or two, for headaches maybe once a week, bought OTC. No chest pain, no SOB, no swelling.\n\nPMH: hypertension. No surgeries.\nMeds: lisinopril 20 daily, HCTZ 25 daily, ibuprofen 200 prn.\nAllergies: none to medications.\nFHx: father has diabetes and high blood pressure and had heart trouble; mother overweight with high BP; one brother.\nSHx: married. Construction site supervisor, long days outdoors. Says he has a cigar now and then when out with friends, no cigarettes he will own to. Drinks socially, \"a couple on the weekend.\" No drugs. Eats on the road a lot.\n\nROS otherwise negative.\n\nExam: BP and pulse in flowsheet; BP high again on recheck. Well appearing, heavyset. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, nontender. Ext without edema, pulses 2+ symmetric. Skin no rash.\n\nAssessment/plan:\n1. Essential hypertension - above goal today on two drugs. He thinks it is the coffee and the drive in. Keep lisinopril 20 and HCTZ 25 for now, asked him to take them every day without skipping. Recheck at his physical. CMP today.\n2. Health maintenance - Tdap today (last tetanus he can't recall). Hep C and HIV screening offered, accepted. CBC with the chemistry. Colon screening discussed, prefers to talk about it at the physical.\n3. Tobacco/alcohol - minimal by his account. AUDIT-C 3. Will revisit.\n4. Records release signed for prior office.\n\nPhysical in the spring, sooner if anything comes up."
+            }
+          ],
+          "vitals": {
+            "height_cm": 180.0
+          }
+        },
+        {
+          "id": "2020-08-13a",
+          "kind": "portal_message",
+          "start": "2020-08-13T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-08-13T16:05",
+              "body": "Hi Patrick, your blood work came back fine. Kidney function, potassium and blood counts are normal, and the hepatitis C and HIV screens were negative. Nothing to change. Keep taking both blood pressure pills every day and we will look at the numbers again at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "outside_records",
+          "start": "2020-09-22T11:30",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2020-09-22T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2020-09-22T11:30",
+              "body": "Records from prior primary care office, 2016 to 2020, 22 pages.\n\nProblem list: hypertension (2016).\nMedications at last visit (02/2020): lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily.\nAllergies: NKDA.\nOffice BPs in the 130s to 140s systolic on treatment. BMP each year without abnormality. Tetanus booster documented 2009.\nLast visit note: BP follow-up, refills given, return 1 year.\n\nScanned to chart. Reviewed by PCP, no new information."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-27a",
+          "kind": "telephone",
+          "start": "2020-10-27T14:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Flu vaccine outreach",
+              "author": "MA",
+              "date": "2020-10-27T14:40",
+              "body": "Called during flu outreach. Pt says he never gets the flu shot and is not interested this year. Documented as declined."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-10a",
+          "kind": "pharmacy",
+          "start": "2020-11-10T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Lisinopril and HCTZ refill",
+              "author": "MA",
+              "date": "2020-11-10T09:20",
+              "body": "Pharmacy request for 90-day supplies of lisinopril 20 mg and hydrochlorothiazide 25 mg. Seen 8/11. Sent per protocol with 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-23a",
+          "kind": "portal_message",
+          "start": "2021-02-23T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "author": "patient",
+              "date": "2021-02-23T19:48",
+              "body": "need to get the physical done before the busy season starts. anything early in the morning in march works. do I need to fast"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "author": "front desk",
+              "date": "2021-02-24T08:31",
+              "body": "Booked for Monday 3/22 at 7:15. Yes, nothing but water after midnight so we can draw fasting labs that morning."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "annual_physical",
+          "start": "2021-03-22T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical; metabolic screening",
+          "conditions": [
+            {
+              "label": "Metabolic syndrome",
+              "icd10": "E88.810",
+              "action": "diagnosed",
+              "onset": "2021-03-22"
+            },
+            {
+              "label": "Mixed hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2021-03-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ],
+            "hr": 78,
+            "weight_kg": 94.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-03-22T07:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 220
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 150
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 175
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-03-22T07:25",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 96
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-03-22T07:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-03-22T07:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "metabolic syndrome, family history of type 2 diabetes; diabetes risk assessment"
+            },
+            {
+              "id": "fit-2021",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-03-22T08:05",
+              "body": "ANNUAL EXAM\n\n47M, here fasting. Feels fine. No complaints. Took his BP pills this morning. Ibuprofen now and then for headaches, nothing new about them.\n\nInterval: none.\nFHx update: father had an MI at 52. Also has diabetes and HTN. Mother obesity and HTN.\nSocial: still says only an occasional cigar at a get-together. Alcohol \"only socially.\" Works long hours, eats whatever is on the site.\n\nROS: negative x 12 systems.\n\nExam:\nVitals per flowsheet. BP 142/88, HR 78. BMI 29.\nGen: well, in no distress.\nHEENT: normal. Neck: no adenopathy, thyroid normal.\nCV: regular rate and rhythm, no murmur or gallop.\nResp: clear to auscultation.\nAbd: soft, non-tender, no organomegaly.\nExt: warm, no edema.\nSkin: unremarkable.\nNeuro: grossly intact.\nImpression: normal exam.\n\nLabs this AM: TC 220, HDL 35, LDL 150, TG 175. FBG 96.\n\nA/P:\n- Metabolic syndrome: BP on treatment, low HDL, high triglycerides. Glucose normal today but strong family history of diabetes. Referring to endocrinology to assess diabetes risk and talk prevention. Diet and activity counseling given - fewer drive-through lunches, walk evenings.\n- Mixed hyperlipidemia: as above, lifestyle first.\n- HTN: 142/88, still above goal. Same regimen, he promises to be more consistent.\n- CRC screening: chose FIT, kit given.\n- PHQ-2 0. AUDIT-C 3.\n- Flu declined in the fall. COVID vaccine - plans to get it at the pharmacy when eligible.\n\nRTC 6 mo or after endo."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical results",
+              "author": "PCP",
+              "date": "2021-03-24T12:10",
+              "body": "Patrick - fasting sugar was normal at 96. Cholesterol pattern is the one we talked about: good cholesterol low at 35, triglycerides 175, LDL 150. Together with your blood pressure that is what we call metabolic syndrome. Endocrinology will call you to schedule. Don't forget to mail back the stool kit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your physical results",
+              "author": "patient",
+              "date": "2021-03-24T20:36",
+              "body": "ok thanks. will drop the kit off this week"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "lab_only",
+          "start": "2021-04-13T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-04-09T06:00",
+              "resulted": "2021-04-13T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2021",
+              "action": "done",
+              "date": "2021-04-13T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "RN",
+              "date": "2021-04-13T11:15",
+              "body": "FIT negative. Letter mailed. Repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "telephone",
+          "start": "2021-05-11T15:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside vaccine record",
+              "author": "MA",
+              "date": "2021-05-11T15:20",
+              "body": "Pt called with COVID vaccine dates from his card, both done at a retail pharmacy: Pfizer 4/8/21 and 4/29/21. Entered as historical."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "specialist_visit",
+          "start": "2021-06-21T13:30",
+          "service": "Endocrinology",
+          "reason": "abnormal glucose screening; metabolic syndrome",
+          "conditions": [
+            {
+              "label": "Prediabetes",
+              "action": "diagnosed",
+              "onset": "2021-06-21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 97.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-06-21T14:10",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 105
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.9
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2021-07-06T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2021-07-06T09:00",
+              "body": "OUTSIDE ENDOCRINOLOGY GROUP - CONSULTATION LETTER\nDate of service: 06/21/2021\nRe: Patrick Carlson, DOB 02/10/1974\n\nThank you for referring Mr. Carlson for evaluation of diabetes risk in the setting of metabolic syndrome.\n\nHe is a 47-year-old construction site supervisor with hypertension of roughly five years' duration, currently on lisinopril and hydrochlorothiazide. He reports smoking about one and a half packs per day for 30 years. He does not exercise on a regular basis and eats fast food on most days of the week. Father with type 2 diabetes.\n\nMedications: lisinopril, hydrochlorothiazide 25 mg daily, ibuprofen 200 mg as needed.\nAllergies: NKDA.\n\nExam: BP 138/88. BMI 30. Remainder of a focused exam was unremarkable; no acanthosis, thyroid not enlarged.\n\nLabs today: fasting glucose 105 mg/dL, hemoglobin A1c 5.9%.\n\nImpression: Prediabetes, in the setting of metabolic syndrome.\n\nRecommendations:\n1. We discussed his risk of progressing to type 2 diabetes and what lowers it: modest weight loss of 5 to 7 percent, 150 minutes a week of activity, cutting sugared drinks and fried food. Referral information for a diabetes prevention program given.\n2. Smoking raises his cardiometabolic risk further; cessation strongly encouraged.\n3. No pharmacotherapy at this time. Repeat A1c in 6 to 12 months through your office.\n4. Follow-up here as needed.\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-07a",
+          "kind": "portal_message",
+          "start": "2021-07-07T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrinology letter",
+              "author": "PCP",
+              "date": "2021-07-07T07:55",
+              "body": "Got the letter from endocrinology. A1c 5.9 puts you in the prediabetes range, not diabetes. The plan is the lifestyle piece - some weight off, more walking, less fast food - and a repeat A1c here in 6 to 12 months. They also told you what I will keep telling you about the smoking. Did you get the prevention program info?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrinology letter",
+              "author": "patient",
+              "date": "2021-07-09T21:14",
+              "body": "yeah got the paper. not much time for classes in the summer, will try in the winter"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T07:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T07:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T07:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2021-10-19T07:10",
+              "body": "In before work for flu vaccine. Wife made him come, per pt. Screening questions negative. Quadrivalent flu 0.5 mL IM L deltoid. VIS given. Left without problems."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T11:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request, lisinopril and HCTZ",
+              "author": "MA",
+              "date": "2021-12-07T11:45",
+              "body": "Pharmacy faxed refill request. Fill history on the request shows last 90-day fills 6/2021, so he has been out or stretching for a few months. Refilled x90 days. Message left asking him to book a BP visit - due."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

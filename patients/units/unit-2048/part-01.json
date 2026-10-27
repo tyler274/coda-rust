@@ -1,0 +1,245 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002048",
+      "given": "Derek",
+      "family": "Mayhew",
+      "birth_date": "1978-02-21",
+      "address_line": "27 Glendale Street",
+      "phone": "+1-518-555-0196",
+      "email": "derek.mayhew@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker with hypertension on hydrochlorothiazide and GERD on omeprazole, former 30 pack-year smoker, who joined in 2021. In 2024 exertional dyspnea and cough led to an HRCT showing fibrosis; pulmonology confirmed idiopathic pulmonary fibrosis and started nintedanib, and follows him yearly with stable resting saturation of 94%.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "author": "front desk",
+              "date": "2021-09-02T10:20",
+              "body": "Derek phoned about membership. Has been going to an office in town for years but says he can never get a callback. Works construction, early starts, wants late-morning or end-of-day slots when possible. Membership info emailed. Booked new patient visit Tue 9/14 at 11:00. Asked him to sign a records release so we can get his old chart, and to bring his medication bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T11:00",
+          "end": "2021-09-14T11:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2016-01-01", "note": "Longstanding per patient, on hydrochlorothiazide"},
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "diagnosed", "onset": "2019-01-01", "note": "Controlled on omeprazole"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2018-11-01", "note": "30 pack-years, quit late 2018"}
+          ],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "GERD"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [135, 85], "weight_kg": 87.2, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 5.4, "Hemoglobin": 14.7}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T11:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T11:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T11:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T11:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2021-09-14T11:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-09-14T11:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Construction worker"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per month, social"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T09:00"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-14T11:40"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-09-14T11:00"},
+            {"procedure": "Tonsillectomy", "performed": "1990-07-01T08:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T12:10",
+              "body": "43M, framing and concrete work for a local builder, here to set up primary care. Coming over from another office in town; release signed, records requested.\n\nHPI: Feels well. Has had high blood pressure for about five years, on HCTZ 25 every morning, rarely misses. No home cuff. Reflux for a couple of years, heartburn after late dinners, gone on omeprazole 20 daily, wants to stay on it. No dysphagia, no weight loss, no black stools. Breathing fine, keeps up on the job site, no cough.\n\nPMH: hypertension, GERD. PSH: tonsils out at 12. Meds: HCTZ 25 mg daily, omeprazole 20 mg daily. Allergies: none to medications.\nFH: father with hypertension. Mother with type 2 diabetes. Nobody with lung disease that he knows of.\nSH: smoked about a pack a day from his late teens, roughly 30 pack-years, stopped in late 2018 around his 40th birthday and has stayed off. A drink or two a month. No drugs. Lives in Easthampton.\nImmunizations: two Pfizer COVID shots this spring at a pharmacy (dates per his card). Flu shot today.\n\nROS: negative except as above.\n\nExam: vitals as charted, BP fine for him. Well appearing. Oropharynx clear. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear to the bases, good air movement. Abdomen soft, nontender. No edema. Skin unremarkable.\n\nA/P:\n1. Hypertension, controlled on HCTZ 25. Continue. CMP today for lytes and kidney function.\n2. GERD, controlled. Continue omeprazole 20; we can try stepping down another time if he wants.\n3. Former smoker, 30 pack-years, quit almost 3 years. Congratulated. Not yet in the age range for lung screening; revisit at 50.\n4. Health maintenance: CBC, lipids, A1c (mother diabetic), one-time HIV and hep C screening, all agreed to. Flu vaccine given. Colon screening starts at 45, will bring up then.\nFollow up in about 6 months for BP, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2021-09-16T16:05",
+              "body": "Hi Derek, everything from Tuesday came back normal: kidney function and potassium are fine on the water pill, blood counts normal, sugar and A1c normal, cholesterol in a reasonable range. HIV and hepatitis C screens negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T09:30",
+          "reason": "Prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "front desk",
+              "date": "2021-10-05T09:30",
+              "body": "Records from previous primary care office, 34 pages, scanned under Media.\n\nSummary for chart (RN): problem list there shows hypertension since 2016, started on hydrochlorothiazide 25 mg that year and continued; reflux since 2019 on omeprazole 20 mg. Tonsillectomy in childhood. Tobacco use documented through 2018, then recorded as quit. Routine labs 2017 through 2020 with normal chemistry and blood counts. No medication allergies listed. No hospital stays on file. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T08:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Hydrochlorothiazide",
+              "author": "RN",
+              "date": "2021-12-07T08:40",
+              "body": "Pharmacy fax requesting HCTZ 25 mg #90. Seen 9/14, BMP normal. Sent 90 days with 1 refill per standing order."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-08T16:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-03-08T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-03-08T16:50",
+              "body": "Six month check. Came straight from a job, still in work boots. No headaches, no chest pain, no swelling. Taking HCTZ every morning. Reflux quiet on omeprazole, still no swallowing trouble. Still not smoking.\n\nBP as charted, about where he usually runs. Heart regular, lungs clear throughout, no edema.\n\nPlan: continue HCTZ 25 and omeprazole 20. BMP for potassium. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "pharmacy",
+          "start": "2022-06-21T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Omeprazole",
+              "author": "RN",
+              "date": "2022-06-21T09:10",
+              "body": "Omeprazole 20 mg capsules, 90-day supply requested by pharmacy. Approved, 1 refill. Due for physical in the fall, front desk to call."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "telephone",
+          "start": "2022-09-21T12:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment Follow-up",
+              "author": "front desk",
+              "date": "2022-09-21T12:30",
+              "body": "Did not come to yesterday's 7:45 physical. Reached him at lunch: crew got pulled to a pour that morning and he forgot to call. Rebooked for Tue 10/18, 4:00. He will come fasting if he can, otherwise fine either way."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-18T16:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-10-18T16:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-10-18T16:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T16:30"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-10-18T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-18T17:05",
+              "body": "Annual exam, 44M. Doing well. Busy season at work, long days but sleeping okay. No chest pain, no shortness of breath on the job, no cough. Reflux controlled. Mood good. Still smoke-free, about four years now. Alcohol a couple of drinks a month.\n\nMeds: HCTZ 25 mg daily, omeprazole 20 mg daily. No drug allergies.\n\nExam: vitals as charted. Well appearing. HEENT unremarkable. Neck without nodes or thyroid enlargement. Heart regular, no murmur. Lungs clear, no wheeze or crackles. Abdomen soft, no organomegaly. Extremities without edema. Skin without suspicious lesions.\n\nA/P:\n- Hypertension: controlled, continue HCTZ. CMP.\n- GERD: controlled, continue omeprazole.\n- Prevention: lipids and A1c today. Flu vaccine given. Colorectal screening next year at 45.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2022-10-20T12:15",
+              "body": "Derek, your blood work from the physical is all normal. Kidneys and potassium good, A1c normal, cholesterol fine. Keep doing what you're doing."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

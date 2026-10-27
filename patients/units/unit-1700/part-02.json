@@ -1,0 +1,585 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001700",
+   "events": [
+    {
+     "id": "2023-04-01a",
+     "kind": "ed_visit",
+     "start": "2023-04-01T14:10",
+     "end": "2023-04-01T23:40",
+     "service": "Emergency Medicine",
+     "reason": "shortness of breath, palpitations",
+     "conditions": [
+      {
+       "label": "Rheumatic mitral stenosis",
+       "icd10": "I05.0",
+       "action": "diagnosed",
+       "onset": "2023-04-01"
+      },
+      {
+       "label": "Paroxysmal atrial fibrillation",
+       "action": "diagnosed",
+       "onset": "2023-03-30"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "atrial fibrillation, mitral stenosis"
+      },
+      {
+       "drug": "furosemide 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily for 5 days",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "pulmonary congestion"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2023-04-01T14:15",
+       "bp": [
+        110,
+        70
+       ],
+       "hr": 120,
+       "rr": 22,
+       "spo2": 94,
+       "temp_c": 36.9
+      },
+      {
+       "time": "2023-04-01T17:30",
+       "bp": [
+        108,
+        68
+       ],
+       "hr": 96,
+       "rr": 18,
+       "spo2": 96
+      },
+      {
+       "time": "2023-04-01T23:00",
+       "bp": [
+        112,
+        72
+       ],
+       "hr": 74,
+       "rr": 16,
+       "spo2": 97
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-01T14:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-01T14:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-01T14:35",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity",
+         "value": 3
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-01T14:35",
+       "results": [
+        {
+         "test": "Pregnancy Test, Urine",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-04-01T14:20",
+       "text": "Atrial fibrillation with rapid ventricular response, ventricular rate about 120. Normal axis. QRS narrow. No ST-segment changes. No T-wave abnormalities.",
+       "conclusion": "Atrial fibrillation with rapid ventricular response; no acute ST or T-wave change."
+      },
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2023-04-01T14:50",
+       "text": "PA and lateral views. Enlarged left atrium with straightening of the left heart border. Pulmonary venous congestion with upper-zone vascular redistribution. No pleural effusion. No pneumothorax. No focal consolidation. Bones unremarkable.",
+       "conclusion": "Pulmonary venous congestion and left atrial enlargement."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2023-04-01T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2023-04-19T10:05",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 04/01/2023\nPatient: Maricel Srisai, 28 F\nAllergies: NKDA\n\nCC: shortness of breath and racing heart\n\nHPI: 28 year old woman with alpha thalassemia trait, otherwise healthy, two days of breathlessness that has been getting worse, now cannot lie flat and has been sleeping propped on pillows, with a fluttering, fast heartbeat on and off. No chest pain, no fever, no leg swelling, no recent travel. Not pregnant per patient, urine hCG negative.\n\nPMH: alpha-thal trait. Prior SVD. Meds: prenatal vitamin, folic acid 1 mg. SH: never smoker, no EtOH, kindergarten teacher. FH: mother with rheumatic heart disease.\n\nExam: in mild respiratory distress, speaking full sentences. BP 110/70, HR 120 and irregularly irregular, RR 22, SpO2 94% RA, afebrile. Cardiac: irregular rhythm; low-pitched rumbling diastolic murmur loudest at the apex with an opening snap. Lungs: crackles at both bases. JVP difficult to assess. Extremities without edema.\n\nECG: atrial fibrillation, rate ~120, no ST or T changes.\nCXR: venous congestion, enlarged LA.\nLabs: hs troponin 3, BMP normal, CBC with microcytosis consistent with known trait.\n\nED course: metoprolol 5 mg IV x2 with rate improvement, furosemide 20 mg IV with good urine output and easier breathing. Spontaneously converted to sinus rhythm at about 21:30. Ambulated on room air, SpO2 97%.\n\nImpression: new atrial fibrillation with rapid rate and pulmonary congestion; exam and film most consistent with rheumatic mitral stenosis, given family history.\n\nDisposition: discharged home in sinus rhythm 23:40. Metoprolol succinate 25 mg daily. Furosemide 20 mg daily for 5 days. Needs echocardiogram and cardiology; follow up with PCP within one week. Return for chest pain, worsening breathing or recurrent palpitations.\n\n[Received by fax 4/19/2023 after records request.]"
+      }
+     ]
+    },
+    {
+     "id": "2023-04-02a",
+     "kind": "portal_message",
+     "start": "2023-04-02T09:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Was in the ER last night",
+       "author": "patient",
+       "date": "2023-04-02T09:50",
+       "body": "Hello doctor, I went to the emergency room yesterday because I couldn't breathe lying down and my heart was racing. They said my heart was out of rhythm and that I may have a problem with a heart valve, like my mom. They gave me two new pills, metoprolol and a water pill for 5 days. I feel much better today. They told me to see you this week and to get a heart ultrasound. What should I do?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Was in the ER last night",
+       "author": "PCP",
+       "date": "2023-04-02T12:20",
+       "body": "Glad you are feeling better. Keep taking both pills as they told you. The office will call tomorrow to get you in this week, I have Thursday morning open. If the racing or breathlessness comes back before then, go back to the ER."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-06a",
+     "kind": "office_visit",
+     "start": "2023-04-06T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, atrial fibrillation",
+     "state": {
+      "weight_kg": 57.2
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-06T09:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-06T09:35",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-04-06T09:15",
+       "text": "Sinus rhythm, rate 72. PR, QRS and QT intervals normal. Normal axis. No ST-segment or T-wave abnormality.",
+       "conclusion": "Normal sinus rhythm."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-06T09:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2023-04-06T09:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2023",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "suspected rheumatic mitral stenosis, atrial fibrillation; needs echo"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED Follow-up",
+       "author": "PCP",
+       "date": "2023-04-06T09:40",
+       "body": "S: Seen in ED Sat 4/1 for 2 days of orthopnea, dyspnea and palpitations; per pt and discharge paperwork she was in AF with RVR, CXR with congestion, converted in the ED. Sent home on metoprolol succinate 25 daily and 5 days of furosemide, which she finished yesterday. Since then breathing back to normal, sleeping flat, no palpitations. Mild fatigue first two days on metoprolol, better now. ED told her they suspect a mitral valve problem like her mother's. We do not have the ED record yet, front desk requesting.\n\nO: vitals as charted, regular pulse. Appears well. JVP not elevated. Heart regular, soft low-pitched diastolic rumble at the apex in left lateral position, which I did not hear at her last physical. Lungs clear. No edema.\nECG in office: sinus rhythm 72, normal intervals.\n\nA/P\n1. Paroxysmal AF, single episode, now sinus on metoprolol. Check TSH, BMP after diuretic.\n2. Probable rheumatic mitral stenosis given exam and her mother's history. Needs TTE and cardiology; referral placed today, asked for a visit within a month.\n3. Continue metoprolol succinate 25 mg daily.\nReturn precautions reviewed. Will call with labs."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-07a",
+     "kind": "portal_message",
+     "start": "2023-04-07T13:30",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Thyroid and chemistry results",
+       "author": "PCP",
+       "date": "2023-04-07T13:30",
+       "body": "TSH normal, so thyroid is not the trigger. Potassium and kidney function fine after the water pill. Cardiology should be calling you to schedule. Let me know if you have not heard from them by next week."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "telephone",
+     "start": "2023-04-11T11:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED records request",
+       "author": "front desk",
+       "date": "2023-04-11T11:00",
+       "body": "Called the hospital ED HIM department, record from 4/1 not sent yet. Faxed a second request with the signed release. They said 5 to 7 business days."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-18a",
+     "kind": "specialist_visit",
+     "start": "2023-05-18T13:30",
+     "service": "Cardiology",
+     "reason": "suspected rheumatic mitral stenosis, atrial fibrillation",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2023-05-18T12:45",
+       "text": "Technically adequate study. Left ventricle normal in size and wall thickness with normal systolic function, LVEF 60%. No regional wall motion abnormality. Right ventricle normal in size and function. Mitral valve: rheumatic morphology with commissural fusion and diastolic doming of the anterior leaflet. Mitral valve area 1.6 cm2 by planimetry. Mean transmitral gradient 6 mmHg at heart rate 68. Mild mitral regurgitation. Left atrium enlarged, volume index 46 mL/m2. No left atrial thrombus seen on transthoracic imaging. Aortic valve trileaflet, opens normally, no aortic regurgitation. Tricuspid valve normal with trace regurgitation; estimated pulmonary artery systolic pressure 36 mmHg. Inferior vena cava normal in size with normal collapse. No pericardial effusion.",
+       "conclusion": "Rheumatic mitral stenosis, MVA 1.6 cm2, mean gradient 6 mmHg; mild MR; enlarged left atrium; normal LV function; PASP 36 mmHg."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2023",
+       "action": "done",
+       "date": "2023-05-18T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2023-05-25T16:10",
+       "body": "Outpatient Cardiology Consultation\nDate of visit: 05/18/2023\nReferred by: primary care, for mitral stenosis and atrial fibrillation\n\nThank you for asking us to see Ms. Srisai, a 28 year old kindergarten teacher with alpha-thalassemia trait, seen in the emergency department on 4/1 with AF and rapid rates and pulmonary congestion that settled with rate control and diuresis, converting to sinus rhythm. She has felt well since, with no palpitations, orthopnea or exertional limitation. She takes metoprolol succinate 25 mg daily, a prenatal vitamin and folic acid. No known drug allergies. Her mother has rheumatic heart disease. She recalls no childhood rheumatic fever. Never smoker, no alcohol.\n\nExam: BP and HR as recorded, regular rhythm. Loud S1, opening snap, and a low-pitched mid-diastolic rumble at the apex. Lungs clear. No edema.\n\nEcho today: rheumatic mitral valve, MVA 1.6 cm2 by planimetry, mean gradient 6 mmHg at HR 68, mild MR, LA volume index 46 mL/m2, LVEF 60%, PASP 36 mmHg.\n\nAssessment: progressive (stage B) rheumatic mitral stenosis. Her decompensation occurred with AF and fast rates, which shorten diastolic filling. Currently in sinus rhythm.\n\nRecommendations:\n1. Continue metoprolol succinate 25 mg daily.\n2. Repeat echocardiogram yearly, sooner with symptoms.\n3. She mentions she may want a second child. Please have her see us before trying to conceive; pregnancy increases the gradient and needs close follow-up.\n4. Seek care promptly for palpitations or breathlessness.\nWe will see her in 1 year with an echo.\n\nOutside cardiology group"
+      }
+     ]
+    },
+    {
+     "id": "2023-07-06a",
+     "kind": "pharmacy",
+     "start": "2023-07-06T10:40",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Metoprolol refill",
+       "author": "RN",
+       "date": "2023-07-06T10:40",
+       "body": "Pharmacy fax: metoprolol succinate 25 mg, ED Rx with no refills left. Cardiology letter says continue. Per PCP sent metoprolol succinate ER 25 mg daily #90 with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "annual_physical",
+     "start": "2023-08-22T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "state": {
+      "weight_kg": 57.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-08-22T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-08-22T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-08-22T09:00",
+       "body": "29 y/o here for yearly visit before classes start back. Saw cardiology in May, echo showed rheumatic MS, MVA 1.6, on metoprolol, yearly echo. No palpitations since April. Walks fine, no orthopnea. Taking metoprolol, prenatal vitamin, folic acid. Thinking about a second baby maybe next year.\n\nExam: vitals reviewed. Heart regular, apical diastolic rumble unchanged. Lungs clear. No edema. Abdomen benign. Normal affect.\nPHQ-2: 1.\n\nA/P\n1. Rheumatic mitral stenosis, stage B, sinus rhythm: per cardiology. Reminded her the cardiologist wants to see her before she tries to conceive.\n2. Hx paroxysmal AF: none since April.\n3. Alpha-thal trait: CBC today.\n4. Health maintenance: Pap 2024. Flu and COVID offered for October, she will come in.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-24a",
+     "kind": "nurse_visit",
+     "start": "2023-10-24T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-24T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-24T16:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-24T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza and COVID vaccines",
+       "author": "RN",
+       "date": "2023-10-24T16:20",
+       "body": "In for flu and the updated COVID shot. Afebrile, feels well. Flu 0.5 mL IM left deltoid; COVID 2023-24 formula 0.3 mL IM right deltoid. VIS for both. Observed 15 min, tolerated. Joked she is doing it this year because last winter she caught everything her class brought in."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-25a",
+     "kind": "annual_physical",
+     "start": "2024-06-25T10:00",
+     "appointment": "no-show",
+     "reason": "annual physical"
+    },
+    {
+     "id": "2024-06-26a",
+     "kind": "telephone",
+     "start": "2024-06-26T09:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-06-26T09:15",
+       "body": "Called re missed physical yesterday. She apologized, mixed up the date with a field day at school. Rebooked 7/16 at 1:40."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "annual_physical",
+     "start": "2024-07-16T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "state": {
+      "weight_kg": 57.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-07-16T14:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-07-16T14:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap)",
+       "performed": "2024-07-16T14:05",
+       "issued": "2024-07-22T15:00",
+       "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+       "conclusion": "Negative for intraepithelial lesion or malignancy."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-07-16T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-07-16T14:25",
+       "body": "30 y/o, rescheduled from June. Saw cardiology last month for her yearly echo; she says it was the same as last year and they want her back in a year. We have not received that letter, will ask. She and her partner would like to try for a second baby this fall; she says the cardiologist told her that was OK as long as she is followed closely in pregnancy. No palpitations, dyspnea, orthopnea or edema. On metoprolol 25, prenatal vitamin, folic acid.\n\nExam: vitals as charted. Heart regular, apical diastolic rumble. Lungs clear. Abd soft. Pelvic exam normal, Pap collected. No edema.\nPHQ-2: 0.\n\nA/P\n1. Rheumatic MS, stable per pt report of June echo. Requesting cardiology note.\n2. Preconception: continue folic acid and prenatal vitamin. When pregnant, tell OB and cardiology right away. MMR documented in old records.\n3. Alpha-thal trait: CBC.\n4. Pap today.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-23a",
+     "kind": "portal_message",
+     "start": "2024-07-23T08:40",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Pap and labs",
+       "author": "PCP",
+       "date": "2024-07-23T08:40",
+       "body": "Pap normal, next in 3 years. Blood count stable for you, kidney function and potassium normal. Still no cardiology letter from June; front desk sent a request."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "portal_message",
+     "start": "2024-10-08T20:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Flu shot this year",
+       "author": "patient",
+       "date": "2024-10-08T20:10",
+       "body": "Got the flu shot reminder. I am going to pass this year, I will think about it later in the season. Thanks."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Flu shot this year",
+       "author": "MA",
+       "date": "2024-10-09T09:00",
+       "body": "No problem, noted as declined for now. Just call or message us if you'd like to come in for it."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

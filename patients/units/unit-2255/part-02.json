@@ -1,0 +1,378 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002255",
+      "events": [
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-02-08T14:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-02-08T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-02-08T14:55",
+             "body": "Six-month check. He and his wife were away for three weeks in January and he kept walking daily there. No chest discomfort, no shortness of breath, no lightheadedness. Cardiology yearly visit was rescheduled twice on their end; now set for later this year.\n\nMeds: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40. All taken.\n\nExam: BP and pulse as charted. JVP flat. Heart regular, no murmur, no gallop. Lungs clear. Ankles without edema.\n\nA/P: Hypertension controlled. CAD and cardiomyopathy without symptoms. BMP today. Physical in August."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "office_visit",
+          "start": "2022-05-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2022-05-16T15:30",
+             "body": "Pt called to cancel tomorrow, traveling. Feels fine, will come for the August physical. OK per PCP."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "annual_physical",
+          "start": "2022-08-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-16T09:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-16T09:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-16T09:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-08-16T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2022-08-16T09:00"}],
+          "orders": [{"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2022-08-16T09:50",
+             "body": "ANNUAL WELLNESS VISIT\n\nHealth risk assessment reviewed with him. Lives with wife in a two-story house, no trouble with stairs. Walks daily, golf in season. No falls in the past year. No urinary problems worth mentioning. Hearing fine. Last eye exam this spring, new readers. Mood good; PHQ-2 0. Wine a couple of glasses a week. Former smoker since 2015.\n\nFunctional status: independent with all ADLs and IADLs, manages his own meds and finances. Memory: no concerns; 3-item recall 3/3.\n\nMed list confirmed. NKDA.\n\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. No edema. Skin unremarkable on the areas examined.\n\nScreening schedule given to him in writing: lung CT this fall, colonoscopy 2028, flu and the new bivalent COVID booster at a nurse visit in October. Shingrix and pneumonia vaccine complete. Health care proxy on file.\n\nLabs today: CMP, lipids, CBC, A1c."}
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T07:50",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2022-08-18T07:50",
+             "body": "All of the physical labs are normal this year. Cholesterol remains well controlled. See you in October for shots."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T13:45"},
+            {"vaccine": "COVID-19, mRNA, Moderna, bivalent", "date": "2022-10-04T13:48"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T13:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2022-10-04T14:05",
+             "body": "High-dose flu L deltoid, Moderna bivalent booster R deltoid. Afebrile, no concerns. 15 minute observation without issue."}
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "imaging",
+          "start": "2022-11-01T08:15",
+          "reason": "lung cancer screening, annual",
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-11-01T08:15"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-11-01T08:15",
+             "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING\nComparison: 10/26/2021 and 10/20/2020.\nLungs: no nodules, masses or airspace disease. No effusion or pneumothorax.\nMediastinum: no adenopathy. Heart normal size. Coronary calcification and coronary stent, stable.\nUpper abdomen and osseous structures: no acute or suspicious findings.",
+             "conclusion": "Lung-RADS 1. Return to annual screening."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT 2022", "author": "PCP", "date": "2022-11-02T08:20",
+             "body": "Third negative screen. Annual LDCT again next fall."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hand tremor",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-12-13T15:55", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.84}, {"test": "Free Thyroxine", "value": 1.21}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-13T15:55", "results": [{"test": "Calcium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T15:20"}],
+          "orders": [{"id": "neuro-ref", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "bilateral hand tremor"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Tremor", "author": "PCP", "date": "2022-12-13T16:00",
+             "body": "CC: shaky hands.\n\nHPI: Since late summer, roughly four months, both hands shake when he holds something: coffee cup, a fork, signing checks. His wife noticed first. Not there when his hands rest in his lap. It is a little better after a glass of wine, which he says with some embarrassment. No new drugs; meds are the same four for years. No caffeine change, no palpitations, no weight loss, no heat intolerance. No stiffness, no slowness, no falls, no change in his walking. His brother has a tremor diagnosed as essential tremor.\n\nExam: BP and pulse as charted. Thyroid not enlarged. Fine tremor of both hands with arms held out and on finger-nose, no tremor at rest. No cogwheeling, normal arm swing, normal fast finger taps. Gait normal. Heart regular, lungs clear.\n\nA/P: Bilateral action/postural tremor, family history in a brother, alcohol-responsive. Most consistent with essential tremor; no parkinsonian features. Thyroid function and BMP today. Referred to neurology to confirm.\n\nRTC after neurology."}
+          ]
+        },
+        {
+          "id": "2022-12-14a",
+          "kind": "portal_message",
+          "start": "2022-12-14T12:30",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Thyroid results", "author": "PCP", "date": "2022-12-14T12:30",
+             "body": "Thyroid tests are normal, as are calcium and the rest of the chemistries, so the tremor isn't coming from the thyroid. Neurology referral is in; their office will call you."},
+            {"type": "Patient Message", "title": "RE: Thyroid results", "author": "patient", "date": "2022-12-14T20:15",
+             "body": "Thanks. They called already, earliest is end of January. I'll take it."}
+          ]
+        },
+        {
+          "id": "2023-01-30a",
+          "kind": "specialist_visit",
+          "start": "2023-01-30T10:30",
+          "service": "Neurology",
+          "reason": "bilateral hand tremor",
+          "conditions": [{"label": "Essential tremor", "action": "diagnosed", "onset": "2022-08-01"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2023-02-08T09:10",
+             "body": "OUTSIDE NEUROLOGY CONSULTATION\nDate of visit: 01/30/2023\nReferred by primary care for bilateral hand tremor.\n\nDear colleague,\n\nI saw Mr. Alden, 66, who describes about six months of shaking in both hands. It is worst when he holds a coffee cup or writes, and he has noticed it settles after alcohol. He has no tremor when his hands are at rest.\n\nHistory includes hypertension on lisinopril, hyperlipidemia on atorvastatin, coronary artery disease with prior MI and stent, and ischemic cardiomyopathy. Medications: aspirin 81 mg, metoprolol succinate 50 mg, lisinopril 20 mg, atorvastatin 40 mg nightly. NKDA. Brother with essential tremor; father MI at 59; mother hypertension and hyperlipidemia; paternal uncle stroke at 64. Former smoker (30 pack-years, quit 2015), 2-3 glasses of wine weekly, retired pharmaceutical sales.\n\nExamination: Postural tremor of both upper extremities. No rigidity. No bradykinesia on repetitive tasks. Finger-nose and heel-shin without dysmetria; no other cerebellar signs. Cranial nerves, strength, reflexes, sensation and gait otherwise normal.\n\nData: routine labs from your office, including thyroid function, are normal.\n\nImpression: Essential tremor. No features of parkinsonism or cerebellar disease.\n\nPlan: return to neurology clinic in follow-up.\n\nNeurology"}
+          ],
+          "orders": [{"id": "neuro-ref", "action": "done", "date": "2023-01-30T10:30"}]
+        },
+        {
+          "id": "2023-02-09a",
+          "kind": "portal_message",
+          "start": "2023-02-09T08:05",
+          "reason": "neurology letter",
+          "documents": [
+            {"type": "Patient Message", "title": "Neurology letter", "author": "PCP", "date": "2023-02-09T08:05",
+             "body": "Ray, I got the neurologist's letter. Same conclusion we talked about, essential tremor, nothing to suggest Parkinson's. I added it to your problem list."}
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "specialist_visit",
+          "start": "2023-05-08T13:00",
+          "service": "Cardiology",
+          "reason": "ischemic cardiomyopathy follow-up",
+          "vitals": {"bp": [132, 84], "hr": 78},
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2023-05-08T14:00",
+             "text": "TRANSTHORACIC ECHOCARDIOGRAM\nIndication: ischemic cardiomyopathy, follow-up.\nLeft ventricle: normal cavity size, reduced systolic function. LVEF 28% by biplane method.\nRight ventricle: normal size and function.\nAtria: normal size.\nValves: no valvular stenosis.\nPericardium: no effusion.\nIVC: normal size with normal respiratory variation.",
+             "conclusion": "Left ventricular systolic dysfunction, LVEF 28%."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up Letter", "author": "cardiology", "date": "2023-05-24T10:40",
+             "body": "OUTSIDE CARDIOLOGY - OFFICE VISIT\nDate of visit: 05/08/2023\n\nMr. Alden, 66, returns for follow-up of ischemic cardiomyopathy. He recently saw neurology for a hand tremor. He takes his medications as directed and has been on the same regimen for well over six months. He gets occasionally short of breath with heavier exertion. No chest pain, no palpitations, no syncope.\n\nMeds: aspirin 81 mg daily, metoprolol succinate 50 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg nightly. NKDA.\n\nBP 132/84, HR 78.\nExam: no distress. Neck veins not distended. Grade III/VI systolic murmur loudest at the apex. Lungs clear. No peripheral edema. Exam otherwise unremarkable.\n\nEcho today: LVEF 28%, LV systolic dysfunction.\n\nAssessment: Ischemic cardiomyopathy with reduced ejection fraction; CAD with prior MI and stent; hypertension; hyperlipidemia.\nPlan: continue current medications. Return in 6 to 12 months.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after cardiology",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-13T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-13T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-06-13T10:15",
+             "body": "Here to go over the cardiology letter. Their echo shows the LVEF at 28%; this is the first number we have had in our chart. He gets winded going up a long hill or carrying the golf bag, has for a while, unchanged. Flat on one pillow. No leg swelling. No chest pain. Tremor about the same.\n\nMeds unchanged x4.\n\nExam: BP and pulse as charted. JVP not elevated. Soft systolic murmur. Lungs clear. No edema.\n\nA/P:\n1. Ischemic cardiomyopathy, LVEF 28% on May echo. Clinically euvolemic. Cardiology continued the current regimen; BMP today. Reviewed daily weights and when to call.\n2. HTN at goal.\n3. Essential tremor, followed by neurology.\nAWV in August."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T09:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T09:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T09:20", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-08-22T08:40"}],
+          "orders": [{"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-08-22T09:25",
+             "body": "AWV, subsequent.\nHRA: no falls, independent, drives, still golfing though he says his putting has suffered from the shake. Mood fine, PHQ-2 0. Wine unchanged. Sleep 7 hours.\nCognition: no concerns, recall 3/3.\nMeds and allergies reconciled; unchanged.\nExam: vitals as charted. Soft systolic murmur, regular rhythm. Lungs clear. No edema. Mild bilateral postural hand tremor.\nPrevention: LDCT ordered for the fall. Flu and updated COVID in October. RSV vaccine discussed given his heart disease; he'll get it at the pharmacy. Colonoscopy 2028.\nLabs: CMP, lipid, CBC.\nProblems reviewed: CAD/old MI/stent, ischemic cardiomyopathy EF 28%, HTN, HLD, essential tremor. Cardiology follow-up per their schedule."}
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T17:15",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-08-24T17:15",
+             "body": "Hi Raymond, labs look good: kidneys, liver, blood count all normal, LDL in the 60s-70s range where it has been."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T11:15"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-03T11:18"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T11:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Fall vaccines", "author": "RN", "date": "2023-10-03T11:35",
+             "body": "Flu (high-dose) left arm, 2023-24 COVID right arm. Tolerated. Plans RSV shot at his pharmacy next week, will message us the date."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "portal_message",
+          "start": "2023-10-17T10:02",
+          "reason": "RSV vaccine",
+          "immunizations": [{"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-12T15:30"}],
+          "documents": [
+            {"type": "Patient Message", "title": "RSV shot", "author": "patient", "date": "2023-10-17T10:02",
+             "body": "Got the RSV vaccine (Arexvy) on 10/12 at the pharmacy. Sore arm, that's all."},
+            {"type": "Patient Message", "title": "RE: RSV shot", "author": "MA", "date": "2023-10-17T13:40",
+             "body": "Recorded, thank you. Your lung CT is Tuesday 10/24 at 8 am."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "imaging",
+          "start": "2023-10-24T08:00",
+          "reason": "lung cancer screening, annual",
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-10-24T08:00"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-10-24T08:00",
+             "text": "LDCT LUNG SCREENING\nComparison: 11/01/2022.\nNo pulmonary nodule. Lungs otherwise clear. No pleural or pericardial effusion. Cardiac size normal; coronary artery calcification and stent again seen. No lymphadenopathy. No suspicious bone lesion.",
+             "conclusion": "Lung-RADS 1, negative. Continue annual LDCT."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT 2023", "author": "PCP", "date": "2023-10-25T08:30",
+             "body": "Negative, Lung-RADS 1. Next due fall 2024."}
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chest pressure with exertion",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-16T11:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-16T11:55", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-16T11:20"}],
+          "orders": [{"id": "cards-ref-2024", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "exertional chest pressure, known CAD"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Chest Pressure", "author": "PCP", "date": "2024-01-16T12:00",
+             "body": "CC: chest tightness walking.\n\nHPI: Over the past few weeks, a pressure in the middle of his chest when he walks fast in the cold or climbs the hill on his street. Goes away within a few minutes of stopping. Never at rest, never woke him. No fainting, no palpitations. Breathing about the same as last year. He knows what this probably means.\n\nMeds: aspirin, metoprolol succinate 50, lisinopril 20, atorvastatin 40, all daily.\n\nExam: vitals as charted, comfortable. No JVD. Regular rhythm, soft systolic murmur, no rub or gallop. Lungs clear. No edema.\n\nA/P: Exertional chest pressure relieved by rest in a man with CAD and prior stent: new stable-pattern angina until proven otherwise. No rest pain, so not sending to the ED. Called cardiology directly; they will see him in about three weeks and decide on testing. ED precautions reviewed in detail with him and his wife (pain at rest, lasting more than 10 minutes, or with sweating or fainting = 911). BMP, CBC today."}
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "pharmacy",
+          "start": "2024-02-07T08:50",
+          "reason": "pharmacy fill notice",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Outside prescription filled", "author": "MA", "date": "2024-02-07T08:50",
+             "body": "Med history import shows a new fill 2/5: nitroglycerin 0.4 mg sublingual tablets #25, prescriber is his cardiologist. No letter from cardiology yet. Routed to PCP."},
+            {"type": "Refill Encounter", "title": "Outside prescription filled", "author": "PCP", "date": "2024-02-07T12:10",
+             "body": "Noted. Will review at his March visit."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "angina follow-up",
+          "conditions": [{"label": "Angina pectoris", "action": "diagnosed", "onset": "2024-02-05", "note": "stable angina due to CAD, medical management per cardiology"}],
+          "medications": [
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "historical", "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3 tablets", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "stable angina"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-12T10:00"}],
+          "orders": [{"id": "cards-ref-2024", "action": "done", "date": "2024-03-12T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up - Angina", "author": "PCP", "date": "2024-03-12T10:35",
+             "body": "Follow-up after cardiology (2/5). We still have no letter, so this is from his account.\n\nHe says cardiology told him it is stable angina from his coronary disease and that they will manage it with medicine for now. ECG there showed nothing acute and his cholesterol panel was fine. He came in having read about a newly approved angina drug and asked for it instead of the usual approach; the cardiologist explained it has little long-term data and is not a first choice, and gave him nitroglycerin tablets to carry. He has used one tablet once, on a cold morning, with relief in a couple of minutes. Episodes with brisk walking or hills, a few a week, brief. None at rest.\n\nMeds: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, SL NTG prn (outside Rx).\n\nExam: vitals as charted. Regular, soft systolic murmur. Lungs clear. No edema.\n\nA/P:\n1. Stable angina, CAD. Added to problem list. Reviewed NTG use: sit down, one tablet, repeat every 5 minutes up to 3, call 911 if not better after the first. Keep tablets in the original bottle. No PDE-5 inhibitors with nitrates; he takes none.\n2. Ischemic cardiomyopathy, HTN: unchanged.\n3. Request cardiology visit note again.\n\nRTC at the physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telephone",
+          "start": "2024-04-16T14:10",
+          "reason": "records request follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2024-04-16T14:10",
+             "body": "Called cardiology about the 2/5/24 visit note, second request. Told it would be faxed by end of week. Will check again if not received."}
+          ]
+        },
+        {
+          "id": "2024-08-02a",
+          "kind": "specialist_visit",
+          "start": "2024-08-02T09:30",
+          "service": "Neurology",
+          "reason": "essential tremor follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Follow-up", "author": "neurology", "date": "2024-08-14T15:20",
+             "body": "OUTSIDE NEUROLOGY - FOLLOW-UP\nDate of visit: 08/02/2024\n\nMr. Alden is a 68 year old man with hypertension, hyperlipidemia, CAD with prior MI, and ischemic cardiomyopathy whom I first saw in January 2023 for hand tremor. He reports that over about two years the tremor in both hands has gradually worsened. It is worse with action, such as drinking from a cup or writing, and less obvious at rest. It does not wake him. No stiffness, slowness, imbalance or other neurologic symptoms.\n\nMedications: aspirin 81 mg, metoprolol succinate 50 mg, lisinopril 20 mg, atorvastatin 40 mg nightly, nitroglycerin SL as needed. NKDA. Social and family history unchanged from my prior note.\n\nExam: bilateral postural hand tremor. No rigidity, no bradykinesia. Handwriting sample: large, wavy letters with a steady oscillation; no decrement in letter size across the line. Gait normal, pull test negative.\n\nImpression: Essential tremor, slowly progressive. Exam continues to show no parkinsonian features.\n\nPlan: follow-up in neurology clinic as needed.\n\nNeurology"}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "imaging",
+          "start": "2024-09-24T08:30",
+          "reason": "lung cancer screening, annual",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-09-24T08:30",
+             "text": "LOW-DOSE SCREENING CT CHEST\nComparison: 10/24/2023.\nFindings: Lungs clear, no nodules. No effusion. Heart normal in size, coronary calcification and stent unchanged. No mediastinal adenopathy. Osseous structures unremarkable.",
+             "conclusion": "Lung-RADS 1. Annual screening recommended."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT 2024", "author": "PCP", "date": "2024-09-25T07:45",
+             "body": "Negative. Lung-RADS 1. Will review at his physical on 10/10."}
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "annual_physical",
+          "start": "2024-10-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit and chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 2}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-10T10:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-10T10:08"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-10T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-10T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-10T10:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2024-10-10T10:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-10-10T09:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-10T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-10-10T10:15",
+             "body": "AWV and follow-up, age 68.\n\nInterval: neurology saw him in August, tremor slowly worse. He uses two hands on his mug and types instead of writing. Angina: a few brief episodes a month with hills, fewer since he slowed his pace; uses NTG maybe once a month. None at rest. No fainting. Breathing unchanged. We never did receive the February cardiology note despite two requests; he plans to see them again next year.\n\nHRA: independent in ADLs/IADLs, no falls, drives, sleeps well. PHQ-2 1. Wine 2-3 glasses a week.\n\nMeds reconciled: aspirin 81 daily, metoprolol succinate 50 daily, lisinopril 20 daily, atorvastatin 40 qhs, NTG 0.4 SL prn. NKDA.\n\nExam: vitals as charted. No JVD. Regular rhythm, soft systolic murmur. Lungs clear. Abdomen soft. No edema. Bilateral postural hand tremor. Gait normal.\n\nAssessment/plan:\n1. Stable angina / CAD / old MI / stent: stable on current medicines, cardiology following.\n2. Ischemic cardiomyopathy (LVEF 28% 5/2023): compensated.\n3. HTN, HLD: CMP, lipid today.\n4. Essential tremor.\n5. Prevention: high-dose flu and 2024-25 COVID today. LDCT 9/24 negative, next fall. Colonoscopy 2028. All other vaccines complete.\n\nLabs today: CMP, lipid, CBC, A1c. Follow-up in 6 months."}
+          ]
+        },
+        {
+          "id": "2024-10-11a",
+          "kind": "portal_message",
+          "start": "2024-10-11T16:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your visit", "author": "PCP", "date": "2024-10-11T16:20",
+             "body": "Raymond, yesterday's labs are all normal, cholesterol included. Please book the spring follow-up when you get a chance."}
+          ]
+        }
+      ]
+    }
+  ]
+}

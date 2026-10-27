@@ -1,0 +1,247 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001821",
+      "events": [
+        {
+          "id": "2026-01-05a",
+          "kind": "specialist_visit",
+          "start": "2026-01-05T13:30",
+          "service": "Pulmonary Medicine",
+          "reason": "chronic productive cough, hemoptysis, weight loss",
+          "state": {"weight_kg": 64.8},
+          "vitals": {"weight_kg": 64.8},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "conditions": [
+            {"label": "Bronchiectasis", "action": "diagnosed", "onset": "2025-01-01"}
+          ],
+          "medications": [
+            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with food for 14 days", "dose": {"value": 875, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "bronchiectasis exacerbation"}
+          ],
+          "orders": [
+            {"id": "pulm-referral", "action": "done", "date": "2026-01-05T13:30"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-05T14:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Eosinophils %"}]},
+            {"panel": null, "collected": "2026-01-05T14:30", "results": [
+              {"test": "IgG", "loinc": "2465-3", "unit": "mg/dL", "value": 1040},
+              {"test": "IgA", "loinc": "2458-8", "unit": "mg/dL", "value": 212},
+              {"test": "IgM", "loinc": "2472-4", "unit": "mg/dL", "value": 118}
+            ]},
+            {"panel": null, "collected": "2026-01-06T07:30", "resulted": "2026-01-09T10:00", "results": [
+              {"test": "Sputum culture", "loinc": "624-7", "text": "Normal oropharyngeal flora. No predominant pathogen isolated."},
+              {"test": "Acid-fast bacilli smear", "loinc": "11545-1", "text": "No acid-fast bacilli seen (specimen 1 of 3)"}
+            ]},
+            {"panel": null, "collected": "2026-01-07T07:30", "resulted": "2026-01-09T10:00", "results": [
+              {"test": "Acid-fast bacilli smear", "loinc": "11545-1", "text": "No acid-fast bacilli seen (specimen 2 of 3)"}
+            ]},
+            {"panel": null, "collected": "2026-01-08T07:30", "resulted": "2026-01-09T16:00", "results": [
+              {"test": "Acid-fast bacilli smear", "loinc": "11545-1", "text": "No acid-fast bacilli seen (specimen 3 of 3)"}
+            ]},
+            {"panel": null, "collected": "2026-01-06T07:30", "resulted": "2026-02-20T09:00", "results": [
+              {"test": "Acid-fast bacilli culture", "loinc": "543-9", "text": "No growth at 6 weeks (specimens 1-3). Final."}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-01-05T13:55",
+              "text": "PA and lateral views. Parallel linear densities and ring shadows at the right lung base, in keeping with thickened, dilated bronchi. No consolidation. No cavity or mass. No pleural effusion. Left lung clear. Heart and mediastinum normal.",
+              "conclusion": "Tram-track and ring opacities at the right base suggesting bronchiectasis. Prior right lower lobe consolidation has cleared."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Medicine consultation",
+              "author": "pulmonology",
+              "date": "2026-01-09T15:40",
+              "body": "Outside Pulmonary Medicine\nDate of service: 01/05/2026\nReason for referral: productive cough and blood-streaked sputum after pneumonia\n\nHPI: 33-year-old woman with chronic hypertension and a right attic cholesteatoma treated surgically last March. She describes a cough that has produced sputum every day for the better part of a year: copious, thick, yellow-green and foul, heaviest on waking. Now and then there are streaks of blood. She is tired, short of breath with exertion, and has lost weight over the last several months without trying. She had a right lower lobe pneumonia in November, treated with doxycycline by her PCP, two weeks after coming home from a two-month rural volunteer placement abroad. She works with toddlers in a busy daycare. She has never had asthma, allergies or any earlier lung problem.\n\nMeds: labetalol 200 mg twice daily; prenatal vitamin daily. NKDA.\nSmoking: about 5 pack-years, stopped at 26. No alcohol.\nFamily history: hypertension in both parents.\nQuantiferon negative last month (PCP).\n\nExam: vital signs normal; weight 64.8 kg. Coarse crackles over the right lung base. Digital clubbing. No wheeze. Heart regular. No lymphadenopathy.\n\nChest X-ray today: tram-track and ring opacities at the right base; no consolidation, cavity or mass.\n\nAssessment: Bronchiectasis, right base, with a current exacerbation (increased purulent sputum, hemoptysis streaking). Travel history makes it important to exclude mycobacterial infection.\n\nPlan:\n1. CT chest without contrast.\n2. Sputum for routine culture and acid-fast smear and culture, three early-morning samples.\n3. CBC with differential; quantitative immunoglobulins (IgG, IgA, IgM).\n4. Amoxicillin-clavulanate 875/125 mg twice daily for 14 days.\n5. Airway clearance: oscillating PEP device twice daily, taught today by our respiratory therapist.\n6. Return in about 5 weeks with spirometry.\n\nThank you for asking me to see her.\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "imaging",
+          "start": "2026-01-09T08:15",
+          "service": "Radiology",
+          "reason": "bronchiectasis evaluation",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-01-09T08:15",
+              "text": "Technique: non-contrast CT of the chest with thin-section reconstructions.\nLungs: cylindrical bronchiectasis of the right lower lobe with bronchial wall thickening and mucus plugging. No cavitation. No mass or suspicious nodule. The remaining lobes are clear.\nAirways: central airways patent.\nMediastinum: no lymphadenopathy. Heart normal size. No pericardial effusion.\nPleura: no effusion or pneumothorax.\nUpper abdomen: unremarkable.\nBones: no aggressive lesion.",
+              "conclusion": "Cylindrical bronchiectasis of the right lower lobe with wall thickening and mucus plugging. No cavitation, mass or lymphadenopathy. Other lobes clear."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "specialist_visit",
+          "start": "2026-02-11T10:00",
+          "service": "Pulmonary Medicine",
+          "reason": "bronchiectasis follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2026-02-11T09:40",
+              "text": "Acceptable and repeatable efforts. FEV1 2.71 L (84% predicted). FVC 3.30 L (91% predicted). FEV1/FVC 0.82. Flow-volume loop normal in shape.",
+              "conclusion": "Normal spirometry. No obstruction."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Medicine follow-up",
+              "author": "pulmonology",
+              "date": "2026-02-16T12:10",
+              "body": "Outside Pulmonary Medicine\nDate of service: 02/11/2026\n\nMs. Lavoie finished the 14 days of amoxicillin-clavulanate. Sputum is down to a fraction of what it was, and there has been no blood since the middle of January. Her energy is better and her weight has held steady. She is doing the oscillating PEP device twice a day.\n\nResults: CT chest - cylindrical bronchiectasis of the right lower lobe with wall thickening and mucus plugging, no cavitation or mass, other lobes clear. Sputum - normal flora; acid-fast smears negative on all three samples, cultures pending. CBC normal. IgG 1,040, IgA 212, IgM 118 mg/dL, all normal.\n\nSpirometry today: FEV1 2.71 L (84%), FVC 3.30 L (91%), ratio 0.82 - no obstruction.\n\nAssessment: Right lower lobe bronchiectasis, likely post-infectious; no other cause identified on this initial evaluation. Exacerbation resolved.\n\nPlan: continue airway clearance daily, more often during colds. Please give her a pneumococcal vaccine. Call us early for increased sputum or blood. Return in 3 months.\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "outside_records",
+          "start": "2026-02-20T15:30",
+          "reason": "final acid-fast cultures",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Final AFB culture results",
+              "author": "front desk",
+              "date": "2026-02-20T15:30",
+              "body": "Pulmonology office faxed final sputum acid-fast cultures (collected 1/6-1/8): no growth at 6 weeks on all three. Indexed to results; routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "office_visit",
+          "start": "2026-02-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pulmonology",
+          "state": {"weight_kg": 64.6},
+          "vitals": {"weight_kg": 64.6},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2026-02-23T16:10"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-23T15:40"},
+            {"procedure": "Immunization administration", "performed": "2026-02-23T16:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "author": "PCP",
+              "date": "2026-02-23T16:20",
+              "body": "Follow-up after the lung workup.\n\nPulmonology letters (1/5, 2/11), CT chest and labs reviewed with her: right lower lobe bronchiectasis, felt to be post-infectious. TB evaluation negative throughout - Quantiferon negative in December, three AFB smears negative, AFB cultures final no growth on 2/20. Immunoglobulins normal. Spirometry normal.\n\nShe feels much better. A little sputum most mornings, cleared with the PEP device, which she does before work and at bedtime. No blood since mid-January. No fever. Weight 64.6, about where it was at pulmonology - no further loss.\n\nMeds: labetalol 200 mg BID, prenatal vitamin. NKDA.\n\nExam: BP at goal. Vitals as charted. Lungs - a few crackles at the right base, no wheeze. Heart regular. R ear dry.\n\nA/P\n1. Bronchiectasis, RLL - on the problem list; pulmonology following, next visit May. Airway clearance daily. PCV20 today per pulmonology; flu and COVID done in December.\n2. Weight loss - stable since January; recheck at next visit.\n3. Cholesteatoma s/p R tympanomastoidectomy 3/2025 - ENT MRI due this spring.\n4. Chronic HTN - controlled on labetalol 200 BID. Refills sent.\n5. HM - Pap/HPV due this year.\n\nRTC for physical in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "portal_message",
+          "start": "2026-03-18T07:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labetalol refill",
+              "author": "patient",
+              "date": "2026-03-18T07:05",
+              "body": "Pharmacy says my labetalol needs a new prescription? I thought you sent one last month. Down to about a week left."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill clarification",
+              "author": "MA",
+              "date": "2026-03-18T09:40",
+              "body": "Called pharmacy. The 2/23 eRx was received but filed under an old profile. Merged; labetalol 200 mg #180 being filled today. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "specialist_visit",
+          "start": "2026-04-08T11:00",
+          "service": "Otolaryngology",
+          "reason": "one-year cholesteatoma surveillance",
+          "reports": [
+            {
+              "study": "MRI internal auditory canals without contrast", "loinc": "30658-9",
+              "performed": "2026-04-06T18:30",
+              "text": "Protocol: temporal bone imaging with non-echo-planar diffusion-weighted sequences, coronal T1 and T2. History: right canal-wall-up tympanomastoidectomy for cholesteatoma 03/2025.\nNo restricted diffusion in the right middle ear or mastoid. Postoperative changes of the right mastoid. Left temporal bone normal. Internal auditory canals and cerebellopontine angles normal. Visualized brain unremarkable.",
+              "conclusion": "No evidence of residual or recurrent right cholesteatoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology surveillance visit",
+              "author": "otolaryngology",
+              "date": "2026-04-13T14:00",
+              "body": "Outside Otolaryngology\nDate of service: 04/08/2026\n\nOne year after right canal-wall-up tympanomastoidectomy for attic cholesteatoma. The ear has stayed dry. Exam: healed graft, no retraction, canal clean. Diffusion-weighted MRI 04/06: no restricted diffusion, no residual or recurrent disease.\n\nMedications: labetalol, prenatal vitamin. NKDA.\n\nPlan: yearly ear checks with us. Return sooner for drainage.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "specialist_visit",
+          "start": "2026-05-20T09:20",
+          "service": "Pulmonary Medicine",
+          "reason": "bronchiectasis follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Medicine follow-up",
+              "author": "pulmonology",
+              "date": "2026-05-26T10:30",
+              "body": "Outside Pulmonary Medicine\nDate of service: 05/20/2026\n\nThree-month follow-up for right lower lobe bronchiectasis. Small amount of sputum in the mornings only, no blood, no exacerbation since January. Final acid-fast cultures were negative. Received pneumococcal vaccine in February.\n\nLungs: scattered crackles right base, otherwise clear. Oxygen saturation normal.\n\nPlan: continue daily airway clearance with the PEP device. Early contact for any flare. Follow-up in 6 months.\nPulmonary Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T20:30",
+          "reason": "employer health form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Daycare health form",
+              "author": "patient",
+              "date": "2026-07-22T20:30",
+              "body": "My daycare needs the yearly staff health form before the fall session - I uploaded it. Can it be filled in from my last visit? They mainly want the TB screen and vaccines."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form completed",
+              "author": "PCP",
+              "date": "2026-07-24T12:45",
+              "body": "Staff health form completed from the 2/23/2026 visit and chart: Quantiferon negative 12/2025, sputum AFB negative, immunizations listed (Tdap 2024, influenza and COVID 12/2025, PCV20 2/2026). Signed, uploaded to portal for pt. Reminded her the physical is overdue - she will call to book."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T10:50",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - labetalol",
+              "author": "MA",
+              "date": "2026-08-12T10:50",
+              "body": "Pharmacy request labetalol 200 mg BID #180. Seen 2/2026, BP controlled. Approved x1 per protocol. Note to pt: please book the physical before the next refill."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4378 @@
+{
+  "unit": "unit-2713",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002713",
+      "given": "Jennifer",
+      "family": "Kaminski",
+      "birth_date": "1975-04-25",
+      "address_line": "118 Cherry Street",
+      "phone": "+1-774-555-0173",
+      "email": "jennifer.kaminski@example.test",
+      "marital_status": "single",
+      "summary": "Office administrator with hypertension on hydrochlorothiazide and known hereditary angioedema who joined in 2018. Practice care 2018 to mid-2023 covers cervical radiculopathy, an open cholecystectomy, an HAE attack and a right vestibular schwannoma treated with radiosurgery; after she was last seen in June 2023, outside records bring a resected pheochromocytoma, atrial flutter, a left midbrain stroke and HCTZ-related pancreatitis.",
+      "events": [
+        {
+          "id": "2018-07-30a",
+          "kind": "telephone",
+          "start": "2018-07-30T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2018-07-30T10:12",
+              "author": "front desk",
+              "body": "Caller is moving her care to us from her old primary care office, says she wants a doctor she can actually reach. Went over membership and that insurance still covers labs and imaging. Commercial PPO on file. Takes one blood pressure pill. Booked new patient visit 8/14 at 9:00. Sent intake forms and a records release to her email."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-14a",
+          "kind": "establish_care",
+          "start": "2018-08-14T09:00",
+          "end": "2018-08-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2014-06-01",
+              "note": "On HCTZ since the prior practice"
+            },
+            {
+              "label": "Hereditary angioedema",
+              "action": "history",
+              "onset": "1979-01-01",
+              "note": "C1 inhibitor deficiency; mother confirmed. Attacks since early childhood."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              83
+            ],
+            "hr": 64,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 68.5,
+            "height_cm": 163.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-08-14T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 97
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-08-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-08-14T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 128
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-08-14T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office administrator"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2018-08-14T09:50",
+              "text": "Specimen: ThinPrep, cervical. Adequacy: satisfactory, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-08-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-08-14T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2018",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "date": "2018-08-14T10:40",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n43 y/o woman, office administrator, transferring care from her prior primary care office (records release signed today). Main reasons for switching: access, and wanting someone who knows what HAE is.\n\nHTN: on hydrochlorothiazide 25 mg every morning for about four years, started by the prior PCP. Home cuff readings mostly 120s/high 70s. No side effects she notices. No headaches, chest pain, swelling.\n\nHereditary angioedema: her mother has confirmed C1 inhibitor deficiency and the patient was told she has the same thing. Swelling episodes since she was a small child: lips, hands or feet, occasionally genital swelling, and bouts of bad crampy belly pain. Each one runs 2-3 days and goes away by itself. Antihistamines were tried years ago and did nothing. Has never been given anything specific for it and does not carry any rescue medicine. No throat involvement she can remember. Last bad episode was over a year ago.\n\nPMH: as above. No surgeries.\nMeds: HCTZ 25 mg daily.\nAllergies: none to drugs, none to foods.\nFH: mother HAE (C1-INH deficiency). Father with high blood pressure, had a stroke at 60.\nSH: never smoker. A drink or two a month. Works full time in an office.\n\nROS otherwise negative.\n\nEXAM\nVitals per flowsheet. Comfortable, well appearing.\nHEENT: no lip or tongue swelling, oropharynx clear. Neck supple, no thyroid enlargement.\nCV: RRR, no murmur. Lungs clear bilaterally.\nAbd: soft, nontender, no masses.\nExt: no edema, no swelling of hands or feet.\nSkin: no rash or urticaria.\nPelvic: normal external genitalia, cervix without lesions; Pap/HPV collected.\nNeuro: grossly nonfocal.\n\nASSESSMENT / PLAN\n1. Essential hypertension, controlled on HCTZ 25. Continue. CMP today.\n2. Hereditary angioedema, C1-INH deficiency by family history and her report. Not on any HAE therapy. She is not interested in a specialist right now since attacks are infrequent. Reminded her that ACE inhibitors and estrogen-containing products should be avoided. Will revisit.\n3. Health maintenance: Pap with HPV collected. Screening mammogram ordered. CBC, lipids, TSH, A1c. Offered one-time HIV and hep C screening, she agreed. Colon screening starts at 45.\n4. Prior records requested.\n\nReturn after labs/records, BP check in about six months."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2018-08-21T12:15",
+              "author": "PCP",
+              "body": "Your Pap test and HPV test are both negative. With a normal co-test we repeat in five years."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 68.2,
+            "height_cm": 164.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3,
+              "Low Density Lipoprotein": 108,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2018-08-15a",
+          "kind": "portal_message",
+          "start": "2018-08-15T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2018-08-15T16:20",
+              "author": "PCP",
+              "body": "Hi Jennifer, everything from yesterday came back fine. Kidney function and potassium are normal on the water pill, blood counts are normal, thyroid and A1c are normal, cholesterol is acceptable, and the HIV and hepatitis C screens are negative. Pap results usually take a week or so; I'll send those when they're in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2018-08-15T19:02",
+              "author": "patient",
+              "body": "Great thank you! I called about the mammogram and they can take me in November."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-06a",
+          "kind": "outside_records",
+          "start": "2018-09-06T11:30",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2018-09-06T11:30",
+              "author": "front desk",
+              "body": "Received 41 pages from patient's former primary care practice (2012-2018). Includes: office notes; BP log; hydrochlorothiazide started 2014 for elevated readings on several visits; Pap smear 2016 negative; screening mammogram 2017 negative (BI-RADS 1); routine labs 2017 unremarkable. Problem list there: hypertension, hereditary angioedema (by family history). No HAE complement testing found in these records. Scanned to Media tab."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-16T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-10-16T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2018-10-16T08:30",
+              "author": "RN",
+              "body": "Here before work for her flu shot. Screening questions negative, no egg or vaccine reactions in the past. Quadrivalent flu vaccine 0.5 mL IM left deltoid. VIS given. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-07a",
+          "kind": "imaging",
+          "start": "2018-11-07T13:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2018-11-07T13:40",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: 2017 outside study. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, calcifications or architectural distortion. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2018",
+              "action": "done",
+              "date": "2018-11-07T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result letter",
+              "date": "2018-11-09T10:00",
+              "author": "front desk",
+              "body": "Dear Ms. Kaminski, your screening mammogram on 11/07/2018 showed no evidence of cancer. Your breast tissue is heterogeneously dense; this is common and is noted for your information. We recommend continued yearly screening."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-26a",
+          "kind": "telephone",
+          "start": "2018-11-26T09:05",
+          "reason": "Refill",
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Reordered under this practice"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2018-11-26T09:05",
+              "author": "MA",
+              "body": "Pharmacy fax: HCTZ 25 mg, last fill from old prescriber, no refills left. Per PCP, new Rx sent for 90 days with 3 refills. Pt notified by voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-13a",
+          "kind": "office_visit",
+          "start": "2019-02-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              75
+            ],
+            "hr": 76,
+            "weight_kg": 68.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-02-13T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-02-13T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-02-13T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-02-13T16:40",
+              "author": "PCP",
+              "body": "BP recheck. Taking HCTZ every morning, misses maybe once a month. Home readings 118-130 over 74-82. One minor lip swelling episode around New Year's that lasted two days, nothing in the belly, no throat symptoms.\n\nExam: BP as charted, at goal. Heart regular, no murmur. Lungs clear. No ankle swelling.\n\nA/P:\nHTN - at goal on HCTZ 25. BMP for potassium/sodium today.\nHAE - mild facial episode, self-limited. Brought up seeing allergy/immunology for a rescue medication; she would rather hold off for now, it's been tolerable. Will keep offering.\n\nSee me for a physical in late summer."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "date": "2019-02-14T08:30",
+              "author": "PCP",
+              "body": "Sodium and potassium normal on HCTZ, creatinine normal. Message sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-08-22a",
+          "kind": "annual_physical",
+          "start": "2019-08-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              87
+            ],
+            "hr": 63,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 68.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-08-22T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-08-22T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-08-22T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2019-08-22T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-08-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-08-22T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-22T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-08-22T09:30",
+              "author": "PCP",
+              "body": "Annual exam, 44F.\n\nInterval: feels well. BP fine at home. Two short swelling episodes this year, one hand, one lip, both gone in a couple of days without treatment. No abdominal attacks.\n\nMeds: HCTZ 25 mg daily. NKDA.\nSocial: unchanged, never smoked, rare alcohol. Walks at lunch most days.\nPHQ-2: 0.\n\nExam: Vitals as recorded. Well appearing. Ears and throat normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Breasts without masses, nipple discharge or skin change; axillae negative. Abdomen soft. Extremities without edema. Skin without suspicious lesions.\n\nPlan:\n- HTN controlled. Continue HCTZ.\n- HAE stable, infrequent attacks. Again offered allergy referral for an on-demand drug, declined for now.\n- Tdap today (last tetanus she can't recall, over 10 years).\n- Mammogram due November, ordered.\n- Pap/HPV negative 2018, next 2023.\n- Fasting labs today.\n- Flu shot in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2019-08-23T13:40",
+              "author": "PCP",
+              "body": "Hi Jennifer, labs from Thursday are fine: normal blood count, kidney function, electrolytes and sugar, and cholesterol about where it was last year. Nothing to change."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2019-10-08T12:20",
+              "author": "RN",
+              "body": "Lunch-hour flu shot. No illness today. Quadrivalent influenza 0.5 mL IM right deltoid, lot recorded in the immunization record. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-13a",
+          "kind": "imaging",
+          "start": "2019-11-13T14:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2019-11-13T14:20",
+              "text": "Bilateral screening mammogram with tomosynthesis compared with 2018 and 2017. Heterogeneously dense breast tissue. No new mass, suspicious calcification or distortion. Stable appearance.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "done",
+              "date": "2019-11-13T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result letter",
+              "date": "2019-11-15T09:30",
+              "author": "front desk",
+              "body": "Your mammogram of 11/13/2019 was normal (BI-RADS 1). Next screening in one year."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2020-03-20T11:00",
+              "author": "front desk",
+              "body": "Office converting routine in-person follow-ups during the COVID closure. Patient prefers to wait a few weeks and do a video visit. Cancelled 3/24, will call her back to schedule video."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-21T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2020",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening, starting at 45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-04-21T11:25",
+              "author": "PCP",
+              "body": "Video visit, she is at her kitchen table, working from home since March. Consent for telehealth given.\n\nBP: home cuff log over two weeks, 116-128 systolic, 72-80 diastolic. Taking HCTZ daily. No lightheadedness.\nHAE: no episodes since the fall.\nOtherwise doing OK with the shutdown, sleeping fine, mood good.\n\nObserved on video: comfortable, no facial swelling, speaking full sentences.\n\nA/P: HTN well controlled on home readings, continue HCTZ 25. Turns 45 this week: discussed colon screening options, she chose a FIT kit by mail. In-person physical in September with labs."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-06a",
+          "kind": "lab_only",
+          "start": "2020-05-06T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-05-02T07:00",
+              "resulted": "2020-05-06T09:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2020",
+              "action": "done",
+              "date": "2020-05-06T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2020-05-06T12:10",
+              "author": "PCP",
+              "body": "FIT negative. Repeat yearly. Released to portal with a note."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-17a",
+          "kind": "annual_physical",
+          "start": "2020-09-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 67.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-17T08:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-17T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-17T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 196
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2020-09-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-17T08:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-17T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-17T08:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-17T09:05",
+              "author": "PCP",
+              "body": "Physical, masked visit.\n\n45F, still mostly remote for work. Feels fine. HTN: home BPs remain in range. HAE: one belly episode in July, cramping and bloating for two days, rode it out at home with fluids. No airway symptoms ever.\nPHQ-2: 1 (some low days with the isolation, not most days).\n\nExam: vitals as noted. Pleasant, in no distress. HEENT normal, no lip or tongue swelling. Neck without nodes. Heart regular rate, no murmurs or gallops. Lungs clear to auscultation. Breast exam deferred to mammogram per her preference. Abdomen soft, non-tender. No peripheral edema.\n\nA/P\n- HTN at goal: HCTZ 25 mg.\n- HAE: an abdominal attack this summer. Talked again about having something on hand for attacks and about seeing allergy/immunology. She'll think about it; she doesn't love the idea of injections.\n- Flu vaccine given today.\n- Mammogram ordered. FIT in the spring was negative; next kit next year.\n- Labs today."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2020-09-18T07:50",
+              "author": "PCP",
+              "body": "CMP, CBC, lipids all within normal range. Released with comment."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-11-18a",
+          "kind": "imaging",
+          "start": "2020-11-18T10:50",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-11-18T10:50",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Compared with 2019 and 2018. Heterogeneously dense. No suspicious findings. No change.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-11-18T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result letter",
+              "date": "2020-11-20T11:00",
+              "author": "front desk",
+              "body": "Your screening mammogram on 11/18/2020 was normal. Please schedule next year's mammogram in November."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-04a",
+          "kind": "outside_records",
+          "start": "2021-03-04T14:00",
+          "reason": "COVID-19 vaccination record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-09T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-02T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 vaccine record",
+              "date": "2021-03-04T14:00",
+              "author": "MA",
+              "body": "Pt sent photo of her vaccination card via portal. Pfizer dose 1 on 2/9/21 and dose 2 on 3/2/21 at a community vaccination clinic. Entered into immunization history; state registry matches."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-29a",
+          "kind": "office_visit",
+          "start": "2021-03-29T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck pain with left arm symptoms",
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "hr": 66,
+            "weight_kg": 68.0
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-29T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-cspine",
+              "action": "placed",
+              "order": "MRI cervical spine without contrast",
+              "category": "imaging",
+              "reason": "Neck pain with left arm weakness and numbness"
+            },
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Left arm radicular symptoms with weakness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-03-29T14:05",
+              "author": "PCP",
+              "body": "S: Two weeks of neck pain shooting into the L arm. Sharp, burning, worse when she turns her head or looks down at her laptop. Numb L thumb and index finger. No injury she can think of. No bowel/bladder change, no leg symptoms, no fever. Ibuprofen at home took the edge off a little. Pain 6/10.\n\nO: BP as charted. Neck: tender L paraspinal muscles, rotation to the L reproduces arm pain. L elbow flexion weak compared with R; rest of arm strength full. L brachioradialis reflex reduced compared with R; biceps and triceps reflexes symmetric. Light touch reduced over L thumb and index. Gait normal.\n\nA/P: L arm radicular pain with objective weakness and reflex change, likely C6/C7 root. Given the weakness, MRI C-spine now rather than waiting, and neurology referral. Heat, gentle range of motion, avoid heavy lifting. Call with any spreading weakness or trouble with walking or bladder."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-04-08a",
+          "kind": "imaging",
+          "start": "2021-04-08T18:30",
+          "reason": "MRI cervical spine",
+          "conditions": [
+            {
+              "label": "Cervical degenerative disc disease with C6-C7 herniation",
+              "action": "diagnosed",
+              "onset": "2021-04-08",
+              "icd10": "M50.223"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI cervical spine without contrast",
+              "loinc": "30667-0",
+              "performed": "2021-04-08T18:30",
+              "text": "Technique: multiplanar multisequence MRI of the cervical spine without contrast.\n\nAlignment normal. Vertebral body heights preserved; marrow signal normal. Cord normal in caliber and signal. Craniocervical junction unremarkable.\n\nC2-C3 through C5-C6: no significant disc bulge, canal or foraminal narrowing.\nC6-C7: degenerative disc desiccation with a left-sided disc herniation. Central canal patent.\nC7-T1: unremarkable.\nParaspinal soft tissues normal.",
+              "conclusion": "C6-C7 degenerative disc disease with left-sided disc herniation at C6-C7. No cord compression."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-cspine",
+              "action": "done",
+              "date": "2021-04-08T18:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "MRI C-spine reviewed",
+              "date": "2021-04-09T08:15",
+              "author": "PCP",
+              "body": "C6-7 disc herniation on the left, which fits her arm symptoms. No cord compression. Called her and went over it. Neurology appointment 4/26, keep it. Sooner if weakness worsens."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-26a",
+          "kind": "specialist_visit",
+          "start": "2021-04-26T10:00",
+          "service": "Neurology",
+          "reason": "Left cervical radicular symptoms",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy",
+              "action": "diagnosed",
+              "onset": "2021-03-15",
+              "note": "Due to C6-C7 intervertebral disc herniation"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2021-04-26T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2021-04-28T09:00",
+              "author": "neurology",
+              "body": "OUTPATIENT NEUROLOGY CONSULTATION\nDate of visit: 04/26/2021\nReferring: primary care\n\nReason: neck pain into the left arm.\n\nHistory: 46-year-old office administrator with hypertension and hereditary angioedema (C1 inhibitor deficiency). For about six weeks she has had neck pain that travels into the left arm, described as sharp and burning and aggravated by moving her neck. She notes numbness of the left thumb and index finger. No bladder or bowel symptoms, no gait trouble.\n\nMedications: hydrochlorothiazide 25 mg daily.\nAllergies: no known drug or food allergies.\nFamily: mother with C1 inhibitor deficiency angioedema; father with hypertension and a stroke at age 60.\nSocial: never smoker, about 1-2 alcoholic drinks monthly, office work.\n\nExamination: Alert, fluent, oriented. Cranial nerves II-XII intact. Motor: left biceps weak; remaining upper and lower limb strength full. Reflexes: left brachioradialis diminished; others 2+ and symmetric; toes downgoing. Sensation: reduced light touch over the left thumb and index finger. Spurling-type maneuver not performed. Gait and coordination normal.\n\nImaging: MRI cervical spine 04/08/2021 personally reviewed, C6-C7 disc herniation.\n\nImpression: Left cervical radiculopathy due to C6-C7 intervertebral disc herniation, on a background of cervical degenerative disc disease. No myelopathic signs.\n\nRecommendations:\n1. Physical therapy for cervical radiculopathy, home exercise program.\n2. Ergonomic adjustments at work; avoid prolonged neck flexion and overhead lifting.\n3. If the arm weakness progresses or pain is not improving after 8-10 weeks of therapy, spine surgery opinion.\n4. Follow-up with neurology as needed.\n\nThank you for this referral.\nOutpatient Neurology"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-29a",
+          "kind": "telephone",
+          "start": "2021-04-29T12:40",
+          "reason": "Physical therapy referral",
+          "orders": [
+            {
+              "id": "pt-neck",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Cervical radiculopathy, C6-C7"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PT referral",
+              "date": "2021-04-29T12:40",
+              "author": "PCP",
+              "body": "Neurology letter reviewed. Called pt: plan is PT, surgeon only if the weakness gets worse. PT referral placed to the outpatient PT office near her work, she'll call them. Also mentioned she has gallbladder surgery booked for late May with the general surgeons."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-26a",
+          "kind": "hospital_admission",
+          "start": "2021-05-26T07:00",
+          "end": "2021-05-28T13:00",
+          "service": "General Surgery",
+          "reason": "Elective open cholecystectomy",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-26T06:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.57
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-05-26T06:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 96
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2021-06-01T10:00",
+              "author": "general surgery",
+              "body": "OPERATIVE REPORT (received 06/01/2021)\nDate of surgery: 05/26/2021\nProcedure: elective open cholecystectomy\nAnesthesia: general endotracheal\nAllergies: NKDA\n\nThe patient was placed supine. After prep and drape and time-out, a right subcostal incision was made and carried down through the abdominal wall. The gallbladder was identified and dissected from the liver bed. The cystic duct and cystic artery were identified, clipped and divided. The gallbladder was removed and sent to pathology. Hemostasis in the liver bed was confirmed. The fascia was closed in layers and the skin with staples. Estimated blood loss 50 mL. No complications. Patient to recovery in stable condition.\n\nGeneral Surgery"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2021-06-01T10:05",
+              "author": "general surgery",
+              "body": "DISCHARGE SUMMARY (received 06/01/2021)\nAdmitted 05/26/2021, discharged 05/28/2021, general surgery service.\n\nProcedure: open cholecystectomy 05/26/2021, uncomplicated.\nHistory: hypertension, hereditary angioedema, cervical disc disease.\nDay-of-surgery labs: WBC 7.0, hemoglobin 13.2, platelets 250K, creatinine 0.9, total bilirubin 0.8, ALT 22, AST 25.\n\nHospital course: diet advanced on post-op day 1, ambulating, pain controlled on oral analgesia. No fever. Incision dry.\n\nDischarge medications: hydrochlorothiazide 25 mg daily (home); acetaminophen as needed for pain.\nFollow-up: general surgery clinic in about 5 days for wound check and staple removal."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-31a",
+          "kind": "specialist_visit",
+          "start": "2021-05-31T09:30",
+          "service": "General Surgery",
+          "reason": "Post-operative visit",
+          "conditions": [
+            {
+              "label": "Postoperative incisional pain",
+              "action": "diagnosed",
+              "onset": "2021-05-26",
+              "icd10": "G89.18"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth three times daily for 7 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative incisional pain"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 8 hours with food for 7 days",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q8H",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative incisional pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Post-op Visit",
+              "date": "2021-06-02T15:00",
+              "author": "general surgery",
+              "body": "GENERAL SURGERY CLINIC (received 06/02/2021)\nDate of visit: 05/31/2021\n\nPOD 5 from open cholecystectomy. She describes a steady, dull ache along the incision that plain acetaminophen as needed has not touched. No fevers, no nausea or vomiting, bowels moving normally. Eating well.\nPMH: HTN, hereditary angioedema, cervical DDD; recently seen for left arm radiculopathy.\nMeds: HCTZ 25 mg daily. NKDA.\n\nVitals stable. Abdomen soft. Right subcostal incision clean and well approximated, no redness, warmth or drainage. Mildly tender along the wound. No fluctuance, no crepitus. Staples removed, steri-strips applied.\n\nImpression: expected post-operative incisional pain, no sign of wound infection or collection.\nPlan: acetaminophen 1 g scheduled three times daily rather than as needed, plus ibuprofen 600 mg every 8 hours with food for one week. No lifting over 10 lb for 4 more weeks. Return as needed.\n\nGeneral Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-23a",
+          "kind": "office_visit",
+          "start": "2021-06-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after surgery; neck",
+          "conditions": [
+            {
+              "label": "Postoperative incisional pain",
+              "action": "resolved",
+              "icd10": "G89.18"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 52,
+            "weight_kg": 68.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-06-23T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-06-23T16:10",
+              "author": "PCP",
+              "body": "Catching up after her gallbladder surgery and the neck workup.\n\nIncision pain eased within about a week on the scheduled Tylenol + ibuprofen, finished both, nothing now. Wound healed.\nNeck/arm: 5 PT visits so far, doing the home program. Arm pain much less, maybe 2/10 at end of day. Still a little numb at the tip of the L thumb. Feels stronger.\nNo HAE swelling around the surgery.\n\nExam: BP as charted. Subcostal scar well healed, no tenderness. L elbow flexion nearly full. Reflexes unchanged.\n\nA/P\n1. Post-op incisional pain - resolved.\n2. L C6-7 radiculopathy - improving with PT; continue. If weakness returns, spine surgery opinion per neuro.\n3. HTN - stable on HCTZ.\nPhysical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-07-27a",
+          "kind": "outside_records",
+          "start": "2021-07-27T10:15",
+          "reason": "Physical therapy discharge summary",
+          "orders": [
+            {
+              "id": "pt-neck",
+              "action": "done",
+              "date": "2021-07-27T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Discharge Summary",
+              "date": "2021-07-27T10:15",
+              "author": "physical therapy",
+              "body": "OUTPATIENT PHYSICAL THERAPY DISCHARGE SUMMARY\nDiagnosis: cervical radiculopathy, C6-C7 disc herniation\nVisits: 10 (05/04/2021 - 07/20/2021)\n\nTreatment: cervical mobility, deep neck flexor and scapular strengthening, nerve glides, posture and workstation education.\nStatus at discharge: arm pain occasional and mild, neck range of motion full, left elbow flexion strength near normal. Residual faint numbness left thumb. Independent with home program. Discharged to home exercise."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-13a",
+          "kind": "annual_physical",
+          "start": "2021-09-13T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              84
+            ],
+            "hr": 64,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 68.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-13T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-13T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-13T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-13T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-13T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2021",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-13T09:20",
+              "author": "PCP",
+              "body": "46F annual.\n\nSince June: neck and arm much better, finished PT in July, keeps up the exercises 3x/week. Occasional faint L thumb tingling only. No HAE attacks this year. BP fine.\n\nMeds: HCTZ 25 daily. NKDA. COVID vaccine x2 in Feb/March.\nPHQ-2 0.\n\nExam: vitals as listed. Well. HEENT normal. Neck full ROM, nontender. Heart RRR, no murmur. Lungs clear. Breasts symmetric, no masses, no axillary nodes. Abdomen soft, healed R subcostal scar. Extremities warm, no swelling. Neuro: arm strength 5/5 both sides, L brachioradialis reflex still a bit reduced.\n\nAssessment and plan:\n- Hypertension: controlled, same dose.\n- Cervical radiculopathy: much improved, home program.\n- Hereditary angioedema: quiet.\n- Prevention: FIT kit given. Mammogram ordered. Pap due 2023. Flu shot in October when the clinic gets stock. Labs today."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2021-09-14T17:10",
+              "author": "PCP",
+              "body": "All normal from your physical, Jennifer. Kidney function and potassium are fine on HCTZ. Remember the FIT kit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-27a",
+          "kind": "lab_only",
+          "start": "2021-09-27T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-23T07:00",
+              "resulted": "2021-09-27T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2021",
+              "action": "done",
+              "date": "2021-09-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT",
+              "date": "2021-09-27T12:30",
+              "author": "PCP",
+              "body": "FIT negative, same as last year. Released."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-05T08:20",
+              "author": "MA",
+              "body": "Influenza vaccine (quadrivalent) 0.5 mL IM L deltoid. No contraindications on screening. Pt tolerated without problems, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-22a",
+          "kind": "ed_visit",
+          "start": "2021-10-22T19:40",
+          "end": "2021-10-23T08:30",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain and lip swelling",
+          "vitals": [
+            {
+              "time": "2021-10-22T19:45",
+              "bp": [
+                140,
+                90
+              ],
+              "hr": 105,
+              "rr": 28,
+              "temp_c": 36.9,
+              "spo2": 98
+            },
+            {
+              "time": "2021-10-23T07:30",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-22T20:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-22T20:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-22T20:05",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 32
+                },
+                {
+                  "test": "Complement C4",
+                  "loinc": "4498-2",
+                  "unit": "mg/dL",
+                  "value": 6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2021-10-22T21:10",
+              "text": "CT of the abdomen and pelvis with IV contrast. Post-cholecystectomy. Wall edema of several small bowel loops. Small-volume ascites. No bowel obstruction, no free air, no abscess. Liver, spleen, pancreas and kidneys normal. Appendix normal. No lymphadenopathy.",
+              "conclusion": "Small bowel wall edema with small-volume ascites; in the setting of known hereditary angioedema, consistent with an abdominal attack. No obstruction or perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2021-10-22T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2021-10-25T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 10/25/2021)\nArrival: 10/22/2021 19:40   Departure: 10/23/2021 08:30\n\nCC: belly pain and lip swelling.\n\nHPI: 46F with hereditary angioedema (C1 inhibitor deficiency) and prior open cholecystectomy. Four hours of deep, crampy abdominal pain that does not radiate, plus swelling around the lips. She and her mother, at the bedside, describe similar episodes going back to early childhood, sometimes with swelling of the face, hands, feet or genitals, typically lasting 2-3 days and settling without treatment. Antihistamines in the past never helped. No rash, no fever, no recent illness. No throat tightness, voice change or trouble swallowing.\nMeds: hydrochlorothiazide 25 mg daily. NKDA, no food allergies.\nFamily: mother with C1 inhibitor deficiency; a maternal uncle died in his 20s of unexplained throat swelling.\nSocial: never smoker, rare alcohol, office administrator.\n\nExam: BP 140/90, HR 105, RR 28, afebrile. Uncomfortable. Swelling around the mouth, no hives. Tongue, uvula and voice normal. Lungs clear. Abdomen diffusely tender without rebound or guarding; bowel sounds hyperactive; no organomegaly.\n\nResults: C4 6 mg/dL (low). CBC, metabolic panel and lipase unremarkable. CT abdomen/pelvis: small bowel wall edema and small-volume ascites, no obstruction.\n\nED course: airway monitored, no progression. IV fluids. Kept overnight in the ED observation area; abdominal pain gradually eased and lip swelling began to recede by morning.\n\nImpression: hereditary angioedema attack, abdominal and perioral.\nDisposition: home. Follow up with primary care this week and with allergy/immunology. Return immediately for any throat or tongue swelling, voice change or trouble breathing."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "office_visit",
+          "start": "2021-10-26T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for angioedema",
+          "vitals": {
+            "bp": [
+              123,
+              78
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 68.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-26T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral",
+              "action": "placed",
+              "order": "Allergy/Immunology referral",
+              "category": "referral",
+              "to": "Allergy/Immunology",
+              "reason": "Hereditary angioedema; on-demand treatment plan"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2021-10-26T12:00",
+              "author": "PCP",
+              "body": "Seen in the ED Friday night for an abdominal HAE attack with lip swelling, kept overnight, home Saturday. Record received and reviewed: low C4, CT with bowel wall edema and a little ascites.\n\nToday: belly sore but much better, eating, lips back to normal. No throat symptoms at any point. She was shaken by it, longest attack in years. Her mother was with her and brought up the uncle who died young of throat swelling, which the patient had not mentioned before; added to family history.\n\nExam: vitals as charted. No facial or oral swelling. Abdomen soft, mild diffuse tenderness, no guarding.\n\nA/P\n1. Hereditary angioedema - recent abdominal attack. She is now ready to see allergy/immunology to get a rescue medication in the house and confirm her complement testing. Referral placed. Until then: ED for any throat or tongue swelling.\n2. HTN - BP fine, HCTZ.\nAlso asked about a COVID booster; fine to get at the pharmacy."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "outside_records",
+          "start": "2021-11-16T09:40",
+          "reason": "Vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2021-11-16T09:40",
+              "author": "MA",
+              "body": "Pharmacy notification: Pfizer COVID-19 booster given 11/12/21. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "specialist_visit",
+          "start": "2021-12-07T14:00",
+          "service": "Allergy/Immunology",
+          "reason": "Hereditary angioedema",
+          "medications": [
+            {
+              "drug_text": "3 ML icatibant 10 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 30 mg subcutaneously at onset of an attack; may repeat once after 6 hours if needed. Max 3 doses in 24 hours.",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Hereditary angioedema, on-demand"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-12-07T14:45",
+              "resulted": "2021-12-10T11:00",
+              "results": [
+                {
+                  "test": "Complement C4",
+                  "loinc": "4498-2",
+                  "unit": "mg/dL",
+                  "value": 7
+                },
+                {
+                  "test": "C1 esterase inhibitor",
+                  "loinc": "4477-6",
+                  "unit": "mg/dL",
+                  "value": 9
+                },
+                {
+                  "test": "C1 esterase inhibitor functional",
+                  "loinc": "4476-8",
+                  "unit": "%",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral",
+              "action": "done",
+              "date": "2021-12-07T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Consultation",
+              "date": "2021-12-14T10:00",
+              "author": "allergy/immunology",
+              "body": "ALLERGY & IMMUNOLOGY CONSULTATION (received 12/14/2021)\nVisit date: 12/07/2021\nReferred by primary care for hereditary angioedema.\n\n46-year-old woman with lifelong recurrent swelling (lips, extremities, genital) and abdominal pain episodes lasting 2-3 days, never responsive to antihistamines, never urticarial. Mother has confirmed C1 inhibitor deficiency; a maternal uncle died young of throat swelling. ED visit 10/22/2021 for an abdominal and perioral attack with C4 of 6 and CT bowel wall edema. Never had laryngeal symptoms. Attack frequency historically one to three per year.\nMeds: hydrochlorothiazide 25 mg. No ACE inhibitor, no estrogen. NKDA.\nPSH: open cholecystectomy 05/2021.\n\nExam: no current swelling. Oropharynx clear. Skin without urticaria.\n\nLabs (drawn today, resulted 12/10): C4 7 mg/dL (low); C1 inhibitor antigen 9 mg/dL (low); C1 inhibitor function 24% (low).\n\nAssessment: hereditary angioedema type 1 (low C1-INH level and function), confirmed.\n\nPlan:\n1. Icatibant 30 mg subcutaneous at the start of any attack, may repeat once after 6 hours. Two syringes to keep at home; self-injection taught today with a trainer device.\n2. Any throat, tongue or voice involvement: inject and call 911.\n3. Continue to avoid ACE inhibitors and estrogen-containing medicines. HCTZ is fine.\n4. Before surgery, endoscopy or major dental work: short-term prophylaxis with C1 inhibitor concentrate; contact our office in advance.\n5. Attack rate does not call for long-term prophylaxis at present; revisit if attacks become more frequent.\n6. Follow up yearly or sooner.\n\nAllergy & Immunology"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "telephone",
+          "start": "2021-12-13T13:30",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Icatibant prior auth",
+              "date": "2021-12-13T13:30",
+              "author": "MA",
+              "body": "Specialty pharmacy called asking which office will handle the PA for icatibant. Told them allergy is the prescriber. Pt also called, nervous it would not be covered. Allergy office confirmed they submitted PA on 12/9. Will let pt know when we hear."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Icatibant prior auth - update",
+              "date": "2021-12-20T10:05",
+              "author": "MA",
+              "body": "Allergy office: PA approved through 12/2022. Specialty pharmacy shipping 2 syringes to pt's home. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-17a",
+          "kind": "imaging",
+          "start": "2021-12-17T09:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-12-17T09:10",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 2020, 2019. Heterogeneously dense. No suspicious mass, calcification or distortion. Stable.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-12-17T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result letter",
+              "date": "2021-12-20T09:15",
+              "author": "front desk",
+              "body": "Your screening mammogram on 12/17/2021 showed no signs of cancer (BI-RADS 1)."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "office_visit",
+          "start": "2022-03-24T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              79
+            ],
+            "hr": 62,
+            "weight_kg": 68.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-24T16:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-24T16:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-24T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-24T16:55",
+              "author": "PCP",
+              "body": "Routine BP check.\n\nFeels well. One hand swelling episode in February, used one icatibant syringe at hour two, swelling stopped growing and was gone the next day. Glad she has it. Specialty pharmacy replaced the syringe. Neck: occasional stiffness after long days, no arm symptoms.\n\nExam: BP at goal per vitals. Heart and lungs unremarkable. No swelling.\n\nPlan: HCTZ continued. BMP. Physical in September."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "date": "2022-03-25T08:05",
+              "author": "PCP",
+              "body": "Normal BMP. No change."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-19a",
+          "kind": "annual_physical",
+          "start": "2022-09-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; hearing change right ear",
+          "vitals": {
+            "bp": [
+              133,
+              89
+            ],
+            "hr": 59,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 68.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-19T09:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-19T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-19T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 196
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-19T08:40"
+            },
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-19T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-19T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "Unilateral right hearing loss with tinnitus"
+            },
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-19T09:45",
+              "author": "PCP",
+              "body": "Annual, 47F.\n\nNew: since roughly April she has had trouble hearing out of her R ear. Noticed first on phone calls, now switches the phone to the L ear. Getting gradually worse. Intermittent ringing on the R. No ear pain, drainage, vertigo or headaches. No noise exposure or trauma.\nOtherwise: HAE one attack this year, treated. Neck fine. BP fine.\n\nMeds: HCTZ 25 mg daily; icatibant 30 mg SC prn. NKDA.\nPHQ-2: 0.\n\nExam: Vitals as recorded. Ears: canals clear, TMs normal both sides. Whispered voice heard on L, missed on R. Face symmetric at rest and with smile today. Heart regular. Lungs clear. Breasts without masses. Abdomen soft. No edema. Neuro: no nystagmus, gait normal.\n\nA/P\n1. R-sided progressive hearing loss with tinnitus over 5 months, normal canal/TM - asymmetric hearing loss needs audiometry and ENT. Referred to ENT, who will do the audiogram there.\n2. HTN controlled.\n3. HAE: icatibant on hand, PA renewal due December (allergy handles).\n4. Health maintenance: FIT kit, mammogram ordered, fasting labs. Flu and bivalent COVID booster at a nurse visit in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Labs and ENT",
+              "date": "2022-09-20T18:20",
+              "author": "PCP",
+              "body": "Jen, your labs are normal. ENT's office should call you this week to set up the hearing test and visit; let us know if you haven't heard by Friday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs and ENT",
+              "date": "2022-09-21T08:12",
+              "author": "patient",
+              "body": "They called, I go Oct 14. They also want an MRI before, is that ok with my angioedema? No contrast allergy that I know of."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs and ENT",
+              "date": "2022-09-21T12:00",
+              "author": "PCP",
+              "body": "Yes, gadolinium for MRI is fine with HAE. Good that it's scheduled."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-14a",
+          "kind": "specialist_visit",
+          "start": "2022-10-14T10:30",
+          "service": "Otolaryngology",
+          "reason": "Right hearing loss",
+          "conditions": [
+            {
+              "label": "Acoustic neuroma",
+              "action": "diagnosed",
+              "onset": "2022-04-01",
+              "note": "Right vestibular schwannoma, 2 cm, cerebellopontine angle"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain and internal auditory canals with and without gadolinium",
+              "loinc": "43769-9",
+              "performed": "2022-10-12T17:45",
+              "text": "Technique: MRI of the brain with dedicated thin-section imaging of the internal auditory canals, before and after IV gadolinium.\n\nA 2.0 cm enhancing mass in the right cerebellopontine angle with extension into the right internal auditory canal. No hydrocephalus. Left internal auditory canal and cerebellopontine angle normal. Brain parenchyma otherwise normal for age; no acute infarct, hemorrhage or other enhancing lesion. Paranasal sinuses and mastoids clear.",
+              "conclusion": "2.0 cm right cerebellopontine angle mass extending into the internal auditory canal, most consistent with vestibular schwannoma."
+            },
+            {
+              "study": "Audiogram",
+              "performed": "2022-10-14T10:00",
+              "text": "Pure tone audiometry: left ear hearing within normal limits 250-8000 Hz. Right ear sensorineural hearing loss, worse in the high frequencies, with no air-bone gap. Word recognition reduced on the right, normal on the left. Tympanometry type A both ears.",
+              "conclusion": "Asymmetric right sensorineural hearing loss; left normal."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2022-10-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "date": "2022-10-19T08:30",
+              "author": "otolaryngology",
+              "body": "OTOLARYNGOLOGY CONSULT (received 10/19/2022)\nSeen 10/14/2022, referred by primary care.\n\n47-year-old woman with hereditary angioedema and cervical degenerative disc disease. Six months of slowly worsening hearing in the right ear with intermittent tinnitus; over the same period she has noticed some weakness on the right side of her face. No vertigo, no headache, no change in taste.\nMeds: HCTZ, icatibant as needed. NKDA.\n\nExam: Ear canals and tympanic membranes normal. Right corneal reflex diminished. Mild right facial droop. Remaining cranial nerves intact. No nystagmus.\n\nAudiogram today: right sensorineural hearing loss.\nMRI brain/IACs with gadolinium (10/12/2022, obtained before today's visit): 2 cm right cerebellopontine angle mass.\n\nImpression: right acoustic neuroma (vestibular schwannoma), 2 cm, with hearing loss, tinnitus, reduced corneal reflex and mild facial weakness.\n\nPlan: Discussed observation, microsurgery and stereotactic radiosurgery. With symptoms and size, treatment rather than watching is favored. Referred to the skull base team (neurotology and radiation oncology) for a joint consultation. Copy to PCP.\n\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "nurse_visit",
+          "start": "2022-10-25T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-25T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-25T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-25T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2022-10-25T17:15",
+              "author": "RN",
+              "body": "Flu (quadrivalent) L deltoid, Pfizer bivalent COVID R deltoid. Flu 0.5 mL IM, COVID 0.3 mL IM. Pt fine, no reactions on prior doses. She mentioned she saw ENT and is waiting on the skull base appointment."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-02a",
+          "kind": "lab_only",
+          "start": "2022-11-02T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-10-29T07:00",
+              "resulted": "2022-11-02T10:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-11-02T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "specialist_visit",
+          "start": "2022-11-09T13:00",
+          "service": "Neurotology",
+          "reason": "Right vestibular schwannoma treatment options",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Skull Base Multidisciplinary Consultation",
+              "date": "2022-11-15T09:00",
+              "author": "neurotology",
+              "body": "SKULL BASE CLINIC: NEUROTOLOGY AND RADIATION ONCOLOGY (received 11/15/2022)\nVisit 11/09/2022\n\nDiagnosis: right vestibular schwannoma, 2.0 cm on MRI 10/12/2022, with right sensorineural hearing loss, tinnitus, diminished right corneal reflex and mild right facial weakness.\nPMH: hypertension on HCTZ; hereditary angioedema type 1 (icatibant on demand); cervical DDD with prior C6-C7 radiculopathy; open cholecystectomy 2021.\n\nDiscussion: we reviewed microsurgical resection (translabyrinthine or retrosigmoid) and single-session stereotactic radiosurgery, including tumor control rates, the risk to facial nerve function and to remaining hearing with each, recovery time, and the need for MRI surveillance after radiosurgery. Her HAE adds airway and anesthesia considerations to open surgery.\n\nDecision: she prefers stereotactic radiosurgery. Planning MRI and frame/mask fitting to be scheduled; treatment targeted for January 2023.\n\nNeurotology / Radiation Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "imaging",
+          "start": "2022-11-16T12:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-16T12:30",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared to prior studies back to 2017. Heterogeneously dense. No suspicious finding. Unchanged.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-11-16T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result letter",
+              "date": "2022-11-18T10:20",
+              "author": "front desk",
+              "body": "Your screening mammogram of 11/16/2022 was negative. Continue annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "outside_records",
+          "start": "2022-12-06T11:00",
+          "reason": "Allergy/immunology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Follow-up",
+              "date": "2022-12-06T11:00",
+              "author": "allergy/immunology",
+              "body": "ALLERGY & IMMUNOLOGY ANNUAL FOLLOW-UP (received 12/06/2022)\nVisit 11/29/2022\n\nHereditary angioedema type 1. One peripheral (hand) attack this year, treated early with icatibant with a good response. No abdominal or laryngeal attacks since the ED visit last October. Now being planned for stereotactic radiosurgery of a right vestibular schwannoma; radiosurgery does not need airway instrumentation, so no pre-procedure C1 inhibitor is planned, but she should have icatibant with her that day.\nPlan: continue icatibant on demand; two in-date syringes at home; prior authorization renewed. Yearly follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "procedure_visit",
+          "start": "2023-01-18T07:30",
+          "end": "2023-01-18T13:30",
+          "service": "Radiation Oncology",
+          "reason": "Stereotactic radiosurgery, right vestibular schwannoma",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Stereotactic Radiosurgery Treatment Summary",
+              "date": "2023-01-24T11:00",
+              "author": "radiation oncology",
+              "body": "RADIOSURGERY TREATMENT SUMMARY (received 01/24/2023)\nTreatment date: 01/18/2023\n\nDiagnosis: right vestibular schwannoma, 2.0 cm.\nTechnique: single-fraction stereotactic radiosurgery with a planning MRI fused to CT the same morning. Marginal dose 12 Gy.\nCourse: treatment delivered without interruption. No nausea, headache or new deficit afterward. Discharged home the same day with a companion.\n\nPost-treatment: may notice temporary fatigue or a mild increase in tinnitus over the next weeks. Follow-up MRI at 6 months, then yearly. Call for new facial weakness, imbalance or severe headache.\n\nAllergies: NKDA. HAE: no airway manipulation required; icatibant available.\n\nRadiation Oncology / Neurotology"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-02a",
+          "kind": "office_visit",
+          "start": "2023-03-02T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after radiosurgery",
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 58,
+            "weight_kg": 67.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-02T14:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-02T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-02T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-02T14:40",
+              "author": "PCP",
+              "body": "Six weeks after radiosurgery for the R vestibular schwannoma. Treatment summary reviewed. Tired for about a week afterward, back to normal now, working full days. Hearing on the R the same as before, ringing the same. R face: still a slight droop at the corner of the mouth when she smiles, not worse. No headache, dizziness or imbalance.\nHAE: no attacks since last year's hand episode. BP fine at home.\n\nExam: BP as recorded. Mild R lower facial droop, eye closure full. Gait steady, tandem okay. Heart regular, lungs clear.\n\nA/P\n1. Vestibular schwannoma s/p SRS 1/2023 - stable symptoms; 6-month MRI in July per skull base team.\n2. HTN - controlled on HCTZ. BMP.\n3. HAE - quiet.\nPhysical in June."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "date": "2023-03-03T08:20",
+              "author": "PCP",
+              "body": "Potassium and creatinine normal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "portal_message",
+          "start": "2023-05-10T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dentist question",
+              "date": "2023-05-10T07:55",
+              "author": "patient",
+              "body": "Hi, I have a cleaning at the dentist in two weeks. Do I need that pre-treatment the allergy doctor talked about? Thanks, Jen"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dentist question",
+              "date": "2023-05-10T12:30",
+              "author": "PCP",
+              "body": "Hi Jen, a routine cleaning is not what they meant. The C1 inhibitor pre-treatment is for extractions, implants or other bigger dental procedures, and for surgery. If the dentist plans anything more than a cleaning, call the allergy office first. Bring your icatibant with you to the appointment either way. See you June 8."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-08a",
+          "kind": "annual_physical",
+          "start": "2023-06-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 77,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 68.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-08T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-08T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-08T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-06-08T09:00",
+              "text": "Liquid-based cervical cytology. Specimen adequate, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM; hrHPV negative. Co-testing interval 5 years."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-08T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-08T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-08T09:40",
+              "author": "PCP",
+              "body": "Annual exam, 48F.\n\nInterval since March: no new problems. Hearing R ear unchanged, tinnitus the same, face unchanged. MRI follow-up scheduled for July. No HAE attacks in 2023 so far; icatibant syringes in date. Neck occasionally stiff, no arm symptoms. Home BP 120s/high 70s.\n\nMeds: hydrochlorothiazide 25 mg daily; icatibant 30 mg SC as needed (allergy). NKDA.\nFH: mother C1-INH deficiency; father HTN, stroke at 60; maternal uncle died young of throat swelling.\nSocial: never smoker, a drink or two a month, office administrator.\nPHQ-2: 0.\n\nExam: Vitals as charted. Well appearing. Mild R lower facial droop, unchanged. Hearing reduced R to whisper. Neck supple. Heart: regular, no murmur. Lungs: clear. Breasts: no masses or skin changes, axillae clear. Abdomen: soft, non-tender, healed subcostal scar. Pelvic: normal external genitalia, cervix normal, co-test collected. Extremities: no edema. Skin: nothing suspicious.\n\nA/P\n- Essential hypertension - controlled. Continue HCTZ 25.\n- Hereditary angioedema type 1 - on-demand icatibant; allergy yearly.\n- R vestibular schwannoma after radiosurgery - surveillance MRI July.\n- L C6-7 radiculopathy - quiet.\n- Health maintenance: Pap/HPV today. Mammogram due in the fall. FIT kit at the next visit. Fasting labs today.\nFollow up in 6 months for BP, sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "portal_message",
+          "start": "2023-06-12T15:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2023-06-12T15:10",
+              "author": "PCP",
+              "body": "Hi Jen, your blood work from the physical is all normal, including kidney function, potassium and cholesterol, and your Pap and HPV test are negative, so no Pap needed for five years. Next step is a BP visit around December and the mammogram this fall. Front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-24a",
+          "kind": "outside_records",
+          "start": "2023-07-24T10:20",
+          "reason": "Post-radiosurgery MRI",
+          "reports": [
+            {
+              "study": "MRI brain and internal auditory canals with and without gadolinium",
+              "loinc": "43769-9",
+              "performed": "2023-07-19T16:30",
+              "text": "MRI brain and IACs before and after gadolinium. Comparison 10/12/2022 and radiosurgery planning study 01/18/2023.\nThe right cerebellopontine angle / internal auditory canal mass measures 2.0 cm, unchanged in size, with new central loss of enhancement. No hydrocephalus. No new lesion. Remainder of the brain normal.",
+              "conclusion": "Treated right vestibular schwannoma, stable at 2.0 cm with central loss of enhancement, an expected post-radiosurgery appearance."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "MRI report received",
+              "date": "2023-07-24T10:20",
+              "author": "front desk",
+              "body": "MRI report from the skull base team's imaging center received and scanned. Routed to PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "MRI reviewed",
+              "date": "2023-07-24T17:45",
+              "author": "PCP",
+              "body": "Stable size with central loss of enhancement after SRS, as expected. Skull base team following. No action from us."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-30a",
+          "kind": "specialist_visit",
+          "start": "2023-10-30T10:15",
+          "service": "Endocrinology",
+          "reason": "Episodes of headache, palpitations and sweating",
+          "vitals": {
+            "bp": [
+              220,
+              110
+            ],
+            "hr": 118,
+            "temp_c": 36.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-30T11:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 110
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-10-30T10:35",
+              "text": "Sinus tachycardia at 118. Normal axis. Normal PR and QRS intervals. No ST-segment or T-wave changes.",
+              "conclusion": "Sinus tachycardia, no ST or T wave changes."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2023-11-01T09:15",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY NEW PATIENT CONSULTATION (received 11/01/2023)\nDate of visit: 10/30/2023\nSelf-referred. Copy to primary care.\n\nHPI: 48-year-old woman with hypertension, hereditary angioedema, cervical disc disease and a prior workup for cervical radiculopathy, and a right acoustic neuroma treated with radiosurgery this year. Over the last few months she has had spells of severe headache with a pounding heartbeat and drenching sweats, coming more often and more intensely lately. She denies chest pain, shortness of breath or recent illness.\nMeds: hydrochlorothiazide 25 mg daily; icatibant 30 mg SC as needed. NKDA.\nFamily history: notable for thyroid cancer in her father. Mother with hereditary angioedema.\nSocial: never smoker, rare alcohol.\n\nExam: BP 220/110, HR 118, afebrile. Well-nourished woman, distressed with a headache during the visit. Skin moist. Fine tremor of the outstretched hands. Abdomen unremarkable.\n\nIn clinic: glucose 110, potassium 3.8, creatinine 0.9. ECG: sinus tachycardia, no ST or T changes.\n\nGiven the severity of the BP she was moved to our monitored treatment area and given intravenous phentolamine; BP came down to 150/90 and the headache and sweating settled. Observed for 2 hours before going home with a companion.\n\nAssessment: paroxysms of headache, palpitations and diaphoresis with severe hypertension. Pheochromocytoma suspected.\n\nPlan:\n1. Plasma free metanephrines and 24-hour urine catecholamines sent today.\n2. Avoid beta-blockers until alpha blockade is established; avoid decongestants and stimulants.\n3. If biochemistry is positive, adrenal-protocol CT.\n4. ED precautions for severe headache, chest pain or a sustained BP over 180.\n5. Results visit in 1-2 weeks.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "specialist_visit",
+          "start": "2023-11-08T15:00",
+          "service": "Endocrinology",
+          "reason": "Results: catecholamine testing and adrenal CT",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-30T11:00",
+              "resulted": "2023-11-03T09:00",
+              "results": [
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 1136
+                },
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-31T08:00",
+              "resulted": "2023-11-06T09:00",
+              "results": [
+                {
+                  "test": "Norepinephrine, 24 hour urine",
+                  "loinc": "2668-2",
+                  "unit": "ug/(24.h)",
+                  "value": 412
+                },
+                {
+                  "test": "Epinephrine, 24 hour urine",
+                  "loinc": "2232-7",
+                  "unit": "ug/(24.h)",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-11-07T13:00",
+              "text": "Adrenal protocol CT of the abdomen with unenhanced, portal venous and delayed images; pelvis included on the venous phase. Status post cholecystectomy.\nLeft adrenal gland: 3.4 cm heterogeneous, avidly enhancing mass, attenuation 38 HU on unenhanced images. Right adrenal gland normal. Liver, spleen, pancreas and kidneys normal. No lymphadenopathy. No ascites. Pelvic organs unremarkable.",
+              "conclusion": "3.4 cm heterogeneous enhancing left adrenal mass; with elevated normetanephrine, consistent with pheochromocytoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2023-11-14T08:40",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY FOLLOW-UP (received 11/14/2023)\nVisit 11/08/2023\n\nResults:\n- Plasma free normetanephrine 1136 pg/mL (reference <148) - elevated\n- Plasma free metanephrine 38 pg/mL (reference <57) - normal\n- 24-hour urine norepinephrine 412 mcg (reference 15-80) - elevated; epinephrine 9 mcg - normal\n- Adrenal CT 11/07/2023: 3.4 cm heterogeneous enhancing left adrenal mass, 38 HU unenhanced\n\nAssessment: left adrenal pheochromocytoma, noradrenergic.\n\nPlan:\n1. Start doxazosin 2 mg at bedtime; increase to 4 mg on 11/20 and to 8 mg on 12/04 if tolerated, guided by home BP and orthostatic symptoms.\n2. Liberal salt and fluid intake once alpha blockade starts.\n3. Referred to endocrine surgery for laparoscopic left adrenalectomy, target early January.\n4. Germline genetic testing to be sent at the post-operative visit, given the family history of thyroid cancer and as recommended for all pheochromocytoma.\n5. Allergy/immunology to coordinate peri-operative C1 inhibitor prophylaxis.\nContinue hydrochlorothiazide for now.\n\nEndocrinology"
+            },
+            {
+              "type": "Result Note",
+              "title": "Endocrinology records reviewed",
+              "date": "2023-11-15T18:30",
+              "author": "PCP",
+              "body": "Endo letters filed: likely L adrenal pheochromocytoma, biochemistry and CT positive, starting doxazosin, adrenalectomy planned. Message to pt that we have the records and are here for anything in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "pharmacy",
+          "start": "2023-12-04T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2023-12-04T09:30",
+              "author": "MA",
+              "body": "Pharmacy renewal request HCTZ 25 mg #90. Last office visit 6/8/23. Per PCP: approved x1 with 1 refill. Pt has a 6-month BP follow-up overdue; left voicemail to schedule. Also noted endocrinology letters on file (new adrenal tumor, on doxazosin) - PCP aware, wants her in after the surgery."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "outside_records",
+          "start": "2023-12-11T09:00",
+          "reason": "Allergy/immunology letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Letter",
+              "date": "2023-12-11T09:00",
+              "author": "allergy/immunology",
+              "body": "ALLERGY & IMMUNOLOGY (received 12/11/2023)\nVisit 12/05/2023\n\nSeen ahead of a planned laparoscopic left adrenalectomy for pheochromocytoma (January). HAE type 1, no attacks in 2023. Plan: C1 inhibitor concentrate IV within 6 hours before surgery, coordinated with anesthesia; icatibant available on the unit post-operatively. Continue on-demand icatibant at home."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "hospital_admission",
+          "start": "2024-01-10T06:30",
+          "end": "2024-01-12T11:00",
+          "service": "Endocrine Surgery",
+          "reason": "Laparoscopic left adrenalectomy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-01-10T10:30",
+              "text": "Specimen: left adrenal gland, laparoscopic adrenalectomy.\nGross: adrenal gland with a 3.3 cm well-circumscribed tan-red nodule.\nMicroscopic: nested (zellballen) pattern of polygonal cells with granular cytoplasm, supported by sustentacular cells. Tumor confined to the adrenal gland. Margins negative. Adjacent adrenal cortex unremarkable.",
+              "conclusion": "Pheochromocytoma, 3.3 cm, confined to the adrenal gland; margins negative.",
+              "issued": "2024-01-15T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2024-01-17T09:00",
+              "author": "endocrine surgery",
+              "body": "OPERATIVE REPORT (received 01/17/2024)\nDate: 01/10/2024\nProcedure: laparoscopic left adrenalectomy\nPreop diagnosis: left adrenal pheochromocytoma, alpha-blocked on doxazosin 8 mg.\nAnesthesia: general endotracheal with arterial line. C1 inhibitor concentrate given intravenously before induction per allergy/immunology for hereditary angioedema.\n\nLateral decubitus positioning. Four ports. The splenic flexure and spleen were mobilized, the left adrenal vein was identified and ligated early, and the gland was dissected free and removed intact in a retrieval bag. Intraoperative BP lability was managed by anesthesia with short-acting agents. EBL minimal. No complications."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2024-01-17T09:05",
+              "author": "endocrine surgery",
+              "body": "DISCHARGE SUMMARY (received 01/17/2024)\nAdmitted 01/10/2024, discharged 01/12/2024.\n\nProcedure: laparoscopic left adrenalectomy for pheochromocytoma (pathology final 01/15: pheochromocytoma 3.3 cm, confined, margins negative).\nCourse: one night in step-down for BP and glucose monitoring, no hypotension requiring pressors, glucose normal. No angioedema. Diet resumed POD 1.\n\nMedication changes: doxazosin STOPPED. Continue hydrochlorothiazide 25 mg daily. Icatibant as needed (unchanged).\nFollow-up: endocrine surgery 2 weeks; endocrinology in 6-8 weeks with plasma metanephrines."
+            },
+            {
+              "type": "Result Note",
+              "title": "Surgical records reviewed",
+              "date": "2024-01-18T07:45",
+              "author": "PCP",
+              "body": "Adrenalectomy records reviewed. Pathology pheochromocytoma, margins clear. Doxazosin stopped, back on HCTZ only."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T09:45",
+          "service": "Endocrinology",
+          "reason": "Follow-up after adrenalectomy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-12T10:20",
+              "resulted": "2024-03-15T09:00",
+              "results": [
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 96
+                },
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2024-03-19T11:30",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY FOLLOW-UP (received 03/19/2024)\nVisit 03/12/2024\n\nTwo months after laparoscopic left adrenalectomy. No spells since surgery; headaches and sweating gone. Home BP 118-128/74-82 on HCTZ alone.\n\nPlasma free normetanephrine 96 pg/mL and metanephrine 30 pg/mL - both normal.\nGermline pheochromocytoma/paraganglioma panel (RET, VHL, SDHA, SDHB, SDHC, SDHD, SDHAF2, NF1, MAX, TMEM127, FH): no pathogenic variants identified.\n\nAssessment: pheochromocytoma, resected, biochemically cured; no hereditary syndrome found.\nPlan: plasma metanephrines yearly; return sooner for recurrent spells. BP management back to primary care.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "pharmacy",
+          "start": "2024-06-03T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-06-03T08:50",
+              "author": "MA",
+              "body": "HCTZ 25 mg renewal request from pharmacy. PCP approved 90 days + 1 refill. Message sent asking pt to book a BP visit and physical (last seen 6/2023)."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Time for a visit",
+              "date": "2024-06-03T09:00",
+              "author": "MA",
+              "body": "Hi Jennifer, your blood pressure prescription has been renewed. It has been about a year since your last visit, so please call or reply here to set up a physical and BP check."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "outside_records",
+          "start": "2024-07-24T13:15",
+          "reason": "Surveillance MRI",
+          "reports": [
+            {
+              "study": "MRI brain and internal auditory canals with and without gadolinium",
+              "loinc": "43769-9",
+              "performed": "2024-07-17T17:00",
+              "text": "MRI brain and IACs without and with gadolinium. Comparison 07/19/2023 and 10/12/2022.\nTreated right cerebellopontine angle / internal auditory canal schwannoma now 1.9 cm, previously 2.0 cm, with persistent central loss of enhancement. No new lesion. No hydrocephalus. Brain otherwise normal.",
+              "conclusion": "Treated right vestibular schwannoma, stable to slightly smaller at 1.9 cm."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Imaging received",
+              "date": "2024-07-24T13:15",
+              "author": "front desk",
+              "body": "18-month post-radiosurgery MRI report from skull base team received, scanned, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "pharmacy",
+          "start": "2024-12-09T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-12-09T14:20",
+              "author": "MA",
+              "body": "HCTZ 25 mg renewal from pharmacy, approved 90 days per PCP. Pt still has not booked a visit; reminder letter mailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "portal_message",
+          "start": "2024-12-10T08:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Overdue visit reminder",
+              "date": "2024-12-10T08:00",
+              "author": "front desk",
+              "body": "Dear Jennifer, our records show it has been more than a year since your last physical. Please call the office or reply through the portal to schedule. Your doctor would like to review your recent specialist care."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "ed_visit",
+          "start": "2025-04-23T15:10",
+          "end": "2025-04-23T21:20",
+          "service": "Emergency Medicine",
+          "reason": "Palpitations and lightheadedness",
+          "vitals": [
+            {
+              "time": "2025-04-23T15:12",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 170,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2025-04-23T18:40",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-23T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-23T15:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-23T15:30",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "text": "Below the 99th percentile"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-23T15:14",
+              "text": "Regular narrow-complex tachycardia at 170 beats per minute. No discernible P waves. Normal QRS duration.",
+              "conclusion": "Narrow-complex tachycardia without visible P waves."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-23T18:35",
+              "text": "Sinus rhythm at 76. Normal intervals and axis. No ST or T wave abnormality.",
+              "conclusion": "Sinus rhythm, normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-23T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2025-04-28T10:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 04/28/2025)\nArrival 04/23/2025 15:10, discharged 21:20.\n\nCC: racing heart and lightheadedness.\n\nHPI: 50-year-old woman with hypertension, hereditary angioedema (C1 inhibitor deficiency), cervical degenerative disc disease and a pheochromocytoma removed last year. About 30 minutes before arrival, while gardening, she felt her heart start racing and became lightheaded. Her hypertension is well controlled on hydrochlorothiazide; no known heart disease. No chest pain, no syncope.\nMeds: hydrochlorothiazide 25 mg daily; icatibant as needed. NKDA.\n\nExam: BP 130/85, HR 170, RR 18, SpO2 98% on room air. Lungs clear. No leg swelling.\n\nMonitor/ECG: regular narrow-QRS tachycardia, no visible P waves.\n\nED course: IV access placed. Adenosine given IV: the ventricular rate slowed briefly, revealing sawtooth flutter waves, and the tachycardia then resumed. Diltiazem IV given for rate control. Spontaneous conversion to sinus rhythm at about 18:30; repeat ECG sinus rhythm 76, normal. Observed further in sinus rhythm.\nLabs: CBC, BMP, magnesium and TSH normal; high-sensitivity troponin normal.\n\nImpression: atrial flutter, converted to sinus rhythm.\nDisposition: home. No new medications. Please arrange outpatient cardiology follow-up. Return for recurrent palpitations, chest pain, fainting or shortness of breath."
+            },
+            {
+              "type": "Result Note",
+              "title": "ED record reviewed",
+              "date": "2025-04-29T08:10",
+              "author": "PCP",
+              "body": "ED record: atrial flutter, converted, sent home without new meds and told to get cardiology follow-up. Nurse to reach out to schedule a visit with us."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "pharmacy",
+          "start": "2025-05-14T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill and ED record",
+              "date": "2025-05-14T10:40",
+              "author": "RN",
+              "body": "HCTZ refill request from pharmacy - approved per PCP standing instruction, 90 days. ED record from 4/23 (atrial flutter, converted) is in the chart. Called pt to recommend a visit to go over the ED visit; no answer, voicemail left with call-back number. Portal message sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-19a",
+          "kind": "ed_visit",
+          "start": "2025-10-19T13:50",
+          "end": "2025-10-19T18:10",
+          "service": "Emergency Medicine",
+          "reason": "Vertigo, vomiting, facial numbness and right-sided weakness",
+          "vitals": [
+            {
+              "time": "2025-10-19T13:55",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 85,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-19T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-19T14:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-19T14:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-10-19T14:10",
+              "text": "Noncontrast CT of the head. No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Posterior fossa without acute finding. Postradiosurgical right cerebellopontine angle lesion not well seen on CT. Calvarium intact.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-19T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2025-10-28T09:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 10/28/2025)\nArrival 10/19/2025 13:50. Admitted to the stroke service 18:10.\n\nCC: dizziness, vomiting, trouble walking.\n\nHPI: 50-year-old woman with cervical degenerative disc disease and a C6-C7 herniation previously evaluated for radiculopathy. Symptoms began about two hours before arrival right after she tipped her head back to paint a ceiling: the room spinning, two episodes of vomiting, numbness of the left side of her face, and weakness of the right arm and leg.\nPMH also: hypertension, hereditary angioedema, atrial flutter (ED 04/2025), pheochromocytoma resected 2024, right vestibular schwannoma after radiosurgery.\nMeds: hydrochlorothiazide. NKDA.\n\nExam: BP 150/90, HR 85, afebrile. Light touch and pinprick reduced over the left face. Right arm and leg weaker than the left. Other cranial nerves normal.\n\nCT head without contrast: no acute abnormality.\n\nImpression: acute posterior circulation stroke syndrome. Stroke team consulted at the bedside. Admitted to the stroke unit for MRI and workup."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-19b",
+          "kind": "hospital_admission",
+          "start": "2025-10-19T18:10",
+          "end": "2025-10-23T12:30",
+          "service": "Neurology — Stroke",
+          "reason": "Acute left midbrain infarction",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-20T05:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-20T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-20T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 99
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2025-10-19T21:00",
+              "text": "MRI brain without contrast with diffusion-weighted imaging, plus time-of-flight MR angiography of the head and contrast-enhanced MR angiography of the neck.\nBrain: focus of restricted diffusion with corresponding FLAIR signal in the left ventral midbrain at the cerebral peduncle, consistent with acute infarct. No hemorrhage. No other acute infarct. Treated right cerebellopontine angle schwannoma, unchanged. Ventricles normal.\nMRA head: normal circle of Willis, basilar and posterior cerebral arteries patent, no stenosis or occlusion.\nMRA neck: carotid and vertebral arteries patent without dissection, stenosis or occlusion.",
+              "conclusion": "Acute left ventral midbrain (cerebral peduncle) infarct. No dissection, stenosis or large-vessel occlusion."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-10-20T11:00",
+              "text": "Normal left ventricular size and wall thickness. LVEF 60%. Normal right ventricle. Atria normal in size. No intracardiac thrombus. Valves structurally normal without significant regurgitation. Agitated saline study: no shunt. No pericardial effusion.",
+              "conclusion": "Normal study. EF 60%, no thrombus, no shunt."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-19T18:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-23T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Stroke Service Discharge Summary",
+              "date": "2025-10-28T09:25",
+              "author": "neurology",
+              "body": "DISCHARGE SUMMARY - STROKE SERVICE (received 10/28/2025)\nAdmitted 10/19/2025, discharged 10/23/2025.\n\nPrincipal diagnosis: Weber syndrome - acute left midbrain (cerebral peduncle) infarction.\n\nPresentation: vertigo, vomiting, left facial numbness and right arm and leg weakness after neck extension while painting; head CT negative in the ED.\n\nNeurology examination on the morning of 10/20: left ptosis, left pupil larger than right, limited adduction and elevation of the left eye (partial left third nerve palsy); right arm and leg weakness; decreased sensation of the left face as noted in the ED. Speech clear.\n\nWorkup:\n- MRI brain: acute left ventral midbrain infarct. MRA head and neck: no dissection, stenosis or occlusion.\n- TTE: EF 60%, no thrombus, no shunt.\n- Telemetry: sinus rhythm throughout the stay.\n- LDL 94 mg/dL. A1c normal.\n\nAssessment: infarct of the left midbrain producing Weber syndrome. With no vessel disease or dissection and a documented episode of atrial flutter in April 2025, the mechanism is felt to be cardioembolic.\n\nTreatment: apixaban 5 mg twice daily started on 10/21/2025. Statin not started: LDL 94 with a cardioembolic mechanism and no atherosclerotic disease.\n\nCourse: right-sided strength improving, walking with standby assistance by day 3 and independently on discharge; ptosis improving. Swallow screen passed.\n\nDischarge medications:\n- Apixaban 5 mg by mouth twice daily - NEW\n- Hydrochlorothiazide 25 mg daily - continue\n- Icatibant 30 mg SC as needed - continue\n\nFollow-up: outpatient physical therapy; stroke clinic in 6-8 weeks; cardiology; primary care in 1-2 weeks.\nAllergies: NKDA."
+            },
+            {
+              "type": "Result Note",
+              "title": "Hospital records reviewed",
+              "date": "2025-10-28T17:20",
+              "author": "PCP",
+              "body": "Read the stroke admission: L midbrain infarct, Weber syndrome, felt cardioembolic from the flutter, now on apixaban. Will discuss at her next contact."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "portal_message",
+          "start": "2025-11-04T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital stay",
+              "date": "2025-11-04T20:15",
+              "author": "patient",
+              "body": "Hi, I don't know if you got the papers but I had a small stroke last month and was in the hospital for 4 days. I'm on a blood thinner now, apixaban. Doing PT twice a week and my right leg is getting better. They told me to see you but I'm not driving yet. Can I come in once I can drive?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital stay",
+              "date": "2025-11-05T07:40",
+              "author": "PCP",
+              "body": "Jen, I'm so sorry to hear this, and yes, the hospital records came last week and I've read them. I'm glad the leg is improving. Keep taking the apixaban twice a day without skipping doses and keep up with PT. A video visit is fine if driving is the issue, or we can find a time once you're back on the road. Call right away for any new weakness, numbness, trouble speaking or vision change. Front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "ed_visit",
+          "start": "2026-04-20T09:30",
+          "end": "2026-04-20T14:45",
+          "service": "Emergency Medicine",
+          "reason": "Severe epigastric pain radiating to the back",
+          "vitals": [
+            {
+              "time": "2026-04-20T09:35",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 102,
+              "rr": 18,
+              "temp_c": 37.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-20T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-20T09:50",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-20T09:50",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 99
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-20T09:50",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 850
+                },
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 900
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 180
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-04-20T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-04-28T11:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 04/28/2026)\nArrival 04/20/2026 09:30. Admitted to medicine 14:45.\n\nCC: severe upper abdominal pain.\n\nHPI: 50-year-old woman with hypertension, hereditary angioedema and a prior open cholecystectomy. For 24 hours, constant, sharp pain in the epigastrium that goes through to her back and is worse lying flat. She does not drink to excess and has never been told she had gallstones.\nMeds: hydrochlorothiazide 25 mg daily. No other medications reported at triage. NKDA, no food allergies.\n\nExam: BP 145/90, HR 102, temperature 37.8 C (100 F). Epigastric tenderness without rebound or guarding. Bowel sounds normal. No swelling of lips, face or extremities.\n\nLabs: WBC 12,000; hemoglobin 13.5; platelets 250,000; amylase 900 U/L (normal 30-110); lipase 850 U/L (normal 0-160); triglycerides 180; calcium 9.2; liver tests normal.\n\nImpression: acute pancreatitis. Not alcohol related; gallbladder absent. HAE attack considered less likely given the enzyme elevation.\nPlan: IV fluids and analgesia. Admit to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20b",
+          "kind": "hospital_admission",
+          "start": "2026-04-20T14:45",
+          "end": "2026-04-23T13:00",
+          "service": "Internal Medicine — Hospital",
+          "reason": "Acute pancreatitis",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-22T05:40",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 140
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-22T05:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-04-20T16:30",
+              "text": "Right upper quadrant ultrasound. Gallbladder surgically absent. Common bile duct 5 mm, no intraductal stone. No intrahepatic biliary dilatation. Liver normal in size and echotexture. Pancreatic head seen and unremarkable; body and tail partly obscured by bowel gas. Right kidney normal. No ascites.",
+              "conclusion": "Post-cholecystectomy. Normal-caliber common duct without stones. Pancreas partly obscured."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-04-20T14:45"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-04-23T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Medicine Discharge Summary",
+              "date": "2026-04-28T11:05",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY - MEDICINE (received 04/28/2026)\nAdmitted 04/20/2026, discharged 04/23/2026.\n\nPrincipal diagnosis: acute pancreatitis, drug-induced (hydrochlorothiazide suspected).\n\nHistory: hypertension; hereditary angioedema type 1; left midbrain infarct (Weber syndrome) 10/2025 on apixaban; atrial flutter 04/2025; pheochromocytoma resected 01/2024; treated right vestibular schwannoma; cervical DDD; open cholecystectomy 2021.\nMedication reconciliation (pharmacy fill history and patient): hydrochlorothiazide 25 mg daily, apixaban 5 mg twice daily, icatibant as needed. The ED triage list had recorded hydrochlorothiazide only.\n\nCourse: Admission lipase 850, amylase 900. RUQ ultrasound: no gallbladder, common duct 5 mm, no stones. No alcohol excess; triglycerides 180 and calcium 9.2 do not explain it. With other causes excluded and a thiazide as her only long-term drug besides apixaban, the pancreatitis was attributed to hydrochlorothiazide. Treated with IV fluids and analgesia; pain settled and diet advanced by day 3. Lipase 140 on 04/22. No angioedema during the stay.\n\nDischarge medications:\n- Hydrochlorothiazide - STOPPED (suspected cause of pancreatitis; avoid thiazides)\n- Amlodipine 5 mg by mouth daily - NEW, for blood pressure\n- Apixaban 5 mg by mouth twice daily - continue\n- Icatibant 30 mg SC as needed - continue\n\nFollow-up: primary care in 1-2 weeks for BP and medication review.\nAllergies/intolerances: NKDA; hydrochlorothiazide - pancreatitis (added this admission)."
+            },
+            {
+              "type": "Result Note",
+              "title": "Hospital records reviewed",
+              "date": "2026-04-29T07:55",
+              "author": "PCP",
+              "body": "Pancreatitis admission reviewed. HCTZ stopped as suspected cause, amlodipine 5 started. Needs a visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request declined",
+              "date": "2026-05-12T09:15",
+              "author": "RN",
+              "body": "Auto-refill request from pharmacy for hydrochlorothiazide 25 mg. Hospital discharge summary (received 4/28) says HCTZ was stopped for pancreatitis and amlodipine started. Declined the refill; told pharmacy to inactivate the HCTZ prescription. Called pt - she confirms she stopped it in the hospital and is taking amlodipine from the hospital doctors. Advised a visit to go over all of it; she will call back with her schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2026-07-21T12:05",
+              "author": "patient",
+              "body": "I know I'm overdue. Can I get in sometime in early September? Mornings are best. I want to go over everything from the hospital and my meds."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2026-07-21T14:30",
+              "author": "front desk",
+              "body": "Hi Jennifer, you're booked Thursday, September 10 at 9:30 with your doctor, a long visit. Please bring all your medication bottles and any papers from the hospital."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:30",
+          "reason": "Follow-up after hospital stays; medication review",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cervical degenerative disc disease with C6-C7 herniation|M50.223": {
+        "code": "M50.223",
+        "display": "Other cervical disc displacement at C6-C7 level",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postoperative incisional pain|G89.18": {
+        "code": "G89.18",
+        "display": "Other acute postprocedural pain",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "3 ML icatibant 10 MG/ML Prefilled Syringe": {
+        "code": "1148141",
+        "display": "3 ML icatibant 10 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "C1 esterase inhibitor": {
+        "code": "4477-6",
+        "display": "Complement C1 esterase inhibitor [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "C1 esterase inhibitor functional": {
+        "code": "4476-8",
+        "display": "Complement C1 esterase inhibitor.functional [Mass/volume] in Serum or Plasma",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Complement C4": {
+        "code": "4498-2",
+        "display": "Complement C4 [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Epinephrine, 24 hour urine": {
+        "code": "2232-7",
+        "display": "EPINEPHrine [Mass/time] in 24 hour Urine",
+        "unit": "ug/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Norepinephrine, 24 hour urine": {
+        "code": "2668-2",
+        "display": "Norepinephrine [Mass/time] in 24 hour Urine",
+        "unit": "ug/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain and internal auditory canals with and without gadolinium": {
+        "code": "43769-9",
+        "display": "MR Brain and Internal auditory canal WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI cervical spine without contrast": {
+        "code": "30667-0",
+        "display": "MR Cervical spine WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

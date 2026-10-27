@@ -1,0 +1,5103 @@
+{
+  "unit": "unit-2002",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002002",
+      "given": "Sean",
+      "family": "Berman",
+      "birth_date": "1973-04-22",
+      "address_line": "212 Bellevue Ave Apt 3",
+      "phone": "+1-860-555-0124",
+      "email": "sean.berman@example.test",
+      "marital_status": "single",
+      "summary": "Retired construction worker on disability with schizophrenia, type 2 diabetes, hypertension and untreated chronic hepatitis B who joined in 2019. Over seven years: iron deficiency anemia, sleep apnea, ectopic ACTH from a resected bronchial carcinoid, cervical radiculopathy, primary polydipsia, hepatitis B-associated PAN and severe finger frostbite. Records arrive with gaps.",
+      "events": [
+        {
+          "id": "2019-02-04a",
+          "kind": "telephone",
+          "start": "2019-02-04T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2019-02-04T10:20",
+              "author": "front desk",
+              "body": "Sister phoned on his behalf; he was on the line too. He wants to move his primary care here, says his old office kept changing doctors. Medicare (disability). Has an outside psychiatrist he sees for schizophrenia. Booked new patient visit 2/12 at 9:30. Records release sent to his prior practice. Asked him to bring all his medicine bottles, including over-the-counter."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-12a",
+          "kind": "establish_care",
+          "start": "2019-02-12T09:30",
+          "end": "2019-02-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2012-06-01"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2014-03-01"
+            },
+            {
+              "label": "Schizophrenia",
+              "action": "history",
+              "onset": "1998-01-01",
+              "note": "followed by outside psychiatry"
+            },
+            {
+              "label": "Chronic hepatitis B",
+              "action": "history",
+              "onset": "2009-01-01",
+              "note": "never treated"
+            },
+            {
+              "label": "Peptic ulcer disease",
+              "action": "history",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Inguinal hernia",
+              "action": "history",
+              "onset": "2017-06-01",
+              "note": "right, reducible"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2007-01-01",
+              "note": "10 pack-years, quit 2017"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "type 2 diabetes"
+            },
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizophrenia, prescribed by outside psychiatry"
+            },
+            {
+              "drug_text": "diphenhydramine hydrochloride 25 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth at bedtime as needed for sleep",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "QHS PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "sleep, over the counter"
+            },
+            {
+              "drug_text": "calcium carbonate 500 MG Chewable Tablet",
+              "action": "historical",
+              "sig": "Chew 1 tablet as needed for indigestion",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "dyspepsia, over the counter"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              71
+            ],
+            "hr": 72,
+            "rr": 18,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 98.2,
+            "height_cm": 179.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 218
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-12T10:35",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Denies alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction worker (disability)"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives alone in an apartment"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-02-12T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-02-12T10:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-02-12T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-02-12T10:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral-2019",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "symptomatic reducible right inguinal hernia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-02-12T10:40",
+              "author": "PCP",
+              "body": "45M here to establish. Sister along for part of the visit, with his permission.\n\nHPI: Long-standing BP and diabetes, both on pills from his last PCP. Takes lisinopril 20 daily and metformin 1000 twice a day, says he rarely misses those. Schizophrenia since his twenties; sees an outside psychiatrist every couple of months; prescribed risperidone 2 mg daily but he admits he stops it for stretches when he feels fine. Hep B found years ago on blood work; brother also carries it. Says nobody ever offered him treatment and he has never seen a liver doctor. Stomach ulcer about ten years ago, now just occasional heartburn, chews calcium carbonate for it. Main complaint today: bulge in the right groin for about a year and a half, aches when he lifts or after a long walk, goes back in when he lies down. Uses diphenhydramine some nights to sleep.\n\nPMH: as above. PSH: none.\nMeds: lisinopril 20 mg daily; metformin 1000 mg BID; risperidone 2 mg daily (intermittent); diphenhydramine 25 mg qhs prn; calcium carbonate 500 mg prn.\nAllergies: NKDA.\nFH: father with type 2 DM and HTN. Mother with schizophrenia. Brother is a hep B carrier.\nSH: Retired construction worker, on disability. Lives alone. Smoked about a pack a day for ten years, quit in 2017. No alcohol, no drugs.\n\nExam: well-appearing, a little guarded, answers in short sentences, linear. HEENT unremarkable. Neck supple. Heart regular rate, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Right inguinal hernia, reducible, nontender, no overlying skin change; left side normal. Extremities without edema. Feet: skin intact, monofilament normal, pulses 2+.\nVitals as charted; BP at goal.\n\nA/P:\n1. Right inguinal hernia, symptomatic, reducible. Referred to general surgery to talk about elective repair. Reviewed warning signs of incarceration.\n2. HTN, at goal on lisinopril. CMP.\n3. Type 2 DM. A1c, lipids, urine microalbumin. Eye exam due; given optometry list.\n4. Chronic hep B, never evaluated. HBsAg and LFTs today. Will revisit specialist referral once labs back.\n5. Schizophrenia, outside psychiatry. Encouraged him to stay on risperidone.\n6. Prevention: HCV and HIV screens today. Tdap given (none on record). PHQ-2 negative.\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 98.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.0,
+              "Hemoglobin A1c": 6.9,
+              "Microalbumin/Creatinine Ratio": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-02-14a",
+          "kind": "portal_message",
+          "start": "2019-02-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-02-14T16:05",
+              "author": "PCP",
+              "body": "Hi Sean, your labs are back. Your A1c is 6.9, close to the goal and fine for now. Kidney and liver numbers are normal. The hepatitis B surface antigen is positive, which we expected since you have carried it for years. Hepatitis C and HIV tests are negative. Cholesterol and urine protein are fine. Nothing to change today. We'll go over the hepatitis B again at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-26a",
+          "kind": "outside_records",
+          "start": "2019-02-26T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2019-02-26T11:00",
+              "author": "front desk",
+              "body": "Received 41 pages from his previous primary care office (2013-2018). Summary for the chart: hypertension on lisinopril 20 mg. Type 2 diabetes on metformin since 2014, A1c values mostly in the high 6s. Hepatitis B surface antigen positive on several draws, liver enzymes normal; no specialist visit documented. Schizophrenia managed by outside psychiatry. Routine labs otherwise unremarkable. Scanned under Media."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-18a",
+          "kind": "office_visit",
+          "start": "2019-06-18T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              74
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 97.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-06-18T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-06-18T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-06-18T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-06-18T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-06-18T14:40",
+              "author": "PCP",
+              "body": "S: Routine DM/HTN check. Groin still aches with lifting; surgery appointment is in August, the first one they had. Taking metformin and lisinopril. Risperidone: \"most days.\" Sleeps OK with the diphenhydramine now and then.\nO: Vitals as charted. Alert, calm. Lungs clear, heart regular. Hernia unchanged, reducible. Feet intact.\nA/P: DM, controlled; A1c and BMP today. HTN at goal. Hernia, surgery consult pending. Hep B: offered liver clinic referral; he wants to wait and think it over. RTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-08-14a",
+          "kind": "specialist_visit",
+          "start": "2019-08-14T10:00",
+          "service": "General Surgery",
+          "reason": "Right inguinal hernia",
+          "vitals": {
+            "bp": [
+              120,
+              68
+            ],
+            "hr": 65,
+            "weight_kg": 98.4
+          },
+          "orders": [
+            {
+              "id": "gensurg-referral-2019",
+              "action": "done",
+              "date": "2019-08-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Consultation",
+              "date": "2019-08-22T09:00",
+              "author": "general surgery",
+              "body": "Outside general surgery clinic. Date of service 8/14/2019. Reason for referral: right groin hernia.\n\n46-year-old man with an 18-month history of a right groin bulge that aches with lifting and prolonged walking and reduces when supine. No episodes of incarceration, no bowel symptoms. History of hypertension, type 2 diabetes, chronic hepatitis B, peptic ulcer disease and schizophrenia. Medications: lisinopril, metformin, risperidone, diphenhydramine as needed, calcium carbonate as needed. No known drug allergies. Former smoker.\n\nExam: right indirect-type inguinal hernia, easily reducible, nontender. Left groin normal. Abdomen soft.\n\nImpression: symptomatic reducible right inguinal hernia, suitable for elective open repair with mesh.\n\nPlan: We discussed elective repair, its risks and recovery. Given his psychiatric history and recent lapses in his antipsychotic, we would like clearance from his psychiatrist before scheduling, so that he can manage the postoperative period and instructions. Our office will contact his psychiatry clinic. Thank you for the referral."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "telephone",
+          "start": "2019-09-10T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from surgery office",
+              "date": "2019-09-10T11:15",
+              "author": "RN",
+              "body": "Surgical scheduler called to confirm the patient still wants the hernia repair and to ask if we had heard from psychiatry. Told them we have not. Called pt: he says his psychiatry appointment is in October and they will \"sign off then.\" Surgery will wait for that letter."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-21a",
+          "kind": "specialist_visit",
+          "start": "2019-10-21T13:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric follow-up and preoperative clearance",
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 61,
+            "weight_kg": 97.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-10-21T12:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-10-21T12:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-10-21T12:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Note",
+              "date": "2019-11-06T15:20",
+              "author": "psychiatry",
+              "body": "Outside community psychiatry clinic. Date of service 10/21/2019. Copy to primary care and to general surgery.\n\nReason for visit: scheduled medication follow-up; the surgical team asked us to comment on readiness for elective right inguinal hernia repair.\n\nInterval history: Mr. Berman stopped his risperidone roughly a month ago. His sister, who came with him, says he has been hearing voices again and has told her that programs on the TV are aimed at him with hidden messages. He minimizes this. Sleep irregular. No reported violence or self-harm, no thoughts of harming himself or others on direct questioning. The hernia bothers him when he is active and he says he wants it fixed.\n\nMedical history: hypertension and type 2 diabetes, both controlled on lisinopril and metformin; chronic hepatitis B; peptic ulcer disease; reducible inguinal hernia. Other medications: diphenhydramine 25 mg at bedtime as needed, calcium carbonate 500 mg as needed. NKDA. Family history: mother with schizophrenia; father with diabetes and hypertension; brother a hepatitis B carrier. Former smoker (quit 2017, 10 pack-years), no alcohol. Retired from construction, on disability.\n\nMental status: unkempt, poor eye contact, mutters to himself at times. Alert. Appears to be attending to internal stimuli. Thought process mostly goal-directed with some tangents. Insight and judgment limited. Vitals stable. Medical exam per our nurse unremarkable apart from the known groin hernia.\n\nMetabolic monitoring today: A1c 6.8%, fasting glucose 138, creatinine 1.0, BUN 14, sodium 140, potassium 4.2.\n\nAssessment: schizophrenia with recurrence of positive symptoms after a month off medication.\n\nPlan: Restart risperidone 2 mg daily; reviewed side effects; sister will help with a pill box. Recheck in 4 weeks. Regarding surgery: we recommend deferring the elective repair until he has been back on medication and stable for a few months, so he can follow perioperative instructions reliably. We will update the surgeon when that is the case."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "nurse_visit",
+          "start": "2019-11-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-11-12T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-11-12T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-11-12T10:15",
+              "author": "RN",
+              "body": "Seasonal flu vaccine 0.5 mL IM left deltoid. No egg or vaccine reactions in the past. VIS given. Tolerated well. He mentioned the surgery is on hold until his psychiatrist clears him; psychiatry letter now in chart."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-03a",
+          "kind": "office_visit",
+          "start": "2019-12-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 97.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-12-03T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-12-03T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-12-03T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-12-03T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-12-03T16:00",
+              "author": "PCP",
+              "body": "S: Back on risperidone since late October, sister fills a weekly pill box. Says the voices are \"quieter.\" Hernia unchanged, no pain at rest; surgery waiting on psychiatry. No new complaints.\nO: Vitals as charted. Calmer than in the summer, better eye contact. Heart regular, lungs clear. Hernia reducible.\nA/P: DM and HTN stable, same meds; A1c and BMP drawn. Schizophrenia, back on medication, outside psychiatry following. PHQ-9 4. Hep B: still prefers to hold off on a liver referral; will keep checking LFTs. RTC 4-6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-03-17a",
+          "kind": "pharmacy",
+          "start": "2020-03-17T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2020-03-17T09:40",
+              "author": "MA",
+              "body": "Pharmacy fax for metformin 1000 mg BID and lisinopril 20 mg daily, 90-day supply. Last visit 12/2019, labs current. Approved per protocol, sent."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-06a",
+          "kind": "office_visit",
+          "start": "2020-04-06T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and shortness of breath with exertion",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2020-04-06"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "iron deficiency anemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              74
+            ],
+            "hr": 62,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 99.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-04-06T11:20",
+              "resulted": "2020-04-06T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2020-04-06T11:20",
+              "resulted": "2020-04-06T15:10",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 450
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 7
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-04-06T11:05",
+              "results": [
+                {
+                  "test": "Occult blood, stool (guaiac)",
+                  "loinc": "2335-8",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-04-06T11:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2020-04-06T11:00",
+              "text": "Sinus rhythm, rate 84. Normal axis. Normal intervals. No ST or T wave abnormality. No prior for comparison.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-04-06T10:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2020-04-06T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-04-06T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2020",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "iron deficiency anemia with guaiac-positive stool"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-04-06T15:40",
+              "author": "PCP",
+              "body": "Masked in-person visit.\n\nS: About three months of getting worn out more and more, now winded walking up the hill to his building or carrying groceries up one flight. No chest pain, no racing heart, no fainting. No black stools he has noticed, no vomiting blood. Occasional heartburn, chews calcium carbonate. On risperidone \"most days.\" Hernia unchanged.\n\nO: Vitals as charted. Looks tired. Skin and conjunctivae pale. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Rectal: brown stool, guaiac positive. No edema.\nECG: sinus, normal.\n\nAddendum 3:30 pm: Hgb 10.2, MCV 72. Iron 30, TIBC 450, sat 7%, ferritin 15. Iron deficiency anemia.\n\nA/P:\n1. Iron deficiency anemia, microcytic, guaiac positive, prior ulcer disease. Needs a GI look from both ends. GI referral placed. Start ferrous sulfate 325 mg daily, every other day if his stomach objects. Told him to call or go to the ED for black stools, vomiting blood, chest pain or fainting.\n2. Exertional dyspnea most likely from the anemia; normal ECG. Recheck after iron.\n3. DM/HTN: no changes.\nCalled pt with results at 3:40 pm; sister on speaker. CBC in 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 99.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-04-08a",
+          "kind": "telephone",
+          "start": "2020-04-08T13:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Iron instructions and GI scheduling",
+              "date": "2020-04-08T13:30",
+              "author": "RN",
+              "body": "Reviewed iron with pt and sister: take with water or juice, not with the calcium chews or within 2 hours of them. Stools will turn dark; red or tarry and sticky stools, or feeling faint, are reasons to call. GI office has the referral; procedures delayed by the pandemic, they will call with a date in June."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-18a",
+          "kind": "procedure_visit",
+          "start": "2020-06-18T08:00",
+          "end": "2020-06-18T10:30",
+          "service": "Gastroenterology",
+          "reason": "Upper endoscopy and colonoscopy for iron deficiency anemia",
+          "medications": [
+            {
+              "drug": "omeprazole 40 MG Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily before breakfast for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "old duodenal ulcer scarring with iron deficiency"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2020-06-18T08:40",
+              "text": "Specimen: gastric antrum and body, cold biopsies. Gastric mucosa of antral and oxyntic type with no significant inflammation. No intestinal metaplasia, dysplasia or malignancy. Immunostain for Helicobacter organisms negative.",
+              "conclusion": "Benign gastric mucosa. H. pylori negative.",
+              "issued": "2020-06-22T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2020-06-18T08:35"
+            },
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2020-06-18T08:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2020",
+              "action": "done",
+              "date": "2020-06-18T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "EGD and Colonoscopy Report",
+              "date": "2020-06-25T10:15",
+              "author": "gastroenterology",
+              "body": "Outside endoscopy center. Date of procedure 6/18/2020. Indication: iron deficiency anemia, guaiac-positive stool, remote peptic ulcer. Sedation: monitored anesthesia care. No known drug allergies.\n\nEGD: Esophagus normal, Z-line regular. Stomach normal; biopsies from antrum and body for H. pylori. Duodenal bulb scarred and mildly deformed, consistent with old ulcer disease; no active ulcer, no blood, no visible vessel. Second part of duodenum normal.\n\nColonoscopy: Prep good. Advanced to the cecum, identified by the appendiceal orifice and the ileocecal valve. Normal mucosa throughout. No polyps, no masses, no blood. Retroflexion normal.\n\nImpression: bulb deformity from prior peptic ulcer disease; otherwise normal upper and lower exam. No active bleeding source seen.\n\nRecommendations: omeprazole 40 mg daily for 8 weeks. Continue oral iron per PCP. Await biopsies. Repeat colonoscopy in 10 years.\n\nAddendum 6/22: biopsies benign, H. pylori negative."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "office_visit",
+          "start": "2020-07-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              66
+            ],
+            "hr": 60,
+            "spo2": 97,
+            "weight_kg": 98.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-07-14T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 192
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-14T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2020-07-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-07-14T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-07-14T12:10",
+              "author": "PCP",
+              "body": "S: Has more energy, can do the stairs without stopping. Taking iron daily with some constipation. Finishing the omeprazole from GI. No dark or bloody stools.\nO: Vitals as charted. Less pale. Heart regular, lungs clear.\nScope report reviewed: old bulb scarring, normal colon, biopsies benign.\nA/P: Iron deficiency anemia improving; Hgb 12.4 today (result back at noon). Continue iron. Recheck CBC and iron at the fall visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "office_visit",
+          "start": "2020-10-13T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up; anemia recheck",
+          "vitals": {
+            "bp": [
+              131,
+              72
+            ],
+            "hr": 64,
+            "spo2": 99,
+            "weight_kg": 98.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-10-13T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2020-10-13T14:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 52
+                },
+                {
+                  "test": "Iron",
+                  "value": 106
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 275
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 39
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-13T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-10-13T14:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-10-13T14:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-13T14:10",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-10-13T13:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T14:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-10-13T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T14:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "sleep-referral-2020",
+              "action": "placed",
+              "order": "Pulmonary / sleep medicine referral",
+              "category": "referral",
+              "to": "Pulmonary & Critical Care",
+              "reason": "loud snoring, witnessed apneas, daytime sleepiness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-10-13T14:30",
+              "author": "PCP",
+              "body": "S: Feels well, energy back. Iron daily. Sister came along and raised something new: when she stays over at his place a few nights a week he snores loudly and she has seen him stop breathing and then gasp. He dozes off watching TV in the afternoon and admits he gets drowsy behind the wheel on longer drives. Still uses diphenhydramine some nights. Weight up a little this year.\nO: Vitals as charted. Heart regular, lungs clear. Neck thick. Feet normal to monofilament.\nA/P:\n1. Possible obstructive sleep apnea: referral to pulmonary/sleep. Strongly advised no driving when drowsy until evaluated.\n2. Iron deficiency anemia: Hgb 13.6, ferritin 52 (back this evening). Continue iron 3 more months then stop.\n3. DM, HTN: labs today, no changes.\n4. Flu shot given."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-12-10a",
+          "kind": "specialist_visit",
+          "start": "2020-12-10T09:20",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Daytime sleepiness and witnessed apneas",
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "hr": 62,
+            "spo2": 97,
+            "weight_kg": 101.4,
+            "height_cm": 178.0
+          },
+          "orders": [
+            {
+              "id": "sleep-referral-2020",
+              "action": "done",
+              "date": "2020-12-10T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary and Sleep Medicine Consultation",
+              "date": "2020-12-18T13:00",
+              "author": "pulmonology",
+              "body": "Outside pulmonary and sleep medicine practice. Date of visit 12/10/2020. Referred by primary care.\n\nHistory: 47-year-old man with schizophrenia, type 2 diabetes, hypertension and iron deficiency anemia (worked up and treated this year) referred for sleepiness. He reports he is sleepy most days and has come close to nodding off while driving several times; a few weeks ago he had a minor fender-bender he thinks was from drowsiness. His sister, who stays with him some nights, describes heavy snoring with pauses in breathing. He takes diphenhydramine on and off to fall asleep. Other medications: lisinopril 20 mg, metformin 1,000 mg BID, risperidone 2 mg (taken irregularly), calcium carbonate as needed, ferrous sulfate. NKDA. Quit smoking in 2017, 10 pack-years. No alcohol.\n\nExam: BMI 32. BP 145/90. Neck circumference 17 inches. Crowded oropharynx. Lungs clear. Heart regular.\n\nEpworth Sleepiness Scale: 16/24.\n\nImpression: high pretest probability of obstructive sleep apnea with severe subjective sleepiness.\n\nPlan: in-laboratory polysomnography with split-night CPAP titration. We counseled him not to drive while sleepy and told him that this is a safety issue for himself and others. Weight loss would help. Follow up after the study."
+            }
+          ],
+          "state": {
+            "weight_kg": 101.4
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "portal_message",
+          "start": "2021-01-19T08:50",
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "iron stores replete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron pills",
+              "date": "2021-01-19T08:50",
+              "author": "patient",
+              "body": "This is his sister typing for Sean. He is almost out of the iron pills. Does he need more? The sleep study was last week, they said the lung doctor will send results."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron pills",
+              "date": "2021-01-19T12:30",
+              "author": "PCP",
+              "body": "Thanks for checking. His blood count and iron level were back to normal in October and he has taken the iron three more months since, so he can stop when this bottle runs out. We'll keep an eye on his blood count with his regular labs. I'll watch for the sleep doctor's letter."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-04a",
+          "kind": "outside_records",
+          "start": "2021-02-04T10:30",
+          "conditions": [
+            {
+              "label": "Obstructive sleep apnea",
+              "action": "diagnosed",
+              "onset": "2021-01-14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary and Sleep Medicine Follow-up Letter",
+              "date": "2021-02-04T10:30",
+              "author": "pulmonology",
+              "body": "Outside pulmonary and sleep medicine practice. Re: Sean Berman, DOB 4/22/1973.\n\nHe completed in-laboratory split-night polysomnography on 1/14/2021. Diagnostic portion: apnea-hypopnea index 34 events per hour, oxygen saturation nadir 81%, predominantly obstructive events, loud snoring. CPAP was titrated in the second half of the night with good control of events.\n\nDiagnosis: obstructive sleep apnea.\n\nPlan: CPAP ordered through a durable equipment supplier, auto-titrating, with a nasal mask; setup expected this month. Reviewed nightly use and mask care. Drowsy driving precautions reviewed again. We will see him about 3 months after he starts, with a download from the machine.\n\nThe full sleep study report is available on request."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-08a",
+          "kind": "pharmacy",
+          "start": "2021-04-08T15:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Vaccine record from pharmacy",
+              "date": "2021-04-09T09:10",
+              "author": "MA",
+              "body": "State immunization registry update: COVID-19 vaccine (Pfizer) dose 1 given 4/8/2021 at a retail pharmacy. Entered into the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-29a",
+          "kind": "pharmacy",
+          "start": "2021-04-29T15:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Vaccine record from pharmacy",
+              "date": "2021-04-30T09:05",
+              "author": "MA",
+              "body": "Registry update: Pfizer COVID-19 dose 2 given 4/29/2021. Primary series complete. Record updated."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "office_visit",
+          "start": "2021-05-04T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "resolved",
+              "onset": "2020-04-06"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              71
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 101.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-05-04T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-05-04T11:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-04T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-05-04T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-05-04T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-05-04T11:45",
+              "author": "PCP",
+              "body": "S: CPAP set up in February. Wears it \"most nights,\" takes it off sometimes at 3 am. Says he is less sleepy in the afternoons. Not driving long distances. Off iron since January. Both COVID shots done at the pharmacy. Risperidone on and off; psychiatry still seeing him.\nO: Vitals as charted. Heart regular, lungs clear. Feet intact.\nPulm letter reviewed: AHI 34, nadir 81%, OSA, on CPAP.\nA/P: OSA on CPAP, encouraged nightly use. DM, A1c today. HTN, no change. Anemia resolved, CBC today to confirm. Weight up; diet talk. RTC 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 102.0,
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "outside_records",
+          "start": "2021-07-20T14:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2021-07-20T14:00",
+              "author": "optometry",
+              "body": "Outside optometry office. Dilated diabetic eye examination 7/13/2021. Visual acuity 20/25 right, 20/20 left with correction. Pressures normal. Lenses clear. Fundus exam both eyes: no diabetic retinopathy, no macular edema. Recheck in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-27a",
+          "kind": "office_visit",
+          "start": "2021-09-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight gain, weakness and high blood pressure",
+          "vitals": {
+            "bp": [
+              156,
+              93
+            ],
+            "hr": 57,
+            "rr": 18,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 107.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-27T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-09-27T10:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-27T10:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.84
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-27T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-27T10:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-27T10:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-27T10:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "suspected hypercortisolism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-09-27T11:30",
+              "author": "PCP",
+              "body": "S: Since about late spring he has put on weight, mostly through the face, neck and belly, without eating more as far as he and his sister can tell. Bruises on his arms from small bumps. A scrape on his shin took weeks to close. Double vision comes and goes, a few times a week, lasts minutes. Hard to get up from a low chair or out of the car without pushing with his arms. Taking lisinopril and metformin. No steroid pills, creams, inhalers or injections, ever.\n\nO: BP 156/96 (repeat similar). Weight 108 kg, up 6 kg since May. Round, red face, fullness at the back of the neck. Scattered bruises on the forearms. Proximal hip weakness; cannot rise from the chair without using his arms. EOM full now, no ptosis. Heart regular, lungs clear.\n\nA/P:\n1. Weight gain, plethoric round face, easy bruising, proximal weakness, rising BP and sugars: concerned for Cushing syndrome. No exogenous steroids. Urgent endocrinology referral; they prefer to run the dexamethasone testing themselves.\n2. Intermittent diplopia: likely part of the same picture vs separate; will ask endo to comment. Return or ED for persistent double vision, facial droop, trouble speaking.\n3. HTN above goal: lisinopril 20 continued; recheck after endocrine visit.\n4. DM: A1c 7.8 today (back this afternoon), higher. Metformin continued.\n5. Flu shot today."
+            }
+          ],
+          "state": {
+            "bp": [
+              156,
+              96
+            ],
+            "weight_kg": 108.0,
+            "labs": {
+              "Hemoglobin A1c": 7.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "specialist_visit",
+          "start": "2021-10-18T14:00",
+          "service": "Endocrinology",
+          "reason": "Suspected Cushing syndrome",
+          "vitals": {
+            "bp": [
+              151,
+              103
+            ],
+            "hr": 63,
+            "weight_kg": 108.0
+          },
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "done",
+              "date": "2021-10-18T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2021-12-14T09:30",
+              "author": "endocrinology",
+              "body": "Outside endocrinology practice. Initial consultation, date of service 10/18/2021. Referred by primary care for suspected hypercortisolism.\n\nHPI: 48-year-old man with hypertension, schizophrenia and type 2 diabetes, recently evaluated for obstructive sleep apnea (on CPAP) and for iron deficiency anemia (resolved). Over roughly four months he has gained weight, his blood pressure has climbed, and he has noticed a fuller face and neck, bruising with little trauma, wounds that are slow to heal, episodes of double vision and difficulty getting up from chairs. No exogenous glucocorticoid exposure.\n\nMedications: metformin 1,000 mg BID, lisinopril 20 mg once daily, risperidone 2 mg (inconsistent), diphenhydramine 25 mg at bedtime as needed, calcium carbonate 500 mg as needed. NKDA. Family history: father with diabetes and hypertension, mother with schizophrenia, brother with hepatitis B. Former smoker, 10 pack-years, quit 2017; no alcohol; retired construction worker.\n\nExam: facial plethora and rounding, dorsocervical fullness. Bruising of forearms. Deep tendon reflexes slightly reduced, becoming brisker after a short period of sustained effort. No ptosis after holding upgaze for a full minute (60 seconds).\n\nLaboratory: serum cortisol elevated; plasma ACTH elevated. Overnight low-dose (1 mg) dexamethasone suppression test: cortisol not suppressed.\n\nAssessment: ACTH-dependent hypercortisolism.\n\nPlan: high-dose dexamethasone suppression test administered to help separate a pituitary from an ectopic source; follow-up in two weeks with results and imaging as indicated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-01a",
+          "kind": "specialist_visit",
+          "start": "2021-11-01T10:30",
+          "service": "Endocrinology",
+          "reason": "Follow-up of ACTH-dependent hypercortisolism",
+          "conditions": [
+            {
+              "label": "Ectopic ACTH production",
+              "action": "diagnosed",
+              "onset": "2021-06-01",
+              "icd10": "E24.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              156,
+              95
+            ],
+            "hr": 65,
+            "weight_kg": 108.1
+          },
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2021-10-26T09:00",
+              "text": "CT chest with intravenous contrast. Indication: ACTH-dependent hypercortisolism, evaluate for an ectopic source. A 1.8 cm well-circumscribed, smoothly marginated solid nodule in the right middle lobe. No other pulmonary nodules. No mediastinal, hilar or axillary lymphadenopathy. No pleural or pericardial effusion. Heart size normal. Visualized upper abdomen unremarkable; adrenal glands unremarkable. Osseous structures intact.",
+              "conclusion": "1.8 cm right middle lobe nodule, a candidate ectopic ACTH source. No adenopathy.",
+              "issued": "2021-10-26T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2021-12-14T09:35",
+              "author": "endocrinology",
+              "body": "Outside endocrinology practice. Follow-up, date of service 11/1/2021.\n\nResults: high-dose dexamethasone suppression test did not suppress cortisol, favoring an ectopic ACTH source over a pituitary adenoma.\n\nImaging: CT chest 10/26/2021 shows a 1.8 cm well-circumscribed right middle lobe nodule without adenopathy. Ga-68 DOTATATE PET/CT 10/29/2021: the right middle lobe nodule is avid; no other abnormal uptake.\n\nAssessment: ectopic ACTH production, most consistent with a bronchial neuroendocrine (carcinoid) tumor of the right middle lobe.\n\nPlan: referred to thoracic surgery for resection. Discussed that cortisol may drop sharply after the tumor is removed and that he will likely need temporary hydrocortisone. Blood pressure and sugars should improve after cure; primary care to adjust as needed. Copy to primary care."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "portal_message",
+          "start": "2021-11-10T19:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery",
+              "date": "2021-11-10T19:15",
+              "author": "patient",
+              "body": "Hi this is Sean's sister. The hormone doctor found a spot on his right lung that they think is causing all of this. The lung surgeon is doing an operation on December 9. Do you need to do anything before that? He is nervous but says he wants it out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery",
+              "date": "2021-11-11T08:20",
+              "author": "PCP",
+              "body": "Thank you for letting us know. We have not received the endocrinology notes yet; I've asked their office to send them. The surgeon's team usually handles the pre-op testing. Please have him keep taking his blood pressure and diabetes pills unless the surgeon says otherwise, and bring his CPAP to the hospital. Call us after he is home and we'll see him."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "office_visit",
+          "start": "2021-12-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after lung surgery",
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (15 mg) by mouth every morning and 1 tablet (5 mg) every afternoon",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "adrenal insufficiency after tumor resection, prescribed by endocrinology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              155,
+              98
+            ],
+            "hr": 58,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 104.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-12-20T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-12-20T14:00",
+              "author": "PCP",
+              "body": "S: Had the lung operation 12/9, keyhole surgery, right middle lobe taken out, home after three nights. By his and his sister's account the surgeon said the tumor was making the hormone. Some soreness at the incisions, using acetaminophen. Breathing fine. Endocrine started hydrocortisone at discharge: 15 mg in the morning, 5 mg mid-afternoon. Tired. No fever. We have no operative note or discharge summary; the endocrinology letters from October and November came last week.\nO: Vitals as charted; BP still up. Port sites clean and dry, no redness. Lungs clear. Face still full.\nA/P:\n1. Ectopic ACTH, s/p right middle lobectomy 12/9/21. Final pathology not in our chart yet; requested from the hospital and endocrinology. On hydrocortisone per endocrine; reviewed sick-day doubling and when to go to the ED (vomiting, can't keep pills down).\n2. HTN and DM: expect improvement, may need less treatment; home glucose checks if he can. No changes today.\nRTC 3 months, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 104.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "outside_records",
+          "start": "2022-01-11T11:40",
+          "conditions": [
+            {
+              "label": "Malignant carcinoid tumor of the bronchus and lung",
+              "action": "diagnosed",
+              "onset": "2021-12-09",
+              "note": "typical carcinoid, right middle lobe, resected 12/2021",
+              "icd10": "C7A.090"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-12-09T10:00",
+              "text": "Specimen: right middle lobe, lobectomy; mediastinal and hilar lymph nodes. Tumor: well-differentiated neuroendocrine tumor, typical carcinoid, 1.8 cm in greatest dimension. No necrosis. Margins: bronchial, vascular and parenchymal margins negative. Lymph nodes: 0 of 8 involved. Background lung without significant abnormality.",
+              "conclusion": "Typical carcinoid of the right middle lobe, 1.8 cm, margins negative, 0/8 lymph nodes.",
+              "issued": "2021-12-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Post-operative Letter",
+              "date": "2022-01-11T11:40",
+              "author": "endocrinology",
+              "body": "Outside endocrinology practice. Telehealth follow-up 1/5/2022.\n\nHe underwent VATS right middle lobectomy with lymph node sampling on 12/9/2021. Pathology attached: typical carcinoid, 1.8 cm, negative margins, no nodal involvement. Post-operative morning cortisol was low, as expected after removal of the ACTH source, and he was discharged on hydrocortisone 15 mg each morning and 5 mg each afternoon. No vomiting or dizziness.\n\nPlan: continue hydrocortisone for now; we will taper over the next 2 to 3 months and check a morning cortisol before stopping. Surveillance chest CT in about one year with thoracic surgery. Primary care: please watch blood pressure and glucose as cortisol excess resolves."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-15a",
+          "kind": "office_visit",
+          "start": "2022-03-15T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "taper completed by endocrinology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              80
+            ],
+            "hr": 73,
+            "spo2": 100,
+            "weight_kg": 99.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-15T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-15T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-15T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-15T10:10",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-15T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-15T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-15T10:25",
+              "author": "PCP",
+              "body": "S: Took his last hydrocortisone last week after the taper; endocrine checked a morning cortisol on 3/7 and told him it was normal. Feels stronger, gets out of a chair without his arms. Face less round. No double vision since around the surgery. Bruising better. CPAP most nights.\nO: BP 132/82. Weight 99 kg, down 9 kg from September. Incisions healed. Proximal strength normal. Lungs clear.\nA/P:\n1. Ectopic ACTH from RML typical carcinoid, resected, hypercortisolism resolved clinically; hydrocortisone done. Surveillance CT per thoracic surgery in December.\n2. HTN better controlled, lisinopril 20 continued.\n3. DM: A1c 6.9 today. Metformin same.\n4. Lipids, urine microalbumin, CMP today.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 99.0,
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "outside_records",
+          "start": "2022-03-22T14:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-07T08:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 13.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology Letter",
+              "date": "2022-03-22T14:15",
+              "author": "endocrinology",
+              "body": "Outside endocrinology practice. Re: Sean Berman. Hydrocortisone was tapered off over January and February. Morning cortisol on 3/7/2022, drawn 24 hours after his last dose, was in the normal range, indicating recovery of his own adrenal function. Hydrocortisone discontinued. No stress dosing needed going forward. He will see thoracic surgery for surveillance imaging in December and us in a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "office_visit",
+          "start": "2022-06-21T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              81
+            ],
+            "hr": 61,
+            "spo2": 97,
+            "weight_kg": 92.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-21T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-06-21T15:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.09
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-06-21T14:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-06-21T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-06-21T15:20",
+              "author": "PCP",
+              "body": "Doing well. Weight keeps coming off without trying, 92 kg. Walks to the corner store and back most days. No lows on metformin. Taking risperidone, he says; psychiatry visit last month. Exam: BP 130/80, heart regular, lungs clear, feet intact. A1c 6.6 after the visit. Plan: same meds. Eye exam due next month. RTC fall."
+            }
+          ],
+          "state": {
+            "bp": [
+              130,
+              80
+            ],
+            "weight_kg": 92.0,
+            "labs": {
+              "Hemoglobin A1c": 6.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "outside_records",
+          "start": "2022-07-26T10:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2022-07-26T10:00",
+              "author": "optometry",
+              "body": "Outside optometry office. Dilated exam 7/19/2022. Corrected acuity 20/25 OD, 20/20 OS. IOP normal. No diabetic retinopathy either eye. No macular edema. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "office_visit",
+          "start": "2022-09-28T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck pain with left arm tingling",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain, max 3,000 mg per day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "neck pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              73
+            ],
+            "hr": 72,
+            "spo2": 96,
+            "weight_kg": 84.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-28T11:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-28T11:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-28T11:55"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-28T11:56"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2022",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "neck pain with left arm paresthesias"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-09-28T12:05",
+              "author": "PCP",
+              "body": "S: Two weeks of left-sided neck pain, came on without an injury he can name. Pins and needles down the left arm off and on. Worse looking over his left shoulder and when he carries anything heavy. No bladder or bowel change, no leg symptoms, no fever. Ibuprofen avoided because of his ulcer history.\nO: Vitals as charted. Weight 84 kg. Tender left paraspinal neck muscles. Neck rotation to the left limited by pain. Grip equal. Brief neuro screen without obvious deficit today.\nA/P:\n1. Neck pain with left arm paresthesias, likely cervical radicular. Neurology referral for evaluation and imaging decisions. Acetaminophen scheduled for a week then as needed. Avoid NSAIDs. Call if weakness, clumsiness, gait or bladder change.\n2. Prevention: PCV20 (diabetes) and flu today, deltoids.\n3. Weight down another 8 kg since June; eating less, sister says he skips meals. Will watch."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "specialist_visit",
+          "start": "2022-10-24T15:00",
+          "service": "Neurology",
+          "reason": "Neck pain and left arm tingling",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy due to C6-C7 disc herniation",
+              "action": "diagnosed",
+              "onset": "2022-09-12",
+              "icd10": "M50.123"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              79
+            ],
+            "hr": 68
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-24T15:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-24T15:45",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-24T15:45",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 0.4
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2022",
+              "action": "done",
+              "date": "2022-10-24T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2022-12-06T08:45",
+              "author": "neurology",
+              "body": "Outside neurology group. Date of service 10/24/2022. Referred by primary care for neck pain with arm paresthesias.\n\nHPI: 49-year-old man with schizophrenia and a reducible inguinal hernia, also hypertension (on lisinopril), diabetes, and a bronchial carcinoid resected last year. For about six weeks he has had neck pain and intermittent tingling into the left arm. Turning his head to the left and lifting heavy objects make it worse.\n\nMedications: lisinopril 20 mg qd, metformin 1000 mg bid, risperidone 2 mg qd (irregular), diphenhydramine 25 mg at bedtime as needed, calcium carbonate 500 mg as needed, acetaminophen as needed. NKDA.\n\nExam: tender left paracervical muscles. Strength reduced in the left biceps and left wrist extensors; otherwise full. Left biceps reflex diminished; other reflexes symmetric. Reduced light touch and pinprick over the left thumb and index finger. Gait normal. No long-tract signs.\n\nLabs today: CBC, ESR and CRP within normal limits.\n\nImpression: left cervical radiculopathy.\n\nPlan: MRI cervical spine without contrast. Physical therapy referral. Continue acetaminophen; avoid NSAIDs given ulcer history. Follow up after MRI.\n\nAddendum: MRI cervical spine 10/31/2022 shows a herniated disc at C6-C7 with impingement of the left nerve root. No cord signal change. Diagnosis: cervical radiculopathy due to C6-C7 disc herniation. Continue therapy; surgical opinion only if weakness progresses or pain is refractory."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "pharmacy",
+          "start": "2022-11-03T16:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-03T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Vaccine record from pharmacy",
+              "date": "2022-11-04T08:45",
+              "author": "MA",
+              "body": "Registry update: Pfizer bivalent COVID-19 booster given 11/3/2022 at a retail pharmacy. Record updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "portal_message",
+          "start": "2022-11-15T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neck doctor",
+              "date": "2022-11-15T10:30",
+              "author": "patient",
+              "body": "The neck doctor did the MRI and said it is a disc. He wants him to do physical therapy. Did you get the papers? He wants to know if he has to wait for you to send it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neck doctor",
+              "date": "2022-11-15T14:10",
+              "author": "RN",
+              "body": "We haven't received the neurology note or the MRI report yet; we've asked their office to fax them. If the neurologist's office already sent the therapy referral he can go ahead and schedule with the therapist; he doesn't need to wait for us. Call if his arm gets weaker."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "imaging",
+          "start": "2022-12-13T08:30",
+          "service": "Radiology",
+          "reason": "Surveillance after carcinoid resection",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2022-12-13T08:30",
+              "text": "CT chest with contrast. Comparison 10/26/2021. Postsurgical changes of right middle lobectomy with staple line intact. No new or enlarging pulmonary nodule. No mediastinal or hilar lymphadenopathy. No pleural effusion. Adrenal glands normal in thickness.",
+              "conclusion": "Postoperative change. No evidence of recurrent or metastatic disease.",
+              "issued": "2022-12-13T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT chest result",
+              "date": "2022-12-20T09:00",
+              "author": "PCP",
+              "body": "Surveillance CT from thoracic surgery received: post-lobectomy change only, no recurrence. Neurology consult and MRI addendum also received 12/6. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up; neck recheck",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy due to C6-C7 disc herniation",
+              "action": "resolved",
+              "onset": "2022-09-12",
+              "icd10": "M50.123"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "no longer needed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              81
+            ],
+            "hr": 67,
+            "spo2": 99,
+            "weight_kg": 83.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-14T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-14T10:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-14T10:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-14T10:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-14T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-14T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-14T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-14T10:50",
+              "author": "PCP",
+              "body": "S: Neck is \"pretty much fine.\" Did a course of physical therapy over the winter and still does the chin tucks. Tingling gone for about a month. Not using acetaminophen. Says he stopped going to his psychiatrist after the holidays, \"didn't need it\"; taking risperidone some days. Sister thinks he is a bit more withdrawn. CPAP some nights.\nO: Vitals as charted, weight steady around 84. Quiet, flat, but cooperative and linear. Neck full range. Strength in the arms full and equal, biceps reflexes symmetric, sensation intact in both hands.\nA/P:\n1. Cervical radiculopathy, resolved with PT. Off the problem list.\n2. Schizophrenia: urged him to go back to psychiatry; gave the clinic number again. PHQ-9 6.\n3. DM, HTN: labs today; lipids, urine microalbumin, CMP, CBC. Metformin, lisinopril same.\n4. Carcinoid: surveillance CT in December was clear; thoracic surgery plans another this winter.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "portal_message",
+          "start": "2023-07-11T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2023-07-11T09:30",
+              "author": "front desk",
+              "body": "Hi Sean, we missed you at your appointment on June 20. Your doctor would like to see you for your diabetes check. Please call or reply here to pick a new time. Your metformin and lisinopril refills have been sent through August."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "outside_records",
+          "start": "2023-08-08T13:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2023-08-08T13:20",
+              "author": "optometry",
+              "body": "Outside optometry office. Dilated diabetic exam 8/1/2023. Acuity stable with correction. Normal pressures. Retina: no diabetic changes in either eye; maculae flat. Annual follow-up advised."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "ed_visit",
+          "start": "2023-10-16T15:10",
+          "end": "2023-10-17T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue, headache, dizziness and excessive water drinking",
+          "conditions": [
+            {
+              "label": "Primary polydipsia",
+              "action": "diagnosed",
+              "onset": "2023-08-01",
+              "icd10": "R63.1"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-10-16T15:20",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2023-10-17T07:00",
+              "bp": [
+                118,
+                76
+              ],
+              "hr": 74,
+              "rr": 14,
+              "temp_c": 36.6,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-16T15:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 127
+                },
+                {
+                  "test": "Chloride",
+                  "value": 94
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.17
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-16T15:40",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-16T15:40",
+              "results": [
+                {
+                  "test": "Osmolality of Serum",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 258
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-16T16:05",
+              "results": [
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-17T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Chloride",
+                  "value": 97
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-10-16T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2023-10-19T10:00",
+              "author": "emergency medicine",
+              "body": "Outside regional hospital emergency department. Arrived 10/16/2023 15:10, discharged from ED observation 10/17/2023 11:30.\n\nChief complaint: tired, headaches, lightheaded, drinking too much water.\n\nHPI: 50-year-old man with schizophrenia and a history of ectopic ACTH production (lung carcinoid resected in 2021), brought in by his sister. Over recent weeks he has become more isolated, mostly staying in his apartment, and has been drinking water constantly, carrying a bottle at all times and getting up through the night to drink. Increasing fatigue, headaches and dizziness. He has not been to his psychiatrist for months; he told his sister the appointments were a way for the government to keep control of him. Lives alone. Denies nausea, vomiting, diarrhea, recent illness or any change in appetite.\n\nMedications per patient and sister: risperidone 2 mg daily (not taking regularly), lisinopril 20 mg daily, metformin 1000 mg BID, diphenhydramine 25 mg at night as needed, calcium carbonate as needed. NKDA.\n\nExam: afebrile. BP 122/78, HR 80. Thin. Skin dry. Flat affect, sparse speech, oriented. Neuro: nonfocal, gait steady. No edema.\n\nLabs: sodium 127, serum osmolality 258, urine osmolality 115, fasting glucose 88.\n\nAssessment: hypotonic hyponatremia with maximally dilute urine, consistent with primary polydipsia in the setting of untreated schizophrenia.\n\nED course: free-water restriction, no IV fluids, sodium monitoring in ED observation overnight. Sodium 131 at 06:00. Headache improved. No seizure or confusion. Not felt to be a danger to himself or others; declined psychiatric evaluation in the ED.\n\nDisposition: home with his sister. Fluid limit written out. Follow up with primary care in 2 to 3 days for a sodium check; re-establish with outpatient psychiatry."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0
+          }
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "office_visit",
+          "start": "2023-10-20T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, low sodium",
+          "vitals": {
+            "bp": [
+              134,
+              80
+            ],
+            "hr": 56,
+            "spo2": 97,
+            "weight_kg": 74.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-20T12:05",
+              "resulted": "2023-10-20T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-20T11:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-20T12:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-20T12:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-20T12:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2023",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "schizophrenia off treatment, primary polydipsia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED Follow-up",
+              "date": "2023-10-20T15:45",
+              "author": "PCP",
+              "body": "Seen with sister. ED record from Monday reviewed (sodium 127, serum osm 258, urine osm 115, glucose 88; 131 the next morning).\n\nS: Says he is \"trying\" with the water limit; sister has been measuring out bottles for the day. Headache gone. Takes risperidone \"when I remember,\" maybe half the days. Has not seen psychiatry since winter. Not keen to go back but does not refuse outright. Denies thoughts of hurting himself.\nO: Vitals as charted. Weight 74 kg. Thin, flat affect, guarded, answers briefly. Mucous membranes moist. Neuro grossly nonfocal. No edema.\nA/P:\n1. Primary polydipsia with hyponatremia, improving. Sodium today, called at 3:40: 135. Continue the fluid limit. Return to ED for confusion, vomiting, severe headache or seizure.\n2. Schizophrenia, off regular treatment. New psychiatry referral sent to the community clinic; sister will help him call. Continue risperidone 2 mg daily; pill box again.\n3. Weight down to 74 kg, much of it the planned loss after the Cushing cure, more recently from poor intake. Will follow.\n4. Flu shot today. RTC 4 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "telephone",
+          "start": "2023-11-02T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Psychiatry referral follow-up",
+              "date": "2023-11-02T14:00",
+              "author": "RN",
+              "body": "Community psychiatry clinic says they left two messages for pt and have not heard back. Called pt: says he will \"think about it.\" Spoke with sister, who will try to bring it up again. Referral remains open with the clinic. He asked to move his 4-week visit to after the holidays; front desk will call."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "pharmacy",
+          "start": "2023-11-09T14:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-09T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Vaccine record from pharmacy",
+              "date": "2023-11-10T08:30",
+              "author": "MA",
+              "body": "Registry update: 2023-2024 COVID-19 vaccine (Pfizer) given 11/9/2023 at a retail pharmacy. Record updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "imaging",
+          "start": "2023-12-05T09:15",
+          "service": "Radiology",
+          "reason": "Surveillance after carcinoid resection",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-12-05T09:15",
+              "text": "CT chest with contrast. Comparison 12/13/2022. Stable postsurgical changes after right middle lobectomy. No new pulmonary nodule or mass. No thoracic lymphadenopathy. No effusion.",
+              "conclusion": "Stable postoperative chest. No recurrence.",
+              "issued": "2023-12-05T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT chest result",
+              "date": "2023-12-12T08:40",
+              "author": "PCP",
+              "body": "Thoracic surgery surveillance CT 12/5: stable, no recurrence. Per their cover note, they are releasing him to routine follow-up with endocrinology. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "pharmacy",
+          "start": "2024-01-16T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - risperidone",
+              "date": "2024-01-16T10:10",
+              "author": "MA",
+              "body": "Pharmacy request: risperidone 2 mg daily. Outside psychiatrist's prescription has run out and he is not active with that clinic. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Refill request - risperidone",
+              "date": "2024-01-16T12:30",
+              "author": "PCP",
+              "body": "OK to send 90 days of risperidone 2 mg daily as a bridge. Psychiatry referral is still open; front desk to remind him at his next visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              86
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 74.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-12T13:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-12T13:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-12T13:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T13:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-12T13:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-12T13:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-12T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-03-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-12T14:00",
+              "author": "PCP",
+              "body": "First visit since October; he rescheduled twice. S: Keeping to his water limit \"mostly,\" no headaches or dizziness. Taking risperidone from our bridge prescription, says most days. Still has not called the psychiatry clinic. CPAP, \"sometimes.\" Eating better per sister.\nO: Vitals as charted, weight holding at 74. Calmer, more engaged than in October. Heart regular, lungs clear. Feet normal.\nA/P:\n1. Primary polydipsia, stable. Sodium with today's CMP.\n2. Schizophrenia: re-sent the psychiatry referral information; continue risperidone 2 mg.\n3. DM, HTN: A1c, CMP, lipids, urine microalbumin today. No changes.\n4. Shingrix #1 today; #2 in 2-6 months, nurse visit.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "nurse_visit",
+          "start": "2024-06-18T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-06-18T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-06-18T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Shingrix",
+              "date": "2024-06-18T10:45",
+              "author": "RN",
+              "body": "Second recombinant zoster dose, 0.5 mL IM right deltoid. Had a sore arm and felt tired for a day after dose 1, nothing else. Series complete. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "outside_records",
+          "start": "2024-07-30T11:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2024-07-30T11:00",
+              "author": "optometry",
+              "body": "Outside optometry office. Exam 7/23/2024, dilated. No diabetic retinopathy OU. New glasses prescription given. See again in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              74
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 75.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-17T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-17T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-09-17T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T11:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T11:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-09-17T11:20",
+              "author": "PCP",
+              "body": "Routine DM/HTN. Feels OK, no complaints. Water intake reasonable per sister. Risperidone most days. Exam: vitals as charted, weight 75. Heart regular, lungs clear, abdomen soft and nontender, right inguinal hernia reducible as before. Plan: A1c and BMP; same meds; flu shot today. COVID booster at the pharmacy when he likes. RTC 4-6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "hospital_admission",
+          "start": "2024-10-23T02:40",
+          "end": "2024-10-30T13:00",
+          "service": "Internal Medicine",
+          "reason": "Acute periumbilical abdominal pain with fever",
+          "conditions": [
+            {
+              "label": "Polyarteritis nodosa",
+              "action": "diagnosed",
+              "onset": "2024-09-20",
+              "note": "hepatitis B associated, mesenteric involvement",
+              "icd10": "M30.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "entecavir 0.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 0.5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hepatitis B with polyarteritis nodosa"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 3 tablets (60 mg) by mouth daily for 7 days, then taper off over 2 weeks as directed",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "polyarteritis nodosa"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-10-23T02:50",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 38.1,
+              "spo2": 97
+            },
+            {
+              "time": "2024-10-30T08:00",
+              "bp": [
+                128,
+                80
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-23T03:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.25
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-23T03:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-23T03:10",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-23T03:10",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 32
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-30T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-10-23T05:15",
+              "text": "CT abdomen and pelvis with intravenous contrast. Indication: acute periumbilical pain, fever. Appendix normal. Gallbladder normal without wall thickening or pericholecystic fluid. Pancreas normal without peripancreatic stranding. Multiple small aneurysms of the mesenteric arterial branches with areas of irregular narrowing. Bowel normal in caliber and wall thickness. Liver, spleen, adrenals and kidneys unremarkable. No free air or free fluid. Right inguinal hernia containing fat.",
+              "conclusion": "No appendicitis, cholecystitis or pancreatitis. Multiple small mesenteric arterial aneurysms with irregular narrowing, suggestive of a medium-vessel vasculitis such as polyarteritis nodosa.",
+              "issued": "2024-10-23T06:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-10-23T07:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-10-30T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-11-19T16:20",
+              "author": "hospital medicine",
+              "body": "Outside regional hospital, internal medicine service. Admitted 10/23/2024, discharged 10/30/2024.\n\nReason for admission: abrupt severe periumbilical abdominal pain with fever.\n\nHistory: 51-year-old man with schizophrenia, chronic hepatitis B, type 2 diabetes and a reducible inguinal hernia, also hypertension, sleep apnea and a resected bronchial carcinoid. Severe, sharp, constant pain around the umbilicus starting about six hours before arrival. Low-grade fevers and about 10 pounds of unintended weight loss over the preceding month. Home medications: lisinopril 20 mg daily; metformin 1000 mg BID; risperidone 2 mg daily (irregular), diphenhydramine 25 mg at bedtime as needed, calcium carbonate as needed. NKDA. Former smoker, no alcohol.\n\nAdmission findings: T 38.1 C, BP 145/90, HR 98. Abdomen tender around the umbilicus, without rebound or guarding; normal bowel sounds. No jaundice, no rash. Labs: hemoglobin 13.2, WBC 12,000, platelets 250,000, creatinine 1.8 (baseline 1.2), AST 45, ALT 50, hepatitis B surface antigen positive. CT abdomen/pelvis with contrast: no appendicitis, cholecystitis or pancreatitis; multiple small mesenteric arterial aneurysms with irregular narrowing.\n\nHospital course: Rheumatology consulted. The imaging pattern with active hepatitis B infection, fever, weight loss and renal impairment was consistent with hepatitis B-associated polyarteritis nodosa. Treated with antiviral therapy (entecavir 0.5 mg daily) and a short course of prednisone 60 mg daily. Bowel rest initially, diet advanced by day 3. Pain resolved by day 5. Creatinine improved to 1.4 at discharge. Metformin was paused while creatinine was elevated and was restarted on day 6. Lisinopril continued once creatinine improving.\n\nDischarge diagnosis: polyarteritis nodosa associated with chronic hepatitis B, with elevated creatinine, improving.\n\nDischarge medications: entecavir 0.5 mg daily (new, long-term); prednisone 60 mg daily to complete 7 days, then taper off over 2 weeks per written schedule (new); lisinopril 20 mg daily; metformin 1000 mg BID; risperidone 2 mg daily; diphenhydramine and calcium carbonate as needed.\n\nFollow-up: primary care within 1 to 2 weeks with a basic metabolic panel; rheumatology clinic in about 3 months. Check sugars while on prednisone."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5
+          }
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "telephone",
+          "start": "2024-10-25T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister calling",
+              "date": "2024-10-25T09:05",
+              "author": "RN",
+              "body": "Sister called: Sean was admitted Wednesday with bad belly pain and a fever, still in the hospital. Doctors told her it is \"inflamed blood vessels\" from his hepatitis B and they started new medicines. She will call when he is discharged. Asked her to have the hospital send records; front desk sent a release request."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "office_visit",
+          "start": "2024-11-04T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              79
+            ],
+            "hr": 54,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 69.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-04T14:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-11-04T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-04T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2024-11-04T16:10",
+              "author": "PCP",
+              "body": "Seen with sister. No discharge summary yet; history from the two of them, the discharge medication sheet they brought, and the pharmacy fill list.\n\nS: Admitted 10/23-10/30 at the regional hospital for sudden severe pain around the belly button with fever. Told he has polyarteritis nodosa from his hepatitis B. Pain gone since about day 5. Eating normally. No fever since. Weight down to about 70 kg. New meds: entecavir 0.5 mg daily (filled 10/30) and prednisone 60 mg, now on day 5 of the taper. Back on metformin and lisinopril. Home sugars higher on prednisone.\nO: Vitals as charted. Afebrile. Abdomen soft, nontender. No rash. No edema.\nA/P:\n1. Hepatitis B-associated PAN: entecavir and PAN added to our lists. Finish the prednisone taper as written. Rheumatology follow-up in about 3 months; they will arrange it.\n2. Creatinine improving: BMP today, creatinine 1.4 (resulted 5 pm), same as discharge. Recheck with rheum labs.\n3. DM: steroid-related highs expected; should settle after the taper. No change to metformin.\n4. Requested discharge summary again."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "pharmacy",
+          "start": "2024-11-21T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - entecavir",
+              "date": "2024-11-21T11:30",
+              "author": "MA",
+              "body": "Pharmacy says his Part D plan wants a prior authorization for entecavir after the first fill. Submitted with diagnoses chronic hepatitis B and polyarteritis nodosa and the hospital discharge summary (received 11/19). Approved same day for 12 months. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "specialist_visit",
+          "start": "2025-01-22T09:40",
+          "service": "Rheumatology",
+          "reason": "Follow-up of hepatitis B-associated polyarteritis nodosa",
+          "vitals": {
+            "bp": [
+              124,
+              84
+            ],
+            "hr": 69,
+            "temp_c": 36.8,
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-22T10:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 67
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2025-02-03T15:00",
+              "author": "rheumatology",
+              "body": "Outside rheumatology clinic. Date of service 1/22/2025. Copy to primary care.\n\nFollow-up for polyarteritis nodosa associated with chronic hepatitis B, diagnosed during his October admission with mesenteric involvement.\n\nInterval: completed prednisone taper in mid-November. No abdominal pain since discharge. No fever, rash, testicular pain, new numbness or weakness. Appetite fine. Taking entecavir daily.\n\nMedications: entecavir 0.5 mg daily, lisinopril 20 mg daily, metformin 1000 mg BID, risperidone 2 mg daily, diphenhydramine as needed, calcium carbonate as needed. NKDA.\n\nExam: afebrile, vitals stable. Abdomen soft, nontender. Skin without livedo or nodules. Neurologic exam without deficit.\n\nLabs: creatinine 1.3.\n\nAssessment: HBV-associated PAN in clinical remission after antiviral therapy and a short steroid course.\n\nPlan: continue entecavir indefinitely. No further immunosuppression. Return in 6 months or sooner for abdominal pain, fever, new rash or neuropathic symptoms."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              78
+            ],
+            "hr": 55,
+            "spo2": 97,
+            "weight_kg": 71.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-11T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-11T10:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-02-11T10:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-11T10:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-11T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-11T10:45",
+              "author": "PCP",
+              "body": "S: No belly pain since the hospital. Saw rheumatology in January (letter received last week): in remission, entecavir indefinitely. Prednisone finished in November; sugars back to his usual. Weight up a little to 72. Takes entecavir every day, says it's the one pill he never misses. Risperidone \"most days.\" No psychiatry.\nO: Vitals as charted. Abdomen soft, nontender. Heart regular, lungs clear. Feet intact, pulses good.\nA/P:\n1. HBV-associated PAN in remission. Entecavir. CMP today for creatinine and liver tests.\n2. DM: A1c today. Metformin dose fine for his kidney function.\n3. HTN at goal.\n4. Schizophrenia: continue risperidone; psychiatry referral information given again.\nRTC 3 months, can be video."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2025-05-20T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication review",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-05-20T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-05-20T15:25",
+              "author": "PCP",
+              "body": "Video from his apartment, sister joined from her phone. Consent for video visit given.\nFeels fine. Taking lisinopril, metformin, entecavir daily; risperidone most days. Water intake steady, no headaches or dizziness. CPAP mask cracked; asked for a new prescription for supplies. No abdominal pain, fever, rash.\nAppears well on video, speech sparse but organized, not distressed.\nA/P: Stable. CPAP supply order faxed to his equipment company. Refills sent for 90 days. Labs and in-person visit in August with eye exam reminder."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-15a",
+          "kind": "pharmacy",
+          "start": "2025-07-15T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-07-15T09:20",
+              "author": "MA",
+              "body": "Pharmacy fax: entecavir 0.5 mg and risperidone 2 mg, 90 days each. Seen by video in May, office visit booked for August. Sent per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "outside_records",
+          "start": "2025-08-05T10:40",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2025-08-05T10:40",
+              "author": "optometry",
+              "body": "Outside optometry office. Dilated exam 7/29/2025. Corrected acuity 20/25 both eyes. Pressures normal. No retinopathy, no macular edema in either eye. Annual follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              127,
+              74
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 72.8,
+            "height_cm": 178.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-19T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.32
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 65
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-19T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives alone in an apartment"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-08-19T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-08-19T10:00",
+              "author": "PCP",
+              "body": "Medicare annual wellness visit, first one here.\n\nHealth risk review: lives alone in an apartment, sister nearby and involved, helps with groceries and the pill box. Independent with bathing, dressing, cooking simple meals; sister handles bills. No falls in the past year. Hearing and vision adequate with glasses. Still drives locally. No alcohol, quit smoking 2017. Walks most days.\n\nCurrent problems: hypertension, type 2 diabetes, schizophrenia, chronic hepatitis B, polyarteritis nodosa in remission on entecavir, obstructive sleep apnea on CPAP, peptic ulcer disease history, right inguinal hernia, resected bronchial carcinoid with prior ectopic ACTH, primary polydipsia.\nMeds reconciled: lisinopril 20 daily, metformin 1000 BID, entecavir 0.5 daily, risperidone 2 daily (most days), diphenhydramine 25 qhs prn, calcium carbonate prn.\n\nExam: vitals as charted. Heart regular, lungs clear, abdomen soft, right inguinal hernia reducible. Feet: monofilament intact, pulses palpable, no lesions.\nScreens: PHQ-9 4. AUDIT-C 0. Cognition grossly intact on conversation.\n\nPrevention: colonoscopy 2020 normal, next 2030. Shingrix complete. PCV20 2022. Tdap 2019. Flu and COVID this fall. Eye exam done July. Hep C and HIV screens done 2019.\n\nPlan: labs today (A1c, CMP, CBC, lipids, urine microalbumin). Advance directive packet given; he wants his sister as health care agent and will return the form. RTC 4-6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "ed_visit",
+          "start": "2025-10-15T07:50",
+          "end": "2025-10-15T13:30",
+          "service": "Emergency Medicine",
+          "reason": "Cold injury to the fingers",
+          "vitals": [
+            {
+              "time": "2025-10-15T08:00",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 35.6,
+              "spo2": 97
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-15T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-02-10T11:20",
+              "author": "emergency medicine",
+              "body": "Outside regional hospital emergency department. Date of visit 10/15/2025, arrival 07:50. (Copy received by the practice 2/10/2026.)\n\nChief complaint: painful, discolored fingers after a night in the cold.\n\nHPI: 52-year-old man with schizophrenia, diabetes and a history of polyarteritis nodosa. Last evening he was driving in the hills when an early-season snowstorm came in; his car got stuck and he spent the night in it. The heater would not stay on and he had no gloves. Found this morning and brought in by ambulance. Severe pain in the fingers.\n\nMedications: lisinopril 20 mg daily, metformin 1000 mg BID, risperidone 2 mg daily, diphenhydramine 25 mg at bedtime as needed, calcium carbonate 500 mg as needed; entecavir per pharmacy record. NKDA. Former smoker, no alcohol.\n\nVitals: T 35.6 C, BP 135/85, HR 88, RR 16.\n\nExam: fingers cold, mottled and waxy in appearance, no bleeding, no blisters. Reduced sensation and no capillary refill in the affected fingers. Remainder of the exam unremarkable.\n\nED course: rapid rewarming of the hands in a circulating water bath at 40 C for 30 minutes with analgesia. After rewarming the affected fingers were still discolored, still numb, and still without capillary refill.\n\nAssessment: severe frostbite of the fingers with tissue necrosis and microvascular thrombosis.\n\nDisposition: admitted to the hospital for further management of frostbite, with hand surgery consultation."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "telephone",
+          "start": "2025-10-24T16:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister calling - hospital stay",
+              "date": "2025-10-24T16:10",
+              "author": "RN",
+              "body": "Sister called to let us know Sean got stuck in his car overnight in last week's snow and his fingers were frostbitten. He was in the hospital several days and is home now; a hand surgeon is following him. She does not have discharge papers handy. Scheduled post-hospital visit 11/5. Records release faxed to the hospital."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "office_visit",
+          "start": "2025-11-05T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T09:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Please reschedule",
+              "date": "2025-11-12T09:00",
+              "author": "front desk",
+              "body": "Hi Sean, we missed you on November 5. Your doctor would like to check on your hands and your other medicines after your hospital stay. Please call us or reply to set up a time. We also have not received your hospital records yet; if you have any papers from the hospital or the hand surgeon, please bring them."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Please reschedule",
+              "date": "2025-12-08T18:40",
+              "author": "patient",
+              "body": "Sorry he has had a lot of appointments with the hand doctor. Can we do January? Mornings are best. - his sister"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after frostbite hospitalization; diabetes",
+          "conditions": [
+            {
+              "label": "Severe frostbite with tissue necrosis and microvascular thrombosis",
+              "action": "diagnosed",
+              "onset": "2025-10-15",
+              "note": "left index and middle fingertips; followed by hand surgery",
+              "icd10": "T34.532A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              79
+            ],
+            "hr": 58,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 73.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-21T10:40",
+              "resulted": "2026-01-22T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-21T10:40",
+              "resulted": "2026-01-22T11:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.37
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 62
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-21T10:40",
+              "resulted": "2026-01-22T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-21T10:40",
+              "resulted": "2026-01-22T11:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-21T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-21T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-21T11:00",
+              "author": "PCP",
+              "body": "Seen with sister. Hospital and hand surgery records still not received; history from them.\n\nS: In October he was stuck overnight in his car in the snow without gloves. Went to the ED by ambulance, fingers rewarmed, admitted several days. Says they gave him an IV medicine \"to open up the blood flow\" for a few days. Most fingers came back. The tips of the left index and middle fingers turned black and dry. Hand surgery sees him every couple of weeks; they plan to trim the dead tips once the line between dead and healthy tissue is complete. Some aching in those fingers, acetaminophen helps. No fever, no drainage. Otherwise taking entecavir, lisinopril, metformin daily, risperidone most days.\nO: Vitals as charted. Left index and middle fingertips with dry black eschar, well demarcated, no surrounding redness, swelling or drainage. Light touch reduced at those two tips. Other fingers on both hands warm, pink, normal capillary refill. Heart regular, lungs clear. Abdomen soft.\nA/P:\n1. Severe frostbite, left index and middle fingertips, demarcated dry eschar, hand surgery managing. Keep dry and protected, gloves outdoors. Call for redness, swelling, pus or fever. Added to problem list.\n2. DM, HTN, PAN on entecavir: A1c, BMP, CBC, hepatic panel today.\n3. Schizophrenia: risperidone; discussed safety in winter (charged phone, not driving into the hills in storms).\n4. Flu shot offered, declined today.\n5. Records request to the hospital and hand surgery sent again.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "portal_message",
+          "start": "2026-01-22T14:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2026-01-22T14:30",
+              "author": "PCP",
+              "body": "Hi Sean, yesterday's labs are back. Your diabetes number is in your usual range. Kidney function is stable at your new baseline, sodium is normal, and your blood count and liver tests are normal. Keep taking the entecavir every day. Let us know how the hand surgeon visits go."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "pharmacy",
+          "start": "2026-03-24T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - entecavir",
+              "date": "2026-03-24T10:00",
+              "author": "MA",
+              "body": "Pharmacy fax: entecavir 0.5 mg daily, 90 days. Prior authorization renewal also due; submitted and approved. Refill sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "portal_message",
+          "start": "2026-06-02T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-06-02T19:50",
+              "author": "patient",
+              "body": "He needs the metformin and the blood pressure pill again, the pharmacy said they need the doctor. His fingers are still being seen by the hand doctor. - sister"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-06-03T08:15",
+              "author": "RN",
+              "body": "Refills for metformin and lisinopril sent for 90 days. Thanks for the update; please ask the hand surgeon's office to fax us their notes. He is due for a visit and labs; the front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for a check-up",
+              "date": "2026-07-28T09:10",
+              "author": "front desk",
+              "body": "Hi Sean, it has been six months since your last visit and you are due for your diabetes check and labs. Please call or reply with a few times that work. Morning appointments are open next month."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cervical radiculopathy due to C6-C7 disc herniation|M50.123": {
+        "code": "M50.123",
+        "display": "Cervical disc disorder at C6-C7 level with radiculopathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ectopic ACTH production|E24.3": {
+        "code": "E24.3",
+        "display": "Ectopic ACTH syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant carcinoid tumor of the bronchus and lung|C7A.090": {
+        "code": "C7A.090",
+        "display": "Malignant carcinoid tumor of the bronchus and lung",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Polyarteritis nodosa|M30.0": {
+        "code": "M30.0",
+        "display": "Polyarteritis nodosa",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary polydipsia|R63.1": {
+        "code": "R63.1",
+        "display": "Polydipsia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe frostbite with tissue necrosis and microvascular thrombosis|T34.532A": {
+        "code": "T34.532A",
+        "display": "Frostbite with tissue necrosis of left finger(s), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "calcium carbonate 500 MG Chewable Tablet": {
+        "code": "308907",
+        "display": "calcium carbonate 500 MG Chewable Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "diphenhydramine hydrochloride 25 MG Oral Capsule": {
+        "code": "1049909",
+        "display": "diphenhydramine hydrochloride 25 MG Oral Capsule",
+        "ingredient": "diphenhydramine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "entecavir 0.5 MG Oral Tablet": {
+        "code": "485434",
+        "display": "entecavir 0.5 MG Oral Tablet",
+        "ingredient": "entecavir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone 5 MG Oral Tablet": {
+        "code": "197787",
+        "display": "hydrocortisone 5 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "risperidone 2 MG Oral Tablet": {
+        "code": "312831",
+        "display": "risperidone 2 MG Oral Tablet",
+        "ingredient": "risperidone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Occult blood, stool (guaiac)": {
+        "code": "2335-8",
+        "display": "Hemoglobin [Presence] in Stool from gastrointestinal",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Serum": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Urine": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

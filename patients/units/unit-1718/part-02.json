@@ -1,0 +1,187 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001718",
+      "events": [
+        {
+          "id": "2023-01-05a",
+          "kind": "specialist_visit",
+          "start": "2023-01-05T13:00",
+          "service": "Psychiatry",
+          "reason": "postpartum depression",
+          "orders": [{"id": "psych-referral-2022", "action": "done", "date": "2023-01-05T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Perinatal Psychiatry Consultation", "author": "psychiatry", "date": "2023-01-10T11:30", "body": "PERINATAL MENTAL HEALTH CLINIC, outside psychiatry group\nInitial evaluation, date of service 01/05/2023\n\nID: 32 y/o G1P1, 4 months postpartum, elementary teacher due back in the classroom later this month. Referred by her PCP.\n\nHPI: Low mood and anxious rumination starting roughly 10 weeks after delivery, overlapping with the end of a thyrotoxic phase of postpartum thyroiditis (now treated and normalizing per PCP labs). Tearful most days, guilt about not feeling the attachment she expected, insomnia beyond infant waking. Function preserved. Denies suicidal ideation, past or present; denies intrusive thoughts of harming the infant. No mania, no psychosis. No prior psychiatric history, no prior treatment.\nMeds: none. Allergies: NKDA.\nSocial: lives with partner and infant; her mother helps several days a week. Alcohol rare, never smoker. Breastfeeding.\n\nMSE: casually dressed, cooperative, mood \"flat and guilty,\" affect constricted and tearful at times, thought process linear, no SI/HI, insight and judgment good.\n\nAssessment: Postpartum depression, moderate, first episode. Low acute risk.\n\nPlan: weekly individual CBT with our clinic therapist; she prefers to hold medication, which is reasonable at this severity, and we will revisit an SSRI compatible with breastfeeding if no improvement in 6–8 weeks. Safety plan completed. Return in 6 weeks.\n\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "lab_only",
+          "start": "2023-02-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "thyroid monitoring",
+          "labs": [
+            {"panel": null, "collected": "2023-02-16T07:30", "results": [{"test": "Thyroid Stimulating Hormone", "value": 3.6}, {"test": "Free Thyroxine", "value": 1.0}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-02-16T07:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "TSH result", "author": "PCP", "date": "2023-02-16T14:10", "body": "TSH 3.6, free T4 1.0. Within range, TSH drifting up as expected after the thyrotoxic phase. She reports energy ok, no cold intolerance. Repeat with June visit. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2023-04-03a",
+          "kind": "office_visit",
+          "start": "2023-04-03T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up mood and thyroid",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "office_visit",
+          "start": "2023-06-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up mood and thyroid",
+          "state": {"weight_kg": 62.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "GAD-7 total score", "value": 2}],
+          "labs": [
+            {"panel": null, "collected": "2023-06-07T15:35", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.1}]}
+          ],
+          "conditions": [
+            {"label": "Postpartum depression", "action": "resolved"},
+            {"label": "Postpartum thyroiditis, hyperthyroid phase", "icd10": "O90.5", "action": "resolved"},
+            {"label": "History of postpartum depression", "icd10": "Z87.59", "action": "history", "onset": "2022-11-20"},
+            {"label": "History of postpartum thyroiditis", "icd10": "Z87.59", "action": "history", "onset": "2022-10-27"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-07T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-06-07T16:15", "body": "Rescheduled from April (school concert week).\n\nMood: finished 14 weeks of CBT at the perinatal clinic last month; psychiatry discharged her back to us. Feels like herself, enjoying the baby, sleeping in longer stretches now that the baby does. Back at work since January and it went better than expected. PHQ-9 3, GAD-7 2. No SI.\n\nThyroid: no symptoms either direction.\n\nFamily history update: she asked her mother after the endocrinology visit, and her mother was told years ago she has autoimmune thyroiditis; never treated as far as she knows. Added.\n\nExam: well, bright affect. Thyroid normal, no tremor. HR 70s.\n\nA/P:\n- Postpartum depression, recovered. Moved to history. Higher chance of recurrence after a future birth; she and her OB should plan for close mood follow-up next time.\n- Postpartum thyroiditis, recovered; TSH today 2.1 (resulted after visit, normal). TPO positive, maternal thyroiditis: TSH yearly and after any future delivery.\n- Pap/HPV next 2025. Flu in the fall.\nSee her for a physical when ready; she is thinking about a second baby."}
+          ]
+        },
+        {
+          "id": "2023-08-28a",
+          "kind": "portal_message",
+          "start": "2023-08-28T20:30",
+          "documents": [
+            {"type": "Patient Message", "title": "News", "author": "patient", "date": "2023-08-28T20:30", "body": "Wanted to let you know I'm pregnant again, about 6 weeks. Seeing the same OB group next week. Anything I should tell them given the thyroid and the depression last time?"},
+            {"type": "Patient Message", "title": "RE: News", "author": "PCP", "date": "2023-08-29T07:05", "body": "Congratulations! Yes, two things: ask them to check a TSH early in the pregnancy and again after delivery because of the thyroiditis and the TPO antibody, and let them know about the postpartum depression so they can screen you closely after the birth. I'll send them a summary with your permission. Reply yes and I'll fax it today."},
+            {"type": "Patient Message", "title": "RE: RE: News", "author": "patient", "date": "2023-08-29T07:40", "body": "Yes please, thank you."}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-19T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-19T15:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-19T15:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines in pregnancy", "author": "RN", "date": "2023-10-19T16:00", "body": "About 13 weeks pregnant. Both recommended during pregnancy, OB agrees per patient. Inactivated flu L arm, updated Pfizer COVID R arm. VIS reviewed. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2024-04-24a",
+          "kind": "hospital_admission",
+          "start": "2024-04-24T03:10",
+          "end": "2024-04-25T15:00",
+          "service": "Obstetrics",
+          "reason": "labor at term",
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-02-12T10:00"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2024-05-02T10:30", "body": "REGIONAL HOSPITAL, MATERNITY UNIT\nAdmitted 04/24/2024 in active labor at 39 weeks 4 days; discharged 04/25/2024.\n\n33 y/o G2P1 → P2. Prenatal course uncomplicated. Early pregnancy TSH normal. Tdap 02/2024 in the OB office.\nSpontaneous vaginal delivery 04/24/2024, healthy newborn. Postpartum course uneventful, afebrile, voiding, ambulating. Exclusively breastfeeding, lactation visited.\nHistory noted: postpartum thyroiditis and postpartum depression after first delivery; OB to screen mood at 2 and 6 weeks; TSH at the six-week visit or via PCP.\nAllergies: no known drug allergies.\nDischarge meds: ibuprofen, acetaminophen as needed.\n\nFiled. PCP reviewed."}
+          ]
+        },
+        {
+          "id": "2024-05-09a",
+          "kind": "specialist_visit",
+          "start": "2024-05-09T10:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "left breast pain and swelling",
+          "vitals": {"temp_c": 38.4},
+          "conditions": [{"label": "Lactational mastitis", "icd10": "O91.23", "action": "diagnosed", "onset": "2024-05-07"}],
+          "medications": [{"drug_text": "dicloxacillin 500 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily for 10 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "lactational mastitis"}],
+          "documents": [
+            {"type": "Consult Note", "title": "OB/GYN Office Visit: mastitis", "author": "obstetrics", "date": "2024-05-13T09:00", "body": "OUTSIDE OB/GYN GROUP, office visit 05/09/2024\n\n33-year-old P2, two weeks after an uncomplicated vaginal birth, exclusively nursing. Two days of a painful, swollen left breast with tiredness and chills. Feeding on that side hurts. Baby has begun clamping down/biting during feeds. Past history of postpartum depression and postpartum thyroiditis (endocrinology, 2022).\nAllergies: NKDA.\nFH: maternal autoimmune thyroiditis; mother with RA.\nTobacco never; alcohol rare.\n\nTemp 38.4 C (101.1 F).\nBreasts: left upper outer quadrant erythematous, warm, firm and tender. Left nipple with a fissure. No fluctuance, no discharge. Right breast unremarkable.\n\nAssessment: lactational mastitis, left, likely entry through the nipple fissure.\nPlan: dicloxacillin 500 mg QID x 10 days. Keep emptying the breast, feed or pump from the left. Ibuprofen for pain and fever. Nipple care for the fissure; lactation consultant appointment for latch and the biting. Call for a mass, spreading redness or no improvement in 48 hours.\n\nFaxed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-05-10a",
+          "kind": "portal_message",
+          "start": "2024-05-10T13:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Breast infection", "author": "patient", "date": "2024-05-10T13:15", "body": "FYI the OB put me on dicloxacillin for mastitis yesterday. Fever already broke. The baby seems fine with it. Just making sure you knew."},
+            {"type": "Patient Message", "title": "RE: Breast infection", "author": "MA", "date": "2024-05-10T15:02", "body": "Thanks Sheila, the doctor saw the OB's note and is glad you're feeling better. Finish all 10 days. We'd like to see you after your six-week OB visit, can you do mid-June after school?"}
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "specialist_visit",
+          "start": "2024-06-04T15:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "six-week postpartum visit",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "state": {"weight_kg": 67.0},
+          "conditions": [{"label": "Intimate partner violence", "icd10": "T76.31XA", "action": "diagnosed", "onset": "2024-05-15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Postpartum Visit", "author": "obstetrics", "date": "2024-06-07T12:00", "body": "OUTSIDE OB/GYN GROUP, postpartum visit 06/04/2024\n\nSix weeks after an uncomplicated SVD. Mastitis treated last month and cleared. She says she is overwhelmed with a newborn and a toddler. More frequent arguments with her partner lately; on questioning she says she sometimes feels frightened when the partner has been drinking. Denies being hit, pushed or threatened with harm. Feels worn out and cut off from friends. Infant healthy, nursing well. No bleeding concerns, no fever.\nAllergies: NKDA.\n\nVitals within normal limits. Tired-appearing, otherwise well. Breasts normal, no residual induration. Abdomen soft. Perineum healed. Uterus involuted.\n\nAssessment:\n1. Routine postpartum exam, normal.\n2. Intimate partner violence, emotional, disclosed today. No physical harm reported. She is not in immediate danger by her account and does not want to leave the home.\nPlan: private discussion of safety, a domestic violence hotline card and the local advocacy program number given; she has a safe person (her mother). Encouraged follow-up with her PCP this month. Contraception discussed; she declines a method for now and plans to nurse.\n\ncc PCP"}
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "office_visit",
+          "start": "2024-06-13T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}, {"survey": "GAD-7 total score", "value": 5}],
+          "labs": [
+            {"panel": null, "collected": "2024-06-13T16:20", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.9}]}
+          ],
+          "conditions": [{"label": "Lactational mastitis", "icd10": "O91.23", "action": "resolved"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-13T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Postpartum follow-up", "author": "PCP", "date": "2024-06-13T16:45", "body": "Seen alone; baby with her mother in the waiting room.\n\nRead the OB note from 6/4. She confirms: the two of them have been fighting more since the baby, and it's worse on nights when the partner drinks. Arguments get loud. Never hit, shoved or threatened. No weapons in the home. Partner is not violent with the children per her. She doesn't want to leave and says things are calmer most weeks. Has the hotline card and her mother knows.\n\nMood: tired, stretched thin, but not the same as 2022. Enjoying the baby. PHQ-9 6, item 9 zero. Sleep broken by feeds only.\nThyroid: no symptoms. Breast: fully better after the antibiotic.\n\nExam: pulse normal. Weight up from prepregnancy, expected. Calm, appropriate, a bit tearful when talking about home. Thyroid normal.\n\nA/P:\n1. Intimate partner violence, emotional, by her report; no physical harm. Safety reviewed: safe person, keeps phone charged, knows to call 911 if threatened. Offered a counselor through the advocacy program; she wants to hold off. I'll ask at every visit, privately.\n2. Mood: mild symptoms, monitor; low threshold to bring the perinatal clinic back in.\n3. History of postpartum thyroiditis: TSH today (1.9, normal; message sent).\n4. Mastitis resolved.\nPhysical early next year."}
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "nurse_visit",
+          "start": "2024-10-23T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-23T15:40"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-23T15:40"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "MA", "date": "2024-10-23T15:50", "body": "Trivalent flu, L deltoid, 0.5 mL IM. Nursing, no contraindication. Declined COVID this year, may do it later. No reaction."}
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T14:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "no menses while breastfeeding",
+          "measure": ["bp", "hr", "weight_kg"],
+          "conditions": [{"label": "Lactational amenorrhea", "icd10": "N91.1", "action": "diagnosed", "onset": "2024-06-01"}],
+          "labs": [
+            {"panel": null, "collected": "2024-12-09T14:45", "results": [
+              {"test": "Prolactin", "value": 29},
+              {"test": "Follicle Stimulating Hormone", "value": 3.2},
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "unit": "m[IU]/mL", "value": 2.1},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 45}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "GYN Visit: amenorrhea", "author": "obstetrics", "date": "2024-12-13T10:45", "body": "OUTSIDE OB/GYN GROUP, visit 12/09/2024\n\nCC: no menstrual period in 6 months.\nHPI: P2, baby nearly 8 months old, exclusively breastfed since birth. No period since the postpartum bleeding stopped. History of postpartum depression and postpartum thyroiditis; mastitis this spring.\nMeds: none. Allergies: NKDA.\nSexual/contraception: not sexually active since the birth; no contraceptive method.\nROS: no hot flashes, no vaginal dryness, libido unchanged.\nExam: BMI in the normal range. General and pelvic exam unremarkable.\nLabs: prolactin 29 ng/mL (4–23), FSH 3.2 mIU/mL (3.5–12.5), LH 2.1 mIU/mL (2.4–12.6), TSH 2.5 mIU/L (0.4–4.0), estradiol 45 pg/mL (30–400).\nAssessment: lactational amenorrhea. Mildly raised prolactin and low-normal gonadotropins fit ongoing nursing. Thyroid normal.\nPlan: reassurance. Expect menses to return within a few months of weaning or reducing feeds. Return if no period 3 months after weaning, or if she resumes intercourse and wants contraception.\n\ncc PCP"}
+          ]
+        }
+      ]
+    }
+  ]
+}
