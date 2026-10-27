@@ -1376,13 +1376,16 @@ stateDiagram-v2
       PrcEnded --> PrcNone : delete your account
     }
     --
-    %% What you have from your sources: kept through any disconnect, gone only with your account (F1, F2).
+    %% What you have: from your sources, and the notes and medications you enter, which are records
+    %% in You like any other (ENG-52). Kept through any disconnect, gone only with your account (F1, F2).
+    %% events you enter a note or medication = add a note | save the proposed note | add a medication | Duet saves a note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked
     state "Your health records" as Rec {
       [*] --> RecNone
       state "No records yet" as RecNone
       state "Records kept" as RecHave
       RecNone --> RecHave : records come in
       RecNone --> RecHave : your phone's readings arrive
+      RecNone --> RecHave : you enter a note or medication
       RecHave --> RecNone : the deletion finishes
     }
     --

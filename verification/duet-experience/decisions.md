@@ -472,7 +472,8 @@ map; Page and state inventory), with later decisions winning.
   it waits while proactive work is paused (Dev 2026-10-26) and alerts only
   once you turn on alerts for Duet's own work.
 - A saved note is a record entered by you, kept apart from Duet's private
-  understanding. Duet reads it, For my doctor can hold it, and while you're
+  understanding. Your library, Health history and search include what you
+  entered even before any source connects. Duet reads it, For my doctor can hold it, and while you're
   connected it flows to your practice, as do your medications (ENG-52;
   Dev 2026-10-25).
 - Stopping a medication keeps it, marked stopped with the date, and it leaves
