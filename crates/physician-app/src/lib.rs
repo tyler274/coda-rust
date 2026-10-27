@@ -3,6 +3,7 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+mod composer;
 mod icons;
 mod panels;
 mod shell;
@@ -10,6 +11,7 @@ mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
+use composer::{Composer, DraftTarget, SaveOutcome};
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
@@ -60,6 +62,8 @@ const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
+const SAVING: &str = "Saving…";
+const SAVED: &str = "Saved";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
@@ -679,8 +683,8 @@ fn PhysicianShell(
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
     let mut connections_open = use_signal(|| false);
-    let mut draft = use_signal(String::new);
-    let mut notice = use_signal(String::new);
+    // Draft text and the Save mark, per patient workspace and chat.
+    let mut composer = use_signal(Composer::default);
     let mut reading = use_signal(|| None::<OpenReading>);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
@@ -905,6 +909,35 @@ fn PhysicianShell(
         }
         write_address(patient, open_chat.read().as_deref());
     });
+    // The draft the composer shows now: the open patient's chat, or `draft`
+    // before a chat is open. Nothing outside a patient page.
+    let draft_target = move || {
+        let workspace = if place() == Place::Workspace {
+            selected()
+        } else {
+            None
+        };
+        workspace.map(|workspace| DraftTarget::new(workspace, open_chat().as_deref()))
+    };
+    // Another draft target clears the Save mark of the one left behind.
+    use_effect(move || {
+        let target = draft_target();
+        composer.write().open(target.as_ref());
+    });
+    // Opening a target reads its saved draft and the revision a Save replaces.
+    let _draft_read = use_resource(move || {
+        let target = draft_target();
+        let client = client.read().clone();
+        async move {
+            let Some(target) = target else { return };
+            if let Ok(saved) = client.read_draft(&target.workspace, &target.chat).await {
+                composer
+                    .write()
+                    .loaded(&target, saved.revision, &saved.text);
+            }
+        }
+    });
+    let shown_target = draft_target();
     let today_read = today.read();
     let today_cache_read = today_cache.read();
     let today_result = today_read
@@ -1038,9 +1071,8 @@ fn PhysicianShell(
         if selected().is_none() {
             return;
         }
-        let chat = new_chat_id();
-        draft.set(String::new());
-        open_chat.set(Some(chat));
+        // The new chat is its own draft target, so its composer starts empty.
+        open_chat.set(Some(new_chat_id()));
     };
     let shell_class = format!(
         "glass-app{}{}",
@@ -1109,7 +1141,7 @@ fn PhysicianShell(
                     let client = client.read().clone();
                     spawn(async move {
                         let _ = client.dictate().await;
-                        notice.set(DICTATION_UNAVAILABLE.to_owned());
+                        composer.write().say(DICTATION_UNAVAILABLE);
                     });
                     return;
                 }
@@ -1124,7 +1156,7 @@ fn PhysicianShell(
                                 .read()
                                 .as_ref()
                                 .and_then(|open| open.time_zone.clone()),
-                            draft(),
+                            composer.peek().text(draft_target().as_ref()),
                         ),
                         move || *snapshot_attempt.write() += 1,
                     );
@@ -1411,8 +1443,9 @@ fn PhysicianShell(
                             focused: shown_focus,
                             chats: chats.clone(),
                             server_now: server_now.clone(),
-                            draft: draft(),
-                            notice: notice(),
+                            draft: composer.read().text(shown_target.as_ref()),
+                            notice: composer.read().notice(shown_target.as_ref()).to_owned(),
+                            saving: composer.read().saving(shown_target.as_ref()),
                             is_admin: whoami.read().as_ref().is_some_and(|account| account.admin),
                             practice_accounts: whoami
                                 .read()
@@ -1553,7 +1586,9 @@ fn PhysicianShell(
                             on_open_source: move |chip: SourceChip| {
                                 reading.set(Some(source_reading(chip)));
                             },
-                            on_draft: move |value: String| draft.set(value),
+                            on_draft: move |value: String| {
+                                composer.write().edit(draft_target().as_ref(), value);
+                            },
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
                             conversation_resume_busy: chat_resume_slot.sending(),
@@ -1570,27 +1605,26 @@ fn PhysicianShell(
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_new_chat: move |_| start_chat(),
                             on_save: move |_| {
-                                let Some(id) = selected() else { return };
+                                // Save names the revision this text was read
+                                // or last saved at; one save runs per draft.
+                                let Some(attempt) = composer.write().begin(draft_target().as_ref())
+                                else {
+                                    return;
+                                };
                                 let client = client.read().clone();
-                                let text = draft();
-                                let chat_id = open_chat();
                                 spawn(async move {
-                                    let saved = if let Some(chat_id) = chat_id {
-                                        match client.read_draft(&id, &chat_id).await {
-                                            Ok(existing) => {
-                                                client
-                                                    .save_draft(&id, &chat_id, existing.revision, &text)
-                                                    .await
-                                            }
-                                            Err(error) => Err(error),
-                                        }
-                                    } else {
-                                        client.save_draft(&id, "draft", 0, &text).await
-                                    };
-                                    notice.set(match saved {
-                                        Ok(()) => String::new(),
-                                        Err(_) => NOT_SAVED.to_owned(),
-                                    });
+                                    let outcome = save_outcome(
+                                        client
+                                            .save_draft(
+                                                &attempt.target.workspace,
+                                                &attempt.target.chat,
+                                                attempt.expected_revision,
+                                                &attempt.text,
+                                            )
+                                            .await
+                                            .map(|saved| saved.revision),
+                                    );
+                                    composer.write().finish(&attempt, outcome);
                                 });
                             },
                             on_send: move |_| {
@@ -1603,7 +1637,7 @@ fn PhysicianShell(
                                             .read()
                                             .as_ref()
                                             .and_then(|open| open.time_zone.clone()),
-                                        draft(),
+                                        composer.peek().text(draft_target().as_ref()),
                                     ),
                                     move || *snapshot_attempt.write() += 1,
                                 );
@@ -1612,7 +1646,7 @@ fn PhysicianShell(
                                 let client = client.read().clone();
                                 spawn(async move {
                                     let _ = client.dictate().await;
-                                    notice.set(DICTATION_UNAVAILABLE.to_owned());
+                                    composer.write().say(DICTATION_UNAVAILABLE);
                                 });
                             },
                             on_editing: move |value: bool| editing.set(value),
@@ -2656,6 +2690,8 @@ fn PatientSurface(
     server_now: String,
     draft: String,
     notice: String,
+    /// A save of this draft is running; Save waits for it.
+    saving: bool,
     is_admin: bool,
     practice_accounts: Vec<PracticeAccountSummary>,
     target_physician_id: String,
@@ -3183,11 +3219,11 @@ fn PatientSurface(
                             oninput: move |event| on_draft.call(event.value()),
                         }
                         div { class: "composer-actions",
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_save.call(()), "Save" }
+                            button { class: "control-secondary", r#type: "button", disabled: saving, onclick: move |_| on_save.call(()), "Save" }
                             button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
                             button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
                             if !notice.is_empty() {
-                                span { class: "composer-notice", "{notice}" }
+                                span { class: "composer-notice", role: "status", "{notice}" }
                             }
                         }
                         {send_notice}
@@ -3732,6 +3768,16 @@ fn open_target(
 
 /// The message the physician wrote, as one command. Nothing goes without a
 /// patient, a conversation and the practice's time zone.
+/// How the server answered a draft save: a 409 is another save's newer
+/// revision (or a read-only projection), and nothing was written.
+fn save_outcome(answer: Result<i64, physician_client::HttpError>) -> SaveOutcome {
+    match answer {
+        Ok(revision) => SaveOutcome::Saved(revision),
+        Err(physician_client::HttpError::Status { status: 409, .. }) => SaveOutcome::Conflict,
+        Err(_) => SaveOutcome::Failed,
+    }
+}
+
 fn message_command(
     workspace_id: Option<String>,
     chat_id: Option<String>,
