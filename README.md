@@ -14,9 +14,8 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 
 Where a change belongs, and how the dev shell, Doppler, and CI fit, is [AGENTS.md](AGENTS.md).
 
-The [personal engineering workstation recipe](infra/engineering-workstation/README.md)
-captures the Ubuntu/GCP desktop setup, private access, native scheduled tasks and
-the boundary between host packages, the Nix toolchain and account sign-in.
+Agent VM and sandbox recipes live in [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/deploy).
+This repository continues to own its Nix toolchain and dev-container setup.
 
 ## Start
 
