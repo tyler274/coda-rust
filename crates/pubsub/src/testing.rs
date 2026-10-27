@@ -4,7 +4,7 @@
 //! so a suite can run under
 //! `scripts/physician-scale-stack.py --dependencies-only -- <command>`, and
 //! otherwise starts `gcloud beta emulators pubsub` from the Nix dev shell on a
-//! loopback port. Without `gcloud` it returns `None`; when
+//! loopback port. Without `gcloud` and its emulator component it returns `None`; when
 //! `CODA_REQUIRE_POSTGRES_TESTS` is set (the Nix Postgres CI job) it panics
 //! instead, so the proof cannot silently skip.
 //!
@@ -152,8 +152,8 @@ struct Owned {
 
 impl Emulator {
     /// Reuses a loopback `PUBSUB_EMULATOR_HOST`, or starts an emulator when
-    /// `gcloud` is on `PATH`. `None` means skip; under
-    /// `CODA_REQUIRE_POSTGRES_TESTS` a missing `gcloud` panics instead.
+    /// `gcloud` and its emulator component are installed. `None` means skip;
+    /// under `CODA_REQUIRE_POSTGRES_TESTS` missing prerequisites panic instead.
     pub async fn start(project: &str) -> Option<Self> {
         if let Some(host) = std::env::var("PUBSUB_EMULATOR_HOST")
             .ok()
@@ -172,11 +172,7 @@ impl Emulator {
             emulator.wait_ready().await;
             return Some(emulator);
         }
-        if !on_path("gcloud") {
-            assert!(
-                std::env::var_os(REQUIRE).is_none(),
-                "gcloud with the pubsub-emulator component from the Nix dev shell is required for the Pub/Sub proof"
-            );
+        if !require_emulator(emulator_installed(), std::env::var_os(REQUIRE).is_some()) {
             return None;
         }
         Some(Self::spawn(project, free_port()).await)
@@ -575,10 +571,39 @@ fn kept_env(home: &Path) -> Vec<(String, String)> {
     env
 }
 
-fn on_path(program: &str) -> bool {
-    std::env::var_os("PATH").is_some_and(|path| {
-        std::env::split_paths(&path).any(|directory| directory.join(program).is_file())
-    })
+fn emulator_installed() -> bool {
+    // Runner images can ship gcloud without its optional emulator component.
+    // Read local installation metadata only; never install or contact Google.
+    let Ok(output) = Command::new("gcloud")
+        .args(["info", "--format=value(installation.sdk_root)"])
+        .stderr(Stdio::null())
+        .output()
+    else {
+        return false;
+    };
+    if !output.status.success() {
+        return false;
+    }
+    let root = String::from_utf8_lossy(&output.stdout);
+    sdk_has_emulator(Path::new(root.trim()))
+}
+
+fn sdk_has_emulator(root: &Path) -> bool {
+    root.is_absolute()
+        && root
+            .join("platform/pubsub-emulator/bin/cloud-pubsub-emulator")
+            .is_file()
+}
+
+fn require_emulator(installed: bool, required: bool) -> bool {
+    assert!(
+        installed || !required,
+        "gcloud with the pubsub-emulator component from the Nix dev shell is required for the Pub/Sub proof"
+    );
+    if !installed {
+        eprintln!("skipping Pub/Sub proof: gcloud's pubsub-emulator component is unavailable");
+    }
+    installed
 }
 
 /// A loopback port for the emulator to bind.
@@ -604,4 +629,30 @@ pub fn free_port() -> u16 {
         return port;
     }
     panic!("no free loopback port in {LOW}..{HIGH}");
+}
+
+#[cfg(test)]
+mod prerequisite_tests {
+    use super::*;
+
+    #[test]
+    fn a_bare_sdk_is_not_an_emulator_installation() {
+        let root = std::env::temp_dir().join(format!("pubsub-sdk-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(root.join("bin")).unwrap();
+        std::fs::write(root.join("bin/gcloud"), "").unwrap();
+        assert!(!sdk_has_emulator(&root));
+        let launcher = root.join("platform/pubsub-emulator/bin/cloud-pubsub-emulator");
+        std::fs::create_dir_all(launcher.parent().unwrap()).unwrap();
+        std::fs::write(&launcher, "").unwrap();
+        assert!(sdk_has_emulator(&root));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn missing_components_skip_only_optional_proofs() {
+        assert!(!require_emulator(false, false));
+        assert!(require_emulator(true, false));
+        assert!(require_emulator(true, true));
+        assert!(std::panic::catch_unwind(|| require_emulator(false, true)).is_err());
+    }
 }
