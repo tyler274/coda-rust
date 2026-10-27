@@ -9,7 +9,8 @@ the full workflow.
 ## Principles
 
 1. **Start from agreed intent.** Carry Dev's decisions forward. Design the complete
-   journey before choosing proof cases. Existing code and historical failures can
+   journey before choosing proof cases. The chart is the product's contract and the
+   harness serves it; never encode how the harness works in the chart. Existing code and historical failures can
    challenge it; missing code cannot limit it. A checked draft is still a draft.
 2. **Keep one owner.** Journey, charts and formal specification express one behavior.
    One feature recipe connects their proofs, actual code and app checks. Reuse real
@@ -56,6 +57,18 @@ flattened representation between Verus generation and finite reachability search
 `statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
 search covers only the finite chart's rules; limits or interruption are incomplete.
 An inductive Verus obligation can fail without a reachable chart violation.
+
+## Connect the harness through events
+
+The harness stays out of the chart and meets it only at declared events (Dev
+2026-10-26). An agent's event is the harness's output, and each tool it admits is
+one such event: the product host checks that event's `needs` before the effect
+commits, and the model decides when to use it. Retries, timeouts, cadence, memory
+and prompts stay in the harness; `infrastructure-gaps.md` names the events each
+runtime guarantee backs. The runtime records chart events where each fact's owner
+changes it, so a recorded run can be checked against the flat model, and `against`
+checks a more detailed model of the same behavior. The harness has no chart of
+its own; it is just the harness.
 
 Do not force every promise into finite states. Identity, revisions, collections,
 atomic batches and progress need linked data proofs and explicit assumptions.
@@ -127,7 +140,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against` and `coverage`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
+| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against` and `coverage`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model
