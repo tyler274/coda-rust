@@ -204,6 +204,98 @@ async fn unchanged_imports_keep_the_version_and_changes_append() {
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
+async fn restart_imports_do_not_rollback_corrections_or_restore_withdrawals() {
+    let (store, scope) = setup().await;
+    let original = source(&scope, "lab", "r1", "Potassium 4.1");
+    let corrected = source(&scope, "lab", "r2", "Potassium 6.8");
+    store
+        .import_sources(std::slice::from_ref(&original))
+        .await
+        .unwrap();
+    store.record_source(&corrected).await.unwrap();
+    // A fresh site connects to the same store but still has its old snapshot.
+    let restarted = Store::connect(&std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap())
+        .await
+        .unwrap();
+    let before = store.sources(&scope.workspace).await.unwrap();
+    restarted
+        .import_sources(std::slice::from_ref(&original))
+        .await
+        .unwrap();
+    assert_eq!(restarted.sources(&scope.workspace).await.unwrap(), before);
+    store
+        .withdraw_source(&scope.workspace, "lab")
+        .await
+        .unwrap();
+    let withdrawn = store.sources(&scope.workspace).await.unwrap();
+    restarted
+        .import_sources(&[original, corrected])
+        .await
+        .unwrap();
+    assert_eq!(
+        restarted.sources(&scope.workspace).await.unwrap(),
+        withdrawn
+    );
+    let restored = source(&scope, "lab", "r3", "Potassium 4.2");
+    assert_eq!(restarted.record_source(&restored).await.unwrap(), 4);
+    assert_eq!(
+        store.sources(&scope.workspace).await.unwrap().sources,
+        vec![restored]
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn source_identity_conflicts_are_refused_throughout_history() {
+    let (store, scope) = setup().await;
+    let original = source(&scope, "lab", "r1", "Potassium 4.1");
+    store.record_source(&original).await.unwrap();
+    for phase in 0..3 {
+        let before = store.sources(&scope.workspace).await.unwrap();
+        let changed_bytes = source(&scope, "lab", "r1", "Potassium 6.8");
+        let mut changed_provenance = original.clone();
+        changed_provenance.provenance = serde_json::json!({"native_record": "another-lab"});
+        for conflict in [changed_bytes, changed_provenance] {
+            assert!(store.record_source(&conflict).await.is_err());
+            assert_eq!(store.sources(&scope.workspace).await.unwrap(), before);
+        }
+        if phase == 0 {
+            store
+                .record_source(&source(&scope, "lab", "r2", "Corrected"))
+                .await
+                .unwrap();
+        } else {
+            store
+                .withdraw_source(&scope.workspace, "lab")
+                .await
+                .unwrap();
+        }
+    }
+    // Identity is scoped to the candidate and workspace, not revision alone.
+    store
+        .record_source(&source(&scope, "other-lab", "r1", "Other bytes"))
+        .await
+        .unwrap();
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn concurrent_conflicting_revisions_cannot_redefine_identity() {
+    let (store, scope) = setup().await;
+    let first = source(&scope, "lab", "r1", "Potassium 4.1");
+    let second = source(&scope, "lab", "r1", "Potassium 6.8");
+    let (a, b) = tokio::join!(store.record_source(&first), store.record_source(&second));
+    assert_ne!(a.is_ok(), b.is_ok());
+    let observed = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(observed.version, 1);
+    assert_eq!(
+        observed.sources,
+        vec![if a.is_ok() { first } else { second }]
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
 async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
     let (store, scope) = setup().await;
     let lab = source(&scope, "lab-1", "r1", "Potassium 4.1");
@@ -255,12 +347,35 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
         RevisionCommit::SourcesUnread(vec!["lab-2".into()])
     );
     assert_eq!(store.draft(&scope).await.unwrap().unwrap().revision, 1);
+    // A retained read with the right identity but different bytes or
+    // provenance is not exact evidence, even if imported by older code.
+    let wrong_bytes = source(&scope, "lab-2", "r1", "Creatinine 0.8 (normal)");
+    let mut wrong_provenance = arrived.clone();
+    wrong_provenance.provenance = serde_json::json!({"native_record": "other-lab"});
+    for (offset, wrong) in [wrong_bytes, wrong_provenance].into_iter().enumerate() {
+        read_then_finish(
+            &store,
+            &claim,
+            3 + offset as u64,
+            &[wrong],
+            &["lab-2".into()],
+            &unread,
+        )
+        .await;
+        assert_eq!(
+            store
+                .commit_revision(&claim, &unread, &mut Allow)
+                .await
+                .unwrap(),
+            RevisionCommit::SourcesUnread(vec!["lab-2".into()])
+        );
+    }
     // Reading it, then finishing, publishes revision 2.
-    let caught_up = finish("finish-3", "Potassium is normal; creatinine is high.");
+    let caught_up = finish("finish-5", "Potassium is normal; creatinine is high.");
     read_then_finish(
         &store,
         &claim,
-        3,
+        5,
         &claim.sources.clone(),
         &["lab-2".into()],
         &caught_up,

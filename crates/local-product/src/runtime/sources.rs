@@ -3,7 +3,8 @@
 //! Each patient workspace has one version row and an append-only list of
 //! source observations. Recording a new or corrected revision, or withdrawing
 //! a source, appends a row and bumps the version, both under the version
-//! row's exclusive lock. Recording the same revision again changes nothing.
+//! row's exclusive lock. Replaying any historical revision changes nothing;
+//! reusing its identity with different content or provenance is refused.
 //! Readers that must not miss an arrival (revision acceptance, claim and
 //! commit) take that row's shared lock in their own transaction, so ingestion
 //! either landed before them and is seen, or waits for them to commit.
@@ -113,9 +114,11 @@ pub(super) async fn observed(
 }
 
 impl Store {
-    /// Records one source revision. A new candidate or a different revision
-    /// of a known one appends a row and bumps the workspace version; the same
-    /// revision again changes nothing. Returns the workspace version after.
+    /// Records one immutable source revision. An unseen revision appends a row
+    /// and bumps the workspace version, including after withdrawal. Replaying
+    /// any historical revision changes nothing, even after correction or
+    /// withdrawal; conflicting bytes or provenance for its identity are refused.
+    /// Returns the workspace version after.
     pub async fn record_source(&self, source: &SourceRevision) -> Result<u64, DbErr> {
         source.validate().map_err(|e| error(&e))?;
         let value = serde_json::to_value(source).map_err(|_| error("invalid source"))?;
@@ -164,21 +167,37 @@ impl Store {
             .await?
             .ok_or_else(|| error("missing source version"))?;
         let version = version_of(row.version)?;
-        let previous = source::Entity::find()
+        // The version lock serializes identity checks with all appends. Keep
+        // the check over history, not just the current row: a startup snapshot
+        // may contain a revision that has since been corrected or withdrawn.
+        let history = source::Entity::find()
             .filter(source::Column::Workspace.eq(workspace))
             .filter(source::Column::Candidate.eq(candidate))
             .order_by_desc(source::Column::ObservedAtVersion)
-            .one(&tx)
+            .all(&tx)
             .await?;
         let incoming = revision
             .clone()
             .map(serde_json::from_value::<SourceRevision>)
             .transpose()
             .map_err(|_| error("invalid source"))?;
-        let unchanged = match &previous {
-            Some(previous) => decode(previous)? == incoming,
-            // Withdrawing what was never recorded changes nothing.
-            None => incoming.is_none(),
+        let unchanged = if let Some(incoming) = &incoming {
+            let mut seen = false;
+            for row in &history {
+                if let Some(recorded) = decode(row)?
+                    && recorded.revision == incoming.revision
+                {
+                    if recorded != *incoming {
+                        return Err(error("conflicting source revision identity"));
+                    }
+                    seen = true;
+                }
+            }
+            seen
+        } else {
+            // Withdrawing what was never recorded or is already withdrawn
+            // changes nothing.
+            history.first().is_none_or(|row| row.revision.is_none())
         };
         if unchanged {
             tx.commit().await?;

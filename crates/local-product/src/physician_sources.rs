@@ -238,6 +238,10 @@ pub fn caught_up(
                     r["reference"] == source.candidate_id.as_str()
                         && r["outcome"] == "available"
                         && r["revision"] == source.revision.as_str()
+                        && r["read_representation"] == "native_record"
+                        && r["content"] == source.content.as_str()
+                        && r["sha256"] == source.sha256.as_str()
+                        && r["provenance"] == source.provenance
                 })
             }),
             _ => false,
@@ -257,6 +261,9 @@ pub fn caught_up(
 pub struct Observation {
     version: u64,
     sources: Vec<SourceRevision>,
+    // Retained after correction and withdrawal so a replay cannot roll back
+    // the observation or redefine an immutable revision identity.
+    history: Vec<SourceRevision>,
 }
 
 impl Observation {
@@ -271,16 +278,28 @@ impl Observation {
         Ok(observation)
     }
 
-    /// Records a new or corrected revision. Returns whether it changed the
-    /// observation.
+    /// Records an unseen revision, including restoration after withdrawal.
+    /// Identical historical revisions are no-ops; conflicting content or
+    /// provenance for the same identity is refused. Returns whether changed.
     pub fn record(&mut self, source: SourceRevision) -> Result<bool, String> {
         source.validate()?;
+        if let Some(recorded) = self.history.iter().find(|recorded| {
+            recorded.workspace == source.workspace
+                && recorded.candidate_id == source.candidate_id
+                && recorded.revision == source.revision
+        }) {
+            return if *recorded == source {
+                Ok(false)
+            } else {
+                Err("conflicting source revision identity".into())
+            };
+        }
+        self.history.push(source.clone());
         match self
             .sources
             .iter_mut()
             .find(|s| s.workspace == source.workspace && s.candidate_id == source.candidate_id)
         {
-            Some(existing) if *existing == source => return Ok(false),
             Some(existing) => *existing = source,
             None => self.sources.push(source),
         }
@@ -318,4 +337,114 @@ impl Observation {
 pub fn read_definition() -> Value {
     json!({"type":"function", "name":"read_patient_sources", "description":"Read exact retained source revisions from this work's recorded patient source observation. Unavailable is not absence. No search or projection grants citation authority.",
         "parameters":{"type":"object", "properties":{"references":{"type":"array","items":{"type":"string"},"minItems":1,"maxItems":8},"max_result_bytes":{"type":"integer","minimum":4096,"maximum":65536}},"required":["references","max_result_bytes"],"additionalProperties":false}})
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use harness::execution::{Item, Record, Request};
+
+    fn source(revision: &str, content: &str) -> SourceRevision {
+        SourceRevision {
+            workspace: "patient".into(),
+            candidate_id: "lab".into(),
+            revision: revision.into(),
+            content: content.into(),
+            sha256: crate::sha256_hex(content.as_bytes()),
+            provenance: json!({"native_record": "lab"}),
+        }
+    }
+
+    #[test]
+    fn inline_historical_reimports_do_not_rollback_or_restore() {
+        let original = source("r1", "Potassium 4.1");
+        let corrected = source("r2", "Potassium 6.8");
+        let mut observation = Observation::seeded(vec![original.clone()]).unwrap();
+        assert!(observation.record(corrected.clone()).unwrap());
+        let before = observation.workspace("patient");
+        assert!(!observation.record(original.clone()).unwrap());
+        assert_eq!(observation.workspace("patient"), before);
+        assert!(observation.withdraw("patient", "lab"));
+        let withdrawn = observation.workspace("patient");
+        for revision in [original, corrected] {
+            assert!(!observation.record(revision).unwrap());
+            assert_eq!(observation.workspace("patient"), withdrawn);
+        }
+        let restored = source("r3", "Potassium 4.2");
+        assert!(observation.record(restored.clone()).unwrap());
+        assert_eq!(observation.workspace("patient"), (4, vec![restored]));
+    }
+
+    #[test]
+    fn inline_revision_identity_is_immutable_even_after_withdrawal() {
+        let original = source("r1", "Potassium 4.1");
+        let mut observation = Observation::seeded(vec![original.clone()]).unwrap();
+        for phase in 0..3 {
+            let before = observation.workspace("patient");
+            let changed_bytes = source("r1", "Potassium 6.8");
+            let mut changed_provenance = original.clone();
+            changed_provenance.provenance = json!({"native_record": "another-lab"});
+            for conflict in [changed_bytes, changed_provenance] {
+                assert!(observation.record(conflict).is_err());
+                assert_eq!(observation.workspace("patient"), before);
+            }
+            if phase == 0 {
+                observation.record(source("r2", "Corrected")).unwrap();
+            } else {
+                observation.withdraw("patient", "lab");
+            }
+        }
+    }
+
+    #[test]
+    fn catch_up_requires_exact_bytes_hash_and_provenance() {
+        let current = source("r1", "Potassium 6.8");
+        let refresh = SourceRefresh::between(0, &[], 1, std::slice::from_ref(&current));
+        let exact = exact_read(
+            std::slice::from_ref(&current),
+            "patient",
+            &["lab".into()],
+            65536,
+        )
+        .unwrap();
+        let check = |value| {
+            caught_up(
+                &[Record::Dispatch {
+                    sequence: 2,
+                    request: Request {
+                        model: "fixed".into(),
+                        options: json!({}),
+                        instructions: String::new(),
+                        tools: vec![],
+                        items: vec![Item::Result {
+                            call_id: "read".into(),
+                            value,
+                        }],
+                    },
+                }],
+                std::slice::from_ref(&refresh),
+                std::slice::from_ref(&current),
+            )
+            .unwrap()
+        };
+        assert!(check(exact.clone()).is_empty());
+        for (field, wrong) in [
+            ("content", json!("Potassium 4.1")),
+            ("sha256", json!(crate::sha256_hex(b"Potassium 4.1"))),
+            ("provenance", json!({"native_record": "another-lab"})),
+            ("read_representation", json!("summary")),
+        ] {
+            let mut stale = exact.clone();
+            stale["results"][0][field] = wrong;
+            assert_eq!(check(stale), vec!["lab".to_string()], "{field}");
+        }
+        let stale = exact_read(
+            &[source("r1", "Potassium 4.1")],
+            "patient",
+            &["lab".into()],
+            65536,
+        )
+        .unwrap();
+        assert_eq!(check(stale), vec!["lab".to_string()]);
+    }
 }
