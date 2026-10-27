@@ -7,6 +7,10 @@
 //! `record` and `replay` use that same path and a cassette. They do not read
 //! an API key. `api` calls OpenAI Responses. The key is an argument from the
 //! environment; this crate does not read it from disk.
+//! Physician HTTP chat runs inline through `execution::PhysicianSession` (file
+//! persistence over `harness::execution`) unless the site starts with
+//! `PHYSICIAN_CHAT_TOPIC`; then the site accepts turns into the Postgres
+//! `runtime` owner over `harness::engine`, and a worker runs them.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
