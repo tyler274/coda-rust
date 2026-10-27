@@ -1,0 +1,232 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002096",
+      "given": "Todd",
+      "family": "McKenna",
+      "birth_date": "1976-01-19",
+      "address_line": "27 Kellogg Hollow Road, Apt 3",
+      "phone": "+1-201-555-0174",
+      "email": "todd.mckenna@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer with advanced HIV who has declined antiretroviral therapy since a brief course in 2016, asplenic after a 2011 crash, on TMP-SMX prophylaxis he takes unevenly. Develops HIV-associated mixed cryoglobulinemia with neuropathy and renal involvement in 2023, then pulmonary and cutaneous nocardiosis in May 2026 and CNS nocardiosis with an ICU stay in July 2026, when ART is finally started.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2021-09-02T10:20", "body": "Caller wants to establish primary care with us. Says his last clinic \"wasn't working out\" and he hasn't had a regular doctor in a while. Medicaid, verified active. Mentions he has HIV and takes an antibiotic a few times a week. New patient slot given for Mon 9/20 at 8:40. Release of records form emailed so we can get his old chart. He works construction days, prefers early appointments."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "outside_records",
+          "start": "2021-09-14T14:05",
+          "reason": "prior clinic records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from Prior Clinic", "author": "MA", "date": "2021-09-14T14:05", "body": "Faxed records, 38 pages, from the community health clinic he used before. Summary for the PCP:\n- HIV-1 infection diagnosed 2016 at that clinic. Started on an antiretroviral regimen at diagnosis, notes say he stopped it on his own within the first year; repeated counseling documented, he declined restarting.\n- CD4 below 200 on their last several draws; viral load in the tens of thousands.\n- On TMP-SMX DS three times weekly for PCP prophylaxis.\n- Anemia attributed to chronic disease; mild CKD on their problem list.\n- MVC around 2011: both femurs fixed, spleen removed, several transfusions. Right knee arthritis since.\n- Hepatitis A and hepatitis B vaccine series documented as complete.\n- NKDA.\nRecords placed in chart for review at the 9/20 visit."}
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "establish_care",
+          "start": "2021-09-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "HIV disease with AIDS, not on antiretroviral therapy", "icd10": "B20", "action": "history", "onset": "2016-06-01"},
+            {"label": "Anemia of chronic disease", "icd10": "D63.8", "action": "history", "onset": "2016-06-01"},
+            {"label": "Chronic kidney disease, stage 2", "action": "history", "onset": "2019-01-01"},
+            {"label": "Post-traumatic arthritis of right knee", "icd10": "M12.561", "action": "history", "onset": "2011-06-01"},
+            {"label": "Acquired absence of spleen", "action": "history", "onset": "2011-06-01"}
+          ],
+          "medications": [
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times weekly (Mon/Wed/Fri)", "dose": {"value": 1, "unit": "tablet"}, "frequency": "THREE TIMES WEEKLY", "route": "Oral", "course": "chronic", "reason": "Pneumocystis prophylaxis"},
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for joint pain", "dose": {"value": 400, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "joint pain"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for fever or headache", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "fever or headache"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 79.0, "height_cm": 180.0, "bp": [118, 72], "labs": {"CD4 Count": 170, "HIV-1 RNA Viral Load": 85000, "Creatinine": 1.1, "Hemoglobin": 12.4, "Microalbumin/Creatinine Ratio": 50}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2021-09-20T09:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-20T09:30", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Urinalysis", "collected": "2021-09-20T09:30", "results": [{"test": "Urine Protein"}]},
+            {"panel": null, "collected": "2021-09-20T09:30", "results": [{"test": "CD4 Count"}, {"test": "HIV-1 RNA Viral Load"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-20T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Construction laborer"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-09-20T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-20T10:15", "body": "NEW PATIENT VISIT\n\n45 y/o man here to set up primary care. Old clinic records reviewed (arrived 9/14).\n\nHIV: diagnosed 2016. Took ART for a few months back then, didn't like how it made him feel and stopped; hasn't been on anything since. Knows his counts are low. Takes Bactrim DS M/W/F \"most weeks\" - honest that he forgets some. No current fevers, sweats, cough, thrush, diarrhea or skin problems.\nOther: anemia (told it's from the HIV), mild kidney disease on old list, right knee arthritis after the 2011 crash - uses ibuprofen 400 or Tylenol 500 when the knee acts up on the job.\n\nPSH: 2011 MVC - ORIF both femurs, splenectomy, multiple transfusions. \nMeds: TMP-SMX DS 1 tab three times weekly; ibuprofen 400 q6h prn; acetaminophen 500 q6h prn.\nAllergies: NKDA.\nFH: father - HTN, CAD. Mother - type 2 DM, hypothyroid. No immunodeficiency, autoimmune or bleeding disorders in the family.\nSH: laborer for a construction outfit, lives alone in Amherst. Quit cigarettes about 8 yrs ago. Alcohol 1-2 drinks a month. \n\nExam: well-appearing, thin. No oral thrush or lesions. No lymphadenopathy. Lungs clear. RRR, no murmur. Abdomen soft, healed midline scar, no organomegaly. Old scars both thighs. R knee with crepitus, no effusion, full extension. Skin without rash. Feet: normal sensation.\n\nA/P\n1. HIV, advanced, off ART. Long talk. Explained that modern once-daily regimens are much easier than what he took in 2016 and that being off treatment with low CD4 is the biggest risk to his health. He's not ready - wants to \"think about it.\" Offered HIV clinic referral, declined for now. Will check CD4/VL today and keep raising it.\n2. PCP prophylaxis - continue TMP-SMX DS three times weekly; set phone alarm.\n3. Asplenia + HIV - needs pneumococcal, meningococcal ACWY and B, Hib. Nurse visit in Oct with flu shot.\n4. Anemia of chronic disease - CBC.\n5. CKD 2 - CMP, UA, urine albumin.\n6. R knee post-traumatic arthritis - ibuprofen/APAP prn as before.\n7. Hep C screen today. Hep A/B vaccination documented in old records.\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2021-09-24a",
+          "kind": "portal_message",
+          "start": "2021-09-24T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2021-09-24T16:40", "body": "Todd - your labs are back. Your CD4 count is low and the virus is very active in your blood, which is what we expected off treatment. Your blood count shows the same mild anemia as before, kidney function is about where your old records had it, and hepatitis C screen is negative. Cholesterol is fine. My offer stands on getting you back on HIV medicine whenever you're ready - one pill a day these days. Please keep taking the Bactrim. See you in October for shots."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunizations",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T08:00"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-10-12T08:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2021-10-12T08:00"},
+            {"vaccine": "Haemophilus influenzae type b (PRP-T)", "date": "2021-10-12T08:00"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-12T08:00"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2021-10-12T08:10", "body": "Per PCP plan for asplenia/HIV. Afebrile. Given: flu (L deltoid), PCV20 (R deltoid), MenACWY dose 1 (L deltoid), Hib (R deltoid). VIS sheets given. Tolerated, waited 15 min without issue. Next: MenACWY #2 and MenB #1 in about 8 weeks - booked 11/16."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "nurse_visit",
+          "start": "2021-11-16T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunizations",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2021-11-16T07:55"},
+            {"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2021-11-16T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-16T07:55"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-11-16T07:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2021-11-16T08:05", "body": "MenACWY #2 and MenB #1 given. Also asked for his COVID booster - primary series was at a pharmacy this spring per his card, booster given today. Sore arm from last round lasted a day. MenB #2 due in a month, booked 12/14."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "nurse_visit",
+          "start": "2021-12-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunization",
+          "immunizations": [
+            {"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2021-12-14T07:45"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-12-14T07:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "MA", "date": "2021-12-14T07:50", "body": "MenB dose 2 given L deltoid. Series complete. Asplenia vaccines now done except MenACWY booster in 5 yrs - added to health maintenance."}
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "office_visit",
+          "start": "2022-01-18T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "fit-2022", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-01-18T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-01-18T09:00", "body": "S: Doing OK. Working through the cold weather, knee stiff in the mornings, ibuprofen a couple times a week helps. Taking Bactrim \"better than before.\" Still not ready for HIV meds - says he'll think about it after the winter.\nO: Vitals reviewed. Thin, no thrush. Lungs clear. R knee crepitus, no effusion. Skin clear.\nA/P: HIV off ART - re-offered, declined, door left open. Prophylaxis continues. Knee - prn analgesics. Turning 46 this week: FIT kit given for colon cancer screening. RTC May with labs."}
+          ]
+        },
+        {
+          "id": "2022-02-03a",
+          "kind": "lab_only",
+          "start": "2022-02-03T11:00",
+          "labs": [
+            {"panel": null, "collected": "2022-02-01T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2022", "action": "done", "date": "2022-02-03T11:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT Result", "author": "PCP", "date": "2022-02-03T15:20", "body": "FIT negative. Repeat yearly. Letter to patient."}
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "pharmacy",
+          "start": "2022-03-21T09:10",
+          "documents": [
+            {"type": "Refill Request", "title": "TMP-SMX Refill", "author": "RN", "date": "2022-03-21T09:10", "body": "Electronic request from his pharmacy, TMP-SMX DS #36 (three times weekly). Last fill 12/2021 - a bit later than expected for a 12-week supply. Approved x1 with 3 refills per standing plan. Flagged for PCP re: adherence."}
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "office_visit",
+          "start": "2022-05-16T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "HIV follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-16T08:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-16T08:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2022-05-16T08:20", "results": [{"test": "CD4 Count"}, {"test": "HIV-1 RNA Viral Load"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-16T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "HIV Follow-up", "author": "PCP", "date": "2022-05-16T08:30", "body": "Subjective: no fevers, night sweats, cough, mouth sores, diarrhea, rashes. Working full days, busy season. Admits to missing \"a few\" Bactrim doses a month. Knee fine lately.\nObjective: vitals stable, weight steady. No thrush, no nodes. Lungs clear. Heart regular. Skin clear.\nAssessment/Plan:\n- Advanced HIV off ART: we talked again about starting a single-tablet regimen; he says his old meds made him sick and he's afraid of that again. Explained side effects are far less common now. Still declines; would rather not see an HIV clinic. Respecting that, will keep offering.\n- PCP prophylaxis: pill box given.\n- Anemia, CKD 2: CBC, BMP today.\n- CD4/VL today.\nFollow up at physical in fall."}
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2022-05-19T12:15", "body": "Hi Todd, labs are about the same as September: CD4 still low, viral load still high, mild anemia unchanged, kidney numbers stable. Nothing new, but the CD4 is the one I worry about. Keep up the Bactrim and let me know any time you want to talk about treatment."},
+            {"type": "Patient Message", "title": "RE: Lab Results", "author": "patient", "date": "2022-05-19T19:02", "body": "thanks doc. got it. still thinking"}
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "annual_physical",
+          "start": "2022-09-26T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-26T08:15", "results": [{"test": "Creatinine"}]},
+            {"panel": "CBC with Differential", "collected": "2022-09-26T08:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Urinalysis", "collected": "2022-09-26T08:15", "results": [{"test": "Urine Protein"}]},
+            {"panel": null, "collected": "2022-09-26T08:15", "results": [{"test": "Microalbumin/Creatinine Ratio"}, {"test": "CD4 Count"}, {"test": "HIV-1 RNA Viral Load"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-26T08:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-26T08:20"},
+            {"vaccine": "Tdap", "date": "2022-09-26T08:20"}
+          ],
+          "orders": [
+            {"id": "fit-2023", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-09-26T07:30"},
+            {"procedure": "Immunization administration", "performed": "2022-09-26T08:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-09-26T09:05", "body": "ANNUAL EXAM - 46M\n\nInterval: no illnesses this year. No ED visits. Still off ART by choice. Bactrim most days it's due.\nROS negative: no weight loss, fevers, sweats, cough, dysphagia, diarrhea, rash, urinary symptoms, numbness.\nMeds: TMP-SMX DS three times weekly, ibuprofen 400 prn, APAP 500 prn. NKDA.\nSocial: same job, lives alone. Former smoker. Rare alcohol.\n\nExam: NAD. HEENT: no thrush, dentition fair. Neck: no nodes, no thyromegaly. Lungs clear. CV: RRR, no murmur. Abd: soft, nontender, scars healed. Ext: no edema, R knee crepitus. Skin: no rash or lesions. Neuro: sensation intact feet, reflexes symmetric.\n\nPlan:\n- Health maintenance: flu, bivalent COVID and Tdap today. FIT kit for this winter. Asplenia series complete.\n- HIV: labs. ART discussion again - \"maybe next year.\"\n- Kidneys/anemia: CMP, CBC, UA, urine albumin.\n- PHQ-2 negative.\nRTC 4-5 months."}
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "telephone",
+          "start": "2022-12-05T13:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Call", "author": "RN", "date": "2022-12-05T13:30", "body": "Pt called, out of Bactrim for about a week - pharmacy said no refills left. Sent 12-week supply per protocol. Reinforced three times weekly dosing; he says job site hours made him lose track. Suggested keeping the bottle in his truck. FIT kit still at home - reminded."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4710 @@
+{
+  "unit": "unit-1726",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001726/2022-03-07a: referral to \"Eating disorder program (therapy and dietitian)\" names no catalog specialty",
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001726",
+      "given": "Taylor",
+      "family": "Gallagher",
+      "birth_date": "1997-12-01",
+      "address_line": "112 Crescent Street, Apt 2",
+      "phone": "+1-917-555-0170",
+      "email": "taylor.gallagher@example.test",
+      "marital_status": "single",
+      "summary": "28-year-old marketing coordinator with bulimia nervosa (purging type) and generalized anxiety, on fluoxetine with variable adherence, whose purging, steroid and diuretic misuse bring repeated electrolyte and volume emergencies, then a pregnancy complicated by hyperemesis gravidarum. Most recently admitted elsewhere with hyponatremia after a hot festival day of heavy water intake and ecstasy, after her last practice visit.",
+      "events": [
+        {
+          "id": "2019-08-13a",
+          "kind": "establish_care",
+          "start": "2019-08-13T09:00",
+          "end": "2019-08-13T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and annual exam",
+          "conditions": [
+            {
+              "label": "Bulimia nervosa, purging type",
+              "action": "diagnosed",
+              "onset": "2013-09-01",
+              "note": "since early adolescence per patient; not in active treatment at joining",
+              "icd10": "F50.20"
+            },
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "diagnosed",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "History of anabolic steroid use disorder",
+              "action": "history",
+              "note": "prior use, not using now",
+              "icd10": "Z86.59"
+            },
+            {
+              "label": "History of laxative and diuretic misuse",
+              "action": "history",
+              "note": "not using now per patient",
+              "icd10": "Z86.59"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder; bulimia nervosa"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 63,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 56.5,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-08-13T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.17
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-08-13T10:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-13T10:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-13T10:15",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-13T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-13T10:15",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-13T10:05",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-13T10:05",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 10
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None (avoids alcohol because of calories)"
+            },
+            {
+              "item": "Occupation",
+              "value": "Marketing coordinator"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2019-08-13T09:50",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2019-08-20T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-08-13T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-08-13T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit and Preventive Exam",
+              "date": "2019-08-13T10:10",
+              "author": "PCP",
+              "body": "21 y/o woman new to us. Came with her prior PCP's med list; records release signed today.\n\nHPI: Wants a doctor she can actually reach. Long history of bulimia, purging type, starting in early adolescence: binge-purge cycles that come and go with stress. Not in any treatment right now; saw a therapist in high school, none since. Purging \"a few times a month\" lately by her estimate, sometimes more around deadlines. In the past also misused laxatives and diuretics, and went through a stretch of using anabolic steroids for body composition. Says none of that now. Generalized anxiety for several years: worry she can't switch off, poor sleep in bad weeks. Fluoxetine 20 mg from her last PCP; honest that she skips it for days at a time.\n\nPMH: bulimia nervosa (purging), GAD, hx anabolic steroid use disorder, hx laxative/diuretic misuse.\nPSH: third molars out at 18.\nMeds: fluoxetine 20 mg daily (adherence variable). No OTCs or supplements per pt.\nAllergies: NKDA.\nFH: mother with major depression; father with GAD; maternal aunt with binge eating disorder.\nSH: marketing coordinator. Never smoked. No alcohol, avoids it for the calories. Single.\n\nPHQ-9 5, GAD-7 10.\n\nExam: thin, well groomed, pleasant, a little guarded when we get to food. BP and HR fine, afebrile. Weight 56 kg, height 165 cm. HEENT: no parotid enlargement, dentition intact. Neck supple, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Hands: no calluses over the knuckles. Skin warm, no lanugo. Pelvic: normal external genitalia, cervix without lesions; Pap and GC/CT collected.\n\nA/P:\n1. Bulimia nervosa, purging type - longstanding, currently not in treatment. Talked about what specialized ED care looks like; not ready for a referral today, will revisit. Baseline CMP, Mg, CBC. Asked her to tell me if she starts using laxatives or water pills again; she agreed.\n2. GAD - continue fluoxetine 20 mg, I'll prescribe going forward. Pill box/phone alarm suggested.\n3. Hx steroid and laxative/diuretic misuse - in remission by her report.\n4. Health maintenance - Pap today (first one). GC/CT, HIV, HCV screening today. HPV series done as a teen per pt; will confirm in old records. Flu shot this fall.\n\nRTC 3-4 months."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2019-08-13T10:12",
+              "author": "PCP",
+              "body": "Nice to meet you today.\n- Keep taking fluoxetine 20 mg once a day. A phone alarm can help.\n- Blood work was drawn today. Results will post to the portal with a note from me.\n- Your Pap result usually takes about a week.\n- You can message or call any time, including about eating. That's what we're here for.\nNext visit: about 3 to 4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              106,
+              68
+            ],
+            "weight_kg": 56.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Magnesium": 2.1,
+              "Phosphorus": 3.7,
+              "Thyroid Stimulating Hormone": 1.62
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-08-16a",
+          "kind": "portal_message",
+          "start": "2019-08-16T16:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2019-08-16T16:40",
+              "author": "PCP",
+              "body": "Hi Taylor, your blood count, chemistry panel, magnesium and thyroid test are all normal, and the HIV, hepatitis C, gonorrhea and chlamydia screens are negative. Pap is still pending. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "portal_message",
+          "start": "2019-08-20T15:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "date": "2019-08-20T15:05",
+              "author": "PCP",
+              "body": "Your Pap smear is normal. Next one is due in 3 years."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "outside_records",
+          "start": "2019-09-10T11:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-09-10T11:20",
+              "author": "front desk",
+              "body": "Prior primary care records received (34 pages) and scanned.\n\nPCP review: problem list there matches ours - bulimia nervosa, purging type; generalized anxiety; history of anabolic steroid use; history of laxative and diuretic misuse. Fluoxetine 20 mg for several years with gaps in fills. Wisdom teeth removed at 18 by oral surgery. Immunizations: childhood series complete, HPV series completed in adolescence, Tdap at 11. Routine well visits with normal exams and normal basic labs. No allergies listed. Nothing that changes our plan."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Vaccine",
+              "date": "2019-10-08T08:30",
+              "author": "RN",
+              "body": "Flu vaccine IM L deltoid. No prior reactions, feeling well today. VIS given. Waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety and eating disorder",
+          "vitals": {
+            "bp": [
+              93,
+              70
+            ],
+            "hr": 63,
+            "weight_kg": 55.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-12-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2019-12-10T16:35",
+              "author": "PCP",
+              "body": "S: Fall busy at work with year-end campaigns. Taking fluoxetine \"most days, maybe 5 of 7.\" Binge/purge a few times a month, no change. Denies laxatives, diuretics, steroids. Sleep ok. No dizziness or palpitations.\nO: vitals fine, weight stable. Calm, good eye contact. No parotid swelling, mucous membranes moist.\nPHQ-9 4, GAD-7 9.\nA/P: GAD with bulimia, stable at her baseline. Continue fluoxetine 20. Raised ED-specialist referral again; she'd rather wait until after the holidays. Ok. See me in spring, sooner if purging picks up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "pharmacy",
+          "start": "2020-03-24T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2020-03-24T10:05",
+              "author": "MA",
+              "body": "Pharmacy fax: refill request fluoxetine 20 mg caps #90. Last visit 12/10/19. Per PCP, ok x1 with 1 refill. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-09T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-06-09T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "date": "2020-06-09T12:55",
+              "author": "PCP",
+              "body": "Video, she's in her apartment, consents to telehealth.\nWorking from home since March. Anxiety up some with everything going on; more time alone with food makes the binge/purge harder to manage, a few times a week some weeks. Denies laxatives/diuretics/steroids. Fluoxetine mostly daily since we refilled. No syncope, no palpitations.\nPHQ-9 6, GAD-7 11.\nLooks well on screen, speech normal, affect a bit flat.\nA/P: GAD, bulimia - modest worsening with isolation. Structure: regular meal times, getting outside. Continue fluoxetine 20 mg. Offered ED program referral; she says she'll think about it and message me. Labs at her physical in the fall unless purging escalates."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Vaccine",
+              "date": "2020-10-06T08:50",
+              "author": "RN",
+              "body": "Masked visit. Influenza vaccine given IM R deltoid, lot recorded. Tolerated, left in good spirits."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "annual_physical",
+          "start": "2020-11-17T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "vitals": {
+            "bp": [
+              101,
+              74
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 57.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-11-17T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-11-17T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-11-17T10:20",
+              "author": "PCP",
+              "body": "Annual. Back in the office, mostly remote for work.\nInterval: anxiety about the same, GAD-7 10. Purging \"a little better than the summer.\" Denies laxatives, diuretics, steroids. Regular periods. Fluoxetine most days. Flu shot done last month.\nROS otherwise negative: no syncope, chest pain, palpitations, abdominal pain, hematemesis.\nExam: weight steady around her usual. Normal vitals. No parotid enlargement, no enamel erosion I can see, no knuckle calluses. Heart, lungs, abdomen normal. Skin and extremities normal.\nA/P: healthy 22 y/o with bulimia and GAD, stable.\n- CMP, Mg, CBC today.\n- GC/CT screen.\n- Pap not due until 2022.\n- Continue fluoxetine 20.\n- Counseled on contraception and sexual health; no needs today.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "portal_message",
+          "start": "2020-11-19T08:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2020-11-19T08:15",
+              "author": "PCP",
+              "body": "Labs look good - potassium and the rest of the chemistry normal, blood count normal, STI screen negative."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "outside_records",
+          "start": "2021-05-12T13:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine card",
+              "date": "2021-05-12T13:30",
+              "author": "patient",
+              "body": "Hi! Fully vaccinated as of yesterday, attaching a photo of my card for my chart. Second one knocked me out for a day but fine now."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Immunization history updated",
+              "date": "2021-05-12T15:10",
+              "author": "MA",
+              "body": "COVID vaccine card reviewed (community pharmacy, dose 1 4/20/21, dose 2 5/11/21). Entered in immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "office_visit",
+          "start": "2021-05-18T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety and bulimia",
+          "vitals": {
+            "bp": [
+              101,
+              72
+            ],
+            "hr": 71,
+            "weight_kg": 55.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-05-18T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-05-18T15:45",
+              "author": "PCP",
+              "body": "S: Doing better this spring. Running again a few times a week. Fluoxetine \"pretty consistent.\" Purging a couple of times a month. No laxatives/diuretics/steroids.\nO: BP and HR normal, weight steady. Calm, bright.\nPHQ-9 4 / GAD-7 8.\nA/P: GAD + bulimia, better. Continue fluoxetine. Encouraged regular fueling around runs. RTC at her physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Vaccine",
+              "date": "2021-10-12T17:20",
+              "author": "RN",
+              "body": "Late-day slot after work. Afebrile, no complaints. Flu vaccine IM L deltoid. VIS reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "annual_physical",
+          "start": "2021-11-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "vitals": {
+            "bp": [
+              96,
+              69
+            ],
+            "hr": 73,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 53.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-16T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-11-16T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-16T09:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-16T09:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-11-16T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-11-16T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-11-16T09:15",
+              "author": "PCP",
+              "body": "Annual exam, 23F.\nInterval: new role at work, more pressure. Says she has started \"eating cleaner\" to drop a few pounds over the last couple of months. Purging about the same. Denies laxatives, diuretics, steroids when I ask. GAD-7 11.\nROS neg for syncope, palpitations, chest pain.\nExam: weight down a little from spring. Vitals normal. Normal general exam; no parotid enlargement.\nA/P:\n- Bulimia / GAD: I'm a little wary of the dieting talk given her history. Said so. She'll message if it gets away from her. Continue fluoxetine 20.\n- Labs: CMP, CBC, GC/CT.\n- Flu done in Oct. COVID booster - she plans to get it at the pharmacy next month.\nRTC 4-6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-16a",
+          "kind": "outside_records",
+          "start": "2021-12-16T09:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2021-12-16T09:40",
+              "author": "MA",
+              "body": "State registry/pharmacy notice: COVID-19 booster (Pfizer) given 12/14/21 at a community pharmacy. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "pharmacy",
+          "start": "2022-01-11T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-01-11T09:30",
+              "author": "MA",
+              "body": "eRx renewal request fluoxetine 20 mg #90 x1. Seen 11/16/21. Approved per standing refill protocol, sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "office_visit",
+          "start": "2022-03-07T10:30",
+          "end": "2022-03-07T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, dizziness, fainted once",
+          "conditions": [
+            {
+              "label": "Anabolic steroid abuse",
+              "action": "diagnosed",
+              "onset": "2021-12-01",
+              "note": "resumed an online-bought anabolic steroid this winter; agrees to stop",
+              "icd10": "F55.3"
+            },
+            {
+              "label": "Hypokalemia",
+              "action": "diagnosed",
+              "onset": "2022-03-07",
+              "icd10": "E87.6"
+            },
+            {
+              "label": "Orthostatic hypotension",
+              "action": "diagnosed",
+              "onset": "2022-03-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with food for 7 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Hypokalemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              95,
+              60
+            ],
+            "hr": 98,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 49.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-07T11:05",
+              "resulted": "2022-03-07T14:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 95
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-07T11:05",
+              "resulted": "2022-03-07T15:40",
+              "results": [
+                {
+                  "test": "Urine sodium",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 150
+                },
+                {
+                  "test": "Urine potassium",
+                  "loinc": "2828-2",
+                  "unit": "mmol/L",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-07T11:05",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-07T10:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-03-07T10:55",
+              "text": "Normal sinus rhythm. Normal axis. PR, QRS and QT intervals within normal limits; QTc normal. No ST-segment or T-wave abnormality. No U waves.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2022-03-07T10:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2022-03-07T10:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-07T11:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ed-program-referral",
+              "action": "placed",
+              "order": "Outpatient eating disorder program referral",
+              "category": "referral",
+              "to": "Eating disorder program (therapy and dietitian)",
+              "reason": "Bulimia nervosa, purging type"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Fatigue, Dizziness, Syncope",
+              "date": "2022-03-07T12:40",
+              "author": "PCP",
+              "body": "CC: tired, dizzy, passed out once.\n\nHPI: 24F with bulimia (purging type) and GAD. For about six months she has been deliberately trying to lose weight and is down roughly 15 lb. Increasingly tired and lightheaded, worst on standing. Last week she blacked out briefly getting up from her desk; coworker caught her, came to right away, no injury, no incontinence, no chest pain or palpitations beforehand. On intake she said she takes nothing except the fluoxetine (on and off). When I asked specifically about the steroids she used years ago, she paused and then told me she started an anabolic steroid again this winter, bought online, pills, to \"keep muscle while cutting.\" Denies laxatives or water pills. Purging some weeks.\n\nMeds: fluoxetine 20 mg daily, adherence variable. Allergies NKDA.\nFH/SH unchanged: no tobacco, no alcohol.\n\nExam: BP 95/60, HR 98 seated. Standing: 85/55, HR 108, lightheaded. Weight 49 kg. Thin, tired-appearing. Mucous membranes dry. No parotid swelling. Heart regular, no murmur. Lungs clear. No edema. Neuro nonfocal.\n\nECG in office: NSR, normal intervals, QTc normal.\n\nLabs (resulted this afternoon): Na 130, K 3.0, Cl 95, HCO3 24, BUN 21, Cr 0.9. Urine Na 150, urine K 60 - kidneys wasting both despite her being dry, which makes me think of a diuretic even though she denies one. Urine hCG negative.\n\nA/P:\n1. Syncope, orthostatic, with volume depletion and hypokalemia - KCl 20 mEq daily x7 days, oral fluids and regular meals, rise slowly. Recheck BMP in 1 week. Reviewed when to go to the ED (another faint, palpitations, chest pain).\n2. Anabolic steroid abuse - relapse on her history of steroid use disorder. Explained the cardiac, liver and hormonal risks. She agrees to stop today and throw out the rest.\n3. Renal Na/K losses - asked again about diuretics; she says no. Will revisit.\n4. Bulimia nervosa, purging type, worse with dieting - she agreed today to a referral to an outpatient eating-disorder program (therapy + dietitian). Referral placed.\n5. GAD - fluoxetine 20, take it daily.\n\nDiscussed at length (~60 min). Follow-up 1 week for labs, 2 months for visit."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2022-03-07T12:45",
+              "author": "PCP",
+              "body": "- Potassium chloride 20 mEq: 1 tablet daily with food for 7 days.\n- Stop the steroid pills completely.\n- Drink fluids through the day and eat regular meals; stand up slowly.\n- Lab recheck next Monday.\n- The eating disorder program will call you to schedule an intake.\nIf you faint again, have chest pain or a racing heartbeat: go to the ER."
+            }
+          ],
+          "state": {
+            "weight_kg": 49.0
+          },
+          "measure": [
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "lab_only",
+          "start": "2022-03-14T07:45",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-14T07:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-14T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP recheck",
+              "date": "2022-03-14T13:10",
+              "author": "PCP",
+              "body": "Taylor - potassium and sodium are back to normal. Finish the last couple of potassium tablets and then stop. How's the dizziness? Any word from the eating disorder program?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BMP recheck",
+              "date": "2022-03-14T18:22",
+              "author": "patient",
+              "body": "Less dizzy. Intake is booked for April. And I tossed the other stuff like you said."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-21a",
+          "kind": "outside_records",
+          "start": "2022-04-21T10:00",
+          "orders": [
+            {
+              "id": "ed-program-referral",
+              "action": "done",
+              "date": "2022-04-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Eating Disorder Program - Intake Summary",
+              "date": "2022-04-21T10:00",
+              "author": "eating disorder therapist",
+              "body": "Outpatient Eating Disorder Program\nIntake assessment completed 04/12/2022.\n\nThank you for referring Ms. Gallagher, 24, for evaluation.\n\nAssessment: Presentation meets criteria for bulimia nervosa, purging type, with self-induced vomiting as the main compensatory behavior and a recent period of restriction aimed at weight loss. Past laxative and diuretic misuse and anabolic steroid use reported; she reports no steroid use since her visit with you in March. Co-occurring generalized anxiety. No suicidal ideation.\n\nPlan: Weekly individual CBT-based therapy with our team; dietitian visits every two weeks for structured eating. We will defer medical monitoring and labs to primary care.\n\nMedications per patient: fluoxetine 20 mg daily. Allergies: none known.\n\nWe will update you as treatment progresses.\n\nOutpatient eating disorder therapist"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia, electrolytes",
+          "vitals": {
+            "bp": [
+              112,
+              66
+            ],
+            "hr": 67,
+            "weight_kg": 47.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-10T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T08:30",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.2
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 3.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-05-10T08:40",
+              "author": "PCP",
+              "body": "S: Started at the ED program in April - has been to 3 therapy sessions and 1 dietitian visit, missed one when work got busy. No more steroids. No fainting since March; occasional head rush on standing. Purging \"less but not gone.\" Still wants to be smaller. Fluoxetine more days than not.\nO: Weight 47.8 kg, down a bit more. BP/HR ok seated. Mucous membranes moist today.\nPHQ-9 7, GAD-7 12.\nA/P: Bulimia - in treatment, early. Weight still drifting down; shared with her that I'd like the program to know. BMP, Mg, Phos today. GAD - continue fluoxetine; talked about using therapy for the anxiety piece too. RTC ~2 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 47.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "portal_message",
+          "start": "2022-05-11T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2022-05-11T12:05",
+              "author": "PCP",
+              "body": "Electrolytes, magnesium and phosphorus all normal this time. See you in July."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "office_visit",
+          "start": "2022-07-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-13a",
+          "kind": "telephone",
+          "start": "2022-07-13T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2022-07-13T10:15",
+              "author": "front desk",
+              "body": "Pt missed 7/12 appt. LVM x2 to reschedule. Portal reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "office_visit",
+          "start": "2022-09-06T09:15",
+          "end": "2022-09-06T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, lightheadedness, urinating often",
+          "conditions": [
+            {
+              "label": "Loop diuretic abuse (furosemide toxicity)",
+              "action": "diagnosed",
+              "onset": "2022-06-01",
+              "note": "furosemide-type water pill bought online; agrees to stop",
+              "icd10": "F55.8"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with food for 7 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Hypokalemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              71
+            ],
+            "hr": 106,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 45.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-06T09:55",
+              "resulted": "2022-09-06T13:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 93
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 31
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 24
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-06T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-06T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Fatigue and Lightheadedness",
+              "date": "2022-09-06T13:50",
+              "author": "PCP",
+              "body": "First visit since May (missed July).\n\nS: Several months of fatigue, lightheadedness and going to the bathroom to urinate constantly. Feels \"drained\" most days. No fever, no recent illness. Says she isn't taking any prescription medicines - turns out she stopped the fluoxetine a while back. Asked again about OTC things and supplements: she admits she's been taking a \"water pill\" ordered online since early summer to keep her weight down. From her description, a loop diuretic (furosemide-type). Stopped going to the ED program in the summer.\n\nO: Supine pulse 106. On standing her systolic drops 18 points and HR climbs to 124. Thin, anxious woman, BMI 17 (46.3 kg). Mucous membranes dry. Neuro nonfocal.\n\nBMP: Na 134, K 3.1, Cl 93, HCO3 31, BUN 24, Cr 1.0 - volume contraction with K loss, fits the diuretic.\n\nA/P:\n1. Loop diuretic abuse (furosemide) with volume depletion and hypokalemia. Stop the pills - she agreed, and will bring the bottle to toss. KCl 20 mEq daily x7d. Fluids, salt with meals. BMP in 1 week. Explained rebound fluid retention for a week or two after stopping, so the scale will go up and that is not fat.\n2. Bulimia, low weight (BMI 17) - asked her to restart with the ED program; she'll call them this week. I'll send them a note with her consent.\n3. GAD - restart fluoxetine 20 mg daily.\nRTC 2-3 months, sooner prn."
+            },
+            {
+              "type": "Letter",
+              "title": "Update to eating disorder program",
+              "date": "2022-09-06T14:10",
+              "author": "PCP",
+              "body": "With Ms. Gallagher's written consent: seen today with fatigue and orthostatic symptoms, BMI 17, and has been taking an online-purchased loop diuretic since early summer, now stopped. Potassium 3.1, bicarbonate 31. She plans to resume with your program this week. I'll keep following her labs. Please call with any concerns.\n\nPrimary care physician"
+            }
+          ],
+          "state": {
+            "weight_kg": 46.3
+          },
+          "measure": [
+            "bp",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "lab_only",
+          "start": "2022-09-13T07:50",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-13T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP recheck",
+              "date": "2022-09-13T12:30",
+              "author": "PCP",
+              "body": "Potassium and bicarbonate are normal again. Good. No more water pills, please."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T08:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T08:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2022-10-11T08:25",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Both VIS/EUA fact sheets given. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "annual_physical",
+          "start": "2022-11-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "conditions": [
+            {
+              "label": "Orthostatic hypotension",
+              "action": "resolved",
+              "note": "no orthostatic drop today"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              68
+            ],
+            "hr": 66,
+            "temp_c": 37.3,
+            "spo2": 98,
+            "weight_kg": 48.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-22T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 196
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-11-22T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-22T09:40",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.1
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 3.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-22T09:30",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-22T09:30",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 11
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-11-22T09:25",
+              "text": "Liquid-based cervical cytology. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "NILM.",
+              "issued": "2022-11-29T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-11-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-22T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-11-22T09:55",
+              "author": "PCP",
+              "body": "Annual, 24F.\nInterval since Sept: off the water pills, she says completely. Back with the ED program, roughly every other week now rather than weekly. Purging \"a couple of times a week, some weeks none.\" Taking fluoxetine.  No syncope.\nPHQ-9 6, GAD-7 11.\nExam: weight 47.5 kg, up a little from September. Orthostatics today: no significant drop, no symptoms. Normal general exam. No parotid enlargement.\nA/P:\n- Bulimia: slowly steadier. Continue with the program. CMP, Mg, Phos, CBC.\n- Orthostatic hypotension: resolved off the diuretic, taking it off the active list.\n- GAD: fluoxetine 20.\n- Pap today (3 yr), GC/CT. Flu and bivalent booster done last month.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 47.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "portal_message",
+          "start": "2022-11-29T16:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2022-11-29T16:00",
+              "author": "PCP",
+              "body": "All of your labs from last week are normal, and the Pap is normal too (next in 3 years)."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "portal_message",
+          "start": "2023-01-17T20:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2023-01-17T20:41",
+              "author": "patient",
+              "body": "Can I get the fluoxetine refilled? Down to my last few. Same pharmacy."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2023-01-18T09:05",
+              "author": "MA",
+              "body": "Fluoxetine 20 mg #90 sent to pharmacy on file per PCP. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-04a",
+          "kind": "ed_visit",
+          "start": "2023-03-04T19:30",
+          "end": "2023-03-05T01:40",
+          "service": "Emergency Medicine",
+          "reason": "Sudden shortness of breath",
+          "conditions": [
+            {
+              "label": "Psychogenic urinary retention due to acute stress reaction",
+              "action": "diagnosed",
+              "onset": "2023-03-04",
+              "icd10": "F45.8"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-03-04T19:38",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 110,
+              "rr": 28,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2023-03-05T01:15",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 84,
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-04T19:50",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 30
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 95
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-03-04T23:10",
+              "results": [
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-04T23:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-03-04T19:45",
+              "text": "Sinus tachycardia. Normal axis and intervals. No ST-segment elevation or depression, no acute T-wave changes.",
+              "conclusion": "Sinus tachycardia, no acute changes."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-03-04T19:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Visit Record",
+              "date": "2023-03-08T11:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department - visit of 03/04/2023 (received 03/08/2023)\n\nCC: shortness of breath.\n\nHPI: 25-year-old woman with bulimia nervosa (purging type), GAD, and past anabolic steroid and diuretic misuse, here with one hour of sudden breathlessness and a sense she can't get a full breath. Under heavy pressure at work and more and more anxious for the past week. No chest pain, cough, fever or recent travel.\n\nMeds: fluoxetine 20 mg daily. Allergies: NKDA.\n\nTriage: RR 28, SpO2 99% RA, HR 110, BP 135/85.\nExam: anxious, talking in full sentences. Lungs clear bilaterally, no wheeze, crackles or rhonchi. Heart tachycardic, regular. Calves soft, nontender.\n\nABG (room air): pH 7.48, PaCO2 30, PaO2 95, HCO3 24 - acute respiratory alkalosis, normal oxygenation.\nECG: sinus tachycardia, no acute change.\n\nCourse: coached slow breathing; RR and HR settled within the hour. Later in her stay she had been unable to pass urine for several hours despite the urge, with lower abdominal fullness. Bladder scan 640 mL. Single in-and-out catheterization drained 700 mL. UA unremarkable, urine hCG negative. No neurologic deficits, no anticholinergic exposure. After reassurance and a quieter room she voided on her own before discharge.\n\nImpression:\n1. Hyperventilation with respiratory alkalosis in the setting of an acute stress reaction.\n2. Psychogenic urinary retention due to acute stress reaction, resolved after one catheterization.\n\nDisposition: home. Follow up with PCP this week; return for fever, inability to urinate, chest pain or worsening breathlessness.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "office_visit",
+          "start": "2023-03-09T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Psychogenic urinary retention due to acute stress reaction",
+              "action": "resolved",
+              "note": "voiding normally since the ED",
+              "icd10": "F45.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              69
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 47.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 15
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-09T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2023-03-09T14:10",
+              "author": "PCP",
+              "body": "Seen in ED Sat 3/4 for hyperventilation (ABG with resp alkalosis, ECG sinus tach) and couldn't void - straight cath x1, 700 mL. Read the ED note this morning.\n\nToday: breathing normal, voiding normally since, no dysuria, no fever. A big work deadline was the trigger. Anxiety high this week, GAD-7 15, PHQ-9 8. No SI. Purging up a bit with the stress. Fluoxetine - \"I've been good about it.\" Still sees the program's therapist every couple of weeks.\n\nExam: calm today, vitals normal. Abdomen soft, no suprapubic fullness or tenderness.\n\nA/P:\n1. Psychogenic urinary retention due to acute stress reaction - resolved.\n2. GAD, acute flare with work stress / hyperventilation - paced breathing taught; asked her to bring the anxiety into her therapy sessions. Continue fluoxetine 20 mg. Call me if another episode.\n3. Bulimia - continue program.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia and anxiety",
+          "vitals": {
+            "bp": [
+              111,
+              71
+            ],
+            "hr": 58,
+            "weight_kg": 49.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-13T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-13T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-13T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-06-13T08:45",
+              "author": "PCP",
+              "body": "S: Work calmer. Training for a half-marathon in late summer, running 4 days a week. Purging occasionally. Therapy less often - \"when I can fit it in.\" No diuretics, laxatives or steroids. GAD-7 10.\nO: 48.6 kg. Vitals fine. Moist mucous membranes.\nA/P: Bulimia/GAD, steadier. Told her plainly that long runs on an empty tank are risky for her; eat before, carry water. BMP today. RTC fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 48.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "ed_visit",
+          "start": "2023-09-05T11:50",
+          "end": "2023-09-05T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Lightheaded and weak after a half-marathon",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "action": "diagnosed",
+              "onset": "2023-09-05",
+              "icd10": "E86.0"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-09-05T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Visit Record",
+              "date": "2023-10-24T09:15",
+              "author": "emergency medicine",
+              "body": "Community hospital emergency department - date of service 09/05/2023. Copy sent on request; received 10/24/2023.\n\nChief complaint: dizziness and weakness after a road race.\n\nHPI: 25F, history of bulimia nervosa (purging type) and prior laxative/diuretic misuse, previously evaluated for loop diuretic toxicity and anabolic steroid abuse. Ran an outdoor half-marathon this morning in the heat. Nothing to eat or drink since last night and she had no water with her. Felt lightheaded and weak from around mile nine, kept going. At the finish she sat down, felt her heart pounding and her vision blur. Turned down water from a friend because of nausea. Became dizzy on standing and needed help to stay upright; friends brought her in. Denies chest pain or shortness of breath. Menses regular.\n\nMeds: fluoxetine 20 mg daily. Allergies: none known.\n\nExam: radial pulse fast and thready. Skin flushed. Alert and oriented, visibly fatigued and mildly disoriented. Extremities warm, capillary refill delayed. No bleeding or trauma. Mucous membranes dry. Pupils slightly sluggish to light. Heart and lungs normal on auscultation. Neuro exam intact.\nOrthostatic vitals: marked rise in heart rate on standing.\n\nTreatment: 2 L normal saline IV. Symptoms resolved; orthostatic heart rate improved on repeat.\n\nDiagnosis: Dehydration.\n\nDischarge: oral fluids and food, rest. Do not run in heat without fluids. PCP follow-up.\n\nEmergency medicine physician"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-07a",
+          "kind": "portal_message",
+          "start": "2023-09-07T08:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER",
+              "date": "2023-09-07T08:55",
+              "author": "patient",
+              "body": "Heads up - I ended up in the ER Tuesday after the half marathon. Got dizzy at the end, they gave me two bags of fluids and sent me home. Feel ok now just embarrassed. You were right about the water."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER",
+              "date": "2023-09-07T12:20",
+              "author": "PCP",
+              "body": "Glad you're ok, and no need to be embarrassed. Come in next week so I can check your labs. We'll ask the hospital for the record."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, dehydration",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "action": "resolved",
+              "icd10": "E86.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              90,
+              72
+            ],
+            "hr": 55,
+            "weight_kg": 48.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-12T12:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-09-12T12:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T12:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2023-09-12T12:40",
+              "author": "PCP",
+              "body": "ED 9/5 for collapse after a half-marathon, ran fasted and without water. IV fluids, discharged. ED record not here yet - requested.\nFeels back to normal. No dizziness, eating and drinking. Says she wasn't purging that week, just \"forgot\" to eat before. No diuretics.\nVitals normal, no orthostatic symptoms. Moist mucosa.\nA/P: dehydration - resolved. BMP today. Race-day fueling plan reviewed: breakfast, fluids, water on the course. Hold off on long runs in heat for now."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-09-12T13:05",
+              "author": "front desk",
+              "body": "Faxed request for 9/5/23 ED record to hospital HIM, release on file."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "telephone",
+          "start": "2023-09-26T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request follow-up",
+              "date": "2023-09-26T10:30",
+              "author": "front desk",
+              "body": "No ED record received yet. Called hospital HIM, they have the request, said 2-4 weeks. Re-faxed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T07:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-10T08:05",
+              "author": "RN",
+              "body": "Influenza (L arm) and 2023-24 COVID (R arm). Screening questions negative. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "annual_physical",
+          "start": "2023-12-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "vitals": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 66,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 49.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-05T10:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-05T10:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-05T10:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.62
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-12-05T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-05T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-12-05T10:50",
+              "author": "PCP",
+              "body": "Annual, just turned 26.\nInterval: ED in Sept (dehydration after race) - record finally arrived in Oct, consistent with what she told me. Otherwise a quieter year. Purging \"maybe once or twice a month.\" Sees the ED program's dietitian now and then, therapy has lapsed. Fluoxetine fairly regular. No diuretics, laxatives, steroids.\nPHQ-9 5, GAD-7 9.\nExam: 49.5 kg, slowly back up. Vitals normal. No parotid enlargement. Heart, lungs, abdomen normal.\nA/P:\n- Bulimia - better stretch. Encouraged keeping some regular contact with the program.\n- GAD - fluoxetine 20.\n- CMP, CBC, TSH, Mg.\n- Vaccines done in Oct. Pap next due 2025.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 49.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-07a",
+          "kind": "portal_message",
+          "start": "2023-12-07T09:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2023-12-07T09:10",
+              "author": "PCP",
+              "body": "Everything normal - chemistry, potassium, magnesium, thyroid and blood count."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-08a",
+          "kind": "ed_visit",
+          "start": "2024-03-08T21:10",
+          "end": "2024-03-09T05:20",
+          "service": "Emergency Medicine",
+          "reason": "Vomiting for two days",
+          "conditions": [
+            {
+              "label": "Hypochloremic metabolic alkalosis secondary to vomiting with hypovolemia",
+              "action": "diagnosed",
+              "onset": "2024-03-06",
+              "icd10": "E87.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 5 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Hypokalemia"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-03-08T21:18",
+              "bp": [
+                95,
+                60
+              ],
+              "hr": 110,
+              "rr": 18,
+              "temp_c": 36.9,
+              "spo2": 98
+            },
+            {
+              "time": "2024-03-09T04:50",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 88,
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-08T21:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 2.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 90
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-08T21:40",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.5
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 42
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-08T22:05",
+              "results": [
+                {
+                  "test": "Urine chloride",
+                  "loinc": "2078-4",
+                  "unit": "mmol/L",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-08T22:05",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-03-08T21:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Visit Record",
+              "date": "2024-03-12T10:40",
+              "author": "emergency medicine",
+              "body": "Emergency Department - Physician Record\nArrival 03/08/2024 21:10. Faxed to PCP 03/12/2024.\n\nCC: vomiting x 2 days.\n\nHPI: 26-year-old woman with bulimia nervosa and a prior ED visit for dehydration, now vomiting for two days and unable to keep down food or fluids. No diarrhea, fever or travel. States her bulimia has been harder to control over the past few weeks.\n\nPMH: bulimia nervosa (purging), GAD, history of anabolic steroid and loop diuretic misuse, prior dehydration. Meds: fluoxetine 20 mg. NKDA.\n\nVS: BP 95/60, HR 110.\nExam: dry, tired-appearing. Abdomen soft, nontender. Heart tachycardic, regular. Lungs clear.\n\nLabs: Na 130, K 2.9, Cl 90, HCO3 32, BUN 28, Cr 0.9. Urine Cl 10. ABG pH 7.50, pCO2 42. Urine hCG negative.\n\nAssessment: Hypochloremic metabolic alkalosis from vomiting, with hypovolemia and hypokalemia. Chloride-responsive (urine Cl 10).\n\nED course: normal saline with KCl added, IV ondansetron. Tolerated PO by early morning, HR 88, BP 108/66.\n\nDischarge: KCl 20 mEq PO twice daily x 5 days. Follow up with PCP in 3-5 days for repeat electrolytes. Encouraged to reconnect with eating disorder treatment.\n\nEmergency physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "office_visit",
+          "start": "2024-03-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, electrolytes",
+          "conditions": [
+            {
+              "label": "Hypochloremic metabolic alkalosis secondary to vomiting with hypovolemia",
+              "action": "resolved",
+              "icd10": "E87.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              70
+            ],
+            "hr": 70,
+            "weight_kg": 49.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-13T11:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-13T11:25",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-13T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-13T11:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2024-03-13T11:40",
+              "author": "PCP",
+              "body": "ED Fri night: 2 days vomiting, K 2.9, HCO3 32, Cl 90, Na 130, urine Cl 10 - contraction/vomiting alkalosis. Fluids + KCl, home on KCl 20 BID x5d (day 5 today).\n\nShe's candid: purging much more since February, several times a day at the worst, around a stretch of long hours. Better since Sunday. Not using diuretics or laxatives. Fluoxetine - missed a lot of doses last month.\n\nVitals ok today, no orthostatic symptoms. Mucous membranes moist. No parotid swelling.\n\nA/P:\n1. Hypochloremic metabolic alkalosis with hypovolemia - resolved clinically; BMP and Mg today to confirm. Finish KCl.\n2. Bulimia, purging type - relapse. She will call the eating disorder program to restart therapy; I asked her to message me once she has an appointment.\n3. GAD - back to daily fluoxetine 20.\nRTC ~3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "portal_message",
+          "start": "2024-03-14T08:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-03-14T08:30",
+              "author": "PCP",
+              "body": "Potassium, chloride and bicarbonate are all back to normal, magnesium normal. You can stop the potassium after today's dose."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-03-14T19:02",
+              "author": "patient",
+              "body": "Ok thank you. I have a therapy appt on the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "telehealth_visit",
+          "start": "2024-06-18T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up bulimia and anxiety",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-06-18T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "date": "2024-06-18T12:25",
+              "author": "PCP",
+              "body": "Video from her office (closed door), consents.\nBack in therapy every other week since March. Purging down to occasional. Fluoxetine daily. Home scale steady to up a little. No dizziness. GAD-7 10, PHQ-9 5.\nA/P: bulimia improving with therapy back in place; GAD stable on fluoxetine 20. In-person for physical in the fall with labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-08T17:15",
+              "author": "RN",
+              "body": "2024-25 flu and COVID given, one in each arm. No contraindications. Pt left after 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "annual_physical",
+          "start": "2024-11-19T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "vitals": {
+            "bp": [
+              107,
+              64
+            ],
+            "hr": 70,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 51.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-19T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.25
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-19T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-19T09:50",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.2
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 3.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-11-19T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-19T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-11-19T10:05",
+              "author": "PCP",
+              "body": "Annual, 26 (27 in a couple of weeks).\nInterval: good stretch since the spring. Therapy every 2-3 weeks. Purging rare by her account. No diuretics, laxatives, steroids. Fluoxetine daily. Running casually, eats before. Periods regular.\nPHQ-9 4, GAD-7 8.\nExam: 51 kg - best weight since I've known her post-2021. Vitals normal. No parotid enlargement. Heart, lungs, abdomen, skin normal.\nA/P:\n- Bulimia, purging type: in a better phase, keep the therapy.\n- GAD: fluoxetine 20.\n- CMP, CBC, Mg, Phos.\n- Flu + COVID done 10/8. Pap due next year.\nRTC 6 months or prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 51.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "portal_message",
+          "start": "2024-11-21T07:55",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-11-21T07:55",
+              "author": "PCP",
+              "body": "All normal this year. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "portal_message",
+          "start": "2025-02-24T07:12",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2025-01-31",
+              "note": "LMP 2025-01-17, EDD 2025-10-24",
+              "icd10": "Z33.1"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Pregnancy, early prenatal care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2025-02-24T07:12",
+              "author": "patient",
+              "body": "So... positive pregnancy test this morning. Two of them actually. Last period started Jan 17. I stopped the fluoxetine over the weekend because I wasn't sure it was safe. I bought prenatal vitamins. What do I do next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2025-02-24T11:40",
+              "author": "PCP",
+              "body": "Congratulations, Taylor. That puts you at about 5 1/2 weeks, due date around October 24. Next step is an OB - I've placed a referral and they'll call you for a first prenatal visit. Keep the prenatal vitamin going.\n\nOn fluoxetine: it is one of the better-studied antidepressants in pregnancy, and stopping can bring the anxiety and the eating symptoms back. It's your decision, and it's one to make with OB too - I'd rather you not make it alone. Please also tell your OB about the eating disorder so they can watch weight and labs closely. Message me any time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2025-02-24T18:30",
+              "author": "patient",
+              "body": "Thanks. I think I'll stay off it for now and talk to the OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-15a",
+          "kind": "hospital_admission",
+          "start": "2025-03-15T14:20",
+          "end": "2025-03-18T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Severe nausea and vomiting in early pregnancy",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum",
+              "action": "diagnosed",
+              "onset": "2025-02-22",
+              "icd10": "O21.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth at bedtime",
+              "dose": {
+                "value": 2,
+                "unit": "tablet"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperemesis gravidarum"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperemesis gravidarum"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-03-15T14:30",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 98,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99,
+              "weight_kg": 45.0
+            },
+            {
+              "time": "2025-03-18T08:00",
+              "bp": [
+                104,
+                64
+              ],
+              "hr": 82,
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-15T14:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 90
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-15T14:55",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.5
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-15T15:10",
+              "results": [
+                {
+                  "test": "Urine chloride",
+                  "loinc": "2078-4",
+                  "unit": "mmol/L",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-03-15T16:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-03-18T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Antepartum Discharge Summary",
+              "date": "2025-04-29T14:05",
+              "author": "obstetrics",
+              "body": "Antepartum unit - Discharge Summary\nAdmitted 03/15/2025, discharged 03/18/2025. Received 04/29/2025.\n\nPatient: 27-year-old G1 at 8w1d by LMP (01/17/2025).\n\nReason for admission: three weeks of severe nausea and vomiting, 4-5 episodes a day, with difficulty keeping down food and fluids and a 6 kg weight loss since onset. Background of bulimia nervosa (purging type) and a previous ED visit for vomiting-related metabolic alkalosis.\n\nAdmission findings: BP 100/60, HR 98. Appeared dehydrated. Weight 45 kg.\nNa 135, K 3.0, Cl 90, HCO3 32; blood gas pH 7.50, PaCO2 45; urine chloride 15.\n\nDiagnosis: Hyperemesis gravidarum with hypokalemic, hypochloremic metabolic alkalosis.\n\nHospital course: IV crystalloid with potassium replacement, IV thiamine before dextrose, scheduled IV antiemetics. Advanced to oral intake on day 2, oral potassium on day 3. Tolerating meals and fluids at discharge. Discussed overlap with her eating disorder history; she reports no intentional purging during this pregnancy.\n\nDischarge medications:\n- doxylamine-pyridoxine 10 mg/10 mg DR, 2 tablets at bedtime\n- ondansetron 4 mg ODT every 8 hours as needed\n- prenatal vitamin daily\nHome fluoxetine listed; patient states she stopped it in February.\nAllergies: NKDA.\n\nFollow-up: OB clinic in 1 week; return for inability to keep fluids down.\n\nObstetrics hospitalist"
+            }
+          ],
+          "state": {
+            "weight_kg": 45.0
+          }
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "telephone",
+          "start": "2025-03-19T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pt reports hospital stay",
+              "date": "2025-03-19T09:20",
+              "author": "RN",
+              "body": "Pt called. Was admitted Sat-Tues for severe vomiting in pregnancy (\"hyperemesis\"), got IV fluids and potassium. Home on two nausea meds from OB. Keeping liquids and small meals down. No discharge paperwork sent to us - pt will ask OB. Scheduled with PCP next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, hyperemesis",
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              75
+            ],
+            "hr": 63,
+            "weight_kg": 46.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-25T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-25T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-25T11:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-03-25T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-03-25T11:20",
+              "author": "PCP",
+              "body": "9w4d. Admitted 3/15-3/18 to the antepartum unit for hyperemesis (no summary yet; history from pt). Had her first OB visit at the start of March, so the referral is complete.\n\nNow: nausea most of the day but vomiting once or twice, keeping fluids and small meals down with the doxylamine-pyridoxine at night and ondansetron as needed. Prenatal vitamin daily, takes it at night with a snack. Off fluoxetine since February; anxiety up some (GAD-7 12) - mostly about the pregnancy. She is clear the vomiting is not self-induced. I believe her, and told her I'd rather she tell me if that changes than hide it.\n\nExam: 46 kg (45 at admission, by her report). Vitals fine. Mucous membranes moist.\n\nA/P:\n1. Hyperemesis gravidarum - improving on OB regimen. BMP today. Per OB: call for inability to keep fluids down.\n2. Pregnancy 9w4d - OB managing. Added OB meds and prenatal vitamin to our list.\n3. GAD / bulimia - off fluoxetine by choice; revisit with OB if anxiety climbs. Suggested she let her therapist know about the pregnancy.\nRTC 2-3 months or as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 46.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "portal_message",
+          "start": "2025-03-26T08:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2025-03-26T08:05",
+              "author": "PCP",
+              "body": "Your potassium and the rest of the chemistry are back to normal. Good sign that the regimen is working."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "ed_visit",
+          "start": "2025-05-10T16:45",
+          "end": "2025-05-11T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Intractable vomiting in pregnancy",
+          "vitals": [
+            {
+              "time": "2025-05-10T16:55",
+              "bp": [
+                94,
+                56
+              ],
+              "hr": 112,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99,
+              "weight_kg": 44.5
+            },
+            {
+              "time": "2025-05-11T08:30",
+              "bp": [
+                102,
+                62
+              ],
+              "hr": 86,
+              "rr": 14,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-10T17:10",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Moderate"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-05-10T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Obstetric Triage Note",
+              "date": "2025-06-17T13:20",
+              "author": "obstetrics",
+              "body": "Obstetric Triage - provider note, 05/10/2025 (copy received 06/17/2025)\n\n27 y/o G1 at 16w1d, known hyperemesis gravidarum (antepartum admission two months ago), bulimia nervosa (purging type) and prior laxative/diuretic misuse. Reports vomiting about ten times a day for the past two weeks, can't hold down food or liquids, weak and lightheaded. Down 4 kg (9 lb) over those two weeks. Prenatal course has otherwise been uncomplicated. Tearful, asks why she is the one friend who is pregnant and sick all the time.\n\nCurrent meds: prenatal vitamin only (has run out of / stopped her antiemetics, per patient). Fluoxetine on old list, not taking. NKDA.\n\nVS: P 112, BP 94/56. Wt 44.5 kg.\nExam: fatigued, mucous membranes dry. Abdomen soft, nontender, uterus appropriate for dates.\nUrine dip: ketones moderate.\nBedside US: single intrauterine pregnancy, viable, cardiac activity present.\n\nA/P: Hyperemesis gravidarum, recurrent, with dehydration and ketonuria.\n- 2 L IV fluids, IV ondansetron.\n- Observed overnight; tolerating clear liquids and crackers this morning, HR 86.\n- Discharge on doxylamine-pyridoxine 2 tabs QHS and ondansetron ODT q8h PRN (new supply sent). Prenatal vitamin.\n- OB clinic within the week. Return for inability to keep fluids down.\n\nOB triage provider"
+            }
+          ],
+          "state": {
+            "weight_kg": 44.5
+          }
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "portal_message",
+          "start": "2025-05-13T13:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in triage",
+              "date": "2025-05-13T13:48",
+              "author": "patient",
+              "body": "FYI I was back at L&D triage over the weekend, throwing up constantly again. They gave me fluids overnight and restarted the nausea meds. I had stopped them because I thought I was past it. Feeling better today. OB appt Thursday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back in triage",
+              "date": "2025-05-13T16:15",
+              "author": "PCP",
+              "body": "I'm sorry - that sounds miserable. Please keep taking both meds until OB says otherwise. Can we see you in a few weeks to check weight and how you're doing overall?"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in during pregnancy",
+          "vitals": {
+            "bp": [
+              101,
+              65
+            ],
+            "hr": 71,
+            "weight_kg": 47.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-10T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-06-10T15:30",
+              "author": "PCP",
+              "body": "20w4d. Triage 5/10 for recurrent hyperemesis (fluids overnight) - triage note not received; pt summary. Since restarting both antiemetics: vomiting \"maybe every other day,\" eating small frequent meals.\nAnxiety moderate, GAD-7 10. Still off fluoxetine; seeing her therapist monthly. No purging.\nWt 47.5 kg, up 3 kg since triage. Vitals normal.\nA/P: hyperemesis improving; pregnancy per OB; GAD/bulimia stable off meds. Flu shot in the fall here. RTC after delivery, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 47.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "outside_records",
+          "start": "2025-06-17T13:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records filed",
+              "date": "2025-06-17T13:25",
+              "author": "MA",
+              "body": "OB triage note from 5/10/25 received by fax and scanned. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-30T12:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-30T12:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Vaccine",
+              "date": "2025-09-30T12:40",
+              "author": "RN",
+              "body": "36w4d. Inactivated flu vaccine IM L deltoid (recommended in pregnancy). No egg or vaccine reactions. Tolerated well. Pt says she had Tdap at OB in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "hospital_admission",
+          "start": "2025-10-20T03:40",
+          "end": "2025-10-22T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Labor at term",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-12-02T10:10",
+              "author": "obstetrics",
+              "body": "Labor and Delivery - Discharge Summary\nAdmitted 10/20/2025, discharged 10/22/2025. Copy received 12/02/2025.\n\n27 y/o G1 at 39w3d, admitted in spontaneous labor.\nPregnancy notable for hyperemesis gravidarum (admission at 8 weeks, triage visit at 16 weeks), resolving in the second trimester. History of bulimia nervosa and GAD; off fluoxetine during pregnancy. Prenatal labs unremarkable. Tdap given 08/12/2025.\n\nDelivery 10/20/2025: uncomplicated spontaneous vaginal delivery. Healthy infant.\nPostpartum course routine. Afebrile, vitals normal, ambulating, voiding, tolerating diet.\n\nDischarge meds: prenatal vitamin. Antiemetics no longer needed.\nFollow-up: postpartum visit with OB at 6 weeks. PCP follow-up for anxiety/eating disorder care.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "portal_message",
+          "start": "2025-10-27T21:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2025-10-27T21:15",
+              "author": "patient",
+              "body": "Delivered on the 20th, everything went smoothly and the baby is healthy. Exhausted but good. Wanted to let you know. I'll book a visit once things settle."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2025-10-28T08:20",
+              "author": "PCP",
+              "body": "Congratulations! So happy for you. Rest when you can. Let's see you in about 6 weeks - and reach out sooner if your mood or eating start to slide."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in, anxiety and eating disorder",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Hyperemesis gravidarum",
+              "action": "resolved",
+              "icd10": "O21.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "Delivered; no longer needed"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "stop",
+              "reason": "Delivered; no longer needed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              95,
+              79
+            ],
+            "hr": 77,
+            "weight_kg": 53.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-09T11:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-08-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Visit",
+              "date": "2025-12-09T11:55",
+              "author": "PCP",
+              "body": "7 weeks postpartum, SVD 10/20 at term, healthy baby (came with her today, sleeping in the car seat). L&D discharge summary arrived last week - uncomplicated. Saw OB for the 6-week check.\n\nMood: tired, but no persistent low mood, no intrusive thoughts. Anxiety creeping up in the first weeks home, so she restarted her fluoxetine 20 mg on her own about 3 weeks after delivery - taking it daily. Eating: \"structured, I'm trying.\" Denies purging, laxatives, diuretics. Restarting therapy in January.\nPHQ-9 7, GAD-7 9.\n\nExam: 53 kg. Vitals normal. Well appearing, appropriate.\n\nA/P:\n1. Postpartum - pregnancy and hyperemesis resolved. Stopped doxylamine-pyridoxine and ondansetron on the list.\n2. GAD - back on fluoxetine 20 mg daily (it never came off our list). Good plan.\n3. Bulimia - watchful; restarting therapy. Asked her to message me if purging returns.\n4. Tdap 8/12/25 at OB per discharge summary - added to immunization record.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 53.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-01-13T14:10",
+              "author": "MA",
+              "body": "Pharmacy e-request: fluoxetine 20 mg caps, 90-day supply. Last fill was a year ago (pt off during pregnancy, restarted on old supply). Seen 12/9. Approved per PCP, sent with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety and bulimia",
+          "vitals": {
+            "bp": [
+              98,
+              65
+            ],
+            "hr": 62,
+            "weight_kg": 51.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T16:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-10T16:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-10T16:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-10T17:00",
+              "author": "PCP",
+              "body": "S: Back at work part-time since February. Fluoxetine daily. Therapy restarted in January, every 2 weeks. Purging \"once in a while, under stress,\" no diuretics or laxatives. Sleep broken but improving.\nO: 51.5 kg. BP and HR normal. Moist mucosa.\nPHQ-9 5, GAD-7 10.\nA/P: GAD and bulimia - holding steady in a demanding season. Continue fluoxetine 20 and therapy. BMP today. Physical this summer - Pap due then."
+            }
+          ],
+          "state": {
+            "weight_kg": 51.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T07:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-03-11T07:40",
+              "author": "PCP",
+              "body": "Electrolytes normal. See you this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "portal_message",
+          "start": "2026-06-02T12:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-06-02T12:50",
+              "author": "patient",
+              "body": "Hi, is there anything late July for my physical? Mornings are easiest, Fridays especially."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-06-02T14:05",
+              "author": "front desk",
+              "body": "You're set for Friday 7/24 at 8:30. No need to fast; we'll draw labs while you're here."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "annual_physical",
+          "start": "2026-07-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive exam",
+          "vitals": {
+            "bp": [
+              101,
+              69
+            ],
+            "hr": 60,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 50.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-24T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-24T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-24T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.47
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 2.1
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 3.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2026-07-24T08:55",
+              "text": "Liquid-based cervical cytology. Specimen satisfactory for evaluation; endocervical cells present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2026-07-31T10:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-24T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-24T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-24T09:30",
+              "author": "PCP",
+              "body": "Annual, 28F. No physical last year (pregnancy).\n\nInterval: baby is 9 months, doing well. Back at work full time since June. Fluoxetine daily. Therapy every 2-3 weeks. Purging rare, she says; no laxatives, diuretics or steroids. Running a little again, eating before. Periods back. Has a couple of summer weekends planned with friends.\nPHQ-9 4, GAD-7 9.\n\nMeds: fluoxetine 20 mg daily; prenatal vitamin most days.\nAllergies: NKDA.\n\nExam: 50.8 kg. Vitals normal. Well appearing. No parotid enlargement. Thyroid normal. Heart RRR, lungs clear, abdomen soft. Skin normal. Pelvic: normal; Pap collected.\n\nA/P:\n1. Bulimia nervosa, purging type - stable phase. Continue therapy.\n2. GAD - fluoxetine 20 mg.\n3. Health maintenance - Pap today (last 2022). CMP, Mg, Phos, CBC, TSH. Flu/COVID this fall.\nOn the summer weekends: heat, fluids and food - she rolled her eyes and promised.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 50.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "portal_message",
+          "start": "2026-07-27T08:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-07-27T08:20",
+              "author": "PCP",
+              "body": "Your blood work from Friday is all normal. I'll send the Pap result when it's back."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "portal_message",
+          "start": "2026-07-31T15:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "date": "2026-07-31T15:00",
+              "author": "PCP",
+              "body": "Pap is normal. Next one in 3 years."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-01a",
+          "kind": "hospital_admission",
+          "start": "2026-08-01T20:45",
+          "end": "2026-08-03T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Confusion after heavy water intake and ecstasy",
+          "vitals": [
+            {
+              "time": "2026-08-01T20:52",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "rr": 18,
+              "temp_c": 37.2,
+              "spo2": 98
+            },
+            {
+              "time": "2026-08-02T08:00",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2026-08-03T10:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-01T21:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 120
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 88
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-01T21:05",
+              "results": [
+                {
+                  "test": "Serum osmolality",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-01T21:30",
+              "results": [
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 500
+                },
+                {
+                  "test": "Urine sodium",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 40
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-02T03:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-02T21:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-03T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-08-01T21:40",
+              "text": "Technique: axial noncontrast CT of the head. Findings: No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal in size for age. Basal cisterns patent. No acute calvarial abnormality. Visualized paranasal sinuses and mastoid air cells clear.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-08-01T20:45"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-08-01T23:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-08-03T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-08-19T11:45",
+              "author": "hospital medicine",
+              "body": "Hospital Medicine - Discharge Summary\nAdmission 08/01/2026 (via ED), discharge 08/03/2026. Received 08/19/2026.\n\nPresentation: 28-year-old woman with bulimia nervosa (purging type), GAD, and prior ED visits for dehydration, diuretic toxicity and vomiting-related metabolic alkalosis, brought in by friends from an outdoor music festival on a hot day. She had been drinking large volumes of water all day to stay hydrated and, per friends, took an ecstasy (MDMA) pill earlier. Found confused and disoriented.\n\nED: T 37.2 C, BP 130/85, HR 110, RR 18. Lethargic but arousable, headache, nausea. Nonfocal neurologic exam.\nNa 120, K 4.2, Cl 88, HCO3 24, BUN 18, Cr 0.9. Serum osm 250, urine osm 500, urine Na 40.\nCT head: no acute abnormality.\n\nAssessment: Acute symptomatic hypotonic hyponatremia - excess free water intake with inappropriately concentrated urine in the setting of MDMA use.\n\nCourse: 100 mL 3% saline bolus in the ED for symptoms, then fluid restriction in the step-down unit with sodium checks every 4-6 hours, correction kept within safe limits. Na 125 at 6 h, 130 at 24 h, 133 on the morning of discharge. Mental status back to baseline by the next morning; headache and nausea resolved.\n\nDischarge diagnoses: Hyponatremia; MDMA ingestion.\n\nHome medications: fluoxetine 20 mg daily (continued). Allergies: NKDA.\n\nInstructions: no ecstasy or other recreational drugs; drink to thirst rather than by volume. Repeat sodium with PCP in about one week.\n\nHospitalist"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T10:32",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital this weekend",
+              "date": "2026-08-04T10:32",
+              "author": "patient",
+              "body": "Not my proudest weekend. I ended up in the hospital Sat-Mon - my sodium was really low after a festival. I drank a ton of water because it was so hot and I took something I shouldn't have. They said to get my sodium checked in a week. I feel ok now, just a headache yesterday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital this weekend",
+              "date": "2026-08-04T13:10",
+              "author": "PCP",
+              "body": "Thank you for telling me, and I'm glad you're ok. I'd like to see you in person next week to recheck your sodium and talk through what happened - no judgment. Please call the front desk or reply here with times that work. If you get confused, a bad headache, vomiting or a seizure before then, go straight to the ER. We'll ask the hospital for the records."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "telephone",
+          "start": "2026-08-06T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling attempt",
+              "date": "2026-08-06T11:15",
+              "author": "front desk",
+              "body": "Per PCP, called pt to schedule post-hospital visit with sodium recheck. No answer, LVM with callback number. Records request faxed to the hospital."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "outside_records",
+          "start": "2026-08-19T11:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records filed",
+              "date": "2026-08-19T11:50",
+              "author": "MA",
+              "body": "Discharge summary 8/1-8/3/26 received by fax, scanned and routed to PCP. Pt has not yet scheduled follow-up."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anabolic steroid abuse|F55.3": {
+        "code": "F55.3",
+        "display": "Abuse of steroids or hormones",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Bulimia nervosa, purging type|F50.20": {
+        "code": "F50.20",
+        "display": "Bulimia nervosa, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dehydration|E86.0": {
+        "code": "E86.0",
+        "display": "Dehydration",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of anabolic steroid use disorder|Z86.59": {
+        "code": "Z86.59",
+        "display": "Personal history of other mental and behavioral disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of laxative and diuretic misuse|Z86.59": {
+        "code": "Z86.59",
+        "display": "Personal history of other mental and behavioral disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperemesis gravidarum|O21.1": {
+        "code": "O21.1",
+        "display": "Hyperemesis gravidarum with metabolic disturbance",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypochloremic metabolic alkalosis secondary to vomiting with hypovolemia|E87.3": {
+        "code": "E87.3",
+        "display": "Alkalosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypokalemia|E87.6": {
+        "code": "E87.6",
+        "display": "Hypokalemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Loop diuretic abuse (furosemide toxicity)|F55.8": {
+        "code": "F55.8",
+        "display": "Abuse of other non-psychoactive substances",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Psychogenic urinary retention due to acute stress reaction|F45.8": {
+        "code": "F45.8",
+        "display": "Other somatoform disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet": {
+        "code": "1375948",
+        "display": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+        "ingredient": "doxylamine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Serum osmolality": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine chloride": {
+        "code": "2078-4",
+        "display": "Chloride [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine osmolality": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine potassium": {
+        "code": "2828-2",
+        "display": "Potassium [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine sodium": {
+        "code": "2955-3",
+        "display": "Sodium [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin Oral Tablet\""
+    ]
+  }
+}

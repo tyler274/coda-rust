@@ -1,0 +1,786 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002193",
+   "given": "Joseph",
+   "family": "Keane",
+   "birth_date": "1955-04-21",
+   "address_line": "112 Bridge Road",
+   "phone": "+1-802-555-0152",
+   "email": "joseph.keane@example.test",
+   "marital_status": "divorced",
+   "summary": "Retired long-haul trucker and 40 pack-year current smoker with hypertension and hyperlipidemia who joins in 2021, then accrues COPD, PAD with claudication and dry AMD at outside consults. A spiculated nodule found in June 2025 goes unworked until Lambert-Eaton weakness in late 2025 leads to limited-stage small cell lung cancer, treated with chemoradiation and durvalumab. Outside records often arrive late.",
+   "events": [
+    {
+     "id": "2021-09-14a",
+     "kind": "telephone",
+     "start": "2021-09-14T10:20",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2021-09-14T10:20",
+       "body": "Caller Joseph Keane, 66, lives in Florence. His old doctor retired over the summer and the group he was with is closing its panel. Medicare plus a supplement. Explained membership, he read the website already and wants in. Booked new patient slot 9/21 at 8:40. Asked him to bring his pill bottles and sign the records release at check-in."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-21a",
+     "kind": "establish_care",
+     "start": "2021-09-21T08:40",
+     "end": "2021-09-21T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2012-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2012-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 12.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       132,
+       84
+      ],
+      "weight_kg": 89.2,
+      "height_cm": 178.0,
+      "labs": {
+       "Low Density Lipoprotein": 92,
+       "Hemoglobin": 14.5
+      }
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired long-haul truck driver"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Occasional social use"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-21T09:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-21T09:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-21T09:35",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-21T09:35",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-09-21T08:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "prior-records",
+       "action": "placed",
+       "order": "Records request, prior primary care",
+       "category": "procedure",
+       "reason": "establishing care"
+      },
+      {
+       "id": "aaa-us",
+       "action": "placed",
+       "order": "Abdominal aortic ultrasound, screening",
+       "category": "imaging",
+       "reason": "male 65-75 who has smoked"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-09-21T09:40",
+       "body": "NEW PATIENT\n\nMr. Keane is a 66 y/o retired long-haul driver coming over after his prior PCP retired. Feels fine. Here mostly to keep his BP and cholesterol scripts going and get set up.\n\nHTN and high cholesterol for roughly a decade by his account, both on the same regimen for years. Takes everything every day, uses a weekly pill box. Doesn't check BP at home. Some breathlessness walking up the hill to his mailbox but says that's 'the cigarettes and the years.' No chest pain, no syncope, no leg swelling.\n\nMeds: lisinopril 20 daily, HCTZ 12.5 daily, atorvastatin 40 daily, ASA 81 daily.\nAllergies: none known.\nPSH: none.\nFHx: father had a heart attack at 68; mother had a stroke at 72; one brother with type 2 diabetes.\nSocial: drove long-haul for most of his working life, retired. Divorced, lives on his own in Florence. Smokes a pack a day, has for about 40 years. Beer on occasion, socially. No other substances.\nScreening per pt: colonoscopy 'six or seven years ago,' told it was fine. Never had a PSA.\n\nExam: Overweight man, comfortable. BP 132/84 on recheck. Heart RRR, no murmur. Lungs with distant breath sounds, no wheeze today, no crackles. Abd soft, nontender, no pulsatile mass. Ext warm, no edema. Neuro grossly normal.\n\nA/P\n1. HTN - at goal on current two drugs. Continue. CMP today.\n2. Hyperlipidemia - continue atorvastatin 40. Lipids today.\n3. Tobacco - smokes 1 ppd, 40 pk-yr. Advised to quit; he isn't interested right now, 'maybe after the holidays.' Will keep asking.\n4. Health maintenance - Hep C once today. Aortic ultrasound screening ordered given age and smoking. Records release signed for colonoscopy report and immunizations. Flu shot and pneumococcal at a nurse visit next month.\n\nRTC 4-5 months."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       84
+      ]
+     }
+    },
+    {
+     "id": "2021-09-24a",
+     "kind": "portal_message",
+     "start": "2021-09-24T16:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-09-24T16:05",
+       "body": "Mr. Keane - your labs from Tuesday look good. Kidney function and potassium are normal on your blood pressure pills, blood counts are normal, and your cholesterol numbers are where we want them on the atorvastatin. Hepatitis C screen was negative. Nothing to change. The aorta ultrasound scheduling desk should call you this week."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-12a",
+     "kind": "outside_records",
+     "start": "2021-10-12T11:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "outside primary care",
+       "date": "2021-10-12T11:00",
+       "body": "Records received from patient's previous primary care practice (closed panel), 38 pages.\n\nProblem list: Hypertension. Hyperlipidemia.\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nColonoscopy, 2015: normal exam to the cecum, no polyps. Recommended repeat at 10 years.\nImmunizations on file: influenza yearly through 2020; COVID-19 Pfizer primary series spring 2021 (dates on CDC card).\nNo PSA results in record.\n\nAbstracted to chart by MA."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-19T14:10"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-10-19T14:12"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-02T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-23T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2021-10-19T14:20",
+       "body": "High-dose flu L deltoid, PCV20 R deltoid. VIS given. Tolerated, waited 15 min, no reaction. Primary COVID series entered from his card (Pfizer x2, March 2021). He'll get the booster at the pharmacy near his house."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-28a",
+     "kind": "pharmacy",
+     "start": "2021-10-28T12:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-27T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Community pharmacy immunization report",
+       "author": "pharmacy",
+       "date": "2021-10-28T12:00",
+       "body": "State registry notice: COVID-19 vaccine, Pfizer-BioNTech booster dose, administered 10/27/2021 at a community pharmacy. Lot on file."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-09a",
+     "kind": "imaging",
+     "start": "2021-11-09T09:30",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2021-11-09T09:30",
+       "text": "LIMITED ULTRASOUND OF THE ABDOMINAL AORTA, SCREENING.\nIndication: Male, 66, current smoker.\nTechnique: Grayscale and color Doppler imaging of the abdominal aorta from the diaphragm to the bifurcation, transverse and longitudinal planes.\nFindings: The proximal, mid and distal aorta measure 2.1 cm, 1.9 cm and 1.8 cm in maximal outer-to-outer diameter. No aneurysmal dilation. Common iliac arteries are normal in caliber where seen. No periaortic fluid.",
+       "conclusion": "Normal caliber abdominal aorta. No aneurysm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "done",
+       "date": "2021-11-09T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Aorta ultrasound result",
+       "author": "PCP",
+       "date": "2021-11-10T08:15",
+       "body": "Normal aorta, no aneurysm. One-time screen done, no repeat needed. Letter to pt."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-16a",
+     "kind": "office_visit",
+     "start": "2022-02-16T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-02-16T10:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-02-16T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-02-16T10:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "prior-records",
+       "action": "done",
+       "date": "2022-02-16T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2022-02-16T10:35",
+       "body": "S: Routine BP check. Winter's been quiet, no ER trips, no new symptoms. Taking all four meds. Still smoking a pack a day; tried cutting down in January, lasted about a week.\n\nO: BP and pulse in flowsheet, fine. Lungs with mildly prolonged exhale, no wheeze. Heart regular. No edema.\n\nA/P: HTN controlled, no change. Lipids fine in Sept. Smoking - discussed again, gave the state quitline number, he took it but says he's not ready. First Shingrix today, second dose in 2-6 months at his pharmacy. Physical in June."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-29a",
+     "kind": "portal_message",
+     "start": "2022-03-29T07:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Pill bottles",
+       "author": "patient",
+       "date": "2022-03-29T07:55",
+       "body": "The pharmacy says my lisinopril is out of refills. I have 4 left."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Pill bottles",
+       "author": "RN",
+       "date": "2022-03-29T10:02",
+       "body": "Sent a new prescription for lisinopril 20 mg, 90 days with refills, to your usual pharmacy. Should be ready later today."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "pharmacy",
+     "start": "2022-05-10T12:00",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-05-09T11:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Community pharmacy immunization report",
+       "author": "pharmacy",
+       "date": "2022-05-10T12:00",
+       "body": "Registry update: Shingrix dose 2 given 05/09/2022 at a community pharmacy. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-13a",
+     "kind": "annual_physical",
+     "start": "2022-06-13T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual check-up",
+     "conditions": [
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "diagnosed",
+       "onset": "1982-01-01",
+       "note": "1 pack per day, 40 pack-years"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       84
+      ]
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-13T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-13T08:05",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 98
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-13T08:05",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 180
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 90
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 45
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-06-13T08:05",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2022-06-13T09:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-06-13T08:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-06-13T09:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-06-13T09:10",
+       "body": "ANNUAL VISIT\n\nNothing bothering him today. Says he hasn't missed a dose; pill box reviewed, matches the list. No chest pain, no fainting, no new trouble with bowels or urine.\n\nMeds: lisinopril 20 mg, atorvastatin 40 mg, hydrochlorothiazide 12.5 mg, aspirin 81 mg - all daily.\nNKDA. No surgeries.\nFamily: father MI at 68, mother stroke at 72, brother with T2DM.\nSmoking: still a pack daily, ~40 pack-years total. Occasional beer.\n\nBP 132/84. Remainder of vitals in flowsheet.\nGen: well appearing. HEENT unremarkable. Neck supple, no nodes, no bruits. Lungs clear. Heart regular, no murmur. Abd benign. Ext no edema, pulses present. Skin no concerning lesions. Neuro intact.\n\nFasting labs drawn before the visit: Hgb 14.2, fasting glucose 98, creatinine 1.0, total chol 180, LDL 90, HDL 45, TG 150.\n\nAssessment/plan\n- Hypertension: at goal. Same regimen.\n- Hyperlipidemia: LDL 90 on atorvastatin 40. Continue.\n- Tobacco use disorder: adding to the problem list. Daily smoker for decades, unable to cut down on his own. Advice to quit repeated, counseling 5 min. Not ready for a quit date. Declines medication for now.\n- Colon cancer screening: normal colonoscopy in 2015, next due 2025.\n- Prostate screening: talked through the PSA test - possible benefit, false positives, biopsies, overtreatment. At 67 it's his call. He'd rather not, 'never had one, don't need one now.' Declined; documented.\n- Tdap today. Shingrix complete. PCV20 done last fall.\n- PHQ-2 negative. Lives alone, independent in all activities, no falls.\n\nRTC fall for vaccines, visit in ~5 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-16a",
+     "kind": "portal_message",
+     "start": "2022-06-16T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results from your physical",
+       "author": "PCP",
+       "date": "2022-06-16T12:40",
+       "body": "Hi Joseph, everything from Monday's bloodwork was in range - blood count, sugar, kidney function, and your LDL was 90 on the atorvastatin. Keep doing what you're doing. Still happy to help when you want to take a run at quitting."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lab results from your physical",
+       "author": "patient",
+       "date": "2022-06-16T19:22",
+       "body": "Thanks Doc. Ill think about it."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-06a",
+     "kind": "pharmacy",
+     "start": "2022-09-06T09:15",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "90-day refill request",
+       "author": "RN",
+       "date": "2022-09-06T09:15",
+       "body": "Electronic request from mail-order pharmacy for 90-day supplies of lisinopril 20, HCTZ 12.5 and atorvastatin 40. Last visit 6/13, BP at goal, BMP normal. Approved x 90 days with 3 refills per standing protocol."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-11T15:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T15:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2022-10-11T15:50",
+       "body": "Flu (high dose) R arm, bivalent COVID L arm. No problems after last year's shots. Observed 15 min, fine. Pt mentioned he gets winded carrying groceries up his porch steps and coughs up phlegm most mornings - wondered if he should be seen. Message sent to PCP, he'll book."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "office_visit",
+     "start": "2022-11-08T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "shortness of breath, morning cough",
+     "state": {
+      "spo2": 93
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-11-08T13:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-referral",
+       "action": "placed",
+       "order": "Pulmonology referral",
+       "category": "referral",
+       "to": "Pulmonology",
+       "reason": "progressive dyspnea, chronic productive cough, heavy smoker; PFTs"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - dyspnea",
+       "author": "PCP",
+       "date": "2022-11-08T13:55",
+       "body": "CC: getting short of breath.\n\nHPI: He thinks his breathing has been slipping for 'a few years,' worse in the last one. Winded on stairs and carrying bags; flat ground at his own pace is ok. Brings up phlegm most mornings, clears after the first coffee and cigarette. No fever, no chills, no chest pain, no blood. No ankle swelling, sleeps flat. Hasn't had a 'chest cold' this year.\n\nStill 1 ppd.\n\nExam: SpO2 a bit low at 93% RA, otherwise vitals in flowsheet. Not distressed, speaking full sentences. Lungs: long expiratory phase, scattered end-expiratory wheeze, no crackles. Heart regular. No clubbing. No edema.\n\nA/P: Exertional dyspnea and chronic productive cough in a 40 pk-yr smoker - most likely COPD, needs PFTs to confirm and stage. Referred to pulmonology; their lab does full PFTs on site. Quitting is the single best thing - repeated, he nods. Call sooner for fever or worse breathing."
+      }
+     ],
+     "vitals": {
+      "spo2": 93
+     }
+    },
+    {
+     "id": "2022-12-08a",
+     "kind": "specialist_visit",
+     "start": "2022-12-08T09:00",
+     "service": "Pulmonology",
+     "reason": "dyspnea, chronic cough",
+     "conditions": [
+      {
+       "label": "Chronic obstructive pulmonary disease",
+       "action": "diagnosed",
+       "onset": "2022-12-08"
+      }
+     ],
+     "vitals": {
+      "spo2": 92
+     },
+     "medications": [
+      {
+       "drug": "10 ACTUAT tiotropium 0.0025 MG/ACTUAT Inhalation Spray",
+       "action": "historical",
+       "sig": "Inhale 2 puffs once daily",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "DAILY",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4-6 hours as needed for shortness of breath",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "Q4-6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2022-12-08T08:30",
+       "text": "Pulmonary function testing, pulmonary function laboratory. Acceptable and reproducible maneuvers.\nFEV1 1.2 L (45% predicted).\nFVC 2.0 L (60% predicted).\nFEV1/FVC 60%.\nDLCO 80% predicted.",
+       "conclusion": "Obstructive ventilatory defect, FEV1 45% predicted, with preserved diffusing capacity. Consistent with COPD."
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-referral",
+       "action": "done",
+       "date": "2022-12-08T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology consultation",
+       "author": "pulmonology",
+       "date": "2022-12-14T10:00",
+       "body": "OUTSIDE PULMONARY CONSULTATION\nDate seen: 12/08/2022\nRequested by: primary care\n\nDear colleague,\n\nThank you for sending Mr. Keane, 67, for evaluation of breathlessness. He describes a gradual loss of exercise tolerance over several years and a daily wet cough on waking. No infections or fevers recently. Background of hypertension and hyperlipidemia. Smokes one pack per day, about 40 pack-years.\n\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\n\nExam: SpO2 92% on room air at rest. Overweight gentleman, comfortable. Expiration is prolonged with wheezing, and breath sounds are reduced at both bases. Rhythm regular. No peripheral edema.\n\nPFTs today: FEV1 1.2 L (45% predicted), FVC 2.0 L (60% predicted), FEV1/FVC 60%, DLCO 80% predicted.\n\nImpression: COPD, severe airflow limitation by FEV1, symptomatic, without exacerbation history. Diffusion relatively preserved.\n\nPlan:\n1. Tiotropium Respimat 2.5 mcg, two inhalations once daily. Technique taught.\n2. Albuterol HFA 2 puffs every 4-6 hours as needed.\n3. Smoking cessation is essential; strongly advised. He declined pharmacotherapy today.\n4. Vaccines per primary care.\n5. Return in about a year with spirometry, sooner for worsening.\n\nSincerely,\nOutside pulmonary group"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-20a",
+     "kind": "pharmacy",
+     "start": "2022-12-20T11:30",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Tiotropium coverage",
+       "author": "MA",
+       "date": "2022-12-20T11:30",
+       "body": "Part D plan rejected tiotropium Respimat at the pharmacy - needs coverage determination. Pulm office says they submitted but asked us to send the PFTs too. Faxed the 12/8 PFT report and pulm letter. Pt aware, using albuterol meanwhile."
+      },
+      {
+       "type": "Prior Authorization",
+       "title": "Tiotropium coverage - approved",
+       "author": "MA",
+       "date": "2022-12-23T14:10",
+       "body": "Coverage approved through 12/2023. Pharmacy notified, pt picking up today."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

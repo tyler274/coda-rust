@@ -348,6 +348,12 @@ jobs:
           nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
       - name: Prove mocked release adapters (no cloud credentials)
         run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+      - name: Validate production mail infrastructure without cloud access
+        run: |
+          nix develop .#release --command tofu fmt -check -recursive infra/gcp/shared-mail
+          nix develop .#release --command tofu -chdir=infra/gcp/shared-mail init -backend=false -input=false
+          nix develop .#release --command tofu -chdir=infra/gcp/shared-mail validate
+          nix develop .#release --command tofu -chdir=infra/gcp/shared-mail test
       # Adapter tests do not authorize deployment. The staging rollout is the
       # deploy-staging job below; hosted runtime qualification is separate.
 

@@ -1,0 +1,28 @@
+# unit-1795 story (Lauren Mazur)
+
+- 2023-08-29 telephone: asks to join, aging out of pediatric office; records request (P)
+- 2023-09-12 establish_care: new patient visit, healthy, HIV/HCV/CT/GC screens (A1, P)
+- 2023-09-20 outside_records: pediatric records, vaccines incl. Tdap at 16 and HPV series (P)
+- 2023-10-17 nurse_visit: influenza and COVID vaccines (P)
+- 2024-03-19 annual_physical: first Pap, CBC (P)
+- 2024-03-27 portal_message: Pap negative result note (P)
+- 2024-10-29 (no record): elective abortion at online-found clinic (S)
+- 2024-11-05 hospital_admission: septic abortion, ED then gyn admit to 11-08, curettage, IV abx, discharge doxy+metronidazole (S, A2); summary received 2024-12-09
+- 2024-11-11 portal_message: patient tells PCP she was in hospital (P)
+- 2024-11-14 office_visit: post-hospital, CBC Hgb 10.9 (P, A3)
+- 2024-11-20 telephone: records request to hospital (P)
+- 2024-12-17 office_visit: well, Hgb 12.4, septic abortion resolved (P, A3)
+- 2025-01-07 portal_message: CBC result note (P)
+- 2025-04-08 annual_physical: PHQ-9 3, CT/GC negative (P)
+- 2025-09-07 hospital_admission: ED behavior change, CSF, EEG, CT pelvis; admit to 10-03; NMDAR encephalitis, steroids/IVIG, teratoma removed, prednisone taper (S, A4); summary received 2025-10-20
+- 2025-09-10 telephone: mother calls about admission (P)
+- 2025-10-09 office_visit: post-discharge TCM visit, on taper (P)
+- 2025-10-28 pharmacy: influenza vaccine at pharmacy reported (P)
+- 2025-11-18 specialist_visit: neurology follow-up, letter received 2026-02-17 (A5)
+- 2026-01-20 portal_message: asks for work note / scheduling (P)
+- 2026-03-10 office_visit: last seen; PHQ-9 4; CBC/CMP; booked Sept (P)
+- 2026-04-25 hospital_admission: aspirin overdose, ICU, bicarbonate, psych consult, to 04-28 (S, A6); summary received 2026-07-21
+- 2026-05-04 portal_message: patient tells PCP; PCP offers visit (P)
+- 2026-05-12 office_visit: cancelled by patient (P)
+- 2026-06-16 telephone: second records request (P)
+- 2026-09-15 office_visit: booked follow-up (P)

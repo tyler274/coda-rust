@@ -1,0 +1,983 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002834",
+      "events": [
+        {
+          "id": "2020-02-26a",
+          "kind": "office_visit",
+          "start": "2020-02-26T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "headaches and dizziness",
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension above goal"
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              80
+            ],
+            "weight_kg": 74.2,
+            "labs": {
+              "Hemoglobin A1c": 7.2,
+              "Low Density Lipoprotein": 100,
+              "High Density Lipoprotein": 45,
+              "Creatinine": 1.0
+            }
+          },
+          "vitals": {
+            "bp": [
+              162,
+              78
+            ],
+            "hr": 78,
+            "weight_kg": 74.2
+          },
+          "measure": [
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-26T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 138
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 60
+                }
+              ],
+              "resulted": "2020-02-26T13:20"
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-02-26T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                }
+              ],
+              "resulted": "2020-02-26T13:20"
+            },
+            {
+              "panel": null,
+              "collected": "2020-02-26T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ],
+              "resulted": "2020-02-26T13:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-02-26T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-hctz-2020",
+              "action": "placed",
+              "order": "Basic metabolic panel",
+              "category": "lab",
+              "reason": "2-3 weeks after starting hydrochlorothiazide"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - headaches",
+              "author": "PCP",
+              "date": "2020-02-26T15:10",
+              "body": "CC: on-and-off headaches and lightheadedness x about 2 months.\n\nHPI: 72 yo with HTN, T2DM, HLD. Over the last couple of months she gets a dull frontal ache a few afternoons a week, sometimes with a brief woozy feeling when she stands from the couch. No vertigo, no falls, no visual loss, no weakness or numbness, no jaw pain. Has not been checking pressures at home since her cuff broke. Taking lisinopril daily.\n\nMeds: lisinopril 10, metformin 1000 BID, simvastatin 20 qhs, ASA 81.\n\nExam: BP 162/78 (repeat similar), HR 78, BMI 29. Fundoscopic: no AV nicking, hemorrhages or exudates - no hypertensive retinopathy. Neck: no bruits. CV: regular, a soft 2/6 systolic ejection murmur at the upper sternal border, otherwise normal. Lungs clear. Neuro grossly nonfocal. No edema.\n\nFasting labs drawn today: glucose 138, A1c 7.2, total chol 190, LDL 100, HDL 45, creatinine 1.0, eGFR 60.\n\nA/P:\n1. Essential hypertension, above goal on lisinopril alone, likely behind the headaches. Adding hydrochlorothiazide 25 mg each morning. BMP in 2-3 weeks. New home cuff - bring readings.\n2. T2DM - A1c 7.2, acceptable. Continue metformin.\n3. HLD - LDL 100 on simvastatin 20. Continue.\n4. Murmur - soft, noted today.\nRecheck 3 months, sooner if headaches worsen or any neuro symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-13a",
+          "kind": "telephone",
+          "start": "2020-03-13T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab postponed",
+              "author": "RN",
+              "date": "2020-03-13T11:30",
+              "body": "Pt cancelled Wednesday's blood draw, the outpatient lab has cut hours and she does not want to go out right now with the virus news. Reasonable. She says the headaches are much less frequent since the water pill. No dizziness when standing slowly. Will revisit labs at her next visit; told to call if any lightheadedness or cramps."
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-hctz-2020",
+              "action": "cancelled",
+              "date": "2020-03-13T11:30"
+            }
+          ]
+        },
+        {
+          "id": "2020-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-20T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and diabetes check",
+          "state": {
+            "bp": [
+              138,
+              84
+            ]
+          },
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-20T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2020-05-20T13:30",
+              "body": "Video visit, pt at her kitchen table, daughter helped her set up the tablet then left the room. Consent for telehealth obtained.\n\nHeadaches gone for the past month or so; no dizziness. Taking HCTZ in the mornings with the others. Bought a new cuff - readings she reads to me run 130s/80s. Sugars at home 120s fasting.\n\nA/P: HTN improved on lisinopril + HCTZ. DM stable. Staying home mostly, groceries delivered. Labs (BMP, A1c, lipids) at an in-person follow-up in August once things settle; she prefers to wait. Call sooner with any cramps, weakness, or lightheadedness."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-17a",
+          "kind": "office_visit",
+          "start": "2020-08-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue and nighttime urination, routine follow-up",
+          "conditions": [
+            {
+              "label": "Hydrochlorothiazide adverse reaction",
+              "icd10": "T50.2X5A",
+              "action": "diagnosed",
+              "onset": "2020-07-01",
+              "note": "hyponatremia, hypokalemia, hypomagnesemia, hypercalcemia, hyperuricemia on HCTZ 25 mg"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "electrolyte derangement"
+            },
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with food for 7 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "potassium 3.2"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Hydrochlorothiazide", "snomed": "387525002", "category": "medication",
+              "reaction": "Hyponatremia and hypokalemia",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "intolerance"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ],
+            "hr": 78
+          },
+          "measure": [
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-08-17T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 132
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 98
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 126
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.6
+                }
+              ],
+              "resulted": "2020-08-17T15:40"
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-17T10:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 210
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 140
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 200
+                }
+              ],
+              "resulted": "2020-08-17T15:40"
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-17T10:30",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.6
+                },
+                {
+                  "test": "Uric Acid",
+                  "value": 8.5
+                }
+              ],
+              "resulted": "2020-08-17T15:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-08-17T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lytes-recheck-2020",
+              "action": "placed",
+              "order": "BMP and magnesium recheck",
+              "category": "lab",
+              "reason": "2 weeks off hydrochlorothiazide"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2020-08-17T16:45",
+              "body": "First in-person visit since February. Mask on, screened at door.\n\nS: Six months since we added HCTZ. Headaches resolved. Now complains of feeling washed out most days, and up 3 times a night to void, which is new for her. No dysuria. No chest pain, palpitations or ankle swelling. No polydipsia that she notices.\n\nO: BP 138/86, HR 78. Mucous membranes moist, looks well hydrated. Heart regular with the same soft systolic ejection murmur. Lungs clear. No edema.\n\nA/P:\n1. Fatigue and nocturia on HCTZ - labs drawn this morning; will call with results.\n2. HTN - better controlled.\n3. Lipids due - drawn.\n\nADDENDUM 16:40: Labs back. Na 132, K 3.2, Cl 98, CO2 24, BUN 18, Cr 1.0, fasting glucose 126, Ca 10.6, Mg 1.6, uric acid 8.5. Total cholesterol 210, LDL 140, TG 200. This is a thiazide picture - low sodium, low potassium and magnesium, high calcium and uric acid - and fits her fatigue and nocturia. Stopping hydrochlorothiazide; added to her intolerance list. Potassium chloride 20 mEq daily x 7 days. Repeat BMP and Mg in 2 weeks. Continue lisinopril 10. Called pt and explained; she has an old bottle of HCTZ and will set it aside. LDL up from 100; continue simvastatin 20 for now."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "portal_message",
+          "start": "2020-08-18T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Medication change",
+              "author": "PCP",
+              "date": "2020-08-18T09:10",
+              "body": "Ms. Pratt, as we discussed by phone: STOP hydrochlorothiazide (the morning water pill). START potassium chloride 20 mEq, one a day with food for 7 days only - it was sent to your pharmacy. Keep taking lisinopril, metformin, simvastatin and aspirin as usual. Blood work again on September 1. Please keep a few blood pressure readings for me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Medication change",
+              "author": "patient",
+              "date": "2020-08-18T14:22",
+              "body": "Got it. The potassium pills are big but I will manage. I put the old water pills in a bag for the pharmacy take-back. Jean"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-01a",
+          "kind": "lab_only",
+          "start": "2020-09-01T08:20",
+          "state": {
+            "bp": [
+              140,
+              82
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-01T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-01T08:20",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "lytes-recheck-2020",
+              "action": "done",
+              "date": "2020-09-01T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-02a",
+          "kind": "portal_message",
+          "start": "2020-09-02T11:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Electrolytes normalized",
+              "author": "PCP",
+              "date": "2020-09-02T11:45",
+              "body": "Repeat labs off HCTZ: sodium 138, potassium 4.0, calcium 9.6, magnesium 1.9 - all back to normal. Done with the potassium pills. How is the energy? Message sent to pt."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: lab results",
+              "author": "patient",
+              "date": "2020-09-02T19:05",
+              "body": "Much better, thank you. Only getting up once at night now. Home blood pressures 136 to 142 on top."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-06T10:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T10:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "biennial screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2020-10-06T10:30",
+              "body": "Curbside flu shot in the car per fall protocol. High-dose quad, R deltoid. No issues. Mammogram order placed per PCP, she will schedule."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "imaging",
+          "start": "2020-10-20T09:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-10-20T09:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 10/2018 and 11/2016. Scattered fibroglandular density. No mass, suspicious calcification or distortion. No change.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-10-20T09:40"
+            }
+          ]
+        },
+        {
+          "id": "2020-11-10a",
+          "kind": "outside_records",
+          "start": "2020-11-10T14:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2020-11-10T14:05",
+              "body": "Exam 11/3/2020 (delayed from summer). Corrected acuity 20/25 OD, 20/30 OS. Pseudophakia OU, implants in good position, mild posterior capsule haze OS not visually significant. Dilated fundus: no diabetic retinopathy OU. Recall 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-09a",
+          "kind": "office_visit",
+          "start": "2020-12-09T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "conditions": [
+            {
+              "label": "Hydrochlorothiazide adverse reaction",
+              "icd10": "T50.2X5A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-12-09T13:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-12-09T13:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2020-12-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2020-12-09T14:15",
+              "body": "S: Energy back to normal since stopping HCTZ. Nocturia once nightly, her baseline. No headaches. Spending the holidays at home this year; daughter will drop off food.\nO: BP and vitals as charted. Same soft SEM. Lungs clear. Feet: monofilament intact, pulses good.\nA/P:\nHTN - on lisinopril 10 alone, readings 130s-140s. Continue.\nThiazide reaction - resolved off drug; stays on intolerance list.\nT2DM - A1c, BMP, urine albumin today.\nHLD - simvastatin 20.\nCOVID vaccine when offered for her age group.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-02a",
+          "kind": "outside_records",
+          "start": "2021-02-02T10:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-01-28T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry update",
+              "author": "MA",
+              "date": "2021-02-02T10:00",
+              "body": "State registry shows COVID-19 Moderna dose 1 given 1/28/21 at a regional vaccination clinic. Added to record. Dose 2 due late February."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "outside_records",
+          "start": "2021-03-02T10:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-02-25T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry update",
+              "author": "MA",
+              "date": "2021-03-02T10:00",
+              "body": "Moderna dose 2, 2/25/21, regional clinic. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-18a",
+          "kind": "office_visit",
+          "start": "2021-03-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "state": {
+            "weight_kg": 73.0,
+            "labs": {
+              "Hemoglobin A1c": 7.3,
+              "Low Density Lipoprotein": 134
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-18T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-03-18T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-03-18T10:00",
+              "body": "Vaccinated x2, relieved. Daughter drove her today. Feels well, no headaches, no dizziness.\nVitals as charted. Exam unchanged, soft SEM, lungs clear.\nA1c in office today.\nPlan: continue lisinopril, metformin, simvastatin, aspirin. Wellness visit in summer."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-19a",
+          "kind": "portal_message",
+          "start": "2021-03-19T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "author": "PCP",
+              "date": "2021-03-19T08:30",
+              "body": "A1c 7.3 - up slightly over the winter, nothing to change yet. More walking now that the sidewalks are clear will help."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "office_visit",
+          "start": "2021-06-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "memory concerns",
+          "state": {
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-21T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2021",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "progressive forgetfulness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - memory",
+              "author": "PCP",
+              "date": "2021-06-21T14:50",
+              "body": "Visit requested by daughter, who came with her.\n\nHPI: Daughter has noticed over roughly the past year that her mother loses track of things - keys, glasses, the checkbook - misses appointments she would never have missed before, and asks the same question two or three times in one phone call without remembering the answer. Earlier this year she got lost driving back from the grocery store and arrived home after dark; she gave up driving on her own after that. Pt herself says her memory is 'what you'd expect at my age' but agrees she stopped driving. No falls, no hallucinations, no change in gait, no urinary accidents, no head injury. Mood okay.\n\nFamily: mother had Alzheimer's starting in her mid-70s.\n\nExam: pleasant, cooperative, well groomed. Vitals as charted. Brief screen: misses delayed recall of items, clock drawing slightly off. Neuro: nonfocal, gait normal.\n\nA/P: Progressive short-term memory loss over a year, functional change (stopped driving), strong family history. Referring to neurology for formal evaluation. Meds reviewed - nothing sedating. Daughter will start checking her pill box weekly. Pt agreeable."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-06a",
+          "kind": "telephone",
+          "start": "2021-07-06T15:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "author": "front desk",
+              "date": "2021-07-06T15:10",
+              "body": "Neurology referral accepted. First available 8/17. Daughter given date, time and address; she will bring her."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "specialist_visit",
+          "start": "2021-08-17T10:30",
+          "service": "Neurology",
+          "reason": "cognitive evaluation",
+          "conditions": [
+            {
+              "label": "Alzheimer disease",
+              "action": "diagnosed",
+              "onset": "2020-07-01",
+              "note": "probable, by clinical criteria and imaging"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-08-17T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-17T09:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2021-08-17T08:30",
+              "text": "Indication: progressive memory loss.\nTechnique: axial noncontrast CT of the head.\nFindings: Generalized prominence of the sulci and ventricles consistent with diffuse cerebral volume loss. No acute hemorrhage. No territorial infarct. No mass, mass effect or midline shift. No extra-axial collection. Basal cisterns patent. Calvarium intact.",
+              "conclusion": "Generalized cerebral atrophy. No evidence of stroke or mass lesion."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2021",
+              "action": "done",
+              "date": "2021-08-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2021-08-24T12:00",
+              "body": "OUTPATIENT NEUROLOGY - CONSULTATION\nDate of service: 08/17/2021\nReferred by: primary care, for memory loss\n\nThank you for referring Mrs. Jean Pratt, a 74-year-old right-handed retired teacher, seen today with her daughter.\n\nHistory: For about a year her daughter has watched her become more forgetful: items are misplaced daily, appointments slip by, and she repeats questions and cannot bring back conversations from the day before. She still lives by herself and handles her own bathing, dressing and meals. Some months ago she became lost driving home and has not driven since. No hallucinations, no tremor, no falls.\n\nPMH: hypertension, type 2 diabetes, hyperlipidemia. Hysterectomy; bilateral cataract surgery.\nMedications (per referral list): metformin 1000 mg BID, lisinopril 10 mg daily, hydrochlorothiazide 25 mg daily, simvastatin 20 mg qhs, aspirin 81 mg daily.\nAllergies: NKDA.\nFamily history: mother with Alzheimer's from age 75; father diabetes, MI at 68; parental hypertension.\nSocial: never smoker, occasional wine.\n\nExam: Alert. Oriented to self and place; not to the date. MMSE 20/30, points lost on orientation, three-word recall and serial subtraction. Language fluent. Cranial nerves intact. Normal strength, tone and reflexes. Gait normal, no focal deficits.\n\nData: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98, TSH 2.5, B12 400. Noncontrast CT head today: generalized atrophy without infarct or mass.\n\nImpression: Progressive amnestic cognitive decline with functional impact and a normal reversible-cause screen, most consistent with Alzheimer's disease (probable).\n\nRecommendations: discussed the diagnosis with the patient and daughter. Safety review - agree she should not drive. Daughter to look into help with finances and medications. Follow up here in 6 months.\n\nNeurology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.5,
+              "Vitamin B12": 400
+            }
+          }
+        },
+        {
+          "id": "2021-09-15a",
+          "kind": "office_visit",
+          "start": "2021-09-15T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology",
+          "state": {
+            "weight_kg": 71.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-15T10:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-15T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-15T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-09-15T10:45",
+              "body": "Here with daughter to go over the neurology consult. Letter reviewed: probable Alzheimer's, MMSE 20, CT with generalized atrophy, labs normal. Pt took the news calmly; daughter more shaken. Neurology list still shows HCTZ - that is an old entry, she has been off it since 8/2020; daughter will tell them at the next visit.\n\nDaughter now fills the weekly pill box on Sundays. Pt still living alone, managing meals and bathing. Not driving.\n\nExam: vitals as charted, weight drifting down a little. Soft SEM unchanged. Lungs clear. Feet fine.\n\nA/P:\n1. Alzheimer disease - per neurology; follow-up there in 6 months.\n2. HTN, T2DM, HLD - A1c and lipids today; same meds.\n3. Flu shot and COVID booster next month.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID booster",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-12T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-10-12T11:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2021-10-12T11:15",
+              "body": "Daughter present. High-dose flu L deltoid, Moderna booster (half dose) R deltoid. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "outside_records",
+          "start": "2021-11-09T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2021-11-09T09:30",
+              "body": "Dilated exam 11/2/2021, accompanied by daughter. VA cc 20/25 OD, 20/30 OS. IOLs centered OU. No diabetic retinopathy or macular edema either eye. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-16a",
+          "kind": "office_visit",
+          "start": "2021-12-16T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "state": {
+            "weight_kg": 70.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-12-16T13:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-16T13:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-16T13:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-12-16T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-12-16T13:55",
+              "body": "S: Daughter with her. Pill box going well, no missed doses on the weekly check. Pt says she feels 'fine, just slower.' Eating less at lunch, daughter thinks. Sleep okay.\nO: Vitals as charted. Weight down about 3 kg over the year. Exam stable.\nA/P: HTN and DM stable on current meds. Labs today (BMP, CBC, urine albumin). Encourage regular meals - daughter will arrange a neighbor lunch twice a week. RTC 3 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

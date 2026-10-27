@@ -1,0 +1,169 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002306",
+      "given": "Michael",
+      "family": "Larkin",
+      "birth_date": "1957-08-09",
+      "address_line": "27 Linden Ridge Road",
+      "phone": "+1-646-555-0134",
+      "email": "michael.larkin@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired shipyard mechanic and metal fabricator with COPD/emphysema who joins in 2020, then develops combined pulmonary fibrosis and emphysema, a resected mucin-producing pancreatic head adenocarcinoma with diabetes, low-grade bladder cancer, limited-stage small cell lung cancer with Lambert-Eaton and SIADH, and in 2026 metastatic prostate cancer reported by urology after his last visit.",
+      "events": [
+        {
+          "id": "2020-09-22a",
+          "kind": "establish_care",
+          "start": "2020-09-22T09:00",
+          "end": "2020-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease with emphysema", "icd10": "J43.9", "action": "history", "onset": "2014-02-01", "note": "Emphysema diagnosed at age 56 by prior pulmonologist"},
+            {"label": "Benign prostatic hyperplasia with lower urinary tract symptoms", "action": "history", "onset": "2016-01-01"},
+            {"label": "Nicotine dependence, cigarettes, in remission", "icd10": "F17.211", "action": "history", "onset": "2019-04-01", "note": "40 pack-years, quit spring 2019"},
+            {"label": "Dependence on supplemental oxygen", "action": "history", "onset": "2019-06-01", "note": "Overnight oxygen 2 L/min"}
+          ],
+          "medications": [
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD with emphysema"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath", "dose": {"value": 180, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD with emphysema"},
+            {"drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth at bedtime", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "BPH with lower urinary tract symptoms"},
+            {"drug_text": "acetaminophen 325 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (650 mg) by mouth every 6 hours as needed for pain", "dose": {"value": 650, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "pain"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Shellfish", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 81.0, "height_cm": 178.0, "spo2": 95, "labs": {"Low Density Lipoprotein": 104, "Hemoglobin A1c": 5.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Retired shipyard mechanic and metal fabricator"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-22T09:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-22T09:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-22T09:50", "results": [{"test": "Low Density Lipoprotein", "value": 104}]},
+            {"panel": null, "collected": "2020-09-22T09:50", "results": [{"test": "Hemoglobin A1c", "value": 5.6}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T09:55"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-09-22T09:00"},
+            {"procedure": "Venipuncture", "performed": "2020-09-22T09:50"},
+            {"procedure": "Immunization administration", "performed": "2020-09-22T09:55"}
+          ],
+          "orders": [{"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "new patient"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-09-22T10:20", "body": "63 y/o man transferring care; his last doctor retired and a neighbor recommended the membership model.\n\nLungs: told he had emphysema in 2014 (age 56) after years of breathlessness on hills. Followed by a pulmonologist at his old office, who put him on tiotropium and, after an overnight oximetry study, oxygen at 2 L by cannula while he sleeps. Uses albuterol a couple of times a week, mostly carrying groceries up his porch steps. Says breathing is 'about where it's been.' No recent flares or prednisone bursts that he can recall.\n\nUrinary: slow stream and gets up 2x a night; on tamsulosin at bedtime for years, happy with it.\n\nOther: takes acetaminophen now and then for aches. Smoked about a pack a day for 40 years, quit spring 2019 cold turkey. Beer with friends maybe once or twice a week. Worked 30 yrs as a mechanic at the shipyard and then metal fabrication shops; retired 2018. Divorced, lives alone, drives.\n\nPSH: appendectomy at 34, right knee scope at 52.\nFamily: father lung cancer at 72 (deceased), mother type 2 diabetes and pancreatic cancer at 78, brother prostate cancer at 68, paternal grandfather bladder cancer.\nAllergies: sulfa (rash), shellfish.\n\nExam: Comfortable at rest, speaks full sentences. Lungs with mildly diminished air movement, no wheeze, no crackles. Heart regular, no murmur. Abdomen soft, healed RLQ scar. No clubbing, no edema. Gait normal.\n\nA/P\n1. COPD/emphysema: continue tiotropium daily, albuterol prn, overnight O2 2 L. Requesting old PFTs and pulmonary notes.\n2. BPH with LUTS: continue tamsulosin.\n3. Tobacco use disorder, sustained remission: congratulated.\n4. Health maintenance: CMP, CBC, lipids, A1c today; one-time hep C and HIV screen. Flu shot given. Will ask old office for colonoscopy report.\nRTC 6 months, sooner prn."},
+            {"type": "Nursing Note", "title": "Immunization", "author": "MA", "date": "2020-09-22T09:57", "body": "Quadrivalent flu vaccine given IM left deltoid. VIS provided. Tolerated without issue."}
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent lab results", "author": "PCP", "date": "2020-09-24T16:10", "body": "Hi Michael, your blood work looks good. Kidney and liver tests normal, blood counts normal, sugar (A1c) normal at 5.6, LDL cholesterol 104. Hepatitis C and HIV screens negative. Nothing to change. Talk soon."}
+          ]
+        },
+        {
+          "id": "2020-10-09a",
+          "kind": "outside_records",
+          "start": "2020-10-09T11:00",
+          "reason": "Records from prior primary care office",
+          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2020-10-09T11:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records Summary", "author": "front desk", "date": "2020-10-09T11:00", "body": "Records received by fax from patient's previous internal medicine office (42 pages), scanned under Media.\n\nContents: office notes 2012-2020; pulmonary clinic notes 2014-2019 documenting emphysema and starting tiotropium; overnight oximetry 2019 with recommendation for nocturnal oxygen 2 L/min; colonoscopy report 2018, normal exam to the cecum, no polyps, ten-year interval suggested; immunization record.\n\nFlagged for PCP review."},
+            {"type": "Progress Notes", "title": "Outside Records Review", "author": "PCP", "date": "2020-10-12T08:30", "body": "Reviewed old chart. Consistent with his account: emphysema since 2014 on tiotropium; overnight O2 since 2019. Colonoscopy 2018 clean, next due 2028. Updated health maintenance."}
+          ]
+        },
+        {
+          "id": "2020-11-03a",
+          "kind": "telephone",
+          "start": "2020-11-03T10:30",
+          "reason": "Oxygen supplier paperwork",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "DME Recertification", "author": "RN", "date": "2020-11-03T10:30", "body": "Home oxygen company called; they need a signed order and face-to-face note from the new PCP to continue his overnight concentrator. Sent new-patient note and order for O2 2 L/min via nasal cannula during sleep. PCP signed."}
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "portal_message",
+          "start": "2021-02-22T19:40",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-01-28T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-18T13:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Got both shots", "author": "patient", "date": "2021-02-22T19:40", "body": "Finally got both covid shots at the clinic at the senior center, Jan 28 and Feb 18. Pfizer. Card attached. Arm ached one night, that was all."},
+            {"type": "Patient Message", "title": "RE: Got both shots", "author": "MA", "date": "2021-02-23T09:15", "body": "Thank you! Both doses are entered in your chart now."}
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "office_visit",
+          "start": "2021-03-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-03-16T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-03-16T14:40", "body": "S: Here for routine follow-up. Winter was quiet. Breathing unchanged, albuterol a few times a week. Wears O2 at night, machine working. Up twice to urinate at night as before.\n\nO: Vitals reviewed. Lungs diminished but clear. Heart RRR. No edema.\n\nA/P: COPD with emphysema stable on tiotropium. BPH stable on tamsulosin. Refills sent. Wellness visit in the fall."}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "pharmacy",
+          "start": "2021-06-08T08:20",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "RN", "date": "2021-06-08T08:20", "body": "Electronic request for tiotropium capsules and tamsulosin 90-day supply. Last visit March, stable. Approved x 4 refills each."}
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-28T10:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-28T10:10", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-28T10:15"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2021-09-28T09:30"},
+            {"procedure": "Venipuncture", "performed": "2021-09-28T10:10"},
+            {"procedure": "Immunization administration", "performed": "2021-09-28T10:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2021-09-28T10:45", "body": "Initial Medicare AWV.\n\nFunctional: independent in all ADLs and IADLs, drives, does his own shopping and cooking. No falls in the past year. Hearing ok in quiet rooms, a bit of trouble in restaurants (years of shipyard noise). Vision fine with readers.\nCognition: three-word recall 3/3, clock drawing normal.\nMood: PHQ-2 0.\nSafety: smoke detectors, no firearms, wears seatbelt.\nAdvance directive: none; given blank health care proxy form, he will think about who to name.\n\nExam: lungs diminished, clear. Heart RRR. No edema.\n\nPrevention: flu today. Discussed pneumococcal (PCV20) and shingles series; he'll come back for a nurse visit next month with his COVID booster. Colonoscopy 2018 normal. Hep C/HIV done 2020.\nPersonalized plan printed and reviewed."},
+            {"type": "Nursing Note", "title": "Immunization", "author": "MA", "date": "2021-09-28T10:17", "body": "Influenza quadrivalent 0.5 mL IM right deltoid. No immediate reaction."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-10-19T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-19T11:08"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-10-19T11:10"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T11:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Immunizations", "author": "RN", "date": "2021-10-19T11:25", "body": "Here for vaccines per PCP plan. Screening questions negative. Given: PCV20 left deltoid; Pfizer COVID booster right deltoid; Shingrix dose 1 left deltoid (separate site, 1 inch apart). Observed 15 min, no reaction. Reminded second Shingrix due in 2-6 months, booked for January."}
+          ]
+        }
+      ]
+    }
+  ]
+}

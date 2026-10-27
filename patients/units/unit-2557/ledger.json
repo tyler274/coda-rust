@@ -2,9 +2,7 @@
   "unit": "unit-2557",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002557/2022-06-20a: allergen \"Haloperidol\" not in catalog (text only)",
     "MRN00002557/2022-06-20a: reaction \"Oculogyric crisis / acute dystonia\" not in catalog (text only)",
-    "MRN00002557/2025-05-22a: allergen \"Trimethoprim-sulfamethoxazole\" not in catalog (text only)",
     "MRN00002557/2025-05-22a: reaction \"Agranulocytosis\" not in catalog (text only)"
   ],
   "patients": [
@@ -486,6 +484,8 @@
           "allergies": [
             {
               "substance": "Haloperidol",
+              "snomed": "386837002",
+              "category": "medication",
               "reaction": "Oculogyric crisis / acute dystonia",
               "severity": "moderate",
               "criticality": "high",
@@ -1649,6 +1649,8 @@
           "allergies": [
             {
               "substance": "Trimethoprim-sulfamethoxazole",
+              "snomed": "398731002",
+              "category": "medication",
               "reaction": "Agranulocytosis",
               "severity": "severe",
               "criticality": "high",
@@ -2764,6 +2766,18 @@
         "code": "69739-1",
         "display": "Drugs of abuse panel - Urine by Screen method",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Haloperidol": {
+        "code": "386837002",
+        "display": "Haloperidol",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Trimethoprim-sulfamethoxazole": {
+        "code": "398731002",
+        "display": "Sulfamethoxazole- and trimethoprim-containing product",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

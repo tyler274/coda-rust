@@ -115,6 +115,10 @@ pub(crate) struct Recovery {
     pub(crate) pending_send: Option<PendingSend>,
     #[serde(default)]
     pub(crate) pending_clear: bool,
+    /// An unanswered save is replayed at its original revision before any
+    /// trailing edit or accepted Send cleanup. A read cannot settle it.
+    #[serde(default)]
+    pub(crate) pending_save: Option<ConflictDraft>,
 }
 
 /// One target's composer text and its baseline.
@@ -128,6 +132,7 @@ struct Held {
     /// The revision `saved` is at; 0 is the server's "no draft yet".
     revision: i64,
     in_flight: Option<u64>,
+    pending_save: Option<ConflictDraft>,
     conflict: Option<ConflictDraft>,
     /// The last save failed; autosave waits for an edit or a slow retry.
     failed: bool,
@@ -147,10 +152,12 @@ impl Held {
     /// Takes the server's text as the baseline when it is newer or equal.
     /// Local unsaved text stays; a newer, different server text is a conflict.
     fn reconcile(&mut self, revision: i64, text: &str) {
-        if revision < self.revision {
+        if revision < self.revision || self.pending_save.is_some() {
             return;
         }
-        if !self.unsaved() {
+        // Even saved text belongs to an unresolved Send. Do not replace it
+        // with another writer's text under the submitted edit generation.
+        if !self.unsaved() && self.pending_send.is_none() && !self.pending_clear {
             self.text = text.to_owned();
             self.saved = text.to_owned();
             self.revision = revision;
@@ -171,6 +178,7 @@ impl Held {
     fn settle(&mut self) {
         if self.pending_clear
             && self.in_flight.is_none()
+            && self.pending_save.is_none()
             && self.conflict.is_none()
             && !self.unsaved()
         {
@@ -351,6 +359,7 @@ impl Composer {
         held.conflict = recovery.conflict;
         held.pending_send = recovery.pending_send;
         held.pending_clear = recovery.pending_clear;
+        held.pending_save = recovery.pending_save;
         if known {
             held.reconcile(server.0, &server.1);
         }
@@ -364,6 +373,7 @@ impl Composer {
         let held = self.held.get(target)?;
         let needed = held.unsaved()
             || held.in_flight.is_some()
+            || held.pending_save.is_some()
             || held.conflict.is_some()
             || held.pending_send.is_some()
             || held.pending_clear;
@@ -375,13 +385,17 @@ impl Composer {
             conflict: held.conflict.clone(),
             pending_send: held.pending_send.clone(),
             pending_clear: held.pending_clear,
+            pending_save: held.pending_save.clone(),
         })
     }
 
     /// Whether `target` has text an autosave should write now.
     pub(crate) fn wants_save(&self, target: &DraftTarget) -> bool {
         self.held.get(target).is_some_and(|held| {
-            held.unsaved() && held.in_flight.is_none() && held.conflict.is_none() && !held.failed
+            (held.unsaved() || held.pending_save.is_some())
+                && held.in_flight.is_none()
+                && held.conflict.is_none()
+                && !held.failed
         })
     }
 
@@ -398,6 +412,13 @@ impl Composer {
         let held = self.held.get_mut(target)?;
         self.next_attempt = id;
         held.in_flight = Some(id);
+        let pending = held
+            .pending_save
+            .get_or_insert_with(|| ConflictDraft {
+                revision: held.revision,
+                text: held.text.clone(),
+            })
+            .clone();
         held.saved_mark = false;
         if shown {
             self.said = None;
@@ -406,8 +427,8 @@ impl Composer {
             id,
             target: target.clone(),
             generation: held.generation,
-            expected_revision: held.revision,
-            text: held.text.clone(),
+            expected_revision: pending.revision,
+            text: pending.text,
             view,
         })
     }
@@ -426,6 +447,7 @@ impl Composer {
         held.in_flight = None;
         match outcome {
             SaveOutcome::Saved(revision) => {
+                held.pending_save = None;
                 if revision >= held.revision {
                     held.revision = revision;
                     held.saved = attempt.text.clone();
@@ -435,6 +457,7 @@ impl Composer {
                 held.saved_mark = same_view && held.text == attempt.text;
             }
             SaveOutcome::Conflict(revision, text) => {
+                held.pending_save = None;
                 held.failures = 0;
                 // The server holds this page's text already (a lost answer):
                 // take its revision as the baseline instead of a conflict.
@@ -1050,6 +1073,7 @@ mod tests {
             conflict: None,
             pending_send: None,
             pending_clear: false,
+            pending_save: None,
         };
         assert!(!composer.restore(&one, record));
         assert_eq!(composer.text(at), "typed now");
@@ -1069,6 +1093,7 @@ mod tests {
             conflict: None,
             pending_send: None,
             pending_clear: false,
+            pending_save: None,
         };
         let mut same = Composer::default();
         same.open(at);
@@ -1106,6 +1131,96 @@ mod tests {
         reloaded.sent(&one, "k1", SendAnswer::Accepted);
         assert_eq!(reloaded.text(at), "");
         assert!(reloaded.recovery(&one).is_none());
+    }
+
+    #[test]
+    fn recovered_send_never_clears_another_writers_newer_draft() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut original = opened(&one, 1, "submitted");
+        original
+            .begin_send(&one, "k1".into(), "submitted", command())
+            .unwrap();
+        let record = original.recovery(&one).unwrap();
+        // Both orders of the independent workspace/recovery and draft reads.
+        for read_first in [false, true] {
+            let mut page = opened(&one, 0, "");
+            if read_first {
+                page.loaded(&one, 2, "another writer");
+            }
+            page.restore(&one, record.clone());
+            if !read_first {
+                page.loaded(&one, 2, "another writer");
+            }
+            page.sent(&one, "k1", SendAnswer::Accepted);
+            assert_eq!(page.text(at), "");
+            assert_eq!(page.conflict(at).unwrap().text, "another writer");
+            assert!(page.begin(&one).is_none());
+        }
+    }
+
+    #[test]
+    fn reload_replays_unanswered_first_save_before_clearing_sent_text() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut original = opened(&one, 0, "");
+        original.edit(at, "submitted".into());
+        original.begin(&one).unwrap();
+        original
+            .begin_send(&one, "k1".into(), "submitted", command())
+            .unwrap();
+        original.sent(&one, "k1", SendAnswer::Accepted);
+        let record: Recovery = serde_json::from_str(
+            &serde_json::to_string(&original.recovery(&one).unwrap()).unwrap(),
+        )
+        .unwrap();
+        for committed in [false, true] {
+            let mut page = opened(&one, 0, "");
+            page.restore(&one, record.clone());
+            page.loaded(
+                &one,
+                if committed { 1 } else { 0 },
+                if committed { "submitted" } else { "" },
+            );
+            assert!(page.clearing(at));
+            assert_eq!(page.text(at), "");
+            let replay = page.begin(&one).unwrap();
+            assert_eq!(
+                (replay.expected_revision, replay.text.as_str()),
+                (0, "submitted")
+            );
+            page.finish(
+                &replay,
+                if committed {
+                    SaveOutcome::Conflict(1, "submitted".into())
+                } else {
+                    SaveOutcome::Saved(1)
+                },
+            );
+            let clear = page.begin(&one).unwrap();
+            assert_eq!((clear.expected_revision, clear.text.as_str()), (1, ""));
+            page.finish(&clear, SaveOutcome::Saved(2));
+            assert!(page.recovery(&one).is_none());
+        }
+    }
+
+    #[test]
+    fn replayed_first_save_preserves_another_writers_text() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut original = opened(&one, 0, "");
+        original.edit(at, "submitted".into());
+        original.begin(&one).unwrap();
+        original
+            .begin_send(&one, "k1".into(), "submitted", command())
+            .unwrap();
+        original.sent(&one, "k1", SendAnswer::Accepted);
+        let mut page = opened(&one, 0, "");
+        page.restore(&one, original.recovery(&one).unwrap());
+        let replay = page.begin(&one).unwrap();
+        page.finish(&replay, SaveOutcome::Conflict(1, "another writer".into()));
+        assert!(page.begin(&one).is_none());
+        assert_eq!(page.conflict(at).unwrap().text, "another writer");
     }
 
     #[test]

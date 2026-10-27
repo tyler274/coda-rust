@@ -1,0 +1,1253 @@
+{
+  "unit": "unit-2612",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002612",
+      "given": "Eli",
+      "family": "Hale",
+      "birth_date": "2000-10-10",
+      "address_line": "19 Cottage Lane, Apt 2B",
+      "phone": "+1-917-555-0131",
+      "email": "eli.hale@example.test",
+      "marital_status": "single",
+      "summary": "Young sales representative with plaque psoriasis on topicals and seasonal allergic rhinitis who joined the practice in 2024. Two weeks after his December 2025 physical he developed chlamydial urethritis treated at urology, then reactive arthritis (HLA-B27 positive) managed by rheumatology through remission in July 2026; the practice has these only as letters.",
+      "events": [
+        {
+          "id": "2024-01-18a",
+          "kind": "telephone",
+          "start": "2024-01-18T10:42",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2024-01-18T10:42",
+              "author": "front desk",
+              "body": "Caller lives in Amherst and wants a PCP closer to home; his previous office is a long drive. Has a skin condition (psoriasis), uses creams and a shampoo, no other meds he can think of. Employer PPO card info taken. Scheduled new pt physical 1/30 at 8:20, asked him to come fasting. Records release form emailed to eli.hale@example.test."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "establish_care",
+          "start": "2024-01-30T08:20",
+          "end": "2024-01-30T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {
+              "label": "Psoriasis",
+              "action": "history",
+              "onset": "2016-06-01",
+              "note": "Plaque type; elbows, knees, scalp"
+            },
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "2012-04-01",
+              "note": "Seasonal, spring and fall"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "clobetasol propionate 0.0005 MG/MG Topical Ointment",
+              "action": "historical",
+              "sig": "Apply thin layer to affected plaques twice daily as needed",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Plaque psoriasis"
+            },
+            {
+              "drug_text": "ketoconazole 20 MG/ML Medicated Shampoo",
+              "action": "historical",
+              "sig": "Lather into scalp, leave 5 minutes, rinse; use twice weekly",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Scalp psoriasis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              73
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 78.8,
+            "height_cm": 179.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-30T08:58",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-30T08:58",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-01-30T08:58",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-30T08:58",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-30T08:58",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social use, 3-4 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Sales representative"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-01-30T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-30T08:58"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2024-01-30T09:05",
+              "author": "PCP",
+              "body": "23M establishing care, wants a doctor in town. Sales rep, lots of driving between client sites. Prior PCP records requested.\n\nPMH:\n- Plaque psoriasis since about age 15. Elbows, knees, some scalp scaling. Uses clobetasol 0.05% ointment twice a day on active plaques when they flare, and ketoconazole 2% shampoo twice a week for the scalp. Says this keeps it to a few coin-sized spots. Never on pills or injections for it.\n- Seasonal allergic rhinitis, worst April-May and again September. Sneezing, itchy eyes, gets by without meds.\nPSH: wisdom teeth out at 18.\nMeds: clobetasol oint prn, ketoconazole shampoo 2x/wk.\nAllergies: none to medications.\nFHx: father has plaque psoriasis. Paternal uncle has ankylosing spondylitis. Mother on thyroid replacement for hypothyroidism.\nSocial: single, rents an apartment in town. Never smoked. 3-4 drinks a week, social. No drug use. Sexually active; offered condoms/STI counseling, accepted HIV and hep C screening today.\n\nROS: negative except a little dandruff-type flaking. No joint pain or morning stiffness, no eye problems, no GU complaints.\n\nExam: well-appearing young man. Vitals in flowsheet, BP normal. HEENT: TMs clear, nasal mucosa slightly pale, oropharynx normal. Neck supple, no nodes, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin: two well-demarcated scaly plaques, right elbow ~2 cm and left knee ~3 cm; fine scale along the posterior hairline. Nails without pitting. Joints: full range, no swelling or tenderness. Neuro grossly normal. Mood bright.\n\nA/P:\n1. Plaque psoriasis, limited, controlled on topicals. Continue both; reviewed not using clobetasol on face/groin and taking breaks once plaques flatten.\n2. Seasonal allergic rhinitis, mild, no treatment wanted.\n3. Health maintenance: CBC, CMP, lipids, HIV, HCV today. PHQ-2 0. Tdap status pending old records. Flu shot declined today, will get it in the fall.\nFollow up in a year or with any flare."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-01-31a",
+          "kind": "portal_message",
+          "start": "2024-01-31T16:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-01-31T16:10",
+              "author": "PCP",
+              "body": "Hi Eli, all of your bloodwork from yesterday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "outside_records",
+          "start": "2024-02-20T11:25",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from former primary care office",
+              "date": "2024-02-20T11:25",
+              "author": "medical records",
+              "body": "Received by fax, 22 pages, covering 2016-2023 from the patient's prior primary care office.\n\nSummary of contents: well visits most years with normal exams. Psoriasis first noted on the elbows in 2016, treated with topical steroid; clobetasol ointment from 2019 onward, ketoconazole shampoo added in 2021 for scalp scale. Seasonal allergy symptoms noted in spring visits, no prescription. Oral surgery note 2019 for third molar extraction, uncomplicated. Immunizations: childhood series complete per school record, Tdap 08/07/2019. No drug allergies listed.\n\nAbstracted to chart; reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "pharmacy",
+          "start": "2024-06-11T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-06-11T09:15",
+              "author": "RN",
+              "body": "Pharmacy e-request: clobetasol 0.05% ointment 60 g. Last filled by his former doctor. Seen 1/30, on med list, psoriasis controlled. Sent 60 g with 2 refills per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T17:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T17:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T17:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-08T17:35",
+              "author": "RN",
+              "body": "Came in after work for vaccines. Feels well, no fever. Screening questions negative. Flu vaccine L deltoid, COVID 2024-25 R deltoid. Lot numbers in immunization record. Waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Psoriasis follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              67
+            ],
+            "hr": 66,
+            "temp_c": 36.4,
+            "weight_kg": 78.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-04T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-04T16:30",
+              "author": "PCP",
+              "body": "S: Here for his yearly skin check-in. Winter usually worse for him. Using clobetasol a few nights a week on the elbows, shampoo twice weekly. Scalp much better than last year. Denies joint pain, back stiffness, eye redness. Busy quarter at work, otherwise fine.\n\nO: Vitals reviewed. Skin: small scaly plaque R elbow about 1.5 cm, faint pink patch L knee with minimal scale, scalp clear. No nail changes. No synovitis of hands, knees or ankles.\n\nA/P: Plaque psoriasis, limited and stable on topicals. Continue current regimen, refills sent as needed. Discussed that if it spreads or joints start hurting, there are good systemic options and dermatology can see him. Physical due at the end of the year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "portal_message",
+          "start": "2025-05-13T21:04",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy season",
+              "date": "2025-05-13T21:04",
+              "author": "patient",
+              "body": "Hey doc, pollen is killing me this week, sneezing nonstop in the car between appointments. Same as every May. Anything you recommend besides waiting it out? Not trying to come in for it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergy season",
+              "date": "2025-05-14T08:12",
+              "author": "PCP",
+              "body": "Sorry to hear it, the tree pollen has been rough this year. Things that help without a visit: saline rinse of the nose once or twice a day, keep the car on recirculate with windows up, and shower before bed to get the pollen off your hair. If it is keeping you up at night or not easing by June, send me a note and we can talk about options."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "pharmacy",
+          "start": "2025-08-19T13:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-08-19T13:30",
+              "author": "MA",
+              "body": "E-refill request ketoconazole 2% shampoo 120 mL, first time from our office. Routed to PCP, approved with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T07:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-14T08:05",
+              "author": "RN",
+              "body": "Early slot before his drive to a client. Well today. 2025-26 flu vaccine and 2025-26 COVID vaccine given, one each arm. Tolerated, left after observation. Reminded him his physical is due."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "telephone",
+          "start": "2025-11-17T12:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "date": "2025-11-17T12:05",
+              "author": "front desk",
+              "body": "Pt has a sales conference out of state this week, can't make the 11/18 physical. Moved to Fri 12/26 at 9:40, he is off that week. Fasting labs same morning."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-12-26a",
+          "kind": "annual_physical",
+          "start": "2025-12-26T09:40",
+          "end": "2025-12-26T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              77
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 79.2,
+            "height_cm": 179.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-26T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 223
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-26T10:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-12-26T10:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social use, 3-4 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-12-26T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-26T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-12-26T10:15",
+              "author": "PCP",
+              "body": "25 y/o man for annual exam, rescheduled from November. Quiet week at work so he finally had time.\n\nInterval: no illnesses, ER visits or new meds this year. Psoriasis stable, mostly elbows, uses clobetasol here and there and the shampoo twice weekly. Spring allergies were bad in May, saline helped some. No joint pain or stiffness, no eye issues, no urinary symptoms.\nMeds: clobetasol 0.05% oint prn, ketoconazole 2% shampoo twice weekly. NKDA.\nSocial: same job, a lot of time on the road. Never smoker. Alcohol about 3-4 drinks/week. Exercises at a gym 2x/week.\nFHx unchanged (father psoriasis, uncle AS, mother hypothyroid).\n\nExam: vitals per flowsheet, normal. Weight about the same as last year. Eyes and ENT normal. Heart RRR without murmur. Lungs clear. Abdomen benign. Skin: one small plaque R elbow, otherwise clear; scalp clear. MSK: spine with normal motion, no peripheral joint swelling. Neuro intact.\n\nAssessment/plan:\n- Well adult exam. CBC, CMP, lipid panel today. Vaccines current (flu and COVID in October; Tdap 2019).\n- Plaque psoriasis, quiet. No change.\n- Seasonal allergic rhinitis, symptomatic only in spring.\nRTC 1 year, sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "portal_message",
+          "start": "2025-12-29T11:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-12-29T11:48",
+              "author": "PCP",
+              "body": "Eli, your labs from Friday all look good. Cholesterol, blood counts, kidney and liver function are normal. See you next year. Happy new year."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "outside_records",
+          "start": "2026-01-14T14:02",
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-09T15:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-09T15:15",
+              "resulted": "2026-01-12T09:30",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-09T15:15",
+              "resulted": "2026-01-12T09:30",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology office visit with addendum",
+              "date": "2026-01-14T14:02",
+              "author": "urology",
+              "body": "Outside urology group. Date of service: 01/09/2026. Addendum: 01/12/2026. Copy to primary care.\n\nReason for visit: dysuria and urethral discharge.\n\nMr. Hale is a 25-year-old man who self-scheduled with three days of burning on urination and a thin, clear discharge from the penis. About two weeks before the symptoms began he had condomless sex with a new partner. He has not traveled, knows of no one ill around him, and has never had anything like this before. No fever, flank pain, testicular pain or rash.\n\nHistory: plaque psoriasis on topical therapy; seasonal allergies. Third molars removed at 18.\nMedications: clobetasol 0.05% ointment as needed to plaques; ketoconazole 2% shampoo twice weekly.\nAllergies: NKDA.\nFamily: father with psoriasis; paternal uncle with ankylosing spondylitis; mother with hypothyroidism.\nSocial: sales representative, never smoker, 3-4 drinks weekly.\n\nExam: afebrile, vital signs normal. Genitourinary: clear mucoid urethral discharge at the meatus. No ulcers, vesicles or warts, no erythema. Testes descended, nontender, no masses; epididymides normal. No inguinal adenopathy.\n\nData: office urinalysis without white cells or bacteria; nitrite and leukocyte esterase negative. Urethral specimen sent for chlamydia and gonorrhea nucleic acid amplification.\n\nImpression: urethritis, likely sexually acquired; await NAAT.\n\nADDENDUM 01/12/2026: Chlamydia trachomatis NAAT detected. Neisseria gonorrhoeae NAAT not detected. Diagnosis: chlamydial urethritis. Patient reached by phone and informed. Doxycycline 100 mg by mouth twice daily for 7 days sent to his pharmacy. Counseled to avoid sex for 7 days after finishing treatment and until partners are treated; he will notify his recent partner, who should be tested and treated. Retest in about 3 months recommended. Follow up with us as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "portal_message",
+          "start": "2026-01-15T19:37",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urology visit",
+              "date": "2026-01-15T19:37",
+              "author": "patient",
+              "body": "Hi, wanted you to know I saw a urologist last week for a urinary thing, turned out to be chlamydia. They put me on doxycycline and I'm on day 3, already better. Embarrassing but figured you should have it in my file."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urology visit",
+              "date": "2026-01-16T07:55",
+              "author": "PCP",
+              "body": "Thanks for telling me, Eli, and nothing to be embarrassed about. We got their letter. Finish all 7 days of the doxycycline, take it with a full glass of water and stay upright for a bit afterward, and go easy on sun exposure while you're on it. Retesting in about 3 months is a good idea. Reach out if anything new comes up."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "outside_records",
+          "start": "2026-02-19T10:16",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-12T11:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 50
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-12T11:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-12T11:40",
+              "resulted": "2026-02-17T14:00",
+              "results": [
+                {
+                  "test": "HLA-B27",
+                  "loinc": "4821-5",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-12T11:30",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "unit": "/[HPF]",
+                  "value": 28
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-12T11:35",
+              "resulted": "2026-02-14T10:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-12T11:35",
+              "resulted": "2026-02-14T10:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "date": "2026-02-19T10:16",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice. Consultation date: 02/12/2026. Results completed 02/17/2026.\n\nPatient: 25-year-old male, self-referred via urgent scheduling line; copy to PCP.\n\nCC: joint swelling, eye redness, urinary pain.\n\nHPI: Chlamydia urethritis diagnosed by urology in early January and treated with a week of doxycycline, roughly one month ago. For the last two weeks the dysuria has returned, his right eye has been red and sore, and over the past several days the left knee and right ankle became suddenly painful and swollen, making it hard to walk the trade-show floor. No injury to either joint. Background plaque psoriasis on topicals.\n\nMeds: clobetasol ointment prn, ketoconazole shampoo. NKDA.\nFamily: father psoriasis; paternal uncle ankylosing spondylitis; mother hypothyroidism.\nSocial: sales rep. Never smoker; drinks socially. Reports several sexual partners recently with inconsistent condom use.\n\nExam: vital signs within normal limits. R eye: conjunctiva injected, no discharge visible at the lids. Purulent urethral discharge noted. L knee: effusion, warm, painful at end range. R ankle: swollen and warm over the tibiotalar joint. Other joints without synovitis. Spine nontender. Skin: no psoriatic plaques at present, no lesions of palms, soles or glans. Nails normal.\n\nLabs (02/12): ESR 50 mm/hr (ref 0-22). CRP 25 mg/L (ref <5.0). UA with pyuria. Urethral swab: gonorrhea NAAT not detected. Repeat chlamydia NAAT not detected. HLA-B27 positive.\n\nAssessment: reactive arthritis following chlamydial urethritis: asymmetric lower-limb oligoarthritis with urethritis and eye inflammation, HLA-B27 positive, which together with the uncle's ankylosing spondylitis fits the B27-associated spectrum. Prior infection adequately treated; repeat chlamydia test negative.\n\nPlan:\n1. Naproxen 500 mg twice daily with food. Reviewed stomach and kidney cautions; avoid other NSAIDs.\n2. Urgent ophthalmology this week to exclude anterior uveitis; appointment made for 02/16.\n3. Rest the ankle, ice; activity as tolerated.\n4. Return in about 8 weeks with ESR, CRP, CBC, CMP. Sooner for worsening eye pain or vision change.\n5. Safer-sex counseling given."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "outside_records",
+          "start": "2026-02-24T15:40",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation",
+              "date": "2026-02-24T15:40",
+              "author": "ophthalmology",
+              "body": "Outside eye clinic. Exam date 02/16/2026. Referred by rheumatology; cc primary care.\n\nReason: red, sore right eye in a patient with newly diagnosed reactive arthritis.\n\nHistory: right eye red and achy for about two weeks, no blur. No contact lenses. No eye history. Meds include naproxen, topical clobetasol, ketoconazole shampoo. NKDA.\n\nExam: VA 20/20 OD and OS uncorrected. Pupils equal and reactive, no APD. IOP 15 OD, 14 OS. External/lids normal. Conjunctiva: diffuse injection OD, white OS. Cornea clear OU, no staining. Anterior chamber deep and quiet OU, no cells or flare. Lens clear. Dilated fundus: healthy optic nerves, normal macula, vessels and periphery OU.\n\nImpression: conjunctivitis of the right eye related to reactive arthritis. No uveitis.\n\nPlan: preservative-free artificial tears as needed. He knows to return promptly for pain, light sensitivity or blurred vision, since uveitis can occur with HLA-B27. Routine follow-up as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "portal_message",
+          "start": "2026-02-25T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2026-02-25T12:20",
+              "author": "patient",
+              "body": "Quick update since the chlamydia thing turned into more. Rheumatology says it's reactive arthritis and I'm on naproxen. Eye doctor said the eye is fine, no uveitis. Knee is better already, ankle still puffy. Do I need to do anything with you guys?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2026-02-25T15:02",
+              "author": "RN",
+              "body": "Hi Eli, thanks for the update. Both letters are in your chart and the doctor has seen them. Rheumatology is running this for now, so keep their follow-up. Take the naproxen with food and let them know if you get heartburn or dark stools. Nothing else needed from us right now; we'll catch up at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "outside_records",
+          "start": "2026-04-21T09:48",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-16T10:05",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 26
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-16T10:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-16T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-16T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up",
+              "date": "2026-04-21T09:48",
+              "author": "rheumatology",
+              "body": "Rheumatology follow-up, seen 04/16/2026. Copy to PCP.\n\nInterval: eye cleared within a couple of weeks; no urinary symptoms since February. Knee pain gone. Right ankle still slightly swollen by evening after long days standing. Taking naproxen twice daily with meals, no stomach upset or dark stools.\n\nExam: BP and pulse normal. Left knee without effusion, full motion. Right ankle with mild residual soft tissue swelling, minimal warmth, near-full motion. No new joints. Eyes white. No skin lesions.\n\nLabs 04/16: ESR 26 mm/hr. CRP 7.8 mg/L. CBC and CMP within normal limits, creatinine normal.\n\nAssessment: reactive arthritis, improving on NSAID.\nPlan: continue naproxen 500 mg twice daily for now; recheck in about 3 months with ESR and CRP. Call if the ankle flares or the eye becomes painful."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T11:05",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-09T09:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-09T09:20",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up",
+              "date": "2026-07-14T11:05",
+              "author": "rheumatology",
+              "body": "Rheumatology return visit 07/09/2026; letter to PCP.\n\nDoing well. No joint pain or swelling for about six weeks, back to full workdays on his feet and to the gym. No eye or urinary symptoms. Has been taking naproxen once a day or skipping it lately.\n\nExam: vitals normal. All peripheral joints without swelling, warmth or tenderness, full range including the right ankle and left knee. Eyes white. Skin without active plaques.\n\nLabs 07/09: ESR 11 mm/hr, CRP 2.1 mg/L.\n\nAssessment: reactive arthritis in remission.\nPlan: stop naproxen. No scheduled follow-up; he will call us if joint swelling, heel or low back pain, or eye symptoms return, given HLA-B27 positivity. Primary care to continue routine care."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T08:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2026-07-20T08:31",
+              "author": "patient",
+              "body": "Rheum discharged me, joints are all good now. Can I set up a visit with Dr. to go over everything from this year? Afternoons after 3 work best, sometime in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2026-07-20T10:14",
+              "author": "front desk",
+              "body": "Glad you're feeling better! You're booked Thursday 9/10 at 3:30. Let us know if that needs to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T15:30",
+          "reason": "Follow-up after rheumatology care",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "ketoconazole 20 MG/ML Medicated Shampoo": {
+        "code": "106336",
+        "display": "ketoconazole 20 MG/ML Medicated Shampoo",
+        "ingredient": "ketoconazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "HLA-B27": {
+        "code": "4821-5",
+        "display": "HLA-B27 [Presence]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

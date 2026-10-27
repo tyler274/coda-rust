@@ -1,0 +1,1130 @@
+{
+  "unit": "unit-2589",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): condition High risk sexual behavior|Z72.5 not found; closest real codes: Z72.51 High risk heterosexual behavior; Z72.52 High risk homosexual behavior; Z72.53 High risk bisexual behavior"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002589",
+      "given": "Noah",
+      "family": "Foley",
+      "birth_date": "2000-10-27",
+      "address_line": "64 Jabish Meadow Rd, Belchertown, MA 01007",
+      "phone": "+1-508-555-0136",
+      "email": "noah.foley@example.test",
+      "marital_status": "single",
+      "summary": "Healthy undergraduate who joined in fall 2024. In 2025 he had primary syphilis treated in clinic, acute HIV infection diagnosed at an outside ED, and secondary syphilis (reinfection) diagnosed by dermatology and treated here; antiretroviral therapy started at an outside ID clinic after a missed intake, and records from ID arrive late or not at all.",
+      "events": [
+        {
+          "id": "2024-08-28a",
+          "kind": "telephone",
+          "start": "2024-08-28T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-28T10:20",
+              "author": "front desk",
+              "body": "Caller is a 23 y/o undergrad looking for a primary doctor closer to campus; his last regular care was a pediatric office back home and the campus health center. Explained the membership model and that insurance is still billed for labs and outside care. Student plan card info entered. Booked new patient physical 9/12 at 8:40. Asked him to sign a release for the pediatric records and fax it to us."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "establish_care",
+          "start": "2024-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 73.4,
+            "height_cm": 177.5
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-12T09:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-12T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-12T09:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Undergraduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-12T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-12T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2024-09-12T09:30",
+              "author": "PCP",
+              "body": "23M establishing care. Undergrad, here for the academic year and most summers. No complaints today, just wants a doctor he can text.\n\nPMH: none. No hospitalizations.\nPSH: none.\nMeds: none, no supplements.\nAllergies: NKDA.\nFHx: father with type 2 diabetes; mother with hypertension.\nSocial: never smoker, no vaping. Drinks socially, about 2-3 drinks/week, no binge pattern on questioning. Student. Sexually active; declined to go into detail today, we talked briefly about routine STI testing and condoms and he was fine with the HIV/HCV screen.\nImmunizations: pediatric records requested; he reports finishing everything required for college entry.\n\nROS negative across systems.\n\nExam: well-appearing young man. Vitals reviewed, BP fine. HEENT normal, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without rash. No lymphadenopathy. Neuro grossly intact. PHQ-2 0.\n\nA/P: healthy adult, preventive visit.\n- One-time HIV and hepatitis C screening, baseline lipids drawn today.\n- Flu and COVID vaccine when the fall supply arrives; nurse visit.\n- Family history of T2DM noted; no screening indicated at his age and weight, revisit in later years.\n- Return yearly, message anytime."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "portal_message",
+          "start": "2024-09-16T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-16T13:05",
+              "author": "PCP",
+              "body": "Hi Noah, everything from last week came back fine: HIV and hepatitis C screens are negative and your cholesterol numbers are healthy. Nothing to do. We'll text you when flu shots are in."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-08T16:25",
+              "author": "RN",
+              "body": "Came in after class. No fever or illness today, no prior vaccine reactions. Flu vaccine L deltoid, 2024-25 COVID mRNA R deltoid. Lot numbers in the immunization record. Tolerated well, waited 15 min, left ambulatory. Pediatric records still not received; second request faxed."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2025-02-11T21:48",
+              "author": "patient",
+              "body": "Hey, my department needs a copy of my vaccine record for a lab course. Can you upload what you have? thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2025-02-12T09:14",
+              "author": "MA",
+              "body": "Hi Noah, your record is attached under Documents. It includes this fall's flu and COVID shots and the childhood vaccines we finally received from your pediatrician's office in December. Let us know if the course needs a signed form."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T23:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "appointment",
+              "date": "2025-04-22T23:31",
+              "author": "patient",
+              "body": "I have a sore on my penis, doesn't hurt, been there maybe 2 weeks. Could I get seen this week? Rather not go to campus health for this"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: appointment",
+              "date": "2025-04-23T07:52",
+              "author": "PCP",
+              "body": "Thanks for telling me. Yes, come in Thursday at 11:20. Until then please avoid any sexual contact."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "office_visit",
+          "start": "2025-04-24T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Genital ulcer",
+          "conditions": [
+            {
+              "label": "Primary syphilis",
+              "action": "diagnosed",
+              "onset": "2025-04-10",
+              "icd10": "A51.0"
+            },
+            {
+              "label": "High risk sexual behavior",
+              "action": "diagnosed",
+              "onset": "2025-03-24",
+              "icd10": "Z72.5"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "penicillin G benzathine 600000 UNT/ML Injectable Suspension",
+              "action": "start",
+              "sig": "2.4 million units IM once, given in clinic (1.2 million units in each buttock)",
+              "dose": {
+                "value": 2400000,
+                "unit": "[iU]"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "Primary syphilis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              69
+            ],
+            "hr": 79,
+            "temp_c": 36.8,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-24T11:55",
+              "resulted": "2025-04-25T10:40",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-24T11:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-24T11:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "date": "2025-04-24T12:20",
+              "author": "PCP",
+              "body": "S: Noticed a sore on the shaft of his penis about two weeks ago. Painless. Has not grown or shrunk. No drainage. No dysuria or urethral discharge. Over the last month he has had condomless sex with several partners. No prior STIs that he knows of.\nNo PMH, no meds, NKDA. Never smoker, drinks socially.\n\nO: Afebrile, vitals ok. Single round ulcer on the penile shaft, sharp edges, clean base, firm/indurated rim on palpation, nontender. No discharge. Bilateral inguinal nodes enlarged, rubbery, nontender. No rash on trunk, palms or soles. Oropharynx clear.\n\nA/P:\n1. Painless indurated genital ulcer with regional adenopathy after recent exposures = primary syphilis until proven otherwise. RPR sent; told him an RPR this early is often still negative, so the result won't change today's plan. Benzathine penicillin G 2.4 million units IM given in clinic today (see MAR). Observed 30 min, no reaction. Warned about possible fever/aches in the next day (Jarisch-Herxheimer).\n2. High-risk sexual exposure. No sex for at least 7 days after treatment and until the sore is fully healed. Partners from the last 3 months should be told and treated; he'd rather tell them himself, and the state partner-services line was given in case that is easier. Condoms reviewed.\nRecheck if the ulcer is not healing in 2 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-25a",
+          "kind": "portal_message",
+          "start": "2025-04-25T14:02",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "RPR result",
+              "date": "2025-04-25T14:02",
+              "author": "PCP",
+              "body": "Noah, your RPR came back negative. As we discussed, that is common in the first weeks of syphilis, and the sore looked typical, so the shot you got yesterday still counts as your treatment. Nothing more to do right now. Message me if the sore isn't clearly healing in a couple of weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "ed_visit",
+          "start": "2025-06-10T19:05",
+          "end": "2025-06-10T23:50",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue and sore throat",
+          "conditions": [
+            {
+              "label": "Acute HIV infection",
+              "action": "diagnosed",
+              "onset": "2025-05-20",
+              "icd10": "B20"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              76
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-10T19:40",
+              "resulted": "2025-06-10T20:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T19:30",
+              "results": [
+                {
+                  "test": "Rapid Strep A Antigen",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T19:40",
+              "results": [
+                {
+                  "test": "Heterophile antibody (Monospot)",
+                  "loinc": "94149-2",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T19:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Reactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T19:40",
+              "resulted": "2025-06-12T15:10",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 1870000
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-06-10T19:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-07-02T11:30",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL — EMERGENCY DEPARTMENT\nVisit date: 06/10/2025. Record sent to primary care on request.\n\nCC: tired, sore throat > 2 weeks.\nHPI: 24 y/o male, college student, seen by his PCP roughly two months ago for a painless penile ulcer. For more than two weeks has had a sore throat and fatigue with on-and-off low fevers, sweats at night, feeling run down, eating less, and a dry cough. No travel. No current or recent antibiotic courses. No known sick contacts. Lives in a shared dorm. Multiple sexual partners, condoms inconsistently.\nPMH: syphilis treated by PCP in April. Meds: none. Allergies: NKDA. FHx: father T2DM, mother HTN.\n\nExam: VS within normal limits. Tired-appearing, nontoxic. Tonsils enlarged with white exudate; scattered white plaques over the buccal mucosa. Mild cervical and occipital lymphadenopathy; axillary and inguinal nodes also enlarged. Palpable spleen tip. Lungs clear. Heart regular. No rash.\n\nED course: rapid strep negative. Monospot negative. CBC: WBC 2.4 K/uL, Hgb 10.2 g/dL, plt 95 K/uL. Mononucleosis-like illness with negative heterophile, cytopenias and recent STI -> 4th generation HIV Ag/Ab sent, REACTIVE. HIV-1 RNA sent. Results discussed with patient at bedside; he is aware.\n\nImpression: acute HIV infection (acute retroviral syndrome).\nDisposition: discharged home, stable. Follow up with PCP this week and with infectious disease for treatment. Return for high fever, trouble swallowing or breathing, bleeding.\n\nAddendum 06/12/2025: HIV-1 RNA 1,870,000 copies/mL. Consistent with acute infection. Patient informed by phone."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "portal_message",
+          "start": "2025-06-11T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER last night",
+              "date": "2025-06-11T08:12",
+              "author": "patient",
+              "body": "I went to the ER last night because my throat has been bad for weeks and I've been wiped out. They said my HIV test was positive and that I need to see you this week and an infectious disease doctor. I'm kind of freaking out. Can I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER last night",
+              "date": "2025-06-11T08:40",
+              "author": "PCP",
+              "body": "Noah, I'm really glad you went in and that you wrote. Come Friday at 9:00 and bring any papers they gave you. We'll go through it together and I'll get you to infectious disease quickly. This is very treatable. Call or text me before then if you feel worse."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "office_visit",
+          "start": "2025-06-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, positive HIV test",
+          "vitals": {
+            "bp": [
+              110,
+              71
+            ],
+            "hr": 75,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 73.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-13T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral-1",
+              "action": "placed",
+              "order": "Infectious disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "Acute HIV infection, establish care and start antiretroviral therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-06-13T09:50",
+              "author": "PCP",
+              "body": "Seen in a regional ED 6/10 for >2 wks of sore throat, fatigue, low fevers and sweats. Brought his discharge paperwork: rapid strep and monospot negative, CBC with WBC 2.4, Hgb 10.2, plt 95, 4th gen HIV Ag/Ab reactive. He says the ED called yesterday with a very high viral load. Full ED record not yet received; requested.\n\nToday: throat a little better, still tired, appetite poor. Scared, tearful at times, but engaged and asking good questions. No SI. Has not had sex since the ED visit.\n\nExam: afebrile. Tonsils enlarged, less exudate than described. Cervical nodes palpable. Spleen tip not clearly felt today. Lungs clear.\n\nA/P:\n1. Acute HIV infection, on problem list. Talked through what acute infection means, that it is highly transmissible right now, and that treatment started early works very well. Referral to infectious disease placed today, asked for the soonest intake. ID will do baseline CD4, resistance testing and start treatment.\n2. Cytopenias, attributed to the acute infection; ID to recheck at intake.\n3. Prevention: no sex until on treatment and undetectable, or condoms every time. He'll think about telling recent partners; partner services can do it anonymously, number given again.\n4. Syphilis treated in April; ulcer healed per patient.\nWill check on the ID appointment date next week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-17a",
+          "kind": "telephone",
+          "start": "2025-07-17T10:35",
+          "orders": [
+            {
+              "id": "id-referral-1",
+              "action": "cancelled",
+              "date": "2025-07-17T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed ID intake",
+              "date": "2025-07-17T10:35",
+              "author": "RN",
+              "body": "ID clinic scheduler called: pt did not show for new-patient intake yesterday 7/16, two attempts to reach him unsuccessful, referral closed on their end. Called pt, voicemail, left message to call back. Also sent portal message. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Missed ID intake",
+              "date": "2025-07-17T12:10",
+              "author": "PCP",
+              "body": "Thanks. Please keep trying him. I'll message him too. Happy to re-refer as soon as he's ready."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "portal_message",
+          "start": "2025-07-21T22:16",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: infectious disease appt",
+              "date": "2025-07-21T22:16",
+              "author": "patient",
+              "body": "Sorry I missed it. I'm doing a summer job off campus and couldn't get there. I feel fine now honestly. I'll do it when I'm back for the semester, I promise."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: infectious disease appt",
+              "date": "2025-07-22T07:35",
+              "author": "PCP",
+              "body": "Thanks for getting back to me. Feeling better is expected after the first few weeks, but the virus is still active and treatment is what protects you long term. When you're ready, message me and I'll get the referral back in the same day. I'd rather that be sooner than September."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "specialist_visit",
+          "start": "2025-10-15T14:00",
+          "service": "Dermatology",
+          "reason": "Rash",
+          "conditions": [
+            {
+              "label": "Secondary syphilis",
+              "action": "diagnosed",
+              "onset": "2025-10-01",
+              "icd10": "A51.39"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-15T14:50",
+              "resulted": "2025-10-16T09:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Reactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-15T14:50",
+              "resulted": "2025-10-16T09:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-15T14:50",
+              "resulted": "2025-10-16T09:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2025-10-16T11:20",
+              "author": "dermatology",
+              "body": "Outside Dermatology Group\nDate of service: 10/15/2025\nTo: primary care physician\n\nNoah, 24, was seen at our office for a rash. Two weeks ago a rash appeared on his trunk and has since spread onto his arms and legs. It does not itch. He feels unwell, with low-grade fevers, malaise, a sore throat and mild headaches. Background: primary syphilis in the spring, treated by you, and acute HIV infection diagnosed in June; he has not yet started HIV treatment. No current medications. NKDA. He remains sexually active with multiple partners and uses condoms inconsistently.\n\nExam: diffuse, symmetric pink-brown macules and papules; on the back they line up along the cleavage lines in a fir-tree arrangement. Palms and soles involved. No lymphadenopathy, no hepatosplenomegaly. Mucosa, scalp and nails otherwise normal; remainder of exam unremarkable.\n\nLabs: RPR reactive. CBC within normal limits. Hepatitis B surface antigen and hepatitis C antibody nonreactive.\n\nAssessment: secondary syphilis, most consistent with a new infection after his spring treatment.\nPlan: we do not stock benzathine penicillin; I called your office and you will treat. Please obtain a quantitative RPR before the injection and repeat at 6 and 12 months. Strongly encouraged him to keep the infectious disease appointment.\n\nThank you for allowing us to see him."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "office_visit",
+          "start": "2025-10-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Secondary syphilis treatment",
+          "conditions": [
+            {
+              "label": "Primary syphilis",
+              "action": "resolved",
+              "icd10": "A51.0"
+            },
+            {
+              "label": "Secondary syphilis",
+              "action": "diagnosed",
+              "onset": "2025-10-01",
+              "icd10": "A51.39"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "penicillin G benzathine 600000 UNT/ML Injectable Suspension",
+              "action": "start",
+              "sig": "2.4 million units IM once, given in clinic",
+              "dose": {
+                "value": 2400000,
+                "unit": "[iU]"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "Secondary syphilis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              85
+            ],
+            "hr": 76,
+            "temp_c": 37.1,
+            "weight_kg": 74.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-17T08:35",
+              "resulted": "2025-10-18T11:15",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Reactive, titer 1:64"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-17T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-17T08:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-17T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-17T08:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral-2",
+              "action": "placed",
+              "order": "Infectious disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "HIV infection, not yet on treatment; urgent intake"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-17T09:15",
+              "author": "PCP",
+              "body": "Here for treatment after dermatology saw him Wednesday; their letter reviewed. Rash on trunk, arms, palms and soles, two weeks, nonitchy. Still a little run down; headaches mild and intermittent, no neck stiffness, no vision or hearing change, no weakness or numbness.\nHas not started HIV care. Back on campus since late August.\n\nExam: afebrile. Faint symmetric maculopapular rash over trunk and proximal limbs, palms and soles involved. Neuro: alert, CN intact, no meningismus. Pupils equal and reactive.\n\nA/P:\n1. Secondary syphilis, a new infection after April's treatment. Quantitative RPR drawn first, then benzathine penicillin G 2.4 million units IM given. No neuro or eye findings, so no LP. Herxheimer reaction reviewed. No sex for 7 days and until the rash clears; partners from the last 6 months need testing. Repeat RPR at 6 months.\n2. Acute HIV infection, still untreated. Long talk. He agrees to go this time. New ID referral placed marked urgent; RN to call ID directly and give him the date before he leaves.\n3. Primary syphilis from April closed on the list.\n4. Flu vaccine today."
+            },
+            {
+              "type": "Nurse Note",
+              "title": "ID appointment",
+              "date": "2025-10-17T09:40",
+              "author": "RN",
+              "body": "Called ID clinic, intake booked 11/6 at 1:30 pm. Pt given card with date and address, he put it in his phone. He'll get a reminder call from us the day before."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "portal_message",
+          "start": "2025-10-20T08:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "RPR titer",
+              "date": "2025-10-20T08:05",
+              "author": "PCP",
+              "body": "Your syphilis blood test (RPR) was positive at a level of 1:64. That's our starting number. After the shot it should fall at least fourfold; we'll recheck in April. See you at ID on Nov 6!"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "pharmacy",
+          "start": "2025-11-07T14:22",
+          "orders": [
+            {
+              "id": "id-referral-2",
+              "action": "done",
+              "date": "2025-11-07T14:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Medication fill notice",
+              "date": "2025-11-07T14:22",
+              "author": "RN",
+              "body": "External fill history alert: bictegravir 50/emtricitabine 200/tenofovir alafenamide 25 mg tab, #30, 1 daily, filled 11/6/2025, prescriber at the ID clinic. So he made the intake. No consult note from ID yet; requested. Not added to med list pending ID records. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "telephone",
+          "start": "2025-12-03T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-12-03T11:40",
+              "author": "front desk",
+              "body": "Second request faxed to ID clinic for 11/6 consult note and labs. Their records office says it will go out with the next visit note."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "specialist_visit",
+          "start": "2026-01-14T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-14T10:40",
+              "resulted": "2026-01-16T12:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-14T10:40",
+              "resulted": "2026-01-15T09:30",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 430
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2026-03-20T15:05",
+              "author": "infectious disease",
+              "body": "INFECTIOUS DISEASE CLINIC — PROGRESS NOTE\nDate of service: 01/14/2026\ncc: primary care physician\n\n25-year-old man with HIV diagnosed during acute infection in June 2025, seen here for intake 11/06/2025. Baseline at intake: CD4 380 cells/uL, HIV-1 RNA 64,000 copies/mL, genotype without major resistance mutations. Started bictegravir/emtricitabine/tenofovir alafenamide one tablet daily that day.\nAlso followed for syphilis: primary in 04/2025 and secondary in 10/2025, both treated with benzathine penicillin by PCP; 6-month RPR due in April with PCP.\n\nInterval: taking the pill every evening with dinner, says he has missed maybe two doses total. No side effects. Rash resolved. No fevers.\nMeds: bictegravir/emtricitabine/TAF 50/200/25 mg daily. Allergies: NKDA.\n\nExam: well. No thrush, no adenopathy, skin clear.\n\nLabs today: HIV-1 RNA 45 copies/mL; CD4 430 cells/uL.\n\nA/P: HIV, responding well at 10 weeks; expect full suppression by next visit. Continue regimen, adherence reinforced. Undetectable = untransmittable discussed, with condoms until he is confirmed undetectable. Return in 4 months with labs.\n\nPlease excuse the delay in sending notes."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "telephone",
+          "start": "2026-03-23T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records",
+              "date": "2026-03-23T09:10",
+              "author": "MA",
+              "body": "ID progress note from 1/14 received by fax 3/20, scanned to Media. The 11/6 intake note was not included. Forwarded to PCP's inbox for review before his April visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "portal_message",
+          "start": "2026-04-08T19:27",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "follow up",
+              "date": "2026-04-08T19:27",
+              "author": "patient",
+              "body": "Got the reminder about the 6 month syphilis blood test. Is Friday morning still ok? I have class at 11"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: follow up",
+              "date": "2026-04-09T08:30",
+              "author": "front desk",
+              "body": "Friday 4/10 at 8:00 is all yours. Please bring the bottle of the HIV medication so the doctor can update your list."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "office_visit",
+          "start": "2026-04-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month syphilis follow-up",
+          "conditions": [
+            {
+              "label": "Acute HIV infection",
+              "action": "resolved",
+              "icd10": "B20"
+            },
+            {
+              "label": "Human immunodeficiency virus [HIV] disease",
+              "action": "diagnosed",
+              "onset": "2025-05-20",
+              "icd10": "B20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV infection; prescribed by infectious disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              81
+            ],
+            "hr": 73,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 73.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-10T08:30",
+              "resulted": "2026-04-11T10:20",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Reactive, titer 1:8"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-10T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-04-10T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2026-04-10T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-04-10T08:50",
+              "author": "PCP",
+              "body": "Six months after treatment for secondary syphilis. Feels well. Rash gone since about November. No headaches now, no vision change, no new sores. Brought his pill bottle.\n\nHIV: established with ID since 11/6/25, on bictegravir/emtricitabine/TAF daily, evening dosing, rarely misses. ID note from January reviewed: CD4 380 -> 430, viral load 64,000 -> 45 at 10 weeks. Next ID visit in May. Med list updated today from the bottle.\n\nExam: well-appearing. Skin clear including palms and soles. No oral lesions. No lymphadenopathy. Heart and lungs normal. PHQ-9 2.\n\nA/P:\n1. Secondary syphilis, treated 10/17/25. RPR drawn today for the 6-month titer (baseline 1:64). Will message result. Repeat at 12 months.\n2. HIV infection on ART, managed by ID. The acute label no longer fits; changed on the problem list. Doing well.\n3. PCV20 today, indicated with HIV. He asked about other vaccines; we'll go over the rest at his physical in the fall.\n4. Safer sex: condoms until ID confirms he's undetectable; he agrees.\nRTC fall for physical and flu shot; message any time."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "portal_message",
+          "start": "2026-04-13T07:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "RPR result",
+              "date": "2026-04-13T07:45",
+              "author": "PCP",
+              "body": "Good news: your RPR is down to 1:8 from 1:64. That is more than the fourfold drop we look for, so the treatment worked. We'll repeat it in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RPR result",
+              "date": "2026-04-13T12:02",
+              "author": "patient",
+              "body": "awesome, thank you!!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T13:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-13T14:05",
+              "resulted": "2026-05-15T11:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-13T14:05",
+              "resulted": "2026-05-14T09:45",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 505
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2026-06-04T10:15",
+              "author": "infectious disease",
+              "body": "INFECTIOUS DISEASE CLINIC — PROGRESS NOTE\nDate of service: 05/13/2026\ncc: primary care physician\n\nHIV on bictegravir/emtricitabine/TAF since 11/2025. Adherent, no side effects. Spring semester went fine. Syphilis titer per PCP fell from 1:64 to 1:8 in April.\nMeds: bictegravir/emtricitabine/TAF daily. Allergies: NKDA.\nExam unremarkable.\n\nLabs: HIV-1 RNA not detected (<20 copies/mL). CD4 505 cells/uL.\n\nA/P: HIV, now virologically suppressed. Continue same regimen. Labs every 4 to 6 months for the first year. Return in 5 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "telephone",
+          "start": "2026-06-05T13:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records",
+              "date": "2026-06-05T13:20",
+              "author": "MA",
+              "body": "ID note dated 5/13 received 6/4, scanned to Media and sent to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "portal_message",
+          "start": "2026-07-23T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "immunization record",
+              "date": "2026-07-23T16:48",
+              "author": "patient",
+              "body": "Could you put an updated copy of my immunization record in the portal? Housing office wants it before move-in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: immunization record",
+              "date": "2026-07-24T09:02",
+              "author": "MA",
+              "body": "Done, it's under Documents now and includes the pneumonia vaccine from April."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute HIV infection|B20": {
+        "code": "B20",
+        "display": "Human immunodeficiency virus [HIV] disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Human immunodeficiency virus [HIV] disease|B20": {
+        "code": "B20",
+        "display": "Human immunodeficiency virus [HIV] disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary syphilis|A51.0": {
+        "code": "A51.0",
+        "display": "Primary genital syphilis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary syphilis|A51.39": {
+        "code": "A51.39",
+        "display": "Other secondary syphilis of skin",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "penicillin G benzathine 600000 UNT/ML Injectable Suspension": {
+        "code": "731572",
+        "display": "penicillin G benzathine 600000 UNT/ML Injectable Suspension",
+        "ingredient": "penicillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Heterophile antibody (Monospot)": {
+        "code": "94149-2",
+        "display": "Heterophile Ab [Presence] in Serum, Plasma or Blood by Rapid immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "condition High risk sexual behavior|Z72.5 not found; closest real codes: Z72.51 High risk heterosexual behavior; Z72.52 High risk homosexual behavior; Z72.53 High risk bisexual behavior"
+    ]
+  }
+}

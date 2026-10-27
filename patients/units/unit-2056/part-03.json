@@ -1,0 +1,769 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002056",
+   "events": [
+    {
+     "id": "2022-02-15a",
+     "kind": "office_visit",
+     "start": "2022-02-15T17:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "daily headaches, trouble concentrating",
+     "state": {
+      "bp": [
+       144,
+       90
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-02-15T17:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-02-15T17:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-02-15T17:35",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 1.9
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 9
+      },
+      {
+       "survey": "GAD-7 total score",
+       "value": 8
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-ref-2022",
+       "action": "placed",
+       "order": "Psychiatry referral",
+       "category": "referral",
+       "to": "Psychiatry",
+       "reason": "headaches and poor concentration after a major work stressor"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-15T17:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Headaches, poor focus",
+       "author": "PCP",
+       "date": "2022-02-15T18:05",
+       "body": "Last appt of the day. About 6 wks of a dull, all-over headache most days, builds through the afternoon, worst by evening. No nausea or vomiting, no light or sound sensitivity, no waking from sleep, no worst-ever headache, no neuro symptoms. Also can't concentrate, rereads emails.\nStarted right after his company announced layoffs and a restructuring. He's been running the restructuring plan for his division, 12-hr days, says he hasn't had time to think about what it means for him. Sleep 5-6 hrs. Alcohol unchanged.\nMeds lisinopril 20, HCTZ 25.\n\nExam: BP 141/96, HR 70. Tense but appropriate. Neck supple, mild trapezius tightness. Cranial nerves intact, strength and reflexes symmetric, gait normal. Fundi: discs flat as far as I can see.\nPHQ-9 9, GAD-7 8.\n\nA/P\n1. Daily headache with poor concentration in the setting of a big work stressor; nonfocal exam. CBC, CMP, TSH to be thorough. Referral to psychiatry for evaluation and therapy options - he's open to it.\n2. HTN a bit high today, likely stress; continue meds.\n3. RTC 2-3 months."
+      },
+      {
+       "type": "Referral",
+       "title": "Referral to psychiatry",
+       "author": "PCP",
+       "date": "2022-02-15T18:15",
+       "body": "Referral: Psychiatry / Behavioral Health. 47M with ADPKD and HTN, six weeks of daily headaches and poor concentration that began with layoff news at work. Nonfocal neuro exam. PHQ-9 9, GAD-7 8, no SI. CBC, CMP, TSH pending. Requesting evaluation and therapy options."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-17a",
+     "kind": "portal_message",
+     "start": "2022-02-17T07:55",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Blood work",
+       "author": "PCP",
+       "date": "2022-02-17T07:55",
+       "body": "Glenn, blood counts, metabolic panel (including kidney function) and thyroid are all normal. Psychiatry should call this week; let me know if they don't."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-15a",
+     "kind": "specialist_visit",
+     "start": "2022-03-15T16:00",
+     "service": "Psychiatry",
+     "reason": "persistent headaches and difficulty concentrating",
+     "vitals": {
+      "bp": [
+       145,
+       90
+      ],
+      "hr": 78
+     },
+     "conditions": [
+      {
+       "label": "Adjustment disorder",
+       "icd10": "F43.20",
+       "action": "diagnosed",
+       "onset": "2022-01-05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-ref-2022",
+       "action": "done",
+       "date": "2022-03-15T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatric evaluation",
+       "author": "psychiatry",
+       "date": "2022-03-22T11:40",
+       "body": "Outpatient Behavioral Health - Initial Psychiatric Evaluation\nDate of service: 03/15/2022\n\nReason for referral: two months of headaches and poor concentration.\n\nHistory: 47-year-old married man with ADPKD and hypertension. Daily, dull, diffuse headaches that worsen toward evening; denies nausea, vomiting, photophobia and phonophobia. Difficulty concentrating at work. Onset closely followed the announcement of layoffs at the company where he has worked for 15 years. Since then he has thrown himself into preparing his division for the restructuring and admits he has not stopped to consider what it means for him personally. No prior psychiatric history, no suicidal thoughts, no substance use beyond social alcohol.\n\nMedications: hydrochlorothiazide 25 mg daily (lisinopril per patient). NKDA.\n\nVitals: BP 145/90, HR 78. Neurological screen without focal findings; remainder unremarkable.\nLabs reviewed: CBC, CMP and TSH normal (02/2022).\n\nMental status: well groomed, cooperative, mildly anxious affect, linear thought process, no psychosis, insight fair.\n\nDiagnosis: adjustment disorder, in response to an occupational stressor.\n\nPlan: weekly individual psychotherapy (CBT-based) with one of our therapists for about 8-10 sessions, focusing on stress and sleep. No medication indicated at this time. Re-evaluate in 2 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-24a",
+     "kind": "specialist_visit",
+     "start": "2022-05-24T16:30",
+     "service": "Psychiatry",
+     "reason": "follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up",
+       "author": "psychiatry",
+       "date": "2022-05-31T09:00",
+       "body": "Follow-up 05/24/2022. Has attended 8 therapy sessions. Headaches now a couple of times a week and milder; concentration improved; sleeping closer to 7 hours. Mood euthymic. Adjustment disorder improving. Will finish the therapy block and follow up with us as needed. No medications from this office."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "annual_physical",
+     "start": "2022-07-19T08:00",
+     "reason": "annual physical",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2022-07-18a",
+     "kind": "telephone",
+     "start": "2022-07-18T16:50",
+     "reason": "cancellation",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancelled physical",
+       "author": "front desk",
+       "date": "2022-07-18T16:50",
+       "body": "Pt called, cancelling tomorrow's 8am physical, work crunch. Will call back to rebook after the end of the quarter."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "pharmacy",
+     "start": "2022-10-11T10:30",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill: lisinopril 20, HCTZ 25",
+       "author": "PCP",
+       "date": "2022-10-11T10:30",
+       "body": "90-day supply approved. No BP visit since 9/2020 other than 2/2022 headache visit, no BMP since February. Please have him schedule a BP visit with labs before next refill."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Time for a visit",
+       "author": "MA",
+       "date": "2022-10-11T11:05",
+       "body": "Hi Glenn, your refills went to the pharmacy. The doctor would like to see you for a blood pressure check and blood work before the next ones. You can book online or reply here."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "office_visit",
+     "start": "2022-12-13T12:20",
+     "reason": "blood pressure follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2022-12-13b",
+     "kind": "portal_message",
+     "start": "2022-12-13T15:10",
+     "reason": "missed appointment",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "We missed you today",
+       "author": "front desk",
+       "date": "2022-12-13T15:10",
+       "body": "We missed you at 12:20 today. Please reply or call to reschedule your blood pressure visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-24a",
+     "kind": "pharmacy",
+     "start": "2023-01-24T09:05",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Bridge refill",
+       "author": "PCP",
+       "date": "2023-01-24T09:05",
+       "body": "30-day bridge of lisinopril and HCTZ only. Missed 12/13 visit. Front desk to call and book."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-07a",
+     "kind": "office_visit",
+     "start": "2023-03-07T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "shortness of breath, pounding heartbeat",
+     "conditions": [
+      {
+       "label": "Adjustment disorder",
+       "icd10": "F43.20",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "bp": [
+       148,
+       54
+      ],
+      "hr": 76
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-03-07T10:05",
+       "text": "Sinus rhythm, rate 74. Normal axis. PR, QRS and QT intervals normal. No ST or T wave abnormality.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2023",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "exertional dyspnea, wide pulse pressure, murmur"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-07T09:40"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2023-03-07T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Dyspnea",
+       "author": "PCP",
+       "date": "2023-03-07T10:45",
+       "body": "First visit in about a year; missed his BP follow-ups through the restructuring. Comes in because over the past few months he's been more winded - stairs at work, carrying groceries - and can't keep up on the weekend walks. Also notices his heart pounding in his chest when he lies on his left side at night. No chest pain, no fainting, no leg swelling, no orthopnea.\nStress better; finished therapy last spring, headaches mostly gone.\nMeds lisinopril 20, HCTZ 25 - admits some missed doses.\n\nExam: BP 149/52 (repeated, similar), HR 76 regular. SpO2 normal. Bounding radial pulses. Diastolic murmur along the left sternal border, heard best sitting forward. Lungs clear. No JVD, no edema.\nECG: sinus, normal.\n\nA/P\n1. Exertional dyspnea with a wide pulse pressure and a diastolic murmur: concern for aortic valve leak. Referred to cardiology, asked for a prompt appointment; they'll do the echo.\n2. HTN, systolic high. Take the meds every day; we'll adjust once cardiology weighs in.\n3. Adjustment disorder - resolved.\n4. Overdue labs/physical: will do after cardiology.\nRTC after cardiology."
+      },
+      {
+       "type": "Referral",
+       "title": "Referral to cardiology",
+       "author": "PCP",
+       "date": "2023-03-07T10:55",
+       "body": "Referral: Cardiology, please see within 2-3 weeks. 48M with HTN and ADPKD. Months of exertional dyspnea, pounding heartbeat lying on the left side. BP 149/52, bounding pulses, diastolic murmur at LSB. ECG sinus, normal. Question aortic regurgitation; echo requested. Meds lisinopril 20, HCTZ 25. NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-27a",
+     "kind": "specialist_visit",
+     "start": "2023-03-27T10:15",
+     "service": "Cardiology",
+     "reason": "progressive shortness of breath, reduced exercise tolerance",
+     "vitals": {
+      "bp": [
+       150,
+       50
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Aortic regurgitation",
+       "icd10": "I35.1",
+       "action": "diagnosed",
+       "onset": "2023-03-27"
+      },
+      {
+       "label": "Thoracic aortic aneurysm without rupture",
+       "action": "diagnosed",
+       "onset": "2023-03-27"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2023-03-27T11:00",
+       "text": "Left ventricle mildly dilated with normal wall thickness. LVEF 55% by biplane method, no regional wall motion abnormality. Normal diastolic filling for age. Right ventricle normal in size and function. Trileaflet aortic valve with moderate aortic regurgitation; no aortic stenosis. Mitral, tricuspid and pulmonic valves without significant abnormality. Ascending aorta aneurysmally dilated; aortic root normal. No pericardial effusion. Estimated RV systolic pressure normal.",
+       "conclusion": "Moderate aortic regurgitation. Aneurysm of the ascending aorta. Mildly dilated left ventricle with LVEF 55%."
+      },
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2023-03-27T11:45",
+       "text": "PA and lateral views. The cardiac silhouette is enlarged. Lungs are clear. No pleural effusion or pneumothorax. No pulmonary edema. Bones unremarkable.",
+       "conclusion": "Cardiomegaly. Clear lungs."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2023",
+       "action": "done",
+       "date": "2023-03-27T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology consultation",
+       "author": "cardiology",
+       "date": "2023-04-03T08:20",
+       "body": "Outside cardiology group - Consultation\nDate of visit: 03/27/2023\n\nReason: worsening breathlessness and exercise intolerance.\n\nHPI: 48-year-old man with ADPKD and hypertension, followed by nephrology and primary care, with a few months of progressive dyspnea and reduced exercise tolerance and a pounding sensation in the chest, most noticeable lying on his left side. By his account his blood pressure has not been looked after for about a year and he has missed doses; it has been poorly controlled.\n\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily. Allergies: NKDA.\nFamily history: father ADPKD with ESRD at 62; paternal grandfather died at 58 of a ruptured cerebral aneurysm; mother hypertension, hyperlipidemia.\nSocial: never smoker, 2-3 drinks/week, senior operations manager.\n\nExam: BP 150/50. Bounding peripheral pulses with a brisk carotid upstroke; nail-bed pulsations visible with light pressure on the nail tip. Diastolic murmur at the left sternal border. No peripheral edema. Lungs clear.\n\nStudies today:\n- Echo: moderate aortic regurgitation, trileaflet valve; aneurysm of the ascending aorta; LV mildly dilated, EF 55%.\n- CXR: enlarged cardiac silhouette, clear lung fields.\n\nAssessment:\n1. Aortic regurgitation, moderate, with preserved LV function.\n2. Ascending aortic aneurysm - needs exact sizing.\n3. Hypertension, poorly controlled.\n\nPlan: CT angiography of the chest to measure the aorta; I will see him back after it. Strict BP control and daily adherence; we discussed avoiding heavy straining/lifting. Will send recommendations to primary care."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-20a",
+     "kind": "imaging",
+     "start": "2023-04-20T13:00",
+     "reason": "ascending aortic aneurysm sizing",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2023-04-20T13:00",
+       "text": "CT angiography of the chest with IV contrast, ECG-gated.\nAortic root at the sinuses normal. The ascending aorta measures 4.5 cm in maximal diameter, measured perpendicular to the vessel centerline at the level of the right pulmonary artery. No dissection flap, no intramural hematoma. Aortic arch and descending thoracic aorta normal in caliber. Pulmonary arteries normal. Heart enlarged; no pericardial effusion. Lungs clear. No mediastinal or hilar adenopathy. Visualized upper abdomen: partially imaged upper poles of both kidneys contain cysts, consistent with known polycystic kidney disease.",
+       "conclusion": "Ascending aortic aneurysm, 4.5 cm. No dissection. Arch and descending aorta normal caliber."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CT angiogram reviewed",
+       "author": "PCP",
+       "date": "2023-04-24T07:45",
+       "body": "CT angiography reviewed: ascending aorta 4.5 cm, no dissection. Cardiology to follow up. BP control is key - he has a visit with us next month."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-03a",
+     "kind": "specialist_visit",
+     "start": "2023-05-03T14:30",
+     "service": "Cardiology",
+     "reason": "follow-up after CT angiography",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up",
+       "author": "cardiology",
+       "date": "2023-05-08T09:45",
+       "body": "Cardiology follow-up 05/03/2023.\nCT angiography: ascending aorta 4.5 cm without dissection; arch and descending aorta normal.\nSymptoms unchanged, mild. Meds: lisinopril 20, HCTZ 25 (reports taking daily now).\nImpression: moderate aortic regurgitation with preserved EF; 4.5 cm ascending aortic aneurysm, below a surgical threshold.\nPlan: surveillance echo and aortic imaging in 12 months, sooner for symptoms. Blood pressure control is the main lever; we would appreciate primary care's help getting him under 130/80. Return in a year."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-09a",
+     "kind": "telephone",
+     "start": "2023-05-09T11:20",
+     "reason": "cardiology recommendations",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cardiology letter",
+       "author": "RN",
+       "date": "2023-05-09T11:20",
+       "body": "Per PCP, called pt to set up a BP visit after cardiology's letter. Booked 5/23 4:15 pm. Reminded to bring home cuff."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-23a",
+     "kind": "office_visit",
+     "start": "2023-05-23T16:15",
+     "reason": "blood pressure follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2023-09-16a",
+     "kind": "ed_visit",
+     "start": "2023-09-16T11:20",
+     "end": "2023-09-16T17:40",
+     "service": "Emergency Medicine",
+     "reason": "shortness of breath and fatigue, palpitations",
+     "vitals": [
+      {
+       "time": "2023-09-16T11:25",
+       "bp": [
+        150,
+        95
+       ],
+       "hr": 130,
+       "rr": 18,
+       "spo2": 98
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Atrial flutter",
+       "action": "diagnosed",
+       "onset": "2023-03-01"
+      },
+      {
+       "label": "Tachycardia-mediated cardiomyopathy",
+       "icd10": "I42.89",
+       "action": "diagnosed",
+       "onset": "2023-03-01"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-09-16T11:45",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-16T11:45",
+       "results": [
+        {
+         "test": "B-type natriuretic peptide",
+         "loinc": "30934-4",
+         "unit": "pg/mL",
+         "value": 80
+        },
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        },
+        {
+         "test": "Troponin I, High Sensitivity",
+         "value": 5
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-16T11:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-09-16T11:30",
+       "text": "Regular narrow-complex tachycardia at 130/min. Sawtooth flutter waves in II, III and aVF at about 260/min with 2:1 atrioventricular conduction. Normal axis. No acute ST elevation.",
+       "conclusion": "Atrial flutter with 2:1 conduction."
+      },
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2023-09-16T14:10",
+       "text": "Limited study during tachycardia. Left ventricle dilated with global hypokinesis; LVEF 35% by visual estimate. Right ventricle normal in size and function. Aortic valve trileaflet; regurgitation not well assessed at this heart rate. No pericardial effusion.",
+       "conclusion": "Dilated left ventricle with LVEF 35%."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2023-09-16T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2023-09-19T08:00",
+       "body": "Emergency Department Physician Record - received by fax\nDate of visit: 09/16/2023\n\nCC: shortness of breath, fatigue.\n\nHPI: 49M with ADPKD and HTN, seen by cardiology 6 months ago for dyspnea, presents with worsening. Palpitations for months: fast and regular, several times weekly, at times lasting hours. Dyspnea and fatigue progressively worse over half a year. Denies chest pain, syncope, leg swelling. Ran out of his blood pressure pills several weeks ago and has not been taking them.\n\nPMH: ADPKD, HTN, aortic regurgitation, ascending aortic aneurysm, psychogenic ED, adjustment disorder.\nHome meds (listed): lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily - not taking.\nAllergies: NKDA.\n\nTriage: BP 150/95, HR 130, RR 18, SpO2 98% RA.\nExam: alert, comfortable at rest. JVP not elevated. Lungs clear, no crackles. Heart regular and fast; no murmur, rub or gallop appreciated. No edema.\n\nResults: Na 140, K 4.2, creatinine 1.0. BNP 80. TSH 2.5. Troponin not elevated. CBC unremarkable.\nECG: atrial flutter with 2:1 block, rate 130.\nBedside/formal echo: dilated LV, EF 35%.\n\nED course: IV metoprolol with rate to the 90s. Duration of flutter unknown (likely months); anticoagulation started. Cardiology consulted.\n\nImpression: atrial flutter with rapid ventricular response; new LV dysfunction, likely tachycardia-mediated cardiomyopathy.\nDisposition: placed in cardiology observation."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-16b",
+     "kind": "hospital_admission",
+     "start": "2023-09-16T17:40",
+     "end": "2023-09-17T13:00",
+     "service": "Cardiology",
+     "reason": "atrial flutter with rapid ventricular response, reduced ejection fraction",
+     "medications": [
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "atrial flutter rate control, cardiomyopathy"
+      },
+      {
+       "drug": "apixaban 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "atrial flutter, stroke prevention"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Observation discharge summary",
+       "author": "cardiology",
+       "date": "2023-09-19T08:05",
+       "body": "Cardiology Observation Unit - Discharge Summary\nAdmitted 09/16/2023, discharged 09/17/2023.\n\nDiagnoses: atrial flutter with rapid ventricular response; LV systolic dysfunction (EF 35%), suspected tachycardia-mediated; hypertension (off medications at presentation); moderate aortic regurgitation; ascending aortic aneurysm 4.5 cm; ADPKD.\n\nCourse: rate controlled overnight on metoprolol, heart rate 80s-90s, remained in flutter. No heart failure signs. CHA2DS2-VASc 2 (hypertension, LV dysfunction); apixaban started. Plan for cavotricuspid isthmus ablation after at least 3 weeks of uninterrupted anticoagulation.\n\nDischarge medications:\n- metoprolol succinate 50 mg daily (new)\n- apixaban 5 mg twice daily (new)\n- lisinopril 20 mg daily (resume)\n- hydrochlorothiazide 25 mg daily (resume)\n\nFollow-up: primary care within 1-2 weeks; electrophysiology will call to schedule ablation. Allergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-19a",
+     "kind": "telephone",
+     "start": "2023-09-19T12:10",
+     "reason": "ED follow-up call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-ED call",
+       "author": "PCP",
+       "date": "2023-09-19T12:10",
+       "body": "ED and observation records came in this morning. Called Glenn. Feels better, heart not racing. Has the metoprolol and apixaban, filled both. Back on lisinopril and HCTZ - says he let them run out in the summer and didn't call. Not judging, but he needs to take all four every day; apixaban especially can't be skipped before the ablation. Visit next Tuesday."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "office_visit",
+     "start": "2023-09-26T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after ED visit for atrial flutter",
+     "state": {
+      "bp": [
+       132,
+       70
+      ],
+      "hr": 72
+     },
+     "measure": [
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-09-26T09:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2023-09-26T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED follow-up",
+       "author": "PCP",
+       "date": "2023-09-26T09:25",
+       "body": "Seen 10 days after ED/obs stay for atrial flutter 2:1, EF 35% on echo, felt to be rate-related cardiomyopathy.\nSince discharge: less winded, no palpitations he can feel, no bleeding on apixaban, no dizziness. Taking metoprolol succinate 50, apixaban 5 bid, lisinopril 20, HCTZ 25 - using a pill organizer now.\n\nExam: BP 132/70, HR 84 regular. Lungs clear. Diastolic murmur LSB. No JVD, no edema.\n\nA/P\n1. Atrial flutter, rate controlled. Apixaban uninterrupted ahead of ablation (EP scheduling). Med rec done.\n2. LV dysfunction, likely tachycardia-mediated - expect improvement once rhythm controlled; cardiology to repeat echo.\n3. HTN with AR/ascending aneurysm - much better back on meds. BMP today.\n4. ADPKD - creatinine 1.0 in ED.\nCall with any bleeding, fainting or racing heart."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "Medication list",
+       "author": "PCP",
+       "date": "2023-09-26T09:30",
+       "body": "Your medicines now: metoprolol succinate 50 mg once daily; apixaban 5 mg twice daily - do not miss doses, especially before your ablation; lisinopril 20 mg once daily; hydrochlorothiazide 25 mg once daily. Call us for bleeding, black stools, fainting or a racing heartbeat. Lab today for potassium and kidney function."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       70
+      ],
+      "hr": 84
+     }
+    },
+    {
+     "id": "2023-10-24a",
+     "kind": "procedure_visit",
+     "start": "2023-10-24T07:30",
+     "end": "2023-10-24T15:00",
+     "service": "Cardiac Electrophysiology",
+     "reason": "cavotricuspid isthmus ablation for atrial flutter",
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Electrophysiology procedure report",
+       "author": "cardiac electrophysiology",
+       "date": "2023-10-30T10:30",
+       "body": "Electrophysiology Laboratory - Procedure Report\nDate: 10/24/2023\nProcedure: electrophysiology study and radiofrequency ablation of the cavotricuspid isthmus.\nIndication: typical atrial flutter with tachycardia-mediated LV dysfunction; on apixaban uninterrupted for over 4 weeks.\nAccess: right femoral vein, ultrasound guided.\nFindings: patient in atrial flutter on arrival, cycle length consistent with typical counterclockwise flutter, confirmed isthmus-dependent by entrainment. Linear ablation across the isthmus terminated flutter to sinus rhythm; bidirectional block confirmed. No other arrhythmia inducible.\nComplications: none. Hemostasis with a figure-of-eight stitch.\nPlan: continue apixaban for at least 3 months, continue metoprolol, repeat echocardiogram in about 3 months. Same-day discharge."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-02a",
+     "kind": "nurse_visit",
+     "start": "2023-11-02T07:50",
+     "reason": "flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-11-02T07:55"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-11-02T07:57"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-11-02T07:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2023-11-02T08:05",
+       "body": "Flu L deltoid, updated COVID R deltoid. On apixaban - held pressure 2 min each site, no bleeding. Says ablation went fine last week, groin site healed."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

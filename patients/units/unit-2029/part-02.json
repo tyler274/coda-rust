@@ -1,0 +1,1074 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002029",
+   "events": [
+    {
+     "id": "2023-01-24a",
+     "kind": "office_visit",
+     "start": "2023-01-24T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lumps on elbows and knees",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "rheum-ref",
+       "action": "placed",
+       "order": "Rheumatology referral",
+       "category": "referral",
+       "to": "Rheumatology",
+       "reason": "nodules over elbows and knees, recurrent great toe attacks"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-01-24T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-01-24T14:05",
+       "body": "CC: lumps on elbows and knees\n\n58M here because of hard bumps over both elbows and the fronts of both knees that he first noticed over the past couple of months. A couple of them have leaked a white, gritty material. Not very painful.\nOn direct questioning: for something like ten years he has had spells of a hot, red, very sore big toe (either side), sometimes so tender a sheet hurts. Each one goes away by itself in a few days, so he never brought it up. Last one was before Christmas. Uncle had gout.\nMeds: HCTZ 25, atorvastatin 20, ASA 81. NKDA.\n\nExam: firm subcutaneous nodules over both olecranon areas and both prepatellar areas, a few with reddened skin over them, one on the R elbow with a little chalky discharge. No warmth or effusion in knees. Feet: no active inflammation of 1st MTPs today.\n\nA/P\nNodules + episodic podagra - picture is gout with tophi until proven otherwise. He is on a thiazide.\n- Referred to rheumatology for evaluation and long-term management; they can aspirate/confirm and start therapy.\n- Keep the draining spot clean and covered.\n- For a flare before then, call; we would treat it."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-28a",
+     "kind": "specialist_visit",
+     "start": "2023-02-28T10:00",
+     "service": "Rheumatology",
+     "reason": "Recurrent great toe attacks and nodules",
+     "conditions": [
+      {
+       "label": "Chronic tophaceous gout",
+       "icd10": "M1A.09X1",
+       "action": "diagnosed",
+       "onset": "2013-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "tophaceous gout"
+      },
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 0.6,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "flare prophylaxis while starting allopurinol"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Uric Acid": 9.5
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-02-28T10:30",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 9.5
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-ref",
+       "action": "done",
+       "date": "2023-02-28T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology Consultation",
+       "author": "rheumatology",
+       "date": "2023-03-06T09:00",
+       "body": "OUTSIDE RHEUMATOLOGY - CONSULTATION LETTER\nDate of visit: 02/28/2023\nRe: Rodney Jacobs, DOB 09/09/1964\nReferred by: primary care\n\nThank you for asking us to see Mr. Jacobs, a 58-year-old retired postal carrier.\n\nHistory: He describes roughly a decade of intermittent attacks in the great toes - intense pain with redness and swelling, each settling over several days without any treatment. More recently he has developed firm lumps over the olecranon and prepatellar bursae.\nPMH: hypertension, hyperlipidemia.\nMedications: hydrochlorothiazide, atorvastatin, aspirin 81 mg.\nAllergies: NKDA.\nFamily history: paternal uncle with gout; father with early coronary disease; mother hypertensive; brother with hyperlipidemia.\nSocial: retired postal worker, never smoker, alcohol 1-2 drinks per week.\n\nExamination: Multiple subcutaneous nodules over both elbows and both knees, firm, with erythema of the overlying skin; several are draining chalky white material. No acute synovitis today.\n\nLaboratory: serum uric acid 9.5 mg/dL (reference 3.5-7.2).\n\nImpression: Chronic tophaceous gout.\n\nRecommendations:\n1. Allopurinol 100 mg daily, to be increased by our office every few weeks toward a serum urate below 6.\n2. Colchicine 0.6 mg daily for flare prophylaxis for the first 6 months.\n3. Hydrochlorothiazide raises urate; we would ask that primary care substitute another antihypertensive.\n4. We will follow his urate and titrate.\n\nSincerely,\nOutpatient Rheumatology"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-08a",
+     "kind": "office_visit",
+     "start": "2023-03-08T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after rheumatology; blood pressure medication change",
+     "conditions": [
+      {
+       "label": "Angina pectoris",
+       "action": "diagnosed",
+       "onset": "2023-02-14",
+       "note": "exertional chest pressure, referred to cardiology"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "stop",
+       "reason": "thiazide raises urate; per rheumatology"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-03-08T15:20",
+       "text": "Normal sinus rhythm, rate 72. Normal axis. Normal intervals. No ST-segment elevation or depression. No pathologic Q waves.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "orders": [
+      {
+       "id": "card-ref-1",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "exertional chest pressure"
+      },
+      {
+       "id": "bmp-0322",
+       "action": "placed",
+       "order": "Basic metabolic panel",
+       "category": "lab",
+       "reason": "2 weeks after lisinopril start"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-08T15:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2023-03-08T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-03-08T15:40",
+       "body": "S: Here to go over the rheumatology letter. Told he has tophaceous gout, uric acid 9.5. Started allopurinol 100 and colchicine 0.6 daily last week; no stomach upset. Rheum wants him off HCTZ.\nNew: for about three weeks he has felt a pressure in the middle of his chest on his morning walks, mostly on the hill on his loop. Eases within a few minutes when he stops. Never at rest, not at night. No sweats, nausea or palpitations. Father had heart disease at 52.\nMeds: HCTZ 25, atorva 20, ASA 81, allopurinol 100, colchicine 0.6.\n\nO: BP/HR per vitals. Heart RRR no murmur. Lungs clear. No edema. Tophi as before.\nECG in office: NSR, no ST changes.\n\nA/P\n1. Exertional chest pressure - typical-sounding exertional symptoms with strong family history and HTN/HLD. Resting ECG normal. Referral to cardiology, asked for a prompt appointment. Reviewed red flags: pain at rest or lasting more than a few minutes, call 911.\n2. HTN - stop HCTZ given gout. Start lisinopril 20 mg daily. BMP in 2 wk for K/Cr.\n3. Gout - per rheum, allopurinol + colchicine. They will titrate.\n4. HLD - atorvastatin 20, continue."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-22a",
+     "kind": "lab_only",
+     "start": "2023-03-22T08:15",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-22T08:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-0322",
+       "action": "done",
+       "date": "2023-03-22T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP after lisinopril start",
+       "author": "PCP",
+       "date": "2023-03-22T16:30",
+       "body": "Potassium and creatinine fine two weeks into lisinopril. Message sent to pt: no changes."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-03a",
+     "kind": "pharmacy",
+     "start": "2023-04-03T10:00",
+     "medications": [
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "stop"
+      },
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (200 mg) by mouth daily",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "tophaceous gout, dose increase by rheumatology"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Outside prescription fill",
+       "author": "MA",
+       "date": "2023-04-03T10:00",
+       "body": "Fill history import: allopurinol 100 mg, new rx from rheumatology, sig now 2 tabs daily. Med list updated."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-19a",
+     "kind": "specialist_visit",
+     "start": "2023-04-19T09:00",
+     "service": "Cardiology",
+     "reason": "Exertional chest discomfort",
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ],
+      "hr": 78,
+      "rr": 16
+     },
+     "medications": [
+      {
+       "drug_text": "isosorbide dinitrate 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "stable angina"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-04-19T08:00",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 110
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 45
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-04-19T09:15",
+       "text": "Sinus rhythm. No acute ST-segment changes.",
+       "conclusion": "No acute ST changes."
+      }
+     ],
+     "orders": [
+      {
+       "id": "card-ref-1",
+       "action": "done",
+       "date": "2023-04-19T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2023-04-25T08:30",
+       "body": "CARDIOLOGY CONSULT\nVisit: 04/19/2023\nPatient: Rodney Jacobs, 58 M\nReason: exertional chest discomfort, referred by PCP\n\nFor about two months Mr. Jacobs has noticed a central, pressure-type discomfort during his daily walks that goes away when he stops. He has had nothing at rest.\nHistory: hypertension, hyperlipidemia, recently diagnosed tophaceous gout.\nMedications: lisinopril, atorvastatin, aspirin 81 mg daily, allopurinol, colchicine.\nAllergies: NKDA.\nFamily: father with coronary disease at 52.\nNever smoker.\n\nExam: BP 138/86, HR 78, RR 16. Regular rhythm; no murmurs, rubs or gallops.\nFasting lipids: total cholesterol 190, LDL 110, HDL 45, triglycerides 150 mg/dL.\nECG: no acute ST changes.\n\nAssessment: stable angina pectoris, to be managed medically.\nPlan: add isosorbide dinitrate 20 mg twice daily. Continue aspirin and statin. Return in about 6 weeks.\n\nOutside Cardiology"
+      }
+     ]
+    },
+    {
+     "id": "2023-05-22a",
+     "kind": "pharmacy",
+     "start": "2023-05-22T17:30",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Outside prescription fill",
+       "author": "MA",
+       "date": "2023-05-22T17:30",
+       "body": "Fill history: isosorbide dinitrate 20 mg #60, prescriber cardiology. First fill."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-30a",
+     "kind": "portal_message",
+     "start": "2023-05-30T19:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Saw the heart doctor yesterday",
+       "author": "patient",
+       "date": "2023-05-30T19:05",
+       "body": "Hi Doc, just so you know I went back to cardiology yesterday. I finally started the new heart pill (isosorbide) a week ago. My walks are better, the chest pressure on the hill is mostly gone. But I get dizzy if I jump up out of the chair too fast. They said my pressure was 102 over 70 and pulse 94 in the office. They said to get up slow and keep taking it. Should I be worried about the low pressure with my lisinopril? Rodney"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Saw the heart doctor yesterday",
+       "author": "PCP",
+       "date": "2023-05-31T08:20",
+       "body": "Thanks for letting me know. The nitrate pill commonly does that in the first weeks. Keep taking it as cardiology said, stand up in stages, and drink enough fluids. If you get close to fainting or actually pass out, call us right away. Let's have you come in in two weeks so we can check your pressure sitting and standing."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-05a",
+     "kind": "pharmacy",
+     "start": "2023-06-05T11:10",
+     "medications": [
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "stop"
+      },
+      {
+       "drug": "allopurinol 300 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "tophaceous gout, dose increase by rheumatology"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Outside prescription fill",
+       "author": "MA",
+       "date": "2023-06-05T11:10",
+       "body": "Fill history: allopurinol 300 mg daily, rheumatology. Replaces the 100 mg tabs. List updated."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-13a",
+     "kind": "office_visit",
+     "start": "2023-06-13T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lightheadedness on standing",
+     "state": {
+      "bp": [
+       126,
+       78
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-06-13T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-06-13T11:25",
+       "body": "F/u dizziness on standing after isosorbide started.\nMuch better. Still gets a brief head rush if he stands fast first thing in the morning, otherwise fine. No syncope, no falls. Walking his usual route with only occasional mild pressure on the steepest part.\nMeds: lisinopril 20, atorvastatin 20, ASA 81, isosorbide dinitrate 20 BID, allopurinol 300 (just went up), colchicine 0.6.\nExam: seated BP per vitals; standing after 2 min without symptoms. Heart regular. Lungs clear.\nA/P: Orthostatic symptoms from nitrate, resolving. No changes. Uric acid due in a couple of months on the new allopurinol dose; rheum may order, we'll draw at next visit if not."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-29a",
+     "kind": "office_visit",
+     "start": "2023-08-29T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Gout and blood pressure follow-up",
+     "state": {
+      "bp": [
+       134,
+       82
+      ],
+      "labs": {
+       "Uric Acid": 5.8
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "stop",
+       "reason": "6 months of prophylaxis completed"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-08-29T09:50",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 5.8
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-08-29T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-08-29T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-08-29T10:10",
+       "body": "S: Gout/HTN f/u. On allopurinol 300 since June. No toe attacks at all since starting treatment. Says the elbow lumps are flatter; no more drainage. Colchicine prescription runs out end of the month, which is the 6 months rheum wanted. Chest pressure only with the hill, rare. Dizziness gone.\nO: vitals per flowsheet. Elbow and knee tophi noticeably smaller, skin intact. Heart RRR. Lungs clear.\nUric acid today 5.8 (resulted while he was here).\nA/P\n- Tophaceous gout: at target on allopurinol 300. Stop colchicine as planned. Copy to rheum.\n- HTN: good on lisinopril. BMP ok.\n- Angina: stable on isosorbide; cardiology f/u this fall."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "pharmacy",
+     "start": "2023-10-10T14:20",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Vaccine administered at community pharmacy",
+       "author": "MA",
+       "date": "2023-10-10T14:20",
+       "body": "Updated COVID-19 vaccine given at pharmacy, from registry."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-30a",
+     "kind": "specialist_visit",
+     "start": "2023-10-30T13:00",
+     "service": "Cardiology",
+     "reason": "Recurrent exertional chest pressure",
+     "conditions": [
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed",
+       "onset": "2023-02-14",
+       "note": "stable angina attributed to CAD by cardiology"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       138,
+       82
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-10-30T13:10",
+       "text": "Sinus rhythm. No significant ST-T wave changes.",
+       "conclusion": "No significant ST-T changes."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2023-11-03T10:45",
+       "body": "Cardiology office note, 10/30/2023 - brief\nPt again having chest pressure in the center of the chest on morning walks, same quality as before, relieved by rest, none at rest.\nMeds: lisinopril, atorvastatin, ASA 81, isosorbide dinitrate 20 BID, allopurinol.\nNKDA. Never smoker.\nBP 138/82, HR 78, BMI 27. CV exam unremarkable, no murmur, rub or gallop.\nECG: no significant ST-T changes.\nImp: stable angina attributed to coronary artery disease, intermediate pretest probability.\nPlan: continue current regimen. RTC spring."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-07a",
+     "kind": "annual_physical",
+     "start": "2023-11-07T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-11-07T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-11-07T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-11-07T08:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-11-07T08:50",
+       "results": [
+        {
+         "test": "Uric Acid"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-11-07T09:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-11-07T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical Examination",
+       "author": "PCP",
+       "date": "2023-11-07T09:30",
+       "body": "Annual exam, 59 M.\nBusy year: gout diagnosed and treated, angina under cardiology. Cardiology saw him 10/30, now calling it angina from coronary disease, staying with medicines for now. Still gets pressure partway up the hill, sometimes on cold mornings, settles with a short rest. Has never needed to stop on the flat.\nNo gout flares since February. Tophi shrinking.\nMeds: lisinopril 20, atorvastatin 20, ASA 81, isosorbide dinitrate 20 BID, allopurinol 300. NKDA.\nROS otherwise negative.\nExam: vitals as recorded. Neck no bruits. Heart RRR, no murmur. Lungs clear. Abd benign. Ext no edema, pulses intact. Small residual nodules at elbows, none draining. Skin otherwise unremarkable.\nPHQ-2 0.\nA/P\n- HTN: high in the office today after rushing in; repeat similar, home log mostly 130s. Continue lisinopril, recheck spring.\n- CAD with stable angina: per cardiology, continue meds; seek care for rest pain.\n- Gout: urate today.\n- HLD: lipids today.\n- Prevention: flu today, covid updated at pharmacy, colonoscopy due 2027."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-09a",
+     "kind": "portal_message",
+     "start": "2023-11-09T10:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2023-11-09T10:15",
+       "body": "Your labs are back: kidneys, liver and blood counts normal; uric acid still at goal on allopurinol. LDL is about where it has been. Have a good winter."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-20a",
+     "kind": "portal_message",
+     "start": "2024-02-20T07:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill",
+       "author": "patient",
+       "date": "2024-02-20T07:50",
+       "body": "Can you send the lisinopril and the atorvastatin to the pharmacy, I have about 5 days left. thanks"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Refill",
+       "author": "MA",
+       "date": "2024-02-20T11:30",
+       "body": "Both sent with refills through the summer. - MA"
+      }
+     ]
+    },
+    {
+     "id": "2024-04-15a",
+     "kind": "specialist_visit",
+     "start": "2024-04-15T10:30",
+     "service": "Cardiology",
+     "reason": "Chest pain radiating to jaw",
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ],
+      "hr": 78,
+      "rr": 16
+     },
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-04-15T08:00",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 120
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-04-15T10:40",
+       "text": "Sinus rhythm. No acute ST or T wave changes.",
+       "conclusion": "No acute changes."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ett-2024",
+       "action": "placed",
+       "order": "Exercise stress test",
+       "category": "procedure",
+       "to": "Cardiology",
+       "reason": "exertional chest pain, evaluate for obstructive CAD"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2024-04-23T09:10",
+       "body": "CARDIOLOGY FOLLOW-UP - 04/15/2024\nRodney Jacobs, 59\nChest discomfort is back on his morning walks, now felt over the left chest and going up into the jaw, about ten minutes at a time and resolving with rest. Nothing at rest. Same episodes as last spring and fall.\nMedications: aspirin 81, atorvastatin, lisinopril, isosorbide dinitrate 20 mg BID, allopurinol.\nAllergies: none known.\nVitals: BP 142/88, pulse 78, respirations 16.\nExam: no JVD, lungs clear, no edema; no evidence of heart failure. Regular rhythm.\nFasting lipid panel: TC 190, HDL 40, LDL 120, TG 150.\nECG: no acute changes.\nPlan: given his symptoms and risk factors, proceed to noninvasive stress testing to look for obstructive coronary disease. Continue current medications pending results."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-08a",
+     "kind": "procedure_visit",
+     "start": "2024-05-08T08:00",
+     "service": "Cardiology",
+     "reason": "Exercise stress test",
+     "orders": [
+      {
+       "id": "ett-2024",
+       "action": "done",
+       "date": "2024-05-08T08:00"
+      }
+     ]
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "office_visit",
+     "start": "2024-05-21T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, BP high at cardiology",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-05-21T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-05-21T10:30",
+       "body": "S: Came in because cardiology's BP was 142/88 last month and he wanted it checked. Had the treadmill stress test 5/8; per him cardiology told him it showed the heart muscle was short of blood flow when he exercised (ST changes) and they want to keep treating with medicines. We do not have the report. Symptoms unchanged: jaw/chest pressure on the hill, gone with rest.\nMeds: lisinopril 20, atorvastatin 20, ASA 81, ISDN 20 BID, allopurinol 300.\nO: BP per vitals, better than at cardiology. Heart RRR, lungs clear, no edema.\nA/P\n- HTN: office BP acceptable today, home readings 130s. Continue lisinopril.\n- CAD/stable angina: positive stress test per patient, medical management per cardiology. Requested the stress test report.\n- Gout: quiet."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-13a",
+     "kind": "office_visit",
+     "start": "2024-08-13T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2024-08-14a",
+     "kind": "telephone",
+     "start": "2024-08-14T09:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-08-14T09:40",
+       "body": "LVM re missed visit yesterday. Pt called back: forgot, was at his grandson's game. Will rebook after summer."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "pharmacy",
+     "start": "2024-10-08T13:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Vaccine administered at community pharmacy",
+       "author": "MA",
+       "date": "2024-10-08T13:00",
+       "body": "Registry: 2024-25 COVID-19 vaccine given at pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-25a",
+     "kind": "ed_visit",
+     "start": "2024-10-25T07:40",
+     "end": "2024-10-25T14:10",
+     "service": "Emergency Medicine",
+     "reason": "Chest pain while walking",
+     "vitals": [
+      {
+       "time": "2024-10-25T07:50",
+       "bp": [
+        150,
+        90
+       ],
+       "hr": 80,
+       "rr": 16,
+       "spo2": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-10-25T08:00",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity",
+         "value": 4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-10-25T11:00",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity",
+         "value": 5
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-10-25T07:55",
+       "text": "Sinus rhythm. No acute ST-segment changes. No T-wave inversions.",
+       "conclusion": "No acute ischemic changes."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2024-10-25T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Note",
+       "author": "emergency medicine",
+       "date": "2024-10-29T15:20",
+       "body": "Emergency Department - abbreviated record (faxed)\nVisit 10/25/2024\nJacobs, Rodney  60 M  DOB 09/09/1964\nCC: chest pain x 30 min while walking dog, recurred in ED.\nHPI: Known CAD, worked up in 2023 and 2024 for exertional chest pain. Central pressure into the L arm starting on a walk with the dog, eased after a few minutes of rest, then came back briefly while here.\nMeds: atorvastatin, lisinopril, aspirin 81, isosorbide dinitrate 20 BID, allopurinol. NKDA.\nNever smoker.\nTriage: BP 150/90, HR 80, RR 16, SpO2 98% RA.\nExam: regular rhythm, no murmur/rub/gallop. Lungs clear.\nECG: no acute ST changes or T wave inversions.\nTroponin x2 negative.\nDx: chest pain, known stable angina. Discharged, to follow up with his cardiologist this week."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-04a",
+     "kind": "office_visit",
+     "start": "2024-11-04T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, chest pain",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2024-11-04T13:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-11-04T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED Follow-up",
+       "author": "PCP",
+       "date": "2024-11-04T13:35",
+       "body": "ED f/u. ED record reviewed: chest pressure walking the dog 10/25, came back in the ED, ECG without acute changes, troponins negative x2, sent home.\nSince then no further episodes; he has been walking flatter routes. Cardiology appointment is set for later this month.\nMeds unchanged: lisinopril 20, atorvastatin 20, ASA 81, ISDN 20 BID, allopurinol 300. NKDA.\nExam: comfortable. BP per vitals. Heart RRR. Lungs clear. No edema.\nA/P: CAD with stable angina - recent ED visit with negative workup. Keep cardiology appt. Call 911 for pain that lasts or occurs at rest. Flu shot today. Physical next month with labs."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-03a",
+     "kind": "annual_physical",
+     "start": "2024-12-03T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-12-03T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-12-03T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-12-03T08:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-12-03T08:50",
+       "results": [
+        {
+         "test": "Uric Acid"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-12-03T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical Examination",
+       "author": "PCP",
+       "date": "2024-12-03T09:25",
+       "body": "ANNUAL EXAM - 60 M\nSaw cardiology after the ED trip; per pt no changes, keep the pills. Episodes of pressure still now and then on hills, a few minutes, rest relieves. No gout attacks in nearly two years.\nMeds: lisinopril 20 daily, atorvastatin 20 qhs, aspirin 81, isosorbide dinitrate 20 BID, allopurinol 300. NKDA.\nROS: neg otherwise. Sleeping fine, mood ok (PHQ-2 1, tired on short days).\nExam: Vitals noted. HEENT nl. Neck no bruit. Heart RRR. Lungs clear. Abd soft. Ext no edema. Small firm nodules at elbows unchanged. Skin no concerning lesions.\nPlan: labs - CMP, CBC, lipids, urate. Prevention up to date; flu given 11/4, covid at pharmacy; colonoscopy 2027. Return spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

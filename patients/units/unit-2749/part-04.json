@@ -1,0 +1,293 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002749",
+      "events": [
+        {
+          "id": "2025-03-18a",
+          "kind": "portal_message",
+          "start": "2025-03-18T21:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Tired again", "author": "patient", "date": "2025-03-18T21:05", "body": "For the last month or so I've been dragging, and the hill on my walk leaves me winded where it didn't before. No chest pain. My hematology visit isn't until mid-April. Should I come in before then?"},
+            {"type": "Patient Message", "title": "RE: Tired again", "author": "PCP", "date": "2025-03-19T07:30", "body": "Yes, let's see you next week. Front desk will reach out. If you get chest pain or are short of breath at rest, go to the ED."}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and exertional dyspnea",
+          "state": {"labs": {"Hemoglobin": 10.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-03-25T11:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-03-25T11:40", "results": [{"test": "Creatinine"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-03-25T11:25", "text": "Sinus rhythm. Normal axis and intervals. No ST or T wave abnormality.", "conclusion": "Normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-25T11:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-03-25T11:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-03-25T11:55", "body": "S: ~6 weeks of more fatigue and getting winded on inclines. No chest pain, palpitations, orthopnea, leg swelling, cough or fever. No bleeding. Taking imatinib daily, MTX weekly, prednisone 5, all as before.\nO: Vitals as charted, sat normal at rest. Pale. Heart regular, no murmur. Lungs clear throughout. No JVD. Abdomen soft, no spleen. No edema. Joints quiet.\nECG: normal sinus rhythm, no ischemic changes.\nCBC: Hgb ~10.4, similar to her baseline; WBC and plt normal.\nA/P: Fatigue and exertional dyspnea with her long-standing anemia, nothing new on exam or ECG. Hematology visit 4/15 - will send today's results and ask them to weigh in on the anemia. Return if worse sooner."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "outside_records",
+          "start": "2025-04-22T14:10",
+          "reason": "Hematology/Oncology follow-up note",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-15T10:05", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Mean Corpuscular Volume", "value": 82}]},
+            {"panel": "Iron Studies", "collected": "2025-04-15T10:05", "results": [{"test": "Iron", "value": 30}, {"test": "Total Iron-Binding Capacity", "value": 250}, {"test": "Transferrin Saturation", "value": 12}, {"test": "Ferritin", "value": 200}]},
+            {"panel": null, "collected": "2025-04-15T10:05", "results": [{"test": "Reticulocytes/100 erythrocytes in Blood", "loinc": "17849-1", "unit": "%", "value": 1}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology/Oncology Follow-up", "author": "hematology/oncology", "date": "2025-04-22T14:10", "body": "Hematology & Oncology - visit 04/15/2025\n\nCML, chronic phase, on imatinib 400 mg daily since May 2023.\n\nTwo months of fatigue and breathlessness with exertion. Remains on methotrexate and low-dose prednisone for RA. On exam she is pale; no active joint inflammation.\n\nHgb 10.2, MCV 82. Iron 30, TIBC 250 (saturation 12%), ferritin 200. Reticulocytes 1%.\nBCR-ABL1 0.02% IS - deep molecular response maintained.\n\nImpression: the anemia fits chronic inflammation rather than iron deficiency, with an underproductive marrow response. Leukemia well controlled. Continue imatinib 400 mg. No iron and no transfusion indicated. Recheck in 6 months.\n\nMedications per our list: imatinib, methotrexate, folic acid, ibuprofen as needed, calcium carbonate, vitamin D3, lisinopril.\nAllergies: sulfonamides, latex.\n\nHematology & Oncology"},
+            {"type": "Result Note", "title": "Outside Note Reviewed", "author": "PCP", "date": "2025-04-23T08:10", "body": "Heme note reviewed: anemia of inflammation, CML in deep response, no change. Their list leaves off her prednisone - she's still taking 5 mg daily, our list is correct."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "lab_only",
+          "start": "2025-06-17T08:10",
+          "reason": "Methotrexate monitoring",
+          "state": {"labs": {"Hemoglobin": 11.0}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-06-17T08:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-17T08:10", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-06-17T08:10"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2025-06-17T16:30", "body": "Hgb a bit better than spring. Rest unchanged. Copies out."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin": 12.3, "Mean Corpuscular Volume": 87}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [{"label": "Anemia in other chronic diseases classified elsewhere", "icd10": "D63.8", "action": "resolved"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-10-07T09:10", "resulted": "2025-10-07T15:00", "results": [{"test": "Hemoglobin", "value": 12.1}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-07T09:10", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-07T09:10", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T09:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T09:07"}
+          ],
+          "orders": [{"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "breast cancer screening"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-10-07T08:30"},
+            {"procedure": "Immunization administration", "performed": "2025-10-07T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-07T09:35", "body": "Annual, 63. Physical pushed to fall this year after the spring workup.\nEnergy much better over the summer, back to the long walking loop and the hill. Heme in April: anemia of inflammation, CML in deep molecular response, no change.\nRA quiet. Baker's cyst unchanged.\nMeds: imatinib 400, MTX 20 weekly, folic acid 1, prednisone 5, ibuprofen prn, calcium 600 BID, D3 2000, lisinopril 10. Allergies: sulfa, latex.\nPHQ-2 0.\nExam: BP fine. Color better. Heart RRR. Lungs clear. Abdomen soft, no organomegaly. No nodes. Joints without synovitis. Breasts normal.\nPlan: labs, mammogram, flu + COVID today.\n\nAddendum 15:10: Hgb 12.1 - normal for the first time since 2020. Taking anemia off the active list; will keep watching with her regular labs."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "imaging",
+          "start": "2025-10-21T09:45",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-10-21T09:45", "text": "Scattered fibroglandular densities. No suspicious mass, calcification or distortion. Stable compared with prior examinations.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "orders": [{"id": "mammo-2025", "action": "done", "date": "2025-10-21T09:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram Result", "author": "PCP", "date": "2025-10-22T07:50", "body": "Negative. Portal letter sent."}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "lab_only",
+          "start": "2025-12-16T08:05",
+          "reason": "Methotrexate monitoring",
+          "state": {"labs": {"Hemoglobin": 12.4}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-12-16T08:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-16T08:05", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-12-16T08:05"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2025-12-16T15:20", "body": "Hgb holding in normal range. LFTs/creatinine fine."}
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "lab_only",
+          "start": "2026-03-17T08:15",
+          "reason": "Methotrexate monitoring",
+          "state": {"labs": {"Hemoglobin": 12.6}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-03-17T08:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-17T08:15", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-03-17T08:15"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2026-03-18T07:40", "body": "All fine. Sent to rheum and heme."}
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "ed_visit",
+          "start": "2026-04-15T13:40",
+          "end": "2026-04-15T19:00",
+          "service": "Emergency Medicine",
+          "reason": "Progressive dyspnea, cough, low-grade fever",
+          "vitals": [
+            {"time": "2026-04-15T13:45", "rr": 22, "spo2": 92}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-15T14:10", "results": [{"test": "White Blood Cells", "value": 9.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2026-04-15T14:10", "results": [
+              {"test": "C Reactive Protein", "value": 25, "unit": "mg/L"},
+              {"test": "Erythrocyte Sedimentation Rate", "value": 40},
+              {"test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma", "loinc": "2532-0", "unit": "U/L", "value": 220}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-04-15T14:30", "text": "Portable AP view. Bilateral interstitial infiltrates. No pleural effusion or pneumothorax. Heart size normal.", "conclusion": "Bilateral interstitial infiltrates."},
+            {"study": "CT chest", "performed": "2026-04-15T16:20", "text": "High-resolution technique with CT angiographic phase. Diffuse bilateral ground-glass opacities. No filling defect in the pulmonary arteries. No mediastinal or hilar lymphadenopathy. No pleural effusion.", "conclusion": "Diffuse ground-glass opacities. No pulmonary embolism. No lymphadenopathy."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-04-15T13:40"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2026-04-16T08:30", "body": "ED visit 04/15/2026 (faxed summary)\n\n63-year-old woman with RA on methotrexate and prednisone and CML on imatinib, two weeks of worsening breathlessness, dry cough and low-grade temperatures. No travel. No sick contacts.\n\nRR 22, SpO2 92% on room air. Tachypneic. Crackles at both bases.\n\nWBC 9.0, Hgb 13.2, plt 250. CRP 25 mg/L, ESR 40, LDH 220.\nCXR: bilateral interstitial infiltrates. HRCT chest: diffuse ground-glass opacities; no PE; no lymphadenopathy.\n\nPMH per our system: RA, CML, chronic anemia, Baker's cyst, osteoporosis, HTN.\nAllergies: sulfa, latex.\n\nDisposition: admitted to medicine with pulmonology consultation."}
+          ]
+        },
+        {
+          "id": "2026-04-15b",
+          "kind": "hospital_admission",
+          "start": "2026-04-15T19:00",
+          "end": "2026-04-21T13:30",
+          "service": "Inpatient Medicine",
+          "reason": "Hypoxemia with diffuse ground-glass opacities",
+          "conditions": [{"label": "Diffuse alveolar hemorrhage", "icd10": "R04.89", "action": "diagnosed", "onset": "2026-04-01"}],
+          "medications": [
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "stop", "reason": "stopped during admission for diffuse alveolar hemorrhage"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "stop"},
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "stop"},
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (40 mg) daily for 14 days, then decrease by 10 mg every 14 days to 10 mg; then resume usual prednisone 5 mg daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Diffuse alveolar hemorrhage"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-04-15T19:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-04-21T11:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary", "author": "hospital medicine", "date": "2026-04-24T10:00", "body": "Admitted 04/15/2026 - discharged 04/21/2026\n\nDiagnosis: diffuse alveolar hemorrhage; cause not established.\n\nCourse: Admitted from the ED with hypoxemia and diffuse ground-glass change. Pulmonology performed bronchoscopy on 04/16: sequential BAL aliquots returned progressively bloodier, and hemosiderin-laden macrophages were seen. BAL bacterial, fungal and AFB cultures negative. Respiratory viral panel negative. ANCA and anti-GBM antibody negative. Treated with IV methylprednisolone 500 mg daily for three days, then oral prednisone 40 mg daily. Breathing improved and she weaned to room air before discharge.\n\nMedication changes: methotrexate and folic acid STOPPED - do not restart without rheumatology. Ibuprofen STOPPED. Prednisone 40 mg daily, decrease by 10 mg every two weeks to 10 mg, then return to her usual 5 mg daily (hold the 5 mg tablets during the taper). Imatinib 400 mg daily continued. Lisinopril, calcium, vitamin D unchanged.\n\nFollow-up: PCP within 1-2 weeks; pulmonology clinic with repeat CT in about 6-8 weeks; rheumatology regarding RA treatment.\n\nAllergies: sulfa, latex."},
+            {"type": "Result Note", "title": "Outside Records Reviewed", "author": "PCP", "date": "2026-04-24T13:15", "body": "Discharge summary reviewed. Med list updated. TCM visit on 4/28."}
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "telephone",
+          "start": "2026-04-22T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2026-04-22T10:40", "body": "TCM call, discharged yesterday. Pt says breathing is easier than last week, still coughs some, no fever since Saturday, no blood coughed up. Has her prednisone 20 mg tablets and the taper calendar from the hospital. Understands no methotrexate and no ibuprofen. Visit booked 4/28. Discharge paperwork not yet received - requested."}
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "office_visit",
+          "start": "2026-04-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "state": {"labs": {"Hemoglobin": 12.8}},
+          "vitals": {"spo2": 96},
+          "measure": ["bp", "hr", "rr", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-04-28T10:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-04-28T10:05", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-04-28T09:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-04-28T10:20", "body": "TCM visit after 4/15-4/21 admission for diffuse alveolar hemorrhage.\nBriefly: two weeks of dyspnea, dry cough and low fevers; ED sat 92%, crackles, CRP 25, ESR 40, LDH 220, CXR with bilateral interstitial infiltrates, HRCT with diffuse ground-glass, no PE. Bronch showed progressively bloody BAL with hemosiderin-laden macrophages; infectious studies, ANCA and anti-GBM negative. IV methylpred x3 then prednisone 40. Cause not pinned down.\nNow: day 10 at 40 mg. Breathing better each day, walks the driveway without stopping. Cough fading. No hemoptysis.\nMeds reconciled with the discharge summary: STOPPED methotrexate, folic acid, ibuprofen. Prednisone taper 40 > 30 > 20 > 10 every two weeks, then back to 5 mg (5 mg tabs on hold). Imatinib 400, lisinopril 10, calcium, D3 continue.\nAllergies: sulfa, latex.\nExam: no distress. SpO2 96% RA. Heart regular. Lungs: a few faint crackles at both bases, much less than described in hospital. No edema. Joints quiet so far.\nA/P:\n1. DAH, improving. Taper as written. Pulm clinic with repeat CT in June - appointment confirmed. Return or ED for any hemoptysis or worse breathing.\n2. RA off methotrexate - she has a rheum visit in May.\n3. CML - imatinib continues; heme aware.\n4. HTN - fine.\nLabs today. See her in July."}
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "lab_only",
+          "start": "2026-05-26T08:30",
+          "reason": "Post-hospital labs",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-05-26T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-26T08:30", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-05-26T08:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2026-05-26T16:45", "body": "Counts stable. Glucose ok on the taper. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "pharmacy",
+          "start": "2026-06-02T13:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy Question", "author": "MA", "date": "2026-06-02T13:10", "body": "Pharmacist called: pt has active scripts for both prednisone 20 mg and 5 mg and asked which is current. Explained the hospital taper, now at 20 mg daily, then 10 mg, then back to her 5 mg tablets in mid-June. Pharmacist satisfied."}
+          ]
+        },
+        {
+          "id": "2026-07-17a",
+          "kind": "office_visit",
+          "start": "2026-07-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after alveolar hemorrhage",
+          "vitals": {"spo2": 97},
+          "measure": ["bp", "hr", "rr", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-07-17T10:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-17T10:40", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-17T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-07-17T10:45", "body": "Follow-up.\nFinished the taper mid-June, back on prednisone 5 mg daily. No breathlessness, back on her usual walks including the hill. No cough. No hemoptysis.\nPulmonology 6/9: she reports the repeat CT was clear - the ground-glass is gone. Their letter not here yet.\nRheumatology in May: methotrexate stays off; joints quiet on prednisone alone for now, and they will talk about another medicine at her next visit. Nothing new started.\nHeme: no change, imatinib continues.\nMeds: imatinib 400, prednisone 5, calcium 600 BID, D3 2000, lisinopril 10. Allergies: sulfa, latex.\nExam: well. SpO2 97% RA. Lungs clear, no crackles. Heart regular. No edema. Hands and wrists without synovitis; R popliteal fullness unchanged.\nA/P: DAH - symptom-free, awaiting pulm letter. RA - rheum managing, no DMARD at present. CML stable. HTN controlled. Labs today. Follow-up in the fall."}
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2026-07-20T12:15", "body": "Hi Diane, Friday's labs look good: blood count is normal and kidney and liver tests are fine. Enjoy the rest of the summer and we'll see you in October."},
+            {"type": "Patient Message", "title": "RE: Your lab results", "author": "patient", "date": "2026-07-20T18:40", "body": "Thank you! Feeling like myself again."}
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "outside_records",
+          "start": "2026-08-04T11:30",
+          "reason": "Pulmonology letter",
+          "reports": [
+            {"study": "CT chest", "performed": "2026-06-09T09:00", "text": "Non-contrast CT of the chest. Interval resolution of the previously seen diffuse ground-glass opacities. Lungs otherwise clear. No lymphadenopathy. No pleural effusion.", "conclusion": "Resolution of diffuse ground-glass opacities."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Clinic Letter", "author": "pulmonology", "date": "2026-08-04T11:30", "body": "Pulmonology clinic - visit 06/09/2026\n\nSeen in follow-up of diffuse alveolar hemorrhage diagnosed during her April admission. She has completed most of her prednisone taper and reports no dyspnea, cough or hemoptysis. Room-air saturation normal; lungs clear.\n\nRepeat CT today: the diffuse ground-glass opacities have resolved.\n\nNo further pulmonary follow-up planned unless symptoms recur. Methotrexate remains off per rheumatology.\n\nAllergies: sulfa, latex.\n\nPulmonology"},
+            {"type": "Result Note", "title": "Outside Letter Filed", "author": "MA", "date": "2026-08-04T14:00", "body": "Pulmonology letter and CT report filed to chart, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2026-08-11T09:40", "body": "Lisinopril 10 mg 90-day refill, seen 7/17, BP controlled. Sent."}
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "office_visit",
+          "start": "2026-10-20T09:30",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

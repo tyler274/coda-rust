@@ -1,0 +1,2269 @@
+{
+  "unit": "unit-1817",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001817",
+      "given": "Deborah",
+      "family": "Gutman",
+      "birth_date": "1997-08-20",
+      "address_line": "27 Hollis Lane",
+      "phone": "+1-917-555-0180",
+      "email": "deborah.gutman@example.test",
+      "marital_status": "partnered",
+      "summary": "Ballet instructor who joined in 2021 with anorexia nervosa in remission and depression on sertraline. Primary ovarian insufficiency found in 2022, a spontaneous pregnancy ending in preterm delivery at 34 weeks with growth restriction in 2024, and a stage IC1 high-grade serous ovarian carcinoma treated with surgery and carboplatin/paclitaxel in 2025-2026.",
+      "events": [
+        {
+          "id": "2021-07-27a",
+          "kind": "telephone",
+          "start": "2021-07-27T10:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2021-07-27T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer primary care here; her old office is too far now that she teaches in town. Membership info emailed. Release of information form sent so we can get her chart from the prior primary care office. New patient slot given for 8/10 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T09:00",
+          "end": "2021-08-10T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Anorexia nervosa, in remission",
+              "action": "history",
+              "onset": "2013-01-01",
+              "note": "adolescent onset; in remission",
+              "icd10": "F50.00"
+            },
+            {
+              "label": "Major depressive disorder",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "stable on sertraline",
+              "icd10": "F32.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Latex",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              73
+            ],
+            "hr": 76,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 46.7,
+            "height_cm": 165.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-10T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 328
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-10T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-10T09:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never drinks alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Ballet instructor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-08-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-10T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-08-10T09:50",
+              "author": "PCP",
+              "body": "23 y/o woman transferring care. Teaches ballet to kids and adults at a local studio.\n\nHx: anorexia nervosa as a teenager, did outpatient treatment, in remission for several years. Eats regularly now, no restricting or purging, no compensatory exercise beyond teaching. Weight has been steady around where it is today and she is comfortable with it. Depression in her late teens/early 20s, on sertraline 50 mg for years with good effect, prior PCP prescribed. Takes vitamin D 2000 units daily. Periods regular, roughly monthly. Not sexually active.\n\nAllergies: latex, sulfa drugs. She does not remember the reactions, both on her old list.\nFamily: mother breast cancer at 51. Maternal grandmother ovarian cancer at 47. Her sister carries a BRCA1 mutation.\nSocial: never smoked, no alcohol, no drugs. Lives locally.\nSurgeries: none.\n\nROS otherwise negative.\n\nExam: thin, well appearing. HEENT normal. Thyroid normal size, no nodules. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender. Skin without lanugo or calluses on the knuckles. Mood euthymic, affect full.\n\nPHQ-9 5.\n\nA/P\n1. Major depressive disorder, stable on sertraline 50. Continue, I'll take over refills.\n2. Anorexia nervosa, in remission. Weight steady, BMI on the low side but stable for her. Will track weight at visits without making a production of it; she prefers not to see the number and we'll respect that.\n3. Health maintenance: CBC, CMP today. One-time HIV and hep C screening, she agrees. Pap was done at the prior office last year per her report, will confirm with records. Flu shot in October.\n\nRecords requested. Return for a physical in about a year, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 47.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "portal_message",
+          "start": "2021-08-11T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-08-11T16:40",
+              "author": "PCP",
+              "body": "Hi Deborah, all of your blood work came back normal: blood counts, kidney and liver tests, electrolytes. HIV and hepatitis C screens were negative. Nice to meet you yesterday."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "outside_records",
+          "start": "2021-08-19T11:05",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-08-19T11:05",
+              "author": "outside primary care",
+              "body": "Prior primary care records, 2016-2021, 41 pages.\n\nProblem list: major depressive disorder; history of anorexia nervosa, in remission.\nMedications: sertraline 50 mg daily; vitamin D3 2000 units daily.\nAllergies: latex; sulfa.\nScreening: cervical cytology 06/2020, negative for intraepithelial lesion or malignancy.\nImmunizations: childhood series complete per school forms; COVID-19 Pfizer 04/06/2021 and 04/27/2021.\n\nAbstracted into chart. Original scanned."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-06a",
+          "kind": "nurse_visit",
+          "start": "2021-10-06T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-06T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-06T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-10-06T16:20",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. Latex-free gloves and bandage used. VIS given. Tolerated well, waited 15 min, left without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-02a",
+          "kind": "pharmacy",
+          "start": "2021-12-02T08:35",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline refill",
+              "date": "2021-12-02T08:35",
+              "author": "MA",
+              "body": "E-request from pharmacy: sertraline 50 mg #90 with 3 refills. Last seen 8/10/21. Approved per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "telehealth_visit",
+          "start": "2022-02-08T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-02-08T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2022-02-08T12:35",
+              "author": "PCP",
+              "body": "Video from her car between classes, consent given.\n\nMood good through the winter, sleeping fine, enjoying teaching. Takes sertraline every day, no side effects she notices. Eating regularly. No self-harm thoughts.\n\nPHQ-9 3.\n\nMDD - in remission on sertraline 50, continue.\nPhysical due late summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "office_visit",
+          "start": "2022-04-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed periods",
+          "conditions": [
+            {
+              "label": "Secondary amenorrhea",
+              "action": "diagnosed",
+              "onset": "2021-12-01",
+              "icd10": "N91.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 77,
+            "temp_c": 36.4,
+            "weight_kg": 46.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-04-12T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2022",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "secondary amenorrhea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-04-12T09:10",
+              "author": "PCP",
+              "body": "S: No period since the first week of December. Before that, cycles came about every 28-30 days like clockwork. Not sexually active, so pregnancy is not a worry for her. No change in eating, no weight loss, no new training load. No breast discharge, no new facial or body hair, no hot flashes she has noticed, no headaches or vision change. Mood fine.\n\nO: Weight unchanged from August. Thyroid not enlarged. No galactorrhea on exam (she declined breast exam, fine). Skin normal.\n\nA/P: Secondary amenorrhea, about 4 months. Her eating disorder history makes hypothalamic causes the first thought, but weight is stable and she describes no restriction. Needs a proper workup; she'd like to see gynecology and has a hard time getting to two sets of appointments, so referral placed to gyn to evaluate and do the hormone panel there. Asked her to let me know if anything changes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-09a",
+          "kind": "outside_records",
+          "start": "2022-05-09T14:00",
+          "conditions": [
+            {
+              "label": "Hypergonadotropic hypogonadism",
+              "action": "diagnosed",
+              "onset": "2022-05-03",
+              "icd10": "E28.39"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-05-03T10:30",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 72
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-05-03T11:00",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 18
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 85
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2022",
+              "action": "done",
+              "date": "2022-05-03T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2022-05-09T14:00",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY - CONSULTATION\nDate of service: 05/03/2022\nReason for referral: amenorrhea\n\nDear Doctor,\n\nThank you for sending Ms. Gutman, 24, who has now gone about five months without a period after years of regular monthly cycles. She reports no meaningful change in weight, and no nipple discharge or excess hair growth. She has not been sexually active and has had no pregnancies. Background includes anorexia nervosa, now in remission, and depression treated with sertraline 50 mg daily; she also takes vitamin D 2000 units daily. Allergic to latex and sulfa drugs. Her mother had breast cancer at 51, her maternal grandmother ovarian cancer at 47, and a sister carries a BRCA1 mutation. Never smoker, no alcohol; she teaches ballet.\n\nOn exam, blood pressure 120/78 and pulse 72. Thyroid without enlargement or nodularity. The remainder of the general and pelvic examination was normal.\n\nResults: urine pregnancy test negative. Prolactin 18 ng/mL (ref 4-23). TSH 2.5 mIU/L (ref 0.4-4.0). FSH 85 mIU/mL, well above the follicular-phase range of 3.5-12.5.\n\nImpression: secondary amenorrhea with a markedly elevated FSH, i.e. hypergonadotropic hypogonadism. Normal prolactin and thyroid function. This pattern points toward primary ovarian insufficiency, which I will confirm with a repeat FSH in about four weeks before we talk about treatment.\n\nPlan: repeat FSH in 4 weeks with a follow-up visit to review. We discussed what the diagnosis would mean.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "outside_records",
+          "start": "2022-06-13T09:30",
+          "conditions": [
+            {
+              "label": "Primary ovarian insufficiency",
+              "action": "diagnosed",
+              "onset": "2022-06-07"
+            },
+            {
+              "label": "Secondary amenorrhea",
+              "action": "resolved",
+              "onset": "2021-12-01",
+              "note": "explained by primary ovarian insufficiency",
+              "icd10": "N91.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary ovarian insufficiency"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-07T09:15",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 78
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up",
+              "date": "2022-06-13T09:30",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY - FOLLOW-UP LETTER\nDate of service: 06/07/2022\n\nDear Doctor,\n\nMs. Gutman returned to review her repeat FSH, which is 78 mIU/mL, again in the menopausal range and consistent with the May value. With six months of amenorrhea and two elevated FSH levels, the diagnosis is primary ovarian insufficiency.\n\nWe spent most of the visit on what this means for her: bone and heart health, the need for hormone replacement until the usual age of menopause, and fertility, which is markedly reduced though occasional spontaneous ovulation does happen. She took it in thoughtfully.\n\nPlan: started estradiol 1 mg / norethindrone acetate 0.5 mg, one tablet daily. Continue vitamin D. Follow up with me yearly or sooner with concerns.\n\nAllergies: latex, sulfa.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "portal_message",
+          "start": "2022-06-14T21:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about hormone pills",
+              "date": "2022-06-14T21:12",
+              "author": "patient",
+              "body": "Hi, gyn started me on hormone replacement for the ovarian insufficiency. With my mom's breast cancer, is this safe for me? Should I be worried?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about hormone pills",
+              "date": "2022-06-15T07:50",
+              "author": "PCP",
+              "body": "Good question. The breast cancer concerns people hear about come from studies of women in their 50s and 60s taking hormones after natural menopause. For a young woman whose ovaries have stopped early, the replacement is giving back roughly what your body would be making anyway, and skipping it carries real risks to your bones and heart. Your gynecologist's plan is the standard one and I agree with it. We'll keep an eye on breast screening because of your mom's history when the time comes."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "annual_physical",
+          "start": "2022-09-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              73
+            ],
+            "hr": 84,
+            "temp_c": 37.2,
+            "spo2": 97,
+            "weight_kg": 47.1,
+            "height_cm": 164.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-13T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 67
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T08:30",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 40
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-13T08:45",
+              "author": "PCP",
+              "body": "Annual exam, 25 y/o F.\n\nInterval: gyn diagnosed primary ovarian insufficiency in June; on estradiol/norethindrone daily since, tolerating it. Some light irregular spotting at first, settled. Mood steady on sertraline. Eating well, no relapse behaviors. Busy fall teaching schedule.\n\nMeds: sertraline 50 daily, estradiol 1 mg/norethindrone acetate 0.5 mg daily, vitamin D3 2000 units.\nAllergies: latex, sulfa.\n\nExam: well, thin. HEENT nl. Thyroid nl. CV RRR. Lungs CTA. Abd soft. Ext warm, no edema. Skin no lesions of concern. Neuro grossly intact. Affect bright.\nPHQ-9 3.\n\nPlan\n- POI: on HRT per gyn.\n- MDD: in remission, continue sertraline.\n- AN in remission: weight stable.\n- Labs: CBC, CMP, lipids (first one), vitamin D level since she supplements.\n- Pap: 2020 normal, next due 2023.\n- Flu and the new bivalent COVID booster at a nurse visit next month.\nRTC 6 months for a med check."
+            }
+          ],
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 38
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2022-09-14T17:05",
+              "author": "PCP",
+              "body": "Hi Deborah, your labs from yesterday look good. Blood counts, kidney and liver function, and cholesterol are all normal, and your vitamin D level is in the healthy range on the 2000 units, so keep taking it as you are."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "nurse_visit",
+          "start": "2022-10-05T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-05T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-05T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-05T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-10-05T16:10",
+              "author": "RN",
+              "body": "Influenza IM R deltoid, Pfizer bivalent COVID IM L deltoid. Latex precautions. VIS reviewed. No immediate reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline renewal",
+              "date": "2023-01-10T09:05",
+              "author": "MA",
+              "body": "Pharmacy renewal request, sertraline 50 mg tab, 90-day supply. Seen 9/2022. Sent, 3 refills. Pt also due for a med check in March, reminder mailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "med check and Pap",
+          "vitals": {
+            "bp": [
+              116,
+              79
+            ],
+            "hr": 82,
+            "weight_kg": 48.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-03-21T09:20",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2023-03-27T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-21T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-21T09:35",
+              "author": "PCP",
+              "body": "Here for a med check and her Pap, due this year.\n\nFeeling well. Sertraline daily, mood good. HRT daily, occasional light bleeding, no hot flashes. Eating fine. Has a new partner. Teaching a full spring recital schedule.\n\nVitals reviewed. Exam: well. Thyroid nl. Heart and lungs normal. Pelvic: external genitalia normal; latex-free speculum; cervix normal appearing, cytology collected. Bimanual deferred at her request.\nPHQ-9 2.\n\n1. MDD in remission - continue sertraline 50.\n2. POI on HRT per gyn.\n3. Cervical screening - cytology sent, will message result.\nPhysical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "portal_message",
+          "start": "2023-03-28T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2023-03-28T12:10",
+              "author": "PCP",
+              "body": "Your Pap came back normal. Next one in three years."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "portal_message",
+          "start": "2023-07-11T07:22",
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "pregnancy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test??",
+              "date": "2023-07-11T07:22",
+              "author": "patient",
+              "body": "I took a home pregnancy test this morning and it's positive. Two of them actually. My last bleed was around June 2. I thought this basically couldn't happen with my ovaries? What do I do with the hormone pills and the sertraline?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test??",
+              "date": "2023-07-11T11:40",
+              "author": "PCP",
+              "body": "Congratulations if this is happy news, and I know it's a surprise either way. Ovarian insufficiency makes pregnancy uncommon but not impossible; the ovaries can still release an egg now and then. Please stop the estradiol/norethindrone now. Keep taking sertraline 50 mg: it is one of the better-studied antidepressants in pregnancy, and stopping it suddenly carries its own risks for you. Keep the vitamin D too. I've put in a referral to obstetrics, and our nurse will call you today to help with scheduling and answer questions."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "telephone",
+          "start": "2023-07-12T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "RN call re: OB scheduling",
+              "date": "2023-07-12T10:05",
+              "author": "RN",
+              "body": "Spoke with pt. Has stopped the hormone tablet as of yesterday. Continuing sertraline, understands why. Mild nausea in the mornings, eating small frequent meals, no vomiting. No bleeding or cramping. OB intake booked; she will call the OB office back to confirm the time. Told to call for bleeding, pain, or if she is unable to keep food down. She asked that weights at OB be done facing away from the scale; encouraged her to tell them."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-04T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-04T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-04T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-04T16:20",
+              "author": "RN",
+              "body": "Pt about 17 wks pregnant, OB recommended both vaccines. Inactivated flu IM R deltoid; 2023-24 Pfizer COVID IM L deltoid. Latex-free supplies. Observed 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-20a",
+          "kind": "outside_records",
+          "start": "2023-12-20T13:30",
+          "conditions": [
+            {
+              "label": "Intrauterine Growth Restriction",
+              "action": "diagnosed",
+              "onset": "2023-12-15",
+              "icd10": "O36.5930"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-12-15T10:10",
+              "bp": [
+                110,
+                70
+              ],
+              "weight_kg": 50.0,
+              "height_cm": 165.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-15T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-12-15T10:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.3
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-12-15T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "done",
+              "date": "2023-12-15T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit, 28 weeks",
+              "date": "2023-12-20T13:30",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS - PRENATAL VISIT SUMMARY\nVisit date: 12/15/2023\nPatient: Deborah Gutman, 26, G1P0, 28w0d by early ultrasound (LMP approx 06/02/2023)\nCopy to primary care\n\nSubjective: Feels well overall. Her main worry today is that she hasn't put on much weight: 4 kg since early pregnancy. She has a history of anorexia nervosa and says things have been steadier over the past year; prepregnancy BMI was 17. Spontaneous conception despite her known primary ovarian insufficiency.\n\nMedications: sertraline 50 mg daily; vitamin D3 2000 units daily; estradiol/norethindrone - ON HOLD since positive test.\nAllergies: latex, sulfa drugs.\nFamily history: mother breast cancer 51; maternal grandmother ovarian cancer 47; sister BRCA1 carrier.\n\nObjective: Wt 50 kg, Ht 165 cm, BP 110/70. Fundal height 24 cm, lagging for dates. FHT normal.\nLabs today: Hgb 11.2 g/dL, Hct 33%, WBC 9,000/mm3, platelets 250,000/mm3. Urinalysis normal.\nGrowth ultrasound today: single live intrauterine pregnancy; estimated fetal weight at the 7th percentile; amniotic fluid volume normal.\n\nAssessment: 28 weeks with intrauterine growth restriction, in the setting of low maternal weight and limited gain.\nPlan: Tdap given today. Nutrition referral; she is open to it. Serial growth scans and closer antenatal visits. Reviewed fetal movement counting and when to call.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-01a",
+          "kind": "outside_records",
+          "start": "2024-02-01T10:15",
+          "conditions": [
+            {
+              "label": "Intrauterine Growth Restriction",
+              "action": "resolved",
+              "onset": "2023-12-15",
+              "icd10": "O36.5930"
+            },
+            {
+              "label": "History of preterm delivery",
+              "action": "history",
+              "onset": "2024-01-26",
+              "icd10": "Z87.51"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2024-02-01T10:15",
+              "author": "obstetrics",
+              "body": "BIRTHING CENTER, COMMUNITY HOSPITAL - MATERNAL DISCHARGE SUMMARY\nAdmit: 01/26/2024  Discharge: 01/28/2024\n\nAdmission diagnosis: preterm labor at 34w0d; pregnancy complicated by fetal growth restriction.\nDischarge diagnosis: spontaneous preterm vaginal delivery at 34w0d.\n\nCourse: Presented in spontaneous labor with regular contractions and cervical change; membranes intact on arrival. Progressed without augmentation to an uncomplicated spontaneous vaginal delivery. Infant small for gestational age, admitted to the special care nursery for prematurity; mother visiting and pumping. Estimated blood loss within normal limits. Postpartum course uneventful.\n\nMedications at discharge: sertraline 50 mg daily (continue); vitamin D3 2000 units daily. Hormone therapy remains on hold until the postpartum visit.\nAllergies: latex (latex-free precautions observed), sulfonamides.\n\nFollow-up: postpartum visit with obstetrics in about 6 weeks; primary care as scheduled. Return precautions reviewed, including mood symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-13T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum check-in",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-02-13T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-02-13T13:25",
+              "author": "PCP",
+              "body": "Video, pt at home with the baby, who came home from the nursery last week.\n\nDelivered at 34 weeks on 1/26, vaginal, baby was small and spent time in the special care nursery, now home and feeding. She is tired in the expected way, sleeping in short stretches, partner helping with nights. Mood: tearful once or twice in the first week, nothing since; enjoying the baby. No intrusive thoughts, no thoughts of self-harm. Eating three meals; aware that the postpartum period is a vulnerable time for eating disorder relapse and has her old therapist's number.\nPHQ-9 4.\n\nA/P\n- Postpartum, 2.5 weeks, mood stable on sertraline 50. Continue; compatible with breastfeeding/pumping.\n- Hx IUGR pregnancy and preterm delivery noted to the history.\n- HRT on hold, OB will address at postpartum visit.\nCheck in by portal anytime; physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "outside_records",
+          "start": "2024-03-13T15:20",
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary ovarian insufficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics postpartum visit",
+              "date": "2024-03-13T15:20",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS - POSTPARTUM VISIT\nDate of service: 03/08/2024\n\nSix weeks after preterm vaginal delivery at 34 weeks. Recovering well; lochia has stopped. Baby gaining weight. Mood good, followed by primary care on sertraline.\n\nExam: abdomen soft, fundus not palpable. Perineum healed.\n\nHer primary ovarian insufficiency is unchanged by the pregnancy. Restarting estradiol 1 mg / norethindrone acetate 0.5 mg daily. Discussed that hormone therapy is not contraception; she understands.\n\nAllergies: latex, sulfa.\nReturn to gynecology yearly.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline",
+              "date": "2024-06-18T08:50",
+              "author": "MA",
+              "body": "Refill sertraline 50 mg, 90 days x 3 refills, sent to her pharmacy. Physical scheduled 9/10."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              84
+            ],
+            "hr": 68,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 46.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 97
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-10T09:05",
+              "author": "PCP",
+              "body": "27 y/o here for physical. Baby is 7 months and thriving. Back teaching part time. HRT restarted by OB in March. Sertraline daily.\n\nMeds: sertraline 50 mg daily; estradiol 1 mg/norethindrone acetate 0.5 mg daily; vitamin D3 2000 units daily.\nAllergies: latex, sulfa.\nPMH: MDD, AN in remission, POI, preterm delivery 1/2024 (IUGR pregnancy).\n\nNo concerns about eating. Weight back to her usual. Sleep better.\n\nExam unremarkable: HEENT nl, thyroid nl, RRR, CTA, abd soft, no edema, skin clear. Mood good.\nPHQ-9 3.\n\nPlan: CBC, CMP. Flu and COVID at a nurse visit in October. Pap next due 2026. Continue all meds. RTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "nurse_visit",
+          "start": "2024-10-02T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-02T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-02T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-02T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2024-10-02T16:45",
+              "author": "RN",
+              "body": "2024-25 flu (trivalent) IM L deltoid and 2024-25 COVID IM R deltoid. Latex-free. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "med check",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "annual_physical",
+          "start": "2025-05-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              71
+            ],
+            "hr": 81,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 46.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-13T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-05-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-05-13T08:40",
+              "author": "PCP",
+              "body": "Physical; she cancelled her February video check (sick kid), rolled into today.\n\nDoing well. Toddler walking. Teaching four days a week again. Mood stable. Eating regularly, no restricting. On HRT, bleeding pattern irregular but light. Sees gyn yearly, due in the fall.\n\nMeds unchanged: sertraline 50, estradiol/norethindrone 1/0.5, D3 2000 units. Allergies latex, sulfa.\n\nExam: well-appearing. Thyroid nl. Heart RRR, lungs clear. Abdomen soft, nontender, no masses. No edema. Affect bright.\nPHQ-9 2.\n\nA/P: MDD in remission, continue sertraline. POI on HRT. AN in remission. Labs CBC/CMP. Vaccines in the fall. Pap due 2026. RTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "portal_message",
+          "start": "2025-05-14T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-05-14T12:30",
+              "author": "PCP",
+              "body": "All normal from your physical: blood counts, electrolytes, kidney and liver tests. Nothing to change. Have a good recital season."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-30T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-30T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-09-30T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-09-30T15:55",
+              "author": "RN",
+              "body": "Seasonal flu IM R deltoid, 2025-26 Moderna COVID IM L deltoid. Latex-free gloves and bandage. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "portal_message",
+          "start": "2025-10-16T20:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bloated",
+              "date": "2025-10-16T20:48",
+              "author": "patient",
+              "body": "For the past few weeks my stomach has felt bloated and my waistbands are tight, and I get full fast. Also really tired but the studio has been nuts. I have my yearly gyn appointment next Wednesday. Should I come in before that or is it fine to wait?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bloated",
+              "date": "2025-10-17T08:15",
+              "author": "PCP",
+              "body": "Thanks for letting me know. Since you see gyn on Wednesday, keep that appointment and make sure they examine your belly and pelvis for this. If you develop significant pain, vomiting, fever, or can't eat, call us the same day and we'll see you. Let me know what they find."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "outside_records",
+          "start": "2025-10-24T11:45",
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-10-22T14:00",
+              "text": "Transabdominal and transvaginal technique. Uterus normal in size and contour; endometrium thin. No intrauterine gestational sac. Right adnexa: large heterogeneous solid and cystic mass arising from the right ovary, measuring 13.6 x 11.0 x 10.2 cm, with internal areas of necrosis and hemorrhage. Left ovary not well seen. No free fluid.",
+              "conclusion": "Large heterogeneous right ovarian mass with necrosis and hemorrhage. No intrauterine pregnancy.",
+              "issued": "2025-10-22T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit",
+              "date": "2025-10-24T11:45",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY - VISIT NOTE\nDate of service: 10/22/2025\n\nDeborah is 28 and came for her annual visit with a month of bloating that has been building gradually, getting full after small meals, and more fatigue than usual, which she had chalked up to work. Her clothes are tight at the waist. On hormone therapy her bleeding has been irregular with occasional skipped bleeds, and she has had none for close to two months. She is sexually active and not using contraception. No weight loss, no fever, no blood in the stool or black stools.\n\nHistory: primary ovarian insufficiency diagnosed 2022; anorexia nervosa in remission; depression on sertraline; one pregnancy with fetal growth restriction, delivered preterm at 34 weeks in January 2024.\nMedications: estradiol 1 mg/norethindrone acetate 0.5 mg daily; sertraline 50 mg daily; vitamin D3 2000 units daily.\nAllergies: latex, sulfa.\nFamily history: mother breast cancer at 51; maternal grandmother ovarian cancer at 47; sister BRCA1 carrier.\n\nExam: abdomen distended but soft; a firm, mobile mass is palpable in the lower abdomen. Pelvic exam: right adnexal mass.\n\nStudies: serum alpha-fetoprotein and beta-hCG both elevated. Transvaginal ultrasound in the office shows a large heterogeneous right ovarian mass with areas of necrosis and hemorrhage, and no intrauterine pregnancy.\n\nAssessment: complex right ovarian mass, concerning for malignancy.\nPlan: urgent referral to gynecologic oncology, who will arrange CA-125 and staging imaging. Discussed with Deborah in detail; she has my direct line.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "telephone",
+          "start": "2025-10-27T12:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call",
+              "date": "2025-10-27T12:40",
+              "author": "PCP",
+              "body": "Called Deborah after receiving the gyn note. She knows the mass is suspicious. Gyn onc appointment Thursday, blood work and CT Wednesday. Scared, but has her partner and her mother helping with the baby. Sleeping poorly. No pain, eating small amounts. We talked through what to expect at the consult. Continue sertraline. She'll message after the visit; told her to call any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "outside_records",
+          "start": "2025-11-03T09:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-29T08:00",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 212
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-10-29T09:30",
+              "text": "CT of the chest with intravenous contrast. Lungs clear without nodules or consolidation. No pleural or pericardial effusion. No mediastinal, hilar or axillary lymphadenopathy. Heart size normal.",
+              "conclusion": "No evidence of thoracic disease.",
+              "issued": "2025-10-29T15:10"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-10-29T09:30",
+              "text": "CT of the abdomen and pelvis with oral and intravenous contrast. Complex solid and cystic right adnexal mass measuring about 13.5 cm in greatest dimension, displacing bowel superiorly. No ascites. No peritoneal or omental nodularity. No retroperitoneal or pelvic lymphadenopathy. Liver, spleen, pancreas, adrenals and kidneys normal. Uterus normal. No hydronephrosis. Bowel without obstruction.",
+              "conclusion": "Large complex right adnexal mass. No ascites, lymphadenopathy, peritoneal disease or distant spread.",
+              "issued": "2025-10-29T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology consultation",
+              "date": "2025-11-03T09:40",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - NEW PATIENT CONSULTATION\nDate of service: 10/30/2025\nReferred by: outside gynecology; copy to primary care\n\n28-year-old with primary ovarian insufficiency on hormone therapy, depression, and anorexia nervosa in remission, referred for a large right ovarian mass. Symptoms: about a month of bloating, early satiety and fatigue. AFP and beta-hCG were reported elevated at the referring office.\n\nCA-125 on 10/29: 212 U/mL.\nCT chest/abdomen/pelvis 10/29: complex right adnexal mass about 13.5 cm; no ascites, adenopathy, peritoneal or distant disease.\n\nExam: thin, well appearing. Abdomen soft, mildly distended; firm mobile mass rising out of the pelvis. No lymphadenopathy.\n\nAssessment: large right adnexal mass, imaging suggesting disease confined to the pelvis. The marker pattern raises a germ cell tumor alongside an epithelial cancer; pathology will decide.\nPlan: exploratory laparotomy with frozen section and full surgical staging. Given primary ovarian insufficiency and the family history, she does not wish to preserve the uterus or the opposite ovary if the frozen section shows an epithelial cancer; consented accordingly. Germline genetic testing to follow the pathology. Surgery booked for 11/06.\n\nAllergies: LATEX, sulfa - latex-safe OR.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "telephone",
+          "start": "2025-11-12T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-11-12T11:15",
+              "author": "RN",
+              "body": "Notified by the hospital of discharge on 11/10 after surgery 11/6. Called pt. Incision intact, mild soreness managed with the pain medication from the hospital. Eating, bowels moving, walking around the house. No fever. Mother staying with her. Has the gyn onc post-op visit 11/20. Reminded her to keep taking sertraline. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "outside_records",
+          "start": "2025-11-14T14:25",
+          "conditions": [
+            {
+              "label": "Serous cystadenocarcinoma of ovary",
+              "action": "diagnosed",
+              "onset": "2025-10-22",
+              "note": "high-grade serous, right ovary, FIGO IC1",
+              "icd10": "C56.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "hysterectomy and oophorectomy for ovarian cancer"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-11-06T08:30",
+              "text": "Specimens: A) right ovary and fallopian tube; B) left ovary and fallopian tube; C) uterus and cervix; D) omentum; E) right pelvic lymph nodes; F) left pelvic lymph nodes; G) para-aortic lymph nodes; H) peritoneal washings.\nA) High-grade serous carcinoma (serous cystadenocarcinoma) of the right ovary, 13.4 cm. Capsule ruptured during removal; no tumor on the ovarian surface. Extensive sampling shows no germ cell or sex cord-stromal component. Right fallopian tube without carcinoma.\nB) Left ovary and fallopian tube: no carcinoma.\nC) Uterus and cervix: no carcinoma; inactive endometrium.\nD) Omentum: no carcinoma.\nE-G) Lymph nodes: 0 of 16 involved.\nH) Washings: negative for malignant cells.\nPathologic stage: FIGO IC1.",
+              "conclusion": "High-grade serous carcinoma of the right ovary, FIGO stage IC1 (intraoperative rupture); lymph nodes 0/16; washings negative.",
+              "issued": "2025-11-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Surgical discharge summary",
+              "date": "2025-11-14T14:25",
+              "author": "gynecologic oncology",
+              "body": "DISCHARGE SUMMARY - GYNECOLOGIC ONCOLOGY SERVICE\nAdmitted 11/06/2025, discharged 11/10/2025\n\nProcedure 11/06: exploratory laparotomy, total abdominal hysterectomy, bilateral salpingo-oophorectomy, omentectomy, pelvic and para-aortic lymph node sampling, peritoneal washings. Frozen section of the right ovary: epithelial carcinoma, so full staging was completed. Capsule ruptured during removal. No visible disease remained.\n\nCourse: recovered on the ward without complications. Diet advanced, ambulating, pain controlled on oral medication by discharge.\n\nFinal pathology (signed 11/12): high-grade serous carcinoma of the right ovary, FIGO IC1; nodes 0/16, washings negative. No germ cell component.\n\nMedications at discharge: sertraline 50 mg daily; vitamin D3 2000 units daily; short course of oral analgesics. Estradiol/norethindrone discontinued.\nAllergies: latex, sulfonamides.\n\nFollow-up: gynecologic oncology clinic 11/20 to plan adjuvant chemotherapy; genetics referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "outside_records",
+          "start": "2025-11-25T10:10",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-20T09:00",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "text": "Within reference range"
+                },
+                {
+                  "test": "Choriogonadotropin beta subunit",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "Within reference range"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology post-operative visit",
+              "date": "2025-11-25T10:10",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - POST-OP VISIT\nDate of service: 11/20/2025\n\nTwo weeks out. Incision healing well, eating, walking a mile a day. AFP and beta-hCG today both within the reference range.\n\nPathology reviewed together: high-grade serous carcinoma of the right ovary, stage IC1 from rupture at surgery. Because of the high grade and the rupture, I recommend six cycles of adjuvant carboplatin (AUC 6) and paclitaxel (175 mg/m2) every 21 days, first cycle 12/03. Reviewed hair loss, neuropathy, fatigue, infection and blood count risks. Germline genetic panel sent today through our genetics counselor.\n\nWe also discussed hormone replacement: she is now surgically menopausal on top of POI. We will hold it through chemotherapy and revisit at the end of treatment.\n\nAllergies: latex, sulfa.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after surgery",
+          "medications": [
+            {
+              "drug_text": "carboplatin 10 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "AUC 6 IV every 21 days for 6 cycles, given at the cancer center",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Serous cystadenocarcinoma of ovary"
+            },
+            {
+              "drug_text": "paclitaxel 6 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "175 mg/m2 IV every 21 days for 6 cycles, given at the cancer center",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Serous cystadenocarcinoma of ovary"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              76
+            ],
+            "hr": 81,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 44.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-09T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-09T10:40",
+              "author": "PCP",
+              "body": "Seeing her after ovarian cancer surgery and the first chemo cycle.\n\nTimeline: right ovarian mass found by gyn 10/22, staging CT without spread, laparotomy with TAH/BSO and staging 11/6. High-grade serous carcinoma, stage IC1, nodes negative. Carboplatin/paclitaxel x6 started 12/3, cycles every 3 weeks through March. HRT stopped at surgery; gyn onc to revisit after chemo. Genetics panel pending.\n\nSince cycle 1: tired for 4-5 days, some nausea managed with the cancer center's plan, eating smaller amounts more often. Hair starting to thin, has a scarf. Mood: frightened at diagnosis, steadier now that there is a plan. Not restricting; she is mindful that low appetite and weight loss could pull her back toward old patterns and has reconnected with her former therapist. Partner and mother sharing childcare. Taking leave from teaching through spring.\n\nExam: thin, tired-appearing. Midline incision well healed. Abdomen soft, nontender. Lungs clear, RRR. No edema. Affect appropriate.\nPHQ-9 5.\n\nA/P\n1. Ovarian cancer, high-grade serous, IC1 - on adjuvant chemo with gyn onc. Lists updated.\n2. MDD - stable, continue sertraline 50. Low threshold to increase if mood dips during treatment; she'll message.\n3. AN in remission - weight down a little since surgery, eating; will watch weights.\n4. POI/surgical menopause - HRT on hold per gyn onc.\nFlu and COVID done in September. No Pap needed going forward after hysterectomy for this indication; will confirm surveillance plan with gyn onc.\nRTC 3 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 45.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "outside_records",
+          "start": "2026-01-06T13:15",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Genetic counseling result letter",
+              "date": "2026-01-06T13:15",
+              "author": "genetics",
+              "body": "CANCER GENETICS PROGRAM - RESULT LETTER\nResult date: 12/29/2025\n\nIndication: high-grade serous ovarian carcinoma at 28; family history of breast cancer (mother, 51), ovarian cancer (maternal grandmother, 47), and a sister with a known BRCA1 pathogenic variant.\n\nTest: hereditary cancer multigene panel, sequencing and deletion/duplication analysis, including BRCA1 and BRCA2.\n\nResult: NEGATIVE. No pathogenic or likely pathogenic variants detected. Specifically, she did not inherit her sister's BRCA1 variant.\n\nInterpretation: her ovarian cancer does not appear to be due to the family's BRCA1 variant. Treatment and surveillance follow the standard approach for her cancer. Her breast screening should still reflect her family history; we will send recommendations to her primary care physician at the appropriate age.\n\nReviewed with the patient by phone on 12/29/2025.\n\nGenetic Counselor, Cancer Genetics Program"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T14:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Teaching",
+              "date": "2026-01-20T14:02",
+              "author": "patient",
+              "body": "Three cycles down. The tiredness is worse the week after each one. Is it ok for me to teach one adult class a week if I feel up to it? Gyn onc said ask my PCP about the work note."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Teaching",
+              "date": "2026-01-20T17:30",
+              "author": "PCP",
+              "body": "Halfway, well done. One class a week on your good weeks is reasonable; skip it the week after a cycle when your counts are lowest, and stay home if you have any fever. I've written a note limiting you to one class weekly through March and left it in your documents."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline",
+              "date": "2026-02-10T09:20",
+              "author": "MA",
+              "body": "Pharmacy request sertraline 50 mg 90-day supply. Approved, 1 refill, f/u booked 3/17."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "outside_records",
+          "start": "2026-02-18T11:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-04T08:15",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology treatment update",
+              "date": "2026-02-18T11:30",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - INTERVAL NOTE\nDate of service: 02/04/2026 (cycle 4 day 1)\n\nTolerating carboplatin/paclitaxel with fatigue the week after each cycle. Counts adequate for treatment today. CA-125 18 U/mL, down from 212 before surgery.\n\nProceed with cycle 4. Cycles 5 and 6 on 02/25 and 03/18. End-of-treatment CT about 4 weeks after cycle 6.\n\nAllergies: latex, sulfa.\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up during chemotherapy",
+          "vitals": {
+            "bp": [
+              107,
+              70
+            ],
+            "hr": 70,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 45.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-17T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-03-17T15:55",
+              "author": "PCP",
+              "body": "Last chemo cycle is tomorrow. Fatigue as before, worst the week after each cycle. Nausea controlled. CA-125 down to 18 in February per gyn onc. Genetics negative, which she found a relief for her child's sake and complicated for her sister's.\n\nMood holding up, PHQ-9 4. Seeing her therapist every other week. Eating three small meals plus snacks, weight steady since December. Teaching one adult class a week on good weeks.\n\nMeds: sertraline 50 daily, vitamin D3 2000 units; finishing carboplatin/paclitaxel at the cancer center. HRT on hold.\n\nExam: thin, alopecia, well-appearing otherwise. Lungs clear, RRR. Abdomen soft, incision healed. No edema. Affect bright today.\n\nA/P\n1. High-grade serous ovarian ca IC1 - final cycle tomorrow, then CT and surveillance with gyn onc.\n2. MDD - stable, continue sertraline.\n3. AN in remission - stable weight, good support.\n4. Surgical menopause/POI - HRT decision with gyn onc after treatment.\nRTC in about 6 months, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "outside_records",
+          "start": "2026-04-28T10:05",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-21T08:00",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-04-21T09:45",
+              "text": "CT of the chest with intravenous contrast. Lungs clear. No nodules, effusion or lymphadenopathy.",
+              "conclusion": "No evidence of thoracic disease.",
+              "issued": "2026-04-21T14:20"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-04-21T09:45",
+              "text": "CT of the abdomen and pelvis with oral and intravenous contrast. Post hysterectomy and bilateral salpingo-oophorectomy. No pelvic mass. No ascites. No peritoneal or omental nodularity. No lymphadenopathy. Liver, spleen, pancreas, adrenals and kidneys normal.",
+              "conclusion": "Expected post-surgical changes. No evidence of disease.",
+              "issued": "2026-04-21T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology end-of-treatment visit",
+              "date": "2026-04-28T10:05",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - END OF TREATMENT\nDate of service: 04/21/2026\n\nCompleted six cycles of carboplatin/paclitaxel, last on 03/18. Energy improving.\n\nCT chest/abdomen/pelvis today: no evidence of disease. CA-125 11 U/mL.\n\nHormone replacement: for a young woman with primary ovarian insufficiency now surgically menopausal after an early-stage serous cancer, the benefits to bone, heart and quality of life outweigh the risks in our view. Started estradiol 1 mg daily (no progestin needed after hysterectomy).\n\nSurveillance: visit with exam and CA-125 every 3 months for the first two years; imaging as symptoms or markers dictate.\n\nCurrent medications: estradiol 1 mg daily; sertraline 50 mg daily; vitamin D3 2000 units daily.\nAllergies: latex, sulfa.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T08:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline",
+              "date": "2026-05-12T08:40",
+              "author": "MA",
+              "body": "E-refill sertraline 50 mg, 90 days. Sent. Seen 3/17/26."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "outside_records",
+          "start": "2026-07-27T15:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-21T08:30",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology surveillance visit",
+              "date": "2026-07-27T15:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate of service: 07/21/2026\n\nThree months after treatment. Feels well; hair returning; back to teaching three days a week. Tolerating estradiol without problems. Exam: abdomen soft, no masses; pelvic exam with vaginal cuff intact, no masses. CA-125 9 U/mL.\n\nImpression: no evidence of disease.\nPlan: return in 3 months with CA-125.\n\nAllergies: latex, sulfa.\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-08-11T19:30",
+              "author": "patient",
+              "body": "Hi, I'm due to come back in September. Do you have anything on a Thursday morning? I teach afternoons."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-08-12T09:10",
+              "author": "front desk",
+              "body": "You're booked Thursday 9/10 at 9:30. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:30",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anorexia nervosa, in remission|F50.00": {
+        "code": "F50.00",
+        "display": "Anorexia nervosa, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of preterm delivery|Z87.51": {
+        "code": "Z87.51",
+        "display": "Personal history of pre-term labor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypergonadotropic hypogonadism|E28.39": {
+        "code": "E28.39",
+        "display": "Other primary ovarian failure",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Intrauterine Growth Restriction|O36.5930": {
+        "code": "O36.5930",
+        "display": "Maternal care for other known or suspected poor fetal growth, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder|F32.9": {
+        "code": "F32.9",
+        "display": "Major depressive disorder, single episode, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary amenorrhea|N91.1": {
+        "code": "N91.1",
+        "display": "Secondary amenorrhea",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Serous cystadenocarcinoma of ovary|C56.1": {
+        "code": "C56.1",
+        "display": "Malignant neoplasm of right ovary",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "carboplatin 10 MG/ML Injectable Solution": {
+        "code": "597195",
+        "display": "carboplatin 10 MG/ML Injectable Solution",
+        "ingredient": "carboplatin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet": {
+        "code": "1359127",
+        "display": "{28 (estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet) } Pack",
+        "ingredient": "estradiol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "paclitaxel 6 MG/ML Injectable Solution": {
+        "code": "312199",
+        "display": "paclitaxel 6 MG/ML Injectable Solution",
+        "ingredient": "paclitaxel",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Alpha-1-Fetoprotein": {
+        "code": "1834-1",
+        "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Cancer Antigen 125": {
+        "code": "10334-1",
+        "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Choriogonadotropin beta subunit": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001951",
+      "events": [
+        {
+          "id": "2026-01-29a",
+          "kind": "portal_message",
+          "start": "2026-01-29T21:14",
+          "reason": "New bump, genital area",
+          "orders": [
+            {"id": "gyn-referral-2026", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "New external genital lesion, history of condylomata"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New bump",
+              "author": "patient",
+              "date": "2026-01-29T21:14",
+              "body": "Hi — about a week ago I noticed a new bump down near the vaginal opening, kind of toward the back. Doesn't hurt or itch, no discharge. I'm assuming it's the same wart thing as last year?? Do I go back to derm or do you want to see it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: New bump",
+              "author": "PCP",
+              "date": "2026-01-30T08:10",
+              "body": "Thanks for letting me know early. It may well be the same thing, but since it's in the genital area rather than around the anus, I'd like gynecology to take this one — they can examine it fully, including a speculum exam, and treat it in the office. I've put in the referral today; they should call within a few days. Message me if it grows quickly, bleeds or becomes painful before then."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral coordination",
+              "author": "MA",
+              "date": "2026-01-30T14:35",
+              "body": "Gyn referral faxed with last office note, derm letters and 2/2025 pathology. Gyn office confirmed receipt; pt scheduled 2/16."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "specialist_visit",
+          "start": "2026-02-16T13:40",
+          "service": "Gynecology",
+          "reason": "External genital lesion",
+          "conditions": [
+            {"label": "Condylomata acuminata", "icd10": "A63.0", "action": "diagnosed", "onset": "2026-01-22", "note": "Recurrence near the perineum; treated by gynecology"}
+          ],
+          "orders": [
+            {"id": "gyn-referral-2026", "action": "done", "date": "2026-02-16T13:40"}
+          ],
+          "procedures": [
+            {"procedure": "Destruction of benign lesions, up to 14", "performed": "2026-02-16T14:05"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2026-02-18T10:30",
+              "body": "OUTSIDE OB/GYN PRACTICE — NEW CONSULTATION\nDate of service: 02/16/2026\nReason for referral: new external genital growth\n\nHPI: 31-year-old who comes in with a growth by the external genitalia. She had perianal condylomata in February 2025, treated by dermatology with cryotherapy and cleared. She first saw the new lesion a few weeks ago and thinks it has been slowly enlarging. No pain, discharge or pruritus.\n\nPMH: perianal condylomata acuminata (2025), treated. Otherwise in good health. Most recent cervical screening normal.\nPSH: tonsillectomy, age 8.\nMedications: ethinyl estradiol/norgestimate, 1 tab daily.\nAllergies: NKDA.\nFamily history: breast cancer in her mother at 55; type 2 diabetes in her father.\nSocial: one male partner; condoms used inconsistently. Nonsmoker.\n\nExam: External genitalia — a single soft, exophytic lesion adjacent to the perineum, formed of multiple small projections giving it an irregular, cauliflower-like surface. No inguinal lymphadenopathy. Speculum examination: vaginal walls and cervix without additional lesions. Bimanual not indicated.\n\nAssessment: recurrent condyloma acuminatum, perineal.\n\nProcedure: cryotherapy with liquid nitrogen to the lesion, two freeze-thaw cycles, after verbal consent. Tolerated well.\n\nCounseling: recurrence after clearance is common; consistent condom use reduces but does not eliminate transmission. Aftercare reviewed.\n\nPlan: recheck in 4 weeks; retreat if residual.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "specialist_visit",
+          "start": "2026-03-16T15:20",
+          "service": "Gynecology",
+          "reason": "Follow-up, condyloma",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-up",
+              "author": "gynecology",
+              "date": "2026-03-18T09:15",
+              "body": "OUTSIDE OB/GYN PRACTICE — FOLLOW-UP\nDate of service: 03/16/2026\n\nFour weeks after cryotherapy. Patient reports the area blistered and then healed; she has seen nothing new.\nExam: treated perineal site fully healed; no residual or new condylomata on external inspection. No inguinal nodes.\n\nAssessment: recurrent condyloma acuminatum, resolved after single cryotherapy treatment.\nPlan: no further treatment needed. Return or contact PCP for any new lesions. Cervical screening per her primary care schedule.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "pharmacy",
+          "start": "2026-03-19T08:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill",
+              "author": "MA",
+              "date": "2026-03-19T08:30",
+              "body": "Pharmacy request, norgestimate/ethinyl estradiol 0.25/0.035, 90 days. BP normal 8/2025. Routed."
+            },
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill approved",
+              "author": "PCP",
+              "date": "2026-03-19T10:40",
+              "body": "OK to refill through the August physical. Also read gyn's recheck note — glad it's cleared."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "annual_physical",
+          "start": "2026-08-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {"label": "Condylomata acuminata", "icd10": "A63.0", "action": "resolved", "note": "Perineal recurrence cleared after gynecology cryotherapy, March 2026"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-11T08:40", "resulted": "2026-08-12T07:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-08-11T08:40", "resulted": "2026-08-12T07:15", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-08-11T08:40", "resulted": "2026-08-12T07:15", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-08-11T08:00"},
+            {"procedure": "Venipuncture", "performed": "2026-08-11T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-08-11T09:15",
+              "body": "32F, yearly visit.\nSince last year: one recurrence of condyloma near the perineum in late January; gyn froze it on 2/16 and it was gone at the 3/16 recheck. Nothing new since March. Feels well otherwise; work steady, running 3x/week. Same partner.\nMeds: norgestimate/EE daily, no missed pills or spotting. NKDA. Nonsmoker; alcohol 2-3/wk.\nROS: no headaches, chest pain, dyspnea, leg swelling.\n\nExam: NAD. BP normal. HEENT unremarkable. Thyroid not palpable. RRR, no murmur. Lungs clear. Breasts without masses or axillary nodes. Abdomen soft, NT. External genital and perianal inspection (chaperone present): no lesions. No inguinal adenopathy. Skin otherwise clear. No edema.\nPHQ-2: 0.\n\nA/P\n1. Condylomata acuminata — recurrence resolved after gyn treatment; back to resolved. Message early if anything returns.\n2. Contraception — continue OCP, refills sent for a year.\n3. Health maintenance — CBC, CMP, lipids today. Pap/HPV due 2029. Mammography at 40 per mom's history. Flu shot this fall — she'll book a visit for that.\nRTC October for flu shot/contraception check, then annual next August."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bloodwork",
+              "author": "PCP",
+              "date": "2026-08-12T16:05",
+              "body": "Hi Beth — labs are back and all normal: blood counts, kidney and liver function, sugar, and cholesterol. Nothing to change. See you in October for the flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T13:22",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "October visit",
+              "author": "patient",
+              "date": "2026-08-20T13:22",
+              "body": "Hi, can I grab a slot in October for the flu shot? Tuesdays around lunch work best for me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: October visit",
+              "author": "front desk",
+              "date": "2026-08-21T09:00",
+              "body": "You're booked Tuesday 10/20 at 12:15. Reminder will come the week before."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "office_visit",
+          "start": "2026-10-20T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine and contraception check",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

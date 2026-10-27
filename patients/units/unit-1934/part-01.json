@@ -1,0 +1,329 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001934",
+      "given": "Kimberly",
+      "family": "Russo",
+      "birth_date": "1994-01-10",
+      "address_line": "36 Comins Way, Apt 2",
+      "phone": "+1-860-555-0110",
+      "email": "kimberly.russo@example.test",
+      "marital_status": "single",
+      "summary": "Young associate attorney with chronic tension-type headache who joined in 2024, saw outside psychiatry for stress and irritability when her sister moved in, and in July 2026 was hospitalized with acute liver failure from unintentional repeated acetaminophen overuse. The practice last saw her in November 2025 and learns of the admission through records; a follow-up visit is booked.",
+      "events": [
+        {
+          "id": "2024-08-13a",
+          "kind": "telephone",
+          "start": "2024-08-13T10:05",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-08-13T10:05",
+              "body": "Caller is looking for a new primary doctor; has not had one locally since moving here for work. Membership terms reviewed and agreement emailed. Booked new patient visit Tue 8/20 at 8:00, she asked for the earliest slot because of work. Asked her to have old office send records; release form sent to her email."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T08:00",
+          "end": "2024-08-20T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {"label": "Tension-type headache", "action": "history", "onset": "2021-09-01", "note": "chronic; patient-reported onset 2021"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 60.5, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Occupation", "value": "Junior associate attorney, large law firm"},
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-20T08:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-08-20T08:55", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.62}]},
+            {"panel": null, "collected": "2024-08-20T08:55", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-08-20T08:55", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, low MDM", "performed": "2024-08-20T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-08-20T08:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-20T08:00",
+              "body": "NEW PATIENT\n\n30 y/o woman establishing care. Last primary care was a couple of years ago, records requested.\n\nHPI: Mostly well. Has had headaches since about 2021, the second year at the firm. Describes a band-like pressure across the forehead and both temples, comes on later in the workday, a few days a week, never wakes her, no aura, no vomiting, no weakness or numbness, no visual change. Not the worst headache of her life ever. Says they are \"just part of the job.\" Previously told tension-type. No meds on a regular basis.\n\nPMH: chronic tension-type headache. PSH: none. Meds: none. Allergies: NKDA.\nFH: mother - generalized anxiety; father - migraines; one younger sister - depression.\nSH: junior associate at a large law firm, long hours. Never smoker, no alcohol, no drugs. Lives alone, single.\nGYN: Pap/HPV at old office last year, she believes normal.\nImm: thinks Tdap was in 2019.\n\nExam: Well appearing, pleasant. HEENT normal, fundi with sharp disc margins. Neck supple, no LAD, thyroid not enlarged. Heart RRR no murmur. Lungs clear. Abd soft NT. Neuro: CN II-XII intact, strength and sensation normal, reflexes symmetric, gait normal. Mild tenderness over trapezius bilaterally. Skin clear.\nPHQ-2 0.\n\nA/P:\n1. Chronic tension-type headache - longstanding, features typical, normal neuro exam, no red flags. Discussed sleep, breaks from the screen, posture, regular meals. Keep a headache diary if they change.\n2. Health maintenance - CBC, CMP, lipids, TSH; offered and accepted one-time HIV and hep C screening. Records from prior office for Pap and Tdap. Flu and COVID in October.\nRTC for annual, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T17:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-08-22T17:40",
+              "body": "Hi Kimberly, all of your bloodwork from Tuesday is normal: blood counts, kidney and liver tests, thyroid, cholesterol, and the HIV and hepatitis C screens are both negative. Nothing to do. Nice to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "outside_records",
+          "start": "2024-09-04T11:20",
+          "reason": "Records from prior primary care office",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2023-04-11T10:00", "text": "Specimen: ThinPrep cervical cytology with high-risk HPV co-test. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-05-14T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "MA",
+              "date": "2024-09-04T11:20",
+              "body": "Records arrived by fax from previous PCP office (14 pages). Abstracted: Pap with HPV co-test 4/2023 negative/negative. Tdap 5/2019. Problem list there: tension headache. No meds, NKDA. No hospitalizations. Imm history updated. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T07:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T07:52"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T07:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2024-10-08T07:45",
+              "body": "In before work for seasonal shots. Afebrile, feels well, no prior reactions. Flu vaccine L deltoid, 2024-25 COVID vaccine R deltoid. VIS given. Waited 15 min without problems."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "office_visit",
+          "start": "2024-12-04T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches more frequent, irritability",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "GAD-7 total score", "value": 4}
+          ],
+          "orders": [
+            {"id": "psych-referral", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "irritability and stress with worsening tension headaches"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-04T12:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-12-04T12:30",
+              "body": "S: Came in on her lunch hour. Last 6 weeks or so the headaches are coming most days instead of a few a week, same squeezing pattern, plus her neck and shoulders feel tight and stiff by evening. The bigger complaint for her is her temper. She has been short with everyone, and particularly with her younger sister, who moved in with her this fall; she ends up yelling over small things and feeling awful about it afterwards. Work has ramped up with a big trial coming, and the partner she reports to is harsh with her; she doesn't feel she can push back without risking her job. Mood itself OK, still enjoys things, sleeping and eating normally. No fever, no vision change, no weakness, no positional or exertional headache.\n\nO: Vitals reviewed, normal. Tired appearing but engaged. Neck supple, full ROM, no meningeal signs; paraspinal and trapezius muscles tight. Fundi normal. Neuro nonfocal. PHQ-9 3, GAD-7 4.\n\nA/P:\nChronic tension-type headache, more frequent with stress. No red flag features, exam normal; no imaging indicated.\nIrritability and stress at home and work. Screens low, she does not describe depression. She would like to talk to someone and asked whether a psychiatrist should see her given her family history. Referral placed to outpatient psychiatry for evaluation. Heat and stretching for the neck. Follow up after she is seen."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Psychiatry",
+              "author": "PCP",
+              "date": "2024-12-04T13:20",
+              "body": "Please evaluate this 30 year old attorney with about six weeks of irritability, interpersonal conflict at home (younger sister recently moved in) and heavy work stress, along with an increase in her chronic tension-type headaches. PHQ-9 3, GAD-7 4. Family history of anxiety in her mother and depression in her sister. No medications, NKDA. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "specialist_visit",
+          "start": "2024-12-23T15:00",
+          "service": "Psychiatry",
+          "reason": "Outpatient psychiatric evaluation",
+          "orders": [
+            {"id": "psych-referral", "action": "done", "date": "2024-12-23T15:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2024-12-30T09:10",
+              "body": "OUTPATIENT PSYCHIATRY - CONSULTATION LETTER\nDate of evaluation: 12/23/2024\nReason for referral: irritability, stress, headaches\n\nThank you for asking us to see Ms. Russo, a 30 year old attorney.\n\nShe describes roughly two months of near-daily headaches with neck stiffness and a short fuse. By her account she has been losing her temper with people generally, and most with her younger sister, who has recently come to live with her; afterwards she feels guilty. Her caseload has grown sharply ahead of a high-profile trial and her supervising partner is frequently harsh with her. She has not raised this with him because she worries about her position. She denies low mood, loss of interest, and changes in sleep or appetite. No suicidal thoughts. No prior psychiatric treatment.\n\nMedical: chronic tension-type headache. Medications: none. Allergies: none known.\nFamily: mother with generalized anxiety disorder, father with migraines, younger sister with depression (currently living with the patient).\nSocial: no alcohol, never smoked.\n\nVital signs within normal limits. General exam unremarkable. MSE: well groomed, cooperative, speech normal, mood \"stressed,\" affect full and appropriate, thought process linear, no SI/HI, insight and judgment good.\n\nImpression: Irritability and tension in the setting of heavy occupational stress and a recent change in her household, with an increase in her chronic tension-type headaches. She does not meet criteria for a depressive disorder on today's evaluation, and we have not made a new psychiatric diagnosis.\n\nRecommendations:\n- Short-term counseling focused on stress management and communication; list of community therapists provided.\n- No psychiatric medication recommended at this time.\n- Happy to see her again if symptoms worsen or mood changes.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "portal_message",
+          "start": "2025-01-06T21:14",
+          "reason": "Therapist question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Therapist list",
+              "author": "patient",
+              "date": "2025-01-06T21:14",
+              "body": "Hi, the psychiatrist gave me a list of counselors but half of them aren't taking new people. Does your office have anyone you'd recommend who has evening hours? Thanks - Kim"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Therapist list",
+              "author": "RN",
+              "date": "2025-01-07T09:02",
+              "body": "Hi Kim, Dr. asked me to send you a couple of names of local therapists who do evenings and take your plan; they're in your Letters tab now. Psych letter is in your chart as well. Let us know how it goes."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up headaches and stress",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-03-11T12:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-03-11T12:15",
+              "body": "Video, she is at her office with the door shut; two identifiers confirmed.\n\nSeen by psychiatry in December, letter reviewed: no new diagnosis, counseling recommended, no meds. She found a therapist with evening hours and has gone 5 or 6 times, finds it useful. Things with her sister are calmer. Trial still going. Headaches about the same as when I saw her, most weekdays, same pressure quality, nothing new. Neck still stiff by evening.\n\nAppears well on video, speech normal, no distress.\n\nA/P: chronic tension-type headache, stress - continue counseling, stretching, screen breaks. Return in a few months or sooner if the pattern changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T12:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up headaches",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "portal_message",
+          "start": "2025-06-18T10:25",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "We missed you yesterday",
+              "author": "front desk",
+              "date": "2025-06-18T10:25",
+              "body": "Hi Kimberly, we had you down for 12:40 yesterday with the doctor and didn't see you. Reply here or call when you want to reschedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: We missed you yesterday",
+              "author": "patient",
+              "date": "2025-06-18T13:51",
+              "body": "So sorry, got stuck in a deposition. I'm fine, nothing new. I'll just do my physical in the fall if that's ok."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T07:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T07:47"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-07T07:45"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2025-10-07T07:40",
+              "body": "Seasonal flu and 2025-26 COVID given, L and R deltoid respectively. Tolerated last year's without issue. No fever today. Observed, left at 7:58. Physical is on the books for end of November."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-28a",
+          "kind": "annual_physical",
+          "start": "2025-11-28T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1},
+            {"survey": "GAD-7 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-28T09:40", "resulted": "2025-11-28T15:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-28T09:40", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-11-28T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-11-28T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-11-28T09:00",
+              "body": "ANNUAL PREVENTIVE VISIT\n\nOff work for the holiday weekend, which is why she took this morning. Feels well. Headaches unchanged from spring: pressure type, most workdays, nothing new in character, no neuro symptoms. Neck tightness persists. Still seeing her counselor every few weeks. Sister now gets along better with her.\n\nMeds: none on her list. Allergies: NKDA.\nNever smoker, no alcohol. Regular cycles. Exercises 1-2x/week.\n\nROS otherwise negative.\n\nExam: Well. HEENT normal, fundi benign. Neck supple, thyroid normal, no nodes. CV regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Ext without edema. Skin no rash. Neuro: normal strength, sensation, reflexes, gait. Mood and affect appropriate.\nPHQ-2 1, GAD-7 3.\n\nA/P:\n- Health maintenance: CBC and CMP drawn. Lipids done last year, normal. Pap/HPV 2023 normal, next due 2028. Tdap 2019. Flu and COVID given 10/7.\n- Chronic tension-type headache: stable pattern. Continue the non-drug measures and counseling.\nReturn in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "portal_message",
+          "start": "2025-12-01T08:12",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical bloodwork",
+              "author": "PCP",
+              "date": "2025-12-01T08:12",
+              "body": "Kimberly - labs from Friday look good: normal blood counts, kidney and liver function. See you next year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

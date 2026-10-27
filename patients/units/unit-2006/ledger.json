@@ -1,9 +1,7 @@
 {
   "unit": "unit-2006",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002006/2021-09-22a: allergen \"Allopurinol\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002006",
@@ -792,6 +790,8 @@
           "allergies": [
             {
               "substance": "Allopurinol",
+              "snomed": "387135004",
+              "category": "medication",
               "reaction": "Rash",
               "severity": "severe",
               "criticality": "high",
@@ -4434,6 +4434,13 @@
         "display": "pH of Arterial blood",
         "unit": "[pH]",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Allopurinol": {
+        "code": "387135004",
+        "display": "Allopurinol",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

@@ -1,0 +1,290 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002808",
+      "events": [
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, myasthenia gravis",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-13T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-01-13T16:05",
+              "body": "Seen after her 12/31-1/3 admission from the neurology clinic (summary reviewed). The injection before dinner the first night made a striking difference, she says - first meal in weeks without stopping to rest her jaw. Now on pyridostigmine 60 mg before meals as needed; most days takes it before lunch and dinner, skips breakfast dose. Eyelids still droop some evenings, double vision much less. Back at work.\n\nMeds: pyridostigmine 60 mg PO up to QID PRN (30 mg PRN discontinued). NKDA.\n\nExam: vitals fine, weight steady. Ptosis minimal at 3:30 pm. EOM full without diplopia on brief testing. Neck flexion 5-/5. Speech normal. Lungs clear.\n\nA/P\n1. Myasthenia gravis, generalized, improved on pyridostigmine. Med list reconciled. Neuro f/u 3 months.\n2. Anterior mediastinal mass, 4.0 cm on inpatient CT, suspected thymoma - hem/onc referral from the hospital is in process; she has not heard yet, front desk to call and confirm it was received.\n3. RTC after the oncology visit or sooner."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Follow-up",
+              "author": "front desk",
+              "date": "2026-01-14T10:30",
+              "body": "Called the hematology/oncology office - referral from the hospital received, they are scheduling new patients for April. Pt informed, she'll take the first available."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "pharmacy",
+          "start": "2026-02-24T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pyridostigmine Refill",
+              "author": "MA",
+              "date": "2026-02-24T09:10",
+              "body": "Electronic refill request: pyridostigmine 60 mg tab, #120. Hospital discharge Rx had no refills and neurology has not seen her since. Per PCP OK x 2 refills until neuro follow-up. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "specialist_visit",
+          "start": "2026-04-20T10:30",
+          "service": "Hematology and Oncology",
+          "reason": "Anterior mediastinal mass",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Thymoma", "icd10": "D15.0", "action": "diagnosed", "onset": "2025-07-23", "note": "clinical and radiographic diagnosis, anterior mediastinal mass with AChR-positive myasthenia gravis"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-04-20T11:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-04-20T11:30",
+              "text": "PA and lateral chest. Comparison radiograph 07/23/2025 and CT 01/01/2026. The mediastinum is widened by the known anterior mediastinal soft-tissue mass, best seen filling the retrosternal space on the lateral view. Lungs clear. No effusion. Heart size normal. Bones intact.",
+              "conclusion": "Widened mediastinum corresponding to the known anterior mediastinal mass. No acute cardiopulmonary process."
+            }
+          ],
+          "orders": [
+            {"id": "hemonc-2026", "action": "done", "date": "2026-04-20T10:30"},
+            {"id": "thoracic-2026", "action": "placed", "order": "Thoracic surgery referral", "category": "referral", "to": "Thoracic Surgery", "reason": "resection of suspected thymoma"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology/Oncology Consultation",
+              "author": "oncology",
+              "date": "2026-04-24T14:20",
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY CONSULTATION - received 4/24/2026\nVisit date: 04/20/2026\nReferral: inpatient neurology team, for anterior mediastinal mass\n\nMs. Pickett is a 45-year-old administrative coordinator seen after evaluations with her PCP, ophthalmology and neurology. Over roughly the past year she has had worsening fatigue, with lids that drift down and chewing that tires during longer meals; it is worse toward evening and eases with rest. She has had no trauma, fevers or weight loss, and no neurologic illness before this. She takes pyridostigmine 60 mg as needed before meals and no scheduled medications.\n\nPMH: myasthenia gravis (AChR antibody positive). PSH: none. Allergies: NKDA. FH: mother Hashimoto thyroiditis; maternal aunt rheumatoid arthritis; father type 2 diabetes. Never smoker, no alcohol.\n\nExam: well appearing. Eye movements show weakness that fluctuates during the exam; mild dysarthria as she talks. Limb strength full at rest but fades with repeated effort. Sensation and reflexes intact. No cervical or supraclavicular adenopathy. Lungs clear; heart regular.\n\nData: CMP today without metabolic abnormality. Chest radiograph today: widened mediastinum from the known mass. CT 1/1/2026: 4.0 x 3.0 cm well-circumscribed anterior mediastinal mass without invasion (3.8 x 2.9 cm in 8/2025).\n\nImpression: anterior mediastinal mass in a patient with AChR-positive myasthenia gravis, radiographically consistent with thymoma, apparently encapsulated and resectable.\n\nRecommendations: no biopsy needed given the typical appearance and resectability. Referral to thoracic surgery for thymectomy, which also serves the myasthenia. We will review the pathology and arrange follow-up afterward.\n\nHematology/Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "specialist_visit",
+          "start": "2026-05-12T14:00",
+          "service": "Thoracic Surgery",
+          "reason": "Thymoma, surgical evaluation",
+          "orders": [
+            {"id": "thoracic-2026", "action": "done", "date": "2026-05-12T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Thoracic Surgery Consultation",
+              "author": "thoracic surgery",
+              "date": "2026-05-14T09:45",
+              "body": "THORACIC SURGERY CONSULTATION (outside) - received by fax 5/14/2026\nSeen 05/12/2026 at the request of hematology/oncology.\n\n45F with AChR-positive generalized myasthenia gravis and a 4.0 cm anterior mediastinal mass on CT, consistent with thymoma, without signs of invasion. Myasthenia currently controlled on as-needed pyridostigmine; no swallowing or breathing problems. No prior surgery. NKDA. Never smoker.\n\nExam: well, speaking comfortably, mild lid droop. Lungs clear. Heart regular.\n\nAssessment/plan: resectable thymoma with myasthenia - complete thymectomy indicated. Plan robotic-assisted thymectomy on 06/18/2026 with planned 1-2 night stay. Discussed risks including bleeding, phrenic nerve injury, conversion to open, and post-operative myasthenic weakness. Neurology aware and will confirm she is stable for surgery. Please see her for preoperative medical evaluation within 30 days of surgery and fax your note.\n\nThoracic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T08:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pre-op Appointment",
+              "author": "patient",
+              "date": "2026-05-19T08:47",
+              "body": "Hello, my surgery to remove the thymoma is set for June 18 and the surgeon needs a pre-op clearance from you. Could I come in the first week of June? I can do any morning. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pre-op Appointment",
+              "author": "front desk",
+              "date": "2026-05-19T10:12",
+              "body": "Hi Taylor - you're booked Thursday 6/4 at 9:15 with your doctor for the pre-op visit. Please bring the surgeon's paperwork if you have any."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "office_visit",
+          "start": "2026-06-04T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preoperative evaluation before thymectomy",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-04T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-04T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-04T09:15"},
+            {"procedure": "Venipuncture", "performed": "2026-06-04T10:00"}
+          ],
+          "orders": [
+            {"id": "fit-2026", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "average-risk colorectal cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preoperative Evaluation",
+              "author": "PCP",
+              "date": "2026-06-04T10:20",
+              "body": "Pre-op medical evaluation\nProcedure: robotic-assisted thymectomy, 6/18/2026, thoracic surgery. Anesthesia: general.\n\nS: Doing reasonably well. Pyridostigmine 60 mg before lunch and dinner most days, occasionally a breakfast dose on long workdays. Lids still tire by evening; double vision now uncommon. Chewing ok with the pre-meal dose. No trouble swallowing liquids, no choking, no shortness of breath. Walks 20-30 min most evenings without chest pain or undue breathlessness - easily more than 4 METs. No prior anesthesia. No personal or family bleeding problems. No recent illness.\n\nMeds: pyridostigmine 60 mg PO up to QID PRN. Allergies: NKDA. Never smoker, no alcohol.\n\nO: vitals reviewed, normal; weight stable. Mild bilateral ptosis appearing toward the end of the visit. EOM full. Speech clear. Neck flexion and proximal strength 5/5. Airway: normal mouth opening and neck motion. Heart regular, no murmur. Lungs clear. No edema.\n\nPHQ-2: 1.\n\nA/P\n1. Preoperative evaluation: low-risk patient for an intermediate-risk procedure. No cardiac testing needed; no ECG indicated. CBC and BMP today, will fax with this note.\n2. Myasthenia gravis - stable on PRN pyridostigmine. Anesthesia should be aware of MG (neuromuscular blockers, post-op weakness); surgeon reports neurology is coordinating peri-op plan. Continue pyridostigmine through the morning of surgery unless told otherwise.\n3. Thymoma - surgery 6/18.\n4. Health maintenance: turned 45 this year. Colorectal screening discussed; she prefers stool testing for now - FIT kit given. Mammogram due in the fall.\n\nFollow up after recovery from surgery."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "portal_message",
+          "start": "2026-06-05T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pre-op Labs",
+              "author": "PCP",
+              "date": "2026-06-05T11:40",
+              "body": "Your blood count and chemistry panel from yesterday are normal. My note and the labs were faxed to the surgeon's office this morning. Best of luck on the 18th - please send me a message when you're home."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Clearance Faxed",
+              "author": "MA",
+              "date": "2026-06-05T11:55",
+              "body": "Pre-op note and 6/4 labs faxed to thoracic surgery. Confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "hospital_admission",
+          "start": "2026-06-18T07:00",
+          "end": "2026-06-20T12:00",
+          "service": "Thoracic Surgery",
+          "reason": "Robotic-assisted thymectomy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-18T09:30",
+              "issued": "2026-06-23T15:00",
+              "text": "Specimen: thymus and anterior mediastinal mass, thymectomy. Gross: encapsulated tan-pink lobulated mass 4.2 x 3.4 x 2.6 cm within thymic fat; cut surface lobulated with thin fibrous septa; no necrosis or hemorrhage grossly. Microscopic: thymoma composed of polygonal epithelial cells admixed with abundant immature T lymphocytes, with perivascular spaces. Capsule intact; no capsular invasion. Surrounding thymic tissue and fat without tumor. Margins negative. Immunohistochemistry: epithelial cells keratin-positive; lymphocytes TdT-positive.",
+              "conclusion": "Thymoma, WHO type B2, 4.2 cm, encapsulated without capsular invasion (Masaoka-Koga stage I). Margins negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge summary",
+              "title": "Surgical Discharge Summary",
+              "author": "thoracic surgery",
+              "date": "2026-06-26T13:30",
+              "body": "DISCHARGE SUMMARY - THORACIC SURGERY (received with pathology 6/26/2026; filed)\nAdmission 06/18/2026 - discharge 06/20/2026.\nAllergies: NKDA.\n\nProcedure 6/18: robotic-assisted thymectomy with en bloc resection of the anterior mediastinal mass. No complications; minimal blood loss. Neuromuscular blockade avoided per anesthesia plan.\n\nCourse: extubated in the OR. Monitored for myasthenic weakness with serial bedside checks - none; swallowing and breathing normal throughout. Pyridostigmine resumed the evening of surgery. Chest tube removed POD 1. Walking the halls by POD 1. Discharged home POD 2.\n\nPathology: thymoma, WHO type B2, 4.2 cm, encapsulated, margins negative, Masaoka-Koga stage I.\n\nDischarge medications: pyridostigmine 60 mg PO up to 4x daily as needed (unchanged); acetaminophen as needed for incision pain.\n\nFollow-up: thoracic surgery clinic in 2-3 weeks; neurology in August; oncology to review pathology."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "lab_only",
+          "start": "2026-06-26T08:30",
+          "labs": [
+            {"panel": null, "collected": "2026-06-24T07:00", "resulted": "2026-06-26T08:30", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2026", "action": "done", "date": "2026-06-26T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "author": "PCP",
+              "date": "2026-06-26T12:10",
+              "body": "FIT negative. Message to pt: normal, repeat yearly. Also got her surgical discharge summary today - home on POD 2, path stage I."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "specialist_visit",
+          "start": "2026-07-07T13:30",
+          "service": "Thoracic Surgery",
+          "reason": "Post-operative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Thoracic Surgery Post-op Visit",
+              "author": "thoracic surgery",
+              "date": "2026-07-09T10:00",
+              "body": "Thoracic surgery clinic, post-op visit 07/07/2026 (received 7/9/2026).\n\nThree weeks after robotic thymectomy. Port sites healed, no drainage. Minimal discomfort, off acetaminophen. Breathing comfortable; walking daily. Myasthenia symptoms no worse than before surgery.\n\nPathology reviewed with her: thymoma WHO B2, stage I, completely resected. No adjuvant radiation or chemotherapy recommended. Surveillance CT chest yearly, first due 6/2027; oncology following.\n\nCleared for full activity and return to work. Return as needed.\n\nThoracic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T15:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pyridostigmine Refill",
+              "author": "RN",
+              "date": "2026-07-21T15:45",
+              "body": "Pharmacy refill request for pyridostigmine 60 mg. Last fill 6/2026 per fill history, using about 2-3 tabs/day. One refill sent per PCP protocol; neurology appointment 8/10, asked pt to have neurology take over the prescription."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "specialist_visit",
+          "start": "2026-08-10T11:00",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "author": "neurology",
+              "date": "2026-08-13T16:20",
+              "body": "Neuromuscular clinic follow-up 08/10/2026 (outside; received 8/13/2026)\n\nSeven weeks after thymectomy for a stage I type B2 thymoma. She notes easier meals and less evening lid droop since surgery, and fewer pyridostigmine doses on some days. No swallowing or breathing difficulty.\n\nExam: trace ptosis after prolonged upgaze; eye movements full; neck flexion and proximal strength full with repetition today; speech normal.\n\nImpression: AChR-positive generalized myasthenia gravis, improved after thymectomy.\n\nPlan: continue pyridostigmine 60 mg up to four times daily as needed; we will prescribe going forward. Further improvement after thymectomy can take months to years. Return in 3 months.\n\nNeuromuscular neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update After Surgery",
+              "author": "patient",
+              "date": "2026-08-18T19:22",
+              "body": "Hi, just an update - back to full days at work since the end of July and feeling better than I have in a year. Neurology said they'll handle the pyridostigmine now. Question: the surgeon said a CT every year - do I schedule that with you or with them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update After Surgery",
+              "author": "RN",
+              "date": "2026-08-18T20:05",
+              "body": "So glad to hear it, Taylor. The yearly scan is ordered by oncology/thoracic surgery, so their office will set it up for next June. Your doctor will see the update in the morning."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

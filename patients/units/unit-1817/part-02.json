@@ -1,0 +1,198 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001817",
+      "events": [
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T09:05",
+          "documents": [
+            {"type": "Refill Request", "title": "Sertraline renewal", "author": "MA", "date": "2023-01-10T09:05",
+             "body": "Pharmacy renewal request, sertraline 50 mg tab, 90-day supply. Seen 9/2022. Sent, 3 refills. Pt also due for a med check in March, reminder mailed."}
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "med check and Pap",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-03-21T09:20", "issued": "2023-03-27T13:00",
+             "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+             "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-21T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-03-21T09:35",
+             "body": "Here for a med check and her Pap, due this year.\n\nFeeling well. Sertraline daily, mood good. HRT daily, occasional light bleeding, no hot flashes. Eating fine. Has a new partner. Teaching a full spring recital schedule.\n\nVitals reviewed. Exam: well. Thyroid nl. Heart and lungs normal. Pelvic: external genitalia normal; latex-free speculum; cervix normal appearing, cytology collected. Bimanual deferred at her request.\nPHQ-9 2.\n\n1. MDD in remission - continue sertraline 50.\n2. POI on HRT per gyn.\n3. Cervical screening - cytology sent, will message result.\nPhysical in the fall."}
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "portal_message",
+          "start": "2023-03-28T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2023-03-28T12:10",
+             "body": "Your Pap came back normal. Next one in three years."}
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "portal_message",
+          "start": "2023-07-11T07:22",
+          "medications": [
+            {"drug_text": "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet", "action": "stop", "reason": "pregnancy"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2023", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "pregnancy"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Positive test??", "author": "patient", "date": "2023-07-11T07:22",
+             "body": "I took a home pregnancy test this morning and it's positive. Two of them actually. My last bleed was around June 2. I thought this basically couldn't happen with my ovaries? What do I do with the hormone pills and the sertraline?"},
+            {"type": "Patient Message", "title": "RE: Positive test??", "author": "PCP", "date": "2023-07-11T11:40",
+             "body": "Congratulations if this is happy news, and I know it's a surprise either way. Ovarian insufficiency makes pregnancy uncommon but not impossible; the ovaries can still release an egg now and then. Please stop the estradiol/norethindrone now. Keep taking sertraline 50 mg: it is one of the better-studied antidepressants in pregnancy, and stopping it suddenly carries its own risks for you. Keep the vitamin D too. I've put in a referral to obstetrics, and our nurse will call you today to help with scheduling and answer questions."}
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "telephone",
+          "start": "2023-07-12T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "RN call re: OB scheduling", "author": "RN", "date": "2023-07-12T10:05",
+             "body": "Spoke with pt. Has stopped the hormone tablet as of yesterday. Continuing sertraline, understands why. Mild nausea in the mornings, eating small frequent meals, no vomiting. No bleeding or cramping. OB intake booked; she will call the OB office back to confirm the time. Told to call for bleeding, pain, or if she is unable to keep food down. She asked that weights at OB be done facing away from the scale; encouraged her to tell them."}
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines in pregnancy",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-04T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-04T16:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-04T16:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2023-10-04T16:20",
+             "body": "Pt about 17 wks pregnant, OB recommended both vaccines. Inactivated flu IM R deltoid; 2023-24 Pfizer COVID IM L deltoid. Latex-free supplies. Observed 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2023-12-20a",
+          "kind": "outside_records",
+          "start": "2023-12-20T13:30",
+          "conditions": [
+            {"label": "Intrauterine Growth Restriction", "icd10": "O36.5930", "action": "diagnosed", "onset": "2023-12-15"}
+          ],
+          "vitals": [{"time": "2023-12-15T10:10", "bp": [110, 70], "weight_kg": 50.0, "height_cm": 165.0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-15T10:40", "results": [
+              {"test": "Hemoglobin", "value": 11.2},
+              {"test": "Hematocrit", "value": 33},
+              {"test": "White Blood Cells", "value": 9.0},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": "Urinalysis", "collected": "2023-12-15T10:40", "results": [{"test": "Urine Protein"}, {"test": "Urine Glucose"}, {"test": "Urine Leukocyte Esterase"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-12-15T11:00"}],
+          "orders": [
+            {"id": "ob-referral-2023", "action": "done", "date": "2023-12-15T10:10"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics prenatal visit, 28 weeks", "author": "obstetrics", "date": "2023-12-20T13:30",
+             "body": "OUTSIDE OBSTETRICS - PRENATAL VISIT SUMMARY\nVisit date: 12/15/2023\nPatient: Deborah Gutman, 26, G1P0, 28w0d by early ultrasound (LMP approx 06/02/2023)\nCopy to primary care\n\nSubjective: Feels well overall. Her main worry today is that she hasn't put on much weight: 4 kg since early pregnancy. She has a history of anorexia nervosa and says things have been steadier over the past year; prepregnancy BMI was 17. Spontaneous conception despite her known primary ovarian insufficiency.\n\nMedications: sertraline 50 mg daily; vitamin D3 2000 units daily; estradiol/norethindrone - ON HOLD since positive test.\nAllergies: latex, sulfa drugs.\nFamily history: mother breast cancer 51; maternal grandmother ovarian cancer 47; sister BRCA1 carrier.\n\nObjective: Wt 50 kg, Ht 165 cm, BP 110/70. Fundal height 24 cm, lagging for dates. FHT normal.\nLabs today: Hgb 11.2 g/dL, Hct 33%, WBC 9,000/mm3, platelets 250,000/mm3. Urinalysis normal.\nGrowth ultrasound today: single live intrauterine pregnancy; estimated fetal weight at the 7th percentile; amniotic fluid volume normal.\n\nAssessment: 28 weeks with intrauterine growth restriction, in the setting of low maternal weight and limited gain.\nPlan: Tdap given today. Nutrition referral; she is open to it. Serial growth scans and closer antenatal visits. Reviewed fetal movement counting and when to call.\n\nObstetrics"}
+          ]
+        },
+        {
+          "id": "2024-02-01a",
+          "kind": "outside_records",
+          "start": "2024-02-01T10:15",
+          "conditions": [
+            {"label": "Intrauterine Growth Restriction", "icd10": "O36.5930", "action": "resolved", "onset": "2023-12-15"},
+            {"label": "History of preterm delivery", "icd10": "Z87.51", "action": "history", "onset": "2024-01-26"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric discharge summary", "author": "obstetrics", "date": "2024-02-01T10:15",
+             "body": "BIRTHING CENTER, COMMUNITY HOSPITAL - MATERNAL DISCHARGE SUMMARY\nAdmit: 01/26/2024  Discharge: 01/28/2024\n\nAdmission diagnosis: preterm labor at 34w0d; pregnancy complicated by fetal growth restriction.\nDischarge diagnosis: spontaneous preterm vaginal delivery at 34w0d.\n\nCourse: Presented in spontaneous labor with regular contractions and cervical change; membranes intact on arrival. Progressed without augmentation to an uncomplicated spontaneous vaginal delivery. Infant small for gestational age, admitted to the special care nursery for prematurity; mother visiting and pumping. Estimated blood loss within normal limits. Postpartum course uneventful.\n\nMedications at discharge: sertraline 50 mg daily (continue); vitamin D3 2000 units daily. Hormone therapy remains on hold until the postpartum visit.\nAllergies: latex (latex-free precautions observed), sulfonamides.\n\nFollow-up: postpartum visit with obstetrics in about 6 weeks; primary care as scheduled. Return precautions reviewed, including mood symptoms."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-13T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum check-in",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-02-13T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2024-02-13T13:25",
+             "body": "Video, pt at home with the baby, who came home from the nursery last week.\n\nDelivered at 34 weeks on 1/26, vaginal, baby was small and spent time in the special care nursery, now home and feeding. She is tired in the expected way, sleeping in short stretches, partner helping with nights. Mood: tearful once or twice in the first week, nothing since; enjoying the baby. No intrusive thoughts, no thoughts of self-harm. Eating three meals; aware that the postpartum period is a vulnerable time for eating disorder relapse and has her old therapist's number.\nPHQ-9 4.\n\nA/P\n- Postpartum, 2.5 weeks, mood stable on sertraline 50. Continue; compatible with breastfeeding/pumping.\n- Hx IUGR pregnancy and preterm delivery noted to the history.\n- HRT on hold, OB will address at postpartum visit.\nCheck in by portal anytime; physical in September."}
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "outside_records",
+          "start": "2024-03-13T15:20",
+          "medications": [
+            {"drug_text": "estradiol 1 MG / norethindrone acetate 0.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Primary ovarian insufficiency"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics postpartum visit", "author": "obstetrics", "date": "2024-03-13T15:20",
+             "body": "OUTSIDE OBSTETRICS - POSTPARTUM VISIT\nDate of service: 03/08/2024\n\nSix weeks after preterm vaginal delivery at 34 weeks. Recovering well; lochia has stopped. Baby gaining weight. Mood good, followed by primary care on sertraline.\n\nExam: abdomen soft, fundus not palpable. Perineum healed.\n\nHer primary ovarian insufficiency is unchanged by the pregnancy. Restarting estradiol 1 mg / norethindrone acetate 0.5 mg daily. Discussed that hormone therapy is not contraception; she understands.\n\nAllergies: latex, sulfa.\nReturn to gynecology yearly.\n\nObstetrics"}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T08:50",
+          "documents": [
+            {"type": "Refill Request", "title": "Sertraline", "author": "MA", "date": "2024-06-18T08:50",
+             "body": "Refill sertraline 50 mg, 90 days x 3 refills, sent to her pharmacy. Physical scheduled 9/10."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-10T08:20"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T08:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-10T09:05",
+             "body": "27 y/o here for physical. Baby is 7 months and thriving. Back teaching part time. HRT restarted by OB in March. Sertraline daily.\n\nMeds: sertraline 50 mg daily; estradiol 1 mg/norethindrone acetate 0.5 mg daily; vitamin D3 2000 units daily.\nAllergies: latex, sulfa.\nPMH: MDD, AN in remission, POI, preterm delivery 1/2024 (IUGR pregnancy).\n\nNo concerns about eating. Weight back to her usual. Sleep better.\n\nExam unremarkable: HEENT nl, thyroid nl, RRR, CTA, abd soft, no edema, skin clear. Mood good.\nPHQ-9 3.\n\nPlan: CBC, CMP. Flu and COVID at a nurse visit in October. Pap next due 2026. Continue all meds. RTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "nurse_visit",
+          "start": "2024-10-02T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-02T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-02T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-02T16:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2024-10-02T16:45",
+             "body": "2024-25 flu (trivalent) IM L deltoid and 2024-25 COVID IM R deltoid. Latex-free. No reaction during observation."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,883 @@
+{
+  "unit": "unit-2642",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): lab \"Fungal elements, KOH preparation\" LOINC 6575-2 not found"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002642",
+      "given": "Mason",
+      "family": "Dean",
+      "birth_date": "1989-10-18",
+      "address_line": "212 Lower Road, Deerfield, MA 01342",
+      "phone": "+1-347-555-0181",
+      "email": "mason.dean@example.test",
+      "marital_status": "single",
+      "summary": "Healthy construction worker who joined in 2024. Tinea pedis in 2025 treated with topical terbinafine, recurrent groin and foot dermatophyte infection seen by dermatology in early 2026 and cleared with oral terbinafine, then a foot recurrence at his last visit in July 2026.",
+      "events": [
+        {
+          "id": "2024-08-20a",
+          "kind": "telephone",
+          "start": "2024-08-20T11:42",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2024-08-20T11:42",
+              "author": "front desk",
+              "body": "Mr. Dean phoned about moving his primary care here. Previous doctor was about an hour east and he wants someone closer now that he lives in Deerfield. Employer plan, card info entered. No current health issues per pt, no meds. Membership agreement emailed. Release of information signed electronically for his prior primary care office; request faxed today. New patient physical booked 9/10 at 8:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "outside_records",
+          "start": "2024-08-28T14:05",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2024-08-28T14:05",
+              "author": "outside primary care",
+              "body": "Summary of care, prior primary care office, covering visits 2013 through 2022.\n\nPatient: Mason Dean, DOB 10/18/1989.\n\nProblem list: none.\nMedications: none.\nAllergies: no known drug allergies.\nSurgical history: none.\n\nImmunizations: Tdap 06/2014. Childhood series documented as complete per school records. Influenza vaccine most seasons.\n\nVisits: periodic physicals, last 03/2022. Normal exams each time. Basic metabolic panel and lipid panel 03/2022 within normal limits.\n\nSocial: works construction, never smoker, drinks socially.\nFamily: father with type 2 diabetes, mother with hypertension.\n\nNo outstanding orders."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              63
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 85.1,
+            "height_cm": 181.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 81
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-09-10T08:45"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T08:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2024-09-10T08:50",
+              "author": "PCP",
+              "body": "34 y/o man establishing care. Lives in Deerfield; prior PCP too far to keep. Feels well, no complaints today. Works construction, long days on his feet.\n\nPMH: none. PSH: none. Meds: none, no supplements. NKDA.\nFH: father T2DM; mother HTN.\nSH: single. Never smoker, 1-2 drinks a week, no drug use. Exercises regularly.\nOutside records reviewed: healthy, Tdap 2014, labs 2022 normal.\n\nROS: negative in full except as above.\n\nExam: well-appearing, vitals reviewed. HEENT normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin: no rashes. Ext: no edema. Neuro grossly normal. PHQ-2 is 0.\n\nAssessment/plan, preventive care, healthy adult:\n- Tdap due (last 2014), given. Flu shot given.\n- Screening labs: CMP, CBC, lipids, A1c given dad's diabetes, hep C antibody once.\n- Discussed sun protection at work, hearing protection on site, lifting form.\n- Annual physical next year."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Hemoglobin A1c": 5.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:20",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your lab results",
+              "date": "2024-09-12T16:20",
+              "author": "PCP",
+              "body": "Hi Mason, everything from Tuesday came back fine. Kidney and liver tests normal, blood counts normal, cholesterol in a good range, and your A1c shows no sign of diabetes. Hep C screen negative. Nothing to do until next year's physical. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-31a",
+          "kind": "portal_message",
+          "start": "2025-07-31T19:12",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Rash on feet",
+              "date": "2025-07-31T19:12",
+              "author": "patient",
+              "body": "Hey, I've had a rash on both feet for a few weeks now. Itches and burns, worse at night after I take my boots off. Tried some spray from the drugstore, didn't do much. Any chance I could be seen next week? Mornings work best."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Rash on feet",
+              "date": "2025-08-01T09:03",
+              "author": "front desk",
+              "body": "Hi Mason, we have Tuesday 8/5 at 7:30 am open with the doctor. You're booked. Please wear socks you can take off easily."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "office_visit",
+          "start": "2025-08-05T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Rash on both feet",
+          "conditions": [
+            {
+              "label": "Tinea pedis",
+              "action": "diagnosed",
+              "onset": "2025-07-01",
+              "icd10": "B35.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "terbinafine hydrochloride 1 % Topical Cream",
+              "action": "start",
+              "sig": "Apply thinly to affected areas of both feet twice daily for 4 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea pedis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              71
+            ],
+            "hr": 64,
+            "temp_c": 36.6,
+            "weight_kg": 86.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-05T07:45",
+              "results": [
+                {
+                  "test": "Fungal elements, KOH preparation",
+                  "loinc": "6575-2",
+                  "text": "Branched, segmented hyphae seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-05T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: Foot Rash",
+              "date": "2025-08-05T08:05",
+              "author": "PCP",
+              "body": "S: Several weeks of an itchy rash on both feet with a burning quality. Clearly worse after a full shift in work boots, says his feet are soaked by the end of the day. Drugstore spray didn't help. No new soaps or detergents. No fever.\nMeds none. NKDA.\n\nO: Vitals fine. Both feet: red, scaly skin with fissures in the toe webs. Soles and the lateral borders thickened and scaly, moccasin pattern. No blisters, no pustules. No cellulitis, no lymphangitic streaking.\nKOH prep done here from toe-web and sole scrapings: branched, segmented hyphae on the slide.\n\nA: Tinea pedis, bilateral, interdigital and moccasin type, KOH positive.\n\nP:\n- Terbinafine 1% cream BID x 4 weeks, rub in beyond the edge of the rash. Keep going a week or so after it looks clear.\n- Moisture-wicking socks, change midday, alternate two pairs of boots so each dries out, powder in boots.\n- Message me in a few weeks on how it's going."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "portal_message",
+          "start": "2025-08-27T20:41",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Feet update",
+              "date": "2025-08-27T20:41",
+              "author": "patient",
+              "body": "Cream is working. Itching mostly gone, skin between the toes looks almost normal. Still a little flaky on the bottoms. Bought a second pair of boots."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Feet update",
+              "date": "2025-08-28T07:58",
+              "author": "PCP",
+              "body": "Great to hear. Finish the full four weeks plus another week past when the soles look clear. The thick skin on the soles is the slowest part to settle. Keep up the dry-feet routine."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:00",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-09-22T15:37",
+              "author": "front desk",
+              "body": "Pt phoned, crew is starting a pour early tomorrow and he can't get off. Cancelled 9/23 physical. Rebooked Tues 10/7 8:00."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T08:00",
+          "end": "2025-10-07T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              71
+            ],
+            "hr": 66,
+            "spo2": 99,
+            "weight_kg": 86.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-07T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-10-07T08:40",
+              "author": "PCP",
+              "body": "35 y/o M here for yearly physical. Doing well. Feet: finished the terbinafine cream in early September, itch gone, says they're much better.\n\nMeds: none currently. NKDA.\nSocial unchanged: construction, never smoker, 1-2 drinks/wk. Running most mornings before work.\n\nROS negative.\n\nExam: vitals reviewed, BMI normal. General well. HEENT, neck normal. Heart RRR no murmur. Lungs clear. Abdomen benign. Feet: faint residual scale on the soles, toe webs clean and dry, no fissures. No other rash. PHQ-2 0.\n\nA/P:\n- Health maintenance up to date. Labs last fall all normal; none needed today.\n- Flu vaccine given. Declined a COVID booster this season.\n- Tinea pedis improving. If the itch returns, message me and I'll send more cream.\n- See him in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T18:55",
+          "medications": [
+            {
+              "drug_text": "terbinafine hydrochloride 1 % Topical Cream",
+              "action": "start",
+              "sig": "Apply to affected areas of both feet twice daily for 2 to 4 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea pedis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Athlete's foot again",
+              "date": "2025-11-18T18:55",
+              "author": "patient",
+              "body": "Feet started itching again last week, same spots between the toes. Can you send more of that cream? Same pharmacy."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Athlete's foot again",
+              "date": "2025-11-19T07:40",
+              "author": "PCP",
+              "body": "Sent a new tube of terbinafine cream to your pharmacy. Twice a day, and this time keep it up a full two weeks after it looks clear. If it keeps coming back we can look at other options."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T21:10",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Recurrent rash of groin and feet despite antifungal creams"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Rash in groin",
+              "date": "2026-01-20T21:10",
+              "author": "patient",
+              "body": "Kind of embarrassing but I've had an itchy red rash in my groin since around the beginning of October. I've been using the store-brand antifungal cream and it clears up, then a few weeks after I stop it's right back. Feet keep doing the same thing too. Is there something stronger, or should I see someone?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Rash in groin",
+              "date": "2026-01-21T07:35",
+              "author": "PCP",
+              "body": "Not embarrassing at all, this is common, especially with the feet already involved. Since it keeps coming back after good courses of cream, I'd like dermatology to take a look and possibly culture it. I've put the referral in; our front desk will call you with a time. Until then keep the area dry and use the cream as you have been."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "telephone",
+          "start": "2026-01-22T10:18",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "date": "2026-01-22T10:18",
+              "author": "front desk",
+              "body": "Referral and last two visit notes faxed to outside dermatology. They offered Mon 2/9 at 9:40. Called pt, confirmed. He'll bring his insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "specialist_visit",
+          "start": "2026-02-09T09:40",
+          "service": "Dermatology",
+          "reason": "Recurrent groin and foot rash",
+          "conditions": [
+            {
+              "label": "Tinea cruris",
+              "action": "diagnosed",
+              "onset": "2025-10-01",
+              "icd10": "B35.6"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "terbinafine 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 14 days",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Tinea cruris and tinea pedis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-09T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-09T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2026-02-09T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2026-02-12T13:30",
+              "author": "dermatology",
+              "body": "Outside dermatology group\nDate of service: 02/09/2026\nRe: Mason Dean, DOB 10/18/1989\nReferring: primary care physician\n\nThank you for sending Mr. Dean, a 36-year-old construction worker, for a rash in the groin.\n\nHistory: For about four months he has had an itchy, red rash in both groin folds. Over-the-counter antifungal cream settles it each time, but it returns within a few weeks of stopping. He had a foot rash evaluated by your office in August 2025 (KOH positive at that visit) and reports athlete's foot treated several times over the past year. He denies new sexual partners and has not changed soaps, detergents or other hygiene products.\n\nMedications: none at present (intermittent OTC antifungal cream).\nAllergies: no known drug allergies.\nPMH: tinea pedis. PSH: none.\nFamily history: father with type 2 diabetes; mother with hypertension.\nSocial: construction work, boots all day. Never smoker. Alcohol 1-2 drinks weekly.\n\nExamination: Bilateral inguinal folds with sharply bordered, erythematous, scaly plaques. Feet show scale and maceration in the toe-web spaces bilaterally. Toenails are thickened and discolored. No inguinal or other lymphadenopathy. Remainder of the skin examined is clear.\n\nStudies today: CBC within normal limits. HIV antigen/antibody negative. Fungal culture of a groin scraping sent; result to follow.\n\nImpression:\n1. Tinea cruris, recurrent.\n2. Tinea pedis, recurrent, likely the reservoir for the groin.\n\nPlan:\n- Terbinafine 250 mg by mouth once daily for 14 days.\n- Dry the groin thoroughly after showering; put socks on before underwear so the feet don't seed the groin; loose cotton underwear; separate towel for the feet.\n- Absorbent antifungal powder in boots.\n- We will forward the culture result.\n\nFollow-up with us as needed.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "outside_records",
+          "start": "2026-03-05T11:02",
+          "reason": "Dermatology culture result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-09T10:15",
+              "resulted": "2026-03-04T09:00",
+              "results": [
+                {
+                  "test": "Fungal culture, groin skin scraping",
+                  "loinc": "580-1",
+                  "text": "Trichophyton rubrum isolated"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatology addendum: fungal culture",
+              "date": "2026-03-05T11:02",
+              "author": "dermatology",
+              "body": "Addendum to consultation of 02/09/2026, Mason Dean.\n\nFungal culture, skin scraping, right and left inguinal folds: Trichophyton rubrum isolated (final 03/04/2026).\n\nConsistent with the clinical diagnosis of tinea cruris. He has completed the prescribed terbinafine course. No change to the plan."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "portal_message",
+          "start": "2026-03-30T19:47",
+          "conditions": [
+            {
+              "label": "Tinea cruris",
+              "action": "resolved",
+              "icd10": "B35.6"
+            },
+            {
+              "label": "Tinea pedis",
+              "action": "resolved",
+              "icd10": "B35.3"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "All cleared up",
+              "date": "2026-03-30T19:47",
+              "author": "patient",
+              "body": "Just wanted to let you know the pills worked. Groin and feet both totally clear since about a week after I finished. Doing the powder and socks thing."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: All cleared up",
+              "date": "2026-03-31T08:12",
+              "author": "PCP",
+              "body": "Glad to hear it, and thanks for the update. I saw the dermatology letter and the culture, which grew the usual fungus behind athlete's foot and jock itch. Keep the prevention habits going, especially through the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "portal_message",
+          "start": "2026-07-29T06:14",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Feet again",
+              "date": "2026-07-29T06:14",
+              "author": "patient",
+              "body": "The foot rash is back for about two weeks, worse after I run. Groin is fine. Can I get in Friday?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Feet again",
+              "date": "2026-07-29T08:30",
+              "author": "front desk",
+              "body": "Friday 7/31 at 7:15 am works. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "office_visit",
+          "start": "2026-07-31T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Recurrent foot rash",
+          "conditions": [
+            {
+              "label": "Tinea pedis",
+              "action": "diagnosed",
+              "onset": "2026-07-17",
+              "icd10": "B35.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "terbinafine hydrochloride 1 % Topical Cream",
+              "action": "start",
+              "sig": "Apply to the toe webs and surrounding skin of both feet twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea pedis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              71
+            ],
+            "hr": 83,
+            "temp_c": 37.1,
+            "weight_kg": 84.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-31T07:30",
+              "results": [
+                {
+                  "test": "Fungal elements, KOH preparation",
+                  "loinc": "6575-2",
+                  "text": "Branching hyphae seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-31T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: Recurrent Tinea Pedis",
+              "date": "2026-07-31T07:50",
+              "author": "PCP",
+              "body": "Mason is back with two weeks of itching between the toes on both feet. Notices it most after his morning run. He'd been completely clear since the oral terbinafine in February. No travel, no one sick at home. Groin fine. Not taking any medications. NKDA.\n\nExam: vitals unremarkable. Both feet: redness, scale and soggy white maceration in the toe webs, most marked in the 4th-5th spaces. Soles look clean this time. No vesicles, no pustules, no cellulitis. Inguinal skin clear.\nKOH from the web spaces: branching hyphae.\n\nAssessment: tinea pedis, recurrence, interdigital.\n\nPlan:\n- Terbinafine 1% cream BID x 2 weeks.\n- Running shoes are probably the new culprit: dry them out between runs, swap socks right after, powder.\n- If it keeps recurring we can talk with dermatology about a longer plan.\n- Message me if not clearly better in two weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "portal_message",
+          "start": "2026-08-14T20:02",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Foot follow-up",
+              "date": "2026-08-14T20:02",
+              "author": "patient",
+              "body": "Two weeks in on the cream. Way better, just a little peeling between the last toes. Should I keep going?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Foot follow-up",
+              "date": "2026-08-15T07:22",
+              "author": "PCP",
+              "body": "Yes, keep going another week past the point it looks normal, then stop. The peeling is the skin healing. Let me know if it comes back."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Tinea cruris|B35.6": {
+        "code": "B35.6",
+        "display": "Tinea cruris",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tinea pedis|B35.3": {
+        "code": "B35.3",
+        "display": "Tinea pedis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "terbinafine hydrochloride 1 % Topical Cream": {
+        "code": "992528",
+        "display": "terbinafine hydrochloride 10 MG/ML Topical Cream",
+        "ingredient": "terbinafine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Fungal culture, groin skin scraping": {
+        "code": "580-1",
+        "display": "Fungus identified in Specimen by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "lab \"Fungal elements, KOH preparation\" LOINC 6575-2 not found"
+    ]
+  }
+}

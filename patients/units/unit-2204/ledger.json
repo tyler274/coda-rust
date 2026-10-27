@@ -2,7 +2,7 @@
   "unit": "unit-2204",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002204/2025-03-25a: allergen \"Cefazolin\" not in catalog (text only)"
+    "MRN00002204/2024-12-10a: imaging order \"Abdominal ultrasound, limited aorta (AAA screening)\" names no one catalog lab, panel, study or procedure"
   ],
   "patients": [
     {
@@ -2269,6 +2269,8 @@
           "allergies": [
             {
               "substance": "Cefazolin",
+              "snomed": "387470007",
+              "category": "medication",
               "reaction": "Rash",
               "severity": "moderate",
               "criticality": "high",
@@ -3853,6 +3855,13 @@
         "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
         "unit": "mg/dL",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Cefazolin": {
+        "code": "387470007",
+        "display": "Cefazolin",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

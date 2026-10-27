@@ -1,0 +1,533 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002203",
+      "given": "Arthur",
+      "family": "Roberge",
+      "birth_date": "1957-03-07",
+      "address_line": "88 Sunderland Road, Amherst, MA 01002",
+      "phone": "+1-774-555-0148",
+      "email": "arthur.roberge@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal clerk with hypertension, type 2 diabetes and hyperlipidemia who joined in May 2024 and then had three acute ischemic strokes (June 2024, February 2025, December 2025), each admitted briefly and recovered without residual deficit. Aspirin was first added after the third stroke; statin never intensified.",
+      "events": [
+        {
+          "id": "2024-05-20a",
+          "kind": "telephone",
+          "start": "2024-05-20T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2024-05-20T10:12",
+              "body": "Mr. Roberge phoned about membership. Says his old primary care doctor is retiring and the office is closing out its panel this summer. Has Medicare A and B. Takes three meds for pressure, sugar and cholesterol, says he's running low on refills in about six weeks. Went over the membership agreement and fees, he'll sign through the portal tonight. New patient slot booked 5/29 at 8:00 am, asked to come fasting for labs. Records release form emailed so we can pull his old chart."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "establish_care",
+          "start": "2024-05-29T08:00",
+          "end": "2024-05-29T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; hypertension, diabetes, cholesterol",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2011-01-01"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2005-01-01"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2010-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "weight_kg": 92.3,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.1,
+              "Microalbumin/Creatinine Ratio": 12,
+              "Glucose": 140
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-05-29T08:20",
+              "resulted": "2024-05-30T14:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-29T08:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-29T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal clerk"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-05-29T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-29T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-05-29T09:05",
+              "body": "NEW PATIENT VISIT\n\nCC: Transferring care. Prior PCP retiring.\n\nHPI: 67 y/o retired postal clerk here to establish. Carries three long-standing diagnoses: hypertension (roughly 15 yrs), type 2 diabetes (about 12 yrs), high cholesterol. All managed by his prior PCP, no specialists. Reports he takes his pills every day and rarely misses; wife sets up a weekly pill box. Doesn't check sugars at home with any regularity, last A1c he recalls was 'a bit over 7.' No hypoglycemia. No chest pain, dyspnea, claudication, numbness in feet, vision change. Came in fasting.\n\nMEDS: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nALLERGIES: none to medications.\n\nPMH: HTN, T2DM, hyperlipidemia.\nPSH: gallbladder removed 2005; inguinal hernia repair 2012.\nFH: Father had a heart attack at 61. Mother had type 2 diabetes. Paternal grandfather had an ischemic stroke at 68.\nSH: Married, lives with wife in Amherst. Retired from the post office (window clerk). Smoked for years, 25 pack-yrs, quit in 2010. Has a beer or a glass of wine once or twice a week. No other substances.\n\nROS: otherwise negative, 12 systems.\n\nEXAM: Vitals as charted. Well-appearing, conversant.\nHEENT unremarkable. Neck supple, no bruits, no thyromegaly.\nCV RRR, no murmur. Lungs clear.\nAbd soft, healed RUQ/umbilical port scars, healed groin scar, no hernia.\nExt: no edema. Feet: skin intact, monofilament sensation intact bilaterally, DP pulses 2+.\nNeuro: alert, speech fluent, CN grossly intact, strength 5/5 x4, gait normal.\n\nA/P:\n1. Hypertension: reasonable control on lisinopril 20. Continue.\n2. Type 2 diabetes: on metformin alone. A1c, CMP, urine microalbumin today. Continue metformin 1000 BID.\n3. Hyperlipidemia: atorvastatin 40. Fasting lipids today.\n4. Former smoker, quit 14 yrs ago. Not in a window for lung screening.\n5. Health maintenance: HCV antibody today. Prior office records requested for colonoscopy and vaccine history. Will set up diabetic eye exam.\n\nRefills sent for all three, 90-day supply. Follow-up after labs and records, roughly 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-31a",
+          "kind": "portal_message",
+          "start": "2024-05-31T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-05-31T16:40",
+              "body": "Hi Mr. Roberge, all of your labs from Wednesday are back. A1c is 7-ish, which is close to where we want it for you. Kidney function and liver tests look fine and the urine protein screen is normal. Hepatitis C screen negative. Cholesterol: LDL is 100 on the atorvastatin. Nothing to change right now. We'll go over it more at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "outside_records",
+          "start": "2024-06-18T11:30",
+          "reason": "Prior primary care records received",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-04-23T10:00"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-03-09T10:00"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-06-01T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-17T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2018-09-12T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2024-06-18T11:30",
+              "body": "41 pages received via fax from patient's previous internal medicine office, covering 2016 to May 2024. Abstracted:\n- Problem list: hypertension, type 2 diabetes, hyperlipidemia. Matches what pt reported.\n- Meds: metformin 1000 BID, lisinopril 20, atorvastatin 40. No recent dose changes.\n- Surgical: cholecystectomy 2005, inguinal hernia repair 2012.\n- Screening colonoscopy 9/2018: normal exam to cecum, no polyps; 10-year interval.\n- Immunizations: Tdap 4/2019; Shingrix x2 (3/2021, 6/2021); PCV20 10/2023.\n- Allergies: NKDA.\nVaccines entered into immunization history. Scanned under Media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-30a",
+          "kind": "hospital_admission",
+          "start": "2024-06-30T10:40",
+          "end": "2024-07-03T12:15",
+          "service": "Emergency Medicine",
+          "reason": "Left-sided weakness and slurred speech",
+          "vitals": [
+            {
+              "time": "2024-06-30T10:46",
+              "bp": [
+                155,
+                90
+              ],
+              "hr": 78,
+              "rr": 16
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "diagnosed",
+              "onset": "2024-06-30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2024-06-30T10:58",
+              "text": "Noncontrast axial CT of the head. No intracranial hemorrhage. Gray-white differentiation preserved. No mass, mass effect or midline shift. Ventricles and sulci appropriate for age. No extra-axial collection. Calvarium intact. Visualized paranasal sinuses and mastoid air cells clear.",
+              "conclusion": "No acute intracranial hemorrhage."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-06-30T10:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-06-30T15:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-07-03T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Note",
+              "author": "emergency medicine",
+              "date": "2024-07-05T09:20",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nVisit date: 06/30/2024\nPatient: Arthur Roberge, 67 M\n\nChief complaint: Left side weak, speech slurred.\n\nHPI: 67-year-old man who noticed his left arm and leg going weak and his words coming out thick about two hours before he got here. Known HTN, type 2 DM, hyperlipidemia. Says he has not missed any doses of lisinopril, metformin or atorvastatin. Lipids drawn by his PCP last month: TC 190, LDL 100, HDL 45, TG 150.\n\nPMH: HTN, DM2, HLD. PSH: cholecystectomy 2005, inguinal hernia repair 2012.\nMeds: lisinopril, metformin, atorvastatin.\nAllergies: NKDA.\nFamily: father MI at 61; mother DM2; paternal grandfather ischemic stroke at 68.\nSocial: ex-smoker, 25 pk-yr, quit 2010. 1-2 drinks weekly. Retired from the postal service.\n\nVitals: BP 155/90, HR 78, RR 16.\nExam: Left facial droop. Dysarthric speech. Strength reduced in left upper and left lower extremity. Remainder of exam unremarkable.\n\nImaging: CT head without contrast, no hemorrhage.\n\nImpression: Acute ischemic stroke, right hemisphere presentation.\nDisposition: Admitted to the hospitalist service for stroke care."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2024-07-05T09:22",
+              "body": "DISCHARGE SUMMARY\nAdmitted 06/30/2024, discharged 07/03/2024.\n\nDiagnosis: Acute ischemic stroke.\n\nCourse: Admitted from the ED with left face/arm/leg weakness and dysarthria, head CT without hemorrhage. Deficits steadily improved over the stay. Ambulating independently at discharge, speech clearer.\n\nDischarge medications (continued, no changes): metformin 1000 mg twice daily; lisinopril 20 mg daily; atorvastatin 40 mg daily.\nAllergies: NKDA.\n\nDischarged home with wife. Follow up with PCP within 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "telephone",
+          "start": "2024-07-01T08:35",
+          "reason": "Family call: patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Wife called re: admission",
+              "author": "RN",
+              "date": "2024-07-01T08:35",
+              "body": "Pt's wife called to let us know he was admitted yesterday after an ED visit for a stroke. She says his arm is already a little stronger this morning. Told her we'll request records and that he should be seen here within a week or two of discharge. She'll call when they have a discharge date. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "office_visit",
+          "start": "2024-07-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after stroke",
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "resolved"
+            },
+            {
+              "label": "History of stroke without residual deficits",
+              "action": "diagnosed",
+              "onset": "2024-06-30"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-07-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2024-07-10T11:20",
+              "body": "Seen with wife one week after discharge from the hospital (6/30 to 7/3) for acute ischemic stroke: left face, arm and leg weakness with dysarthria, CT negative for bleed. Discharge summary and ED note reviewed.\n\nSays he feels back to himself. Speech normal per wife since about day 2 in the hospital. Left hand grip 'all there.' Walking around the neighborhood. No headache, no new symptoms, no falls. Taking all three meds.\n\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40. Hospital made no changes.\n\nExam: vitals as charted. Alert, fluent speech, no dysarthria. Face symmetric. Strength 5/5 all four limbs, no drift. Finger-nose normal. Gait steady.\n\nA/P:\n1. Ischemic stroke 6/30, recovered with no residual deficit on today's exam. Moved to history on the problem list. Continue current meds.\n2. HTN: BP fine today on lisinopril.\n3. T2DM, HLD: unchanged.\nReviewed stroke warning signs with both of them, call 911 for any new weakness or speech trouble. RTC November for diabetes check."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "outside_records",
+          "start": "2024-08-21T14:05",
+          "reason": "Diabetic eye exam report received",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2024-08-21T14:05",
+              "body": "Dear Doctor,\n\nI saw your patient Arthur Roberge on 08/14/2024 for his annual diabetic eye examination.\n\nVisual acuity corrected 20/25 OD, 20/25 OS. Pupils equal and reactive, no APD. IOP 15 mmHg each eye. Dilated fundus exam: clear media, healthy optic nerves, maculae flat and dry, no hemorrhages, microaneurysms or exudates in either eye.\n\nImpression: type 2 diabetes with no diabetic retinopathy.\nRecommend repeat dilated exam in 12 months.\nMedications reviewed: metformin, lisinopril, atorvastatin. Allergies: NKDA.\n\nThank you for allowing me to participate in his care.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-09T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T09:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-09T09:30",
+              "body": "Here for seasonal shots. Afebrile, feeling well. Screening questions negative. High-dose flu given L deltoid, updated Pfizer COVID given R deltoid. VIS provided. Waited 15 min, no reaction. Lot numbers in the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "office_visit",
+          "start": "2024-11-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-20T14:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-20T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-20T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-20T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Follow-up",
+              "author": "PCP",
+              "date": "2024-11-20T14:40",
+              "body": "S: Routine recheck. Doing well since the stroke in June, no recurrent symptoms. Admits the holidays started early, more sweets around the house. No lows. Good with meds. Flu and COVID shots done here in Oct.\n\nO: vitals as charted. Speech normal, face symmetric, moves all extremities with full strength. Heart regular. Lungs clear. Feet without lesions, sensation intact.\n\nA/P:\nT2DM - A1c and BMP today. If up, talk diet first.\nHTN - at goal, lisinopril 20.\nHLD - atorvastatin 40.\nHx stroke - stable.\nFollow up 3-4 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-22a",
+          "kind": "portal_message",
+          "start": "2024-11-22T12:10",
+          "reason": "A1c result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c from this week",
+              "author": "PCP",
+              "date": "2024-11-22T12:10",
+              "body": "Arthur, your A1c came back a little higher than in May, and your kidney numbers are stable. Let's give it until the next visit with less dessert and more walking and see where it lands before we think about adding anything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: A1c from this week",
+              "author": "patient",
+              "date": "2024-11-22T18:47",
+              "body": "Fair enough. My wife already hid the cookies. Thanks Doc."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

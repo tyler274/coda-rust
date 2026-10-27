@@ -244,6 +244,7 @@ pub(crate) mod tests {
             conflict: None,
             pending_send: None,
             pending_clear: false,
+            pending_save: None,
         }
     }
 

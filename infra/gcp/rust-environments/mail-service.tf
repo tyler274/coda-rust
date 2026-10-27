@@ -40,7 +40,10 @@ resource "google_cloud_run_v2_service" "mail_relay" {
     execution_environment            = "EXECUTION_ENVIRONMENT_GEN2"
     timeout                          = "60s"
     max_instance_request_concurrency = 8
-    scaling { max_instance_count = 1 }
+    scaling {
+      min_instance_count = 1 # Keep the sign-in mail path warm between requests.
+      max_instance_count = 1
+    }
     vpc_access {
       egress = "ALL_TRAFFIC"
       network_interfaces {
@@ -52,7 +55,7 @@ resource "google_cloud_run_v2_service" "mail_relay" {
       image = var.mail_relay_image
       ports { container_port = 8080 }
       resources {
-        limits   = { cpu = "1", memory = "256Mi" }
+        limits   = { cpu = "1", memory = "512Mi" } # Cloud Run Gen2 minimum.
         cpu_idle = true
       }
       env {

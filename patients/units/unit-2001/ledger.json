@@ -2,8 +2,8 @@
   "unit": "unit-2001",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002001/2024-05-07a: allergen \"Blood products\" not in catalog (text only)",
-    "MRN00002001/2024-05-07a: reaction \"Acute hemolytic transfusion reaction\" not in catalog (text only)"
+    "MRN00002001/2024-05-07a: reaction \"Acute hemolytic transfusion reaction\" not in catalog (text only)",
+    "MRN00002001/2025-04-22b: referral to \"Cardiac Rehabilitation\" names no catalog specialty"
   ],
   "patients": [
     {
@@ -841,6 +841,8 @@
           "allergies": [
             {
               "substance": "Blood products",
+              "snomed": "410652009",
+              "category": "biologic",
               "reaction": "Acute hemolytic transfusion reaction",
               "severity": "severe",
               "criticality": "high",
@@ -3272,6 +3274,13 @@
         "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Blood products": {
+        "code": "410652009",
+        "display": "Blood product",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

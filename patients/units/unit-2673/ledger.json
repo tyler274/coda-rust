@@ -1,0 +1,1877 @@
+{
+  "unit": "unit-2673",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002673/2025-02-10a: lab order \"Urine drug screen\" names no one catalog lab, panel, study or procedure"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002673",
+      "given": "Malcolm",
+      "family": "Kirby",
+      "birth_date": "1995-05-05",
+      "address_line": "118 Bay Road, Apt 2",
+      "phone": "+1-518-555-0164",
+      "email": "malcolm.kirby@example.test",
+      "marital_status": "single",
+      "summary": "Sales representative in his late twenties who joined in 2022 as a pack-a-day smoker. In 2025 a weight-loss and nosebleed workup uncovered intranasal cocaine use; after an ED visit for cocaine intoxication he entered an outpatient addiction program and reports abstinence since.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T10:42",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-08-29T10:42",
+              "author": "front desk",
+              "body": "Caller is looking for a new PCP, his last doctor was back near where he grew up and he hasn't been in a few years. Works in sales, on the road a lot, likes that he can text. Membership info emailed. Booked new pt physical 9/12 at 8:30. Asked him to sign the records release for his old office."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {
+              "label": "Tobacco use disorder",
+              "action": "diagnosed",
+              "onset": "2013-06-01",
+              "icd10": "F17.210"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              71
+            ],
+            "hr": 68,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 81.3,
+            "height_cm": 179.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-12T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-12T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-12T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T09:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Sales representative"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social; occasional weekend binge of 4-6 drinks"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-12T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-12T09:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-12T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-12T09:10"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-12T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2022-09-12T08:30",
+              "author": "PCP",
+              "body": "27M establishing care. Last physical was 3-4 yrs ago at a family practice out of state, nothing ever came of it per him. Feels well. No complaints today.\n\nPMH: none he knows of. PSH: none. Meds: none, no supplements. NKDA.\n\nSocial: outside sales, lots of driving and client dinners. Single, rents in town. Smokes 1 ppd, started around 18. Has tried to quit cold turkey twice, lasted about a week each time. Alcohol: social, will have 4-6 drinks on a weekend night out a couple times a month. Denies other substances when asked.\n\nFamily: dad with alcohol use disorder. Paternal grandfather had CAD at 48. Mom has generalized anxiety.\n\nROS negative across systems.\n\nExam: well-appearing, NAD. HEENT: TMs clear, nares patent, mucosa pink, oropharynx clear. Neck supple, no nodes or thyroid enlargement. Heart RRR, no murmur. Lungs clear, no wheeze. Abd soft, NT, no HSM. Ext no edema. Skin: no rashes. Neuro grossly intact. Mood good, affect full.\n\nPHQ-9 2. AUDIT-C 5.\n\nA/P\n1. Preventive: CBC, CMP, lipids, one-time HIV and HCV today. Tdap and flu given.\n2. Tobacco use disorder, 1 ppd ~9 yrs. Talked about quitting, gave the state quitline number. Not interested in patches or medication right now. Will keep asking.\n3. Alcohol: weekend binge pattern. Discussed limits. He says it's mostly work-related.\n\nRTC 1 yr for physical, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.5,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-09-14T16:20",
+              "author": "PCP",
+              "body": "Hi Malcolm, all your labs from Monday came back fine: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to do here. The quitline offer stands whenever you want to take a run at the cigarettes."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:05",
+          "reason": "Records from prior primary care",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2022-09-20T11:05",
+              "author": "front desk",
+              "body": "Received 6 pages by fax from former family practice. Covers visits 2016-2019: two physicals and a sports physical form. Healthy young adult, no chronic problems, no prescriptions. Smoker noted at each visit. Normal CBC and metabolic panel 2018. Childhood vaccines documented. Scanned to media tab, flagged for PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2022-09-21T07:50",
+              "author": "PCP",
+              "body": "Old records reviewed. Nothing new. Childhood series complete. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "annual_physical",
+          "start": "2023-09-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              136,
+              68
+            ],
+            "hr": 67,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 82.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-25T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-25T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-25T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-25T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-25T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-25T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-25T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-25T08:00",
+              "author": "PCP",
+              "body": "Yearly visit. Busy year at work, new territory, more nights out with clients. Feels fine. Still about a pack a day, more on long drive days.\n\nNo new meds. NKDA. FHx unchanged.\n\nROS: no chest pain, no SOB, no cough beyond morning throat clearing, no weight change.\n\nExam: NAD. Nose and throat normal. No adenopathy. RRR without murmur. Lungs clear. Abdomen soft, non-tender. No edema. Skin clear.\n\nScreens: PHQ-9 2, AUDIT-C 5.\n\nA/P\n- Health maintenance: CBC, CMP. Lipids were fine last year, will skip.\n- Tobacco use disorder: precontemplative. Briefly reviewed options again, he'll think about it. 5 A's done.\n- Weekend drinking unchanged, discussed.\n- Flu and updated COVID today.\n\nSee him next September."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "portal_message",
+          "start": "2023-09-27T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2023-09-27T12:15",
+              "author": "PCP",
+              "body": "Labs look normal across the board. Have a good fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results",
+              "date": "2023-09-27T19:02",
+              "author": "patient",
+              "body": "thanks doc"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "annual_physical",
+          "start": "2024-08-05T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              70
+            ],
+            "hr": 81,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 82.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-05T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 207
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-05T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-05T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-05T07:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-05T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-05T07:45",
+              "author": "PCP",
+              "body": "29 y/o here for yearly. Came early before a sales trip. No concerns.\n\nMeds none. NKDA.\nSocial: 1 ppd unchanged. Alcohol same weekend pattern. Denies drug use.\n\nExam: well, NAD. Wt 81 kg, about where he's been. HEENT unremarkable, nasal mucosa normal. Neck without nodes. Heart regular, no murmur. Lungs clear. Abd benign. No edema.\n\nPHQ-9 3, AUDIT-C 5.\n\nPlan:\n1. Labs: CBC, CMP, lipids (due).\n2. Tobacco: still not ready. Offered nicotine replacement, declined. Quitline info re-sent.\n3. Flu/COVID when available, nurse visit in Oct.\n\n1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-07a",
+          "kind": "portal_message",
+          "start": "2024-08-07T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "date": "2024-08-07T09:30",
+              "author": "PCP",
+              "body": "Malcolm, your cholesterol, blood counts and chemistry panel are all in the normal range. Our nurses will reach out in October about the flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "nurse_visit",
+          "start": "2024-10-07T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-07T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-07T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-07T17:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-07T17:10",
+              "author": "RN",
+              "body": "Late-day slot after work. Afebrile, no acute illness. Screening questions negative. Flu (trivalent) L deltoid, COVID 2024-25 R deltoid. Observed 15 min, no reaction. VIS given."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "portal_message",
+          "start": "2025-02-05T22:48",
+          "reason": "Visit request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "can I get in",
+              "date": "2025-02-05T22:48",
+              "author": "patient",
+              "body": "Hey, I've dropped a bunch of weight without trying, like 15 lbs since summer, and my nose keeps bleeding on and off. Also not sleeping great. My buddies keep telling me I'm cranky lately lol. Can I come in next week? Mornings are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: can I get in",
+              "date": "2025-02-06T08:55",
+              "author": "front desk",
+              "body": "Good morning Malcolm, you're set for Monday 2/10 at 8:15 with the doctor. If the nosebleeds get heavy or won't stop with pressure, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "office_visit",
+          "start": "2025-02-10T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight loss, nosebleeds, poor sleep",
+          "vitals": {
+            "bp": [
+              121,
+              62
+            ],
+            "hr": 110,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 73.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-10T08:55",
+              "resulted": "2025-02-10T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-10T08:55",
+              "resulted": "2025-02-10T14:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-10T09:00",
+              "resulted": "2025-02-12T10:30",
+              "results": [
+                {
+                  "test": "Cocaine metabolite screen, urine",
+                  "loinc": "19359-9",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-10T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-10T08:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uds-2025",
+              "action": "placed",
+              "order": "Urine drug screen",
+              "category": "lab",
+              "reason": "weight loss, epistaxis, septal perforation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-10T08:15",
+              "author": "PCP",
+              "body": "S: 29M, last seen at his physical in August. About six months of unintended weight loss, ~15 lb by his count, says he's eating and exercising the same as always. On-and-off nosebleeds, usually small, stop with pressure. Trouble falling and staying asleep. Friends have told him he's been short-tempered and moody. No fevers, night sweats, cough, GI symptoms. Still smoking a pack a day; alcohol unchanged by his account. Asked directly about drugs, he deflected.\n\nO: HR 110. Wt 74.2 kg (81 in Aug). Restless, shifting in the chair, otherwise appears well. Nasal mucosa red and inflamed with a perforation of the septum. No cervical, supraclavicular or axillary nodes. Heart tachycardic, regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin unremarkable. Neuro nonfocal.\nPHQ-9 7.\n\nLabs drawn in office, back this afternoon: Hgb 14.2, WBC 7.0, plt 250, random glucose 98, Cr 1.0.\n\nA/P\nWeight loss with recurrent epistaxis, a perforated septum, insomnia, irritability and a resting tachycardia in a young man. Counts and chemistry unremarkable. The nasal exam in particular raises concern for intranasal stimulant use. Urine drug screen sent, explained why and he agreed to give the sample.\n- Will call with tox result and bring him back to talk it through\n- Smoking: advised to quit, not today"
+            }
+          ],
+          "state": {
+            "weight_kg": 74.2
+          },
+          "measure": [
+            "bp",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "telephone",
+          "start": "2025-02-12T11:20",
+          "reason": "Urine drug screen result",
+          "orders": [
+            {
+              "id": "uds-2025",
+              "action": "done",
+              "date": "2025-02-12T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result call",
+              "date": "2025-02-12T11:20",
+              "author": "RN",
+              "body": "Per PCP, called pt re: urine screen. Reached him on cell, verified DOB. Told him the screen was positive for cocaine and negative for everything else on the panel, and that the doctor would like to see him in person to go over it. He was quiet, then said ok. Booked Wed 2/19 at 4:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "office_visit",
+          "start": "2025-02-19T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up drug screen result",
+          "conditions": [
+            {
+              "label": "Cocaine abuse",
+              "action": "diagnosed",
+              "onset": "2024-03-01",
+              "icd10": "F14.10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              68
+            ],
+            "hr": 69,
+            "weight_kg": 74.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-19T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "sud-ref-1",
+              "action": "placed",
+              "order": "Outpatient addiction treatment referral",
+              "category": "referral",
+              "to": "Addiction Medicine",
+              "reason": "cocaine use"
+            },
+            {
+              "id": "sud-ref-1",
+              "action": "cancelled",
+              "date": "2025-02-19T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-02-19T16:30",
+              "author": "PCP",
+              "body": "Back to discuss the positive screen. More open today. Has been snorting cocaine, mostly on weekends, sometimes at work events, for about a year. Says it started socially and he figured he had it under control. Connects the nosebleeds and weight to it once we talk it through.\n\nExam: more settled than last week. Septum perforated as before, no active bleeding.\n\nA/P\nCocaine abuse, intranasal.\n- Went over the septal damage, the risk to his heart (spikes in pressure and rate, arrhythmia, MI even at his age), and the family history of addiction on his dad's side and early heart disease in his grandfather.\n- Offered referral to an outpatient addiction treatment program. He would rather try to cut back on his own for now. Order withdrawn at his request, offer left open.\n- Combined with cigarettes, his cardiac risk is real. Quitline again.\n- Recheck weight and how he's doing in 2 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "office_visit",
+          "start": "2025-04-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "2 month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T09:12",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "We missed you",
+              "date": "2025-04-22T09:12",
+              "author": "front desk",
+              "body": "Hi Malcolm, we had you on the schedule yesterday morning for your follow-up. Please reply or call to rebook, the doctor would like to see you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: We missed you",
+              "date": "2025-05-28T13:40",
+              "author": "patient",
+              "body": "sorry, been slammed. can do early June"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: We missed you",
+              "date": "2025-05-28T15:02",
+              "author": "front desk",
+              "body": "You're booked Monday 6/9 at 7:45."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "office_visit",
+          "start": "2025-06-09T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up cocaine use, weight",
+          "vitals": {
+            "bp": [
+              135,
+              75
+            ],
+            "hr": 70,
+            "weight_kg": 73.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-09T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-06-09T07:45",
+              "author": "PCP",
+              "body": "Says he has cut way back, still uses \"once in a while.\" No nosebleeds in the past month. Sleep a little better. Weight about flat, 74.5. Smoking the same.\nNose: perforation unchanged, mucosa less angry. Heart regular, lungs clear.\nA/P: Cocaine abuse, reports reduced use. Raised the treatment program again, he declined; he knows how to reach me if that changes. Tobacco cessation advised. Follow up in fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "ed_visit",
+          "start": "2025-10-13T23:40",
+          "end": "2025-10-14T04:50",
+          "service": "Emergency Medicine",
+          "reason": "Palpitations, anxiety and chest discomfort after cocaine",
+          "conditions": [
+            {
+              "label": "Acute cocaine intoxication",
+              "action": "diagnosed",
+              "onset": "2025-10-13",
+              "icd10": "F14.920"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lorazepam 2 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "2 mg IV once",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "cocaine intoxication"
+            },
+            {
+              "drug_text": "aspirin 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "325 mg chewed once",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "route": "Oral",
+              "course": "short",
+              "reason": "chest discomfort"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-13T23:44",
+              "bp": [
+                164,
+                92
+              ],
+              "hr": 126,
+              "rr": 20,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2025-10-14T04:30",
+              "bp": [
+                134,
+                82
+              ],
+              "hr": 94,
+              "rr": 16,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-13T23:55",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "unit": "ng/L",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-14T02:55",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "unit": "ng/L",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-13T23:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-13T23:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-14T00:10",
+              "results": [
+                {
+                  "test": "Cocaine metabolite screen, urine",
+                  "loinc": "19359-9",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-13T23:48",
+              "text": "Sinus tachycardia, rate 124. Normal axis. PR, QRS and QT intervals within normal limits. No ST-segment elevation or depression. No T-wave inversions.",
+              "conclusion": "Sinus tachycardia without ST-segment changes."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-13T23:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-10-13T23:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2025-10-14T05:05",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 10/13/2025 23:40. Departure 10/14/2025 04:50.\nAllergies: NKDA. Home medications: none.\n\nCC: heart racing, chest discomfort\n\nHPI: 30 y/o M walked in with a friend. Was at a party and roughly half an hour before arrival snorted a white powder, which he then told us was cocaine. Abrupt onset of pounding heartbeat and anxiety, mild chest discomfort, nonradiating. Describes himself as wired and on edge. Friend says he was fine earlier in the evening. Denies fever, chills, cough, recent illness. Known prior cocaine use per pt; smokes ~1 ppd; drinks socially. FHx notable for early CAD in a grandfather.\n\nExam: T 37.1 C, HR 126, RR 20, BP 164/92, SpO2 98% RA. Anxious, fidgety, alert and oriented. Heart: regular, fast, no murmurs, rubs or gallops. Lungs clear bilaterally. Abd soft. Neuro: alert, fluent, moves all extremities, no focal deficit.\n\nECG (23:48): sinus tachycardia, no ST changes.\n\nED course: lorazepam 2 mg IV and aspirin 325 mg PO chewed. hs-troponin I 3 ng/L at 23:55 and 4 ng/L at 02:55. CBC and BMP within normal limits. Urine cocaine screen positive. Heart rate and anxiety settled over the next hours. At 04:30 HR 94, BP 134/82, chest discomfort resolved.\n\nImpression: acute cocaine intoxication with sympathomimetic symptoms; MI ruled out by serial troponins and ECG.\n\nDisposition: discharged home with friend. Counseled to avoid cocaine; return precautions for chest pain, palpitations, shortness of breath. Follow up with PCP within 1 week. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "outside_records",
+          "start": "2025-10-14T10:20",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record received",
+              "date": "2025-10-14T10:20",
+              "author": "front desk",
+              "body": "ED provider note, ECG tracing and labs from the regional hospital for 10/13 overnight visit received electronically. Routed to PCP inbox."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "ED record review",
+              "date": "2025-10-14T12:35",
+              "author": "PCP",
+              "body": "Reviewed. Cocaine intoxication, troponins negative x2, ECG sinus tach only. Asked front desk to reach him for a visit this week or next."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "portal_message",
+          "start": "2025-10-15T07:58",
+          "reason": "Follow-up after ED",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "after the ER",
+              "date": "2025-10-15T07:58",
+              "author": "patient",
+              "body": "I guess you saw I ended up in the ER Monday night. That scared me. I'm ready to talk about the program you mentioned. When can I come in"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: after the ER",
+              "date": "2025-10-15T12:10",
+              "author": "PCP",
+              "body": "Glad you reached out, and glad you're ok. I have Monday 10/20 at 8:00 if that works; the front desk will confirm. If you get chest pain or your heart races again, go straight back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "office_visit",
+          "start": "2025-10-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, cocaine use",
+          "conditions": [
+            {
+              "label": "Acute cocaine intoxication",
+              "action": "resolved",
+              "icd10": "F14.920"
+            },
+            {
+              "label": "Cocaine abuse",
+              "action": "resolved",
+              "note": "reclassified as severe use disorder",
+              "icd10": "F14.10"
+            },
+            {
+              "label": "Cocaine use disorder, severe",
+              "action": "diagnosed",
+              "onset": "2024-03-01",
+              "icd10": "F14.20"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              74
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 74.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-20T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-20T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-20T08:42"
+            }
+          ],
+          "orders": [
+            {
+              "id": "sud-ref-2",
+              "action": "placed",
+              "order": "Outpatient addiction treatment referral",
+              "category": "referral",
+              "to": "Addiction Medicine",
+              "reason": "severe cocaine use disorder"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-10-20T08:00",
+              "author": "PCP",
+              "body": "Seen one week after ED visit for cocaine intoxication (palpitations, chest discomfort; serial troponins and ECG reassuring per their record). Feels back to baseline. No chest pain, palpitations or SOB since.\n\nMuch more forthcoming today. Use never really came down after our June visit; mostly weekends but some weeknights, cravings when he's out with clients, spends more than he means to, has tried to stop several times and couldn't, kept using knowing about his nose, and now the ER. No cocaine since that night, he says. Drinking a little less. Still 1 ppd.\n\nExam: HR and BP normal today. Wt 75.0. Calm, good eye contact. Septal perforation unchanged, no bleeding. Heart RRR no murmur. Lungs clear.\nPHQ-9 5. AUDIT-C 4.\n\nA/P\n1. Cocaine use disorder, severe (updated from cocaine abuse; meets criteria on today's history). He's ready. Referral to outpatient addiction treatment program placed, he'll call for intake this week. Release signed so they can send notes. No medication indicated.\n2. Acute cocaine intoxication: resolved.\n3. Tobacco use disorder: advised to quit; he wants to tackle one thing at a time.\n4. Flu and COVID given.\nTelehealth check-in in a few months."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "outside_records",
+          "start": "2025-11-17T14:00",
+          "reason": "Addiction program intake letter",
+          "orders": [
+            {
+              "id": "sud-ref-2",
+              "action": "done",
+              "date": "2025-11-17T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Addiction Program Intake",
+              "date": "2025-11-17T14:00",
+              "author": "addiction medicine",
+              "body": "OUTPATIENT SUBSTANCE USE TREATMENT PROGRAM — INTAKE SUMMARY\nDate of intake: 11/06/2025\nReferred by: primary care physician\nAllergies: NKDA. Medications: none.\n\nMr. Kirby is a 30-year-old sales representative referred after an ED visit for cocaine intoxication on 10/13/2025. He describes intranasal cocaine use beginning about early 2024, escalating over 2024-2025, with cravings, repeated unsuccessful attempts to stop, money and time spent, sleep and mood effects, use in risky settings, and continued use despite nasal septal damage and the ED visit. He reports no cocaine since 10/13/2025. Smokes about 1 pack per day. Drinks socially. Father with alcohol use disorder.\n\nDiagnoses: Cocaine use disorder, severe, in early abstinence. Tobacco use disorder.\n\nPlan: weekly group cognitive behavioral therapy plus individual counseling; random urine drug screens; tobacco cessation resources offered. No pharmacotherapy indicated. We will update the referring office periodically with patient consent.\n\nIntake clinician, outpatient addiction program"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Letter review",
+              "date": "2025-11-18T07:40",
+              "author": "PCP",
+              "body": "Intake letter read. Good that he followed through. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "telehealth_visit",
+          "start": "2026-02-09T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in, substance use treatment",
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-02-09T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "date": "2026-02-09T12:30",
+              "author": "PCP",
+              "body": "Video from his car on lunch break, consented to telehealth, identity verified.\nGoing to group every week and seeing his counselor. No cocaine since October, he says, and the urine screens there have been clean. Sleeping much better. No nosebleeds. Thinks he's put a few pounds back on. Still about a pack a day; the cigarettes are what he leans on now.\nAppears well on video, speech normal, upbeat.\nA/P: Cocaine use disorder, severe, in early remission by report, engaged in treatment. Keep going. Tobacco: offered nicotine patches with a short-acting form for cravings, declined for now, maybe in the summer. Physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T10:45",
+          "reason": "Addiction program progress letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Treatment Progress Update",
+              "date": "2026-03-16T10:45",
+              "author": "addiction medicine",
+              "body": "OUTPATIENT SUBSTANCE USE TREATMENT PROGRAM — PROGRESS UPDATE\nReport date: 03/12/2026\n\nPatient has attended group and individual sessions consistently since intake in November. All random urine drug screens have been negative. He continues to report abstinence from cocaine. Tobacco use ongoing; cessation resources re-offered.\n\nGiven his engagement, sessions are stepped down to every other week. Diagnoses unchanged: cocaine use disorder, severe; tobacco use disorder. No medications.\n\nCounselor, outpatient addiction program"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "annual_physical",
+          "start": "2026-08-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              72
+            ],
+            "hr": 80,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-14T08:35",
+              "resulted": "2026-08-15T07:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-14T08:35",
+              "resulted": "2026-08-15T07:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-14T08:35",
+              "resulted": "2026-08-15T07:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-14T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-14T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-08-14T08:00",
+              "author": "PCP",
+              "body": "31M, yearly. Doing well. Still in the program every other week, no cocaine since last October by his report. Work going fine. Weight back up to 78. Sleeping normally. Drinks less than he used to. Still 1 ppd.\n\nMeds: none. NKDA. FHx unchanged.\nROS: no chest pain, palpitations, nosebleeds, cough or SOB.\n\nExam: well-appearing, relaxed. Wt 78.0. Septal perforation unchanged in size, mucosa healed, no crusting or bleeding. Oropharynx clear. No adenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin normal. Mood euthymic.\nPHQ-9 3. AUDIT-C 4.\n\nA/P\n1. Cocaine use disorder, severe, sustained abstinence by report since 10/2025, engaged in treatment. Proud of him and told him so.\n2. Tobacco use disorder: brief counseling; he'd like to try quitting after a big work conference this fall, we'll revisit then.\n3. Preventive: CBC, CMP, lipids today. Flu/COVID in the fall.\n\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T10:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical labs",
+              "date": "2026-08-17T10:05",
+              "author": "PCP",
+              "body": "Hi Malcolm, everything from Friday came back normal: blood counts, kidney and liver panel, cholesterol. Good visit. Let me know when you're ready to try the patches."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your physical labs",
+              "date": "2026-08-17T18:31",
+              "author": "patient",
+              "body": "Awesome, thanks. Will do."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute cocaine intoxication|F14.920": {
+        "code": "F14.920",
+        "display": "Cocaine use, unspecified with intoxication, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cocaine abuse|F14.10": {
+        "code": "F14.10",
+        "display": "Cocaine abuse, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cocaine use disorder, severe|F14.20": {
+        "code": "F14.20",
+        "display": "Cocaine dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tobacco use disorder|F17.210": {
+        "code": "F17.210",
+        "display": "Nicotine dependence, cigarettes, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "aspirin 325 MG Oral Tablet": {
+        "code": "212033",
+        "display": "aspirin 325 MG Oral Tablet",
+        "ingredient": "aspirin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "lorazepam 2 MG/ML Injectable Solution": {
+        "code": "238100",
+        "display": "lorazepam 2 MG/ML Injectable Solution",
+        "ingredient": "lorazepam",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Cocaine metabolite screen, urine": {
+        "code": "19359-9",
+        "display": "Cocaine [Presence] in Urine by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

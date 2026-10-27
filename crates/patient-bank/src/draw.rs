@@ -36,108 +36,174 @@ pub fn own_normal(mrn: &str, test: &str, female: bool) -> Option<(f64, usize)> {
     Some((rng.uniform(lo + (hi - lo) * 0.3, hi - (hi - lo) * 0.3), dec))
 }
 
-/// Calculated members: (test, inputs, formula from the inputs' values).
-type Formula = fn(&[f64], &Draw) -> f64;
-const DERIVED: &[(&str, &[&str], Formula, usize)] = &[
-    (
-        "Mean Corpuscular Hemoglobin",
-        &["Hemoglobin", "Red Blood Cells"],
-        |v, _| v[0] / v[1] * 10.0,
-        1,
-    ),
-    (
-        "Mean Corpuscular Hemoglobin Concentration",
-        &["Hemoglobin", "Hematocrit"],
-        |v, _| v[0] / v[1] * 100.0,
-        1,
-    ),
-    (
-        "Absolute Neutrophil Count",
-        &["White Blood Cells", "Neutrophils %"],
-        |v, _| v[0] * v[1] / 100.0,
-        1,
-    ),
-    (
-        "Estimated Glomerular Filtration Rate (Creatinine)",
-        &["Creatinine"],
-        |v, d| num(&ckd_epi_2021(v[0], d.age, d.female)),
-        0,
-    ),
-    (
-        "Anion Gap",
-        &["Sodium", "Chloride", "Bicarbonate"],
-        |v, _| v[0] - v[1] - v[2],
-        0,
-    ),
-    (
-        "Total Cholesterol",
-        &[
+/// How many decimals a test reports: its normal's, else its formula's.
+pub fn decimals(test: &str, female: bool) -> usize {
+    normal(test, female)
+        .map(|n| n.1)
+        .or_else(|| {
+            IDENTITIES
+                .iter()
+                .find(|i| i.test == test)
+                .map(|i| i.decimals)
+        })
+        .unwrap_or(1)
+}
+
+fn fmt(x: f64) -> String {
+    let s = format!("{x:.2}");
+    s.trim_end_matches('0').trim_end_matches('.').to_string()
+}
+
+/// A calculated test: the formula an analyzer or the lab applies to its inputs.
+/// It holds on every draw. Code calculates the test from its inputs; when the test
+/// is stated and an input is not, code solves that input so the calculation lands
+/// on the stated value. A level set on the test moves `moves`, the input the
+/// patient's condition moves, with the other inputs pinned at their levels.
+pub struct Identity {
+    pub test: &'static str,
+    pub inputs: &'static [&'static str],
+    /// The test from the inputs' values, for a patient of this age and sex.
+    pub formula: fn(&[f64], i64, bool) -> f64,
+    pub decimals: usize,
+    pub moves: Option<usize>,
+    /// For a formula with a lab-chosen constant, the lowest and highest test value
+    /// any real lab's choice gives; `formula` is the one this practice's lab uses.
+    pub band: Option<Band>,
+}
+
+/// The lowest and highest test value from the inputs' values.
+pub type Band = fn(&[f64]) -> (f64, f64);
+
+impl Identity {
+    /// The value of input `k` that makes the formula give `target`, the other
+    /// inputs held at `values`; `None` when no positive value does. Every formula
+    /// is monotonic in each input, so bisection finds the one root.
+    pub fn solve(
+        &self,
+        k: usize,
+        target: f64,
+        values: &[f64],
+        age: i64,
+        female: bool,
+    ) -> Option<f64> {
+        let at = |x: f64| {
+            let mut v = values.to_vec();
+            v[k] = x;
+            (self.formula)(&v, age, female) - target
+        };
+        let (mut lo, mut hi) = (1e-6, 1.0);
+        while at(lo).signum() == at(hi).signum() {
+            hi *= 2.0;
+            if hi > 1e7 {
+                return None;
+            }
+        }
+        for _ in 0..200 {
+            let mid = (lo + hi) / 2.0;
+            if at(mid).signum() == at(lo).signum() {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        Some((lo + hi) / 2.0)
+    }
+}
+
+/// Every calculated test, each after the tests it is calculated from (total
+/// cholesterol before non-HDL), so calculating runs forward through the table and
+/// solving runs backward.
+pub const IDENTITIES: &[Identity] = &[
+    Identity {
+        test: "Mean Corpuscular Hemoglobin",
+        inputs: &["Hemoglobin", "Red Blood Cells"],
+        formula: |v, _, _| v[0] / v[1] * 10.0,
+        decimals: 1,
+        moves: None,
+        band: None,
+    },
+    Identity {
+        test: "Mean Corpuscular Hemoglobin Concentration",
+        inputs: &["Hemoglobin", "Hematocrit"],
+        formula: |v, _, _| v[0] / v[1] * 100.0,
+        decimals: 1,
+        moves: None,
+        band: None,
+    },
+    Identity {
+        test: "Absolute Neutrophil Count",
+        inputs: &["White Blood Cells", "Neutrophils %"],
+        formula: |v, _, _| v[0] * v[1] / 100.0,
+        decimals: 1,
+        moves: Some(1),
+        band: None,
+    },
+    Identity {
+        test: "Estimated Glomerular Filtration Rate (Creatinine)",
+        inputs: &["Creatinine"],
+        formula: |v, age, female| num(&ckd_epi_2021(v[0], age, female)),
+        decimals: 0,
+        moves: Some(0),
+        band: None,
+    },
+    Identity {
+        test: "Anion Gap",
+        inputs: &["Sodium", "Chloride", "Bicarbonate"],
+        formula: |v, _, _| v[0] - v[1] - v[2],
+        decimals: 0,
+        moves: None,
+        band: None,
+    },
+    Identity {
+        test: "Total Cholesterol",
+        inputs: &[
             "Low Density Lipoprotein",
             "High Density Lipoprotein",
             "Triglycerides",
         ],
-        |v, _| v[0] + v[1] + v[2] / 5.0,
-        0,
-    ),
-    (
-        "Non-HDL Cholesterol",
-        &["Total Cholesterol", "High Density Lipoprotein"],
-        |v, _| v[0] - v[1],
-        0,
-    ),
-    (
-        "Transferrin Saturation",
-        &["Iron", "Total Iron-Binding Capacity"],
-        |v, _| v[0] / v[1] * 100.0,
-        0,
-    ),
-    (
+        // LDL is calculated as TC - HDL - TG/f: Friedewald's f is 5, Martin-Hopkins
+        // picks f from 3.1 to 11.9 by triglycerides and non-HDL
+        formula: |v, _, _| v[0] + v[1] + v[2] / 5.0,
+        decimals: 0,
+        moves: Some(0),
+        band: Some(|v| (v[0] + v[1] + v[2] / 11.9, v[0] + v[1] + v[2] / 3.1)),
+    },
+    Identity {
+        test: "Non-HDL Cholesterol",
+        inputs: &["Total Cholesterol", "High Density Lipoprotein"],
+        formula: |v, _, _| v[0] - v[1],
+        decimals: 0,
+        moves: Some(0),
+        band: None,
+    },
+    Identity {
+        test: "Transferrin Saturation",
+        inputs: &["Iron", "Total Iron-Binding Capacity"],
+        formula: |v, _, _| v[0] / v[1] * 100.0,
+        decimals: 0,
+        moves: Some(0),
+        band: None,
+    },
+    Identity {
         // INR is (PT / the lab's normal PT) ^ ISI; with ISI 1 and a normal PT of
-        // 12.2 s, PT follows the INR the chart is managed by
-        "Prothrombin Time",
-        &["Prothrombin Time-International Normalized Ratio"],
-        |v, _| v[0] * 12.2,
-        1,
-    ),
+        // 12.2 s, PT follows the INR the chart is managed by. Reagents run ISI 1.0
+        // to 1.3 and normal PT 11.2 to 13.2 s
+        test: "Prothrombin Time",
+        inputs: &["Prothrombin Time-International Normalized Ratio"],
+        formula: |v, _, _| v[0] * 12.2,
+        decimals: 1,
+        moves: Some(0),
+        band: Some(|v| {
+            let (a, b) = (11.2 * v[0].powf(1.0 / 1.3), 13.2 * v[0]);
+            (a.min(b), a.max(b))
+        }),
+    },
 ];
 
 /// Hematocrit and red cells are calculated too, from hemoglobin and MCV.
 pub fn derived(test: &str) -> bool {
-    matches!(test, "Hematocrit" | "Red Blood Cells") || DERIVED.iter().any(|d| d.0 == test)
+    matches!(test, "Hematocrit" | "Red Blood Cells") || IDENTITIES.iter().any(|d| d.test == test)
 }
-
-/// A level set on a calculated test moves the input it is calculated from, so the
-/// calculation lands on that level: (calculated test, input, the other inputs,
-/// the input's level from the set level and the others' levels). The other
-/// inputs are pinned at their levels, so the draw calculates from the same ones.
-type Solve = fn(f64, &[f64]) -> f64;
-pub const SOLVE: &[(&str, &str, &[&str], Solve)] = &[
-    (
-        "Total Cholesterol",
-        "Low Density Lipoprotein",
-        &["High Density Lipoprotein", "Triglycerides"],
-        |tc, o| tc - o[0] - o[1] / 5.0,
-    ),
-    (
-        "Non-HDL Cholesterol",
-        "Low Density Lipoprotein",
-        &["Triglycerides"],
-        |n, o| n - o[0] / 5.0,
-    ),
-    (
-        "Transferrin Saturation",
-        "Iron",
-        &["Total Iron-Binding Capacity"],
-        |sat, o| sat * o[0] / 100.0,
-    ),
-    ("Hematocrit", "Hemoglobin", &[], |hct, _| hct * 0.334),
-    (
-        "Absolute Neutrophil Count",
-        "Neutrophils %",
-        &["White Blood Cells"],
-        |anc, o| anc / o[0] * 100.0,
-    ),
-];
 
 /// A reading of `level`: a tenth of the test's range, but never more than 15% of
 /// the level (a ferritin of 5 stays near 5); an abnormal level strays at least 3%
@@ -184,7 +250,10 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
             .map(num)
             .filter(|x| *x != 0.0)
     };
-    let open = |lab: &Lab, t: &str| at(t).is_some_and(|i| lab.results[i].value.is_none());
+    // a result is answered by a value or by text ("not calculated")
+    let open = |lab: &Lab, t: &str| {
+        at(t).is_some_and(|i| lab.results[i].value.is_none() && lab.results[i].text.is_none())
+    };
     // A calculated value is released with the last of its inputs.
     let released = |lab: &Lab, inputs: &[&str]| -> Option<Stamp> {
         inputs
@@ -212,10 +281,40 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
             &["Hematocrit", "Red Blood Cells"],
         );
     }
+    // A stated calculated test fixes one of its open inputs: the one its level
+    // moves, else the last. Plan which before anything is filled, so that input is
+    // solved from the stated test, not read from its own level.
+    // Only a number solves; a formula with an input answered in text ("not
+    // calculated") cannot, so it holds back none of its inputs.
+    let mut numbers: Vec<&str> = (lab.results.iter())
+        .filter(|r| r.value.is_some())
+        .map(|r| r.test.as_str())
+        .collect();
+    let answered: Vec<&str> = (lab.results.iter())
+        .filter(|r| r.text.is_some())
+        .map(|r| r.test.as_str())
+        .collect();
+    let mut plan: Vec<(&Identity, usize)> = Vec::new();
+    for id in IDENTITIES.iter().rev() {
+        if !numbers.contains(&id.test)
+            || (id.inputs.iter()).any(|t| at(t).is_none() || answered.contains(t))
+        {
+            continue;
+        }
+        let unknown: Vec<usize> = (0..id.inputs.len())
+            .filter(|&k| !numbers.contains(&id.inputs[k]))
+            .collect();
+        let Some(&last) = unknown.last() else {
+            continue;
+        };
+        plan.push((id, id.moves.filter(|m| unknown.contains(m)).unwrap_or(last)));
+        numbers.extend(id.inputs);
+    }
+    let solved: Vec<&str> = plan.iter().map(|(id, k)| id.inputs[*k]).collect();
     let diff_open: Vec<&str> = DIFFERENTIAL
         .iter()
         .copied()
-        .filter(|t| open(lab, t) && !d.levels.contains_key(*t))
+        .filter(|t| open(lab, t) && !d.levels.contains_key(*t) && !solved.contains(t))
         .collect();
     for i in 0..lab.results.len() {
         let r = &lab.results[i];
@@ -223,6 +322,7 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
             || r.text.is_some()
             || derived(&r.test)
             || diff_open.contains(&r.test.as_str())
+            || solved.contains(&r.test.as_str())
         {
             continue;
         }
@@ -243,6 +343,30 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
                 d.eid
             )),
             None => {}
+        }
+    }
+    for (id, k) in plan {
+        let input = id.inputs[k];
+        let values: Option<Vec<f64>> = (id.inputs.iter().enumerate())
+            .map(|(j, t)| if j == k { Some(0.0) } else { value(lab, t) })
+            .collect();
+        let (Some(target), Some(values)) = (value(lab, id.test), values) else {
+            continue;
+        };
+        match id.solve(k, target, &values, d.age, d.female) {
+            Some(v) => {
+                let others: Vec<&str> = (id.inputs.iter().copied())
+                    .filter(|t| *t != input)
+                    .chain([id.test])
+                    .collect();
+                set(lab, input, v, decimals(input, d.female), &others);
+            }
+            None => errors.push(format!(
+                "{}: {} {} cannot come from this draw's other values: no {input} gives it",
+                d.eid,
+                id.test,
+                fmt(target)
+            )),
         }
     }
     if !diff_open.is_empty() {
@@ -290,13 +414,14 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
             set(lab, "Red Blood Cells", hct / mcv * 10.0, 2, &inputs);
         }
     }
-    for (t, inputs, f, dec) in DERIVED {
-        if !open(lab, t) {
+    for id in IDENTITIES {
+        if !open(lab, id.test) {
             continue;
         }
-        let got: Option<Vec<f64>> = inputs.iter().map(|i| value(lab, i)).collect();
+        let got: Option<Vec<f64>> = id.inputs.iter().map(|i| value(lab, i)).collect();
         if let Some(got) = got {
-            set(lab, t, f(&got, d), *dec, inputs);
+            let v = (id.formula)(&got, d.age, d.female);
+            set(lab, id.test, v, id.decimals, id.inputs);
         }
     }
     // a member code could not make is left out, unless the author named it

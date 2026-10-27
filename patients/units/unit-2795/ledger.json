@@ -1,0 +1,2027 @@
+{
+  "unit": "unit-2795",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002795",
+      "given": "Doris",
+      "family": "Hastings",
+      "birth_date": "1966-11-21",
+      "address_line": "28 Lathrop Street",
+      "phone": "+1-201-555-0129",
+      "email": "doris.hastings@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with hypertension, type 2 diabetes, hyperlipidemia, hypothyroidism and obesity who transferred care in August 2023. A midline laparotomy scar from a 2020 small bowel obstruction develops an incisional hernia in 2025, managed expectantly by surgery. After her last practice visit in March 2026 she has a laparoscopic cholecystectomy and returns to an outside ED with a retained common bile duct stone cleared at ERCP; the records arrive piecemeal.",
+      "events": [
+        {
+          "id": "2023-08-03a",
+          "kind": "telephone",
+          "start": "2023-08-03T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2023-08-03T10:12",
+              "author": "front desk",
+              "body": "Caller is moving her primary care to us from her old office, which she says has had a lot of turnover. Teaches second grade, wants to get settled before school starts. Insurance BCBS PPO, verified. Takes several daily meds for BP, sugar, cholesterol and thyroid and has about a month left on each. Scheduled new patient visit 8/22 at 9:00. Sent portal invite and the records release form; she will sign and return it so we can request her old chart."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T09:00",
+          "end": "2023-08-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; chronic disease management",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2012-05-01",
+              "note": "Long-standing, on lisinopril from prior care"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2014-03-01",
+              "note": "On metformin from prior care"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2014-03-01",
+              "note": "Dyslipidemia, on atorvastatin"
+            },
+            {
+              "label": "Hypothyroidism",
+              "action": "diagnosed",
+              "onset": "2009-06-01",
+              "note": "On levothyroxine"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2010-01-01",
+              "note": "BMI 33"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "levothyroxine sodium 0.075 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 75,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary prevention"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              141,
+              83
+            ],
+            "hr": 69,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 87.2,
+            "height_cm": 162.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 107
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Denies alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-22T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n56 y/o woman, elementary school teacher, transferring from another primary care office. Here to set up care before the school year. Feels well.\n\nChronic problems, per patient and her pill bottles:\n- HTN for roughly a decade, lisinopril 10 daily. Does not check at home.\n- T2DM since about 2014, metformin 1000 BID, tolerates it. Says her last A1c was \"around 7.\" Checks sugars a few mornings a week, 120s-140s. No hypoglycemia. Has an eye doctor she sees yearly.\n- Dyslipidemia, atorvastatin 20, no muscle complaints.\n- Hypothyroid, levothyroxine 75 mcg, takes it first thing before coffee.\n- Weight has been about the same for years. Walks the track at school in nice weather.\n- Aspirin 81 daily, started by her prior doctor.\n\nPSH: C-section 1995 (low transverse). Exploratory laparotomy 2020 for a small bowel obstruction, midline incision, recovered without problems. Nothing since.\nAllergies: none to medications.\nFH: Mother - T2DM and HTN. Father - CAD, high cholesterol. Sister had her gallbladder out for stones. Brother had an inguinal hernia fixed.\nSH: Never smoked. No alcohol. No drugs. Teaches second grade.\n\nROS: no chest pain, dyspnea, polyuria, foot numbness, abdominal pain or bowel change. Mood fine, PHQ-2 0.\n\nEXAM: Vitals as charted. BMI about 33.\nWell appearing. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen obese, soft, nontender; healed lower transverse scar and healed lower midline scar, no bulge. Legs without edema. Feet: skin intact, pulses 2+, monofilament intact bilaterally.\n\nASSESSMENT/PLAN\n1. HTN - a bit above goal today, first visit nerves; recheck next visit before changing anything. Continue lisinopril 10.\n2. T2DM - continue metformin. A1c, CMP, urine microalbumin today.\n3. Dyslipidemia - lipids today, continue atorvastatin 20.\n4. Hypothyroidism - TSH today.\n5. Obesity BMI 33 - discussed modest goals.\n6. Health maintenance - requesting prior office records to see where she is on colonoscopy, Pap, mammogram and vaccines. Flu and COVID in the fall.\n\nFollow up 4-6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 87.7,
+            "height_cm": 163.0,
+            "labs": {
+              "Glucose": 141,
+              "Hemoglobin A1c": 7.3,
+              "Low Density Lipoprotein": 84,
+              "Microalbumin/Creatinine Ratio": 9,
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-08-24T16:40",
+              "author": "PCP",
+              "body": "Hi Doris, your labs from Tuesday are back. A1c is a little over 7, about where you thought it was. Kidney function, liver tests, blood counts and thyroid are all normal, and there is no protein in the urine. LDL cholesterol is in the 80s on the atorvastatin. No changes for now. Have a good start to the school year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Your lab results",
+              "date": "2023-08-24T19:02",
+              "author": "patient",
+              "body": "Thank you! I signed the release for my old office yesterday so they should be sending things."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "outside_records",
+          "start": "2023-09-14T11:20",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records received",
+              "date": "2023-09-14T11:20",
+              "author": "MA",
+              "body": "Outside records, 64 pages, from patient's previous primary care office. Abstracted for the chart:\n- Colonoscopy 2019: no polyps, recall 10 years.\n- Pap with HPV cotest 2021: negative for intraepithelial lesion, HPV not detected.\n- Screening mammogram 2022: negative, BI-RADS 1.\n- Tdap 2017.\n- COVID: two-dose mRNA series 2021 plus one booster.\n- No pneumococcal or shingles vaccines on file.\n- Hospital discharge summary 2020: small bowel obstruction treated with exploratory laparotomy, uneventful course.\nMed list matches ours. Flagged for PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2023-09-15T07:50",
+              "author": "PCP",
+              "body": "Reviewed prior records. Colonoscopy 2019 normal, next 2029. Cervical screening cotest 2021 normal, due 2026. Mammogram due now, will order at next visit if not done. Needs flu, updated COVID, Shingrix and pneumococcal; nurse visit in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              133,
+              86
+            ],
+            "hr": 73
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T15:52"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-10-12T15:54"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-12T16:05",
+              "author": "RN",
+              "body": "Came after school. Screening questions negative, no prior vaccine reactions. Flu L deltoid, COVID R deltoid, Shingrix #1 L deltoid below flu site. VIS given. Waited 15 min, no reaction. Told her Shingrix can make her feel achy for a day or two. Dose 2 due in 2-6 months; will try to line it up with her winter follow-up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "outside_records",
+          "start": "2023-11-20T13:05",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "date": "2023-11-20T13:05",
+              "author": "optometry",
+              "body": "Diabetic Eye Examination\nExam date: 11/08/2023\nPatient: Doris Hastings, DOB 11/21/1966\nHistory: type 2 diabetes, on metformin. Medications reviewed. NKDA.\nVisual acuity with correction: 20/20 OD, 20/25 OS.\nIOP 15 / 16 mmHg.\nDilated fundus exam: no diabetic retinopathy either eye. No macular edema. Optic nerves healthy.\nImpression: Type 2 diabetes without retinopathy. Mild presbyopia, new reading Rx given.\nRecommend dilated exam yearly.\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "pharmacy",
+          "start": "2024-01-04T09:30",
+          "reason": "Refill request, 90-day supply",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Mail-order refill request",
+              "date": "2024-01-04T09:30",
+              "author": "MA",
+              "body": "Mail-order pharmacy request for 90-day supplies of metformin 1000 mg BID, lisinopril 10 mg, atorvastatin 20 mg and levothyroxine 75 mcg (insurance change to mail order for maintenance meds). All active, last visit 8/2023, labs current. Sent 90 days with 1 refill each per protocol. Aspirin is OTC."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 88.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-13T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-13T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 134
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-13T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-13T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-13T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-02-13T16:15"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-02-13T16:16"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: diabetes, hypertension",
+              "date": "2024-02-13T16:30",
+              "author": "PCP",
+              "body": "S: Routine f/u. Busy at school, a lot of sick kids in her class but she has stayed well. Taking all meds. Home sugars mostly 120-150 fasting. No lows. No foot symptoms. Eye exam in November was clear (letter on file). Felt tired for a day after the first Shingrix, nothing more.\n\nO: BP at goal, weight stable (see vitals). Heart RRR. Lungs clear. No edema. Feet normal.\n\nA/P:\nT2DM - A1c today. Continue metformin 1000 BID.\nHTN - at goal on lisinopril 10.\nHyperlipidemia, hypothyroid - stable, labs due with physical.\nPrevention - Shingrix #2 and PCV20 today. Screening mammogram ordered; she will book over April break.\nPhysical in September, f/u in about 4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 88.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "portal_message",
+          "start": "2024-02-15T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2024-02-15T12:10",
+              "author": "PCP",
+              "body": "Doris - A1c came back about the same as August. Kidney function and potassium are normal. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "imaging",
+          "start": "2024-04-09T08:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-04-09T08:30",
+              "text": "Bilateral screening digital mammogram with tomosynthesis. Comparison: outside study from 2022. Breast composition: scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion in either breast. Skin and axillae unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening mammogram in 1 year.",
+              "issued": "2024-04-10T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-04-09T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram result",
+              "date": "2024-04-11T10:20",
+              "author": "RN",
+              "body": "Your screening mammogram from April 9 was normal. Next one due in a year. Reminder letter will go out."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-06-11T16:15",
+              "author": "front desk",
+              "body": "Did not arrive for 3:30 f/u. Left VM to reschedule. 6/12 - she called back, end-of-year field day ran late and she forgot. Rebooked 6/27."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "office_visit",
+          "start": "2024-06-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              79
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 88.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-27T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-27T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-27T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2024-06-27T11:00",
+              "author": "PCP",
+              "body": "First week of summer break, apologetic about the missed visit. Doing well. Has been walking mornings now that school is out. Fasting sugars 110s-130s. No med issues.\n\nExam: vitals reviewed. BP up a little today - she hurried over from a dentist appointment; it has been at goal otherwise. Weight about the same. Heart and lungs normal. No edema.\n\nT2DM: A1c today, continue metformin.\nHTN: recheck at the physical, no change.\nOthers stable.\nPhysical with fasting labs in September."
+            },
+            {
+              "type": "Result Note",
+              "title": "A1c result",
+              "date": "2024-06-28T08:15",
+              "author": "PCP",
+              "body": "A1c 6.6, lowest yet. Released to portal with a note: summer walking is paying off."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              136,
+              85
+            ],
+            "hr": 58,
+            "temp_c": 36.3,
+            "spo2": 95,
+            "weight_kg": 87.8,
+            "height_cm": 162.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-16T07:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 131
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-16T07:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-16T07:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T07:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-16T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-16T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-16T07:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-16T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-16T08:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-16T08:25",
+              "author": "PCP",
+              "body": "ANNUAL EXAM - 57F\n\nEarly appointment before school. Fasting. No new concerns. Sleeping okay. Mood good, PHQ-2 0.\n\nMeds: metformin 1000 BID, lisinopril 10, atorvastatin 20, levothyroxine 75 mcg, ASA 81. No allergies.\nFH/SH unchanged: never smoker, no alcohol.\n\nROS negative across systems including chest pain, dyspnea, GI, GU, skin, neuro.\n\nExam:\nGen: well, obese.\nHEENT: normal. Neck: no thyroid enlargement, no nodes.\nCV: RRR, no murmur. Lungs: clear.\nBreasts: deferred, mammogram April.\nAbd: soft, nontender, old scars healed, no masses.\nExt: no edema. Feet: intact sensation, good pulses, no skin breakdown.\nSkin: no worrisome lesions.\n\nPlan:\n- Labs: CMP, CBC, lipids, A1c, TSH, urine microalbumin. One-time hep C and HIV screening, she agrees.\n- Vaccines: flu and the 2024-25 COVID shot today.\n- Colonoscopy 2029, Pap/HPV due 2026, mammogram April.\n- Eye exam in November.\n- F/u winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T17:25",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2024-09-18T17:25",
+              "author": "PCP",
+              "body": "Hi Doris, all of your physical labs look good. A1c is 7.4, back up a little from June but close to where you've been. Cholesterol is at goal on the current dose, thyroid level normal, kidney and liver tests normal, no protein in the urine. Hepatitis C and HIV screens negative. Nothing to change."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical labs",
+              "date": "2024-09-18T20:41",
+              "author": "patient",
+              "body": "Great news, thanks. Arm was a little sore from the shots but fine now."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T19:15",
+          "reason": "Refill; eye exam update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Levothyroxine and eye doctor",
+              "date": "2024-12-03T19:15",
+              "author": "patient",
+              "body": "Hello - the mail order says my levothyroxine is out of refills. Could you send a new one? Also I had my eye exam in November and the eye doctor said everything was fine, no diabetes changes. I asked them to send it to you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Levothyroxine and eye doctor",
+              "date": "2024-12-04T08:35",
+              "author": "RN",
+              "body": "Levothyroxine 75 mcg 90 days with 3 refills sent to your mail order pharmacy. Thanks for the eye exam update - we haven't received their report yet, I've noted what you told us in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "vitals": {
+            "bp": [
+              137,
+              81
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-30T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-30T16:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 135
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-30T15:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-30T16:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic care follow-up",
+              "date": "2025-01-30T16:35",
+              "author": "PCP",
+              "body": "Winter f/u. Admits the holidays were rough on her eating and she has not been walking since it got icy. Fasting sugars creeping into the 150s. Meds taken daily. No lows, no foot symptoms, no chest pain.\nEye exam 11/2024 normal per patient, report never came - will ask them again.\n\nExam: BP okay. Weight up a little from summer. Heart/lungs normal. Abdomen soft, nontender. Feet: normal sensation and pulses.\n\nT2DM: expect A1c a bit higher today. If it is over 7.5 we'll talk about adding something; for now she'd rather get back to walking at the school gym after dismissal.\nHTN, lipids, thyroid: stable.\nScreening mammogram reordered for spring.\nRTC 4-6 mo."
+            },
+            {
+              "type": "Result Note",
+              "title": "A1c result",
+              "date": "2025-01-31T12:40",
+              "author": "PCP",
+              "body": "A1c about where it was in the fall, not at the point where I'd add a medication. Messaged her: same plan, recheck in the summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.6,
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "imaging",
+          "start": "2025-04-08T08:15",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-04-08T08:15",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 04/2024 and 2022. Scattered fibroglandular density. No mass, suspicious calcification, or distortion. No change from prior.",
+              "conclusion": "BI-RADS 1: Negative. Return to annual screening.",
+              "issued": "2025-04-09T11:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-04-08T08:15"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lump in lower abdomen",
+          "vitals": {
+            "bp": [
+              127,
+              86
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 88.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-13T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-ref",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "Reducible bulge at lower midline laparotomy scar, suspected incisional hernia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit: abdominal wall bulge",
+              "date": "2025-05-13T16:30",
+              "author": "PCP",
+              "body": "CC: bump below her belly button.\n\nHPI: Noticed a soft swelling in the lower abdomen sometime around New Year's. Thinks it has gotten a bit bigger since. Most obvious at the end of a school day when she has been on her feet, or after carrying boxes for her classroom. When she lies down at night it flattens out and she cannot find it. No pain. No nausea or vomiting, bowels regular, no constipation. Did not mention it in January because she thought it was just weight.\n\nPSH reminder: midline laparotomy 2020 for SBO; C-section 1995.\n\nExam: Vitals reviewed. Abdomen obese, soft, nontender. Standing, there is a soft bulge along the lower part of the midline scar that gets fuller when she coughs; it reduces easily with gentle pressure and when supine. No skin changes over it. Lower transverse scar flat. No groin bulge.\n\nA/P: Bulge at the laparotomy scar, reducible and nontender - most consistent with an incisional hernia. Referred to general surgery for evaluation. Reviewed what to watch for (a bulge that stays out, becomes painful or firm, vomiting) and to go to the ED if that happens. Diabetes and BP f/u due in summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telephone",
+          "start": "2025-06-24T10:50",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Surgery consult note request",
+              "date": "2025-06-24T10:50",
+              "author": "MA",
+              "body": "Pt saw general surgery 6/2 per her portal check-in; no consult note received. Called the surgeons' office, they will fax the visit note. Will watch the fax queue."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "outside_records",
+          "start": "2025-07-08T14:20",
+          "reason": "General surgery consultation note",
+          "conditions": [
+            {
+              "label": "Incisional hernia without obstruction or gangrene",
+              "action": "diagnosed",
+              "onset": "2024-12-15",
+              "note": "Lower midline laparotomy scar; watchful waiting per surgery",
+              "icd10": "K43.2"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-ref",
+              "action": "done",
+              "date": "2025-07-08T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery consultation",
+              "date": "2025-07-08T14:20",
+              "author": "general surgery",
+              "body": "GENERAL SURGERY - NEW PATIENT CONSULTATION\nDate of service: 06/02/2025\nReferring: primary care\nReason: lower abdominal swelling\n\nMs. Hastings is a 58-year-old teacher seen for a lower abdominal bulge. She became aware of it roughly six months ago and feels it has slowly enlarged. It is most apparent after long periods standing or with exertion and goes away when she lies flat. She has had no nausea, vomiting, constipation or abdominal pain.\n\nPast history: hypertension, type 2 diabetes, dyslipidemia, hypothyroidism, obesity with BMI 33.\nSurgical history: cesarean delivery 1995. Laparotomy in 2020 for small bowel obstruction. No abdominal operations or abdominal trauma since then.\nMedications: metformin 1000 mg twice daily, lisinopril 10 mg daily, atorvastatin 20 mg daily, levothyroxine 75 mcg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFamily history: mother with diabetes and hypertension; father with coronary disease and hyperlipidemia; sister status post cholecystectomy for gallstones; brother status post inguinal herniorrhaphy.\nSocial: never smoker, no alcohol, elementary school teacher.\n\nExam: Pleasant, comfortable. Abdomen soft and nontender. Along the old lower midline incision there is a soft, reducible, nontender mass which becomes more prominent when she bears down. No erythema or warmth over it. No other abdominal wall or groin masses on careful palpation.\n\nImpression: Incisional hernia of the lower midline laparotomy scar, reducible, minimally symptomatic.\n\nPlan: We discussed elective repair versus a period of observation. Given that it is reducible and not bothering her much, she prefers to wait, which is reasonable. Any improvement in weight and glucose control before an eventual repair would be to her benefit. She knows to return sooner, or go to an emergency department, for pain, rapid enlargement, or a bulge that will not go back in. She will call us when she wishes to schedule repair.\n\nGeneral Surgery attending"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside note review",
+              "date": "2025-07-09T07:45",
+              "author": "PCP",
+              "body": "Surgery consult 6/2 reviewed: incisional hernia at the midline laparotomy scar, reducible. Watchful waiting, she can schedule elective repair when ready. Added to problem list."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "office_visit",
+          "start": "2025-08-18T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              143,
+              81
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 87.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-18T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-18T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-18T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "date": "2025-08-18T10:15",
+              "author": "PCP",
+              "body": "S: Back to classroom setup next week. Walked most mornings this summer. Fasting sugars back in the 120s-130s. Hernia: no pain, still pops out at the end of the day, she is not ready for surgery - maybe next summer. Meds unchanged.\nO: Vitals reviewed, BP a little above goal today. Abdomen: reducible lower midline bulge, nontender, same as May. Feet normal.\nA/P: T2DM - A1c today, continue metformin. HTN - mildly up today, recheck in October, no change. Incisional hernia - observation per surgery, warning signs reviewed again. Physical in October."
+            },
+            {
+              "type": "Result Note",
+              "title": "A1c result",
+              "date": "2025-08-19T13:00",
+              "author": "PCP",
+              "body": "A1c 6.6, under 7 again. Portal note sent: nice work this summer. BP was a little up at the visit; will recheck at the physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.9,
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "annual_physical",
+          "start": "2025-10-09T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              84
+            ],
+            "hr": 73,
+            "temp_c": 36.2,
+            "spo2": 95,
+            "weight_kg": 87.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-09T07:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 149
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-09T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-09T07:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 82
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 127
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 107
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-09T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-09T07:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-09T07:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T08:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-09T08:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive visit",
+              "date": "2025-10-09T08:20",
+              "author": "PCP",
+              "body": "PHYSICAL, 58 y/o F\n\nInterval: surgery consult in June for incisional hernia, observing. Otherwise no new problems. Fasting this morning. PHQ-2 negative.\n\nCurrent meds: metformin 1000 mg BID; lisinopril 10 mg daily; atorvastatin 20 mg daily; levothyroxine 75 mcg qAM; aspirin 81 mg daily. NKDA.\nNever smoker. No alcohol.\n\nROS: no chest pain, dyspnea, abdominal pain, change in bowels, urinary symptoms, rashes.\n\nExam\nGeneral: no distress\nHEENT, neck: unremarkable; thyroid normal size\nHeart: regular, no murmur\nLungs: clear\nAbdomen: soft, nontender; reducible bulge at lower midline scar, unchanged\nExtremities: no edema\nFeet: sensation intact to monofilament, pulses palpable\nSkin: nothing concerning\n\nPlan\n- Fasting labs: CMP, CBC, lipids, A1c, TSH, urine microalbumin\n- Flu and 2025-26 COVID vaccines given\n- Mammogram due April; Pap with HPV due 2026, can do at next physical; colonoscopy 2029\n- Eye exam next month\n- Diabetes f/u in about 5 months"
+            },
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2025-10-10T16:05",
+              "author": "PCP",
+              "body": "All physical labs reviewed and acceptable: A1c 7.4, up from summer as usual for her, LDL at goal on atorvastatin 20, TSH normal, renal and hepatic panels normal, urine microalbumin normal. Released with comment."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T09:10",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "date": "2025-11-18T09:10",
+              "author": "optometry",
+              "body": "Diabetic eye exam - 11/05/2025\nPatient: Hastings, Doris (DOB 11/21/1966)\nDM type 2. Meds per patient list. NKDA.\nBCVA 20/20 right, 20/25 left. Pressures normal.\nDilated exam: no diabetic retinopathy OU. Maculae flat and dry. Lens clear.\nA: No diabetic retinopathy.\nP: Return 1 year.\nFaxed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T08:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Lisinopril refill",
+              "date": "2026-01-13T08:45",
+              "author": "MA",
+              "body": "eRx renewal request from mail-order pharmacy for lisinopril 10 mg daily x90. Last BP at goal, BMP normal in October. Approved, 90 days with 1 refill. F/u visit due - reminder sent to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "vitals": {
+            "bp": [
+              137,
+              83
+            ],
+            "hr": 68,
+            "spo2": 96,
+            "weight_kg": 86.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-06T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-06T16:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 146
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-06T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-06T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: DM2, HTN, hernia",
+              "date": "2026-03-06T16:15",
+              "author": "PCP",
+              "body": "Subjective\nCame straight from school. Feeling fine. Has kept up walking in the gym most afternoons this winter and weight is a little down. Fasting sugars 115-135. All five meds daily, no side effects. Hernia unchanged, painless, still thinking about having it fixed this summer and will call surgery herself.\n\nObjective\nVitals reviewed - BP at goal, weight down slightly.\nHeart regular. Lungs clear.\nAbdomen: soft, nontender; soft reducible bulge at the lower midline scar, no change.\nNo edema. Feet: intact sensation and pulses.\n\nAssessment / Plan\n1. Type 2 DM - A1c and BMP today. Metformin 1000 BID.\n2. HTN - controlled on lisinopril 10.\n3. Hyperlipidemia - atorvastatin 20, lipids done in October.\n4. Hypothyroidism - levothyroxine 75 mcg, TSH normal in October.\n5. Incisional hernia - observation; she will contact surgery if she wants repair.\n6. Obesity - encouraged, keep going.\nMammogram due April - she will schedule. Pap with HPV due this year, at the fall physical.\nFollow-up 4-6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.2,
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Friday's labs",
+              "date": "2026-03-09T12:20",
+              "author": "PCP",
+              "body": "Hi Doris, your A1c from Friday is a bit over 7, about where it usually runs, and your kidney function and potassium are normal. Keep up the walking. See you in late summer or early fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Metformin refill",
+              "date": "2026-05-19T09:05",
+              "author": "MA",
+              "body": "Mail-order request: metformin 1000 mg BID x90. Seen 3/6, A1c and renal function fine. Sent with 1 refill per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T20:10",
+          "reason": "Upcoming gallbladder surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gallbladder surgery next week",
+              "date": "2026-07-21T20:10",
+              "author": "patient",
+              "body": "Hi, just wanted to let you know what's been going on. A few times this spring I had pain in my upper belly after dinner that lasted a couple of hours and then went away. I went back to the surgeon I saw for my hernia and they sent me for an ultrasound, which showed gallstones (my sister had the same thing). They are taking my gallbladder out laparoscopically on July 29. They gave me instructions about my medications for the day of surgery. Is there anything you need from me or anything I should do differently?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Gallbladder surgery next week",
+              "date": "2026-07-22T07:55",
+              "author": "PCP",
+              "body": "Thanks for letting us know, Doris. Follow the surgical team's medication instructions for the day of surgery - they will tell you when to restart your metformin and aspirin. Please ask them to send us the operative note afterward. Wishing you an easy recovery, and message us if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "ed_visit",
+          "start": "2026-08-06T11:05",
+          "end": "2026-08-06T21:40",
+          "service": "Emergency Medicine",
+          "reason": "Jaundice after cholecystectomy",
+          "vitals": [
+            {
+              "time": "2026-08-06T11:10",
+              "bp": [
+                134,
+                78
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-08-06T11:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 4.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 3.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 312
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 148
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-06T11:40",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 34
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-06T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-08-06T11:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-06T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 168
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-08-06T13:20",
+              "text": "Indication: jaundice, 8 days after laparoscopic cholecystectomy. The gallbladder is surgically absent. No fluid collection in the gallbladder fossa. The common bile duct measures 9 mm. The distal duct is obscured by overlying bowel gas. Liver normal in size and echotexture without focal lesion. Pancreatic head not well seen. No ascites. Right kidney unremarkable.",
+              "conclusion": "Post-cholecystectomy. Common bile duct 9 mm; distal duct not visualized. No fluid collection in the gallbladder fossa."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-08-13T10:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD - received by fax 08/13/2026\nDate of visit: 08/06/2026\n\nChief complaint: yellow eyes and skin.\n\nHPI: 59-year-old woman with hypertension, type 2 diabetes, dyslipidemia, hypothyroidism, obesity and a known incisional hernia, who had a laparoscopic cholecystectomy 8 days ago for presumed symptomatic gallstones. Per the operative records available to us, no intraoperative cholangiogram was obtained. She did well for the first several days at home, then over the last 3 days has noticed her eyes and skin turning yellow, with pale, clay-colored stools and very dark urine. She has had no fever, no abdominal pain and no nausea. Eating normally, bowels moving regularly. No history of liver disease.\n\nPMH: as above. PSH: cesarean section 1995, laparotomy for SBO 2020, laparoscopic cholecystectomy 7/29/2026.\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 20 mg daily, levothyroxine 75 mcg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFamily hx: mother DM2/HTN; father CAD/hyperlipidemia; sister cholecystectomy for stones; brother inguinal hernia repair.\nSocial: never smoker. Denies alcohol or IV drug use.\n\nTriage vitals: BP 134/78, HR 76, T 36.7 C, RR 16, SpO2 98% RA. Afebrile, vitals normal throughout.\n\nExam: Alert, comfortable. Scleral icterus; skin mildly jaundiced. Abdomen soft, nondistended, nontender; no hepatosplenomegaly. Bowel sounds present. Laparoscopic port sites clean, dry, healing well. Reducible lower midline incisional hernia. Rectal deferred. Remainder of exam unremarkable.\n\nLabs: total bilirubin 4.7, direct 3.6, alk phos 312, AST 96, ALT 148, albumin 4.0, lipase 34. WBC 7.4, Hgb 13.1, plt 236. INR 1.1. Creatinine 0.82, glucose 168.\n\nImaging: RUQ US - post-cholecystectomy, CBD 9 mm, distal duct obscured by gas, no fossa collection. MRCP 18:40 - 8 mm calculus in the distal common bile duct, CBD 9 mm, no other filling defect, no fluid collection, pancreatic duct normal.\n\nED course / MDM: Painless obstructive jaundice after cholecystectomy with a dilated duct and a distal CBD stone on MRCP - retained common bile duct stone. Afebrile with normal white count and lipase: no evidence of cholangitis or pancreatitis. Discussed with GI and the operating surgeon. Admitted to the surgical service for ERCP.\n\nDiagnosis: Choledocholithiasis (retained common bile duct stone) following laparoscopic cholecystectomy.\nDisposition: admitted."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T14:35",
+          "reason": "Update after hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back home",
+              "date": "2026-08-11T14:35",
+              "author": "patient",
+              "body": "Hi - I wanted to update you. About a week after my gallbladder surgery my eyes and skin turned yellow, so I went to the ER on the 6th. They found a stone stuck in my bile duct and kept me overnight. The next day they did a scope (ERCP) and pulled the stone out, and I went home on the 8th. The yellow is already fading and I feel fine. They didn't change any of my medicines. I have a follow-up with the surgeon. I asked them to send you everything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Back home",
+              "date": "2026-08-12T08:05",
+              "author": "PCP",
+              "body": "Doris, I'm sorry you had to go through that, and glad it was sorted out quickly. We'll watch for the hospital records. Call the surgeon or the ED right away for fever, chills, belly pain or if the yellow comes back. Keep your follow-up with surgery, and let us know when you'd like to come in to catch up."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "telephone",
+          "start": "2026-08-14T11:15",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records request",
+              "date": "2026-08-14T11:15",
+              "author": "MA",
+              "body": "ED record from 8/6 received yesterday and routed to PCP. Still missing: operative note from the 7/29 cholecystectomy, ERCP report and discharge summary. Faxed request to the hospital's medical records department and called the surgeons' office for the op note."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "outside_records",
+          "start": "2026-08-25T15:40",
+          "reason": "ERCP report",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "ERCP report",
+              "date": "2026-08-25T15:40",
+              "author": "gastroenterology",
+              "body": "ENDOSCOPIC RETROGRADE CHOLANGIOPANCREATOGRAPHY\nDate of procedure: 08/07/2026\nIndication: choledocholithiasis on MRCP after laparoscopic cholecystectomy (7/29/2026); obstructive jaundice.\nAllergies: NKDA.\nSedation: monitored anesthesia care.\n\nFindings: Normal major papilla. Deep biliary cannulation achieved with a sphincterotome over a wire. Cholangiogram showed a common bile duct of 9 mm with a single 8 mm filling defect in the distal duct. No leak from the cystic duct stump. Biliary sphincterotomy performed. The stone was extracted with an extraction balloon. Final balloon occlusion cholangiogram showed no remaining filling defects with good drainage.\n\nImpression: Choledocholithiasis, cleared. Biliary sphincterotomy.\nComplications: none immediate.\nPlan: advance diet, resume home medications, repeat liver tests per surgical team. \n\nGastroenterology"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside record review",
+              "date": "2026-08-26T07:40",
+              "author": "PCP",
+              "body": "ED record (8/6) and ERCP report (8/7) reviewed: retained CBD stone after lap chole, cleared at ERCP with sphincterotomy. Operative note and discharge summary still outstanding - MA following up."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Incisional hernia without obstruction or gangrene|K43.2": {
+        "code": "K43.2",
+        "display": "Incisional hernia without obstruction or gangrene",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}
