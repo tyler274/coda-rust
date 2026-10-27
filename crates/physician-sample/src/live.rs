@@ -66,7 +66,7 @@ pub(crate) struct Live {
     turns: AtomicU64,
     /// Set only when both the physician database and chat topic are configured.
     /// The site accepts and snapshots; the worker runs the model.
-    durable: Option<Arc<crate::durable::DurableChat>>,
+    pub(crate) durable: Option<Arc<crate::durable::DurableChat>>,
 }
 
 impl Live {

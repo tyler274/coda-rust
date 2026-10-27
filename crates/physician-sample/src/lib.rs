@@ -13,6 +13,7 @@
 
 mod auth;
 mod care;
+mod chat_draft;
 pub mod durable;
 mod gmail;
 pub mod hosting;
@@ -144,8 +145,13 @@ fn router_with(upstream: Option<String>) -> Router {
 }
 
 /// The recorded practice the sample server serves, for integration tests.
+/// Its projection is read-only, so a draft save answers 409.
 pub fn recorded() -> Router {
     site()
+        .route(
+            "/physician-state/drafts/{workspace}/{chat}",
+            get(empty_draft).put(draft_not_saved),
+        )
         .route("/commands", post(reject_command))
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
@@ -161,6 +167,10 @@ fn live_router(model: live::ChatModel) -> Router {
 fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
     site()
         .route("/commands", post(live::submit))
+        .route(
+            "/physician-state/drafts/{workspace}/{chat}",
+            get(chat_draft::read).put(chat_draft::save),
+        )
         .route(
             "/physician-state/reply-drafts/{workspace}/{reply}",
             get(reply::read).put(reply::save),
@@ -227,10 +237,6 @@ where
         )
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
-        .route(
-            "/physician-state/drafts/{workspace}/{chat}",
-            get(empty_draft).put(draft_not_saved),
-        )
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))

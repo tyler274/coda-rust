@@ -810,3 +810,143 @@ async fn chat_list_orders_by_activity_before_its_limit() {
             .all(|s| s.practice != practice)
     );
 }
+
+/// Allows or refuses every publication, without the auth owner's tables.
+struct Gate(bool);
+#[async_trait]
+impl Authority for Gate {
+    async fn check(&mut self, _: &Scope) -> Result<(), String> {
+        Ok(())
+    }
+    async fn lock_publication(
+        &mut self,
+        _: &PublicationTransaction,
+        _: &Scope,
+        hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        if self.0 && hash.is_some() {
+            Ok(())
+        } else {
+            Err("physician authority changed".into())
+        }
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn chat_drafts_save_under_a_revision_fence_for_one_physician() {
+    use chat_draft::{ChatDraft, ChatDraftSaved};
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = Scope {
+        practice: uuid::Uuid::new_v4().to_string(),
+        physician: "physician".into(),
+        workspace: "workspace".into(),
+        chat: "draft".into(),
+    };
+    let hash = [7_u8; 32];
+    let draft = |revision, text: &str| ChatDraft {
+        revision,
+        text: text.into(),
+    };
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(0, ""));
+
+    // A refused authority writes nothing, even the first save.
+    assert!(
+        store
+            .save_chat_draft(&scope, 0, "refused", &hash, &mut Gate(false))
+            .await
+            .is_err()
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(0, ""));
+    assert!(
+        store
+            .save_chat_draft(&scope, 0, "short hash", &[1; 4], &mut Gate(true))
+            .await
+            .is_err()
+    );
+
+    let saved = |d| ChatDraftSaved::Saved(d);
+    assert_eq!(
+        store
+            .save_chat_draft(&scope, 0, "first", &hash, &mut Gate(true))
+            .await
+            .unwrap(),
+        saved(draft(1, "first"))
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(1, "first"));
+    assert_eq!(
+        store
+            .save_chat_draft(&scope, 1, "second", &hash, &mut Gate(true))
+            .await
+            .unwrap(),
+        saved(draft(2, "second"))
+    );
+    // Both a second opening save and a save at an old revision are stale and
+    // answer the current draft without writing.
+    for stale in [0, 1, 3] {
+        assert_eq!(
+            store
+                .save_chat_draft(&scope, stale, "stale", &hash, &mut Gate(true))
+                .await
+                .unwrap(),
+            ChatDraftSaved::Conflict(draft(2, "second"))
+        );
+    }
+    assert!(
+        store
+            .save_chat_draft(&scope, 2, "refused", &hash, &mut Gate(false))
+            .await
+            .is_err()
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap(), draft(2, "second"));
+    // Two saves naming the same revision: exactly one wins.
+    let (a, b) = tokio::join!(
+        async {
+            store
+                .save_chat_draft(&scope, 2, "a", &hash, &mut Gate(true))
+                .await
+        },
+        async {
+            store
+                .save_chat_draft(&scope, 2, "b", &hash, &mut Gate(true))
+                .await
+        },
+    );
+    let outcomes = [a.unwrap(), b.unwrap()];
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|o| matches!(o, ChatDraftSaved::Saved(_)))
+            .count(),
+        1,
+        "{outcomes:?}"
+    );
+    assert_eq!(store.chat_draft(&scope).await.unwrap().revision, 3);
+
+    // Another physician, another chat and another workspace see nothing.
+    for other in [
+        Scope {
+            physician: "colleague".into(),
+            ..scope.clone()
+        },
+        Scope {
+            chat: "chat-other".into(),
+            ..scope.clone()
+        },
+        Scope {
+            workspace: "workspace-other".into(),
+            ..scope.clone()
+        },
+    ] {
+        assert_eq!(store.chat_draft(&other).await.unwrap(), draft(0, ""));
+    }
+    let empty = Scope {
+        physician: " ".into(),
+        ..scope.clone()
+    };
+    assert!(store.chat_draft(&empty).await.is_err());
+    // Drafts never create chat work.
+    assert!(store.conversation(&scope).await.is_err());
+}
