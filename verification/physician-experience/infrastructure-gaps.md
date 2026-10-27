@@ -44,14 +44,16 @@ the answer, or the answer restarts with it. Typed input is never lost (N3).
 
 **Assumed away.** How often the runtime re-reads records while work runs.
 
-**Must guarantee.** Initial understanding, patient review and visit preparation
-reflect every record that arrived before they finish. Answers and asked replies
-that finish on older records say so and offer Update (decision 7).
+**Must guarantee.** Every kind of Coda's work reflects every record that
+arrived before it finishes: the product host refuses a finish while something
+that arrived is not yet taken in. A given chat answer is marked when newer
+records arrive and offers Update (decision 7).
 
 ## Records currency
 
-**Assumed away.** Records stay current while the source is up. The graph shows a
-failed check and a source that is down, but no "overdue" state.
+**Assumed away.** How often sources are checked and how a failed check retries.
+The graph shows records current, records that couldn't be updated, and a source
+that is down, but no checking or "overdue" state.
 
 **Must guarantee.** Each source is checked at least daily, with no model calls,
 and a review follows only when something is new (CT). A failed check retries
