@@ -52,7 +52,7 @@ impl SmtpRelay {
             .send(self.message(to, subject, body)?)
             .await
             .map(|_| ())
-            .map_err(|_| Error::RelayDelivery)
+            .map_err(delivery_error)
     }
 
     /// Sends HTML with an equivalent plain-text alternative over the same TLS relay.
@@ -73,7 +73,14 @@ impl SmtpRelay {
             )?)
             .await
             .map(|_| ())
-            .map_err(|_| Error::RelayDelivery)
+            .map_err(delivery_error)
+    }
+}
+
+fn delivery_error(error: lettre::transport::smtp::Error) -> Error {
+    match error.status() {
+        Some(code) => Error::RelayRefused(code.to_string()),
+        None => Error::RelayDelivery,
     }
 }
 
@@ -155,5 +162,91 @@ mod tests {
         );
         let commands = server.await.unwrap();
         assert!(!commands.contains("MAIL FROM") && !commands.contains("secret-token"));
+    }
+    // Exercise the HTTP adapter through a real SMTP exchange. No external mail is sent.
+    #[tokio::test]
+    async fn http_preserves_smtp_acceptance_refusal_and_uncertainty() {
+        for (reply, expected) in [
+            (Some("250 accepted\r\n"), 204),
+            (Some("550 refused\r\n"), 422),
+            (None, 503),
+        ] {
+            let smtp = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let port = smtp.local_addr().unwrap().port();
+            let server = tokio::spawn(async move {
+                let (socket, _) = smtp.accept().await.unwrap();
+                let mut socket = BufReader::new(socket);
+                socket
+                    .get_mut()
+                    .write_all(b"220 localhost ESMTP\r\n")
+                    .await
+                    .unwrap();
+                let mut message = String::new();
+                loop {
+                    let mut line = String::new();
+                    if socket.read_line(&mut line).await.unwrap() == 0 {
+                        break;
+                    }
+                    if line.starts_with("DATA") {
+                        socket
+                            .get_mut()
+                            .write_all(b"354 continue\r\n")
+                            .await
+                            .unwrap();
+                        loop {
+                            let mut line = String::new();
+                            assert!(socket.read_line(&mut line).await.unwrap() > 0);
+                            if line == ".\r\n" {
+                                break;
+                            }
+                            message.push_str(&line);
+                        }
+                        if let Some(reply) = reply {
+                            socket.get_mut().write_all(reply.as_bytes()).await.unwrap();
+                        }
+                        break;
+                    }
+                    assert!(
+                        line.starts_with("EHLO ")
+                            || line.starts_with("MAIL FROM:")
+                            || line.starts_with("RCPT TO:"),
+                        "{line}"
+                    );
+                    socket.get_mut().write_all(b"250 OK\r\n").await.unwrap();
+                }
+                message
+            });
+            let relay = SmtpRelay {
+                from: "Coda Health <signin@codahealth.ai>".parse().unwrap(),
+                transport: AsyncSmtpTransport::<Tokio1Executor>::builder_dangerous("127.0.0.1")
+                    .port(port)
+                    .timeout(Some(std::time::Duration::from_secs(2)))
+                    .build(),
+            };
+            let http = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let url = format!("http://{}/send", http.local_addr().unwrap());
+            let api = tokio::spawn(async move {
+                axum::serve(http, crate::service::router(relay))
+                    .await
+                    .unwrap()
+            });
+            let response = reqwest::Client::new().post(url).json(&serde_json::json!({
+                "to": "doctor@example.test", "subject": "Sign in", "text": "Your code: 123456", "html": "<p>Your code: 123456</p>"
+            })).send().await.unwrap();
+            assert_eq!(response.status().as_u16(), expected);
+            let raw = server.await.unwrap();
+            assert!(raw.contains("signin@codahealth.ai"), "{raw}");
+            assert!(
+                raw.contains("multipart/alternative")
+                    && raw.contains("text/plain")
+                    && raw.contains("text/html"),
+                "{raw}"
+            );
+            assert!(
+                raw.contains("Your code: 123456") && raw.contains("<p>Your code: 123456</p>"),
+                "{raw}"
+            );
+            api.abort();
+        }
     }
 }

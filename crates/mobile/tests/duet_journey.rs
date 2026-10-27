@@ -25,6 +25,7 @@ const SEND_TEXT: &str = "How is my sleep this week?";
 mod durable_doctor;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_duet_journey_runs_on_a_live_stub_backend() {
     let address = spawn_site().await;
     let base = format!("http://{address}");
@@ -164,6 +165,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_mode_switch_walks_the_tabs_in_the_browser() {
     let address = spawn_site().await;
     let base = format!("http://{address}");

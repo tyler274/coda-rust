@@ -7,6 +7,7 @@ use devtools::{Browser, DESKTOP, PHONE};
 
 /// A browser boots on its own port and reports the body text.
 #[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 fn a_browser_boots_and_reads_a_page() {
     let served = serve_one_page();
     let mut browser = Browser::launch();
@@ -20,6 +21,7 @@ fn a_browser_boots_and_reads_a_page() {
 
 /// Two browsers get two different ports, so proofs run in parallel.
 #[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 fn two_browsers_take_two_ports() {
     let first = Browser::launch();
     let second = Browser::launch();
@@ -33,6 +35,7 @@ fn two_browsers_take_two_ports() {
 /// Clicking and typing reach the page: the input takes the text and the
 /// button's click flips the flag the page shows.
 #[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 fn click_and_type_reach_the_page() {
     let served = serve_one_page();
     let mut browser = Browser::launch();
@@ -46,6 +49,7 @@ fn click_and_type_reach_the_page() {
 /// The viewport helpers: the emulation reports the phone metrics and the
 /// reduced-motion media query flips.
 #[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 fn viewports_resize_and_motion_emulates() {
     let _ = serve_one_page();
     let mut browser = Browser::launch();

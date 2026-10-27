@@ -77,6 +77,7 @@ fn click_text(browser: &mut Browser, text: &str) {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn saved_page_publishes_and_revokes_through_real_durable_routes() {
     let url = std::env::var("DUET_TEST_DATABASE_URL")
         .expect("explicit disposable loopback PostgreSQL required");

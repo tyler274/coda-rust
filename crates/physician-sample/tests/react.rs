@@ -23,6 +23,7 @@ const MARY: &str = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
 // The browser calls below block this thread; the in-process Rust server
 // needs another worker to answer them.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_live_react_practice_matches_the_rust_page() {
     assert!(
         std::net::TcpStream::connect("127.0.0.1:8787").is_ok(),

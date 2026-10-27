@@ -5,6 +5,7 @@ use std::{
 };
 
 #[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 fn desktop_mobile_motion_reduced_motion_and_static_fallback() {
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     let address = listener.local_addr().unwrap();

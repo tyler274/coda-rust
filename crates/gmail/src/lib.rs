@@ -24,6 +24,7 @@ use serde::{Deserialize, Serialize};
 
 mod relay;
 pub use relay::SmtpRelay;
+pub mod service;
 
 /// Gmail `users.messages.send`.
 const GMAIL_SEND: &str = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send";
@@ -40,8 +41,11 @@ pub enum Error {
     /// The relay sender or TLS configuration is invalid.
     #[error("Workspace SMTP relay is not configured")]
     RelayConfiguration,
-    /// SMTP connection, TLS negotiation, or message acceptance failed.
-    #[error("Workspace SMTP relay did not accept the message")]
+    /// A negative SMTP reply confirms that this attempt was refused.
+    #[error("Workspace SMTP relay refused the message ({0})")]
+    RelayRefused(String),
+    /// The connection failed without a confirmed acceptance or refusal.
+    #[error("Workspace SMTP relay acceptance could not be confirmed")]
     RelayDelivery,
     /// From, To, or Subject contained a character a header must not carry.
     #[error("gmail message headers were refused")]

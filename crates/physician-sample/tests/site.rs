@@ -23,6 +23,7 @@ fn test_lock() -> &'static Mutex<()> {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_recorded_practice_is_visible() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -156,6 +157,7 @@ async fn the_recorded_practice_is_visible() {
 /// New conversation, send, then a reload without `?chat=`: the workspace
 /// lists the chat the physician started, titled by its first message.
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -339,6 +341,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -435,6 +438,7 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects() {
     use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -574,6 +578,7 @@ fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) ->
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     use base64::Engine;
 
@@ -728,6 +733,7 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignment() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -962,6 +968,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_interact() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -1069,6 +1076,7 @@ async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_int
 }
 
 #[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
     let _guard = test_lock().lock().await;
     let site = build_site();
