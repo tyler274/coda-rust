@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "3b879e9221ad0a597bd7fce5f00c97c95b8c615d10933ed833448d93581e5488",
-  "generated_sha256": "631c0c976e460875f611761301956a8161e4622e9ef3662a3c21a3493312554c",
-  "steps_sha256": "a835526ff569843d76e55f65a091f2ed1c72f70886a610430760c0f738e51777",
+  "chart_sha256": "41141f06cb0c39f9aacd4bf75921cbfc2e98f942f5add454b9b2ea72b21b13d9",
+  "generated_sha256": "dc3e5a8126403b55a8b75a6025199f1ed7d7d3129f6a115f6dd2416db4d19074",
+  "steps_sha256": "56219ecd120b380c1e41f4e588425e448059d8480d6fe1956cc535f4ccff0626",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -9515,10 +9515,10 @@
       ]
     },
     {
-      "label": "open an update from the orb",
-      "function": "event_open_an_update_from_the_orb",
+      "label": "open an update",
+      "function": "event_open_an_update",
       "cause": "you",
-      "intent": "From the orb you open one update; Coda opens on it. Previewing updates there never navigates or clears attention; only opening one does (PX).",
+      "intent": "You read one update, from the Updates list or wherever the app offers it; opening records it seen and never removes it. Previewing one never navigates or clears attention; only opening it does (PX).",
       "needs": {
         "not": false,
         "states": {
@@ -9542,6 +9542,12 @@
               "Reading an update.Update read.Loading the update"
             ]
           }
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Updates view",
+          "from": "Updates list",
+          "to": "Reading an update.Update read.Loading the update",
+          "guard": null
         },
         {
           "region": "Physician session/Signed in/Updates panel/Updates open/Updates view",
@@ -9716,38 +9722,6 @@
           "region": "Physician session/Signed in/Updates panel/Updates open/Updates view",
           "from": "Reading an update.Update read.Couldn't load the update, with Retry",
           "to": "Reading an update.Update read.Loading the update",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "open an update row",
-      "function": "event_open_an_update_row",
-      "cause": "you",
-      "intent": "You read one update; opening records it seen and never removes it.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ]
-        },
-        "reason": "commands need an active session; an update about a patient is clinical content"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Updates view",
-          "from": "Updates list",
-          "to": "Reading an update.Update read.Loading the update",
-          "guard": null
-        },
-        {
-          "region": "This patient's update today",
-          "from": "Written to you, new",
-          "to": "Opened by you",
           "guard": null
         }
       ]
@@ -23279,11 +23253,14 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: read": [
             "Coda couldn't read a message, on Today"
           ]
         },
-        "reason": "only a message Coda couldn't read"
+        "reason": "Done needs clinical access and a message Coda couldn't read"
       },
       "transitions": [
         {
@@ -23313,11 +23290,14 @@
           "Physician session/Signed in/Your command on the unread message": [
             "Done on the unread message: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: read": [
             "Coda couldn't read a message, on Today"
           ]
         },
-        "reason": "only a message Coda couldn't read; and an answer comes only for a command in flight"
+        "reason": "Done needs clinical access and a message Coda couldn't read; and an answer comes only for a command in flight"
       },
       "accepts": "mark the unread message done",
       "transitions": [
@@ -23360,11 +23340,14 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access"
+                  ],
                   "Patient message: read": [
                     "Coda couldn't read a message, on Today"
                   ]
                 },
-                "reason": "only a message Coda couldn't read"
+                "reason": "Done needs clinical access and a message Coda couldn't read"
               }
             ]
           ]
@@ -23861,11 +23844,14 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: reply/Reply work open/Reply status": [
             "Closed, no reply needed, Undo shown"
           ]
         },
-        "reason": "only while its Undo shows"
+        "reason": "the reply is clinical content; only while its Undo shows"
       },
       "transitions": [
         {
@@ -23895,11 +23881,14 @@
           "Physician session/Signed in/Your command on the reply": [
             "Undo no reply needed on the reply: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: reply/Reply work open/Reply status": [
             "Closed, no reply needed, Undo shown"
           ]
         },
-        "reason": "only while its Undo shows; and an answer comes only for a command in flight"
+        "reason": "the reply is clinical content; only while its Undo shows; and an answer comes only for a command in flight"
       },
       "accepts": "undo no reply needed",
       "transitions": [
@@ -23942,11 +23931,14 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access"
+                  ],
                   "Patient message: reply/Reply work open/Reply status": [
                     "Closed, no reply needed, Undo shown"
                   ]
                 },
-                "reason": "only while its Undo shows"
+                "reason": "the reply is clinical content; only while its Undo shows"
               }
             ]
           ]
@@ -24007,11 +23999,14 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: reply/Reply work open/Your reply text": [
             "Your reply, with Coda's update offered"
           ]
         },
-        "reason": "only while Coda's update is offered"
+        "reason": "the reply is clinical content; only while Coda's update is offered"
       },
       "transitions": [
         {
@@ -24041,11 +24036,14 @@
           "Physician session/Signed in/Your command on the reply": [
             "Use Coda's update on the reply: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: reply/Reply work open/Your reply text": [
             "Your reply, with Coda's update offered"
           ]
         },
-        "reason": "only while Coda's update is offered; and an answer comes only for a command in flight"
+        "reason": "the reply is clinical content; only while Coda's update is offered; and an answer comes only for a command in flight"
       },
       "accepts": "use Coda's update",
       "transitions": [
@@ -24088,11 +24086,14 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access"
+                  ],
                   "Patient message: reply/Reply work open/Your reply text": [
                     "Your reply, with Coda's update offered"
                   ]
                 },
-                "reason": "only while Coda's update is offered"
+                "reason": "the reply is clinical content; only while Coda's update is offered"
               }
             ]
           ]
@@ -24153,11 +24154,14 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: reply/Reply work open/Your reply text": [
             "Coda's text replaced yours, Restore available"
           ]
         },
-        "reason": "only while your earlier text can be restored"
+        "reason": "the reply is clinical content; only while your earlier text can be restored"
       },
       "transitions": [
         {
@@ -24187,11 +24191,14 @@
           "Physician session/Signed in/Your command on the reply": [
             "Restore my version on the reply: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
           "Patient message: reply/Reply work open/Your reply text": [
             "Coda's text replaced yours, Restore available"
           ]
         },
-        "reason": "only while your earlier text can be restored; and an answer comes only for a command in flight"
+        "reason": "the reply is clinical content; only while your earlier text can be restored; and an answer comes only for a command in flight"
       },
       "accepts": "restore my version",
       "transitions": [
@@ -24234,11 +24241,14 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access"
+                  ],
                   "Patient message: reply/Reply work open/Your reply text": [
                     "Coda's text replaced yours, Restore available"
                   ]
                 },
-                "reason": "only while your earlier text can be restored"
+                "reason": "the reply is clinical content; only while your earlier text can be restored"
               }
             ]
           ]

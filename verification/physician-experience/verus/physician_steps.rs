@@ -181,8 +181,8 @@ pub proof fn preserves_event_open_updates(s: State, t: State)
 pub proof fn preserves_event_open_all_updates(s: State, t: State)
     requires inductive(s), ensures event_open_all_updates(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_open_an_update_from_the_orb(s: State, t: State)
-    requires inductive(s), ensures event_open_an_update_from_the_orb(s, t) ==> inductive(t),
+pub proof fn preserves_event_open_an_update(s: State, t: State)
+    requires inductive(s), ensures event_open_an_update(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_close_updates(s: State, t: State)
     requires inductive(s), ensures event_close_updates(s, t) ==> inductive(t),
@@ -201,9 +201,6 @@ pub proof fn preserves_event_the_update_fails_to_load(s: State, t: State)
 {}
 pub proof fn preserves_event_retry_the_update(s: State, t: State)
     requires inductive(s), ensures event_retry_the_update(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_open_an_update_row(s: State, t: State)
-    requires inductive(s), ensures event_open_an_update_row(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_go_to_the_next_update(s: State, t: State)
     requires inductive(s), ensures event_go_to_the_next_update(s, t) ==> inductive(t),
@@ -1854,14 +1851,13 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_retry_the_reading(s, t);
     preserves_event_open_updates(s, t);
     preserves_event_open_all_updates(s, t);
-    preserves_event_open_an_update_from_the_orb(s, t);
+    preserves_event_open_an_update(s, t);
     preserves_event_close_updates(s, t);
     preserves_event_the_update_shows_a_saved_copy(s, t);
     preserves_event_the_update_loads(s, t);
     preserves_event_the_update_loads_in_part(s, t);
     preserves_event_the_update_fails_to_load(s, t);
     preserves_event_retry_the_update(s, t);
-    preserves_event_open_an_update_row(s, t);
     preserves_event_go_to_the_next_update(s, t);
     preserves_event_go_to_the_previous_update(s, t);
     preserves_event_back_to_updates(s, t);
