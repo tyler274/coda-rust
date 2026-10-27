@@ -161,3 +161,43 @@ From: A patient's first records give Coda its initial understanding
 6. Coda finishes the follow-up review with an update for you → Active follow-up
 7. complete the follow-up
 8. your Complete on the follow-up goes through → Completed
+
+## Your edited reply stays yours when the patient writes again
+
+Newer work offers Coda's update beside your text rather than replacing it; you
+choose, and one restore point brings your text back.
+
+From: A patient's first records give Coda its initial understanding
+
+1. connect the channel
+2. the provider authorizes the channel
+3. a message arrives from a known sender
+4. Coda starts the patient review
+5. Coda finishes the patient review with an update for you → Reply work open
+6. open the patient
+7. edit the reply → Your edited reply
+8. the patient writes again → Reviewing a new message; Your edited reply
+9. Coda starts the patient review
+10. Coda finishes the patient review with an update for you → Reply ready.Ready to send or copy; Your reply, with Coda's update offered
+11. use Coda's update
+12. your Use Coda's update on the reply goes through → Coda's text replaced yours, Restore available
+13. restore my version
+14. your Restore my version on the reply goes through → Your edited reply
+
+## Clearing a concern leaves its follow-up running
+
+Done is about the concern; the follow-up carries on until it is completed or
+cancelled.
+
+From: A patient's first records give Coda its initial understanding
+
+1. open the patient
+2. create a follow-up
+3. your Create on the follow-up goes through → Active follow-up.Not yet due
+4. new records arrive
+5. Coda starts the patient review
+6. Coda finishes the patient review with an update for you → Needs attention; Active follow-up.Not yet due
+7. open the concern
+8. mark the concern done
+9. your Done on the concern goes through → No concern needs you.Marked done; Active follow-up.Not yet due
+10. the follow-up comes due → Active follow-up.Due, its review owed

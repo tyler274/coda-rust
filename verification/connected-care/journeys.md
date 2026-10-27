@@ -56,17 +56,20 @@ From: A set-up patient and a signed-in physician
 
 ## What the patient shares reaches the practice while connected
 
-Each change to what the patient shares is news for the practice's agents; For
-my doctor goes only when the patient sends it.
+Each change to what the patient shares is news for the practice's agents, here
+taken in by the initial understanding already running; saving For my doctor
+shares nothing, and sending it does.
 
 From: The practice invites the patient, who joins
 
-1. add a note
-2. your Add on the note goes through → duet: Note saved; physician: initial understanding in hand
-3. save For my doctor
-4. your Save on For my doctor goes through → duet: For my doctor saved
-5. send For my doctor to your practice
-6. your Send to my practice on For my doctor goes through → duet: Connected to your practice, sharing; physician: Connected
+1. Coda starts the initial understanding → physician: initial understanding in hand.initial understanding active.Coda is working on the initial understanding; physician: Nothing new since it started@understanding
+2. add a note
+3. your Add on the note goes through → duet: Note saved; physician: Something new arrived since it started@understanding
+4. Coda takes in what arrived in the initial understanding → physician: Nothing new since it started@understanding
+5. save For my doctor
+6. your Save on For my doctor goes through → duet: For my doctor saved; physician: Nothing new since it started@understanding
+7. send For my doctor to your practice
+8. your Send to my practice on For my doctor goes through → physician: Something new arrived since it started@understanding
 
 ## The patient leaves, and both sides show the connection ended
 
@@ -89,5 +92,5 @@ From: The practice invites the patient, who joins
 From: The practice invites the patient, who joins
 
 1. delete your account
-2. your Delete account on your account goes through → duet: Deleting your account
+2. your Delete account on your account goes through → duet: Deleting your account; physician: Connection ended.Ended, the patient's account was deleted
 3. the deletion finishes → duet: No account; physician: Connection ended.Ended, the patient's account was deleted
