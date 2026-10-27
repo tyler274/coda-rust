@@ -1,0 +1,300 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002006",
+      "events": [
+        {
+          "id": "2022-01-26a",
+          "kind": "procedure_visit",
+          "start": "2022-01-26T08:30",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "orders": [{"id": "colo-2022", "action": "done", "date": "2022-01-26T08:30"}],
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2022-01-26T08:45"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2022-01-28T10:00", "body": "Outside endoscopy center. Procedure date 1/26/2022.\nIndication: first screening colonoscopy, average risk, age 45.\nSedation: propofol, monitored anesthesia care.\nPrep: good, adequate for small lesions.\nFindings: scope advanced to the cecum with appendiceal orifice and ileocecal valve photographed. Withdrawal 9 minutes. Mucosa normal throughout. No polyps, no diverticula. Retroflexion in the rectum normal.\nImpression: normal screening exam.\nRecommendation: next colonoscopy in 10 years (2032).\nAllergies on file: sulfa, allopurinol."}
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "office_visit",
+          "start": "2022-03-23T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-23T14:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-03-23T13:40"}, {"procedure": "Venipuncture", "performed": "2022-03-23T14:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-23T13:40", "body": "HTN check. Winter was slow at work, back to full days now. No headaches, no lightheadedness, no leg swelling. Takes both pills every morning. No gout attacks this winter. Shoulder occasionally achy, manageable.\nColonoscopy in January normal.\n\nExam: BP per vitals, at goal. Heart regular, lungs clear, no edema.\n\nPlan: same meds. BMP. See in the fall for the physical."}
+          ]
+        },
+        {
+          "id": "2022-06-01a",
+          "kind": "pharmacy",
+          "start": "2022-06-01T10:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2022-06-01T10:30", "body": "Refill request lisinopril 10 mg and HCTZ 12.5 mg, 90 days. BMP 3/23 normal, BP at goal. Sent per protocol, 1 refill each."}
+          ]
+        },
+        {
+          "id": "2022-08-17a",
+          "kind": "ed_visit",
+          "start": "2022-08-17T05:50",
+          "end": "2022-08-17T10:15",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain",
+          "vitals": [{"time": "2022-08-17T05:55", "temp_c": 36.8, "bp": [150, 90], "hr": 98}],
+          "conditions": [
+            {"label": "Ureterolithiasis", "action": "diagnosed", "icd10": "N20.1", "onset": "2022-08-17", "note": "5 mm left distal ureteral stone"}
+          ],
+          "medications": [
+            {"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "start", "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea", "dose": {"value": 4, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "nausea from kidney stone"}
+          ],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2022-08-17T06:10", "results": [{"test": "Urine Blood", "text": "Large"}, {"test": "Urine Red Blood Cells", "text": ">50"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2022-08-17T05:50"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department note", "author": "emergency medicine", "date": "2022-08-18T13:20", "body": "Regional hospital ED, 8/17/2022, abbreviated note.\n\n46M, known stone former, woke at 4 am with sudden severe left flank pain shooting to the groin, comes in waves, nauseated, urine looked bloody. No trauma, no fever, no urinary infection symptoms. Meds lisinopril, HCTZ. Allergies sulfa, allopurinol.\n\nAfebrile. BP 150/90, HR 98. Writhing. Left CVA tenderness. Abdomen otherwise soft.\nUA: RBCs present, no leukocytes or nitrite.\nCT abdomen/pelvis without contrast: 5 mm calculus, left distal ureter. No hydronephrosis.\n\nDx: left ureteral stone.\nIV fluids, morphine 4 mg IV, ondansetron 4 mg IV with relief. Good chance of passing on its own. Home with ondansetron ODT, his own acetaminophen, strainer. Follow up with PCP; urology if not passed in 2 weeks or fever."}
+          ]
+        },
+        {
+          "id": "2022-08-22a",
+          "kind": "portal_message",
+          "start": "2022-08-22T07:05",
+          "conditions": [
+            {"label": "Ureterolithiasis", "action": "resolved", "icd10": "N20.1"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Kidney stone", "author": "patient", "date": "2022-08-22T07:05", "body": "Was in the ER Wednesday with another stone. It came out Saturday night, caught it in the strainer. Feel fine now. Do you want it?"},
+            {"type": "Patient Message", "title": "RE: Kidney stone", "author": "PCP", "date": "2022-08-22T12:40", "body": "Good news. Hang on to it for now. Keep the water up, especially on the hot days at work. No need to come in unless the pain comes back or you get a fever."}
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T07:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-12T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-12T07:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-12T07:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-10-12T07:30", "body": "Flu vaccine L arm and Pfizer bivalent booster R arm. Screening questions negative. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2022-11-02a",
+          "kind": "annual_physical",
+          "start": "2022-11-02T13:00",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2022-11-02T13:25", "body": "No-show for 1:00 physical. Left voicemail. He called back at 3, got stuck on a job site in Goshen with no signal. Rebooked 11/16 1:00."}
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "annual_physical",
+          "start": "2022-11-16T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-16T13:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-11-16T13:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-11-16T13:40", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-11-16T13:00"}, {"procedure": "Venipuncture", "performed": "2022-11-16T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-11-16T13:00", "body": "Physical, 46M. Sorry about missing the 2nd.\n\nInterval: left ureteral stone in August, 5 mm, passed at home in a few days. No gout flares this year. Shoulder fine most days. Flu and bivalent booster done in October. Colonoscopy normal in January, due 2032.\n\nMeds: lisinopril 10 daily, HCTZ 12.5 daily, acetaminophen prn.\nAllergies: sulfa; allopurinol.\nSH: unchanged. Still no cigarettes since 2018.\n\nExam: well, tan. HEENT normal. Heart regular, no murmur. Lungs clear. Abdomen soft, no CVA tenderness. Skin no lesions of concern. Joints quiet. R shoulder full range.\nPHQ-2 0, AUDIT-C 2.\n\nA/P:\n1. HTN, controlled.\n2. Recurrent nephrolithiasis: passed stone this summer. Hydration.\n3. Gout quiet off therapy.\n4. Labs: CMP, CBC, lipids.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "portal_message",
+          "start": "2022-11-18T09:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-11-18T09:15", "body": "Your physical labs are all normal: kidney function, electrolytes, blood count and cholesterol. See you in the spring."}
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "pharmacy",
+          "start": "2023-02-08T15:20",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2023-02-08T15:20", "body": "New pharmacy (moved prescriptions closer to home). Transfer plus refill lisinopril 10 mg, HCTZ 12.5 mg. Sent 90 days x1 refill."}
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "office_visit",
+          "start": "2023-04-19T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-19T13:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-04-19T13:20"}, {"procedure": "Venipuncture", "performed": "2023-04-19T13:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-04-19T13:20", "body": "BP recheck. Doing well, busy season starting. No complaints. Med adherence good.\nBP per flowsheet, fine. Cardiopulmonary exam normal, no edema.\nContinue lisinopril/HCTZ. BMP. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "office_visit",
+          "start": "2023-07-12T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "left scrotal ache",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "orders": [{"id": "uro-2023", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "left scrotal ache radiating to the flank"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-07-12T13:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-07-12T13:10", "body": "Dull ache in the left side of the scrotum for about two months, worse at the end of a work day, sometimes runs up into the left flank. Not like his stones, which are sharp and come in waves. No fever, no burning, no blood in the urine. No injury.\n\nExam: afebrile. Abdomen soft, nontender, no CVA tenderness. GU exam limited today, he preferred to have urology examine him.\n\nA/P: left scrotal ache radiating to flank, 2 months. With his stone history and the flank component, sending to urology for evaluation. Call sooner for fever or sudden severe pain."}
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "specialist_visit",
+          "start": "2023-08-10T10:00",
+          "service": "Urology",
+          "reason": "left scrotal pain",
+          "conditions": [
+            {"label": "Varicocele", "action": "diagnosed", "onset": "2023-05-01", "note": "left, does not decompress supine"}
+          ],
+          "orders": [
+            {"id": "uro-2023", "action": "done", "date": "2023-08-10T10:00"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-10T10:40", "results": [{"test": "Hemoglobin", "value": 14.5}, {"test": "White Blood Cells", "value": 7.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-08-10T10:40", "results": [{"test": "Creatinine", "value": 1.0}]},
+            {"panel": "Urinalysis", "collected": "2023-08-10T10:40", "results": [{"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology consultation", "author": "urology", "date": "2023-08-14T15:10", "body": "Outside urology group. Seen 8/10/2023.\n\nReason for referral: left scrotal pain.\n\n47M, history of kidney stones and a left ureteral stone last year, hypertension, gout, right rotator cuff tear. Three months of a dull, aching pain in the left hemiscrotum that at times travels to the left flank. Denies fever, dysuria, hematuria.\nMeds: lisinopril 10 mg, hydrochlorothiazide 12.5 mg, acetaminophen as needed. Allergies: allopurinol, sulfa.\n\nVitals within normal limits.\nGU: left-sided cord mass above the testis with the feel of a bag of worms, unchanged when he lies supine. Testes normal in size and consistency bilaterally, no hernia. Remainder of GU exam unremarkable. Abdomen normal, no palpable mass.\n\nLabs: Hgb 14.5, WBC 7,000, platelets 250,000, creatinine 1.0. UA normal.\n\nAssessment: left varicocele that does not decompress in the supine position. A varicocele that persists lying down warrants imaging of the left kidney and renal vein.\nPlan: CT abdomen and pelvis with contrast. Will call with results."}
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "imaging",
+          "start": "2023-08-21T15:30",
+          "service": "Radiology",
+          "reason": "non-reducing left varicocele",
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-08-21T15:30", "text": "Technique: helical CT of the abdomen and pelvis after IV contrast, portal venous and delayed phases.\nKidneys: 4.6 cm solid, heterogeneously enhancing mass arising from the lower pole of the left kidney, measured in greatest axial dimension, without macroscopic fat. Left renal vein and IVC patent without filling defect. Right kidney normal. No calculi. No hydronephrosis. Ureters normal.\nDilated left pampiniform plexus veins, in keeping with the clinical varicocele.\nAdrenals, liver, spleen, pancreas normal. No retroperitoneal or pelvic adenopathy. Bladder normal. No free fluid. Bones without suspicious lesions.", "conclusion": "4.6 cm enhancing solid mass of the left kidney lower pole, suspicious for renal cell carcinoma. Renal vein patent. No adenopathy or metastatic disease in the abdomen or pelvis."},
+            {"study": "CT chest", "performed": "2023-08-21T15:30", "text": "Staging CT of the chest with IV contrast. Lungs clear. No pulmonary nodules. No mediastinal or hilar adenopathy. No effusion. Heart normal size.", "conclusion": "No evidence of thoracic metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "CT abdomen/pelvis and chest", "author": "radiology", "date": "2023-08-22T08:30", "body": "Copy of outside CT reports (8/21/2023) faxed to PCP at the request of urology. See structured reports."}
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "specialist_visit",
+          "start": "2023-08-30T14:00",
+          "service": "Urology",
+          "reason": "left renal mass",
+          "documents": [
+            {"type": "Consult Note", "title": "Urology follow-up", "author": "urology", "date": "2023-09-01T11:00", "body": "Seen 8/30/2023 to review CT. 4.6 cm enhancing lower-pole left renal mass, renal vein patent, no nodes, chest clear. Suspicious for renal cell carcinoma, clinical T1b. Discussed surveillance, ablation, partial and radical nephrectomy. Given his size, location and stone history we recommend robotic left partial nephrectomy to preserve renal function. He agrees. Request preoperative evaluation from PCP. Surgery tentatively 10/4."}
+          ]
+        },
+        {
+          "id": "2023-08-31a",
+          "kind": "telephone",
+          "start": "2023-08-31T12:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Patient call re kidney mass", "author": "PCP", "date": "2023-08-31T12:15", "body": "Called him after urology's note came through. He understands it is likely a kidney cancer and that the plan is to remove the part of the kidney with the mass. Anxious but practical, asking about time off work. Answered questions about recovery in general terms; urology will give specifics. Booked pre-op visit 9/20."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "office_visit",
+          "start": "2023-09-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preoperative evaluation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-20T11:35", "resulted": "2023-09-20T16:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-20T11:35", "resulted": "2023-09-20T16:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2023-09-20T11:20", "text": "Normal sinus rhythm. Normal axis and intervals. No ST or T wave abnormality.", "conclusion": "Normal ECG."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-09-20T11:00"}, {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2023-09-20T11:20"}, {"procedure": "Venipuncture", "performed": "2023-09-20T11:35"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Preoperative Evaluation", "author": "PCP", "date": "2023-09-20T11:00", "body": "Pre-op for robotic left partial nephrectomy 10/4 (urology), for a 4.6 cm left renal mass.\n\nNo chest pain, no exertional dyspnea; climbs ladders and carries lumber all day without trouble. No prior anesthesia problems (tonsillectomy as a child). No bleeding history. Not on anticoagulants or aspirin.\nMeds: lisinopril 10, HCTZ 12.5, acetaminophen prn. Allergies: sulfa; allopurinol (AIN).\n\nExam: BP per vitals. Airway normal. Heart regular, no murmur. Lungs clear. No edema.\nECG: normal sinus rhythm, normal.\nCBC and BMP drawn.\n\nAssessment: low risk for the planned procedure, excellent functional capacity. Hold lisinopril and HCTZ morning of surgery per anesthesia preference; resume after. Avoid NSAIDs and nephrotoxins given AIN history and the partial nephrectomy. Letter to urology.\nAddendum 16:45: CBC and BMP normal, creatinine at baseline."}
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "hospital_admission",
+          "start": "2023-10-04T06:30",
+          "end": "2023-10-06T11:00",
+          "service": "Urology",
+          "reason": "robotic left partial nephrectomy",
+          "conditions": [
+            {"label": "Clear cell renal cell carcinoma of left kidney", "action": "diagnosed", "icd10": "C64.2", "onset": "2023-08-10", "note": "pT1b NX, ISUP grade 2, margins negative; left partial nephrectomy 2023-10-04"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-10-04T09:40", "issued": "2023-10-10T14:00", "text": "Specimen: left kidney, lower pole, partial nephrectomy.\nGross: 7.8 cm partial nephrectomy specimen with a 4.6 cm well-circumscribed golden-yellow tumor, inked parenchymal margin.\nMicroscopic: clear cell renal cell carcinoma. ISUP/WHO nucleolar grade 2. No sarcomatoid or rhabdoid features. No necrosis. Tumor confined to the kidney; no perinephric fat or renal sinus invasion. No lymphovascular invasion. Parenchymal margin negative.\nLymph nodes: none submitted.", "conclusion": "Clear cell renal cell carcinoma, 4.6 cm, ISUP grade 2, margins negative. pT1b NX."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge note", "author": "urology", "date": "2023-10-09T10:00", "body": "Brief discharge note, regional hospital urology service.\nAdmitted 10/4/2023 for robotic left partial nephrectomy, uncomplicated. Ambulating, tolerating diet, pain controlled on acetaminophen, catheter out day 1. Discharged 10/6. Resume home lisinopril and HCTZ. No NSAIDs. Pathology pending at discharge. Follow-up urology clinic in 4 weeks; PCP in 2 weeks."},
+            {"type": "Outside Records", "title": "Pathology report received", "author": "MA", "date": "2023-10-12T09:30", "body": "Surgical pathology report from partial nephrectomy received by fax and filed. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "office_visit",
+          "start": "2023-10-18T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-operative follow-up",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-18T13:55", "resulted": "2023-10-18T17:10", "results": [{"test": "Creatinine", "value": 1.1}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-18T13:30"}, {"procedure": "Venipuncture", "performed": "2023-10-18T13:55"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-10-18T13:30", "body": "Two weeks after robotic left partial nephrectomy. Pathology: clear cell RCC 4.6 cm, ISUP grade 2, negative margin, pT1b NX. Reviewed with him; urology will set up imaging surveillance.\n\nSore at the port sites, needing acetaminophen once or twice a day. Eating and moving normally. Scrotal ache a bit less but still there. Out of work until urology clears him.\n\nExam: afebrile. Port incisions clean and healing, no erythema. Abdomen soft. No edema.\n\nA/P:\n1. Clear cell RCC of left kidney, s/p partial nephrectomy. Surveillance per urology.\n2. Kidney function after surgery: BMP today.\n3. HTN: resumed both meds, BP fine.\nAddendum: creatinine 1.1, expected after partial nephrectomy."}
+          ]
+        },
+        {
+          "id": "2023-10-25a",
+          "kind": "nurse_visit",
+          "start": "2023-10-25T07:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-25T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-25T07:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-25T07:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2023-10-25T07:30", "body": "Flu and 2023-24 COVID vaccines given, one each arm. 3 weeks post kidney surgery, feeling well, no fever. No reactions."}
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "annual_physical",
+          "start": "2023-12-06T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-06T13:45", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-06T13:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-12-06T13:45", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-12-06T13:00"}, {"procedure": "Venipuncture", "performed": "2023-12-06T13:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-12-06T13:00", "body": "Annual, 47M.\n\nBig year: left renal mass found in the workup of a varicocele, robotic partial nephrectomy 10/4, clear cell RCC pT1b, margins clear. Urology plans CT surveillance, first in spring. Back to work since mid-November.\nNo stones this year, no gout.\n\nMeds unchanged. Allergies sulfa, allopurinol.\n\nExam: well. Heart, lungs normal. Abdomen: healed port scars, nontender. No edema. Skin clear.\nPHQ-2: 1.\n\nA/P:\n1. RCC s/p partial nephrectomy, surveillance per urology.\n2. HTN controlled.\n3. Nephrolithiasis, gout: quiet.\n4. Labs CMP, CBC, lipids. Vaccines up to date this season.\nRTC spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

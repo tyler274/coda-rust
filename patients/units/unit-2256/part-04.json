@@ -1,0 +1,394 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002256",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-23T10:50", "results": [{"test": "Creatinine"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-23T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2024-01-23T11:00", "body": "With wife. Winter has kept him inside more; walks laps at the community center twice a week with a friend from church. No chest pain, dyspnea, palpitations. No falls. Leg still strong. Wife says memory is about where it was in the fall.\nMeds: aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, amlodipine 5, Biktarvy, latanoprost, donepezil 10.\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. Strength symmetric, gait steady.\nA/P: CAD and prior stroke on aspirin and statin; HTN at goal; BMP today. Alzheimer's stable on donepezil. Glaucoma per ophthalmology. Next visit in summer for AWV."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "pharmacy",
+          "start": "2024-03-12T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Part D formulary change", "author": "MA", "date": "2024-03-12T09:30", "body": "Notice from mail order: his Part D plan moved brand latanoprost to a higher tier; generic latanoprost 0.005% remains covered. Ophthalmology prescribes it; called their office, they will send a generic prescription. Wife informed, no gap in drops."}
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "ed_visit",
+          "start": "2024-05-22T21:10",
+          "end": "2024-05-23T02:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe left eye pain",
+          "measure": ["bp", "hr", "spo2"],
+          "conditions": [{"label": "Acute angle-closure glaucoma, left eye", "action": "diagnosed", "onset": "2024-05-22", "icd10": "H40.212"}],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2024-05-22T21:10"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2024-05-28T10:30", "body": "Regional hospital ED, 05/22/2024.\n\n71-year-old man with open-angle glaucoma on latanoprost, right eye pseudophakic, brought by his daughter for abrupt, severe pain in the left eye starting about two hours before arrival, with a frontal headache, vomiting, blurred vision in that eye and rainbow-colored rings around lights. Light makes it worse and he cannot hold the left eye open. No injury, no fever, no discharge. Background: CAD with prior MI and stent, repaired post-MI VSD, prior stroke, hypertension, hyperlipidemia, HIV on ART, Alzheimer's dementia. NKDA.\n\nExam: left eye red with marked conjunctival injection and tearing; pupil mid-dilated and nonreactive; cornea hazy; anterior chamber shallow. Right eye unremarkable. Tonometry: left IOP 38 mm Hg.\n\nAssessment: acute angle-closure glaucoma, left eye.\nTreatment: pressure-lowering eye drops and IV acetazolamide, antiemetic. Ophthalmology on call evaluated in the ED; pressure falling. Laser iridotomy arranged for the morning. Discharged to ophthalmology clinic."}
+          ]
+        },
+        {
+          "id": "2024-05-24a",
+          "kind": "telephone",
+          "start": "2024-05-24T08:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Daughter calling about ED visit", "author": "RN", "date": "2024-05-24T08:50", "body": "Daughter called: father went to the ED Wednesday night with sudden left eye pain and was told it was an acute glaucoma attack. Ophthalmology did a laser procedure on the left eye yesterday. Pain gone, vision clearing, eating normally. She wanted us to know and asked if anything in his regular medicines could have caused it. Told her the eye team will review his list and we will look at the records when they arrive; no changes for now. Follow-up visit booked with PCP in June."}
+          ]
+        },
+        {
+          "id": "2024-05-30a",
+          "kind": "specialist_visit",
+          "start": "2024-05-30T11:00",
+          "service": "Ophthalmology",
+          "reason": "Follow-up after acute angle closure",
+          "documents": [
+            {"type": "Consult Note", "title": "Ophthalmology letter: acute angle closure", "author": "ophthalmology", "date": "2024-06-04T09:15", "body": "Dear colleague, your patient presented to the ED on 05/22/2024 with acute angle-closure glaucoma of the left eye, IOP 38 mm Hg. After medical lowering in the ED, I performed a laser peripheral iridotomy of the left eye on 05/23/2024 without complication. The right eye is pseudophakic with a deep chamber and needs no laser.\nFollow-up 05/30/2024: no pain, cornea clear, iridotomy patent, angle open on gonioscopy, left IOP 16 mm Hg. Acute attack resolved. Continue latanoprost both eyes at bedtime for his open-angle glaucoma. Post-laser drops completed. Return as previously scheduled, sooner for any recurrence of pain or halos. NKDA."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for eye",
+          "conditions": [{"label": "Acute angle-closure glaucoma, left eye", "action": "resolved", "onset": "2024-05-22", "icd10": "H40.212"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-06-11T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2024-06-11T15:30", "body": "Follow-up after the May ED visit for acute angle-closure glaucoma of the left eye; ED record and ophthalmology letter reviewed. Laser iridotomy 05/23, pressure 16 at the one-week check. No eye pain now; vision back to his usual.\nReviewed his medicine list against the eye team's question: nothing he takes is a usual trigger. Daughter reassured.\nExam: vitals as charted. Left eye white, small iridotomy visible superiorly.\nA/P: acute angle closure, left eye, resolved after iridotomy. POAG continues on latanoprost. Other problems stable. AWV in August."}
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "specialist_visit",
+          "start": "2024-07-23T10:00",
+          "service": "Cardiology",
+          "reason": "Yearly cardiology follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up", "author": "cardiology", "date": "2024-07-30T12:00", "body": "Annual visit 07/23/2024. Two years after inferior STEMI with mid-RCA DES and surgical repair of a post-infarction VSD; stroke 05/2023 with full recovery. No angina, no dyspnea walking at his usual pace, no palpitations, no syncope. Brief ED visit in May for an eye problem.\nExam: BP and pulse controlled. Regular rhythm, no murmur. Lungs clear. No edema.\nPlan: continue aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, amlodipine 5. Return in one year. Our research group may contact him about a secondary-prevention study."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "annual_physical",
+          "start": "2024-08-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-13T09:25", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-13T09:25", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-13T09:25", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-08-13T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-08-13T09:50", "body": "AWV with wife. Cardiology in July: stable. Eye pressure good since the laser. No falls this year.\nFunction: independent walking and dressing, cues for bathing and meals; family handles medicines, money, transport. PHQ-9 2. Sleeping well.\nHealth care proxy (daughter) reconfirmed; no change in his stated wishes.\nExam: vitals as charted. Alert, pleasant, oriented to person. Heart regular, lungs clear, no edema. Gait steady.\nA/P\n- CAD, old MI, VSD repaired, prior stroke: aspirin, metoprolol, atorvastatin 40, lisinopril, amlodipine. Lipids today.\n- HTN: at goal.\n- Alzheimer's: donepezil, neurology early next year.\n- POAG: stable. HIV: ID in November.\n- Prevention: lung CT September; flu and COVID in October.\nRTC 5 months."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "imaging",
+          "start": "2024-09-17T11:10",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-09-17T11:10", "text": "Annual low-dose screening CT, comparison 09/2023. No pulmonary nodules. Lungs clear. Postoperative sternotomy changes stable. No effusion or adenopathy.", "conclusion": "Lung-RADS 1."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT 2024", "author": "PCP", "date": "2024-09-18T07:40", "body": "Lung-RADS 1. Letter sent."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T14:32"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T14:35"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T14:32"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "MA", "date": "2024-10-08T14:50", "body": "High-dose trivalent influenza L deltoid and 2024-25 COVID vaccine R deltoid. Wife present. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "specialist_visit",
+          "start": "2024-11-19T09:45",
+          "service": "Ophthalmology",
+          "reason": "Glaucoma follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Ophthalmology follow-up", "author": "ophthalmology", "date": "2024-11-26T10:20", "body": "Seen 11/19/2024. Left iridotomy patent. IOP 16 right, 16 left on latanoprost. Fields stable. No further angle-closure symptoms. Continue latanoprost. Return one year."}
+          ]
+        },
+        {
+          "id": "2024-11-26a",
+          "kind": "outside_records",
+          "start": "2024-11-26T11:00",
+          "labs": [
+            {"panel": null, "collected": "2024-11-12T09:15", "results": [{"test": "CD4 Count", "value": 570}, {"test": "HIV-1 RNA Viral Load", "text": "<20 copies/mL, not detected"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Infectious disease annual note", "author": "infectious disease", "date": "2024-11-26T11:00", "body": "HIV visit 11/12/2024. Continues bictegravir/emtricitabine/TAF with family-supervised dosing. Acetazolamide given once in the ED in May; no ongoing interacting drugs. CD4 570 cells/mm3, viral load not detected. Continue. One year."}
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-28T13:30", "results": [{"test": "Creatinine"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-28T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2025-01-28T13:35", "body": "With daughter. Cardiology research coordinator called them about a study for people after a heart attack; they have a screening visit in February and wanted my view. Explained that a trial may give either the study drug or placebo, that he stays on all his usual heart medicines, and that his daughter, as his health care agent, can help him decide and withdraw at any time. They will go to the screening visit.\nNo chest pain, no breathlessness, no falls.\nExam: vitals as charted. Heart regular, lungs clear, no edema.\nA/P: CAD and prior stroke stable; HTN at goal; BMP today. Alzheimer's, neurology visit in two weeks. RTC summer for AWV."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "specialist_visit",
+          "start": "2025-02-11T10:30",
+          "service": "Neurology",
+          "reason": "Dementia follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology follow-up", "author": "neurology", "date": "2025-02-18T14:00", "body": "Follow-up 02/11/2025 with daughter. Gradual progression per family: more help with daily planning, occasional repeated stories, sleeping through the night. MMSE 17/30 (18/30 in 08/2023). Neuro exam nonfocal; gait normal. Continue donepezil 10 mg. Reviewed the cardiology study with the daughter; no neurological objection. Return in 12 months."}
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "outside_records",
+          "start": "2025-03-18T09:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Clinical trial enrollment notice", "author": "cardiology research", "date": "2025-03-18T09:20", "body": "Notice to primary care physician. Your patient enrolled on 03/06/2025 in a randomized, double-blind, placebo-controlled secondary-prevention trial for adults after myocardial infarction, with consent from the patient and his health care agent. He began the blinded study drug, one dose daily, on 03/06/2025. Please continue all usual medications and do not start new lipid-lowering therapy without contacting the study team. Study visits are scheduled at our cardiology office; the study team is reachable at the number on the patient's wallet card for any adverse event or hospitalization."}
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T19:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Study medicine", "author": "patient", "date": "2025-03-20T19:05", "body": "Hi, this is his daughter. Dad started the study pill two weeks ago. Do you need anything from us? Should mom keep it in the pill box with his other medicines?"},
+            {"type": "Patient Message", "title": "RE: Study medicine", "author": "PCP", "date": "2025-03-21T08:30", "body": "Thanks for letting me know; we received the enrollment notice and noted the study drug in his chart. Keeping it in the weekly box is fine unless the study team said otherwise. Bring the study card to his visits so any doctor can reach them."}
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "specialist_visit",
+          "start": "2025-05-22T10:00",
+          "service": "Cardiology",
+          "reason": "Clinical trial follow-up visit",
+          "vitals": {"bp": [132, 84], "hr": 78},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-05-22T09:30", "results": [
+              {"test": "Total Cholesterol", "value": 190},
+              {"test": "Low Density Lipoprotein", "value": 110},
+              {"test": "High Density Lipoprotein", "value": 45},
+              {"test": "Triglycerides", "value": 150}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology research visit", "author": "cardiology", "date": "2025-05-30T11:45", "body": "Study follow-up visit 05/22/2025. 72-year-old man with coronary disease after an inferior MI in 2022 complicated by a ventricular septal defect (surgically repaired), enrolled in March in a blinded secondary-prevention trial. He reports taking the study drug and all his usual medicines every day, and he and his wife are following a heart-healthy diet. No chest pain, no breathlessness, nothing new. He asked how well the study drug works; I explained that the trial is designed to answer that question, that neither he nor we know whether he is receiving active drug or placebo, and that results are shared once the study ends.\nVitals: BP 132/84, HR 78. Exam unremarkable.\nLipids: total cholesterol 190, LDL 110, HDL 45, triglycerides 150 mg/dL.\nPlan: continue study drug and usual regimen (aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, amlodipine 5). Next study visit in six months."}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-07-22T09:25", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-22T09:25", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-07-22T09:00"}],
+          "orders": [{"id": "fit-2025", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "Colorectal cancer screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-07-22T09:45", "body": "AWV with daughter. In the cardiology study since March, study visit in May went fine; their lipid panel then was LDL 110, so not repeating lipids today. Neurology in February: slow progression, donepezil continues. No falls, no ED visits this year.\nFunction: walks independently; needs help with bathing setup, meals, medicines, money. PHQ-9 3.\nExam: vitals as charted. Heart regular, no murmur, lungs clear, no edema. Gait steady.\nColorectal screening: colonoscopy from 2016 would make the next one due in 2026. Given his heart history and dementia, he and his daughter prefer a stool test; FIT kit given.\nA/P: chronic conditions stable on current regimen. CMP, CBC today. Lung CT September; fall vaccines October. RTC 4-5 months."}
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "lab_only",
+          "start": "2025-08-05T10:00",
+          "labs": [{"panel": null, "collected": "2025-08-04T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "orders": [{"id": "fit-2025", "action": "done", "date": "2025-08-05T10:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "RN", "date": "2025-08-06T09:00", "body": "FIT negative. Letter sent to patient and daughter. Repeat yearly if continuing screening."}
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "imaging",
+          "start": "2025-09-16T10:40",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-09-16T10:40", "text": "Annual low-dose screening CT, comparison 09/2024. No pulmonary nodules. Lungs clear. Stable sternotomy changes. No effusion or lymphadenopathy.", "conclusion": "Lung-RADS 1."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT 2025", "author": "PCP", "date": "2025-09-17T08:15", "body": "Lung-RADS 1. He reaches 15 years since quitting in 2027; discussed with daughter that screening ends then."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-07T10:22"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-07T10:25"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T10:22"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2025-10-07T10:40", "body": "High-dose flu R deltoid, 2025-26 COVID L deltoid. Study team informed by daughter per trial rules. Tolerated."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "specialist_visit",
+          "start": "2025-11-18T13:15",
+          "service": "Ophthalmology",
+          "reason": "Glaucoma follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Ophthalmology follow-up", "author": "ophthalmology", "date": "2025-11-25T09:40", "body": "Seen 11/18/2025. On latanoprost both eyes at bedtime, given by wife. IOP 17 right, 16 left. Fields stable for his level of disease; discs unchanged. Iridotomy patent. Continue. Return in one year."}
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "outside_records",
+          "start": "2025-11-25T10:30",
+          "labs": [
+            {"panel": null, "collected": "2025-11-11T09:00", "results": [{"test": "CD4 Count", "value": 650}, {"test": "HIV-1 RNA Viral Load", "text": "<20 copies/mL, not detected"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Infectious disease annual note", "author": "infectious disease", "date": "2025-11-25T10:30", "body": "HIV visit 11/11/2025. In a blinded cardiology trial since March; study team confirmed no expected interaction with his ART. CD4 650 cells/mm3, viral load not detected. Continue bictegravir/emtricitabine/TAF. One year."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-09T11:50", "results": [{"test": "Creatinine"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-12-09T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2025-12-09T11:50", "body": "With wife. Quiet fall, no illnesses. Still in the cardiology study, next study visit in January. No chest pain, dyspnea, falls.\nExam: vitals as charted. Heart regular, lungs clear, no edema. Walks steadily.\nA/P: all stable; BMP today. Reminded family about icy steps and walkway salt this winter given prior stroke and dementia. RTC spring."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "ed_visit",
+          "start": "2026-02-12T08:40",
+          "end": "2026-02-12T13:30",
+          "service": "Emergency Medicine",
+          "reason": "Head injury after fall on ice",
+          "measure": ["bp", "hr", "spo2"],
+          "conditions": [{"label": "Concussion with loss of consciousness of 30 minutes or less, initial encounter", "action": "diagnosed", "onset": "2026-02-12", "icd10": "S06.0X1A"}],
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2026-02-12T09:05", "text": "Noncontrast head CT, comparison 05/2023. No acute intracranial hemorrhage. No skull fracture. Chronic encephalomalacia in the right anterior cerebral artery territory, consistent with the known prior infarct. No mass effect. Ventricles and sulci appropriate for age.", "conclusion": "No acute intracranial abnormality. Chronic right ACA territory infarct."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-02-12T08:40"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-02-18T10:00", "body": "Regional hospital ED, 02/12/2026.\n\n73-year-old man with Alzheimer's dementia and a prior stroke who fell backward on an icy front step this morning and struck the back of his head. He was out for a short time and was alert and answering within minutes. EMS reports he vomited twice on the way in. Here he is a little confused but oriented, with a dull headache that has eased over the past hour. Denies change in vision, seizure or weakness. On aspirin; no anticoagulant. Background also includes CAD with prior MI and stent, repaired VSD, hypertension, hyperlipidemia, HIV on ART, glaucoma. NKDA.\n\nExam: no focal neurological deficit; speech clear and coherent. Scalp without laceration. Neck nontender.\nCT head without contrast: no hemorrhage or fracture; old right ACA infarct.\n\nObserved for four hours: awake, cooperative and walking steadily at discharge, still somewhat tired.\nDiagnosis: concussion with brief loss of consciousness.\nDischarge: home with wife; head injury precautions; acetaminophen for headache; follow up with PCP within the week; return for worsening headache, repeated vomiting, new confusion or weakness."}
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "telephone",
+          "start": "2026-02-13T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Wife calling after ED visit", "author": "RN", "date": "2026-02-13T09:30", "body": "Wife called: he slipped on the ice yesterday, hit his head and was seen in the ED, CT okay, told it was a concussion. Slept well with her checking on him overnight. Headache mild this morning, no vomiting since the ambulance, talking and walking as usual. Reviewed warning signs. Visit booked Tuesday with PCP."}
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for concussion",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-17T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED visit", "author": "PCP", "date": "2026-02-17T11:20", "body": "With wife and daughter, five days after a fall on ice with brief loss of consciousness; ED diagnosed concussion, head CT without bleeding or fracture. ED record reviewed.\nSince: headache faded to almost nothing, used acetaminophen twice. No vomiting. Family says he is back to his usual self cognitively, maybe a bit more tired the first few days. No new weakness or vision change.\nExam: vitals as charted. Alert, conversant, at baseline per family. Cranial nerves intact, strength 5/5 all limbs, gait steady.\nA/P\n1. Concussion, improving. Rest and gradual return to usual walks. Return precautions reviewed. RN will call in a few weeks.\n2. Fall prevention: the fall was a slip on ice rather than a balance problem; daughter arranging ice melt and a railing check on the front steps.\n3. Other problems unchanged.\nRTC June."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telephone",
+          "start": "2026-03-10T14:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Concussion check-in", "author": "RN", "date": "2026-03-10T14:10", "body": "Called wife for planned check-in. No headache for over two weeks, no acetaminophen needed. Back to walking at the community center. Sleep and appetite normal. No further falls. Will see PCP in June."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T17:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Refills", "author": "patient", "date": "2026-04-14T17:40", "body": "His wife here. Mail order says metoprolol and lisinopril need new prescriptions. Thank you."},
+            {"type": "Patient Message", "title": "RE: Refills", "author": "MA", "date": "2026-04-15T08:50", "body": "Both renewed today, 90 days with refills, to the mail order pharmacy."}
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "office_visit",
+          "start": "2026-06-05T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "conditions": [{"label": "Concussion with loss of consciousness of 30 minutes or less, initial encounter", "action": "resolved", "onset": "2026-02-12", "icd10": "S06.0X1A"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-05T09:45", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-05T09:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2026-06-05T09:45", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-05T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2026-06-05T10:05", "body": "With daughter. Concussion symptoms gone since early March. No further falls. Still in the cardiology study. Neurology visit was moved to the summer by their office. No chest pain, dyspnea, palpitations. Eyes stable.\nMeds: aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, amlodipine 5, Biktarvy, latanoprost OU nightly, donepezil 10, study drug (blinded).\nExam: vitals as charted. Alert, pleasant, at baseline. Heart regular, no murmur. Lungs clear. No edema. Gait steady.\nA/P\n1. Concussion, resolved.\n2. CAD with old inferior MI, VSD repaired; history of stroke without residual deficits: aspirin, metoprolol, atorvastatin 40, lisinopril, amlodipine. Labs today: CMP, CBC, lipids.\n3. HTN: at goal.\n4. Alzheimer's disease: donepezil; family support in place.\n5. POAG: ophthalmology yearly. HIV: ID yearly.\nRTC September for follow-up; AWV after that."}
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "portal_message",
+          "start": "2026-06-08T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2026-06-08T12:15", "body": "Friday's labs are back. Kidney function, liver tests and blood counts are normal. The cholesterol panel is similar to his last ones. Nothing to change before his September visit."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2026-07-21T09:10", "body": "Mail order renewal request for amlodipine 5 mg and atorvastatin 40 mg. Seen 06/05, sent 90 days with 1 refill each."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

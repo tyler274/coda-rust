@@ -1,0 +1,220 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002677",
+      "given": "Gavin",
+      "family": "Michaud",
+      "birth_date": "1998-04-30",
+      "address_line": "41 Silver Street, Apt 2",
+      "phone": "+1-646-555-0113",
+      "email": "gavin.michaud@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with bipolar I disorder on lithium who joined in 2021, developed lithium-associated nephrogenic diabetes insipidus diagnosed at his last practice visit in January 2025, and in July 2026 was hospitalized for valproate-induced liver injury with hyperammonemia two weeks after divalproex was added at a psychiatric admission. The practice learns of the 2026 events from his message and late records and has not seen him since.",
+      "events": [
+        {
+          "id": "2021-08-04a",
+          "kind": "telephone",
+          "start": "2021-08-04T10:20",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2021-08-04T10:20",
+              "body": "Caller is moving his primary care here from the student health service he used through undergrad and the first year of his graduate program. Commercial plan through the university, card info entered. Says he sees an outside psychiatrist for bipolar disorder and takes lithium, no other meds. Membership agreement emailed and returned signed same morning. New patient visit set for 8/18 at 9:00. Release of records form sent for student health and for his psychiatrist's office."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-18a",
+          "kind": "establish_care",
+          "start": "2021-08-18T09:00",
+          "end": "2021-08-18T09:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Bipolar I disorder", "icd10": "F31.9", "action": "history", "onset": "2016-03-01", "note": "Followed by outside psychiatry; on lithium since diagnosis; euthymic"}
+          ],
+          "medications": [
+            {"drug_text": "lithium carbonate 300 MG Oral Capsule", "action": "historical", "sig": "Take 2 capsules (600 mg) by mouth twice daily", "dose": {"value": 600, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Bipolar I disorder (prescribed by outside psychiatry)"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 76.0, "height_cm": 178.0, "labs": {"Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-08-18T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-18T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-08-18T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-08-18T09:50", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.7},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-08-18T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-08-18T09:50"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-08-21T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-07T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-28T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-08-18T10:30",
+              "body": "23 y/o man, second-year graduate student, here to set up primary care. Had been using student health and wants a doctor who will stay put.\n\nPMH: Bipolar I disorder, diagnosed 2016 in his first year of college. Followed since by an outside psychiatrist, seen every 3 months or so. On lithium the whole time; no episodes he'd call significant in several years. Psychiatry checks levels, but he is fine with us drawing them with his yearly labs and sending copies over.\nPSH: tonsils out at 8.\nMeds: lithium carbonate 300 mg caps, 2 caps twice a day (600 mg BID). Rx from psychiatry.\nAllergies: none known.\nFHx: mother has bipolar disorder and a thyroid problem he thinks is autoimmune, on thyroid pills. Father has high blood pressure. No sibs mentioned.\nSocial: lives with one roommate near campus. Never smoked. Doesn't drink at all, partly because of the lithium. No drug use. Bikes most places.\nVaccines: Tdap 2019 at student health; Pfizer x2 in April.\n\nROS: sleeping 7-8 h, mood even, appetite normal. No tremor he notices. No unusual thirst or urination. Nothing else.\n\nExam: well, relaxed, good eye contact. Vitals as recorded, BMI about 24. HEENT clear, tonsillar fossae empty. Thyroid not enlarged, no nodules. Heart RRR without murmur. Lungs clear. Abdomen soft, no organomegaly. No tremor with arms outstretched. Skin without rash. Neuro grossly normal.\nPHQ-9: 3.\n\nA/P\n1. Bipolar I disorder, stable on lithium with outside psychiatry. Baseline CMP, CBC, TSH and lithium level today; results to go to his psychiatrist as well. Records requested.\n2. Health maintenance: one-time HCV and HIV screens today, lipids since he has never had them. Flu shot when this season's vaccine arrives.\nRTC one year for a physical, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-20a",
+          "kind": "portal_message",
+          "start": "2021-08-20T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2021-08-20T12:15",
+              "body": "Hi Gavin, everything from Wednesday came back normal. Kidney numbers, sodium, calcium, liver tests, blood counts and thyroid are all in range. Lithium level 0.7, which sits in the usual target window. Cholesterol is fine, and the hepatitis C and HIV screens are negative. I'm faxing a copy to your psychiatrist's office. Nice to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "outside_records",
+          "start": "2021-09-08T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from university student health service",
+              "author": "student health",
+              "date": "2021-09-08T14:00",
+              "body": "Received 9/8/2021, 22 pages. University student health service, visits 2016 to 2021.\n\nSummary on review: routine visits only. Tdap given 08/21/2019. COVID-19 Pfizer doses 04/07/2021 and 04/28/2021. Bipolar disorder noted on every problem list with lithium, managed by outside psychiatry. Labs over those years limited to occasional BMP and TSH copied from psychiatry, all normal. Allergies listed as none. No surgeries besides childhood tonsillectomy.\n\nScanned. Immunizations reconciled. -- MA"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "nurse_visit",
+          "start": "2021-10-13T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-13T16:15"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-13T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2021-10-13T16:20",
+              "body": "Came in after his afternoon lab section for flu vaccine. Screening questions negative, no egg or vaccine reactions, feels well. Quadrivalent flu 0.5 mL IM L deltoid. VIS given. Waited 15 min in the lobby, no reaction, left on his bike."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-08a",
+          "kind": "outside_records",
+          "start": "2021-12-08T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outpatient psychiatry summary",
+              "author": "psychiatry",
+              "date": "2021-12-08T11:30",
+              "body": "Outpatient Psychiatry - Treatment Summary\nIn response to records request dated 08/04/2021\n\nMr. Michaud has been in our care since 2016, when bipolar I disorder was diagnosed during his first year of college. He has been maintained on lithium carbonate since diagnosis, currently 600 mg twice daily, with serum levels between 0.6 and 0.8 mmol/L. He has been euthymic for several years without psychiatric admission in that time. Insight and adherence are good. He tolerates lithium without notable tremor or GI effects.\n\nWe see him roughly quarterly and will continue to prescribe. Thank you for sharing his August labs; we would appreciate copies of future renal, thyroid and lithium results.\n\nAllergies: NKDA.\nMedications: lithium carbonate 300 mg capsules, two capsules by mouth twice daily.\n\nOutpatient psychiatry, attending psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2022-02-16a",
+          "kind": "portal_message",
+          "start": "2022-02-16T21:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record for my program",
+              "author": "patient",
+              "date": "2022-02-16T21:40",
+              "body": "Hi, my department needs a copy of my vaccine record before I can do field work this summer. Can you send it to me through here? Thanks, Gavin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record for my program",
+              "author": "MA",
+              "date": "2022-02-17T09:05",
+              "body": "Hi Gavin, your immunization record is attached as a PDF. It includes the Tdap and COVID doses from student health and the flu shot you got here in October. If the program has its own form, upload it here and we'll fill it out."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "annual_physical",
+          "start": "2022-09-14T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-09-14T09:20", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-14T09:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-09-14T09:20", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.8}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-14T08:40"},
+            {"procedure": "Immunization administration", "performed": "2022-09-14T09:15"},
+            {"procedure": "Venipuncture", "performed": "2022-09-14T09:20"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-14T09:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-14T09:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-14T09:45",
+              "body": "Yearly visit. Spent the summer on field work, back to classes and teaching a section this term. Psychiatry visits continue every few months; no dose changes, mood steady, sleep fine.\n\nMeds: lithium 600 mg BID (psychiatry). NKDA.\nROS negative, including no tremor, no change in thirst or urination, no weight change.\n\nExam: vitals as charted, weight stable. Thyroid normal size. Heart and lungs normal. Abdomen soft. Hands steady. Skin fine.\nPHQ-9 2.\n\nA/P\n- Bipolar I, stable on lithium. BMP, CBC, TSH, lithium level today, copy to psychiatry.\n- Flu and the new bivalent COVID booster today, one in each arm.\n- Screening otherwise current for age. See him in a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "author": "PCP",
+              "date": "2022-09-16T08:30",
+              "body": "Gavin - all normal again. Sodium, kidney function and calcium in range, thyroid normal, blood counts fine. Lithium 0.8. Copy sent to your psychiatrist. Talk next year unless something comes up."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

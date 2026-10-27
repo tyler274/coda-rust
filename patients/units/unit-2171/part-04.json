@@ -1,0 +1,169 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002171",
+      "events": [
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T07:25",
+          "reason": "refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Amlodipine refill", "author": "patient", "date": "2026-02-10T07:25", "body": "Mail order says amlodipine needs a new prescription. Thanks."},
+            {"type": "Patient Message", "title": "RE: Amlodipine refill", "author": "MA", "date": "2026-02-10T10:50", "body": "Done, amlodipine 5 mg 90 days plus 3 refills sent to mail order. You're due for a follow-up in March, the front desk will call to set it up."}
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "office_visit",
+          "start": "2026-03-19T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancelled follow-up", "author": "front desk", "date": "2026-03-18T16:05", "body": "Patient cancelled tomorrow's follow-up, conflict with an oncology appointment the same afternoon. Will call back to reschedule after he sees his schedule at work."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "ed_visit",
+          "start": "2026-04-14T06:50",
+          "end": "2026-04-14T13:30",
+          "service": "Emergency Medicine",
+          "reason": "severe back pain, leg weakness, urinary retention",
+          "conditions": [
+            {"label": "Cauda equina syndrome", "icd10": "G83.4", "action": "diagnosed", "onset": "2026-04-14", "note": "ED impression; MRI showed recurrent thoracic cord compression at T8"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-14T07:30", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 7.8}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-14T07:30", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Blood Urea Nitrogen", "value": 14}, {"test": "Calcium", "value": 9.8}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-04-14T06:50"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record (outside)", "author": "emergency medicine", "date": "2026-05-12T10:30", "body": "Regional hospital ED, 04/14/2026 06:50.\nPatient: Howard Nadeau, 60 M.\n\nCC: sudden severe low back pain, weak legs, cannot urinate.\nHPI: Woke with abrupt, severe low back pain that has stayed constant; over-the-counter pain relievers did nothing. Both legs weak, unable to void since last night. Metastatic prostate cancer with a T8 cord compression treated last year; this feels like that episode, only faster.\nPMH: metastatic castration-resistant prostate cancer (T8 decompression and fusion 04/2025, radiation); prior cord compression; constrictive pericarditis s/p pericardiectomy; Hodgkin lymphoma remote; HTN; HLD; osteopenia.\nMeds: leuprolide, enzalutamide, denosumab, amlodipine, atorvastatin, calcium/vitamin D, aspirin 81.\nAllergies: penicillin - rash; shellfish - anaphylaxis.\nSocial: former smoker, quit 2017; social alcohol; logistics coordinator.\n\nExam: vitals as charted. In obvious pain. Light touch and pinprick diminished below the umbilicus bilaterally. Strength 3/5 in both lower extremities. Rectal tone diminished. Bladder distended on scan; Foley placed.\n\nLabs: Hgb 13.2, WBC 7.8, platelets 250, creatinine 1.0, BUN 14, calcium 9.8.\nMRI spine (urgent): mass compressing the thoracic spinal cord. See report.\n\nCourse: dexamethasone 10 mg IV. Neurosurgery and radiation oncology at bedside.\nImpression: cauda equina syndrome; recurrent metastatic thoracic cord compression.\nDisposition: admitted to neurosurgery."},
+            {"type": "Imaging Report", "title": "MRI thoracic and lumbar spine (outside)", "author": "radiology", "date": "2026-05-12T10:30", "body": "Regional hospital radiology. MRI thoracic and lumbar spine without and with contrast, 04/14/2026. Comparison 04/01/2025.\nFindings: Postoperative changes of T8 laminectomy and T6-T10 posterior fusion with susceptibility artifact. Recurrent enhancing epidural soft tissue at T8, compressing the thoracic spinal cord. Other vertebral bodies with normal marrow signal. Conus and cauda equina normal in appearance. No lumbar canal stenosis.\nImpression: recurrent epidural tumor at T8 compressing the thoracic cord."}
+          ]
+        },
+        {
+          "id": "2026-04-14b",
+          "kind": "hospital_admission",
+          "start": "2026-04-14T13:30",
+          "end": "2026-04-24T11:00",
+          "service": "Neurosurgery",
+          "reason": "recurrent metastatic cord compression at T8",
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-04-14T14:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-04-24T10:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary, neurosurgery (outside)", "author": "neurosurgery", "date": "2026-05-12T10:30", "body": "Regional hospital, neurosurgery.\nAdmitted 04/14/2026 from ED. Discharged 04/24/2026 to inpatient rehabilitation.\nAllergies: penicillin (rash), shellfish (anaphylaxis).\n\nDiagnoses: recurrent metastatic epidural compression of the thoracic cord at T8 (ED impression cauda equina syndrome); metastatic castration-resistant prostate cancer.\n\nProcedure 04/15/2026: revision posterior decompression at T8 with resection of recurrent epidural tumor; existing T6-T10 instrumentation intact.\nRadiation: stereotactic re-irradiation to the T8 epidural disease, completed before discharge.\nCourse: dexamethasone, tapered off by discharge. Leg strength improving, 3+/5 by discharge. Foley remained in place. Oncology aware; systemic therapy to be reviewed after recovery.\nAspirin held peri-operatively, resumed day 6.\nDischarge to inpatient rehab with Foley, PT/OT."}
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "hospital_admission",
+          "start": "2026-04-24T13:00",
+          "end": "2026-05-08T11:00",
+          "service": "Inpatient Rehabilitation",
+          "reason": "rehabilitation after spinal cord compression",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Rehabilitation discharge summary (outside)", "author": "physical medicine and rehabilitation", "date": "2026-05-12T10:30", "body": "Inpatient rehabilitation facility. Admitted 04/24/2026, discharged 05/08/2026 home.\nDiagnosis: recurrent metastatic thoracic cord compression, s/p revision T8 decompression and re-irradiation.\nAllergies: penicillin, shellfish.\nProgress: daily PT and OT. Foley removed day 4 with voiding trial passed; post-void residuals consistently under 100 mL thereafter. Bowel regular. Lower-extremity strength 4/5 bilaterally at discharge. Ambulates 150 feet with a rolling walker, supervision on stairs.\nDischarge plan: home with rolling walker, shower chair; outpatient PT 2-3 times weekly. Follow up with neurosurgery, oncology and PCP."}
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "telephone",
+          "start": "2026-05-11T11:00",
+          "reason": "post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Home from rehab", "author": "RN", "date": "2026-05-11T11:00", "body": "Patient called: home since Friday 5/8 after the hospital and then two weeks of rehab. Using a walker, PT starting this week. Bladder emptying on its own. Asked the hospital and rehab to send summaries; faxed requests to both today. Appointment with PCP 5/20."}
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "office_visit",
+          "start": "2026-05-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital and rehabilitation",
+          "state": {"weight_kg": 79.6, "labs": {"Hemoglobin": 12.6}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2026-05-20T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2026-05-20T10:55", "body": "After admission 4/14-4/24 and inpatient rehab 4/24-5/8. ED record, MRI, hospital and rehab summaries all arrived 5/12 and reviewed.\n\nWhat happened: sudden severe back pain, leg weakness and urinary retention; ED found a sensory level at the umbilicus, 3/5 legs, reduced rectal tone, and labeled it cauda equina syndrome; MRI showed recurrent tumor at T8 compressing the thoracic cord. Revision decompression 4/15 and re-irradiation. Rehab: catheter out, voiding with low residuals, 4/5 legs, walker.\n\nToday: walking in with rolling walker. Back pain 4/10, acetaminophen helps. Bladder: going on his own, no leakage. Bowels regular. Mood low some days but sleeping and eating. Off work for now.\nMeds per his list: enzalutamide 160, denosumab q4wk, leuprolide, amlodipine 5, atorvastatin 20, aspirin 81, calcium/D. Oncology visit is next week to talk about what's next.\n\nExam: vitals per flowsheet, weight 79.6 kg. Incision healed. Strength 4/5 in both legs. Steady with walker.\n\nA/P\n1. Recurrent metastatic cord compression at T8, recovering. Outpatient PT. Same red-flag instructions.\n2. mCRPC: oncology to decide next systemic treatment.\n3. HTN: BP fine; continue amlodipine.\n4. Problem list carries the ED's cauda equina syndrome label as given in the record.\nWill see in about 2 months; call anytime."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T09:30",
+          "service": "Medical Oncology",
+          "reason": "progression, start chemotherapy",
+          "labs": [
+            {"panel": null, "collected": "2026-05-26T10:00", "results": [{"test": "Prostate Specific Antigen", "value": 6.4}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology note", "author": "medical oncology", "date": "2026-06-12T14:30", "body": "Outside medical oncology. Visit 06/09/2026.\nDiagnosis: metastatic castration-resistant prostate adenocarcinoma; T8 cord compression 04/2025 (decompression, fusion, 30 Gy/10) and recurrent T8 epidural compression 04/2026 (revision decompression, stereotactic re-irradiation).\nAllergies: penicillin (rash), shellfish (anaphylaxis).\nPSA 6.4 ng/mL on 05/26/2026, up from a nadir of 1.2 in 08/2025.\nAssessment: progression on enzalutamide.\nPlan: stop enzalutamide. Begin docetaxel 75 mg/m2 IV every 3 weeks with prednisone 5 mg by mouth twice daily; cycle 1 given today. Continue leuprolide and denosumab 120 mg q4 weeks. CBC before each cycle here. Counseled on neuropathy, infection risk and fever precautions; asplenic, so fever is an emergency."}
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "office_visit",
+          "start": "2026-07-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up during chemotherapy",
+          "medications": [
+            {"drug_text": "enzalutamide 40 MG Oral Capsule", "action": "stop", "reason": "progression; stopped by oncology 06/2026"},
+            {"drug_text": "docetaxel 20 MG/ML Injectable Solution", "action": "historical", "sig": "75 mg/m2 IV every 3 weeks, given at oncology", "frequency": "EVERY 3 WEEKS", "route": "Intravenous", "course": "chronic", "reason": "metastatic castration-resistant prostate cancer"},
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with docetaxel, per oncology", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "with docetaxel"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-07-24T11:40", "resulted": "2026-07-24T16:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-24T11:40", "resulted": "2026-07-24T16:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-24T11:00"},
+            {"procedure": "Venipuncture", "performed": "2026-07-24T11:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2026-07-24T11:45", "body": "Follow-up. Oncology note of 6/9 received 6/12.\n\nOncology: PSA 6.4 in late May, progression on enzalutamide; enzalutamide stopped and docetaxel every 3 weeks with prednisone 5 twice daily started 6/9. He's had three cycles (6/9, 6/30, 7/21). Leuprolide and denosumab continue.\n\nHow he's doing: tired for 3-4 days after each cycle, then better. Appetite OK. No fevers. Back pain 2-3/10. Still using the rolling walker outside the house. Bladder fine. Outpatient PT twice weekly. PHQ-9 4.\n\nMeds reconciled: docetaxel q3wk and prednisone 5 BID added; enzalutamide removed. Amlodipine 5, atorvastatin 20, aspirin 81, calcium/D, leuprolide, denosumab, epi pen.\n\nExam: vitals per flowsheet. Alert. Mouth without sores. Heart regular, no rub. Lungs clear. No edema. Legs 4/5. Gait steady with walker.\n\nA/P\n1. mCRPC on docetaxel/prednisone per oncology. CBC and CMP today so I have a baseline here between their checks.\n2. Asplenic on chemotherapy: reviewed fever plan, ED for temp 100.4 or higher.\n3. HTN controlled. Hyperlipidemia on atorvastatin 20.\n4. Fall vaccines: will coordinate timing with oncology in September.\nCall or message anytime."}
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "portal_message",
+          "start": "2026-07-27T09:10",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Friday's labs", "author": "PCP", "date": "2026-07-27T09:10", "body": "Howard, your blood counts and chemistry from Friday came back fine for where you are in treatment; nothing needs action from me. Oncology can see them too."}
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "pharmacy",
+          "start": "2026-08-10T14:20",
+          "reason": "refill",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Atorvastatin refill", "author": "MA", "date": "2026-08-10T14:20", "body": "Mail-order request, atorvastatin 20 mg #90 with 3 refills. Seen 7/24. Approved."}
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "outside_records",
+          "start": "2026-08-18T15:30",
+          "reason": "oncology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology update", "author": "medical oncology", "date": "2026-08-18T15:30", "body": "Outside medical oncology. Visit 08/11/2026, cycle 4.\nMetastatic castration-resistant prostate cancer on docetaxel 75 mg/m2 q3 weeks with prednisone 5 mg twice daily since 06/09/2026; leuprolide and denosumab continued.\nAllergies: penicillin (rash), shellfish (anaphylaxis).\nTolerating with fatigue. No febrile episodes. Cycle 4 given 08/11.\nPlan: continue docetaxel; restaging after cycle 6."}
+          ]
+        }
+      ]
+    }
+  ]
+}

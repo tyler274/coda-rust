@@ -1,0 +1,292 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002719",
+      "given": "Melissa",
+      "family": "Marsh",
+      "birth_date": "1972-01-11",
+      "address_line": "88 High St",
+      "phone": "+1-860-555-0185",
+      "email": "melissa.marsh@example.test",
+      "marital_status": "single",
+      "summary": "Administrative assistant with hypertension who joined in 2018, then developed major depression (sertraline), recurrent right trigeminal neuralgia (carbamazepine) and a toxic right thyroid nodule treated with I-131. After her last practice visit in October 2025 she was diagnosed with left inflammatory breast carcinoma, HER2-positive, and the chart ends during post-mastectomy radiation.",
+      "events": [
+        {
+          "id": "2018-05-22a",
+          "kind": "establish_care",
+          "start": "2018-05-22T09:00",
+          "end": "2018-05-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "note": "carried from prior practice, on lisinopril"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "1998-01-01", "note": "about a pack a week for 20 years"},
+            {"label": "Family history of breast cancer", "action": "diagnosed", "note": "maternal aunt at 54"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [128, 80], "weight_kg": 70.0, "height_cm": 163.0, "labs": {"Low Density Lipoprotein": 92}},
+          "vitals": {"bp": [128, 80], "weight_kg": 70.0, "height_cm": 163.0},
+          "measure": ["hr", "rr", "temp_c", "spo2"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Administrative assistant"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-05-22T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-05-22T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2018-05-22T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2018-05-22T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 40-64", "performed": "2018-05-22T09:00"}],
+          "orders": [
+            {"id": "prior-records-2018", "action": "placed", "order": "Records request, prior primary care", "category": "procedure", "reason": "new patient"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2018-05-22T11:30", "body": "46F joining us after her old office stopped taking her plan. Works as an administrative assistant at an insurance agency office in town, sits most of the day.\n\nHTN for several years per her, on lisinopril 10 daily, no side effects, home cuff readings in the 120s. No other chronic problems. No surgeries. NKDA.\n\nFHx: mom with high blood pressure, maternal aunt had breast cancer at 54, sister treated for depression.\nSHx: smokes roughly a pack a week, has for about 20 years. Says she really wants to stop and has tried cutting down on her own. Drinks once or twice a month at most. Single, lives alone.\n\nROS negative.\n\nExam: well appearing. BP and vitals as charted. Thyroid not enlarged, no nodules felt. Heart RRR without murmur, lungs clear. Breasts symmetric without masses, no axillary nodes. Abdomen soft. No edema. Skin clear.\n\nA/P\n1. Essential HTN, controlled on lisinopril 10. Continue. BMP today.\n2. Tobacco: about 3 pack-years. Talked through quit options including patch or medication; she wants to try a quit date first, will let me know. Not in range for lung screening.\n3. Health maintenance: CBC, CMP, fasting lipids, one-time hep C and HIV screen today. Signed release for the old office so we get her last mammogram and Pap. Mammogram due in the fall. Colon screening discussed, she wants to wait a bit.\nPHQ-2 negative.\nRTC 6 months, sooner as needed."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2018-05-24T16:40", "body": "Labs reviewed. Blood counts, kidney and liver panel, cholesterol all normal. Hep C and HIV negative. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2018-06-05a",
+          "kind": "outside_records",
+          "start": "2018-06-05T10:00",
+          "reason": "Records from prior primary care office",
+          "orders": [{"id": "prior-records-2018", "action": "done", "date": "2018-06-05T10:00"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2016-04-12T10:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "front desk", "date": "2018-06-05T10:00", "body": "Records received from patient's former primary care office (14 pages). Summary for chart:\n- Screening mammogram 11/2017: negative, BI-RADS 1.\n- Pap with HPV co-test 2017: NILM, HPV negative.\n- Tdap 04/2016.\n- Hypertension managed with lisinopril 10 mg for several years. No other active problems listed.\n- Allergies: none.\nOriginals scanned to media tab."}
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "measure": ["bp"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-16T08:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-16T08:20"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2018-10-16T08:30", "body": "In before work for her flu shot. No egg allergy, no prior reaction. Quadrivalent given IM left deltoid, lot logged. VIS provided. Waited 15 min without issue. Reminded her the screening mammogram order is in; she will call the imaging center to schedule."}
+          ]
+        },
+        {
+          "id": "2018-11-13a",
+          "kind": "imaging",
+          "start": "2018-11-13T07:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2018-11-13T07:40", "text": "Bilateral CC and MLO views with tomosynthesis. Compared with prior study from 2017. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcification in either breast. Skin and nipples unremarkable.", "conclusion": "Negative. BI-RADS 1. Routine annual screening recommended."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2018-11-14T12:05", "body": "Screening mammogram negative, BI-RADS 1. Dense tissue letter sent by the imaging center. Annual screening."}
+          ]
+        },
+        {
+          "id": "2019-01-08a",
+          "kind": "office_visit",
+          "start": "2019-01-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low mood, tired all the time",
+          "state": {"weight_kg": 76.8, "labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "vitals": {"weight_kg": 76.8},
+          "measure": ["bp", "hr", "temp_c", "spo2"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 17}, {"survey": "GAD-7 total score", "value": 6}],
+          "labs": [
+            {"panel": null, "collected": "2019-01-08T16:05", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Fasting Glucose", "value": 98}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-01-08T15:20"}],
+          "orders": [
+            {"id": "psych-referral-2019", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "depressed mood, 6 months"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2019-01-08T17:10", "body": "Booked this herself after the holidays. For about six months she has felt flat and heavy, hard to get going, nothing feels worth the effort. Sleeping as much as 12 hours on weekends and still tired. Up about 15 lb since summer per our scale and hers. Cannot point to anything that changed: same job, same apartment, nothing happened. Still getting to work but describes it as going through the motions. No SI, no plan, no prior episodes. Sister has been treated for depression. No alcohol increase.\n\nExam: flat affect, good eye contact, linear. Thyroid normal size, no nodule. Heart and lungs normal. No edema.\n\nPHQ-9 17. GAD-7 6.\n\nA/P\nDepressed mood with hypersomnia and weight gain, 6 months, moderately severe by PHQ-9. Checking TSH and fasting glucose today to rule out the obvious medical causes. She would like to see psychiatry before starting anything; referral placed, marked soon. Crisis line info given and she knows to call me same day if mood dips further.\nHTN: BP fine today, continue lisinopril.\nSmoking: still at a pack a week; not the right moment for a quit attempt, will revisit."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2019-01-09T13:20", "body": "TSH normal. Fasting glucose 98. Nothing medical showing up to explain the fatigue. Psychiatry intake is Jan 25. Message sent to pt."}
+          ]
+        },
+        {
+          "id": "2019-01-25a",
+          "kind": "specialist_visit",
+          "start": "2019-01-25T10:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric evaluation, depressed mood",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, moderate", "action": "diagnosed", "onset": "2018-07-01"}
+          ],
+          "medications": [
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"}
+          ],
+          "orders": [{"id": "psych-referral-2019", "action": "done", "date": "2019-01-25T10:00"}],
+          "procedures": [{"procedure": "Psychiatric diagnostic evaluation with medical services", "performed": "2019-01-25T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry Consultation", "author": "psychiatry", "date": "2019-01-30T09:00", "body": "OUTSIDE PSYCHIATRY GROUP - CONSULTATION LETTER\nVisit 01/25/2019. Thank you for referring Ms. Marsh, 47.\n\nPresenting problem: half a year of sadness, low energy and poor drive that has steadily deepened. She now sleeps up to twelve hours a day and has put on roughly fifteen pounds. She denies any precipitating event or change at home or work.\n\nMedical: hypertension, controlled on lisinopril 10 mg daily. No drug allergies.\nFamily: sister with major depression; mother hypertension; maternal aunt breast cancer at 54.\nSubstances: smokes, which she minimized at first and then said she has wanted to give up for years, about a pack weekly over two decades. Alcohol a drink or two a month. No drugs.\n\nVitals within normal limits per our intake. Physical screening exam unremarkable. Your TSH (normal) and fasting glucose of 98 reviewed.\n\nMental status: casually dressed, psychomotor slowing, mood 'empty', affect constricted, thought process goal directed, no SI or HI, no psychotic features, insight fair.\n\nImpression: Major depressive disorder, single episode, moderate, with atypical-leaning features (hypersomnia, weight gain).\n\nPlan: sertraline 50 mg daily. Referral to individual therapy; she has the list. Follow-up here in 6 weeks. Safety plan reviewed.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2019-02-12a",
+          "kind": "portal_message",
+          "start": "2019-02-12T20:14",
+          "reason": "Question about new medication",
+          "documents": [
+            {"type": "Patient Message", "title": "Sertraline question", "author": "patient", "date": "2019-02-12T20:14", "body": "Hi, the psychiatrist started me on sertraline about two weeks ago. My stomach has been a little off in the mornings. Is that normal or should I stop? I don't want to bother her office if it's nothing."},
+            {"type": "Patient Message", "title": "RE: Sertraline question", "author": "PCP", "date": "2019-02-13T08:02", "body": "Very common in the first couple of weeks and it usually fades. Taking it with breakfast helps. Don't stop it. If it isn't better in another week, or anything else comes up, let her office or me know."}
+          ]
+        },
+        {
+          "id": "2019-03-08a",
+          "kind": "specialist_visit",
+          "start": "2019-03-08T11:00",
+          "service": "Psychiatry",
+          "reason": "Medication follow-up",
+          "medications": [
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "stop", "reason": "dose increase"},
+            {"drug": "sertraline 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Follow-up", "author": "psychiatry", "date": "2019-03-12T09:00", "body": "Follow-up 03/08/2019. Ms. Marsh reports some lift in energy, getting up earlier, but mood still low most days. Early nausea resolved. Has had two therapy sessions. No SI. Partial response at 6 weeks; increasing sertraline to 100 mg daily. Return in 2 to 3 months. Meds: sertraline 100 mg daily, lisinopril 10 mg daily. NKDA."}
+          ]
+        },
+        {
+          "id": "2019-04-23a",
+          "kind": "office_visit",
+          "start": "2019-04-23T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and mood follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 9}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-04-23T16:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-04-23T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2019-04-23T17:05", "body": "Follow-up. Mood noticeably better since the sertraline went to 100; sleeping 8 to 9 hours now, back to walking at lunch. PHQ-9 down to 9. Seeing a therapist every other week. Weight holding, not going up.\nBP good on lisinopril. BMP today.\nExam: brighter affect. Heart regular, lungs clear.\nA/P: MDD improving on sertraline 100, psychiatry following. HTN controlled. Still smoking, no change; she wants mood steady first. Recheck in the fall."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "RN", "date": "2019-04-24T11:30", "body": "BMP normal per PCP, pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2019-06-04a",
+          "kind": "office_visit",
+          "start": "2019-06-04T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sharp pain right side of face",
+          "measure": ["bp", "hr", "temp_c"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 8}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-06-04T08:40"}],
+          "orders": [
+            {"id": "neuro-referral-2019", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "paroxysmal right facial pain"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2019-06-04T09:50", "body": "Texted Friday asking to come in. About three weeks of jolts of pain on the right side of her face, like a zap, seconds long, several a day. Brushing her teeth sets it off reliably so she has been brushing the right side gently or not at all. Nothing between attacks. No rash, no dental work, no jaw clicking, no headache, no vision change.\nExam: no facial asymmetry, no rash. Teeth and gums look normal, no tender tooth on percussion. TMJ nontender. Cranial nerves II-XII intact, facial sensation normal to light touch, corneal reflex not tested. Strength and gait normal.\nA/P: Brief triggered unilateral facial pain, sounds like trigeminal neuralgia. Neurology referral to confirm and start treatment; she prefers to let neuro choose the drug. Tylenol in the meantime though it likely won't touch it.\nMood: doing well, psychiatry visit Friday."}
+          ]
+        },
+        {
+          "id": "2019-06-07a",
+          "kind": "specialist_visit",
+          "start": "2019-06-07T13:30",
+          "service": "Psychiatry",
+          "reason": "Medication follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Follow-up and Transfer of Care", "author": "psychiatry", "date": "2019-06-11T09:00", "body": "Follow-up 06/07/2019. Ms. Marsh describes her mood as close to her usual self for about a month. Energy and sleep normalized; working and socializing again. Mentions new facial pain, already referred to neurology. No SI.\nAssessment: MDD, single episode, responding well to sertraline 100 mg.\nPlan: continue sertraline 100 mg daily for at least a year of remission before any taper discussion. She may continue therapy as she wishes. Returning medication management to primary care; happy to see her again if symptoms recur."}
+          ]
+        },
+        {
+          "id": "2019-07-15a",
+          "kind": "specialist_visit",
+          "start": "2019-07-15T14:00",
+          "service": "Neurology",
+          "reason": "Facial pain",
+          "conditions": [
+            {"label": "Trigeminal neuralgia", "action": "diagnosed", "onset": "2019-05-15", "note": "right"}
+          ],
+          "medications": [
+            {"drug_text": "carbamazepine 200 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Trigeminal neuralgia"}
+          ],
+          "orders": [{"id": "neuro-referral-2019", "action": "done", "date": "2019-07-15T14:00"}],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2019-07-15T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2019-07-19T08:30", "body": "OUTSIDE NEUROLOGY - CONSULTATION\nDate of visit: 07/15/2019\n\nMs. Marsh is a 47-year-old woman with treated hypertension and a depressive episode earlier this year, now on sertraline, seen for two months of right facial pain. She characterizes each attack as an electric jolt or stab on the right side of the face, lasting under a minute and recurring many times through the day. Toothbrushing is the most consistent trigger. She has had no change in vision, no fever and no other neurologic complaint.\n\nMedications: lisinopril 10 mg daily, sertraline 100 mg daily. NKDA.\nFamily history: mother hypertension; sister depression; maternal aunt breast cancer.\nSocial: smokes about one pack weekly for twenty years and hopes to quit; rare alcohol; administrative assistant.\n\nExamination: alert, fluent. Cranial nerves intact including facial sensation in all three divisions and masseter strength. Motor, sensory, reflexes, coordination and gait normal.\n\nImpression: classic right trigeminal neuralgia.\n\nPlan: carbamazepine 200 mg twice daily. Reviewed dizziness, rash and low sodium as things to report. Please check CBC and sodium in about a month. Phone follow-up in 2 months."}
+          ]
+        },
+        {
+          "id": "2019-08-13a",
+          "kind": "lab_only",
+          "start": "2019-08-13T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Labs on carbamazepine",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-08-13T07:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-08-13T07:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2019-08-13T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2019-08-13T15:45", "body": "One month on carbamazepine. Sodium normal, white count and platelets normal. Copy faxed to neurology. Pt says the face pain stopped within about a week of starting it."}
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "specialist_visit",
+          "start": "2019-09-24T11:15",
+          "service": "Neurology",
+          "reason": "Telephone follow-up, trigeminal neuralgia",
+          "medications": [
+            {"drug_text": "carbamazepine 200 MG Oral Tablet", "action": "stop", "reason": "pain-free, tapered off"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Telephone Follow-up", "author": "neurology", "date": "2019-09-27T10:00", "body": "Phone visit 09/24/2019. Pain-free for about seven weeks on carbamazepine 200 mg twice daily, a little drowsy in the evenings. Labs from PCP reviewed, normal. As remissions are common, we agreed on a two-week taper to off: 200 mg once daily for a week, then 100 mg nightly for a week, then stop. She will call if attacks return; we can restart at the prior dose."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T12:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T12:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "MA", "date": "2019-10-08T12:25", "body": "Came over on lunch. Quad flu IM right deltoid. Tolerated. Physical booked for December."}
+          ]
+        },
+        {
+          "id": "2019-12-03a",
+          "kind": "annual_physical",
+          "start": "2019-12-03T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}, {"survey": "AUDIT-C total score", "value": 1}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2019-12-03T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-12-03T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-12-03T08:00"}],
+          "orders": [
+            {"id": "mammo-2019", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "annual screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-12-03T09:40", "body": "Annual. Mood good, PHQ-9 4, taking sertraline 100 every morning, no longer in therapy. Face pain came back toward the end of October after neuro tapered her off in September; fewer attacks than spring but same character, mostly with brushing. She already called neurology and has a January appointment; doesn't want to restart on her own. Tylenol does little.\nStill smoking a pack a week. Tried a quit date in August, lasted four days. Offered patch and Chantix again, wants to try again on her own after the holidays.\n\nExam: well. BP and vitals as charted. HEENT normal. Thyroid without enlargement or nodules. Heart RRR, no murmur. Lungs clear. Breasts without masses, nipple changes or axillary adenopathy. Abdomen soft, no organomegaly. Extremities without edema. Neuro nonfocal.\n\nA/P\n1. HTN controlled on lisinopril 10.\n2. MDD in remission on sertraline 100. Continue at least through mid-2020.\n3. Trigeminal neuralgia, recurrent, off carbamazepine. Neuro in January.\n4. Tobacco, counseled 5 min.\n5. HM: mammogram order placed. Lipids and BMP today. Colonoscopy discussed again, she will think about it after 50."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2019-12-04T10:15", "body": "Lipids normal, BMP normal. Sent to portal."}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "imaging",
+          "start": "2019-12-10T16:20",
+          "reason": "Screening mammogram",
+          "orders": [{"id": "mammo-2019", "action": "done", "date": "2019-12-10T16:20"}],
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2019-12-10T16:20", "text": "Digital screening mammography with tomosynthesis, CC and MLO views of each breast. Comparison 11/2018 and 11/2017. Heterogeneously dense breast tissue. No new mass, asymmetry, distortion or suspicious calcifications.  Skin normal.", "conclusion": "BI-RADS 1, negative. Return to annual screening."}
+          ]
+        }
+      ]
+    }
+  ]
+}

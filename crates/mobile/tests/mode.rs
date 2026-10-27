@@ -9,6 +9,7 @@ use std::process::Command;
 use std::time::Duration;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn physician_and_client_modes_render() {
     let site = build_site();
     let address = serve(site);

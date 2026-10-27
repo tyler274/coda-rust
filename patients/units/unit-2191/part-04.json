@@ -1,0 +1,551 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002191",
+      "events": [
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.9, "Hemoglobin": 11.2}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2022-02-08T11:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-02-08T11:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-02-08T10:40"},
+            {"procedure": "Venipuncture", "performed": "2022-02-08T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-02-08T11:05",
+              "body": "Winter check. Quiet few months. Feet fine, podiatry every 3 months. Darbepoetin monthly at nephrology. Sugars 130-170.\n\nExam: per flowsheet. Heart regular, lungs clear, no edema. Feet: scar R 1st MT intact, no callus.\n\nPlan: A1c, BMP. Tdap next month at a nurse visit. Same regimen."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "nurse_visit",
+          "start": "2022-03-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tdap",
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-03-08T09:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-03-08T09:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Tdap",
+              "author": "RN",
+              "date": "2022-03-08T09:40",
+              "body": "Tdap L deltoid, last tetanus 2012. Tolerated. No questions."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "outside_records",
+          "start": "2022-03-22T13:00",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-15T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-03-15T09:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-03-15T09:10", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2022-03-22T13:00",
+              "body": "Dear colleague,\n\nSeen 3/15/2022. Stable stage 4 CKD. Hemoglobin in target on monthly darbepoetin. Mineral labs fine on sevelamer and calcitriol. Return in 6 months.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chest tightness with exertion",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2022-05-10T14:20"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-05-10T14:40"}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2022-05-10T14:40", "text": "Sinus rhythm, rate 76. Normal axis. Normal intervals. No Q waves. No ST elevation or depression. Unchanged from 4/25/2017.", "conclusion": "Normal sinus rhythm. No change from prior."}
+          ],
+          "orders": [
+            {"id": "cards-2022", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Exertional chest tightness, known CAD"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chest tightness",
+              "author": "PCP",
+              "date": "2022-05-10T15:00",
+              "body": "About 6 weeks of a tight band across the chest when he walks up the hill on his street or carries groceries up from the car. Goes away within a few minutes of standing still. Never at rest, never woken him. No radiation, no sweating, no fainting. Not getting worse.\n\nKnown CAD from 2012 stress test, never cathed. On aspirin and atorvastatin 40.\n\nExam: BP per flowsheet. Heart regular, no murmur. Lungs clear. No edema.\n\nECG in office: sinus, no ischemic changes, same as 2017.\n\nA/P: exertional angina in known CAD, stable pattern. Cardiology referral, asked for a visit within 2-3 weeks. Reviewed: call 911 for pain at rest, pain lasting more than 15 min, or with sweating or shortness of breath. Stop smoking - said it plainly again."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "specialist_visit",
+          "start": "2022-06-14T08:30",
+          "service": "Cardiology",
+          "reason": "Exertional angina",
+          "orders": [{"id": "cards-2022", "action": "done", "date": "2022-06-14T08:30"}],
+          "reports": [
+            {"study": "Exercise stress test", "performed": "2022-06-14T09:00", "text": "Bruce protocol. Exercised 5 minutes 40 seconds, reaching 7 METs, 86% of predicted maximal heart rate. Stopped for typical chest tightness. Horizontal ST depression of 2 mm in V2 through V5 beginning at 4 minutes, resolving 5 minutes into recovery. No arrhythmia. Blood pressure response normal.", "conclusion": "Positive exercise test for ischemia in the anterior leads with reproduction of angina."}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Cardiology consultation",
+              "author": "cardiology",
+              "date": "2022-06-20T11:00",
+              "body": "Dear colleague,\n\nThank you for referring Mr. Dabrowski, 70, seen 6/14/2022 for six weeks of exertional chest tightness. History of CAD by stress testing in 2012, medically managed. Diabetes, CKD stage 4, hypertension, hyperlipidemia, active smoker with 40 pack-years.\n\nExam: regular rhythm, no murmur or gallop, lungs clear, no edema.\n\nTreadmill test today reproduced his angina at moderate workload with 2 mm ST depression in the anterior leads.\n\nAssessment: stable angina with anterior ischemia.\n\nPlan: coronary angiography with possible intervention, using minimal contrast and pre- and post-procedure IV fluids given his kidney function, coordinated with his nephrologist. Continue aspirin and atorvastatin. Smoking cessation strongly advised.\n\nNKDA.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-19a",
+          "kind": "procedure_visit",
+          "start": "2022-08-19T07:00",
+          "end": "2022-08-20T10:00",
+          "service": "Cardiology",
+          "reason": "Coronary angiography and PCI",
+          "conditions": [
+            {"label": "Presence of coronary artery stent", "action": "diagnosed", "onset": "2022-08-19"}
+          ],
+          "medications": [
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 75, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Drug-eluting stent"},
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "historical", "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "Angina"}
+          ],
+          "procedures": [
+            {"procedure": "Coronary stent placement, single vessel", "performed": "2022-08-19T08:10"}
+          ],
+          "reports": [
+            {"study": "Cardiac catheterization", "loinc": "18745-0", "performed": "2022-08-19T08:10", "text": "Right radial access. Left main normal. LAD: 90% proximal stenosis. Circumflex: mild luminal irregularities. Right coronary: 40% mid-vessel narrowing. Left ventricular function not assessed by ventriculography to limit contrast. Intervention: proximal LAD treated with a single drug-eluting stent, 3.0 x 18 mm, 0% residual, TIMI 3 flow. Contrast 45 mL.", "conclusion": "Single-vessel intervention: drug-eluting stent to the proximal LAD. Moderate RCA disease for medical therapy."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Catheterization and discharge summary",
+              "author": "cardiology",
+              "date": "2022-08-24T15:30",
+              "body": "Elective coronary angiography 8/19/2022 for angina with a positive stress test. Proximal LAD 90% stenosis treated with one drug-eluting stent via the right radial artery. RCA 40% and mild circumflex disease left for medical therapy. Kept overnight for IV fluids; creatinine unchanged the next morning. Radial site without hematoma.\n\nNew medications: clopidogrel 75 mg daily with aspirin 81 mg daily, uninterrupted for at least 12 months - do not stop without speaking to cardiology. Nitroglycerin 0.4 mg under the tongue as needed for chest pain.\nContinue: insulin glargine, lisinopril 10 mg, atorvastatin 40 mg, sevelamer, calcitriol, darbepoetin per nephrology, acetaminophen as needed.\n\nReferred to cardiac rehab. Clinic follow-up in 3 months.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "office_visit",
+          "start": "2022-08-30T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after stent",
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-08-30T11:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-30T11:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-08-30T11:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-30T11:20"},
+            {"procedure": "Venipuncture", "performed": "2022-08-30T11:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-PCI follow-up",
+              "author": "PCP",
+              "date": "2022-08-30T12:00",
+              "body": "LAD stent 8/19. Chest tightness gone, walked the hill twice this week without it. Wrist healed. Taking clopidogrel and aspirin daily. Hasn't needed the nitro. Says cardiac rehab hasn't called yet. Clopidogrel copay is an issue on his plan; pharmacy found a cheaper generic.\n\nExam: R radial site healed, pulse intact. Heart regular. Lungs clear. No edema.\n\nA/P\n1. CAD s/p LAD DES - DAPT for at least 12 months, emphasized not to stop either pill. Rehab - we'll call them for him.\n2. DM2 - labs today.\n3. Smoking - down to half a pack, still smoking.\n4. Eye exam this fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "outside_records",
+          "start": "2022-09-06T10:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2022-09-06T10:00",
+              "body": "Dilated exam 9/1/2022. Mild cataracts unchanged. No diabetic retinopathy either eye; macula flat. Annual follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T13:45",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-09-13T09:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-09-13T09:30", "results": [{"test": "Phosphorus"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2022-09-20T13:45",
+              "body": "Dear colleague,\n\nSeen 9/13/2022, a month after his LAD stent. Creatinine unchanged after the procedure. Potassium and phosphorus fine. Hemoglobin in range on darbepoetin. Continue the current plan.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "annual_physical",
+          "start": "2022-10-04T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T10:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T10:12"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2022-10-04T09:40"},
+            {"procedure": "Immunization administration", "performed": "2022-10-04T10:10"}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2022-10-04T10:30",
+              "body": "AWV. Six weeks of cardiac rehab done, enjoys it. No angina since the stent. Independent at home, no falls. PHQ-2 0.\n\nPreventive: high-dose flu and bivalent COVID booster today. Tdap done March. Lung CT November, ordered. Colonoscopy due 2024 - will discuss FIT vs scope then. Eye exam September.\n\nMeds reviewed with him pill by pill, including clopidogrel and aspirin; he knows not to stop them.\n\nTobacco: half a pack. Rehab staff working on it with him too."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T08:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-11-08T08:00", "text": "Annual low-dose CT chest. Comparison 11/09/2021. No nodules. Lungs clear. Coronary stent noted in the LAD territory.", "conclusion": "Lung-RADS 1, negative."}
+          ],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-11-08T08:00"}],
+          "documents": []
+        },
+        {
+          "id": "2022-12-23a",
+          "kind": "ed_visit",
+          "start": "2022-12-23T06:40",
+          "end": "2022-12-23T07:45",
+          "service": "Emergency Medicine",
+          "reason": "Chest pain",
+          "state": {"bp": [160, 90]},
+          "conditions": [
+            {"label": "Acute ST elevation myocardial infarction of inferior wall", "icd10": "I21.11", "action": "diagnosed", "onset": "2022-12-23"}
+          ],
+          "vitals": [
+            {"time": "2022-12-23T06:45", "bp": [160, 90], "hr": 92, "rr": 20, "spo2": 95, "temp_c": 36.7}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-12-23T06:55", "results": [
+              {"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "value": 12},
+              {"test": "Creatine kinase MB", "loinc": "32673-6", "unit": "U/L", "value": 80},
+              {"test": "Myoglobin", "loinc": "2639-3", "unit": "ng/mL", "value": 1500}
+            ]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2022-12-23T06:48", "text": "Sinus rhythm, rate 92. ST elevation in leads II, III and aVF with reciprocal ST depression in I and aVL.", "conclusion": "Acute inferior ST-elevation myocardial infarction."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2022-12-23T06:40"}],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2022-12-28T10:00",
+              "body": "Regional hospital emergency department, 12/23/2022.\n\n70 y/o man with diabetes, stage 4 CKD and CAD (LAD drug-eluting stent in August) brought by ambulance with severe chest pain into the left arm, began 30 minutes before arrival while sitting at home. He tells us he stopped all of his pills about a week ago because he was feeling well and the costs were adding up.\n\nOn arrival BP 160/90, sweaty and visibly distressed.\n\nECG: ST elevation II, III, aVF with reciprocal changes - STEMI activation.\nLabs: troponin I 12 ng/mL (normal under 0.04), CK-MB 80 U/L (0-24), myoglobin 1500 ng/mL (28-72).\n\nGiven aspirin 325 mg chewed, clopidogrel load, heparin per protocol. Taken directly to the cath lab.\n\nDisposition: admitted to cardiology after catheterization.\n\nNKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-23b",
+          "kind": "hospital_admission",
+          "start": "2022-12-23T07:45",
+          "end": "2022-12-27T12:00",
+          "service": "Cardiology",
+          "reason": "Inferior STEMI",
+          "state": {"labs": {"Creatinine": 3.2}},
+          "medications": [
+            {"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Myocardial infarction"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-25T05:30", "results": [{"test": "Creatinine", "value": 3.6}, {"test": "Potassium"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-27T05:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Coronary stent placement, single vessel", "performed": "2022-12-23T07:20"}
+          ],
+          "reports": [
+            {"study": "Cardiac catheterization", "loinc": "18745-0", "performed": "2022-12-23T07:20", "text": "Emergent angiography, right radial access. Right coronary: thrombotic total occlusion of the mid vessel. LAD: previously placed proximal stent widely patent, no restenosis. Circumflex: mild irregularities. Intervention: a single drug-eluting stent to the mid RCA, 3.5 x 22 mm, TIMI 3 flow restored. Contrast 70 mL.", "conclusion": "Inferior STEMI from mid-RCA occlusion, treated with a drug-eluting stent. Patent LAD stent."},
+            {"study": "Transthoracic echocardiogram", "performed": "2022-12-24T10:00", "text": "Left ventricle normal in size with hypokinesis of the inferior wall. Estimated ejection fraction 45%. Right ventricle normal in size and function. No significant valve disease. No pericardial effusion.", "conclusion": "Mildly reduced LV function, EF 45%, with inferior hypokinesis."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "cardiology",
+              "date": "2022-12-29T09:15",
+              "body": "Admitted 12/23/2022, discharged 12/27/2022.\n\nDiagnosis: acute inferior ST-elevation MI from occlusion of the mid right coronary artery.\n\nCourse: emergent catheterization from the ED showed a thrombotic mid-RCA occlusion, treated with a drug-eluting stent. The LAD stent from August was patent. Pain resolved after reperfusion. No arrhythmia on telemetry. Echo 12/24: EF 45% with inferior hypokinesis. Creatinine rose to 3.6 after contrast and came back to 3.2 by discharge with fluids. He had stopped all medications a week before admission because of cost and feeling well; we went through why each one matters, especially clopidogrel and aspirin with two stents, and social work linked him with a drug assistance program.\n\nHe decided to quit smoking and stop drinking; he has not smoked since admission.\n\nDischarge medications:\n- aspirin 81 mg daily\n- clopidogrel 75 mg daily (12 months from this event; do not interrupt)\n- metoprolol succinate 25 mg daily - NEW\n- atorvastatin 40 mg daily\n- lisinopril 10 mg daily\n- insulin glargine 24 units at bedtime\n- sevelamer carbonate 800 mg three times daily with meals\n- calcitriol 0.25 mcg daily\n- darbepoetin per nephrology\n- nitroglycerin 0.4 mg sublingual as needed\n- acetaminophen as needed\nNKDA.\n\nFollow-up: PCP within a week; cardiology 4-6 weeks; cardiac rehab re-referral."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-28a",
+          "kind": "telephone",
+          "start": "2022-12-28T10:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2022-12-28T10:30",
+              "body": "TCM call after discharge 12/27 for heart attack. Pt home, daughter staying with him this week. No chest pain, no shortness of breath. Has picked up all discharge meds; the assistance program covered the clopidogrel. Taking every pill, daughter set up a weekly pillbox. No cigarettes since 12/23. Appt with PCP 1/4 confirmed. ED record received today and routed."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-04a",
+          "kind": "office_visit",
+          "start": "2023-01-04T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, myocardial infarction",
+          "state": {"bp": [134, 78], "weight_kg": 93.0},
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "resolved", "onset": "1972-01-01"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2022-12-23"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None since December 2022"}
+          ],
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-04T13:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-04T13:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2023-01-04T13:00"},
+            {"procedure": "Venipuncture", "performed": "2023-01-04T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2023-01-04T13:40",
+              "body": "Seen with daughter, 8 days after discharge for an inferior STEMI (mid RCA occlusion, DES; LAD stent from August patent). EF 45% with inferior hypokinesis. He had stopped all his meds the week before for cost. Discharge summary and ED record reviewed.\n\nSince home: no chest pain, walking in the house and to the mailbox, a little tired. Every med in the pillbox, assistance program covering clopidogrel. Has not smoked since 12/23 and has not had a drink. Proud of it, and he should be.\n\nMeds reconciled: aspirin 81, clopidogrel 75, metoprolol succinate 25 (new), atorvastatin 40, lisinopril 10, glargine 24 qhs, sevelamer 800 tid, calcitriol 0.25, darbepoetin q4 wk (nephrology), SL NTG prn, acetaminophen prn.\n\nExam: BP and HR per flowsheet. R wrist site healed. Heart regular, no murmur, no gallop. Lungs clear. No edema.\n\nA/P\n1. Inferior STEMI s/p RCA DES; prior LAD DES - DAPT uninterrupted, metoprolol. Cardiology 4-6 weeks, rehab re-referral placed by hospital. Talked through costs and that he must call us before stopping anything; we can find a cheaper option every time.\n2. Tobacco - quit 12/23. Former smoker. Offered patch for cravings; he says he doesn't need it.\n3. CKD 4 - creatinine bumped with contrast, BMP today.\n4. DM2 - glargine unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "specialist_visit",
+          "start": "2023-02-14T09:00",
+          "service": "Cardiology",
+          "reason": "Post-MI follow-up",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2023-02-17T12:20",
+              "body": "Dear colleague,\n\nSeen 2/14/2023 for follow-up after his December inferior STEMI with RCA stent; LAD stent August 2022. No angina, no dyspnea. Cardiac rehab started this month. Off cigarettes since admission.\n\nBlood pressure and heart rate at goal on metoprolol. Regular rhythm, no gallop, lungs clear, no edema.\n\nPlan: continue aspirin and clopidogrel through December 2023, metoprolol succinate 25 mg, atorvastatin 40 mg, lisinopril 10 mg. Return in 6 months.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.7}},
+          "conditions": [
+            {"label": "Acute ST elevation myocardial infarction of inferior wall", "icd10": "I21.11", "action": "resolved", "onset": "2022-12-23"},
+            {"label": "Old myocardial infarction", "action": "diagnosed", "onset": "2022-12-23"}
+          ],
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2023-03-21T10:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-21T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-21T10:20"},
+            {"procedure": "Venipuncture", "performed": "2023-03-21T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-03-21T10:45",
+              "body": "Three months out from the MI. Rehab twice a week, up to 25 minutes on the treadmill. No chest pain. Still not smoking - chewing gum and toothpicks. Taking all meds.\n\nExam: per flowsheet. Heart regular. Lungs clear. No edema. Feet intact.\n\nA/P: STEMI now remote -> old MI on list. CAD with 2 stents on DAPT until December per cardiology. DM2 A1c today. CKD per nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "outside_records",
+          "start": "2023-04-18T14:00",
+          "reason": "Nephrology letter",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-11T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-11T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2023-04-11T09:00", "results": [{"test": "Phosphorus"}, {"test": "Parathyroid Hormone, Intact"}]}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2023-04-18T14:00",
+              "body": "Dear colleague,\n\nSeen 4/11/2023 after his MI and RCA stent in December. Creatinine has settled back near his baseline after the contrast exposure. Potassium acceptable on lisinopril with metoprolol added. Hemoglobin in target on monthly darbepoetin. Phosphorus and PTH acceptable.\n\nGlad to hear he has stopped smoking.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "office_visit",
+          "start": "2023-06-27T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg", "spo2"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-06-27T09:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-06-27T09:20", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-27T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-06-27T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-06-27T09:30",
+              "body": "Finished cardiac rehab in May, still walks most mornings. Six months smoke-free. No angina, no nitro used. Sugars fine.\n\nExam: per flowsheet. Heart regular, lungs clear, no edema. Feet: intact, podiatry visit last month.\n\nPlan: lipids, A1c, UACR. Same meds. Eye exam August."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T10:30",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye exam report",
+              "author": "optometry",
+              "date": "2023-08-29T10:30",
+              "body": "Dilated exam 8/23/2023. Cataracts mild. No diabetic retinopathy OU. Return in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T15:00",
+          "reason": "Cardiology letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2023-09-12T15:00",
+              "body": "Dear colleague,\n\nSeen 9/5/2023. Feeling well, walking daily, no angina or breathlessness. Not smoking. Pressure and heart rate at goal. Exam unremarkable. Continue DAPT until the December anniversary of his MI, then aspirin alone. Return in early January.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "annual_physical",
+          "start": "2023-10-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "weight_kg", "height_cm", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2023-10-03T10:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T10:27"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2023-10-03T10:00"},
+            {"procedure": "Immunization administration", "performed": "2023-10-03T10:25"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Former smoker, quit 2022, 40 pack-years"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-10-03T10:40",
+              "body": "AWV. Ten months off cigarettes. Independent, drives, no falls. PHQ-2 0. Proxy unchanged.\n\nPreventive: flu and updated COVID today. Lung CT next month (former smoker within 15 years, still eligible). Colonoscopy due next year - he would rather do the stool test; FIT kit at next visit. Eye exam August, no retinopathy.\n\nNext chronic visit early in the new year."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "imaging",
+          "start": "2023-11-07T08:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-11-07T08:30", "text": "Annual low-dose CT chest. Comparison 11/08/2022. No pulmonary nodules. Lungs clear. Coronary stents.", "conclusion": "Lung-RADS 1, negative."}
+          ],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-11-07T08:30"}],
+          "documents": []
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "portal_message",
+          "start": "2023-12-05T18:40",
+          "reason": "Clopidogrel question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Plavix",
+              "author": "patient",
+              "date": "2023-12-05T18:40",
+              "body": "It's almost a year since the heart attack. Do I stop the clopidogrel now or wait for the heart doctor? I don't want to mess it up again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Plavix",
+              "author": "PCP",
+              "date": "2023-12-06T08:10",
+              "body": "Good question, and thank you for asking first. Keep taking it until cardiology tells you to stop. Your appointment with them is in early January and that's when they planned to make the change. Keep the aspirin no matter what."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

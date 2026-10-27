@@ -1,0 +1,188 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002125",
+      "given": "Randall",
+      "family": "Lindqvist",
+      "birth_date": "1970-02-28",
+      "address_line": "63 Ryan Road, Apt 4",
+      "phone": "+1-802-555-0149",
+      "email": "randall.lindqvist@example.test",
+      "marital_status": "single",
+      "summary": "Former construction site supervisor with intermediate-risk AML diagnosed 2023, in remission on maintenance azacitidine/venetoclax at an outside cancer center, with hypertension and chemotherapy-induced neuropathy; joins the practice in 2024. Febrile neutropenia admission in December 2025, ICU stay for severe sepsis in February 2026, and in July 2026 an ICU admission for severe hyponatremia complicated by central pontine myelinolysis with a locked-in state.",
+      "events": [
+        {
+          "id": "2024-08-21a",
+          "kind": "telephone",
+          "start": "2024-08-21T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-08-21T10:40",
+              "body": "Caller is looking to move his primary care here. His old PCP office is cutting hours and he wants a doctor he can reach by text while he's going through cancer treatment. Gets his leukemia care at a cancer center, wants a local doc for everything else. Medicare. Explained membership and that insurance still covers labs and specialists. Booked new patient appt 9/4 at 9:00. He signed a records release over the phone portal; release faxed to his prior PCP office today. Asked him to bring all med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "outside_records",
+          "start": "2024-08-27T14:05",
+          "reason": "prior primary care records",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2016-05-01", "note": "per prior PCP records, on amlodipine"}
+          ],
+          "allergies": [
+            {"substance": "Sulfamethoxazole-trimethoprim", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Iodinated contrast media", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "procedures": [
+            {"procedure": "Colonoscopy, screening, average risk", "performed": "2020-06-11T08:30"},
+            {"procedure": "Tonsillectomy", "performed": "1977-07-01T09:00"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-05-08T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (received)",
+              "author": "outside primary care",
+              "date": "2024-08-27T14:05",
+              "body": "Records packet from the patient's previous primary care office, 38 pages, received by fax.\n\nProblem list on their summary: hypertension, since 2016, on amlodipine 5 mg daily, generally controlled at their visits. Acute myeloid leukemia, followed by an outside oncology program since 2023. Peripheral neuropathy after chemotherapy.\n\nAllergies on their list: sulfamethoxazole-trimethoprim (anaphylaxis); iodinated contrast (hives).\n\nScreening colonoscopy 06/11/2020: normal to the terminal ileum, no polyps, good prep; next screening in 10 years.\nTdap 05/08/2019.\nTonsillectomy as a child.\n\nSocial: former smoker, about 20 pack-years, quit 2019. Construction site supervisor.\n\nLast visit with them was a blood pressure recheck in spring 2024, BP at goal. No other active issues. Scanned and abstracted."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "establish_care",
+          "start": "2024-09-04T09:00",
+          "end": "2024-09-04T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Acute myeloid leukemia, intermediate-risk cytogenetics, in remission", "icd10": "C92.01", "action": "diagnosed", "onset": "2023-03-14", "note": "outside cancer center; maintenance therapy"},
+            {"label": "Chemotherapy-induced peripheral neuropathy", "icd10": "G62.0", "action": "diagnosed", "onset": "2023-08-01"}
+          ],
+          "medications": [
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug_text": "acyclovir 800 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily (antiviral prophylaxis)", "dose": {"value": 800, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "antiviral prophylaxis, prescribed by oncology"},
+            {"drug_text": "posaconazole 100 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 3 tablets (300 mg) by mouth daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "antifungal prophylaxis, prescribed by oncology"},
+            {"drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution", "action": "historical", "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation", "dose": {"value": 17, "unit": "g"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "constipation"},
+            {"drug_text": "oxycodone hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for bone pain", "dose": {"value": 5, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "bone pain, prescribed by oncology"},
+            {"drug_text": "azacitidine 100 MG Injection", "action": "historical", "sig": "75 mg/m2 subcutaneously daily on days 1-7 of each 28-day cycle, given at the cancer center", "dose": {"value": 75, "unit": "mg/m2"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "AML maintenance, oncology"},
+            {"drug_text": "venetoclax 10 MG Oral Tablet", "action": "historical", "sig": "Take 7 tablets (70 mg) by mouth daily on days 1-14 of each 28-day cycle", "dose": {"value": 70, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "AML maintenance, oncology; dose reduced with posaconazole"}
+          ],
+          "state": {"bp": [132, 80], "weight_kg": 83.6, "height_cm": 180.3, "labs": {"Hemoglobin A1c": 5.4}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-04T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-04T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-04T10:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2024-09-04T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-04T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Construction site supervisor; not working since 2023"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-09-04T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-04T10:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-04T09:00",
+              "body": "NEW PATIENT\n\n54M transferring primary care. Main reason: wants one doctor he can reach between oncology visits, since the cancer center is an hour each way.\n\nOncologic hx (per pt, cancer center records requested): AML, told intermediate-risk cytogenetics, diagnosed March 2023 after a marrow biopsy. Port placed R chest wall at diagnosis. Inpatient induction then consolidation that year, in remission since. Since early 2024 on maintenance cycles: shots at the infusion center for a week each month plus venetoclax pills for two weeks. Several marrow biopsies so far, all OK per him. Prophylactic acyclovir and posaconazole the whole time. Oxycodone from oncology for bone aches, uses it maybe a few times a month.\n\nNeuropathy: numb, pins-and-needles feeling in both feet since the consolidation chemo in 2023. Not painful enough to want a med. Has learned to look at his feet going down stairs. No falls.\n\nHTN since about 2016, amlodipine 5 for years. No home cuff.\n\nPSH: port 2023, marrow biopsies, tonsillectomy as a kid.\nAllergies: Bactrim, anaphylaxis. IV contrast, hives.\nMeds: reconciled from bottles, see list. Venetoclax 70 mg (7 x 10 mg) days 1-14 is the reduced dose oncology uses with the posaconazole.\nFH: father lung ca, died 68. Mother DM2, HTN. Paternal uncle died at 55 of an acute leukemia, type unknown.\nSH: construction site supervisor, out on disability since the diagnosis. Lives alone, single. Former smoker, ~20 pk-yr, quit 2019. Beer once or twice a week. No drugs.\n\nROS: energy okay between cycles, tired the week of injections. No fevers. Bowels slow on oxycodone days, uses Miralax-type powder. Otherwise negative.\n\nEXAM\nVitals as charted. Well appearing, pleasant.\nHEENT: oropharynx clear, no mucosal lesions. Neck supple, no nodes.\nChest: port R upper chest, skin intact, no erythema or tenderness.\nCV: RRR, no murmur. Lungs clear bilaterally.\nAbd: soft, nontender, no hepatosplenomegaly palpable.\nSkin: no petechiae or bruising.\nNeuro: alert, fluent. Strength 5/5 throughout. Vibration and pinprick reduced in both feet up to the ankles; proprioception at the toes intact. Gait steady.\nExt: no edema.\n\nA/P\n1. AML in remission on maintenance - managed by the cancer center. Records request sent. They run his counts; I'll copy them on my labs.\n2. HTN - at goal on amlodipine 5. Continue, I'll take over refills.\n3. Chemo neuropathy, feet - stable, declines medication. Foot care and fall precautions talked through.\n4. Health maintenance: CMP, lipids, A1c, one-time hep C and HIV today. Colonoscopy 2020 normal per prior records. Tdap 2019. Talked about vaccines for someone on chemo - flu, COVID and Prevnar 20 at a nurse visit next month, Shingrix after that. Qualifies by age and smoking history for a lung screening CT; we agreed to hold off while he's on active leukemia treatment and revisit. PHQ-9 3.\n5. Bowel regimen ok.\n\nRTC 3 months, sooner prn. He has my cell for texting."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-06a",
+          "kind": "portal_message",
+          "start": "2024-09-06T16:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-09-06T16:22",
+              "body": "Randall - your labs from Wednesday look good. Kidney and liver tests normal, sugar and A1c normal, cholesterol fine without a medication. Hep C and HIV screens were negative, so those never need repeating unless something changes. The nurse will reach out to set up your vaccine visit. - your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "outside_records",
+          "start": "2024-09-18T11:30",
+          "reason": "cancer center records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology-oncology treatment summary (received)",
+              "author": "hematology-oncology",
+              "date": "2024-09-18T11:30",
+              "body": "OUTSIDE CANCER CENTER - LEUKEMIA PROGRAM\nTreatment summary prepared at the request of the patient's new primary care physician.\n\nDiagnosis: acute myeloid leukemia, intermediate-risk cytogenetics. Diagnosed March 2023 on bone marrow aspirate and biopsy. Right chest wall implanted port placed March 2023.\n\nTreatment:\n- Induction with cytarabine-based intensive chemotherapy, spring 2023. Day-28 marrow: morphologic remission.\n- Consolidation with cytarabine-based cycles, summer-fall 2023. Peripheral neuropathy of the feet developed during consolidation and has persisted.\n- Maintenance since early 2024: azacitidine 75 mg/m2 subcutaneously days 1-7 with venetoclax days 1-14 of each 28-day cycle. Venetoclax 70 mg daily, reduced for concomitant posaconazole.\n\nMost recent marrow (spring 2024): continued morphologic remission.\n\nSupportive medications: acyclovir 800 mg twice daily; posaconazole delayed-release 300 mg daily; oxycodone 5 mg every 6 hours as needed for bone pain; polyethylene glycol as needed.\n\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); iodinated contrast (hives).\n\nOther: hypertension on amlodipine. Former smoker.\n\nPlan: maintenance cycles monthly with counts before each cycle; marrow surveillance periodically. Please call the leukemia nurse line for fever of 100.4 or higher.\n\nAttending hematologist-oncologist, leukemia program"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["bp", "hr", "temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-10T13:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-10T13:42"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-10-10T13:44"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-10T13:40"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2024-10-10T13:30",
+              "body": "Here for vaccines ordered at his new patient visit. Timed between maintenance cycles; last injection week ended 9/30 and oncology ok'd today. Afebrile, feels well. Allergies reviewed, none to vaccine components.\nGiven: inactivated flu L deltoid; Pfizer COVID 2024-25 formula R deltoid; Prevnar 20 L deltoid, separate site 1 inch below flu.\nTolerated, no reaction in 15 min wait. VIS sheets given. Shingrix series to start at his December visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-12-10T10:55"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-12-10T10:20"},
+            {"procedure": "Immunization administration", "performed": "2024-12-10T10:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-12-10T10:20",
+              "body": "S: 3-month check. Doing alright. Had his December cycle last week, fatigue for a few days then back to normal. Oncology says counts fine, plan unchanged. Taking amlodipine daily. Feet the same, no falls.\n\nO: BP and pulse as charted, weight steady. Alert, comfortable. Mouth clear. Heart regular, lungs clear. No ankle swelling. Port site fine.\n\nA/P:\n- HTN: controlled, no change. Refill sent for 90 days.\n- AML on maintenance: per cancer center.\n- Neuropathy: stable.\n- Shingrix #1 today (recombinant, fine with his treatment). Dose 2 in 2 months, nurse visit.\n\nRecheck spring for a wellness visit."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

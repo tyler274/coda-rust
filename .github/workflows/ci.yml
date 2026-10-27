@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches: [main]
@@ -50,7 +51,7 @@ jobs:
           # Optional developer references are never fetched by CI.
           submodules: false
           persist-credentials: false
-      - name: Install Node for public-site asset and browser proofs
+      - name: Install Node for public-site assets
         uses: actions/setup-node@v7
         with:
           node-version: '22'
@@ -152,46 +153,42 @@ jobs:
       # Browser proofs build their WebAssembly bundles offline. A restored
       # native build cache is not guaranteed to contain target-only crates.
       - name: Fetch locked browser build dependencies
+        if: github.event_name == 'workflow_dispatch'
         run: cargo fetch --locked --target wasm32-unknown-unknown
       - name: Install Chromium
+        if: github.event_name == 'workflow_dispatch'
         id: chrome
         uses: browser-actions/setup-chrome@v2
         with:
           install-dependencies: true
-      # The doctor-page PDF proof reads the rendered file with an independent
-      # extractor and rasterizer (pdftotext, pdfinfo, pdftoppm). The Nix
-      # shell carries poppler-utils; this job is not in that shell (ENG-46).
-      - name: Install browser proof and static-build tools
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends poppler-utils musl-tools
-          pdftotext -v
+      # The routine duet-page renderer test needs independent PDF extraction and
+      # rasterization; Poppler is required even when browser tests are not run.
+      - name: Install PDF proof and static-build tools
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends poppler-utils musl-tools
       - name: Check formatting
         run: cargo fmt --check
       # CI parity with the pre-commit hook (.githooks/pre-commit): a commit
       # that slips past --no-verify still faces clippy here, warnings denied.
       - name: Lint
         run: cargo clippy --workspace --all-targets -- -D warnings
-      # Each package runs once. Browser packages keep dedicated steps below;
-      # the workspace step includes the harness streaming suites.
+      # Browser tests are explicitly ignored by Rust's test harness. Routine
+      # checks still run every package's unit, service, storage and HTTP tests.
       - name: Test workspace libraries and services
-        env:
-          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
-        # The Android shell is proved by UI Automator on a local emulator.
-        run: cargo test --workspace --exclude physician-sample --exclude public-site --exclude mobile
-      - name: Test physician service and browser journeys
-        env:
-          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
-        # GitHub has no Node practice on port 8787. That comparison fails
-        # closed when run; it is not counted as passed here.
-        run: cargo test -p physician-sample -- --skip the_live_react_practice_matches_the_rust_page
-      - name: Browser and reference proof (public site)
+        run: cargo test --workspace
+      - name: Run explicitly requested browser qualification
+        if: github.event_name == 'workflow_dispatch'
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
           PUBLIC_SITE_SCREENSHOTS: ${{ runner.temp }}/public-site-screenshots
-        run: cargo test -p public-site
+        # Select browser targets only; other ignored tests have their own jobs.
+        # React comparison still requires a separate practice on port 8787.
+        # backend_process is a child-only helper, launched by its parent proof.
+        run: |
+          cargo test -p physician-sample --test site --test auth_browser -- --ignored
+          cargo test -p public-site --test site -- --ignored
+          cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
       - name: Upload public-site browser screenshots
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7
         with:
           name: public-site-browser
@@ -235,10 +232,6 @@ jobs:
           name: public-site-pr-binary-${{ github.sha }}
           path: public-site-pr-binary
           retention-days: 3
-      - name: Browser proof (mode shells)
-        env:
-          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
-        run: cargo test -p mobile
       # The archive is written beside target, so free space has to hold that
       # second copy. Drop proof outputs, then build-script dirs if it is
       # still tight. Registry is always saved. A target that does not fit

@@ -1,0 +1,515 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002823",
+   "events": [
+    {
+     "id": "2026-02-25a",
+     "kind": "hospital_admission",
+     "start": "2026-02-25T06:50",
+     "end": "2026-03-17T13:00",
+     "service": "Critical Care Medicine",
+     "reason": "Altered mental status and severe hypotension after two days of fever and chills",
+     "conditions": [
+      {
+       "label": "Sepsis, unspecified organism",
+       "icd10": "A41.9",
+       "action": "diagnosed",
+       "onset": "2026-02-23"
+      },
+      {
+       "label": "Severe sepsis with septic shock",
+       "icd10": "R65.21",
+       "action": "diagnosed",
+       "onset": "2026-02-25"
+      },
+      {
+       "label": "Acute kidney failure with acute cortical necrosis",
+       "icd10": "N17.1",
+       "action": "diagnosed",
+       "onset": "2026-02-25",
+       "note": "diffuse cortical necrosis on renal biopsy"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dialysis-dependent kidney failure"
+      },
+      {
+       "drug_text": "glyburide 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Hypoglycemia risk on dialysis"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Acute kidney failure; hyperkalemia risk"
+      },
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Anuric"
+      },
+      {
+       "drug": "methotrexate 2.5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Contraindicated in kidney failure"
+      },
+      {
+       "drug_text": "alendronic acid 70 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Not for use with kidney failure"
+      },
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "start",
+       "sig": "Inject 8 units under the skin at bedtime",
+       "dose": {
+        "value": 8,
+        "unit": "[iU]"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 6.4,
+       "Hemoglobin": 9.6,
+       "Hemoglobin A1c": 8.3,
+       "Glucose": 212
+      }
+     },
+     "vitals": [
+      {
+       "time": "2026-02-25T06:55",
+       "bp": [
+        78,
+        42
+       ],
+       "hr": 124,
+       "rr": 26,
+       "temp_c": 39.4,
+       "spo2": 92
+      },
+      {
+       "time": "2026-02-25T10:30",
+       "bp": [
+        94,
+        54
+       ],
+       "hr": 112,
+       "rr": 22,
+       "temp_c": 38.6,
+       "spo2": 95
+      },
+      {
+       "time": "2026-03-17T08:00",
+       "bp": [
+        124,
+        72
+       ],
+       "hr": 84,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 94
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-02-25T07:10",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 19.6
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-25T07:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 3.9
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 68
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-02-25T07:10",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 5.2
+        },
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days (2 sets)"
+        },
+        {
+         "test": "Urine Culture",
+         "text": "No growth"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-02-25T07:40",
+       "text": "Portable AP chest. Hyperinflated lungs. No focal consolidation, effusion or pneumothorax. Heart size normal.",
+       "conclusion": "No acute cardiopulmonary process."
+      },
+      {
+       "study": "Renal ultrasound",
+       "performed": "2026-02-28T11:00",
+       "text": "Right kidney 10.2 cm, left kidney 10.5 cm. No hydronephrosis. No stones or masses. Bladder decompressed.",
+       "conclusion": "Normal-sized kidneys without hydronephrosis."
+      },
+      {
+       "study": "Surgical pathology report",
+       "performed": "2026-03-03T10:00",
+       "issued": "2026-03-06T15:00",
+       "text": "Specimen: kidney, left, percutaneous core biopsy (2 cores).\nLight microscopy: renal cortex with widespread coagulative necrosis involving glomeruli and tubules across both cores, across the sampled cortex. Immunofluorescence and electron microscopy: no immune-complex glomerulonephritis.",
+       "conclusion": "Diffuse renal cortical necrosis."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "ICU and hospital discharge summary",
+       "author": "critical care",
+       "date": "2026-03-19T10:00",
+       "body": "DISCHARGE SUMMARY - regional medical center\nAdmitted 02/25/2026 (via ED to ICU)  Discharged 03/17/2026\n\nDiagnoses: septic shock, source not identified; acute kidney failure due to diffuse renal cortical necrosis (biopsy-proven), not recovered - now dialysis dependent.\n\nPresentation: 72-year-old woman with severe COPD, CKD 3b (baseline creatinine about 1.7), poorly controlled T2DM, RA on methotrexate and prednisone 10 mg daily. Two days of high fevers and shaking chills at home, then her husband found her confused. On arrival: T 39.4, BP 78/42, HR 124, RR 26, SpO2 92% on room air. Cool extremities, slow capillary refill, dry mouth. Creatinine 3.9, BUN 68, lactate 5.2, WBC 19.6.\n\nHospital course:\n- Shock: IV fluid resuscitation, norepinephrine for 3 days, broad-spectrum antibiotics (vancomycin and piperacillin-tazobactam), stress-dose hydrocortisone given chronic prednisone. Blood and urine cultures without growth; chest film without consolidation; no source identified. Antibiotics completed. Mental status back to baseline by day 2.\n- Kidneys: urine output remained low despite resuscitation and creatinine kept climbing; anuric by day 4. Ultrasound with normal-sized kidneys, no obstruction. Hemodialysis started day 5 through a temporary femoral catheter. Renal biopsy 3/3: diffuse cortical necrosis. No return of urine output over the following two weeks. Tunneled right internal jugular dialysis catheter placed 3/10. Accepted to an outpatient in-center unit, three treatments a week.\n- Steroids: hydrocortisone tapered back to prednisone 10 mg daily.\n- Diabetes: oral agents stopped; basal insulin started.\n- Lungs: no intubation this admission; oxygen weaned to room air.\n\nDischarge medication changes:\nSTOPPED: metformin, glyburide, lisinopril, hydrochlorothiazide, methotrexate, alendronate.\nSTARTED: insulin glargine 8 units at bedtime.\nCONTINUED: prednisone 10 mg daily, amlodipine 5 mg daily, omeprazole 20 mg, aspirin 81 mg, fluticasone-salmeterol, albuterol as needed, calcium carbonate with meals, cholecalciferol.\nAllergies: no known drug allergies.\n\nFollow-up: PCP within 1 week; nephrology at the dialysis unit; rheumatology regarding RA treatment off methotrexate."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-24a",
+     "kind": "office_visit",
+     "start": "2026-03-24T10:00",
+     "end": "2026-03-24T11:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital visit; new hemodialysis",
+     "conditions": [
+      {
+       "label": "Sepsis, unspecified organism",
+       "action": "resolved",
+       "icd10": "A41.9"
+      },
+      {
+       "label": "Severe sepsis with septic shock",
+       "action": "resolved",
+       "icd10": "R65.21"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "resolved",
+       "note": "progressed to ESRD"
+      },
+      {
+       "label": "Acute kidney failure with acute cortical necrosis",
+       "action": "resolved",
+       "note": "no renal recovery; now ESRD",
+       "icd10": "N17.1"
+      },
+      {
+       "label": "End stage renal disease",
+       "action": "diagnosed",
+       "onset": "2026-03-01",
+       "note": "diffuse cortical necrosis after septic shock; hemodialysis"
+      },
+      {
+       "label": "Dependence on renal dialysis",
+       "icd10": "Z99.2",
+       "action": "diagnosed",
+       "onset": "2026-03-01"
+      }
+     ],
+     "state": {
+      "bp": [
+       126,
+       74
+      ],
+      "weight_kg": 71.0,
+      "labs": {
+       "Glucose": 150
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-03-24T10:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.3
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-03-24T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2026-03-24T11:20",
+       "body": "TCM visit. RN contact 3/18. Discharge summary received 3/19 and reviewed in full.\n\nThree-week ICU and hospital stay for septic shock without a source found, complicated by kidney failure - biopsy showed diffuse cortical necrosis and she never made urine again. Now on in-center hemodialysis three times a week via a right chest tunneled catheter. Came straight from a dialysis morning; husband drove.\n\nShe is exhausted and weak, walking with a cane in the house for now. Eating small amounts. No fever. Breathing at baseline. Mind clear. Fingersticks 140s-230s on glargine 8 units.\n\nMed reconciliation: list updated to the discharge changes - metformin, glyburide, lisinopril, HCTZ, methotrexate and alendronate off; glargine 8 units at bedtime on. She has the pen and was taught at discharge; technique reviewed. Prednisone 10, amlodipine 5, omeprazole, aspirin, inhalers, calcium, D3 continue.\n\nExam: Vitals as charted - weight down several kilos. Thin, tired. Catheter site right upper chest clean, dressing intact. Lungs distant, no crackles. Heart regular. No edema.\n\nA/P:\n1. ESRD on hemodialysis after diffuse cortical necrosis - nephrology/dialysis unit managing; I'll get their notes. CKD 3b closed out, ESRD added.\n2. Septic shock - resolved.\n3. T2DM - glargine 8 units; she will keep a log and the RN will call Thursday. A1c today knowing it is less reliable with dialysis and anemia.\n4. RA - methotrexate off; rheumatology appointment requested; prednisone continues, do not stop.\n5. Deconditioning - home safety reviewed; she declines home PT, will walk at home.\nRTC 6-8 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-26a",
+     "kind": "telephone",
+     "start": "2026-03-26T14:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Glucose check",
+       "author": "RN",
+       "date": "2026-03-26T14:20",
+       "body": "Called for sugar log as planned. Fasting 138, 162, 151; one bedtime reading of 244 after a large supper. No lows, no symptoms of lows. Pen technique fine. A1c from Tuesday 8.3 - PCP aware, no dose change for now. Reminded her to bring the log to dialysis too. Next PCP visit May 12."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-14a",
+     "kind": "specialist_visit",
+     "start": "2026-04-14T09:00",
+     "service": "Nephrology",
+     "reason": "End-stage renal disease on hemodialysis",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology / dialysis unit progress note",
+       "author": "nephrology",
+       "date": "2026-04-17T08:30",
+       "body": "Nephrology monthly dialysis note, 04/14/2026.\n\nESRD after biopsy-proven diffuse cortical necrosis with septic shock in late February; anuric. In-center hemodialysis three times weekly via right IJ tunneled catheter, tolerating treatments; dry weight being set. Fistula planning referral placed by our unit.\n\nMonthly labs: pre-dialysis creatinine 6.4, potassium 4.8, hemoglobin 9.6. Phosphorus and PTH being followed at the unit with dietary counseling; calcium carbonate continues with meals.\n\nMeds reviewed against discharge list; no changes from our side. Alendronate and methotrexate remain off. Insulin per PCP.\n\nOutside Nephrology Group / dialysis unit"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "specialist_visit",
+     "start": "2026-04-21T13:30",
+     "service": "Rheumatology",
+     "reason": "Rheumatoid arthritis after hospitalization",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2026-04-24T10:00",
+       "body": "RA visit 4/21/2026 after septic shock and new ESRD on hemodialysis. Methotrexate stopped in hospital and should stay off on dialysis. Joints currently quiet, mild morning stiffness only. Continue prednisone 10 mg daily. Other disease-modifying options will be discussed once she has recovered from the hospitalization. Return 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-12a",
+     "kind": "office_visit",
+     "start": "2026-05-12T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after hospitalization; diabetes on insulin",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2026-05-12T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-05-12T13:45",
+       "body": "Seven weeks after discharge. Dialysis routine settling - the off days are better than the treatment days. Energy slowly returning; off the cane. Appetite better.\n\nSugars: fasting mostly 130s-160s on glargine 8 units, no lows. Nephrology April note reviewed (Hb 9.6, K 4.8). Rheum: MTX stays off, prednisone continues.\n\nExam: vitals as charted. Catheter site clean. Lungs distant. Regular rhythm. No edema.\n\nA/P: ESRD on HD - per nephrology. T2DM - continue glargine 8 units; A1c at next visit. RA - stable on prednisone alone for now. COPD stable. RTC July."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-15a",
+     "kind": "specialist_visit",
+     "start": "2026-06-15T10:30",
+     "service": "Gynecologic Oncology",
+     "reason": "Vulvar cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology surveillance visit",
+       "author": "gynecologic oncology",
+       "date": "2026-06-17T11:00",
+       "body": "Surveillance, about 3 years from treatment of FIGO IB vulvar SCC. Interval septic shock with new ESRD on hemodialysis noted. No vulvar symptoms. Exam: no lesions, scar intact, groins negative. NED. Return 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-08a",
+     "kind": "office_visit",
+     "start": "2026-07-08T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and post-hospital follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-07-08T10:10",
+       "resulted": "2026-07-09T13:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-07-08T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-07-08T10:20",
+       "body": "S: Four months into hemodialysis. Doing her own errands again on non-dialysis days. Sugars fasting 120s-150s, no hypoglycemia. Breathing fine in the heat with the controller. Joints ok on prednisone. Gyn onc in June: no evidence of disease. Husband's health about the same.\n\nMeds reviewed: glargine 8 units qhs, prednisone 10, amlodipine 5, omeprazole 20, aspirin 81, fluticasone-salmeterol, albuterol prn, calcium carbonate, D3.\n\nO: vitals as charted. Catheter site clean. Lungs distant without wheeze. Heart regular. No edema. Feet: intact skin, sensation normal to monofilament, pulses present.\n\nA/P: T2DM on basal insulin - A1c today; no change unless above 8. ESRD on HD - nephrology. RA, COPD stable. Flu and COVID vaccines in the fall; dialysis unit may give flu, she will let us know. RTC October."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-10a",
+     "kind": "portal_message",
+     "start": "2026-07-10T08:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "A1c result",
+       "author": "PCP",
+       "date": "2026-07-10T08:30",
+       "body": "Hi Beverly - A1c came back at 7.9, the best it has been since you joined us. Keep the glargine at 8 units. See you in October."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: A1c result",
+       "author": "patient",
+       "date": "2026-07-10T17:41",
+       "body": "That made my week! Thank you."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-12a",
+     "kind": "specialist_visit",
+     "start": "2026-08-12T09:00",
+     "service": "Nephrology",
+     "reason": "End-stage renal disease on hemodialysis",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology / dialysis unit progress note",
+       "author": "nephrology",
+       "date": "2026-08-14T08:30",
+       "body": "Nephrology monthly dialysis note, 08/12/2026. ESRD from diffuse cortical necrosis, anuric, in-center HD three times weekly via tunneled right IJ catheter. Treatments tolerated, at dry weight. No interval infections. Labs reviewed at the unit; no medication changes from our side this month. Access planning continues.\n\nOutside Nephrology Group / dialysis unit"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "pharmacy",
+     "start": "2026-08-18T10:15",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request: insulin glargine, pen needles",
+       "author": "MA",
+       "date": "2026-08-18T10:45",
+       "body": "Pharmacy request for insulin glargine pens and pen needles, 90-day supply. Dose on file 8 units nightly. Sent per PCP. Pt notified."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

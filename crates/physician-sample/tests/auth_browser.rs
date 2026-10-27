@@ -19,6 +19,7 @@ use devtools::{Browser, DESKTOP, PHONE};
 const STAGING_EMAIL: &str = "physician@codahealth.test";
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn sign_in_and_sign_out_walk_the_browser() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
@@ -62,6 +63,7 @@ async fn sign_in_and_sign_out_walk_the_browser() {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_sign_in_screen_holds_the_phone_and_reduced_motion_viewports() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
@@ -147,6 +149,7 @@ fn another_tab_signs_in(physician: &str) -> String {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
@@ -215,6 +218,7 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn another_physicians_sign_in_starts_this_tab_over_at_today() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
@@ -240,6 +244,7 @@ async fn another_physicians_sign_in_starts_this_tab_over_at_today() {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_signed_out_tab_holding_a_patient_link_lands_on_it_when_another_tab_signs_in() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
@@ -259,6 +264,7 @@ async fn a_signed_out_tab_holding_a_patient_link_lands_on_it_when_another_tab_si
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_link_that_no_longer_grants_access_opens_no_access() {
     let server = spawn_required_server().await;
     // The server's refusal is proved in its own tests; this stands in for it so

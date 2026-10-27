@@ -1,0 +1,273 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002019",
+      "events": [
+        {
+          "id": "2025-01-07a",
+          "kind": "office_visit",
+          "start": "2025-01-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and kidney follow-up",
+          "vitals": {"bp": [133, 82]},
+          "measure": ["hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-01-07T16:10", "results": [{"test": "Albumin"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Urinalysis", "collected": "2025-01-07T16:10", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-07T15:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-01-07T16:20",
+              "body": "Routine recheck. Busy year-end at work, otherwise no new symptoms. Continues in the blinded BP study; their last check was fine per him. Last nephrology visit in the fall, he says no changes were made. Still no notes from that office in our chart.\n\nMeds: lisinopril 20, atorvastatin 40, aspirin 81, plus blinded study medication.\nNKDA.\n\nVitals in flowsheet, BP in his usual range.\nExam: NAD. Heart RRR. Lungs clear. Trace bilateral ankle edema, symmetric, unchanged from prior. No calf tenderness.\n\nA/P\n1. HTN: stable, continue current regimen.\n2. Membranous nephropathy: CMP, UA today. Asked him to bring or forward his nephrology results.\n3. Hyperlipidemia: atorvastatin 40, repeat fasting lipids late spring.\n4. Aspirin tolerated.\nReturn in about 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "portal_message",
+          "start": "2025-01-09T11:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your visit",
+              "author": "PCP",
+              "date": "2025-01-09T11:20",
+              "body": "Hi Patrick, labs look like they did in the fall: kidney function and potassium normal, albumin on the low side and protein in the urine as before. Keep doing what you're doing. Front desk will reach out about a spring appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "portal_message",
+          "start": "2025-05-13T09:30",
+          "reason": "overdue follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time to schedule your follow-up",
+              "author": "MA",
+              "date": "2025-05-13T09:30",
+              "body": "Hello Mr. Michaud, Dr. asked that we see you about now for a blood pressure visit and fasting labs. Reply here or call the office and we'll find a time that works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time to schedule your follow-up",
+              "author": "patient",
+              "date": "2025-05-14T22:47",
+              "body": "Thanks, it's audit season and I'm swamped. I'll call once things quiet down, probably July."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T08:40",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - lisinopril, atorvastatin",
+              "author": "MA",
+              "date": "2025-06-17T08:40",
+              "body": "Mail-order request for lisinopril 20 and atorvastatin 40. Last visit 01/07/25; follow-up not yet booked (reminder sent 5/13). Routed.\n\nPCP: 90 days each sent. Please ask him again to schedule; BMP is due."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "ed_visit",
+          "start": "2025-10-14T09:35",
+          "end": "2025-10-14T15:20",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain and gross hematuria with left leg and scrotal swelling",
+          "vitals": {"bp": [145, 90], "hr": 88},
+          "measure": ["rr", "temp_c", "spo2"],
+          "state": {"labs": {"Albumin": 2.1, "Total Protein": 4.6, "Creatinine": 1.2, "Total Cholesterol": 300, "High Density Lipoprotein": 30, "Low Density Lipoprotein": 190, "Triglycerides": 400}},
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-10-14T10:05", "results": [
+              {"test": "Urine Protein", "text": "3+"},
+              {"test": "Urine Blood", "text": "Large"},
+              {"test": "Urine Red Blood Cells", "text": "Too numerous to count"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-14T10:00", "results": [
+              {"test": "Albumin", "value": 2.1},
+              {"test": "Creatinine", "value": 1.2},
+              {"test": "Total Protein"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-14T10:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-10-14T10:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2025-10-14T10:00", "results": [{"test": "D-dimer", "loinc": "48065-7", "unit": "ng/mL FEU", "text": "Elevated"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-14T10:00", "results": [
+              {"test": "Total Cholesterol", "value": 300},
+              {"test": "High Density Lipoprotein", "value": 30},
+              {"test": "Low Density Lipoprotein", "value": 190},
+              {"test": "Triglycerides", "value": 400}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-10-14T12:10",
+              "text": "Indication: left flank pain, hematuria, nephrotic syndrome. Technique: CT of the abdomen and pelvis after IV contrast with portal venous and delayed phases. Findings: Occlusive filling defect within the left renal vein consistent with thrombus. Left kidney otherwise unremarkable in size and enhancement; no hydronephrosis. Right kidney normal; right renal vein patent. IVC opacifies normally and is patent. No renal or ureteral stones. Liver, spleen, pancreas and adrenals unremarkable. Bowel normal in caliber. No free fluid. Bladder unremarkable. Bones without acute finding.",
+              "conclusion": "Left renal vein thrombosis."
+            }
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-10-14T09:35"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-11-18T14:05",
+              "body": "Outside emergency department, date of service 10/14/2025. Received by fax 11/18/2025.\n\nCC: L flank pain, blood in urine, L leg and scrotal swelling.\n\nHPI: 56M with HTN, HLD, nephrotic syndrome, prior MI and stroke, presents with 2 days of L flank pain and grossly bloody urine. Has noticed the L leg and scrotum getting progressively more swollen over the same period. PMH notable for HTN and recent diagnosis of nephrotic syndrome from membranous nephropathy.\n\nPSH: L percutaneous renal biopsy.\nHome meds: lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFHx: father MI 58, mother HTN and DM2, older brother ischemic stroke at 52.\nSocial: never smoker, social alcohol 1-2/wk, works as a senior financial analyst.\n\nVS: BP 145/90, P 88, afebrile.\nExam: uncomfortable but nontoxic. L lower extremity markedly enlarged vs R with pitting edema up to the mid-thigh. Scrotal edema. Heart regular. Lungs clear.\n\nData: UA 3+ protein, RBC TNTC. Albumin 2.1. Cr 1.2. D-dimer elevated. Cholesterol 300, LDL 190, HDL 30.\nCT A/P with contrast: L renal vein thrombosis.\n\nED course / MDM: Renal vein thrombosis in the setting of nephrotic syndrome. Heparin started per weight-based protocol. Admitted to medicine.\n\nDx: Left renal vein thrombosis; nephrotic syndrome.\nDisposition: admitted."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14b",
+          "kind": "hospital_admission",
+          "start": "2025-10-14T15:20",
+          "end": "2025-10-17T12:30",
+          "service": "Hospital Medicine",
+          "reason": "left renal vein thrombosis",
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-10-14T16:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-10-17T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-11-18T14:06",
+              "body": "Admission 10/14/2025 - discharge 10/17/2025. Received 11/18/2025.\n\nPrincipal diagnosis: left renal vein thrombosis.\nSecondary: nephrotic syndrome due to membranous nephropathy; hypertension; hyperlipidemia.\nAllergies: no known drug allergies.\n\nHospital course: Admitted from the ED after CT showed thrombus in the left renal vein. Treated with IV unfractionated heparin, then transitioned to apixaban. Nephrology consulted while inpatient; nephrotic syndrome is active again and further treatment will be decided in their clinic. Aspirin had been taken for primary prevention only and was stopped now that he is fully anticoagulated. Lisinopril and atorvastatin unchanged. Stable for discharge on hospital day 3.\n\nDischarge medications:\n- apixaban 10 mg twice daily through 10/20/2025, then 5 mg twice daily (new)\n- lisinopril 20 mg daily (continue)\n- atorvastatin 40 mg daily (continue)\n- aspirin 81 mg daily - STOP\n\nFollow-up: outpatient nephrology within 1-2 weeks (arranged). Primary care within 2 weeks.\nPatient informed his research study team of the admission."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T19:18",
+          "reason": "patient reports hospitalization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital last week",
+              "author": "patient",
+              "date": "2025-10-21T19:18",
+              "body": "Hi, wanted you to know I was admitted for a few days last week. Blood clot in the vein of my left kidney, they think from the nephrotic thing flaring. I'm on Eliquis now twice a day and they told me to stop the baby aspirin. Kidney doctor saw me in the hospital and I see her again next week. Can you get the paperwork from the hospital? -Pat"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital last week",
+              "author": "PCP",
+              "date": "2025-10-22T07:48",
+              "body": "Patrick, I'm glad you're home and sorry you went through that. We'll request the hospital records today. Please book a visit with me in the next couple of weeks so we can go over everything together and do labs, and bring the discharge papers. Keep taking the apixaban exactly as written and don't miss doses."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Was in the hospital last week",
+              "author": "patient",
+              "date": "2025-10-22T21:30",
+              "body": "Will do. Nephrology has me coming in a lot right now, I'll call your office once that settles."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T10:10",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital records request",
+              "author": "front desk",
+              "date": "2025-10-22T10:10",
+              "body": "Faxed request to the hospital's HIM department for ED note, imaging, labs and discharge summary, admission 10/14-10/17/25. Release on file from patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "telephone",
+          "start": "2025-11-04T14:30",
+          "reason": "records request follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital records - follow-up",
+              "author": "front desk",
+              "date": "2025-11-04T14:30",
+              "body": "Nothing back from hospital HIM after 2 weeks. Called; told the first fax was not on file. Sent again with release. Also left patient a voicemail that we still have no post-hospital visit on the schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T14:05",
+          "reason": "hospital records received",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital records received",
+              "author": "MA",
+              "date": "2025-11-18T14:20",
+              "body": "Received by fax from the hospital: ED record 10/14/25, CT abdomen/pelvis report, labs, discharge summary 10/17/25 (14 pages). Indexed to the encounter dates and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T08:55",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - lisinopril, atorvastatin",
+              "author": "MA",
+              "date": "2026-01-20T08:55",
+              "body": "Request for lisinopril 20 mg and atorvastatin 40 mg, 90 days. Pharmacy profile also shows apixaban 5 mg BID filled monthly from another prescriber. No office visit since 01/2025. Routed to PCP.\n\nPCP: 90-day supplies sent. He needs a visit before the next refill; please call him."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T12:40",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling a physical",
+              "author": "patient",
+              "date": "2026-06-09T12:40",
+              "body": "Sorry for being so slow on this. I'd like to come in for a full physical and catch up on everything since the hospital. Early morning works best, any day after Labor Day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling a physical",
+              "author": "front desk",
+              "date": "2026-06-10T09:15",
+              "body": "You're booked Thursday 9/10 at 7:30 AM for a physical with follow-up from your hospital stay. Please bring your current medication bottles, including anything from nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "annual_physical",
+          "start": "2026-09-10T07:30",
+          "reason": "annual physical and post-hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

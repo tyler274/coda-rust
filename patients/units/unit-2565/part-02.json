@@ -1,0 +1,570 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002565",
+      "events": [
+        {
+          "id": "2025-02-03a",
+          "kind": "specialist_visit",
+          "start": "2025-02-03T15:00",
+          "service": "Psychiatry",
+          "reason": "nightmares and flashbacks after military service",
+          "conditions": [
+            {
+              "label": "Post-traumatic stress disorder",
+              "action": "diagnosed",
+              "onset": "2024-08-01"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2",
+              "action": "done",
+              "date": "2025-02-03T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Evaluation",
+              "author": "psychiatry",
+              "date": "2025-08-26T10:20",
+              "body": "Outpatient Psychiatry, return evaluation\nVisit date: 02/03/2025\n\nIdentification: 35-year-old man with hypertension, known to this clinic from an evaluation one year ago for perfectionism and occupational stress, re-referred by primary care.\n\nPresenting problem: For roughly six months he has had recurring, vivid nightmares in which he relives combat from his time in military service; he often wakes from them panicked. He also has daytime flashbacks. Sleep onset is difficult, and he describes a constant sense of being on guard. Primary care started sertraline three months ago, which he has taken consistently, with only partial relief. He denies suicidal ideation.\n\nMedications: sertraline; antihypertensive per PCP (hydrochlorothiazide). NKDA.\nFamily history: maternal depression; maternal aunt with generalized anxiety; father hypertensive.\nSocial: never smoker, light social alcohol, works in finance.\n\nVital signs within normal limits. Physical examination unremarkable. Mental status: alert, cooperative, anxious affect, linear thought, no psychosis, no suicidal ideation.\n\nAssessment: Post-traumatic stress disorder, combat-related, delayed expression. Underlying obsessive-compulsive personality traits as previously described.\n\nPlan: Continue sertraline 50 mg daily. Referral for trauma-focused psychotherapy (cognitive processing or prolonged exposure). Follow up in clinic in about six months.\n\nOutpatient Psychiatry\n[Sent to PCP in response to records request, August 2025.]"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up; sertraline",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T08:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-18T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-03-18T08:30",
+              "body": "Follow-up. No note from psychiatry yet.\n\nPer patient: saw psychiatry 2/3, was told this is PTSD from his deployment. They kept sertraline at 50 and want him in trauma-focused therapy; he has an intake call with a therapist next month. Nightmares a bit less often than in the fall, still most weeks. Sleep onset still slow. No SI.\n\nBP fine on HCTZ, no side effects. NKDA.\n\nExam: vitals per flowsheet. Heart and lungs unremarkable. No edema. Affect brighter than November.\n\nA/P\n- PTSD per psychiatry (by his report; will request their note). Sertraline 50 mg refilled x 3 months.\n- HTN, controlled. BMP for potassium on the thiazide.\n- Front desk to ask psychiatry for the February note."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "telephone",
+          "start": "2025-03-19T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, psychiatry",
+              "author": "front desk",
+              "date": "2025-03-19T10:40",
+              "body": "Faxed request to the psychiatry clinic for the note from his 2/3/25 appointment, release from last year still valid per their office. Will follow up if not received."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T15:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP result",
+              "author": "RN",
+              "date": "2025-03-20T15:45",
+              "body": "Hi Ethan, the doctor reviewed your blood work from Tuesday. Sodium, potassium and kidney function are all normal. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "portal_message",
+          "start": "2025-05-20T21:32",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped on his own"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stopped the sertraline",
+              "author": "patient",
+              "date": "2025-05-20T21:32",
+              "body": "Wanted to let you know I quit the sertraline about three weeks ago. Honestly it didn't seem to be doing much for me and I'd rather not be on something that isn't helping. I feel about the same off it. Is that OK?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stopped the sertraline",
+              "author": "PCP",
+              "date": "2025-05-21T07:48",
+              "body": "Thanks for telling me. I've taken it off your medication list. Three weeks out, the risk of withdrawal symptoms is mostly past. Please keep your psychiatry follow-up and the therapy intake, and tell them you've stopped it, since they may suggest another approach. If the nightmares or mood get worse, reach out sooner."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-25a",
+          "kind": "specialist_visit",
+          "start": "2025-07-25T10:30",
+          "service": "Psychiatry",
+          "reason": "irritability, poor sleep, feeling overwhelmed",
+          "conditions": [
+            {
+              "label": "Adjustment disorder with anxiety",
+              "icd10": "F43.22",
+              "action": "diagnosed",
+              "onset": "2025-04-25"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              90
+            ],
+            "hr": 88
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-25T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-25T11:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-07-25T11:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "author": "psychiatry",
+              "date": "2025-08-26T10:22",
+              "body": "Outpatient Psychiatry, follow-up visit\nVisit date: 07/25/2025\n\nInterval history: Seen here in early 2024 for perfectionism and work stress and in February 2025 for combat-related nightmares and flashbacks. Over the past three months he has felt on edge and irritable, sleeps poorly, and has been short with coworkers over trivial matters. He reports tension headaches and tight, aching muscles. He denies any recent change at work or in his personal circumstances, yet appears anxious and acknowledges being swamped by obligations at home, where he is now the main caregiver for his mother, whose health is failing.\n\nMedications: none (no psychiatric medication at present).\nAllergies: NKDA.\nFamily history: mother with major depressive disorder, maternal aunt with generalized anxiety disorder, father with hypertension.\nSocial: never smoker, 1 to 2 drinks per week.\n\nVitals: BP 140/90, HR 88.\nExam: otherwise within normal limits. Mental status: anxious, tense, cooperative, no suicidal ideation, no psychosis.\n\nLabs: CBC within normal limits; TSH within normal limits; urinalysis normal.\n\nAssessment: Adjustment disorder with anxiety, in the setting of caregiving demands. History of PTSD and obsessive-compulsive personality disorder.\n\nPlan: supportive psychotherapy with emphasis on stress management and caregiver support; no medication started. Follow up as needed.\n\nOutpatient Psychiatry\n[Sent to PCP in response to records request, August 2025.]"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "telephone",
+          "start": "2025-08-12T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, psychiatry",
+              "author": "front desk",
+              "date": "2025-08-12T11:05",
+              "body": "Still no notes from psychiatry for his February visit (asked in March) and patient says he went back in July. Second request faxed with a fresh signed release, asked for both dates. Spoke with their records clerk, she said 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T07:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-09T07:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-09T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-09T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-09T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-09T08:20",
+              "body": "36M here for yearly exam, fasting.\n\nBoth psychiatry notes arrived 8/26 and are reviewed. February: PTSD from combat service, sertraline continued, trauma-focused therapy advised. July: adjustment disorder with anxiety tied to caring for his mother; supportive therapy, no medication. He is off sertraline since spring. He did the therapy intake and has been going every other week, finds it useful. Caregiving is still a lot; he is managing.\n\nHTN on HCTZ 25 mg. BP was 140/90 at the July psychiatry visit; reading here is better.\nNKDA. Never smoker, 1-2 drinks a week.\n\nExam: Vitals per flowsheet. HEENT unremarkable. Neck without adenopathy or thyromegaly. Regular rhythm, no murmur. Clear lungs. Abdomen soft and nontender. Skin intact. No peripheral edema. Neuro grossly normal. Anxious but engaged.\nPHQ-9 6, GAD-7 8.\n\nPlan\n1. Hypertension: on target in clinic, continue HCTZ. CMP.\n2. PTSD, adjustment disorder with anxiety, OCPD: followed by psychiatry and his therapist. Problem list updated from the letters.\n3. CBC and lipids.\n4. Fall vaccines next month at a nurse visit.\nPhysical again in a year, BP check in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "portal_message",
+          "start": "2025-09-11T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-09-11T12:40",
+              "body": "Ethan, all of Tuesday's labs are normal: chemistries, potassium, kidney function, blood counts and cholesterol. Nothing to do. Glad the therapy is helping."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T17:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2025-10-14T17:25",
+              "body": "2025-26 influenza (trivalent) left deltoid and 2025-26 COVID right deltoid. Screening questions negative. Observed 15 minutes without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "pharmacy",
+          "start": "2026-02-17T10:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: hydrochlorothiazide",
+              "author": "MA",
+              "date": "2026-02-17T10:15",
+              "body": "Pharmacy request, HCTZ 25 mg 90-day supply. Seen 9/2025, labs current. 30-day bridge sent; he is due for his BP visit, scheduled 3/10."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T16:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-10T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-10T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-03-10T16:45",
+              "body": "BP follow-up, end of day.\n\nTaking hydrochlorothiazide every morning, no dizziness or cramps. No headaches or chest symptoms. Still seeing his therapist, less often now. Says the winter was steadier than last year. PHQ-2 1.\n\nNKDA.\n\nExam: per flowsheet BP at goal, weight unchanged. Heart regular. Lungs clear. Ankles without swelling.\n\nA/P\nEssential hypertension, controlled. HCTZ 25 mg daily, 90 days with 3 refills sent. BMP today.\nPhysical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP normal",
+              "author": "RN",
+              "date": "2026-03-12T09:20",
+              "body": "Your kidney function and electrolytes from the 10th are normal. Keep taking the hydrochlorothiazide as you are."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "ed_visit",
+          "start": "2026-07-31T12:50",
+          "end": "2026-07-31T17:40",
+          "service": "Emergency Medicine",
+          "reason": "witnessed loss of consciousness with convulsive movements",
+          "vitals": [
+            {
+              "time": "2026-07-31T12:55",
+              "bp": [
+                140,
+                85
+              ],
+              "hr": 78,
+              "rr": 16
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-31T13:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-07-31T13:00",
+              "text": "Normal sinus rhythm. Normal axis and intervals. No ST or T wave abnormality. No pre-excitation.",
+              "conclusion": "Normal sinus rhythm; no abnormalities.",
+              "issued": "2026-07-31T13:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-07-31T12:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-08-24T14:05",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 07/31/2026 12:50 by EMS\n\nCC: unresponsive episode with shaking, witnessed.\n\nHPI: 37-year-old man brought in by ambulance from his workplace. Per the coworker who was with him, he was eating lunch when he abruptly stopped responding and went down to the floor, then had generalized jerking movements lasting around a minute. Afterward he was confused for several minutes. He has no memory of the episode. He denies any heart history and has never had an event like this before.\n\nPMH: hypertension on hydrochlorothiazide. Psychiatric history of work-related perfectionism with excessive checking, combat-related nightmares and flashbacks, and more recent irritability with poor sleep.\nMeds: hydrochlorothiazide.\nAllergies: NKDA.\nFH: father hypertension; mother major depression; maternal aunt generalized anxiety.\nSH: never smoker; 1-2 drinks weekly; senior financial analyst.\n\nVitals on arrival: BP 140/85, HR 78, RR 16.\nExam: Alert and oriented x3, back to baseline. Laceration along the lateral border of the tongue. Otherwise unremarkable, including a nonfocal neurologic examination.\n\nED course: sodium, potassium, calcium and magnesium all within normal limits. ECG: normal sinus rhythm, no abnormalities. Observed without recurrence.\n\nImpression: seizure, first episode.\n\nDisposition: discharged home in stable condition. Arrange outpatient neurology follow-up. No driving until cleared by neurology. Return for any further episode.\n\nEmergency Medicine\n[Faxed to PCP on request.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T07:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit Friday",
+              "author": "patient",
+              "date": "2026-08-03T07:52",
+              "body": "Wanted you to know I ended up in the ER on Friday. I apparently passed out at lunch and had a seizure, my coworker called 911. I don't remember any of it, bit my tongue pretty good. They checked blood work and an EKG which were fine and sent me home. They said to see neurology and not drive until then. Can I come in to see you? Do I need a referral for neurology?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit Friday",
+              "author": "front desk",
+              "date": "2026-08-03T09:15",
+              "body": "Hi Ethan, sorry to hear this. The doctor asked us to get you in to go over everything and handle the neurology referral at that visit. The first opening is Wednesday 9/2 at 8:00 am. We are also requesting the ER records so they are here for that appointment. If anything happens again before then, go straight to the ER."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit Friday",
+              "author": "patient",
+              "date": "2026-08-03T10:02",
+              "body": "9/2 is fine, I'll get a ride. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "telephone",
+          "start": "2026-08-04T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, ED",
+              "author": "front desk",
+              "date": "2026-08-04T14:30",
+              "body": "Requested ED physician record, labs and EKG from 7/31 visit. Release on file from patient portal. Their HIM office says up to 10 business days."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-02a",
+          "kind": "office_visit",
+          "start": "2026-09-02T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for seizure",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

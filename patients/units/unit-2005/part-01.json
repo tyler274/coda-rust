@@ -1,0 +1,250 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002005",
+      "given": "Isaiah",
+      "family": "Coleman",
+      "birth_date": "1966-01-02",
+      "address_line": "38 Kellogg Lane",
+      "phone": "+1-774-555-0150",
+      "email": "isaiah.coleman@example.test",
+      "marital_status": "single",
+      "summary": "Postal service supervisor in Granby with hypertension, type 2 diabetes, mixed hyperlipidemia, past recurrent diverticulitis and hyperzincemia, followed since 2018. He quietly stopped his statin in early 2023 and restarted after cardiology; last seen September 2024, then perforated diverticulitis needing sigmoid colectomy in October 2025, known to the practice only from records.",
+      "events": [
+        {
+          "id": "2018-08-09a",
+          "kind": "telephone",
+          "start": "2018-08-09T10:42",
+          "reason": "New patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2018-08-09T10:42", "body": "Mr. Coleman phoned wanting to transfer his primary care here. Has been with another office for several years. Reports high blood pressure, diabetes and cholesterol, all on meds. Membership info emailed. New patient appt set for 8/21 at 8:30, asked him to come fasting and bring his pill bottles. Records release form sent with the welcome packet."}
+          ]
+        },
+        {
+          "id": "2018-08-21a",
+          "kind": "establish_care",
+          "start": "2018-08-21T08:30",
+          "vitals": {"bp": [134, 82]},
+          "end": "2018-08-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history"},
+            {"label": "Mixed hyperlipidemia", "action": "history"},
+            {"label": "Diverticulitis of colon", "action": "history", "note": "Recurrent; two episodes treated as an outpatient at prior practice, last 2017"},
+            {"label": "Hyperzincemia", "icd10": "E83.2", "action": "history", "note": "Elevated serum zinc on prior practice labs"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Mixed hyperlipidemia"},
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes mellitus"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [134, 84], "weight_kg": 93.4, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 6.9, "Low Density Lipoprotein": 114, "Triglycerides": 168, "High Density Lipoprotein": 41, "Glucose": 102, "Creatinine": 1.0, "Thyroid Stimulating Hormone": 1.7, "Prostate Specific Antigen": 1.2}},
+          "measure": ["hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-08-21T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-08-21T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2018-08-21T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-08-21T09:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2018-08-21T09:20", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2018-08-21T09:20", "results": [{"test": "Prostate Specific Antigen"}]},
+            {"panel": null, "collected": "2018-08-21T09:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2018-08-21T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2018-08-21T09:20", "results": [{"test": "Zinc", "loinc": "8245-3", "unit": "ug/dL", "value": 134}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Social drinker, a few drinks a month"},
+            {"item": "Occupation", "value": "Postal service supervisor"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2018-08-21T09:25"}],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2018-08-21T08:30"}],
+          "documents": [
+            {"type": "History and physical note", "title": "New Patient Visit", "author": "PCP", "date": "2018-08-21T09:40", "body": "52 y/o man transferring care. Works as a supervisor at the post office, on his feet a fair amount.\n\nPMH (per pt, prior records requested):\n- HTN, on lisinopril 20 for years, no side effects\n- Type 2 DM, on metformin 1000 BID, tolerates it, does not check sugars often\n- Mixed hyperlipidemia on atorvastatin 40\n- Diverticulitis x2, both treated at home with oral antibiotics, most recent 2017. Had a colonoscopy after the second bout, told he has diverticulosis and no polyps.\n- Told by his last doctor that his zinc level runs high. No symptoms he knows of. Never treated or worked up further as far as he knows.\n\nPSH: none. No abdominal surgery.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily, metformin 1000 mg BID.\nAllergies: none to meds.\nFHx: father had a heart attack at 58. Mother has type 2 diabetes. Brother with hypertension.\nSocial: former cigarette smoker, stopped in 2016. Drinks socially, a few times a month. No drugs. Lives in Granby.\n\nROS: no chest pain, dyspnea, abdominal pain, change in stools, polyuria, vision change.\n\nExam: well appearing. BP as recorded. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Ext without edema, DP pulses 2+. Feet: skin intact, monofilament sensation normal bilaterally. Skin unremarkable.\nPHQ-2 0.\n\nA/P\n1. HTN: at goal on lisinopril 20, continue.\n2. T2DM: on metformin, A1c today. Eye exam due, given list of local optometrists.\n3. Mixed hyperlipidemia: atorvastatin 40, lipids today.\n4. Hx recurrent diverticulitis: quiet since 2017. Reviewed warning signs, call with LLQ pain or fever.\n5. Hyperzincemia per prior records: will recheck zinc with today's draw.\n6. HM: Tdap today. Hep C and HIV screen today. PSA discussed, he would like it checked. Colonoscopy 2017 per pt, will confirm with records. Flu shot when available.\nRTC 6 months for diabetes, sooner prn."}
+          ]
+        },
+        {
+          "id": "2018-08-23a",
+          "kind": "portal_message",
+          "start": "2018-08-23T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2018-08-23T16:05", "body": "Hi Mr. Coleman, your labs from Tuesday are back. A1c is right around where we want it on metformin. Cholesterol numbers are reasonable on the atorvastatin. Kidney, liver, blood counts and thyroid all normal. Hepatitis C and HIV screens negative. PSA normal. Zinc came back at 134, mildly above the lab's range, which matches what your last office told you. Nothing to do about it right now. Let's stay the course and see you in about 6 months."}
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "outside_records",
+          "start": "2018-10-16T11:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "outside primary care", "date": "2018-10-16T11:20", "body": "Records received from prior primary care office, 41 pages, abstracted:\n- Problem list: hypertension, type 2 diabetes, mixed hyperlipidemia, diverticulitis (recurrent), elevated serum zinc.\n- Diverticulitis: two office-treated episodes with oral antibiotics, the second in 2017.\n- Colonoscopy 2017 (outside GI): sigmoid diverticulosis, no polyps. Recommended interval 10 years.\n- Serum zinc above reference range on two prior draws, no workup documented.\n- Meds match current list. No drug allergies recorded.\n- Immunizations: influenza most years.\nScanned to media tab. Reviewed by PCP, no changes."}
+          ]
+        },
+        {
+          "id": "2018-10-23a",
+          "kind": "nurse_visit",
+          "start": "2018-10-23T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-23T16:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2018-10-23T16:20", "body": "In after work for flu vaccine. Denies prior reactions, no fever today. Given IM L deltoid, VIS provided. Waited 15 min without issue."}
+          ]
+        },
+        {
+          "id": "2019-02-26a",
+          "kind": "office_visit",
+          "start": "2019-02-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-02-26T08:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-02-26T08:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-02-26T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2019-02-26T08:35", "body": "S: Routine 6 month check. Busy season at work but feeling fine. Taking all three meds. No GI trouble on metformin. No abdominal pain since the 2017 episode.\nO: BP and weight in flowsheet. Heart regular, lungs clear, abdomen soft and nontender, no ankle swelling.\nA/P: HTN controlled on lisinopril. DM, A1c and BMP drawn today. Lipids due with the fall physical. Eye exam still not done, he promises to book it this spring. Return for physical in September."}
+          ]
+        },
+        {
+          "id": "2019-03-01a",
+          "kind": "portal_message",
+          "start": "2019-03-01T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2019-03-01T12:30", "body": "A1c is stable and your kidney function and potassium are fine on the lisinopril. No changes."}
+          ]
+        },
+        {
+          "id": "2019-05-20a",
+          "kind": "pharmacy",
+          "start": "2019-05-20T09:15",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request: lisinopril, atorvastatin, metformin", "author": "MA", "date": "2019-05-20T09:15", "body": "Electronic refill request from pharmacy for lisinopril 20, atorvastatin 40, metformin 1000. Last visit Feb, labs current. 90-day supply with 1 refill each sent per PCP protocol."}
+          ]
+        },
+        {
+          "id": "2019-07-18a",
+          "kind": "outside_records",
+          "start": "2019-07-18T14:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry letter", "author": "optometry", "date": "2019-07-18T14:00", "body": "Dilated eye exam performed 07/09/2019 for diabetes.\nVA 20/20 OD, 20/25 OS with correction. IOP normal both eyes.\nFundus: no diabetic retinopathy either eye. Discs and maculae healthy.\nImpression: diabetes without retinopathy. Annual dilated exam advised.\nAllergies: NKDA. Thank you for the referral."}
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "annual_physical",
+          "start": "2019-09-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {"bp": [132, 84]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-17T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-17T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-17T08:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-17T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-09-17T08:45"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2019-09-17T08:46"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-09-17T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical Exam", "author": "PCP", "date": "2019-09-17T08:50", "body": "53M here for yearly physical.\nInterval: no illnesses. Got his eye exam in July, no retinopathy. No abdominal pain. Still not smoking.\nMeds: lisinopril 20 daily, atorvastatin 40 daily, metformin 1000 twice a day. NKDA.\nROS negative in full.\nExam: NAD. Vitals per flowsheet. Eyes, ears, throat normal. Neck no nodes or thyroid enlargement. Cor regular, no murmur or gallop. Lungs clear. Abd soft, NT, no organomegaly. GU deferred. Ext no edema, pulses full. Diabetic foot exam: no ulcers or calluses, monofilament intact. Neuro grossly normal. Skin no lesions of concern.\nPHQ-2 negative.\nImpression and plan:\n- Health maintenance: flu vaccine and first Shingrix today, second dose in 2-6 months. Colonoscopy 2017, next 2027. PSA done last year, repeat every other year.\n- HTN controlled.\n- DM: A1c with today's labs.\n- Lipids today on atorvastatin.\n- Diverticular disease quiet.\nFollow up 6 months."}
+          ]
+        },
+        {
+          "id": "2019-09-19a",
+          "kind": "portal_message",
+          "start": "2019-09-19T17:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your physical", "author": "PCP", "date": "2019-09-19T17:40", "body": "All your physical labs look good. A1c steady, LDL about where it was last year on atorvastatin, kidneys and liver normal, blood count normal. Remember the second shingles shot in a few months, the front desk can set it up."},
+            {"type": "Patient Message", "title": "RE: Results from your physical", "author": "patient", "date": "2019-09-19T20:12", "body": "Thanks Doc. Arm was achy for 2 days from the shingles one but I'm ok now. Will book the second in January."}
+          ]
+        },
+        {
+          "id": "2020-01-14a",
+          "kind": "nurse_visit",
+          "start": "2020-01-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-01-14T16:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Shingrix #2", "author": "RN", "date": "2020-01-14T16:40", "body": "Second recombinant zoster dose given IM R deltoid. Tolerated first dose with only soreness. Series complete."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "telephone",
+          "start": "2020-03-24T11:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment change", "author": "front desk", "date": "2020-03-24T11:05", "body": "Called pt re: his spring diabetes follow-up. With the current COVID restrictions office is converting routine visits to video. Pt agreeable. Booked video visit 5/12, lab-only draw a few days prior. Lab slip mailed."}
+          ]
+        },
+        {
+          "id": "2020-05-08a",
+          "kind": "lab_only",
+          "start": "2020-05-08T07:45",
+          "labs": [
+            {"panel": null, "collected": "2020-05-08T07:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-05-08T07:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2020-05-08T07:45"}]
+        },
+        {
+          "id": "2020-05-12a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-12T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-05-12T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit: diabetes and BP", "author": "PCP", "date": "2020-05-12T13:25", "body": "Video visit, two-way audio and video, pt in his car on lunch break, consents to telehealth.\nStill working, post office considered essential. Wearing a mask at work. No symptoms of COVID.\nNo home BP cuff readings to share. No hypoglycemia, no GI side effects. Diet has slipped a little with stress.\nLabs from 5/8 reviewed: A1c holding, BMP normal.\nA/P: T2DM stable on metformin, HTN presumed controlled, last office BP fine in Feb. Continue current regimen. In-person physical in the fall."}
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "pharmacy",
+          "start": "2020-08-18T10:20",
+          "documents": [
+            {"type": "Refill Request", "title": "Refills sent", "author": "MA", "date": "2020-08-18T10:20", "body": "Pharmacy requesting 90-day supplies of metformin, lisinopril and atorvastatin. Seen by video in May, labs current. Sent x 90 days, 1 refill. Physical due in October, pt reminded via portal."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "annual_physical",
+          "start": "2020-10-20T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-10-20T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-10-20T08:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-10-20T08:55", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2020-10-20T08:55", "results": [{"test": "Prostate Specific Antigen"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-20T09:00"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2020-10-20T08:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical Exam", "author": "PCP", "date": "2020-10-20T09:05", "body": "54M, physical. First in-person visit since February.\nFeels well. Working full time through the pandemic. Missed his eye exam this year, offices were closed, plans to go in the spring. No abdominal symptoms, bowels regular.\nMeds unchanged, adherent. NKDA. Former smoker since 2016. Alcohol occasional.\nExam: comfortable. BP per vitals. HEENT normal. No JVD. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, no tenderness, no masses. Extremities warm, no edema. Feet with normal sensation and pulses, skin intact.\nPHQ-2 score 1, not depressed.\nA/P:\n1. HTN: stable on lisinopril 20.\n2. T2DM: A1c, CMP today. Eye exam overdue, reminded.\n3. Mixed HLD: lipids today, continue atorvastatin 40.\n4. HM: flu shot today. PSA today per his preference. Colonoscopy up to date. Shingrix complete. Tdap 2018.\nSee me in 6 months."}
+          ]
+        },
+        {
+          "id": "2020-10-22a",
+          "kind": "portal_message",
+          "start": "2020-10-22T15:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2020-10-22T15:50", "body": "Your labs are all in. A1c, kidney function, liver tests and PSA are all fine. Cholesterol is similar to last year. No changes, see you in the spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

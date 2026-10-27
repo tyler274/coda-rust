@@ -1,0 +1,260 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002719",
+      "events": [
+        {
+          "id": "2022-03-15a",
+          "kind": "office_visit",
+          "start": "2022-03-15T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up, Pap, shingles vaccine",
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-03-15T09:50"}],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-03-15T09:35", "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative. Repeat co-testing in 5 years."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-15T09:10"},
+            {"procedure": "Immunization administration", "performed": "2022-03-15T09:50"}
+          ],
+          "orders": [
+            {"id": "gi-referral-2022", "action": "placed", "order": "Screening colonoscopy referral", "category": "referral", "to": "Gastroenterology", "reason": "average-risk colorectal screening, age 50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-15T10:30", "body": "Follow-up plus overdue health maintenance now that she's 50. BP fine. TN controlled. Mood stable; decided herself to stay on sertraline for now, which is reasonable.\nThe New Year's quit date lasted about two weeks. Back to roughly a pack a week. Still wants to stop; NRT offered again, declined.\nPelvic: external normal, cervix normal appearing, Pap/HPV collected. Breast exam normal.\nA/P: HTN controlled. TN on carbamazepine. MDD in remission. Tobacco counseled. HM: Pap/HPV sent. Shingrix #1 today, #2 in 2 to 6 months. Colonoscopy referral placed. Mammogram due this summer."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2022-03-21T12:00", "body": "Pap normal, HPV negative. Next co-test 2027."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "procedure_visit",
+          "start": "2022-05-17T07:30",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy",
+          "orders": [{"id": "gi-referral-2022", "action": "done", "date": "2022-05-17T07:30"}],
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2022-05-17T08:05"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2022-05-19T09:00", "body": "OUTSIDE GI GROUP - COLONOSCOPY\nDate: 05/17/2022. Indication: average-risk screening, first colonoscopy, age 50.\nSedation: monitored anesthesia care with propofol.\nPrep: good (BBPS 8).\nThe scope was passed without difficulty to the cecum, confirmed by landmarks and photographed. Withdrawal time 9 minutes. Mucosa normal throughout the colon and rectum. No polyps, no diverticula. Retroflexion in the rectum normal.\nImpression: normal screening colonoscopy.\nRecommendation: repeat screening in 10 years.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "nurse_visit",
+          "start": "2022-06-14T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-06-14T12:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-06-14T12:20"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Shingrix #2", "author": "RN", "date": "2022-06-14T12:30", "body": "Second Shingrix given IM left deltoid. First dose gave her a sore arm and chills for a day; warned this one may do the same. Series complete."}
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "imaging",
+          "start": "2022-07-19T08:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-07-19T08:00", "text": "Bilateral two-view screening mammography with tomosynthesis. Comparison 06/2021 and prior. Heterogeneously dense. No suspicious findings. No skin or nipple change.", "conclusion": "BI-RADS 1. Negative."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result Note", "author": "MA", "date": "2022-07-20T10:00", "body": "Normal mammogram per PCP, letter mailed."}
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "office_visit",
+          "start": "2022-08-23T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-08-22a",
+          "kind": "telephone",
+          "start": "2022-08-22T09:05",
+          "reason": "Cancel appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment Cancelled", "author": "front desk", "date": "2022-08-22T09:05", "body": "Pt called to cancel tomorrow's BP check, short-staffed at work and can't leave early. Will rebook for the fall with her flu shot. Lisinopril, HCTZ and carbamazepine refills sent to PCP for approval."},
+            {"type": "Telephone Encounter", "title": "Refill Approval", "author": "PCP", "date": "2022-08-22T13:40", "body": "Refills approved x 90 days with 1 refill: lisinopril 10, HCTZ 12.5, carbamazepine 200 BID, sertraline 100."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines, BP check",
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T07:58"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T07:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit", "author": "RN", "date": "2022-10-11T08:15", "body": "Flu vaccine left arm, bivalent COVID booster right arm. BP fine, weight stable. She mentioned she's been feeling 'revved up' and hot at night for a few weeks and wondered if it was her age; suggested she book with PCP. Offered the next opening."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations, feeling hot, losing weight",
+          "state": {"weight_kg": 73.0, "bp": [140, 86], "hr": 104},
+          "vitals": {"bp": [140, 86], "hr": 104, "weight_kg": 73.0},
+          "measure": ["temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2022-12-13T15:00", "results": [{"test": "Thyroid Stimulating Hormone", "text": "<0.01"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-13T15:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-13T15:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T14:20"}],
+          "orders": [
+            {"id": "endo-referral-2022", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "suppressed TSH, symptomatic"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-12-13T15:30", "body": "About two months of feeling her heart pounding, sometimes racing at rest, always too warm while everyone else is cold, and eating more but the scale keeps dropping, down about 7 lb from our October weight. No chest pain, no fainting, no diarrhea, periods unchanged. No new meds or supplements. No neck pain.\nExam: HR 104 regular, BP as charted. Thyroid: possible fullness on the right, hard to be sure. No eye findings. Heart tachycardic, no murmur. Lungs clear.\nA/P: Symptoms fit hyperthyroidism. TSH, BMP and CBC today. If TSH is low I'll refer to endocrinology right away. Return precautions for chest pain or fainting. Smoking same; told her tobacco and an overactive thyroid both strain the heart."},
+            {"type": "Patient Message", "title": "Your thyroid test", "author": "PCP", "date": "2022-12-14T09:20", "body": "Your TSH came back very low (under 0.01), which means the thyroid is making too much hormone. That fits how you've been feeling. I've placed an urgent endocrinology referral; their office will call you. Your other labs were normal. If your heart races and doesn't settle, or you get chest pain, call me right away."},
+            {"type": "Patient Message", "title": "RE: Your thyroid test", "author": "patient", "date": "2022-12-14T12:48", "body": "Thank you, honestly relieved there's a reason. They called already, first opening is Jan 20 and they want me to do a scan a few days before."}
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "imaging",
+          "start": "2023-01-17T09:00",
+          "service": "Nuclear Medicine",
+          "reason": "Radioiodine uptake and scan",
+          "documents": [
+            {"type": "Imaging Report", "title": "Thyroid Uptake and Scan", "author": "nuclear medicine", "date": "2023-01-19T14:00", "body": "OUTSIDE NUCLEAR MEDICINE\nExam: I-123 thyroid uptake and scan, 01/17/2023 (uptake measured at 4 and 24 hours).\nIndication: suppressed TSH, possible right thyroid nodule.\nFindings: focal intense radiotracer accumulation corresponds to a nodule in the right lobe. The remaining right lobe and the entire left lobe show suppressed uptake. No additional foci.\nImpression: hyperfunctioning right thyroid nodule with suppression of the remaining gland, consistent with a toxic adenoma."}
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "specialist_visit",
+          "start": "2023-01-20T10:40",
+          "service": "Endocrinology",
+          "reason": "Hyperthyroidism",
+          "conditions": [
+            {"label": "Toxic single thyroid nodule", "action": "diagnosed", "onset": "2022-10-15"}
+          ],
+          "medications": [
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Toxic single thyroid nodule"},
+            {"drug": "atenolol 25 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "palpitations, hyperthyroidism"}
+          ],
+          "vitals": {"bp": [145, 90], "hr": 102, "weight_kg": 72.3},
+          "measure": ["temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2023-01-20T11:30", "results": [
+              {"test": "Thyroid Stimulating Hormone", "text": "<0.01"},
+              {"test": "Free Thyroxine", "value": 3.0},
+              {"test": "Free Triiodothyronine", "value": 8.0}
+            ]}
+          ],
+          "orders": [{"id": "endo-referral-2022", "action": "done", "date": "2023-01-20T10:40"}],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2023-01-20T10:40"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Consultation", "author": "endocrinology", "date": "2023-01-25T08:30", "body": "OUTSIDE ENDOCRINOLOGY - NEW CONSULT\nDate of visit: 01/20/2023\n\nMs. Marsh, 51, with hypertension, a past episode of major depression and recurrent trigeminal neuralgia, comes in with three months of a pounding heartbeat, heat intolerance and a ten-pound weight loss even though she is hungrier than usual. Bowel habits and menses have not changed.\n\nMedications: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, carbamazepine 200 mg twice daily, sertraline 100 mg daily. NKDA.\nFamily history: mother hypertension; sister depression; maternal aunt breast cancer at 54. No known thyroid disease.\nSocial: smoker, about a pack per week for 20 years, wants to quit. Social alcohol. Administrative assistant.\n\nExam: BP 145/90, HR 102. Fine tremor of the outstretched hands. A non-tender nodule is palpable in the right thyroid lobe. No proptosis, lid lag or pretibial skin change.\n\nLabs today: TSH <0.01 mIU/L (0.4-4.0), free T4 3.0 ng/dL (0.9-1.7), free T3 8.0 pg/mL (2.3-4.2).\nUptake scan 01/17/2023: hot right nodule with suppression of the rest of the gland.\n\nAssessment: toxic single thyroid nodule (toxic adenoma) with overt hyperthyroidism.\n\nPlan: methimazole 10 mg daily to bring levels down, atenolol 25 mg daily for heart rate and tremor. Discussed definitive options; she prefers radioactive iodine over surgery. Will schedule I-131 in about 6 weeks, holding methimazole for several days beforehand. CBC and liver tests are not needed routinely but call for sore throat with fever or yellowing. Follow-up 6 to 8 weeks after treatment."}
+          ]
+        },
+        {
+          "id": "2023-01-26a",
+          "kind": "portal_message",
+          "start": "2023-01-26T19:30",
+          "reason": "Endocrinology plan",
+          "documents": [
+            {"type": "Patient Message", "title": "Thyroid plan", "author": "patient", "date": "2023-01-26T19:30", "body": "Saw endo. They think it's one nodule on the right that's overactive. I'm on methimazole and atenolol now and doing radioactive iodine in March. Do I keep taking my blood pressure pills too?"},
+            {"type": "Patient Message", "title": "RE: Thyroid plan", "author": "PCP", "date": "2023-01-27T07:55", "body": "Yes, keep the lisinopril and HCTZ. The atenolol is for heart rate and shakiness and may lower your BP a bit more, so if you feel lightheaded or home readings are under 100 on top, let me know. I got their letter and updated your list."}
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "procedure_visit",
+          "start": "2023-03-08T10:00",
+          "service": "Nuclear Medicine",
+          "reason": "Radioactive iodine therapy",
+          "medications": [
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "stop", "reason": "held before I-131"}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "I-131 Therapy", "author": "nuclear medicine", "date": "2023-03-10T09:00", "body": "OUTSIDE NUCLEAR MEDICINE - RADIOIODINE THERAPY\nDate: 03/08/2023. Indication: toxic adenoma, right thyroid lobe.\nMethimazole held since 03/03/2023.\nAdministered 15 mCi I-131 sodium iodide orally. Tolerated without event. Radiation safety instructions reviewed in writing.\nMethimazole is not to be resumed unless endocrinology advises. Continue atenolol. Follow-up with endocrinology in 8 weeks with TSH and free T4."}
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "specialist_visit",
+          "start": "2023-05-10T14:15",
+          "service": "Endocrinology",
+          "reason": "Post radioiodine follow-up",
+          "medications": [
+            {"drug": "atenolol 25 MG Oral Tablet", "action": "stop", "reason": "euthyroid"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-05-10T13:50", "results": [
+              {"test": "Thyroid Stimulating Hormone", "value": 1.1},
+              {"test": "Free Thyroxine", "value": 1.1}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Follow-up", "author": "endocrinology", "date": "2023-05-15T08:30", "body": "Seen 05/10/2023, about 9 weeks after 15 mCi I-131 for a right toxic adenoma. Palpitations, heat intolerance and tremor gone; appetite back to normal, some weight regained. TSH 1.1, free T4 1.1: euthyroid, off methimazole. Stopping atenolol today. No thyroid hormone needed. Hypothyroidism can still develop later, so please check TSH yearly, or sooner for fatigue, cold intolerance or weight gain. No routine return here needed."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after thyroid treatment",
+          "state": {"bp": [124, 78], "hr": 76, "weight_kg": 75.5, "labs": {"Thyroid Stimulating Hormone": 1.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-13T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-06-13T15:45", "body": "Follow-up after the radioiodine. Feels normal again, sleeping well, weight back up toward her usual. Off atenolol since May without palpitations. BP at goal on lisinopril and HCTZ. Face pain quiet on carbamazepine. Mood stable.\nExam: HR 70s regular. No tremor. Thyroid: small firm nodule right lobe, nontender. Heart and lungs normal.\nA/P: Toxic nodule treated with I-131, euthyroid on May labs; TSH yearly with her physical. HTN controlled. TN, MDD stable on current meds. Mammogram due in August. Tobacco: still about a pack a week, counseled."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "imaging",
+          "start": "2023-08-22T07:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-08-22T07:30", "text": "Bilateral screening mammogram with tomosynthesis. Compared with 07/2022. Heterogeneously dense breasts. No suspicious mass, calcifications or architectural distortion. Skin and nipples normal.", "conclusion": "Negative mammogram. BI-RADS 1."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2023-08-23T09:30", "body": "Normal screening mammogram. Pt notified."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "annual_physical",
+          "start": "2023-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-24T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-24T08:47"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-10-24T08:50"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-10-24T08:55", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-10-24T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-24T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-10-24T08:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-10-24T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-10-24T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-10-24T09:50", "body": "Annual. Good year after the thyroid business. No palpitations, energy fine. BP home log 120s/70s. Rare facial twinge. Mood good, PHQ-9 2, staying on sertraline by choice.\nTobacco: a pack a week still. Interested, not ready; we set a check-in for January.\nExam: vitals as charted. Eyes normal. Thyroid: small right nodule unchanged. Heart RRR. Lungs clear, no wheeze. Breasts without masses, skin or nipple change, axillae negative. Abdomen benign. No edema. Neuro nonfocal.\nA/P\n1. HTN: controlled, lisinopril 10 + HCTZ 12.5.\n2. Toxic nodule s/p I-131: TSH today.\n3. TN on carbamazepine: CMP/CBC today.\n4. MDD in remission on sertraline 100.\n5. Tobacco, counseled.\n6. HM: flu, updated COVID and PCV20 (smoker) given today. Lipids. Mammogram current, colonoscopy 2022 normal, Pap 2022 normal."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2023-10-25T12:10", "body": "TSH normal, still euthyroid after radioiodine. CMP, CBC and lipids normal. Sent to portal."}
+          ]
+        }
+      ]
+    }
+  ]
+}

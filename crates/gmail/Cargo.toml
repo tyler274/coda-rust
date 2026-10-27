@@ -6,6 +6,7 @@ publish.workspace = true
 version.workspace = true
 
 [dependencies]
+axum = "0.8"
 base64 = "0.23"
 # Push wakes arrive as Pub/Sub envelopes; decoding stays product-neutral.
 pubsub = { path = "../pubsub" }
@@ -15,19 +16,11 @@ reqwest = { version = "0.12", default-features = false, features = ["json", "rus
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "signal", "time"] }
 
 [features]
 # Local stand-in of the Gmail HTTP API, for another crate's tests.
-test-util = ["dep:axum", "dep:tokio"]
-
-[dependencies.axum]
-version = "0.8"
-optional = true
-
-[dependencies.tokio]
-version = "1"
-features = ["macros", "net", "rt", "time"]
-optional = true
+test-util = []
 
 [dev-dependencies]
 axum = "0.8"

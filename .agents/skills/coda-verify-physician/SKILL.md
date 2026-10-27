@@ -22,7 +22,7 @@ active, prefix with `nix develop --command`.
 
    ```bash
    CARGO_TARGET_DIR=target/stream-e cargo build -p physician-sample --bins
-   cargo test -p physician-sample --test site   # also writes target/physician-web
+   cargo test -p physician-sample --test site -- --ignored   # also writes target/physician-web
    ```
 
    The page assets are served from `target/physician-web` (or `--site-dir`). A stale

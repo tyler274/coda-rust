@@ -1,0 +1,1384 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002823",
+   "given": "Beverly",
+   "family": "Fischer",
+   "birth_date": "1954-02-03",
+   "address_line": "27 Crescent Hill Road",
+   "phone": "+1-646-555-0126",
+   "email": "beverly.fischer@example.test",
+   "marital_status": "married",
+   "summary": "Retired administrative assistant with poorly controlled type 2 diabetes, hypertension, CKD 3b, rheumatoid arthritis on methotrexate and prednisone, severe COPD and GERD who joins in 2019. Osteoporosis, renal secondary hyperparathyroidism, two intubations for COPD, glucocorticoid excess, a stage IB vulvar SCC, a fragility wrist fracture and shingles follow; septic shock in 2026 leaves diffuse renal cortical necrosis and dialysis-dependent ESRD.",
+   "events": [
+    {
+     "id": "2019-08-27a",
+     "kind": "telephone",
+     "start": "2019-08-27T10:20",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2019-08-27T10:31",
+       "body": "Caller wants to move her care here; her previous doctor retired from a group in the next county and she hasn't liked the rotating coverage since. 65 yo, has diabetes, kidney and lung issues, sees a rheumatologist. Membership explained, she and her husband discussed it already. New patient visit set for 9/10 at 9:00, 60 min slot. Release form for prior records emailed to her. Asked her to bring all pill bottles and inhalers."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-10a",
+     "kind": "establish_care",
+     "start": "2019-09-10T09:00",
+     "end": "2019-09-10T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with hyperglycemia",
+       "action": "history",
+       "onset": "2004-06-01",
+       "note": "long-standing, poorly controlled"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2002-03-01"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "history",
+       "onset": "2017-05-01",
+       "note": "progressive; diabetes and hypertension"
+      },
+      {
+       "label": "Rheumatoid arthritis",
+       "action": "history",
+       "onset": "2009-04-01",
+       "note": "followed by outside rheumatology"
+      },
+      {
+       "label": "Chronic obstructive pulmonary disease",
+       "action": "history",
+       "onset": "2012-01-01",
+       "note": "severe"
+      },
+      {
+       "label": "Gastroesophageal reflux disease without esophagitis",
+       "action": "history",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Acquired absence of uterus and cervix",
+       "action": "history",
+       "onset": "2006-05-01",
+       "note": "TAH age 52 for fibroids"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug_text": "glyburide 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily with breakfast",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 12.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth daily before breakfast",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "GERD"
+      },
+      {
+       "drug": "prednisone 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Rheumatoid arthritis and COPD"
+      },
+      {
+       "drug": "methotrexate 2.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 6 tablets (15 mg) by mouth once weekly",
+       "dose": {
+        "value": 15,
+        "unit": "mg"
+       },
+       "frequency": "WEEKLY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Rheumatoid arthritis"
+      },
+      {
+       "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+       "action": "historical",
+       "sig": "Inhale 1 puff twice daily; rinse mouth after use",
+       "dose": {
+        "value": 1,
+        "unit": "puff"
+       },
+       "frequency": "BID",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath or wheeze",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug_text": "calcium carbonate 1500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet (600 mg elemental calcium) by mouth three times daily",
+       "dose": {
+        "value": 600,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Bone health on long-term steroids"
+      },
+      {
+       "drug": "cholecalciferol 0.05 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule (2000 units) by mouth daily",
+       "dose": {
+        "value": 2000,
+        "unit": "[iU]"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Bone health on long-term steroids"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       138,
+       82
+      ],
+      "weight_kg": 73.0,
+      "height_cm": 160.0,
+      "labs": {
+       "Hemoglobin A1c": 8.9,
+       "Creatinine": 1.35,
+       "Hemoglobin": 12.0,
+       "Microalbumin/Creatinine Ratio": 210,
+       "Glucose": 176
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-10T10:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.35
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-10T10:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.0
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-10T10:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.9
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 210
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Occasional wine, 1-2 glasses per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired administrative assistant"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2019-09-10T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neph-referral-2019",
+       "action": "placed",
+       "order": "Nephrology referral",
+       "category": "referral",
+       "to": "Nephrology",
+       "reason": "CKD stage 3b, progressive"
+      },
+      {
+       "id": "rheum-referral-2019",
+       "action": "placed",
+       "order": "Rheumatology referral",
+       "category": "referral",
+       "to": "Rheumatology",
+       "reason": "Rheumatoid arthritis on methotrexate, transfer of care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-10T10:40",
+       "body": "65 yo woman transferring care. Retired admin assistant, lives with her husband. Brought every bottle in a shopping bag, which helped.\n\nHPI: Diabetes for about 15 years, never well controlled per her report; on metformin and glyburide, checks sugars maybe twice a week, fasting usually 150s-190s. No lows she knows of. HTN on three agents. Kidney function has been drifting down for a couple of years and she was told stage 3. RA since her mid-50s, hands mostly, on weekly methotrexate and daily prednisone 10 mg from her rheumatologist, whose office is closing to new referrals from her old group so she needs a new one. COPD: never smoked, but has had a bad chest for years; dyspnea on one flight of stairs, uses rescue inhaler a few times a week. Reflux controlled on omeprazole.\n\nPMH: T2DM, HTN, CKD 3b, RA, COPD (severe per prior PFTs), GERD.\nPSH: TAH at 52 for fibroids.\nMeds: reconciled from bottles, see list. Takes calcium and D because of the prednisone.\nAllergies: none to drugs.\nFHx: Mother with T2DM and osteoporosis. Father with HTN and COPD. Maternal aunt broke a hip from osteoporosis.\nSHx: Never smoker. Wine 1-2 glasses a week. No drugs.\n\nROS: Chronic exertional dyspnea, morning stiffness in hands ~30 min. Otherwise negative.\n\nExam: Vitals as charted. Pleasant, in no distress. Lungs with diminished breath sounds at both bases, prolonged expiration, no wheeze today. Heart regular, no murmur. Abdomen soft. Hands with mild MCP swelling bilaterally, no warmth. No leg edema. Feet: skin intact, monofilament sensation intact, DP pulses 2+.\n\nA/P:\n1. T2DM, poorly controlled - A1c today. Will revisit regimen once labs back; glyburide in her kidney range is not ideal, noted for next visit.\n2. HTN - 138/82, near goal on three drugs, continue.\n3. CKD 3b - BMP and urine albumin today; referral to nephrology since she has none locally.\n4. RA - continues MTX/prednisone; referral to rheumatology for ongoing management and MTX monitoring.\n5. COPD - severe by history, continue ICS/LABA and albuterol. Will request old PFTs.\n6. GERD - stable.\n7. HM - records request for vaccines, colonoscopy, mammogram. HCV screen today. Flu/pneumonia vaccines at a nurse visit next month.\n\nReturn 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-13a",
+     "kind": "portal_message",
+     "start": "2019-09-13T16:12",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2019-09-13T16:12",
+       "body": "Hi Beverly, your labs from Tuesday are back. A1c is 8.9, which tells me your sugars have been running high for a while; we'll talk about options at your December visit, and in the meantime cutting back on the evening snacks we discussed will help. Kidney function is about where your old records put it (creatinine 1.35), and there is protein in the urine (ratio 210), which is common with diabetic kidney disease. Your blood count, liver tests and cholesterol are fine. Hepatitis C screen is negative. The nephrology office should call you to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-24a",
+     "kind": "outside_records",
+     "start": "2019-09-24T11:00",
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2017-03-14T10:00",
+       "text": "Pre- and post-bronchodilator spirometry. Acceptable and reproducible efforts. Post-bronchodilator FEV1/FVC 0.56. Post-bronchodilator FEV1 41% predicted. No significant bronchodilator response.",
+       "conclusion": "Severe obstructive ventilatory defect."
+      },
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2018-05-22T09:30",
+       "text": "Bilateral screening mammogram. Scattered fibroglandular densities. No suspicious mass, calcification or architectural distortion.",
+       "conclusion": "BI-RADS 1, negative. Routine annual screening."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2015-06-09T10:00"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2018-10-16T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care practice",
+       "author": "outside primary care",
+       "date": "2019-09-24T11:00",
+       "body": "Records received from prior primary care office, 64 pages, covering 2014-2019. Scanned. Pertinent items abstracted:\n- PFTs 3/2017: severe obstruction, FEV1 41% predicted, FEV1/FVC 0.56 post-BD.\n- Screening colonoscopy 2016: normal to the terminal ileum, no polyps; repeat in 10 years.\n- Mammogram 5/2018: BI-RADS 1.\n- Tdap 6/2015; PCV13 10/2018; flu shots yearly.\n- Problem list matches what she reported. Creatinine 1.2-1.4 range over 2017-2019.\n- No drug allergies documented."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T14:00",
+     "reason": "Vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2019-10-08T14:10"
+      },
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2019-10-08T14:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse visit - immunizations",
+       "author": "RN",
+       "date": "2019-10-08T14:25",
+       "body": "In for flu and pneumococcal vaccines per PCP. PCV13 documented in outside records 10/2018, so PPSV23 due. Screened, no contraindications. High-dose flu L deltoid, PPSV23 R deltoid. Tolerated. VIS given. Waited 15 min, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-30a",
+     "kind": "specialist_visit",
+     "start": "2019-10-30T13:30",
+     "service": "Nephrology",
+     "reason": "CKD stage 3b",
+     "orders": [
+      {
+       "id": "neph-referral-2019",
+       "action": "done",
+       "date": "2019-10-30T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology consultation",
+       "author": "nephrology",
+       "date": "2019-11-04T09:00",
+       "body": "Outpatient Nephrology Consultation\nDate of service: 10/30/2019\nReason: CKD 3b, referred by her primary care physician.\n\nThank you for sending Ms. Fischer, a 65 year old woman with long-standing type 2 diabetes, hypertension, RA on methotrexate and prednisone, and severe COPD. Creatinine has risen from about 1.2 to 1.35 over two years. Urine albumin to creatinine ratio 210 mg/g. No hematuria. No NSAID use. BP 136/80 here.\n\nImpression: CKD stage 3b, most consistent with diabetic and hypertensive kidney disease, moderately increased albuminuria.\n\nRecommendations: Continue lisinopril. Avoid NSAIDs and IV contrast where possible. I would watch metformin dosing as filtration falls. Methotrexate is renally cleared; rheumatology aware. We will see her yearly with labs beforehand.\n\nMeds reviewed: metformin, glyburide, lisinopril, amlodipine, HCTZ, omeprazole, prednisone, methotrexate, fluticasone-salmeterol, albuterol, aspirin, calcium, vitamin D3.\nAllergies: NKDA.\n\nOutside Nephrology Group"
+      }
+     ]
+    },
+    {
+     "id": "2019-11-19a",
+     "kind": "specialist_visit",
+     "start": "2019-11-19T10:00",
+     "service": "Rheumatology",
+     "reason": "Rheumatoid arthritis",
+     "orders": [
+      {
+       "id": "rheum-referral-2019",
+       "action": "done",
+       "date": "2019-11-19T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology new patient consultation",
+       "author": "rheumatology",
+       "date": "2019-11-22T15:00",
+       "body": "RHEUMATOLOGY CONSULTATION - 11/19/2019\n\n65F with seropositive RA for about ten years, transferring care. Currently methotrexate 15 mg weekly and prednisone 10 mg daily. Reports 30 minutes of morning stiffness, no recent flares. Exam: mild synovial thickening at MCPs 2-3 bilaterally, no active synovitis, no deformity. Disease activity low.\n\nCKD 3b noted; we will keep MTX at 15 mg and monitor CBC, LFTs and creatinine every 3 months - your office's draws are fine, please copy us. Prednisone is also covering her lung disease per her account; no change today.\n\nPlan: continue current regimen, return 1 year or sooner for flare.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-10a",
+     "kind": "office_visit",
+     "start": "2019-12-10T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-12-10T11:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-12-10T11:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2019-12-10T11:10",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-12-10T11:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-12-10T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-12-10T11:35",
+       "body": "S: Here for 3-month follow-up. Saw nephrology and rheumatology, letters reviewed, no changes from either. Says she has been better about portion size; still having toast and jam at night sometimes. Home fasting sugars 140s-180s. No hypoglycemia. Breathing at baseline.\n\nO: Vitals as charted. Lungs diminished, no wheeze. RRR. No edema.\n\nA/P:\n- T2DM, not at goal. A1c and MTX monitoring labs today. Discussed that glyburide is a concern with her kidneys; she would rather not change anything before the holidays. Will look at the full picture at her wellness visit in February.\n- HTN controlled.\n- CKD 3b, nephrology following.\n- RA, labs drawn for rheum.\n- Eye exam: she says she saw her optometrist last week, will get the report.\nRTC February for annual wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-17a",
+     "kind": "outside_records",
+     "start": "2019-12-17T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2019-12-17T09:00",
+       "body": "Dilated eye examination, exam date 12/3/2019. VA 20/25 OD, 20/25 OS with correction. Pupils and pressures normal. Lens: early nuclear sclerosis both eyes. Fundus: no diabetic retinopathy, no macular edema either eye. Recommend repeat dilated exam in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-28a",
+     "kind": "pharmacy",
+     "start": "2020-01-28T08:40",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request: glyburide, lisinopril",
+       "author": "MA",
+       "date": "2020-01-28T09:15",
+       "body": "Electronic request from pt's pharmacy for glyburide 5 mg #90 and lisinopril 20 mg #90. Last filled by prior PCP. Sent 90-day supplies with 1 refill per PCP. Pt has AWV 2/17."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-17a",
+     "kind": "annual_physical",
+     "start": "2020-02-17T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit; diabetes management and medication review",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 9.1,
+       "Glucose": 184
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-02-17T10:25",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-02-17T10:25",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-02-17T10:25",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-02-17T10:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.1
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2020-02-17T09:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2020",
+       "action": "placed",
+       "order": "DXA bone density, hip and spine",
+       "category": "imaging",
+       "reason": "Height loss; long-term prednisone; family history of osteoporosis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2020-02-17T10:50",
+       "body": "Annual wellness visit, combined with diabetes follow-up and a full medication reconciliation (she brought the bag again).\n\nMeds reviewed one by one against pharmacy fill history: all 13 being taken as listed. Uses spacer? No - DPI, technique observed and fine.\n\nDiabetes: still not at goal. Diet changes partial. We talked about adding a DPP-4 inhibitor, which is safe at her kidney function and doesn't cause lows. She wants to give diet three more months before adding a pill, and is worried about another copay. Fair enough; revisit.\n\nHealth risk assessment: lives with husband in a two-story house, independent in ADLs and IADLs, drives. No falls in past year. Hearing fine. Advance directive: has health care proxy (husband), copy requested.\n\nBones: she mentions her clothes fit differently and she thinks she has shrunk - measured height today is shorter than the 5'4\" she reports from her 50s. Ten-plus years of prednisone, mother with osteoporosis, aunt with hip fracture. No DXA in old records. Ordered.\n\nExam: Vitals as charted. Lungs with distant breath sounds. Heart regular. Mild MCP thickening. Feet: monofilament intact, pulses palpable, no ulcers.\n\nScreening: mammogram due 5/2020, will order. Colonoscopy 2016 normal. HCV done. Pneumococcal complete. Flu done.\n\nPlan: labs today, DXA, mammogram this spring. Follow-up after DXA."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-19a",
+     "kind": "portal_message",
+     "start": "2020-02-19T12:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-02-19T12:05",
+       "body": "A1c 9.1 - a bit higher than September. Kidney numbers stable. Cholesterol and blood counts OK. The bone density scan order is in; radiology will call. -your PCP"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lab results",
+       "author": "patient",
+       "date": "2020-02-19T19:48",
+       "body": "Thank you. I know the sugar is my fault. I'm going to try harder with the evening eating before we add anything. Bev"
+      }
+     ]
+    },
+    {
+     "id": "2020-03-25a",
+     "kind": "telephone",
+     "start": "2020-03-25T11:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Check-in call",
+       "author": "RN",
+       "date": "2020-03-25T11:30",
+       "body": "Outreach call to high-risk patients during the pandemic. Pt staying home, husband doing the shopping. Breathing at baseline, has albuterol and 2 months of her controller. Asked about switching to 90-day mail order - set up for metformin, amlodipine, HCTZ, omeprazole. Reminded her not to stop prednisone. Bone density scan was postponed by radiology; they will call to reschedule. Knows to call us for fever or worse breathing."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-28a",
+     "kind": "imaging",
+     "start": "2020-04-28T13:00",
+     "reports": [
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2020-04-28T13:00",
+       "text": "Dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and left hip. No artifacts limiting interpretation. Lumbar spine L1-L4: T-score -2.8. Left total hip and femoral neck measured; the lumbar spine is the lowest site. WHO classification based on the lowest T-score.",
+       "conclusion": "Osteoporosis. Lowest T-score -2.8 at the lumbar spine."
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2020",
+       "action": "done",
+       "date": "2020-04-28T13:00"
+      }
+     ]
+    },
+    {
+     "id": "2020-05-15a",
+     "kind": "office_visit",
+     "start": "2020-05-15T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Bone density results; height loss",
+     "conditions": [
+      {
+       "label": "Osteoporosis",
+       "action": "diagnosed",
+       "onset": "2020-04-28"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "alendronic acid 70 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth once weekly in the morning with a full glass of plain water, 30 minutes before food or other medicines; stay upright for 30 minutes",
+       "dose": {
+        "value": 70,
+        "unit": "mg"
+       },
+       "frequency": "WEEKLY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Osteoporosis"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Parathyroid Hormone, Intact": 58,
+       "Phosphorus": 3.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-05-12T08:30",
+       "resulted": "2020-05-13T14:00",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact"
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-05-12T08:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-05-15T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Bone Density",
+       "author": "PCP",
+       "date": "2020-05-15T14:45",
+       "body": "In person, masked, first in-office visit since March.\n\nS: Follow-up on DXA. She has never broken a bone that she knows of. Estimates she has lost about 2 inches (5 cm) over several years. No back pain episodes. No falls.\n\nData: DXA 4/28: L1-L4 T -2.8, lowest site. Labs drawn 5/12: calcium, phosphorus, intact PTH and alk phos all within normal limits, so no secondary bone disease evident on labs.\n\nA/P: Osteoporosis - glucocorticoid exposure plus postmenopausal, strong family history. Start alendronate 70 mg weekly; went through the dosing routine twice (empty stomach, 8 oz plain water, sit or stand 30 minutes, nothing else first). Her reflux is controlled; she will tell me about any heartburn or swallowing trouble. Keep calcium and D3 but not within the alendronate window. Dental check fine per her. Repeat DXA in 2 years.\n\nT2DM - diet effort ongoing, next A1c in summer.\nRTC August (video OK)."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-18a",
+     "kind": "portal_message",
+     "start": "2020-05-18T08:02",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Question about the new bone pill",
+       "author": "patient",
+       "date": "2020-05-18T08:02",
+       "body": "Can I take the new weekly pill on the same morning as my methotrexate? Right now I take both on the same morning."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Question about the new bone pill",
+       "author": "RN",
+       "date": "2020-05-18T10:40",
+       "body": "Good question. Simplest is to move the alendronate to a different morning of the week, first thing with water only. Keep your methotrexate day the same. Call with any heartburn."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-23a",
+     "kind": "imaging",
+     "start": "2020-06-23T09:15",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-06-23T09:15",
+       "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 5/2018. Scattered areas of fibroglandular density. No suspicious masses, calcifications or distortion. Stable.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-18a",
+     "kind": "telehealth_visit",
+     "start": "2020-08-18T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up (video)",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-08-13T08:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-08-13T08:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2020-08-13T08:20",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-13T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2020-08-18T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2020-08-18T11:30",
+       "body": "Video, pt in her kitchen, husband helped with the camera. Consent for video obtained.\n\nLabs from 8/13 reviewed with her. A1c still well above goal. She has been walking the driveway loop most days, weight steady by her scale. Tolerating alendronate, no heartburn. Breathing ok in the humidity, using albuterol a few times a week.\n\nWe returned to the question of a third diabetes drug; she still prefers to hold off. Agreed to recheck in the fall. Kidney labs stable. MTX labs fine, copied to rheum.\n\nFlu shot at a nurse visit in late September. RTC November in person."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-29a",
+     "kind": "nurse_visit",
+     "start": "2020-09-29T15:00",
+     "reason": "Influenza vaccine",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-09-29T15:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-29T15:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu vaccine",
+       "author": "MA",
+       "date": "2020-09-29T15:15",
+       "body": "High-dose flu vaccine L deltoid, lot recorded. No prior reactions. VIS given. Pt waited in car 15 min per curbside protocol, no issues."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-20a",
+     "kind": "specialist_visit",
+     "start": "2020-10-20T09:00",
+     "service": "Nephrology",
+     "reason": "CKD follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2020-10-23T10:00",
+       "body": "Nephrology Clinic Follow-up, 10/20/2020 (telephone visit due to pandemic).\n\nCKD 3b, diabetic/hypertensive. Labs from her PCP in August reviewed: creatinine within her recent range, potassium normal. BP at home 130s/80s. No new NSAIDs. Started alendronate this spring for osteoporosis; acceptable at her current filtration, would stop if eGFR falls below 30.\n\nPlan: continue current regimen. PTH and phosphorus with next labs. Return in one year.\n\nOutside Nephrology Group"
+      }
+     ]
+    },
+    {
+     "id": "2020-11-17a",
+     "kind": "office_visit",
+     "start": "2020-11-17T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and CKD follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-11-17T10:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-11-17T10:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2020-11-17T10:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-11-17T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-11-17T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2020-11-17T10:50",
+       "body": "Diabetes/CKD f/u. Feels more tired this fall than usual, attributes to staying in and the short days. Some achiness in shins and hips, worse in the evening. No fevers, no weight loss. Breathing baseline.\n\nExam: vitals as charted. Lungs distant. No synovitis today. No edema.\n\nA/P: T2DM - A1c today; she continues to decline adding a medication for now. CKD - labs. Fatigue/achiness - will see what labs show; if persistent, broader workup. RTC 2 months or sooner."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-24a",
+     "kind": "specialist_visit",
+     "start": "2020-11-24T14:00",
+     "service": "Rheumatology",
+     "reason": "Rheumatoid arthritis follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2020-11-27T09:00",
+       "body": "Rheumatology follow-up 11/24/2020. RA quiet. Morning stiffness brief. No synovitis on exam. Monitoring labs from PCP office reviewed, acceptable. Continue methotrexate 15 mg weekly and prednisone 10 mg daily. Follow up 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "outside_records",
+     "start": "2020-12-08T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2020-12-08T09:00",
+       "body": "Annual dilated diabetic eye exam, 12/1/2020. Corrected acuity 20/25 both eyes. IOP normal. Mild nuclear sclerosis, stable. Retina: no diabetic retinopathy, no macular edema. Return 1 year."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
