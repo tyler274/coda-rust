@@ -1,0 +1,270 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002319",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "specialist_visit",
+          "start": "2024-01-09T07:30",
+          "service": "Urology",
+          "reason": "left radical orchiectomy",
+          "conditions": [
+            {"label": "Malignant neoplasm of left testis", "icd10": "C62.92", "action": "diagnosed", "onset": "2023-11-20", "note": "non-seminomatous germ cell tumor"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-12-21T10:15", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 412}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-01-09T08:40", "issued": "2024-01-12T13:30", "text": "Specimen: Left testis and spermatic cord, radical orchiectomy.\nGross: Testis 5.2 x 3.4 x 3.1 cm with a 3.0 cm variegated tan-white mass in the lower pole. Spermatic cord 9.5 cm.\nMicroscopic: Non-seminomatous germ cell tumor. Tumor confined to the testis; tunica vaginalis not involved. Rete testis not involved. Spermatic cord margin negative.", "conclusion": "Non-seminomatous germ cell tumor, left testis, 3.0 cm, confined to the testis; spermatic cord margin negative."}
+          ],
+          "orders": [
+            {"id": "uro-referral-2023", "action": "done", "date": "2023-12-21T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology Consultation and Operative Summary", "author": "urology", "date": "2024-01-12T16:00", "body": "Patient: Andrew Marino  DOB 03/08/1961\n\nSeen in clinic 12/21/2023 at the request of his primary care physician for a left testicular mass. 62-year-old man, about a month of a painless left testicular lump. Ultrasound 12/14: 2.8 cm solid vascular left intratesticular mass. PMH notable for stage IA lung adenocarcinoma s/p LUL lobectomy 01/2023, hypertension. Former smoker. Allergies: iodinated contrast, sulfonamide antibiotics.\nExam in clinic: firm left lower-pole mass, right testis normal, no adenopathy.\nTumor markers 12/21: AFP 412 ng/mL (elevated).\n\nPlan carried out: left radical inguinal orchiectomy 01/09/2024, outpatient. Uneventful; discharged same day.\n\nPathology (01/12): non-seminomatous germ cell tumor, 3.0 cm, confined to the testis, cord margin negative.\n\nAssessment: Left testicular NSGCT. Referred to medical oncology for staging and to follow the markers; repeat AFP in 3 weeks.\nMeds: lisinopril 5 mg daily, acetaminophen as needed. Post-op: acetaminophen; ice; no heavy lifting for 2 weeks.\n\nUrology"}
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "telephone",
+          "start": "2024-01-16T15:40",
+          "reason": "pathology result",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call re orchiectomy pathology", "author": "PCP", "date": "2024-01-16T15:40", "body": "Reviewed urology note and path. Called Andrew - he already heard from urology, sounded steadier than I expected. Oncology appointment 2/6. Told him to message anytime. Problem list updated."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "specialist_visit",
+          "start": "2024-02-06T10:00",
+          "service": "Hematology/Oncology",
+          "reason": "testicular germ cell tumor, staging and treatment",
+          "labs": [
+            {"panel": null, "collected": "2024-01-30T09:00", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 188}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-01-30T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2024-01-30T09:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "CT chest, abdomen and pelvis without contrast", "loinc": "72253-8", "performed": "2024-01-29T14:00", "text": "Indication: Staging, left testicular non-seminomatous germ cell tumor s/p orchiectomy.\nTechnique: Helical CT of the chest, abdomen and pelvis without IV contrast (contrast allergy). Oral contrast given.\nComparison: CT chest 07/11/2023.\nFindings: Chest: postsurgical changes of left upper lobectomy. No pulmonary nodules. No mediastinal or hilar adenopathy. Abdomen and pelvis: no retroperitoneal, pelvic or inguinal adenopathy. Liver, spleen, adrenals and pancreas unremarkable within the limits of a non-contrast study. Kidneys without hydronephrosis. Post-orchiectomy changes in the left inguinal canal. No osseous lesions.", "conclusion": "No evidence of metastatic disease. Post-lobectomy and post-orchiectomy changes."}
+          ],
+          "medications": [
+            {"drug_text": "bleomycin 30 UNT Injection", "action": "historical", "sig": "BEP, 3 cycles, oncology infusion", "route": "Intravenous", "course": "short", "reason": "testicular germ cell tumor"},
+            {"drug_text": "etoposide 20 MG/ML Injectable Solution", "action": "historical", "sig": "BEP, 3 cycles, oncology infusion", "route": "Intravenous", "course": "short", "reason": "testicular germ cell tumor"},
+            {"drug_text": "cisplatin 1 MG/ML Injectable Solution", "action": "historical", "sig": "BEP, 3 cycles, oncology infusion", "route": "Intravenous", "course": "short", "reason": "testicular germ cell tumor"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Consultation", "author": "oncology", "date": "2024-02-06T13:00", "body": "RE: Andrew Marino, 62M\nReferring: Urology; copy to primary care\n\nDiagnosis: Left testicular non-seminomatous germ cell tumor, s/p radical orchiectomy 01/09/2024 (3.0 cm, organ-confined, cord margin negative).\n\nHistory: Painless left testicular mass, AFP 412 before orchiectomy. Also stage IA lung adenocarcinoma resected 01/2023, on CT surveillance. Hypertension. Former smoker, 40 pack-years, quit 08/2022. Kidney function normal.\nMeds: lisinopril 5 mg daily; acetaminophen prn.\nAllergies: iodinated contrast (hives); sulfonamide antibiotics (rash).\n\nStaging CT C/A/P without contrast 01/29: no adenopathy or metastases.\nAFP 01/30 (3 weeks post-op): 188 ng/mL - falling but well above normal and not on the expected half-life curve.\n\nAssessment: Persistently elevated AFP after orchiectomy with no radiographic disease: stage IS. This is treated as disseminated disease; surveillance is not appropriate.\n\nPlan: BEP x 3 cycles, starting 02/12/2024, 21-day cycles. We talked at length about toxicity at his age, including bleomycin lung injury (older age, prior lung surgery and smoking history raise the risk) and cisplatin effects on kidneys and hearing. Will watch symptoms and creatinine each cycle. AFP every cycle.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "telephone",
+          "start": "2024-03-05T11:20",
+          "reason": "check-in during chemotherapy",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Check-in", "author": "RN", "date": "2024-03-05T11:20", "body": "Per PCP request called pt between cycles 1 and 2. Tired for a week after each round, some nausea that is manageable, eating OK. No fever. Cycle 2 starts today actually, he is at the infusion center. Reminded him to call oncology first for fever. Nothing needed from us."}
+          ]
+        },
+        {
+          "id": "2024-04-30a",
+          "kind": "specialist_visit",
+          "start": "2024-04-30T09:30",
+          "service": "Hematology/Oncology",
+          "reason": "end of BEP",
+          "labs": [
+            {"panel": null, "collected": "2024-04-23T08:40", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Follow-up", "author": "oncology", "date": "2024-04-30T12:00", "body": "Mr. Marino completed cycle 3 of BEP on 04/15/2024. Fatigue improving, appetite returning, a few pounds down over treatment. No cough or breathlessness today, no tinnitus, no numbness of the feet.\nAFP 04/23: 4 ng/mL - normal.\nExam: lungs clear, no edema.\nCreatinine has drifted up over the course; he knows to keep drinking fluids. Asked his PCP to recheck kidney function in about 6 weeks.\n\nAssessment: Stage IS NSGCT, marker normalization after 3 cycles of BEP. Complete response.\nPlan: Surveillance with markers every 2 months and CT at 6 months (~11/2024, chest without contrast plus MRI abdomen/pelvis given his contrast allergy). Lung cancer CT surveillance can be folded into the same imaging.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemotherapy, kidney function",
+          "conditions": [
+            {"label": "Chronic kidney disease, stage 3b", "action": "diagnosed", "onset": "2024-04-15"},
+            {"label": "Malignant neoplasm of left testis", "icd10": "C62.92", "action": "resolved", "onset": "2023-11-20"},
+            {"label": "History of left testicular non-seminomatous germ cell tumor", "icd10": "Z85.47", "action": "diagnosed", "onset": "2024-04-15"}
+          ],
+          "medications": [
+            {"drug": "furosemide 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"}
+          ],
+          "state": {"bp": [148, 90], "weight_kg": 84.0, "labs": {"Creatinine": 1.8}},
+          "vitals": {"bp": [148, 90]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-11T09:55", "resulted": "2024-06-11T15:30", "results": [{"test": "Creatinine", "value": 1.8}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Bicarbonate"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-11T09:55", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Urinalysis", "collected": "2024-06-11T09:55", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-11T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-06-11T09:20", "body": "First visit since BEP (3 cycles, done 4/15) for left testicular NSGCT. AFP back to normal in April; oncology calls it a complete response, surveillance now.\n\nS: Energy coming back, maybe 75%. Down about 4 kg since winter. Feet fine. Breathing OK on his walks. No urinary symptoms.\nHome BP readings 140s-150s/88-92 the last month.\nMeds: lisinopril 5 daily, acetaminophen rarely.\n\nO: BP 148/90 (repeat similar). Weight 84 kg. Lungs clear. Heart RRR. No edema.\nLabs today (back this afternoon): creatinine 1.8, from 1.15 before chemo; eGFR in the low 40s. UA bland.\n\nA/P\n1. CKD stage 3b - after cisplatin; oncology had flagged the rising creatinine. Will repeat in 3 months to see where it settles, but the chemo injury is usually lasting. Avoid NSAIDs, contrast is already off the table, renally dose anything new.\n2. HTN - above goal. Not raising lisinopril much with this creatinine; adding furosemide 20 mg each morning. His sulfa antibiotic rash is not a reason to avoid it - cross-reactivity with non-antibiotic sulfonamides is low, explained, he is fine with it. BMP in 2 weeks.\n3. Hx testicular NSGCT - surveillance with oncology. Problem list updated.\n4. Hx stage I NSCLC - imaging with oncology's in November.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "lab_only",
+          "start": "2024-06-25T08:10",
+          "reason": "BMP after starting furosemide",
+          "state": {"bp": [132, 80]},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-25T08:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "BMP result", "author": "PCP", "date": "2024-06-25T16:40", "body": "Creatinine stable after starting furosemide, potassium and sodium fine. Pt messaged home BP now 128-134/78-82. Continue."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "office_visit",
+          "start": "2024-07-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough and shortness of breath",
+          "vitals": {"spo2": 93},
+          "measure": ["bp", "hr", "weight_kg"],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2024-07-16T14:50", "text": "Comparison: None available at this facility.\nFindings: Postsurgical changes of left upper lobectomy with mild left volume loss and surgical clips. Bibasilar reticular opacities. No focal consolidation. No pleural effusion. No pneumothorax. Heart size normal.", "conclusion": "Bibasilar reticular opacities. Post-lobectomy changes on the left."}
+          ],
+          "orders": [
+            {"id": "pulm-referral-2024", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "cough, exertional dyspnea, bibasilar opacities after bleomycin"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-07-16T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - cough", "author": "PCP", "date": "2024-07-16T14:00", "body": "Dry cough since about early June, and getting winded with things that were easy in the spring - one flight of stairs, carrying groceries in. No fever, no sputum, no chest pain, no leg swelling, no orthopnea. Not smoking. Finished BEP in April.\n\nO: SpO2 93% at rest on room air. Afebrile. Fine dry crackles at both bases. Heart RRR, no gallop. No JVD, no edema.\nCXR in office: bibasilar reticular opacities, post-lobectomy changes on the left, no consolidation or effusion.\n\nA/P\nCough and exertional dyspnea 2-4 months after bleomycin, basal crackles, new bibasilar reticulation, lower resting sat. Bleomycin lung toxicity is the concern. No sign of infection or heart failure on exam.\n- Pulmonology referral, marked urgent; message sent to his oncologist as well.\n- Reviewed red flags: worsening breathlessness at rest, fever - call same day.\n- No new medicines today."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "specialist_visit",
+          "start": "2024-08-13T13:00",
+          "service": "Pulmonology",
+          "reason": "cough and exertional dyspnea after bleomycin",
+          "vitals": {"spo2": 91},
+          "measure": ["bp", "hr"],
+          "conditions": [
+            {"label": "Bleomycin-induced pulmonary fibrosis", "icd10": "J70.3", "action": "diagnosed", "onset": "2024-06-01"}
+          ],
+          "medications": [
+            {"drug": "prednisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Bleomycin-induced pulmonary fibrosis"},
+            {"drug_text": "oxygen 1000 MG/ML Gas for Inhalation", "action": "historical", "sig": "2 liters per minute by nasal cannula, continuous", "route": "Inhalation", "course": "chronic", "reason": "Bleomycin-induced pulmonary fibrosis"}
+          ],
+          "reports": [
+            {"study": "CT chest", "performed": "2024-08-06T11:20", "text": "Indication: Cough and dyspnea after bleomycin. High-resolution protocol.\nTechnique: Volumetric thin-section CT of the chest without IV contrast, supine and prone, inspiratory and expiratory.\nComparison: CT chest/abdomen/pelvis 01/29/2024.\nFindings: New bilateral lower-lobe predominant subpleural reticulation with traction bronchiectasis and superimposed ground-glass opacity. No honeycombing. No air trapping. Postsurgical changes of left upper lobectomy, unchanged. No pulmonary nodules. No pleural effusion. No adenopathy.", "conclusion": "New bibasilar subpleural fibrotic change with ground-glass, in keeping with bleomycin-related lung injury in this clinical setting. Post-lobectomy changes."}
+          ],
+          "orders": [
+            {"id": "pulm-referral-2024", "action": "done", "date": "2024-08-13T13:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonary Consultation", "author": "pulmonology", "date": "2024-08-14T10:30", "body": "Andrew Marino, 63 years old\nReferred by: primary care\n\nReason: nonproductive cough and worsening breathlessness on exertion.\n\nHPI: Mr. Marino started BEP on 02/12/2024 for a left testicular non-seminomatous germ cell tumor (3 cycles, completed 04/15). Since about June he has had a dry cough that will not settle and has become steadily more short of breath with exertion; stairs and yard work now stop him. No fever, sputum or hemoptysis. Known to us from his 2022 bronchoscopy; LUL lobectomy 01/2023 for stage IA adenocarcinoma.\n\nOther history: hypertension; CKD stage 3b after cisplatin. Former smoker, 40 pack-years, quit 08/2022. Social alcohol. Retired construction supervisor.\nFamily: father lung cancer (died 67), paternal uncle renal cell carcinoma, mother hypertension.\nMedications: lisinopril 5 mg daily, furosemide 20 mg daily, acetaminophen 650 mg q6h prn.\nAllergies: iodinated contrast - urticaria; sulfonamide antibiotics - rash.\n\nExam: SpO2 91% on room air at rest. Comfortable at rest, speaks full sentences. Fine dry crackles at both lung bases. No clubbing. Heart regular. No edema.\n\nStudies:\n- HRCT chest 08/06 (non-contrast): bibasilar subpleural reticulation with traction bronchiectasis and ground-glass; no honeycombing; post-lobectomy changes.\n- Full PFTs 08/13: restrictive pattern. TLC 64% predicted. DLCO 41% predicted.\n- 6-minute walk 08/13 on room air: nadir SpO2 86%.\n\nImpression: Bleomycin-induced pulmonary fibrosis.\n\nPlan:\n1. Prednisone 10 mg daily. Will reassess symptoms, saturation and PFTs in 3 months.\n2. Home oxygen 2 L/min by nasal cannula, continuous. Order sent to a home oxygen supplier; qualifying walk test documented above.\n3. Bleomycin must never be given again - please add to his record.\n4. Pulmonary rehab information given.\n5. Return 3 months.\n\nPulmonary Medicine"}
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "office_visit",
+          "start": "2024-08-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pulmonology",
+          "conditions": [
+            {"label": "Iatrogenic immunosuppression", "icd10": "D84.821", "action": "diagnosed", "onset": "2024-08-13", "note": "chronic prednisone"},
+            {"label": "Dependence on supplemental oxygen", "action": "diagnosed", "onset": "2024-08-13"}
+          ],
+          "vitals": {"spo2": 95},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-08-26T10:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-08-26T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-08-26T10:00", "body": "Follow-up after pulmonology 8/13. Diagnosis: bleomycin-induced pulmonary fibrosis (HRCT bibasilar fibrosis, restrictive PFTs with TLC 64% and DLCO 41%, walk sat down to 86%). Started prednisone 10 mg daily and oxygen 2 L continuous.\n\nS: Oxygen delivered last week - concentrator at home and portable tanks. Hates the tubing but admits he can do more with it. Cough a little less. On prednisone 13 days, no problems with it so far.\nMeds reconciled: lisinopril 5, furosemide 20 qAM, prednisone 10 daily, oxygen 2 L/min NC continuous, acetaminophen prn.\nAllergies: contrast, sulfa abx. Added note to chart: no bleomycin, ever.\n\nO: SpO2 95% on 2 L. Fine bibasilar crackles. No edema. BP fine.\n\nA/P\n1. Bleomycin pulmonary fibrosis - per pulm. Oxygen certification paperwork signed today for the supplier.\n2. Long-term prednisone - added iatrogenic immunosuppression to the problem list so it is visible to anyone treating him for an infection. Glucose on today's BMP. Call early with fever or a cough that changes.\n3. CKD 3b - creatinine stable.\n4. HTN - at goal on lisinopril + furosemide.\n5. Vaccines: flu, COVID and RSV this fall (RSV given his lung disease). Avoid live vaccines on prednisone.\nPHQ-9 3. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "pharmacy",
+          "start": "2024-09-10T13:15",
+          "reason": "oxygen supplier recertification form",
+          "documents": [
+            {"type": "Administrative Note", "title": "Home oxygen paperwork", "author": "front desk", "date": "2024-09-10T13:15", "body": "Oxygen supplier faxed the certificate of medical necessity and request for the signed face-to-face note. Sent 8/26 visit note and pulm walk test. PCP signed CMN. Faxed back 1:10 pm, confirmation received."}
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T09:30",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-15T09:34"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-15T09:36"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-10-15T09:38"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-15T09:34"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2024-10-15T09:30", "body": "Arrived on portable O2 2 L. Influenza R deltoid, COVID L deltoid, RSV L deltoid lower. Observed 15 min, no reaction. Pt asked when his November scans are; told him oncology schedules those."}
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "imaging",
+          "start": "2024-11-07T10:00",
+          "reason": "germ cell tumor surveillance imaging",
+          "reports": [
+            {"study": "CT chest", "performed": "2024-11-07T10:00", "text": "Indication: Surveillance, testicular NSGCT s/p BEP; history of LUL adenocarcinoma s/p lobectomy.\nTechnique: Helical CT chest without IV contrast.\nComparison: HRCT 08/06/2024.\nFindings: Four new solid nodules in the right lung, measuring 4 to 9 mm, the largest in the right lower lobe. Bibasilar subpleural reticulation and traction bronchiectasis, unchanged; ground-glass slightly less. Post-lobectomy changes on the left. No pleural effusion. No adenopathy.", "conclusion": "Four new right lung nodules, 4-9 mm, indeterminate; metastatic disease not excluded. Stable fibrotic changes."},
+            {"study": "MRI abdomen and pelvis without and with contrast", "loinc": "97392-5", "performed": "2024-11-07T11:30", "text": "Indication: Surveillance, testicular NSGCT; iodinated contrast allergy.\nTechnique: Multiplanar multisequence MRI of the abdomen and pelvis before and after gadolinium (macrocyclic agent; eGFR noted).\nComparison: CT 01/29/2024.\nFindings: Left kidney: 6.3 cm solid mass in the lower pole with heterogeneous avid enhancement. Left renal vein and IVC patent without tumor thrombus. Perinephric fat intact. Right kidney normal. No retroperitoneal or pelvic adenopathy. Liver, spleen, pancreas and adrenals unremarkable. Post-orchiectomy changes. No suspicious bone marrow lesions.", "conclusion": "6.3 cm enhancing solid left renal mass, consistent with renal cell carcinoma. Renal vein patent. No adenopathy."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Imaging reviewed", "author": "PCP", "date": "2024-11-08T08:15", "body": "Reviewed oncology surveillance imaging: new 6.3 cm L renal mass c/w RCC, and 4 small new R lung nodules. Oncology already arranging urology. Messaged pt to offer a call."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "portal_message",
+          "start": "2024-11-12T20:55",
+          "reason": "questions about kidney mass",
+          "documents": [
+            {"type": "Patient Message", "title": "kidney", "author": "patient", "date": "2024-11-12T20:55", "body": "Oncology told me about the kidney thing. My uncle had kidney cancer. How do I have three different cancers? Is this from the smoking? They want me to see urology the 25th. If they take the kidney out what happens to my kidney numbers, they're already bad."},
+            {"type": "Patient Message", "title": "RE: kidney", "author": "PCP", "date": "2024-11-12T21:30", "body": "Andrew, these are fair questions and I'm sorry you're facing another one. Smoking raises the risk of both lung and kidney cancer, and the family history matters too; sometimes there is no single reason. Losing a kidney will lower your kidney function further, and we will plan around that with urology - they weigh it before deciding how much to remove. I want to see you before any surgery. The front desk will book a pre-op visit once urology sets a date."}
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "specialist_visit",
+          "start": "2024-11-25T15:00",
+          "service": "Urology",
+          "reason": "left renal mass",
+          "documents": [
+            {"type": "Consult Note", "title": "Urologic Oncology Consultation", "author": "urology", "date": "2024-11-26T09:10", "body": "Re: Andrew Marino\n\n63-year-old man known to us from his 01/2024 left orchiectomy (NSGCT, complete response to BEP). Surveillance MRI 11/07 found a 6.3 cm enhancing solid left lower-pole renal mass, renal vein patent, no adenopathy. Concurrent CT chest: four new right lung nodules, 4-9 mm, too small to characterize.\n\nAlso: stage IA lung adenocarcinoma s/p LUL lobectomy (2023); bleomycin pulmonary fibrosis on prednisone 10 mg and 2 L oxygen; CKD 3b after cisplatin; HTN. Paternal uncle with renal cell carcinoma.\nMeds: lisinopril, furosemide, prednisone, home O2, acetaminophen prn.\nAllergies: iodinated contrast, sulfonamide antibiotics.\n\nAssessment: Left renal mass, presumed RCC. Size, central location and enhancement make partial nephrectomy not feasible; we discussed that removing the left kidney will reduce his kidney function further.\nPlan: Left radical nephrectomy, laparoscopic, 01/08/2025. Anesthesia pre-assessment given his lung disease. Medical clearance from his PCP requested. The lung nodules will be followed by oncology.\n\nUrology"}
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation, nephrectomy",
+          "vitals": {"spo2": 95},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-17T10:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "CBC with Differential", "collected": "2024-12-17T10:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2024-12-17T10:05", "text": "Sinus rhythm, rate 80. Normal axis and intervals. No acute ST-T changes. Unchanged from 12/2022.", "conclusion": "Normal ECG, unchanged."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2024-12-17T09:40"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2024-12-17T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Pre-operative Evaluation", "author": "PCP", "date": "2024-12-17T09:40", "body": "Pre-op for laparoscopic L radical nephrectomy 1/8/25 (urology), 6.3 cm L renal mass.\n\nS: On 2 L continuous since August; walks the length of the house and out to the mailbox with the portable tank, stairs slowly. Cough improved on prednisone. No chest pain, no syncope, no orthopnea. No bleeding history. Tolerated lobectomy anesthesia in 2023 without trouble.\nMeds: lisinopril 5, furosemide 20, prednisone 10 daily, O2 2 L NC, acetaminophen prn.\nAllergies: IV contrast (hives), sulfa abx (rash).\n\nO: SpO2 95% on 2 L. Fine bibasilar crackles, unchanged. Heart RRR. No edema.\nECG normal, unchanged.\n\nA/P\nElevated pulmonary risk because of the fibrosis and oxygen need; cardiac risk low. Not a reason to delay cancer surgery; I agree with the anesthesia pre-assessment urology set up.\n- On prednisone 10 mg since August: flagged for anesthesia re: perioperative steroid coverage.\n- Hold lisinopril and furosemide the morning of surgery.\n- Expect creatinine to rise after nephrectomy; BMP 1-2 weeks after discharge here.\n- Incentive spirometry and early walking.\n- Contrast allergy and no-bleomycin alert on the letter.\nNote faxed to urology."}
+          ]
+        }
+      ]
+    }
+  ]
+}

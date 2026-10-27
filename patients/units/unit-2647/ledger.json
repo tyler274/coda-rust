@@ -1,0 +1,1141 @@
+{
+  "unit": "unit-2647",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002647",
+      "given": "Silas",
+      "family": "Mahoney",
+      "birth_date": "1997-08-13",
+      "address_line": "27 Bittersweet Lane",
+      "phone": "+1-603-555-0133",
+      "email": "silas.mahoney@example.test",
+      "marital_status": "single",
+      "summary": "Young farm laborer who joined in January 2024 with nosebleeds and fatigue; diagnosed with HHT, iron deficiency anemia and pulmonary AVMs, then hookworm (Necator) at hematology in late 2024 and a recurrent hookworm infection after volunteering abroad in 2026. Last seen in the practice May 2024; outside records arrive late and the AVM referral was never completed.",
+      "events": [
+        {
+          "id": "2023-12-14a",
+          "kind": "telephone",
+          "start": "2023-12-14T10:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2023-12-14T10:22",
+              "author": "front desk",
+              "body": "Caller is 26 y/o male looking for a primary doctor. Hasn't had one in years, last saw anybody when he was a teenager. Says he gets a lot of nosebleeds and has been run down for months. Has MassHealth, card verified. Works on a farm, days are long, prefers early morning appts. Booked new patient visit Mon 1/8 at 7:40. Sent new patient packet and portal invite to his email."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "establish_care",
+          "start": "2024-01-08T07:40",
+          "end": "2024-01-08T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; recurrent nosebleeds and fatigue",
+          "conditions": [
+            {
+              "label": "Hereditary hemorrhagic telangiectasia",
+              "action": "diagnosed",
+              "onset": "2024-01-08",
+              "note": "Clinical diagnosis: recurrent spontaneous epistaxis, mucocutaneous telangiectasias, affected first-degree relative (mother)"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2024-01-08"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              78
+            ],
+            "hr": 71,
+            "rr": 18,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 64.5,
+            "height_cm": 178.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-01-08T08:30",
+              "resulted": "2024-01-08T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.83
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 55
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-01-08T08:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 6
+                },
+                {
+                  "test": "Iron",
+                  "value": 22
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 452
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-08T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-08T08:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Farm laborer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-01-08T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-08T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-01-08T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-01-08T08:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-avm",
+              "action": "placed",
+              "order": "CT chest with contrast",
+              "category": "imaging",
+              "reason": "HHT, screen for pulmonary arteriovenous malformations"
+            },
+            {
+              "id": "heme-referral",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "iron deficiency anemia with HHT"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-01-08T08:35",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\nCC: nosebleeds, tired all the time.\n\nHPI: 26 y/o man, farm laborer, no regular medical care for years. Over roughly the past 12 months he has had a number of nosebleeds that come on without any trauma or picking. Most stop if he holds pressure; a couple of times he needed the nose packed. Alongside that he has been more and more worn out, and lately gets winded going up a flight of stairs, which is new for him. No chest pain. No black or bloody stools that he has noticed. Never told he had a bleeding problem; no bleeding with dental work that he recalls.\n\nPMH: none known.\nPSH: none.\nMeds: none. No supplements.\nAllergies: NKDA.\nFHx: Mother has had nosebleeds her whole life. Maternal grandfather also had frequent nosebleeds and was anemic, never found out why.\nSHx: Single, lives in South Hadley. Works outdoors on a farm most of the day. Never smoker, no alcohol, no drugs.\n\nROS: fatigue, exertional dyspnea, epistaxis as above. Denies fever, weight loss, hematuria, melena.\n\nExam: Thin young man, comfortable at rest. Vitals per flowsheet.\nHEENT: conjunctivae pale. Many small pinpoint red lesions scattered over the lips, tongue and inner cheeks, blanching, consistent with telangiectasias. No active bleeding from nares.\nNeck: supple, no adenopathy.\nHeart: regular, no murmur.\nLungs: clear.\nAbd: soft, nontender, no hepatosplenomegaly.\nSkin: no bruising. Ext: no edema.\n\nPOC/labs drawn today, will follow.\n\nA/P:\n1. Hereditary hemorrhagic telangiectasia. He meets three clinical criteria today: spontaneous recurrent epistaxis, multiple mucosal telangiectasias, and a first-degree relative (mother) with the same picture. Definite HHT clinically. Explained what this is and that it runs in families. Needs screening for visceral AVMs; pulmonary first. CT chest with contrast ordered.\n2. Anemia, likely iron deficiency from chronic nasal blood loss. CBC and iron studies today. Will start iron once confirmed. Hematology referral placed for ongoing anemia management.\n3. Health maintenance: CMP, HIV and hep C screening today. Flu shot given, tolerated. PHQ-9 3.\n4. Nosebleed first aid reviewed: lean forward, firm pinch over the soft part of the nose 10-15 minutes, ED if it won't stop in 30.\n\nRTC 6-8 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Ferritin": 6,
+              "Hemoglobin": 9.1,
+              "Mean Corpuscular Volume": 72
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T12:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2024-01-09T12:05",
+              "author": "PCP",
+              "body": "Hi Silas,\n\nYour labs from yesterday are back. Your hemoglobin is 9.1, which is well below normal, and your red cells are small (MCV 72). Your iron stores are very low (ferritin 6). That fits iron deficiency from the nosebleeds and explains a lot of the tiredness and getting winded on stairs.\n\nI've sent ferrous sulfate 325 mg, one tablet a day, to your pharmacy. Take it with water or a little orange juice, not with milk or coffee. It can turn your stool dark and sometimes upsets the stomach. Let me know if it does.\n\nKidney and liver tests were normal. HIV and hepatitis C screens were negative.\n\nThe CT imaging place should call you to schedule this week. The hematology office will reach out too.\n\nPCP"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your blood work",
+              "date": "2024-01-09T19:48",
+              "author": "patient",
+              "body": "ok thanks. ct is friday morning. will pick up the pills tonight"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-12a",
+          "kind": "imaging",
+          "start": "2024-01-12T07:15",
+          "service": "Radiology",
+          "reason": "HHT, evaluate for pulmonary AVM",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-01-12T07:15",
+              "text": "EXAM: CT chest with IV contrast.\nCLINICAL INDICATION: Hereditary hemorrhagic telangiectasia. Screening for pulmonary arteriovenous malformation.\nTECHNIQUE: Helical CT of the chest after 75 mL intravenous iodinated contrast. Axial, coronal and sagittal reformats, with MIP reconstructions.\nCOMPARISON: None.\nFINDINGS:\nLungs and airways: Multiple pulmonary arteriovenous malformations are present, each with a feeding artery and draining vein. No consolidation, no pleural effusion, no pneumothorax. Central airways patent.\nMediastinum and hila: No lymphadenopathy. Heart size normal. No pericardial effusion. Thoracic aorta and main pulmonary artery normal in caliber.\nUpper abdomen: Limited images unremarkable.\nBones and soft tissues: No suspicious lesion.",
+              "conclusion": "Multiple pulmonary arteriovenous malformations, in keeping with the history of HHT. Evaluation at a center experienced in pulmonary AVM management is suggested.",
+              "issued": "2024-01-12T13:40"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "telephone",
+          "start": "2024-01-16T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "CT chest result",
+          "conditions": [
+            {
+              "label": "Pulmonary arteriovenous malformation",
+              "action": "diagnosed",
+              "onset": "2024-01-12",
+              "note": "Multiple, on CT chest 1/12/24; HHT",
+              "icd10": "Q25.72"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-avm",
+              "action": "done",
+              "date": "2024-01-12T07:15"
+            },
+            {
+              "id": "hht-center-referral",
+              "action": "placed",
+              "order": "HHT center referral, pulmonary AVM evaluation",
+              "category": "referral",
+              "to": "Interventional Radiology",
+              "reason": "multiple pulmonary arteriovenous malformations, HHT"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result call",
+              "date": "2024-01-16T17:10",
+              "author": "PCP",
+              "body": "Called pt after his shift. Reviewed CT chest: several abnormal artery-to-vein connections in the lungs (pulmonary AVMs), which go along with HHT. Explained these can let small clots or bacteria bypass the lung filter and that they are usually treated by a specialist team, often with a catheter procedure. He was quiet but understood, asked if he could keep working; yes. Referral placed to an HHT center for pulmonary AVM evaluation. Told him to go to the ED for sudden weakness on one side, trouble speaking, or coughing up blood. Taking the iron, no problems so far. He will watch for calls from both referral offices."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "telephone",
+          "start": "2024-01-30T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral coordination",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "date": "2024-01-30T11:30",
+              "author": "referral coordinator",
+              "body": "Hematology referral faxed 1/9 with CBC/iron studies, received on their end, they will call pt. HHT center referral sent 1/17 with CT report and disc request; their intake says pt has to call them himself to register. Left pt VM with the HHT center number and the hematology office number."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "portal_message",
+          "start": "2024-02-20T06:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nosebleed question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "nosebleed",
+              "date": "2024-02-20T06:12",
+              "author": "patient",
+              "body": "had a bad one yesterday at work in the barn, took like 15 min of pinching but it stopped. is that normal for this or should i be doing something else"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: nosebleed",
+              "date": "2024-02-20T09:40",
+              "author": "PCP",
+              "body": "Hi Silas, glad it stopped. Pinching that long is right for you and that's how most of these will go. The dry winter air makes them worse, so a humidifier at night and keeping the inside of the nose moist can help. If one goes past 30 minutes of firm pressure, or you feel lightheaded, go to the ED.\n\nAre you still taking the iron every day? Your follow-up with me is March 11, we'll recheck your blood count then."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "telephone",
+          "start": "2024-03-05T14:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral coordination",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "HHT center unable to reach",
+              "date": "2024-03-05T14:05",
+              "author": "referral coordinator",
+              "body": "HHT center called: two attempts to reach pt, no callback, they will keep the referral on file. Hematology says they have not been able to schedule him yet either. Tried pt cell, no answer, left another VM. Will flag for PCP at the 3/11 visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2024-03-12T09:15",
+              "author": "front desk",
+              "body": "Hi Silas, we missed you at your 7:40 appointment yesterday. Your doctor would like to recheck your blood count soon. Please reply here or call to pick a new time. Early mornings are still open most weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2024-04-29T20:31",
+              "author": "patient",
+              "body": "sorry, calving season, couldnt get away. can do a friday in late may"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-24a",
+          "kind": "office_visit",
+          "start": "2024-05-24T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia and HHT follow-up",
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Constipation on daily dosing; changed to every other day"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every other day",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "EVERY OTHER DAY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              69
+            ],
+            "hr": 58,
+            "spo2": 98,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-24T08:15",
+              "resulted": "2024-05-24T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-24T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-24T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: anemia, HHT",
+              "date": "2024-05-24T08:30",
+              "author": "PCP",
+              "body": "S: Back after missing March. Took the iron for about three weeks in January and quit because it backed him up badly. Nothing since. Nosebleeds still coming a few times a month, mostly stop with pressure, none needing packing since he joined. Still tired, still gets winded on stairs, about the same as January. Never called the HHT center or hematology back; says spring on the farm is nonstop. No hemoptysis, no focal weakness, no headaches.\n\nO: Vitals per flowsheet. Pale. Telangiectasias on lips and tongue unchanged. Nares without active bleeding. Heart regular. Lungs clear. Abdomen soft.\n\nA/P:\n1. Iron deficiency anemia, not treated in practice since February. CBC today. Restart iron at every-other-day dosing, which is absorbed as well and is easier on the gut; can add a stool softener over the counter if needed.\n2. HHT with multiple pulmonary AVMs, not yet evaluated. Went over again why the HHT center visit matters. Re-sent both referrals today and wrote the phone numbers on his visit summary. He says he will call this week.\n3. Epistaxis per HHT, humidification and pressure.\n\nRTC 3 months after hematology sees him."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.4,
+              "Mean Corpuscular Volume": 71
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "portal_message",
+          "start": "2024-05-28T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2024-05-28T08:50",
+              "author": "PCP",
+              "body": "Silas, hemoglobin 9.4, MCV 71. Basically where it was in January, which makes sense since the iron didn't stay on board. Please give the every-other-day iron a real try, and call the HHT center and hematology numbers I gave you. Message me if the constipation comes back."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "telephone",
+          "start": "2024-06-04T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral coordination",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referrals re-sent",
+              "date": "2024-06-04T10:40",
+              "author": "referral coordinator",
+              "body": "Both referrals re-faxed 5/24 with updated CBC. Hematology confirms receipt, next new patient openings are in the fall, pt must call to book. HHT center: still no contact from pt. Left VM for pt with both numbers again."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "pharmacy",
+          "start": "2024-08-19T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: ferrous sulfate",
+              "date": "2024-08-19T09:05",
+              "author": "RN",
+              "body": "E-refill request for ferrous sulfate 325 mg every other day, #45. Last office visit 5/24/24. Refilled x1 per protocol. Note to schedule follow-up added to his chart."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "portal_message",
+          "start": "2024-10-07T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu season",
+              "date": "2024-10-07T13:00",
+              "author": "MA",
+              "body": "Hi Silas, this year's flu shots are in. You can walk in for one any weekday morning, no visit needed. You're also due for a follow-up with your doctor to recheck your blood count. Reply here and we'll set it up."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "specialist_visit",
+          "start": "2024-12-23T13:30",
+          "service": "Hematology",
+          "reason": "Iron deficiency anemia, HHT",
+          "vitals": {
+            "bp": [
+              123,
+              70
+            ],
+            "hr": 72,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 62.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-12-23T13:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.03
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-23T13:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-23T13:50",
+              "results": [
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "Oval, thin-shelled hookworm-type ova seen. Speciation: Necator americanus."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2024-12-23T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "done",
+              "date": "2024-12-23T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2025-04-08T10:15",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY GROUP\nConsultation, date of service 12/23/2024\nReferring: primary care\n\nReason: iron deficiency anemia in a patient with hereditary hemorrhagic telangiectasia.\n\nHistory: 27-year-old man with clinically diagnosed HHT (January 2024) seen today after a gap in care. Over the last four months he has felt progressively more fatigued and can do less physically. He is a farm laborer in a rural area and is outside for most of the working day. Not on any medications at present; he was prescribed oral iron by his primary physician but is not taking it. He reports no overt bleeding, no easy bruising, no night sweats and no recent illness. He does describe intermittent mild abdominal discomfort and loose stools on and off. No nausea, vomiting or yellowing of the skin or eyes. Before this past year he had not been to a doctor for several years.\n\nAllergies: NKDA.\nFamily: mother with recurrent nosebleeds throughout life; maternal grandfather with frequent nosebleeds and iron deficiency anemia never explained.\nSocial: no tobacco, alcohol or drug use.\n\nExam: Vitals within normal limits. Thin, pale young man. Conjunctival pallor, mild. Koilonychia of the fingernails. Grade 2/6 systolic flow murmur at the left sternal border; heart and lungs otherwise unremarkable. Abdomen mildly and diffusely tender, no hepatosplenomegaly.\n\nData: Hgb 9.3 g/dL, MCV 70 fL, ferritin 7 ng/mL, WBC 7,800/mm3 with 8% eosinophils. Given the GI symptoms, outdoor field work and the eosinophilia, stool sent for ova and parasites: oval thin-shelled ova consistent with hookworm, speciated by the reference lab as Necator americanus.\n\nImpression:\n1. Iron deficiency anemia, likely two sources: chronic mucosal blood loss from HHT and intestinal hookworm infection.\n2. Necator americanus infection.\n3. HHT.\n\nPlan:\n- Albendazole 400 mg by mouth, single dose, prescribed today.\n- Resume the oral iron already prescribed, every other day.\n- Return to hematology in 3 months with CBC and ferritin.\n\nThank you for this referral.\nHematology"
+            }
+          ],
+          "state": {
+            "weight_kg": 62.5,
+            "labs": {
+              "Eosinophils %": 8,
+              "Ferritin": 7,
+              "Hemoglobin": 9.3,
+              "Mean Corpuscular Volume": 70,
+              "White Blood Cells": 7.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "pharmacy",
+          "start": "2025-01-06T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication history review",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside fill noted; records request",
+              "date": "2025-01-06T11:20",
+              "author": "RN",
+              "body": "Pulling external fill history ahead of refill review: albendazole 200 mg #2 filled 12/23/24, prescriber at an outside hematology group. Ferrous sulfate last filled 8/19/24. No consult note from hematology in our chart. Records request faxed to hematology for 12/23 visit note and labs. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "telephone",
+          "start": "2025-02-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hematology records, second request",
+              "date": "2025-02-11T15:45",
+              "author": "front desk",
+              "body": "Nothing back from hematology on the January request. Called their records line, they said note not signed yet. Re-faxed request. Will check again in a month."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "telephone",
+          "start": "2025-04-09T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside records reviewed; outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hematology note reviewed",
+              "date": "2025-04-09T09:30",
+              "author": "PCP",
+              "body": "Hematology consult from 12/23/24 received yesterday and reviewed. Pt has not been seen here since 5/24/24. Please call him to book a visit, ideally after his 3-month hematology recheck."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach call",
+              "date": "2025-04-09T12:10",
+              "author": "front desk",
+              "body": "Called cell to schedule f/u per PCP. No answer, mailbox full, could not leave message. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "portal_message",
+          "start": "2025-07-21T21:04",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records copy request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "copy of my records",
+              "date": "2025-07-21T21:04",
+              "author": "patient",
+              "body": "hi, i signed up for a volunteer farm project overseas, leaving mid august for about 6 months. they want a copy of my medical records and shot record. can you send"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: copy of my records",
+              "date": "2025-07-22T10:02",
+              "author": "front desk",
+              "body": "Hi Silas, your visit summaries, labs and immunization record are now available to download under the Health Records tab. Your doctor also asked us to mention that you are overdue for a visit and would like to see you before you leave if you can fit it in. Reply here and we'll find a time."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "portal_message",
+          "start": "2025-10-06T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shots available",
+              "date": "2025-10-06T13:00",
+              "author": "MA",
+              "body": "Hi Silas, flu shots for the 2025-26 season are here. Walk in any weekday morning, or reply to book a visit with your doctor and get it then."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "ed_visit",
+          "start": "2026-02-24T10:20",
+          "end": "2026-02-24T15:05",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath on exertion, fatigue",
+          "vitals": [
+            {
+              "time": "2026-02-24T10:28",
+              "bp": [
+                116,
+                70
+              ],
+              "hr": 104,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-24T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.07
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-24T10:55",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 5
+                },
+                {
+                  "test": "Reticulocytes/100 erythrocytes in Blood",
+                  "loinc": "4679-7",
+                  "unit": "%",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-24T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-03-09T14:30",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nVisit 2/24/2026, arrived 10:20, discharged 15:05\n\nChief complaint: short of breath with exertion, exhausted.\n\nHPI: 28M with hereditary hemorrhagic telangiectasia (dx 2024) and a hookworm (Necator) infection treated in 2024, here with sudden, marked breathlessness on any exertion and profound fatigue. About three weeks ago he came back to the US after six months doing volunteer agricultural development work in rural villages in the tropics. He was barefoot in the fields much of the time and remembers an itchy rash on the soles of his feet over there that cleared up without treatment. No overt bleeding, no weight loss, has not changed how he eats. No fever, no black or bloody stools.\n\nAllergies: NKDA.\nMeds (per our system): ferrous sulfate 325 mg every other day; pt says he takes nothing.\nFamily: mother and maternal grandfather with frequent nosebleeds; grandfather with iron deficiency anemia.\nSocial: farm laborer. Never smoker, no alcohol.\n\nExam: T 36.8, HR 104, BP 116/70, RR 18, SpO2 97% RA.\nPale, mildly tachycardic, speaking full sentences. Conjunctivae pale. Soft systolic flow murmur. Lungs clear. Abdomen soft, nontender. No lymphadenopathy.\n\nResults: Hgb 9.6, MCV 72. Ferritin 5 (low). Reticulocytes 2.6% (mildly increased).\n\nMDM: Symptomatic microcytic iron deficiency anemia, hemodynamically stable. Likely ongoing HHT losses plus possible re-infection with hookworm given the exposure history. Stool ova and parasites sent; we will call with the result.\n\nDisposition: discharged home. Follow up with primary care and hematology this week. Return for chest pain, fainting, black stools or bleeding that won't stop.\n\nEmergency Medicine"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 5,
+              "Hemoglobin": 9.6,
+              "Mean Corpuscular Volume": 72
+            }
+          }
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "telephone",
+          "start": "2026-02-27T16:15",
+          "service": "Emergency Medicine",
+          "reason": "ED result callback",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-24T13:40",
+              "resulted": "2026-02-27T11:02",
+              "results": [
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "Hookworm ova present."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED callback: stool O&P",
+              "date": "2026-03-09T14:30",
+              "author": "emergency medicine",
+              "body": "ED results callback, 2/27/2026 16:15. Stool O&P from 2/24 positive for hookworm ova. Reached patient by phone, identity confirmed. Albendazole 400 mg as a one-time dose sent to his pharmacy. Advised shoes outdoors, keep the PCP and hematology follow-up. Pt agreeable."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up outreach",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your ER visit",
+              "date": "2026-03-10T08:05",
+              "author": "PCP",
+              "body": "Hi Silas, I received the records from your ER visit last month and the stool result. Welcome back. I'd like to see you in the office soon to go over your blood count, the iron, and the lung AVM referral we never got to. Please reply or call and we'll get you in early in the morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "telephone",
+          "start": "2026-03-24T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling call",
+              "date": "2026-03-24T09:50",
+              "author": "front desk",
+              "body": "Portal message from 3/10 unread. Called pt to schedule post-ED visit, no answer, left VM with callback number."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "portal_message",
+          "start": "2026-06-15T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Overdue visit reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for a visit",
+              "date": "2026-06-15T13:00",
+              "author": "front desk",
+              "body": "Hi Silas, our records show it has been over two years since your last office visit. Your doctor would still like to see you. Reply here or call us to book, early morning slots available."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Pulmonary arteriovenous malformation|Q25.72": {
+        "code": "Q25.72",
+        "display": "Congenital pulmonary arteriovenous malformation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Ova and parasites identified in Stool by Light microscopy": {
+        "code": "10704-5",
+        "display": "Ova and parasites identified in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Reticulocytes/100 erythrocytes in Blood": {
+        "code": "4679-7",
+        "display": "Reticulocytes/Erythrocytes in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

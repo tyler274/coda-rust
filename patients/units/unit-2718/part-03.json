@@ -1,0 +1,650 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002718",
+   "events": [
+    {
+     "id": "2025-01-16a",
+     "kind": "outside_records",
+     "start": "2025-01-16T10:30",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2025-01-16T10:30",
+       "body": "Annual diabetic eye exam 01/09/2025. Dilated. Retina flat, no hemorrhages or exudates, no neovascularization. No diabetic retinopathy in either eye. Acuity 20/20 OD, 20/20 OS corrected. See again in a year."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-14a",
+     "kind": "lab_only",
+     "start": "2025-04-14T07:40",
+     "reason": "Fasting labs before follow-up",
+     "state": {
+      "weight_kg": 90.3,
+      "labs": {
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-04-14T07:40",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 146
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-14T07:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-04-14T07:40",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 38
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 130
+        },
+        {
+         "test": "Triglycerides",
+         "value": 220
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-04-14T07:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-04-14T07:40"
+      }
+     ]
+    },
+    {
+     "id": "2025-04-21a",
+     "kind": "office_visit",
+     "start": "2025-04-21T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Weight management and diabetes follow-up",
+     "vitals": {
+      "bp": [
+       132,
+       86
+      ],
+      "weight_kg": 90.3
+     },
+     "measure": [
+      "hr",
+      "spo2"
+     ],
+     "conditions": [
+      {
+       "label": "Obesity, unspecified",
+       "action": "diagnosed",
+       "onset": "2024-04-01"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-04-21T16:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-referral",
+       "action": "placed",
+       "order": "Endocrinology referral",
+       "category": "referral",
+       "to": "Endocrinology",
+       "reason": "Central weight gain and weight-loss plateau after gastric bypass, with type 2 diabetes"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Weight and Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2025-04-21T17:05",
+       "body": "Returns for weight follow-up, 6 months after we made a plan at her physical. Bypass 2022, course complicated by a leak that year.\n\nShe has done everything we discussed: low-calorie plan with a food log app, gym 3-4x/week after work since November. Down only 2 kg in 6 months. Clearly frustrated, a little tearful. Feels her belly is bigger even though the scale barely moved; pants tight at the waist, other clothes fit the same. Taking metformin and lisinopril, plus her bariatric supplements.\n\nNo polyuria. Sleeping ok. No new meds or OTCs.\n\nExam: BP 132/86. Wt 90.3 kg, BMI 34. Waist circumference 102 cm. Abdomen protuberant, soft, nontender, scars healed. No edema. Heart/lungs nl.\n\nLabs 4/14 (fasting): glucose 146, A1c 7.2, TC 210, HDL 38, LDL 130, TG 220. Reviewed with her.\n\nA/P\n1. Obesity, BMI 34, with weight regain and now a plateau despite a real effort, and weight redistributing to the middle. Adding obesity to the problem list. Given the plateau and central pattern in a woman with diabetes and hypertension, would like endocrinology to evaluate before anything else. Referral placed.\n2. T2DM: A1c 7.2, drifting up. Continue metformin 1000 BID for now; revisit after endo.\n3. HTN: 132/86, ok on lisinopril 20.\n4. Lipids reviewed.\nRTC after endo visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-22a",
+     "kind": "telephone",
+     "start": "2025-04-22T10:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Endocrinology referral",
+       "author": "front desk",
+       "date": "2025-04-22T10:15",
+       "body": "Endocrinology referral faxed with last note and labs. Their office will call pt; earliest new patient slot is mid-May. Pt aware."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-28a",
+     "kind": "outside_records",
+     "start": "2025-05-28T13:45",
+     "reason": "Endocrinology consultation letter",
+     "conditions": [
+      {
+       "label": "Cushing syndrome",
+       "action": "diagnosed",
+       "onset": "2024-10-01"
+      },
+      {
+       "label": "Collapsed vertebra, lumbar region (L1 compression fracture)",
+       "icd10": "M48.56XA",
+       "action": "diagnosed",
+       "onset": "2025-05-10"
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-referral",
+       "action": "done",
+       "date": "2025-05-28T13:45"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-05-19T08:05",
+       "results": [
+        {
+         "test": "Cortisol, AM",
+         "value": 29
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-05-19T08:05",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 132
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-05-19T08:05",
+       "results": [
+        {
+         "test": "Calcium",
+         "value": 9.2
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 138
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-05-17T07:00",
+       "resulted": "2025-05-21T15:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24-hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 388
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Lumbar spine X-ray",
+       "performed": "2025-05-19T10:10",
+       "text": "AP and lateral views of the thoracolumbar junction and lumbar spine. Anterior wedge compression deformity of the L1 vertebral body. Posterior vertebral body line intact. No lytic or blastic lesion, no endplate erosion, no paraspinal soft tissue mass. Remaining vertebral heights preserved. Disc spaces maintained. Alignment normal.",
+       "conclusion": "Anterior wedge compression fracture of L1. No radiographic evidence of malignancy or infection."
+      },
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2025-05-22T09:00",
+       "text": "DXA of the lumbar spine (L1 excluded due to fracture) and both proximal femurs. Patient is premenopausal; Z-scores are reported. Bone mineral density at the lumbar spine and hips is below the expected range for age.",
+       "conclusion": "Decreased bone mineral density for age."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Consultation",
+       "author": "endocrinology",
+       "date": "2025-05-28T13:45",
+       "body": "Endocrinology consultation. Date of visit 05/19/2025.\nReferred by her primary care physician for central weight gain and a weight-loss plateau after gastric bypass.\n\nHistory: 48-year-old woman (49 next month) with type 2 diabetes, hypertension and Roux-en-Y gastric bypass in 2022 complicated by an anastomotic leak. About two weeks ago she reached up to a high shelf for a heavy box, twisted, felt something give way in her mid-back with a pop, and has had severe pain there since. No fall, no major trauma. Separately, for several months she has noticed her middle getting bigger, which she connects to a stressful stretch in her life. Energy is low and she tires easily.\nMeds: metformin 1000 mg twice daily, lisinopril 20 mg daily, cyanocobalamin 1000 mcg daily, calcium carbonate/vitamin D twice daily, multivitamin. No glucocorticoids of any kind, by mouth, inhaled, injected or topical.\nAllergies: NKDA. Never smoker, no alcohol or drugs.\n\nExam: Purplish striae across the lower abdomen and upper thighs. Tender to palpation over the thoracolumbar spine; range of motion limited by pain. Neurologically intact in the legs.\n\nResults:\n8 AM cortisol 29 ug/dL\n24-hour urine free cortisol 388 ug/day\nFasting glucose 132 mg/dL\nCalcium 9.2 mg/dL\nAlkaline phosphatase 138 U/L\nThoracolumbar films: anterior wedge compression fracture at L1, no features of malignancy or infection.\nDXA: decreased bone mineral density.\n\nAssessment:\n1. Cushing syndrome. Clinical features (central weight gain, violaceous striae, low-trauma vertebral fracture with low bone density, worsening glucose) with a markedly elevated urine free cortisol and high morning cortisol, no exogenous steroid exposure.\n2. L1 compression fracture with decreased bone density, consistent with cortisol excess.\n\nPlan: Diagnosis discussed with her. Continue calcium and vitamin D. Activity as tolerated for the back. Will see her back in clinic.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2025-05-29a",
+     "kind": "portal_message",
+     "start": "2025-05-29T07:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Endocrinology appointment",
+       "author": "patient",
+       "date": "2025-05-29T07:55",
+       "body": "The endocrinologist said I have Cushing's. I looked it up and I'm kind of freaked out. Can I come in to talk about it? My back is still killing me too."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Endocrinology appointment",
+       "author": "PCP",
+       "date": "2025-05-29T12:10",
+       "body": "Of course. I have their letter. Front desk will call you for a visit next week or the one after. Until then, heat and gentle walking for the back; call if you get numbness, weakness in the legs, or trouble with bladder or bowels."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "office_visit",
+     "start": "2025-06-10T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Discuss Cushing syndrome diagnosis, back pain",
+     "state": {
+      "weight_kg": 90.6
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-06-10T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up - Endocrinology Results",
+       "author": "PCP",
+       "date": "2025-06-10T11:45",
+       "body": "Here to talk through the endocrinology consult. Endo letter of 5/19 reviewed: high 8 AM cortisol and 24-h urine free cortisol, striae, L1 wedge compression fracture on films, low bone density on DXA. Diagnosis Cushing syndrome.\n\nShe was scared after reading online. We went over what it means: her body is making too much cortisol, which explains the belly weight, the stretch marks, the fracture and some of the sugar drift. The endocrinologist will be the one to sort out where it's coming from and how to treat it.\n\nBack: pain 4/10, better than 3 weeks ago. Working, sitting with a lumbar pillow. No leg numbness or weakness, no bladder or bowel change.\n\nExam: BP and weight in flowsheet. Mild tenderness at thoracolumbar junction. Strength 5/5 legs, reflexes symmetric, gait normal.\n\nA/P\n1. Cushing syndrome, new per endocrinology. Endo follow-up pending on their end.\n2. L1 compression fracture with low bone density. Improving. Continue calcium/vitamin D. Heat, walking, avoid heavy lifting.\n3. T2DM, HTN: unchanged plan.\nRTC at physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-09a",
+     "kind": "imaging",
+     "start": "2025-09-09T07:40",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2025-09-09T07:40",
+       "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2023 and 2021. Breasts are scattered fibroglandular. No suspicious mass, calcifications or distortion. No change.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Mammogram result letter",
+       "author": "front desk",
+       "date": "2025-09-11T09:45",
+       "body": "Dear Ms. Tremblay, your 9/9/2025 screening mammogram is normal. A copy of the report has gone to your primary care doctor."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-16a",
+     "kind": "annual_physical",
+     "start": "2025-09-16T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 86.4,
+      "bp": [
+       130,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.0,
+       "Hemoglobin": 12.1,
+       "Mean Corpuscular Volume": 96,
+       "Low Density Lipoprotein": 131,
+       "Triglycerides": 214,
+       "High Density Lipoprotein": 38
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-16T09:40",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-09-16T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-09-16T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-09-16T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-09-16T09:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-09-16T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-09-16T09:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "Bloating, watery diarrhea and weight loss after gastric bypass"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-09-16T09:55",
+       "body": "Annual physical, 49F.\n\nNew issue: since around April, bloating, a lot of gas and watery loose stools, several a day, worse after meals. Weight down about 4 kg since June without trying, which after last spring she is half pleased and half worried about. No blood in stool, no black stools, no vomiting, no fever. No travel, no recent antibiotics. Diet unchanged.\nBack pain much better, occasional ache.\nHas not heard from endocrinology about a follow-up; will call them.\n\nMeds: metformin 1000 BID, lisinopril 20, cyanocobalamin 1000 mcg, Ca/D BID, MVI. NKDA.\n\nExam: Wt 86.4 kg. BP 130/84. Gen nl. Heart RRR, lungs clear. Abd soft, mildly distended, nontender, scars healed, bowel sounds active. Skin: faded striae lower abdomen. Feet nl, monofilament intact.\n\nA/P\n1. Bloating, diarrhea, weight loss post-RYGB, 5 months. Referral to GI. FIT deferred this year since GI is evaluating.\n2. T2DM: A1c today. Metformin can cause loose stools but she has been on the same dose for 12 years.\n3. HTN controlled.\n4. Cushing syndrome: to call endo.\n5. HM: mammogram done 9/9, normal. Pap 2024. Flu/COVID at nurse visit next month. PHQ-2 1.\nRTC after GI."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       130,
+       84
+      ],
+      "weight_kg": 86.4
+     }
+    },
+    {
+     "id": "2025-09-18a",
+     "kind": "portal_message",
+     "start": "2025-09-18T13:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2025-09-18T13:05",
+       "body": "Hi Michelle, labs from your physical: A1c 7.0, kidney and liver tests normal, blood count within normal range, urine protein normal. GI referral is in; they should call within a couple of weeks."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-08a",
+     "kind": "nurse_visit",
+     "start": "2025-10-08T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-08T12:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-08T12:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-08T12:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2025-10-08T12:50",
+       "body": "Flu (trivalent) L arm, COVID R arm. No prior reactions. Observed 15 minutes, fine. GI appt is 10/21."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-29a",
+     "kind": "outside_records",
+     "start": "2025-10-29T15:10",
+     "reason": "Gastroenterology consultation letter",
+     "state": {
+      "weight_kg": 85.8
+     },
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "done",
+       "date": "2025-10-29T15:10"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-10-21T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.2
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 101
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-21T10:30",
+       "results": [
+        {
+         "test": "Vitamin B12",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-21T10:30",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 98
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-21T10:30",
+       "resulted": "2025-10-24T11:00",
+       "results": [
+        {
+         "test": "Ova and parasites, stool",
+         "loinc": "10704-5",
+         "text": "No ova or parasites seen"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-21T10:30",
+       "resulted": "2025-10-22T09:00",
+       "results": [
+        {
+         "test": "C. difficile toxin, stool",
+         "loinc": "34468-9",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Consultation",
+       "author": "gastroenterology",
+       "date": "2025-10-29T15:10",
+       "body": "Gastroenterology consultation, visit date 10/21/2025.\nReason for referral: bloating, diarrhea and weight loss after gastric bypass.\n\nHPI: 49-year-old woman, about three and a half years out from Roux-en-Y gastric bypass (anastomotic leak, repaired) and recently diagnosed with Cushing syndrome by endocrinology. Six months of bloating, flatulence and watery diarrhea. She has lost 10 pounds over that time without changing what she eats or how much she exercises. Denies fever, vomiting, hematochezia or melena.\nPMH also: type 2 diabetes, well controlled on metformin; hypertension.\nMeds: metformin, lisinopril, cyanocobalamin, calcium/vitamin D, multivitamin. NKDA. Never smoker, no alcohol.\n\nExam: Abdomen mildly distended, diffusely tender on palpation without rebound or guarding. Hyperactive bowel sounds. Well-healed laparotomy and port scars.\n\nData: Hemoglobin 11.2 g/dL, MCV 101 fL, serum B12 150 pg/mL (low despite daily oral supplement), fasting glucose 98 mg/dL. Stool for ova and parasites negative; C. difficile toxin negative.\n\nAssessment: Post-bypass bloating and diarrhea with weight loss; anemia with low B12.\nPlan:\n1. Upper endoscopy to evaluate the gastric pouch, anastomosis and Roux limb. Scheduled 11/04.\n2. Low B12 and anemia: recommend hematology evaluation; we will let the PCP place the referral.\n\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2025-11-10a",
+     "kind": "outside_records",
+     "start": "2025-11-10T09:20",
+     "reason": "Upper endoscopy report",
+     "conditions": [
+      {
+       "label": "Stricture of gastrojejunal anastomosis",
+       "icd10": "K91.89",
+       "action": "diagnosed",
+       "onset": "2025-11-04"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Upper Endoscopy with Balloon Dilation",
+       "author": "gastroenterology",
+       "date": "2025-11-10T09:20",
+       "body": "Procedure: Esophagogastroduodenoscopy with through-the-scope balloon dilation. Date 11/04/2025.\nIndication: bloating, diarrhea, weight loss after Roux-en-Y gastric bypass.\nSedation: monitored anesthesia care. ASA II.\n\nFindings:\n- Esophagus: normal mucosa, normal Z-line.\n- Gastric pouch: small, normal mucosa.\n- Gastrojejunal anastomosis: stricture, estimated 9 mm diameter; the standard endoscope passed with resistance. No marginal ulcer, no staples or sutures exposed.\n- Roux limb: normal as far as examined.\nIntervention: CRE balloon dilation of the anastomosis to 15 mm, held 60 seconds. Minimal expected oozing. Scope then passed easily.\nComplications: none.\n\nImpression: Anastomotic stricture at the gastrojejunostomy, dilated to 15 mm.\nRecommendations: liquids today, advance to usual diet tomorrow. Call for chest pain, fever or vomiting."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-12a",
+     "kind": "portal_message",
+     "start": "2025-11-12T11:30",
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "placed",
+       "order": "Hematology referral",
+       "category": "referral",
+       "to": "Hematology",
+       "reason": "Anemia with low vitamin B12 after gastric bypass"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "GI results and next step",
+       "author": "PCP",
+       "date": "2025-11-12T11:30",
+       "body": "Hi Michelle, I have the GI letter and the endoscopy report. They found a narrowing where the stomach pouch joins the intestine and stretched it open. Your blood count is a little low and your B12 level is low even though you take it every day, so GI suggested you see hematology. I've placed that referral; their office will call. Keep taking your B12 until they see you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: GI results and next step",
+       "author": "patient",
+       "date": "2025-11-12T18:22",
+       "body": "Ok thanks. Eating feels a bit easier since the scope. Still running to the bathroom though. Hematology's first opening is end of December."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

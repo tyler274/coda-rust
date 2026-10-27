@@ -1,0 +1,1709 @@
+{
+  "unit": "unit-2602",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002602",
+      "given": "Hunter",
+      "family": "Wright",
+      "birth_date": "1992-06-10",
+      "address_line": "27 Bardwell Ridge Road",
+      "phone": "+1-603-555-0116",
+      "email": "hunter.wright@example.test",
+      "marital_status": "single",
+      "summary": "Software engineer in his early thirties who joins in 2024 with oral ulcers, constipation and new back stiffness; a bilateral uveitis that autumn leads to an ankylosing spondylitis diagnosis and biologic therapy, and in 2025 a perianal abscess uncovers ileal Crohn's disease. A second perianal abscess sends him to an ED after his last visit.",
+      "events": [
+        {
+          "id": "2024-07-03a",
+          "kind": "telephone",
+          "start": "2024-07-03T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2024-07-03T10:20",
+              "author": "front desk",
+              "body": "Caller is moving his primary care to us; his old office is closing its adult panel. Works remotely as a software engineer, flexible schedule. Membership info emailed, he signed up during the call. New patient visit set for 7/17 at 9:00. Records release signed electronically and faxed to his former primary care office. He'll bring his supplement bottle to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-17a",
+          "kind": "establish_care",
+          "start": "2024-07-17T09:00",
+          "end": "2024-07-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Recurrent oral aphthae",
+              "action": "diagnosed",
+              "onset": "2015-01-01",
+              "note": "years of recurrent mouth ulcers, self-limited",
+              "icd10": "K12.0"
+            },
+            {
+              "label": "Chronic constipation",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "long-standing, managed with fiber and diet"
+            },
+            {
+              "label": "Unspecified acute and subacute iridocyclitis",
+              "action": "history",
+              "onset": "2023-10-01",
+              "note": "one episode autumn 2023, treated with drops at an outside eye clinic, resolved",
+              "icd10": "H20.00"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 IU) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "over-the-counter supplement"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              75
+            ],
+            "hr": 63,
+            "spo2": 97,
+            "weight_kg": 70.3,
+            "height_cm": 179.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-17T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 277
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-17T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-07-17T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-17T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software engineer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-07-17T09:00"
+            },
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "2004-08-01T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-17T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-07-17T09:00",
+              "author": "PCP",
+              "body": "32M here to establish. Software engineer, works from home most days at a standing desk he admits he rarely stands at.\n\nConcerns today:\n1. Low back stiffness for roughly two weeks. Worst first thing in the morning, loosens up after he's been moving around for a while. No injury, no leg symptoms, no bowel or bladder change. Has not taken anything for it.\n2. Mouth ulcers on and off for years, a few times a year, heal on their own in a week or so. Uses an OTC numbing gel when they flare.\n3. Has always run constipated; does fine with a fiber supplement and fruit, no laxatives.\n4. Had one bout of iritis last October, painful red eye, an eye clinic treated it with drops and it cleared. Nothing since.\n\nPMH: as above. PSH: tonsils out at 12.\nMeds: vitamin D3 2000 IU daily, self-started.\nAllergies: none to medications.\nFamily: father has Crohn's disease. Maternal uncle with ankylosing spondylitis. Mother hypothyroid.\nSocial: single, lives in Belchertown. Never smoked. 2-3 drinks a week socially. Hikes on weekends.\n\nExam: well-appearing, lean. HEENT: no active oral ulcers today, conjunctivae clear. Neck supple, no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Back: no midline tenderness, full forward flexion and extension, negative straight leg raise both sides. Neuro grossly intact, reflexes symmetric. Skin clear.\n\nA/P:\n- Low back stiffness: likely mechanical, desk posture and sitting. Gave a stretching handout, encouraged breaking up sitting time and getting back to his core routine. Let me know if not better in 4-6 weeks.\n- Recurrent aphthous ulcers: benign course, continue OTC care.\n- Chronic constipation: stable on fiber.\n- Past iritis: resolved; should call us or eye care same day for any red painful eye.\n- Health maintenance: CBC, CMP, lipids, one-time HIV and hep C screen today. PHQ-2 0. Flu and COVID when available in the fall.\nRTC in the fall or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "portal_message",
+          "start": "2024-07-19T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-07-19T14:05",
+              "author": "PCP",
+              "body": "Hi Hunter, all of your labs from Wednesday look good: blood counts, kidney and liver tests, and cholesterol are normal, and the HIV and hepatitis C screens are negative. Nothing to do. Hope the stretching is helping."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "telephone",
+          "start": "2024-09-30T08:12",
+          "reason": "red painful eyes",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Triage: bilateral eye pain and redness",
+              "date": "2024-09-30T08:12",
+              "author": "RN",
+              "body": "Pt calling, both eyes red and painful since Saturday, vision blurry, light hurts. Says it feels like the iritis he had last year but both sides this time. No injury, no contacts, no discharge. Discussed with PCP: needs to be seen by eye care today. Called the ophthalmology group's urgent line and got him an 11:30 slot. Pt has a friend driving him. Also mentioned the low back stiffness never really went away. Told him to keep that for his follow-up with us."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "outside_records",
+          "start": "2024-10-10T13:40",
+          "reason": "ophthalmology consult records",
+          "conditions": [
+            {
+              "label": "Unspecified acute and subacute iridocyclitis",
+              "action": "resolved",
+              "icd10": "H20.00"
+            },
+            {
+              "label": "Recurrent acute iridocyclitis, bilateral",
+              "action": "diagnosed",
+              "onset": "2024-09-28",
+              "note": "HLA-B27 positive anterior uveitis",
+              "icd10": "H20.023"
+            },
+            {
+              "label": "Ankylosing spondylitis of unspecified sites in spine",
+              "action": "diagnosed",
+              "onset": "2024-07-01",
+              "note": "bilateral sacroiliitis on X-ray, HLA-B27 positive"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+              "action": "historical",
+              "sig": "1 drop in both eyes every 2 hours while awake, then taper as directed",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "anterior uveitis"
+            },
+            {
+              "drug_text": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "1 drop in both eyes three times daily",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "anterior uveitis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-30T12:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 30
+                },
+                {
+                  "test": "HLA-B27 antigen",
+                  "loinc": "4821-5",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "X-ray pelvis",
+              "loinc": "28561-9",
+              "performed": "2024-09-30T13:05",
+              "text": "AP view of the pelvis. Both sacroiliac joints show erosive change with subchondral sclerosis and irregular joint margins. Hip joints preserved. No fracture. Visualized lower lumbar spine without acute finding.",
+              "conclusion": "Bilateral sacroiliitis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation, visit 09/30/2024",
+              "date": "2024-10-10T13:40",
+              "author": "ophthalmology",
+              "body": "Re: Hunter Wright, DOB 06/10/1992. Date of visit 09/30/2024.\n\nThank you for sending Mr. Wright. He came in with two days of aching, red eyes with blurring in both eyes. He had one prior bout of anterior uveitis about a year ago. On review he also describes three months of low back pain, at its worst on waking and better with exercise. No recent infection or trauma. Recurrent oral ulcers by history.\n\nMedications: vitamin D3. Allergies: NKDA.\n\nExam: Visual acuity reduced in both eyes. Ciliary flush OU. Slit lamp: anterior chamber cell OU. Corneas clear, no keratic precipitates of note, IOP normal. Dilated fundus exam without posterior involvement. Lumbar spine tender on palpation with limited range of motion.\n\nWorkup: ESR 45 mm/hr, CRP 3.0 mg/dL, HLA-B27 positive. AP pelvis: bilateral sacroiliitis.\n\nImpression: Recurrent acute anterior uveitis, bilateral, HLA-B27 associated. Inflammatory back pain with radiographic sacroiliitis, consistent with ankylosing spondylitis.\n\nPlan: Prednisolone acetate 1% OU every 2 hours while awake with a taper over about four weeks; cyclopentolate 1% OU three times daily for comfort. Recheck here in one week. Recommend rheumatology evaluation for the spondyloarthritis.\n\nAllergies: NKDA.\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "office_visit",
+          "start": "2024-10-14T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after uveitis; back pain",
+          "vitals": {
+            "bp": [
+              116,
+              73
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 70.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-14T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-14T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-14T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-14T15:37"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "ankylosing spondylitis with HLA-B27 uveitis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-10-14T15:00",
+              "author": "PCP",
+              "body": "S: Following up after the eye episode. Eye letter arrived Thursday, reviewed. Eyes feel almost back to normal, light sensitivity gone, still on the steroid drop taper (down to twice a day) and finished the dilating drops. Eye doctor saw him back last week and was happy.\nBack: honestly no better than in July. Still stiff for the first hour of the day, eases with a walk. Stretches have not changed much.\n\nReviewed ophtho workup: ESR 45, CRP 3.0 mg/dL, HLA-B27 positive, pelvis film with bilateral sacroiliitis.\n\nO: Looks well. Conjunctivae minimally injected. Lumbar paraspinals mildly tender, forward bending limited compared to July. Hips full range.\n\nA/P:\n- Ankylosing spondylitis: B27 positive with SI changes on film and morning stiffness that eases with activity; his uncle has it too. Referral to rheumatology placed, asked for the next new patient opening. Keep moving, swimming or yoga fine.\n- Recurrent anterior uveitis, both eyes: improving, finish taper per ophthalmology, same-day eye care for any recurrence.\n- Flu and COVID vaccines given today.\nF/u after rheumatology."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-22a",
+          "kind": "portal_message",
+          "start": "2024-11-22T19:48",
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "done",
+              "date": "2024-11-22T19:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rheumatology update",
+              "date": "2024-11-22T19:48",
+              "author": "patient",
+              "body": "Saw rheumatology Wednesday. They agree it's AS. Started me on sulfasalazine, working up to 2 pills twice a day over a month. They also drew a TB test and hepatitis labs because they want to add Humira once insurance says yes. Just keeping you posted. Eyes are totally fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rheumatology update",
+              "date": "2024-11-23T09:15",
+              "author": "PCP",
+              "body": "Thanks for the update, Hunter. That plan makes sense. Taking the sulfasalazine with food helps the stomach. I'll watch for their letter."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "outside_records",
+          "start": "2025-01-06T11:25",
+          "reason": "rheumatology consult records",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-20T11:10",
+              "results": [
+                {
+                  "test": "Quantiferon-TB Gold",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B core antibody, total",
+                  "loinc": "16933-4",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology new patient consultation, 11/20/2024",
+              "date": "2025-01-06T11:25",
+              "author": "rheumatology",
+              "body": "Patient: Hunter Wright. DOB 06/10/1992. Seen 11/20/2024 at the request of his primary care physician.\n\nHistory: 32-year-old software engineer with about five months of low back pain and morning stiffness lasting close to an hour, eased by activity, and two episodes of acute anterior uveitis, the second bilateral in late September. HLA-B27 positive; ESR 45 and CRP 3.0 mg/dL at the eye visit; plain film shows bilateral sacroiliitis. Long history of oral aphthae. Chronic constipation, no diarrhea or bleeding. Maternal uncle with AS, father with Crohn's disease.\n\nMeds: vitamin D3 2000 IU daily; finishing prednisolone eye drops. Allergies: NKDA.\n\nExam: Afebrile. Lumbar flexion reduced, tenderness over both SI joints. No peripheral synovitis, no enthesitis at the heels. Chest expansion preserved. Skin and nails clear. Eyes quiet.\n\nAssessment: Ankylosing spondylitis (radiographic axial spondyloarthritis) with recurrent HLA-B27 anterior uveitis.\n\nPlan:\n1. Sulfasalazine, 500 mg daily, increase by 500 mg each week to 1000 mg twice daily.\n2. Given two uveitis episodes, a monoclonal TNF inhibitor is preferred: adalimumab 40 mg subcutaneously every 14 days once approved. Prior authorization submitted.\n3. Pre-biologic screen today: QuantiFERON negative, hepatitis B surface antigen and core antibody nonreactive.\n4. Home exercise program. Inactivated vaccines encouraged; avoid live vaccines once on adalimumab.\n5. Return in 3 months.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "portal_message",
+          "start": "2025-01-09T12:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Humira approved",
+              "date": "2025-01-09T12:31",
+              "author": "patient",
+              "body": "Insurance finally approved the Humira. Specialty pharmacy is shipping the pens, first shot is Monday the 13th, every two weeks after that. The nurse from the drug company is doing a video call to walk me through the first one. Anything I should know from your end?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Humira approved",
+              "date": "2025-01-09T16:02",
+              "author": "PCP",
+              "body": "Good news. A few things: let us know about any fever or infection that isn't settling, since this medicine dampens the immune system. Flu and COVID shots are already done for the season. When you're in next we'll talk about the pneumonia and shingles vaccines, both fine to get on it."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "loose stools, weight loss",
+          "medications": [
+            {
+              "drug_text": "sulfasalazine 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (1000 mg) by mouth twice daily with food",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ankylosing spondylitis"
+            },
+            {
+              "drug": "0.4 ML adalimumab 100 MG/ML Auto-Injector",
+              "action": "historical",
+              "sig": "Inject 40 mg under the skin every 14 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "ankylosing spondylitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              77
+            ],
+            "hr": 61,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 67.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-08T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-08T10:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T10:45",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-08T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T10:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "loose stools, weight loss, family history of Crohn's disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-08T10:00",
+              "author": "PCP",
+              "body": "Rescheduled from March (work trip).\n\nS: Stools have gone loose over the past 2-3 months, a big switch for someone who has always been constipated. Belly discomfort on and off, some days worse than others. Feels run down, gets low-grade temps some evenings. Mouth has been sore at times, clears up by itself. Appetite poor, eating at odd hours, and weight has drifted down over the year. No travel, no antibiotics, no new foods. Also some soreness around the bottom the past couple of weeks, hard to sit through long meetings. Back and eyes are fine since the Humira started in January.\n\nMeds reviewed and list updated: sulfasalazine 1000 mg BID (since Nov, rheum), adalimumab 40 mg q14 days (since 1/13, rheum), vitamin D3 2000 IU.\n\nO: Thin. Weight down about 3 kg since last July. Abdomen soft, mildly tender low across both quadrants, no guarding, no mass. Declined perianal exam today, would rather wait for GI.\n\nA/P:\n- Change in bowel habit with weight loss, fevers, oral soreness, perianal pain, in a man with a father with Crohn's: needs GI. Referral placed, urgent. CBC, CMP, CRP today.\n- AS and uveitis: quiet on current regimen.\nCall if fevers climb or the perianal pain gets worse before GI sees him."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T08:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2025-04-10T08:44",
+              "author": "PCP",
+              "body": "Hunter, your hemoglobin is a little low at 12.6 (mild anemia), and the inflammation marker CRP is slightly up at 0.8 mg/dL. Kidney and liver tests are fine. This fits with some inflammation in the gut and is useful for GI to have; I've sent it to them with the referral. They have you on the list for early May."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T21:10",
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2025-05-08T21:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI visit",
+              "date": "2025-05-08T21:10",
+              "author": "patient",
+              "body": "Saw GI Tuesday. She looked at the sore spot and wants an MRI of my pelvis next week before deciding anything. Said Crohn's is on the list given my dad. FYI in case you don't get her note."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T09:50",
+          "reason": "outside imaging report",
+          "reports": [
+            {
+              "study": "MRI pelvis without and with contrast",
+              "loinc": "30674-6",
+              "performed": "2025-05-16T15:20",
+              "text": "Perianal protocol. A small perirectal fluid collection lies adjacent to the anal canal with rim enhancement, suggestive of an abscess. No fistulous tract is clearly defined on this study. Sphincter complex otherwise intact. Rectal wall without mass. No pelvic lymphadenopathy. Bladder, prostate and seminal vesicles unremarkable. Visualized bones without marrow abnormality.",
+              "conclusion": "Perirectal fluid collection suggestive of abscess."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Imaging report received: MRI pelvis",
+              "date": "2025-05-20T09:50",
+              "author": "MA",
+              "body": "MRI pelvis from 5/16 (ordered by GI) received by fax, scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "outside_records",
+          "start": "2025-06-02T14:15",
+          "reason": "gastroenterology consult records",
+          "conditions": [
+            {
+              "label": "Anal abscess",
+              "action": "diagnosed",
+              "onset": "2025-03-20",
+              "note": "perirectal collection on MRI; drainage planned",
+              "icd10": "K61.0"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology pre-procedure visit, 05/23/2025",
+              "date": "2025-06-02T14:15",
+              "author": "gastroenterology",
+              "body": "Patient: Hunter Wright, DOB 06/10/1992. Visit 05/23/2025.\n\nReason: pre-operative evaluation before drainage of a perianal collection.\n\nHPI: Second visit. Mr. Wright has ankylosing spondylitis on adalimumab and sulfasalazine. For several months his stools have been loose, with lower abdominal discomfort that waxes and wanes. No recent travel, antibiotics or change in diet. Gradual weight loss over the past year, which he puts down to poor appetite and skipped meals. ROS: fatigue, intermittent low-grade fevers, occasional sore mouth that resolves without treatment.\n\nMeds: adalimumab 40 mg SC q14 days, sulfasalazine 1000 mg BID, vitamin D3 2000 IU daily. Allergies: NKDA. FH: father with Crohn's disease, maternal uncle with AS, mother with hypothyroidism.\n\nExam: Thin young man. Mildly tender lower abdomen. Near the anal verge a small, tender area of fluctuance. DRE causes discomfort.\n\nData: Labs from his PCP in April show mild anemia and a mildly raised CRP. MRI pelvis 5/16: perirectal fluid collection suggestive of abscess.\n\nImpression: Perianal abscess. Picture raises strong concern for Crohn's disease with perianal involvement, given the bowel change, weight loss, anemia, inflammatory markers, aphthae and family history.\n\nPlan: Colorectal surgery for exam under anesthesia and drainage, scheduled 6/3. Colonoscopy with biopsies afterward to establish the diagnosis and its extent. Continue adalimumab and sulfasalazine for now.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "outside_records",
+          "start": "2025-06-10T10:30",
+          "reason": "operative note",
+          "procedures": [
+            {
+              "procedure": "Incision and drainage of abscess, simple",
+              "performed": "2025-06-03T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Exam under anesthesia, drainage of perianal abscess, 06/03/2025",
+              "date": "2025-06-10T10:30",
+              "author": "colorectal surgery",
+              "body": "Date of surgery: 06/03/2025. Patient: Hunter Wright, 32M.\nPreoperative diagnosis: perianal abscess, suspected Crohn's disease.\nPostoperative diagnosis: same.\nProcedure: examination under anesthesia, incision and drainage of perianal abscess.\nAnesthesia: general (LMA). Allergies: NKDA.\n\nFindings: Small abscess at the anal verge, drained with return of purulent material. Careful probing found no fistula tract and no internal opening. Anoderm and distal rectal mucosa otherwise unremarkable on anoscopy.\n\nDescription: Prone jackknife. Prepped and draped. Exam under anesthesia as above. Cruciate incision over the point of maximal fluctuance, cavity drained and irrigated, loculations broken down. Packed lightly. Hemostasis ensured. EBL minimal. Tolerated well, to recovery in good condition.\n\nDischarge: same day. Sitz baths, remove packing in 24 hours, follow up in clinic in 2 weeks.\n\nColorectal Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "portal_message",
+          "start": "2025-07-01T18:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Colonoscopy",
+              "date": "2025-07-01T18:22",
+              "author": "patient",
+              "body": "Biopsies are back from the colonoscopy last week. GI says it's Crohn's, in the last part of the small intestine. She's keeping me on Humira and sulfasalazine for now since they cover both. Bottom has healed up nicely. Can we do a visit sometime in August?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Colonoscopy",
+              "date": "2025-07-02T09:05",
+              "author": "front desk",
+              "body": "Hi Hunter, you're booked Tuesday August 5 at 1:30 with your doctor. We've requested the colonoscopy report from GI."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "outside_records",
+          "start": "2025-07-28T15:00",
+          "reason": "colonoscopy report and pathology",
+          "conditions": [
+            {
+              "label": "Crohn disease",
+              "action": "diagnosed",
+              "onset": "2025-02-01",
+              "note": "terminal ileum with perianal disease; biopsy confirmed"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-06-24T08:30",
+              "text": "A. Terminal ileum, biopsies: small bowel mucosa with chronic active ileitis, showing villous blunting, crypt architectural distortion and cryptitis. No granulomas identified. Negative for dysplasia.\nB. Random colon biopsies: colonic mucosa without significant histologic abnormality.",
+              "conclusion": "Chronic active ileitis, consistent with Crohn's disease. Colon unremarkable. No dysplasia.",
+              "issued": "2025-06-27T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2025-06-24T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy with biopsies, 06/24/2025",
+              "date": "2025-07-28T15:00",
+              "author": "gastroenterology",
+              "body": "Procedure date 06/24/2025. Indication: loose stools, weight loss, recent perianal abscess, family history of Crohn's disease. Sedation: propofol by anesthesia. Allergies: NKDA.\n\nPrep good. Scope passed to the cecum and the terminal ileum was intubated. Terminal ileum: scattered ulcers with surrounding erythema; biopsied. Colon from cecum to rectum: normal mucosa, random biopsies taken. Rectum normal on retroflexion. Perianal drainage site healing.\n\nPathology (06/27): chronic active ileitis consistent with Crohn's disease; colon biopsies unremarkable; no dysplasia.\n\nImpression: Crohn's disease of the terminal ileum with perianal disease.\nPlan: Continue adalimumab 40 mg every 14 days and sulfasalazine, co-managed with rheumatology. GI follow-up in 3 months.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "office_visit",
+          "start": "2025-08-05T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, new Crohn's diagnosis",
+          "conditions": [
+            {
+              "label": "Anal abscess",
+              "action": "resolved",
+              "icd10": "K61.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              86
+            ],
+            "hr": 62,
+            "spo2": 96,
+            "weight_kg": 67.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-05T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-05T14:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-05T13:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-05T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-05T13:30",
+              "author": "PCP",
+              "body": "S: Catching up after a busy spring. Abscess drained 6/3, healed, no drainage or pain now. Colonoscopy 6/24 showed Crohn's in the terminal ileum; GI and rheum are keeping adalimumab and sulfasalazine as they are. Stools mostly formed now, one or two a day. Eating better. No fevers. Back stiffness minimal, eyes quiet. Occasional mouth ulcer.\n\nO: Weight up a little from April. Abdomen soft, nontender. Perianal exam deferred, recently checked by surgery.\n\nA/P:\n- Crohn's disease, ileal with perianal disease: GI managing. Updated problem list.\n- Perianal abscess: resolved.\n- AS / uveitis: quiet.\n- Recheck CBC and CRP today after April's anemia.\n- Fall: flu, COVID, PCV20 and start Shingrix at his physical (all non-live, fine on adalimumab)."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.5,
+            "labs": {
+              "C Reactive Protein": 3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 68.2,
+            "height_cm": 179.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-21T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-21T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-21T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-21T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T09:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-21T09:46"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-10-21T09:47"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-10-21T09:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-21T09:00",
+              "author": "PCP",
+              "body": "33M, annual exam.\n\nInterval: GI follow-up in September went fine per patient, staying the course. Bowels regular, no blood. Back stiffness ten minutes in the morning at most. No eye flares since last fall. Mouth ulcers a couple of times since summer, brief. Doing his shots every other Monday without trouble.\n\nMeds: adalimumab 40 mg SC q14d, sulfasalazine 1000 mg BID, vitamin D3 2000 IU daily. NKDA.\nSocial: still remote engineering work. Never smoker, 2-3 drinks a week. Hiking again.\n\nROS otherwise negative.\n\nExam: Well, lean. Weight continuing to recover. HEENT: oropharynx clear, no ulcers today, eyes white. Neck without nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no mass. Spine: lumbar flexion mildly limited, no tenderness. Joints without swelling. Skin without rash. Neuro nonfocal. Mood good, PHQ-2 0.\n\nA/P:\n- Crohn's (ileal + perianal), AS, recurrent anterior uveitis: stable on adalimumab and sulfasalazine. CBC and CMP for monitoring.\n- Lipids today.\n- Immunizations: flu, updated COVID, PCV20, and Shingrix #1 today. Shingrix #2 in 2-6 months, nurse visit.\n- Sun protection reminder on a TNF inhibitor; yearly skin look at physicals.\nReturn in 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "portal_message",
+          "start": "2025-10-23T11:17",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-10-23T11:17",
+              "author": "PCP",
+              "body": "Your labs from the physical are all normal, including the blood count, which has fully recovered since spring. Liver and kidney tests look fine on the sulfasalazine and adalimumab. Cholesterol normal. Remember to book the second shingles shot for January."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "nurse_visit",
+          "start": "2026-01-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-01-13T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2026-01-13T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Shingrix #2",
+              "date": "2026-01-13T16:00",
+              "author": "RN",
+              "body": "In for second Shingrix. First dose 10/21/25, tired and achy for a day afterward, nothing more. Feeling well, no fever, last adalimumab dose was yesterday. Given in L deltoid, lot and expiration logged. Waited 15 min, no reaction. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Specialty pharmacy call",
+              "date": "2026-03-17T10:40",
+              "author": "MA",
+              "body": "Specialty pharmacy called: his employer changed plan administrators in January and the adalimumab claim rejected for a new PA. They had our office listed as prescriber in error. Rheumatology writes this one. Gave them the rheumatology office fax. Messaged pt so he doesn't run short; he has one pen left at home."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "office_visit",
+          "start": "2026-04-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "six-month follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              77
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 69.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-22T11:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-22T11:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-22T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-22T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-04-22T11:00",
+              "author": "PCP",
+              "body": "S: Six-month check. The insurance snag with his pens in March got sorted, missed no doses. Bowels behaving, 1-2 formed BMs daily, no blood, no perianal pain or drainage. Back stiffness brief in the mornings, not limiting; hiking most weekends. Eyes quiet. Mouth ulcers now and then, a few days each.\n\nMeds: adalimumab 40 mg q14d, sulfasalazine 1000 mg BID, vitamin D3 2000 IU. NKDA.\n\nO: Weight steadily back up. Mouth: no ulcers. Eyes white. Abdomen soft, nontender. Lumbar flexion mildly limited, unchanged.\n\nA/P:\n- Crohn's, AS, recurrent anterior uveitis: all quiet on current regimen. GI and rheum each following.\n- Monitoring CBC and CMP today.\n- Recurrent aphthae, chronic constipation pattern: no change.\nPhysical in the fall; front desk to book."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "portal_message",
+          "start": "2026-04-24T09:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-04-24T09:12",
+              "author": "PCP",
+              "body": "Hunter, blood count and chemistry panel from Wednesday are normal. No changes. Enjoy the trails."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "portal_message",
+          "start": "2026-05-28T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit",
+              "date": "2026-05-28T07:55",
+              "author": "patient",
+              "body": "Wanted you to know I ended up in the ER Tuesday night. Another abscess down there, a lot worse than last year, fever too. They drained it right there and sent me home on two antibiotics for 10 days. Already feeling better. I'm calling GI and the surgeon today for follow-up."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit",
+              "date": "2026-05-28T12:40",
+              "author": "PCP",
+              "body": "Sorry you went through that, glad it was drained quickly. Finish the full antibiotic course, and good plan to get in with GI and the surgeon. With adalimumab on board, call us the same day for fever after the antibiotics or pain that starts building again. We've asked the hospital for the ER record."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "outside_records",
+          "start": "2026-06-18T14:30",
+          "reason": "emergency department record",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-26T22:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.57
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 265
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-26T22:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Incision and drainage of abscess, simple",
+              "performed": "2026-05-26T23:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record, 05/26/2026",
+              "date": "2026-06-18T14:30",
+              "author": "emergency medicine",
+              "body": "Patient: Hunter Wright, 33M, DOB 06/10/1992. Arrived 05/26/2026 21:40.\n\nCC: Pain and swelling by the anus x 3 days.\n\nHPI: Man with Crohn's disease, ankylosing spondylitis and a prior perianal abscess drained last year, now with three days of severe perianal pain and swelling. Pain is worse with bowel movements and with sitting.\n\nPMH: Crohn's disease, ankylosing spondylitis, recurrent aphthous stomatitis, chronic constipation. PSH: tonsillectomy age 12; perianal abscess drainage 2025.\nMeds: adalimumab 40 mg SC every 14 days, sulfasalazine 1000 mg BID, vitamin D3 2000 IU daily.\nAllergies: NKDA.\nFH: father Crohn's disease; maternal uncle ankylosing spondylitis; mother hypothyroidism.\nSH: Never smoker. Sexually active, receptive anal intercourse.\n\nVitals: T 38.5 C (101.3 F); remaining vitals within normal limits.\n\nExam: Uncomfortable. At the anal verge, a tender, fluctuant, erythematous mass. Rectal exam limited by severe pain. Abdomen soft.\n\nLabs: WBC 15.0 K/uL, Hgb 13.5 g/dL, CRP 24 mg/L.\n\nCourse: Perianal abscess. Bedside incision and drainage under local anesthesia, moderate purulent drainage, cavity packed. Tolerated well. Afebrile on recheck before discharge.\n\nDisposition: Discharged home 05/27 01:50. Ciprofloxacin 500 mg PO BID and metronidazole 500 mg PO TID x 10 days. Sitz baths. Packing out in 48 hours. Follow up with colorectal surgery and gastroenterology within one week. Return for spreading redness, rising fever or inability to pass stool.\n\nDiagnosis: Recurrent perianal abscess in Crohn's disease.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Outside Records",
+              "title": "ED record filed",
+              "date": "2026-06-18T14:32",
+              "author": "MA",
+              "body": "ED record from 5/26 arrived after second request. Scanned to chart, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T15:03",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall physical",
+              "date": "2026-08-11T15:03",
+              "author": "front desk",
+              "body": "Hi Hunter, confirming your annual physical on Tuesday, October 20 at 9:00 AM. Please come fasting if you can, and bring any recent letters from GI or the surgeon if you have copies."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anal abscess|K61.0": {
+        "code": "K61.0",
+        "display": "Anal abscess",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Recurrent acute iridocyclitis, bilateral|H20.023": {
+        "code": "H20.023",
+        "display": "Recurrent acute iridocyclitis, bilateral",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Recurrent oral aphthae|K12.0": {
+        "code": "K12.0",
+        "display": "Recurrent oral aphthae",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Unspecified acute and subacute iridocyclitis|H20.00": {
+        "code": "H20.00",
+        "display": "Unspecified acute and subacute iridocyclitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution": {
+        "code": "1298066",
+        "display": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution",
+        "ingredient": "cyclopentolate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "prednisolone acetate 10 MG/ML Ophthalmic Suspension": {
+        "code": "1376336",
+        "display": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+        "ingredient": "prednisolone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sulfasalazine 500 MG Oral Tablet": {
+        "code": "198232",
+        "display": "sulfasalazine 500 MG Oral Tablet",
+        "ingredient": "sulfasalazine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "HLA-B27 antigen": {
+        "code": "4821-5",
+        "display": "HLA-B27 [Presence]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B core antibody, total": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI pelvis without and with contrast": {
+        "code": "30674-6",
+        "display": "MR Pelvis WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "X-ray pelvis": {
+        "code": "28561-9",
+        "display": "XR Pelvis Views",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

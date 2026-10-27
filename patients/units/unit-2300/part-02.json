@@ -1,0 +1,223 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002300",
+      "events": [
+        {
+          "id": "2022-01-19a",
+          "kind": "pharmacy",
+          "start": "2022-01-19T10:30",
+          "reason": "outside immunization",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-01-19T10:30"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Shingrix dose 2 reported", "author": "MA", "date": "2022-01-20T08:45", "body": "Pharmacy reported second Shingrix 1/19/22. Series complete. Updated."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "portal_message",
+          "start": "2022-03-22T19:12",
+          "reason": "scheduling",
+          "documents": [
+            {"type": "Patient Message", "title": "Appointment", "author": "patient", "date": "2022-03-22T19:12", "body": "Hello, I have not been feeling like myself this winter, just worn out. Nothing hurts. Is my April appointment still on? My daughter will bring me. Darnell Robinson"},
+            {"type": "Patient Message", "title": "RE: Appointment", "author": "front desk", "date": "2022-03-23T09:05", "body": "Hi Mr. Robinson, yes you are set for Monday April 18 at 10:15. If you feel worse before then please call and we will see you sooner."}
+          ]
+        },
+        {
+          "id": "2022-04-18a",
+          "kind": "office_visit",
+          "start": "2022-04-18T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, poor appetite, ankle swelling",
+          "conditions": [
+            {"label": "Volume overload", "icd10": "E87.70", "action": "diagnosed", "onset": "2022-01-01", "note": "in setting of CKD 3b"}
+          ],
+          "vitals": {"bp": [152, 88], "hr": 72, "weight_kg": 79.6},
+          "measure": ["spo2"],
+          "state": {"bp": [140, 80], "weight_kg": 79.6, "labs": {"Creatinine": 2.1, "Hemoglobin": 11.5, "Blood Urea Nitrogen": 36}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-04-18T11:00", "resulted": "2022-04-18T16:30", "results": [{"test": "Hemoglobin", "value": 11.5}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-04-18T11:00", "resulted": "2022-04-18T16:30", "results": [{"test": "Creatinine", "value": 2.1}, {"test": "Blood Urea Nitrogen", "value": 38}, {"test": "Potassium"}]},
+            {"panel": "Urinalysis", "collected": "2022-04-18T11:00", "resulted": "2022-04-18T16:30", "results": [{"test": "Urine Protein", "text": "1+"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Red Blood Cells", "value": 0}, {"test": "Urine White Blood Cells", "value": 0}]},
+            {"panel": null, "collected": "2022-04-18T11:00", "resulted": "2022-04-18T16:30", "results": [{"test": "Protein/Creatinine ratio, urine", "loinc": "2890-2", "unit": "mg/mg", "value": 0.3}]}
+          ],
+          "orders": [
+            {"id": "renal-us-2022", "action": "placed", "order": "Renal ultrasound", "category": "imaging", "reason": "CKD with edema"},
+            {"id": "nephro-ref-2022", "action": "placed", "order": "Nephrology referral", "category": "referral", "to": "Nephrology", "reason": "CKD 3b with volume overload"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-04-18T10:15"},
+            {"procedure": "Venipuncture", "performed": "2022-04-18T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-04-18T10:15", "body": "CC: tired, not hungry, ankles puffy.\n\nHPI: 82M with HTN and CKD 3b. Since about the start of winter, roughly 4 months, he has felt more and more run down, eats less than he used to, and has noticed his ankles swell by evening. Lost about 4 lb without trying. Now and then a little lightheaded when he gets up from a chair, passes in seconds. No chest pain, no trouble breathing, no change in how he urinates. No fevers.\n\nMeds unchanged: lisinopril 20, amlodipine 5, HCTZ 25, atorvastatin 40, ASA 81. NKDA. No NSAIDs.\nSH: no tobacco, no alcohol.\n\nExam: BP 152/88, HR 72, BMI 26. Alert, conversant. Fundi: mild AV nicking both eyes. Neck: no JVD. Heart and lungs unremarkable. Abdomen benign. Trace edema at both ankles. Neuro grossly normal.\n\nA/P:\n1. Fatigue, anorexia, weight loss, edema in CKD 3b: concern kidney function has slipped with fluid retention. CBC, BMP, UA and urine protein/creatinine today. Renal ultrasound. Cut salt, aim under 2 g sodium a day, handout given and reviewed with daughter.\n2. Volume overload on CKD: as above; will refer to nephrology for co-management.\n3. HTN: above goal today; leave regimen for now until labs back, the lightheadedness argues against adding more.\n4. Lightheadedness: brief, positional. Rise slowly.\nI'll call him with results. RTC ~2 months."}
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "telephone",
+          "start": "2022-04-19T12:10",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results call", "author": "PCP", "date": "2022-04-19T12:10", "body": "Called pt (daughter on speaker). Reviewed: Hgb 11.5, Cr 2.1 (up from ~1.8 baseline), BUN 38. UA with 1+ protein, no blood, sediment bland. UPCR 0.3. Explained kidneys are working less well than last year and some fluid is hanging on. Ultrasound next week is set. Nephrology referral sent. Continue salt restriction; weigh himself a few mornings a week. Both voiced understanding."}
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "imaging",
+          "start": "2022-04-26T08:30",
+          "service": "Radiology",
+          "reason": "renal ultrasound",
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2022-04-26T08:30", "issued": "2022-04-26T13:20", "text": "EXAM: Ultrasound, kidneys and bladder.\nINDICATION: Chronic kidney disease with edema.\nCOMPARISON: None.\nFINDINGS: Right kidney 9.4 cm in length. Left kidney 9.4 cm in length. Both kidneys show increased cortical echogenicity relative to the liver and spleen. No hydronephrosis. No renal calculus or solid mass. Urinary bladder is unremarkable.", "conclusion": "Bilaterally echogenic kidneys measuring approximately 9.4 cm, consistent with medical renal disease. No hydronephrosis."}
+          ],
+          "orders": [
+            {"id": "renal-us-2022", "action": "done", "date": "2022-04-26T08:30"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Renal US reviewed", "author": "PCP", "date": "2022-04-27T07:50", "body": "Small-ish echogenic kidneys, no blockage. Fits long-standing kidney disease. Sent to nephrology ahead of consult. Portal note to pt."}
+          ]
+        },
+        {
+          "id": "2022-05-23a",
+          "kind": "specialist_visit",
+          "start": "2022-05-23T13:00",
+          "service": "Nephrology",
+          "reason": "CKD 3b with volume overload",
+          "orders": [
+            {"id": "nephro-ref-2022", "action": "done", "date": "2022-05-23T13:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Consultation", "author": "nephrology", "date": "2022-05-25T10:00", "body": "OUTPATIENT NEPHROLOGY CONSULTATION\nDate of service: 05/23/2022\nReferred by: primary care physician, for CKD stage 3b with edema.\n\nThank you for asking us to see Mr. Robinson, an 82-year-old gentleman with long-standing hypertension. Over the winter he had fatigue, poorer appetite, mild ankle swelling and a few pounds of weight loss. Creatinine 2.1 and BUN 38 on 4/18/22, up from about 1.8. Urinalysis 1+ protein with a bland sediment and no hematuria; protein/creatinine ratio 0.3. Hemoglobin 11.5. Renal ultrasound: echogenic kidneys about 9.4 cm bilaterally without hydronephrosis.\n\nMedications: lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, atorvastatin 40 mg, aspirin 81 mg daily.\nAllergies: NKDA.\n\nExam: BP 138/80. No JVD. Lungs clear. Trace ankle edema, less than at his April visit per patient since cutting salt.\n\nImpression: CKD stage 3b with low-grade proteinuria and mild volume overload. Small echogenic kidneys and a bland sediment point to chronic disease. A kidney biopsy would not change management and carries real risk with kidneys this size; not recommended.\n\nRecommendations:\n1. Continue current antihypertensives at present doses.\n2. Sodium restriction under 2 g/day; he is already doing well with it.\n3. Avoid NSAIDs and IV contrast where possible; renally dose new medications.\n4. BMP every 3 to 4 months through primary care.\n5. We will see him yearly, sooner if creatinine rises above 2.5.\n\nOutpatient nephrology"}
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "office_visit",
+          "start": "2022-06-28T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up CKD and edema",
+          "conditions": [
+            {"label": "Volume overload", "icd10": "E87.70", "action": "resolved"}
+          ],
+          "state": {"bp": [138, 78], "labs": {"Creatinine": 2.15, "Blood Urea Nitrogen": 32, "Hemoglobin": 11.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-06-28T10:15", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-06-28T09:45"},
+            {"procedure": "Venipuncture", "performed": "2022-06-28T10:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-06-28T09:45", "body": "S: Saw nephrology last month, no med changes, no biopsy. Has been strict with salt; daughter cooks a few nights a week and reads labels. Ankles no longer swell. Energy better, eating better. Home weights steady.\nO: vitals reviewed. No edema. Lungs clear. Heart regular.\nA/P:\n- Volume overload: resolved with sodium restriction. Off problem list.\n- CKD 3b: BMP today; nephrology yearly.\n- HTN: better today on same meds.\nAWV next month."}
+          ]
+        },
+        {
+          "id": "2022-07-27a",
+          "kind": "annual_physical",
+          "start": "2022-07-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-07-27T10:50"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-07-27T10:45", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-27T10:45", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-07-27T10:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2022-07-27T10:00"},
+            {"procedure": "Immunization administration", "performed": "2022-07-27T10:50"},
+            {"procedure": "Venipuncture", "performed": "2022-07-27T10:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2022-07-27T10:00", "body": "Subsequent AWV.\n- ADLs/IADLs independent. Drives locally in daylight.\n- Falls: none. Timed up-and-go about 11 seconds.\n- PHQ-2: 0.\n- Cognition: recall and clock normal.\n- Meds/supplements reviewed; no OTC pain relievers besides acetaminophen now and then.\n- Advance directive: still thinking about it.\n\nExam: Heart regular. Lungs clear. No edema. Skin intact.\n\nPrevention: PCV20 given today. Shingles series complete. COVID bivalent in fall at pharmacy. Flu in October.\nLabs today. RTC fall."},
+            {"type": "Result Note", "title": "Labs reviewed", "author": "PCP", "date": "2022-07-28T08:30", "body": "Cr steady around 2.1, Hgb stable low 11s, LDL at goal. Message sent to pt."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "measure": ["bp"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-11T14:25"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-11T14:25"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine and BP check", "author": "RN", "date": "2022-10-11T14:25", "body": "High-dose flu L deltoid, tolerated. BP rechecked while here, in flowsheet, no symptoms. Pt says bivalent COVID booked at pharmacy next week."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "pharmacy",
+          "start": "2022-10-20T15:00",
+          "reason": "outside immunization",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T15:00"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Bivalent COVID reported", "author": "MA", "date": "2022-10-21T09:20", "body": "Pfizer bivalent booster 10/20/22 per pharmacy. Added."}
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "office_visit",
+          "start": "2022-12-12T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fever, sore throat, rash",
+          "conditions": [
+            {"label": "Acute pharyngitis", "icd10": "J02.9", "action": "diagnosed", "onset": "2022-12-07"},
+            {"label": "History of intravenous drug use", "icd10": "Z87.898", "action": "history", "note": "remote, decades ago; disclosed 12/2022"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2022-12-12T13:55", "resulted": "2022-12-12T14:05", "results": [{"test": "Rapid Strep A Antigen", "text": "Negative"}]},
+            {"panel": null, "collected": "2022-12-12T13:55", "resulted": "2022-12-12T14:10", "results": [{"test": "Heterophile antibody (Monospot)", "loinc": "31418-7", "text": "Negative"}]},
+            {"panel": null, "collected": "2022-12-12T14:00", "resulted": "2022-12-13T11:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-12T13:30"},
+            {"procedure": "Venipuncture", "performed": "2022-12-12T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-day Visit", "author": "PCP", "date": "2022-12-12T13:30", "body": "CC: sore throat, fever, rash.\n\nHPI: 82M with CKD 3b, seen in April for fluid retention which has since settled. For 5 days: fevers at home, sore throat, aching muscles, tired, mild headache, and a blotchy rash on his chest and both arms. Not itchy. No new medications, no new soaps. No cough, no urinary symptoms. No stiff neck, no confusion, no light sensitivity.\n\nRisk history: when I asked about HIV risk he told me, with some hesitation, that he injected drugs as a young man, decades ago, and has not used since. Never been tested that he knows of. No recent sexual partners.\n\nExam: afebrile here (took nothing today). Throat red, no exudate, tonsils not enlarged. Tender anterior cervical nodes both sides. Faint pink maculopapular rash scattered over chest and upper arms, blanching, palms and soles spared, no mucosal lesions. Neck supple, no meningismus. Heart regular. Lungs clear. Abdomen soft, no spleen felt.\n\nPoint of care: rapid strep negative. Monospot negative.\n\nA/P:\n1. Febrile illness with pharyngitis, lymphadenopathy and rash: most likely viral. Given the remote injection history and that he has never been screened, HIV antigen/antibody today; hep C antibody added while drawing.\n2. History of IV drug use, remote: added to the history.\n3. Supportive care: fluids, acetaminophen as needed, no ibuprofen with his kidneys.\nCall me if worse, new stiff neck, confusion, or rash blistering. I'll call with HIV and hep C results."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "portal_message",
+          "start": "2022-12-13T12:00",
+          "reason": "results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your test results", "author": "PCP", "date": "2022-12-13T12:00", "body": "Mr. Robinson, both blood tests from yesterday came back negative: no HIV and no hepatitis C. That is good news. Keep resting and drinking fluids. I'll give you a call next Monday to see how the throat and rash are doing."}
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "telephone",
+          "start": "2022-12-19T11:30",
+          "reason": "illness follow-up",
+          "conditions": [
+            {"label": "Acute pharyngitis", "icd10": "J02.9", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Follow-up call", "author": "PCP", "date": "2022-12-19T11:30", "body": "Spoke with pt. No fever since Thursday. Throat almost back to normal, rash has faded to a few spots on the arms. Appetite returning. Resolved viral picture. Nothing further needed; call if anything recurs."}
+          ]
+        }
+      ]
+    }
+  ]
+}

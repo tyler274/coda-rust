@@ -1,0 +1,197 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002319",
+      "events": [
+        {
+          "id": "2026-01-26a",
+          "kind": "imaging",
+          "start": "2026-01-26T13:00",
+          "reason": "restaging CT chest",
+          "reports": [
+            {"study": "CT chest", "performed": "2026-01-26T13:00", "text": "Indication: Metastatic clear cell RCC to lung on sunitinib; history of LUL adenocarcinoma s/p lobectomy.\nTechnique: Helical CT of the chest without IV contrast.\nComparison: CT chest 08/11/2025.\nFindings: New spiculated mass in the right upper lobe measuring 3.4 cm. The remaining right lung nodules, including the biopsied right lower lobe nodule, are unchanged in size. Bibasilar fibrotic change, stable. Post-lobectomy changes on the left. No pleural effusion. No adenopathy.", "conclusion": "New 3.4 cm spiculated right upper lobe mass, suspicious for malignancy: new primary lung cancer versus metastasis. Other nodules stable."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "CT reviewed", "author": "PCP", "date": "2026-01-27T08:05", "body": "New 3.4 cm spiculated RUL mass on restaging CT; others stable. Oncology visit 2/16. Called pt - he had seen it on the portal already. Offered to talk anytime before then."}
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "specialist_visit",
+          "start": "2026-02-16T14:00",
+          "service": "Hematology/Oncology",
+          "reason": "next steps for suspected lung malignancy",
+          "conditions": [
+            {"label": "Suspected malignant neoplasm of lung", "icd10": "R91.8", "action": "diagnosed", "onset": "2026-01-26", "note": "new right upper lobe mass"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Follow-up", "author": "oncology", "date": "2026-02-16T18:10", "body": "Andrew Marino, 64, here with his wife.\nDx: metastatic clear cell RCC to lung (biopsy-proven 08/2025) on sunitinib since 05/2025; bleomycin pulmonary fibrosis on 2 L O2 and prednisone 10 mg; stage IA LUL adenocarcinoma s/p lobectomy 2023; testicular NSGCT in remission; CKD 3b.\n\nInterval: Completed his fifth course of sunitinib 01/04. CT chest 01/26: new 3.4 cm spiculated right upper lobe mass, other nodules stable. This could be a new lung primary - he has had one before - or an RCC metastasis behaving differently from the rest.\n\nToday he looks worn out. When I started to lay out options, he said he understands the cancer is serious and that his wife has been reading about newer treatments and wants him to try all of them, then after a pause said he is just exhausted. His wife cut in right away and told him he cannot quit now.\n\nI slowed down. I told them both there is no decision to make today, that being tired is information and not giving up, and that whatever he chooses we keep treating his symptoms. He agreed to a CT-guided biopsy of the RUL mass so we know what we are dealing with. Both agreed to meet with palliative care - framed as an extra layer of support, not an ending.\n\nPlan:\n1. Hold sunitinib for now (treatment break while we sort this out).\n2. CT-guided biopsy of the RUL mass; IR to schedule. Pulmonology aware given his fibrosis.\n3. Palliative care referral sent.\n4. See me after the biopsy result, 3/30.\nCopy to PCP.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "portal_message",
+          "start": "2026-02-18T07:50",
+          "reason": "asks for a visit",
+          "documents": [
+            {"type": "Patient Message", "title": "can we talk", "author": "patient", "date": "2026-02-18T07:50", "body": "The cancer doctor stopped the pills for now and wants me to see palliative. My wife is upset. I'd like to come in and talk to you about what all this means and the forms people keep mentioning. Can she come too?"},
+            {"type": "Patient Message", "title": "RE: can we talk", "author": "front desk", "date": "2026-02-18T09:12", "body": "Hi Mr. Marino, the doctor asked us to give you a long visit. You're booked Tuesday 3/3 at 2:00 for 40 minutes, and yes, your wife is welcome."}
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T14:00",
+          "end": "2026-03-03T14:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "goals of care discussion",
+          "medications": [
+            {"drug_text": "sunitinib 50 MG Oral Capsule", "action": "stop", "reason": "held by oncology 02/16/2026"}
+          ],
+          "state": {"weight_kg": 76.0},
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2026-03-03T14:00"},
+            {"procedure": "Advance care planning, first 30 minutes", "performed": "2026-03-03T14:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Advance Care Planning", "author": "PCP", "date": "2026-03-03T14:00", "body": "Visit with Andrew and his wife after his 2/16 oncology visit. New 3.4 cm RUL mass on January CT; biopsy scheduled 3/18. Sunitinib held since 2/16. Palliative care consult 3/9.\n\nS: Energy a little better two weeks off sunitinib, still naps. Breathing same on 2 L. Down to 76 kg. Sleeping OK. Mood: \"tired, not down.\" PHQ-9 6, mostly the fatigue items.\nMeds: lisinopril 5, furosemide 20, prednisone 10, O2 2 L continuous, acetaminophen prn. Sunitinib off per oncology - removed from active list.\n\nO: SpO2 94% on 2 L. Thin. Bibasilar crackles unchanged. No edema.\n\nAdvance care planning (25 min, both present, voluntary):\n- He understands the RCC has spread and that treatment now is to control it, not cure it.\n- What matters to him: being home, being clear-headed, time with family, not being kept alive on machines if there is no way back.\n- His wife hopes for more treatment. They disagreed gently and then agreed it is his call and she will speak for him if he can't.\n- Health care proxy completed today naming his wife; copy scanned, original to patient.\n- MOLST discussed; for now he wants full treatment, including CPR and ICU, and wants to revisit after the biopsy and palliative visit. Form not completed today, by his choice.\n\nA/P\n1. Metastatic ccRCC, suspected new lung malignancy - biopsy 3/18, oncology 3/30. Palliative 3/9.\n2. Weight loss with the cancer and sunitinib - small frequent meals, supplement shakes are fine.\n3. Pulm fibrosis, CKD 3b, HTN - stable, no changes.\nRTC 6-8 weeks (video OK)."}
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T10:00",
+          "service": "Palliative Care",
+          "reason": "palliative care consultation",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Palliative Care Consultation", "author": "palliative care", "date": "2026-03-10T09:30", "body": "Patient: Andrew Marino, 65\nReferred by: medical oncology\n\nMr. Marino has metastatic clear cell RCC to the lungs, on a sunitinib break since 02/16 with a new right upper lobe mass awaiting biopsy, plus bleomycin pulmonary fibrosis on continuous 2 L oxygen and prednisone 10 mg, a resected stage IA lung adenocarcinoma, a treated testicular germ cell tumor and CKD 3b. Seen with his wife.\n\nSymptoms: fatigue is the biggest burden (6/10), worse in the afternoon. Breathlessness on exertion, at his baseline on 2 L. Pain 0-1/10, acetaminophen occasionally. Appetite reduced. Sleep fair. Mood: worried, not depressed by his account.\n\nUnderstanding and goals: Knows the cancer is not curable. Wants to know the biopsy result before deciding anything. Values time at home and clear thinking. His wife wants him to keep all options open; they both said they feel heard today. Health care proxy (wife) completed with PCP on 03/03.\n\nRecommendations:\n1. Fatigue: pacing, scheduled rest, short walks with oxygen; no new medicine for now.\n2. Breathlessness: fan to face, pursed-lip breathing, keep O2 at 2 L.\n3. Continue acetaminophen as needed; avoid NSAIDs (single kidney, CKD).\n4. Will follow alongside oncology; next visit in about 3 months, sooner if needed.\n\nPalliative Care"}
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "outside_records",
+          "start": "2026-03-23T16:20",
+          "reason": "right upper lobe biopsy pathology",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2026-03-18T10:40", "issued": "2026-03-23T12:30", "text": "Specimen: Right upper lobe mass, CT-guided core needle biopsy (4 cores).\nMicroscopic: Lung tissue involved by nests and sheets of tumor cells with clear to eosinophilic cytoplasm in a rich capillary network. Immunostains: PAX8 positive, carbonic anhydrase IX positive; TTF-1 negative, napsin A negative, p40 negative.\nComparison: morphology matches the 08/2025 right lower lobe biopsy and the 01/2025 nephrectomy.", "conclusion": "Metastatic clear cell renal cell carcinoma, right upper lobe. No evidence of a primary lung carcinoma."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Biopsy reviewed", "author": "PCP", "date": "2026-03-24T07:55", "body": "RUL biopsy 3/18: metastatic clear cell RCC, not a new lung cancer. Home same day. Oncology 3/30."}
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "specialist_visit",
+          "start": "2026-03-30T11:00",
+          "service": "Hematology/Oncology",
+          "reason": "biopsy results and treatment options",
+          "conditions": [
+            {"label": "Suspected malignant neoplasm of lung", "icd10": "R91.8", "action": "resolved", "onset": "2026-01-26", "note": "biopsy showed RCC metastasis"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Follow-up", "author": "oncology", "date": "2026-03-30T15:20", "body": "Andrew Marino, 65, with his wife.\n\nThe right upper lobe biopsy (03/18) shows metastatic clear cell RCC - so not a new lung cancer. This mass grew while he was on sunitinib, which means the RCC is progressing through first-line therapy.\n\nHe feels better six weeks off the drug: more energy, eating a little more. Breathing at baseline on 2 L.\n\nOptions discussed: (a) second-line oral targeted therapy, with similar side effects to what he had; (b) a treatment break with CT in 3 months and starting therapy if there is meaningful growth or symptoms; (c) focusing on comfort with palliative care. Immunotherapy remains a poor choice for his lungs. Clinical trials: none he is eligible for nearby given his oxygen needs.\n\nHe chose (b) today. His wife asked whether waiting would close doors; I told her honestly that a few months of watching in someone feeling this much better is reasonable and that the option of treatment stays open. She accepted it, with tears.\n\nPlan: No systemic therapy for now. CT chest in late June. Return early July. Palliative care continues. Copy to PCP.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2026-04-21T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2026-04-21T15:30", "body": "Video from his kitchen, wife joined partway. Identity verified.\n\nInterval: RUL biopsy - RCC metastasis, not a new lung primary. Oncology 3/30: he chose a treatment break, CT in late June. Palliative care following.\n\nS: Feels \"more like myself\" off sunitinib. Out on the porch most afternoons with his portable tank. Eating better, weight stable on his bathroom scale. Breathing at baseline. Home BP 120s-130s/70s. No fever, no new cough.\nMeds: lisinopril 5, furosemide 20, prednisone 10, O2 2 L, acetaminophen prn.\n\nA/P\n1. Metastatic ccRCC, on treatment break by his choice - supported; CT June.\n2. Pulm fibrosis - stable on prednisone 10 and O2; refills due next month, will send.\n3. CKD 3b / HTN - stable by home readings; labs at July visit.\n4. ACP - proxy on file; he wants to revisit the MOLST after June.\nRTC early July in person."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T10:30",
+          "reason": "refills",
+          "documents": [
+            {"type": "Refill Request", "title": "Refills", "author": "MA", "date": "2026-05-12T10:30", "body": "Pharmacy requests 90-day refills: lisinopril 5 mg, furosemide 20 mg, prednisone 10 mg. Last BMP 12/2025 stable. Sent per PCP, 1 refill each."}
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "imaging",
+          "start": "2026-06-22T09:30",
+          "reason": "CT chest on treatment break",
+          "reports": [
+            {"study": "CT chest", "performed": "2026-06-22T09:30", "text": "Indication: Metastatic clear cell RCC to lung, off systemic therapy since 02/2026.\nTechnique: Helical CT of the chest without IV contrast.\nComparison: CT chest 01/26/2026.\nFindings: Right upper lobe mass now 3.9 cm (previously 3.4 cm). The other right lung nodules are slightly larger, by 1 to 3 mm each. No new nodules. Bibasilar fibrotic change, stable. Post-lobectomy changes on the left. No effusion. No adenopathy.", "conclusion": "Slow growth of the right upper lobe mass (3.4 to 3.9 cm) and slight growth of the other pulmonary metastases. No new lesions."}
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "specialist_visit",
+          "start": "2026-06-29T10:00",
+          "service": "Hematology/Oncology",
+          "reason": "follow-up on treatment break",
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Follow-up", "author": "oncology", "date": "2026-06-29T13:40", "body": "Andrew Marino, 65. Metastatic clear cell RCC to lung, off therapy since 02/16/2026 by choice.\n\nFeels about the same as in the spring. Fatigue moderate, breathing at baseline on 2 L, weight steady around 75 kg.\nCT 06/22: RUL mass 3.9 cm (from 3.4), other nodules slightly larger, nothing new.\n\nDiscussion: Slow progression. Restarting second-line oral therapy is reasonable now; so is continuing to watch for another few months given how slowly things are moving and how much better he feels off treatment. He wants time to talk it through with his family before choosing; his wife leans toward treatment. No pressure from me either way.\n\nPlan: He will call with a decision. Otherwise see me in mid-August. Palliative care following. Copy to PCP.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "office_visit",
+          "start": "2026-07-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "state": {"weight_kg": 75.0, "labs": {"Calcium": 10.5, "Hemoglobin": 17.2}},
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-07T11:00", "results": [{"test": "Creatinine"}, {"test": "Calcium", "value": 10.5}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-07T11:00", "results": [{"test": "Hemoglobin", "value": 17.2}, {"test": "Hematocrit"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-07-07T11:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-07T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-07-07T10:20", "body": "Follow-up. Oncology 6/29: slow growth on the 6/22 CT (RUL mass 3.4 -> 3.9 cm), options laid out, he is deciding with his family whether to restart treatment. Palliative care following.\n\nS: Steady. Tired by mid-afternoon, otherwise doing the small jobs he likes. Breathing at baseline on 2 L, no change in cough. Eating OK, 75 kg. No pain beyond the occasional ache, acetaminophen a few times a week. Says he is leaning toward waiting a bit longer; his wife wants him to start. They are talking. PHQ-9 5.\nMeds: lisinopril 5, furosemide 20 qAM, prednisone 10, O2 2 L continuous, acetaminophen 650 prn.\nAllergies: iodinated contrast (hives), sulfa antibiotics (rash).\n\nO: SpO2 94% on 2 L. BP at goal. Thin, comfortable. Fine bibasilar crackles, unchanged. Heart regular. No edema.\n\nA/P\n1. Metastatic clear cell RCC, on treatment break - decision is his and he knows we will back either choice. Oncology mid-August.\n2. Bleomycin pulmonary fibrosis - stable on prednisone 10 and 2 L.\n3. CKD 3b, HTN - CMP today; continue lisinopril 5 and furosemide 20.\n4. Calcium and Hgb (oncology following) - rechecking today.\n5. ACP - proxy on file; MOLST still deferred by his choice; will raise again at next visit.\n6. Flu and COVID in the fall.\nRTC about 2-3 months."}
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T12:45",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results from Tuesday", "author": "PCP", "date": "2026-07-09T12:45", "body": "Andrew, your labs are steady: kidney function the same as the last several checks, calcium and blood count about where they have been, sugar fine. Nothing to change. I sent a copy to oncology."},
+            {"type": "Patient Message", "title": "RE: Lab results from Tuesday", "author": "patient", "date": "2026-07-09T18:02", "body": "Thanks doc. Good to hear something is staying the same."}
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T09:40",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill - acetaminophen", "author": "MA", "date": "2026-08-04T09:40", "body": "Pharmacy request: acetaminophen 325 mg tabs, 2 tabs q6h prn, #200 (pt prefers to have it on his profile for the insurance). Approved per PCP."}
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "outside_records",
+          "start": "2026-08-10T14:00",
+          "reason": "palliative care follow-up letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Palliative Care Follow-up", "author": "palliative care", "date": "2026-08-10T14:00", "body": "Andrew Marino, 65. Metastatic clear cell RCC to lung, off systemic therapy since February; bleomycin pulmonary fibrosis on 2 L O2 and prednisone 10 mg; CKD 3b.\n\nSeen 08/06 with his wife. Fatigue unchanged (5-6/10), breathlessness at baseline, pain minimal on occasional acetaminophen. Weight steady. He has not yet decided about restarting treatment and sees oncology later this month. He talked about what a good day looks like for him: coffee on the porch, a visit from family, an afternoon nap without feeling guilty about it.\n\nRecommendations: continue current approach; no medication changes. Revisit MOLST with PCP and oncology once the treatment decision is made. Follow-up in 3 months.\n\nPalliative Care"},
+            {"type": "Administrative Note", "title": "Filed", "author": "front desk", "date": "2026-08-12T11:20", "body": "Palliative care letter received by fax, scanned to chart, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

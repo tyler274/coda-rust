@@ -1,0 +1,680 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002193",
+   "events": [
+    {
+     "id": "2023-01-10a",
+     "kind": "pharmacy",
+     "start": "2023-01-10T09:40",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Albuterol refill",
+       "author": "RN",
+       "date": "2023-01-10T09:40",
+       "body": "Pharmacy request for albuterol HFA refill, originally from pulmonology. Pt using it 2-3 times a week per last call. Approved one inhaler with 2 refills; pulm to manage going forward."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-07a",
+     "kind": "office_visit",
+     "start": "2023-03-07T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-07T10:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-07T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2023-03-07T10:20",
+       "body": "Follow-up after pulmonology.\n\nPulm letter reviewed: COPD with FEV1 45% predicted, DLCO preserved. Started tiotropium daily plus albuterol rescue. Coverage sorted out in December.\n\nHe uses the Respimat every morning - demonstrated, technique decent, reminded to hold the breath. Albuterol a couple of times a week, mostly shoveling or stairs. Morning cough the same. No fevers this winter, no steroid or antibiotic courses. Smoking unchanged at a pack.\n\nVitals in flowsheet, SpO2 93% RA. Lungs: prolonged expiration, faint end-expiratory wheeze. Heart RRR. No edema.\n\n1. COPD - added to problem list. Continue tiotropium + PRN albuterol. Up to date on flu, COVID, PCV20.\n2. HTN - controlled. BMP today.\n3. Tobacco - he asks what the patch costs; told him the plan covers it, he'll 'think on it.'\n\nRTC 4-6 mo."
+      }
+     ],
+     "vitals": {
+      "spo2": 93
+     }
+    },
+    {
+     "id": "2023-03-09a",
+     "kind": "portal_message",
+     "start": "2023-03-09T08:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "BMP result",
+       "author": "RN",
+       "date": "2023-03-09T08:50",
+       "body": "Mr. Keane, your kidney function and potassium from Tuesday are normal. No changes. - Nursing, on behalf of your physician"
+      }
+     ]
+    },
+    {
+     "id": "2023-04-20a",
+     "kind": "portal_message",
+     "start": "2023-04-20T20:14",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Legs",
+       "author": "patient",
+       "date": "2023-04-20T20:14",
+       "body": "My calves have been cramping when I walk to the post office and back. Have to stop and lean on something then its fine. Can I come in sometime next week, no rush."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Legs",
+       "author": "front desk",
+       "date": "2023-04-21T08:31",
+       "body": "Good morning - you're booked Tuesday 4/25 at 2:00 with your physician."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-25a",
+     "kind": "office_visit",
+     "start": "2023-04-25T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "calf pain with walking",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-25T14:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "exertional calf pain, weak pedal pulses; vascular evaluation and ABI"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit - leg pain",
+       "author": "PCP",
+       "date": "2023-04-25T14:40",
+       "body": "Both calves cramp after about two blocks of walking, has to stop; a minute or two of rest and it eases, then he can go again. Couple of months. No pain at rest or at night, no foot sores, no numbness. No chest pain or palpitations with it.\n\nExam: Feet warm, cap refill ok. Dorsalis pedis and posterior tibial pulses faint on both sides; femorals palpable. No ulcers, skin intact. No calf tenderness or swelling.\n\nImpression: classic story for claudication in a smoker with HTN and lipids. Sending to cardiology (they do the vascular studies and ABIs). Already on aspirin and atorvastatin. Walk to the point of pain, rest, repeat - started him on that today. Smoking discussed in that light too."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-12a",
+     "kind": "specialist_visit",
+     "start": "2023-06-12T10:30",
+     "service": "Cardiology",
+     "reason": "calf pain with walking",
+     "conditions": [
+      {
+       "label": "Peripheral arterial disease",
+       "action": "diagnosed",
+       "onset": "2023-02-01"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ],
+      "hr": 78
+     },
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-06-12T08:00",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 140
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "done",
+       "date": "2023-06-12T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology consultation - vascular",
+       "author": "cardiology",
+       "date": "2023-08-08T09:00",
+       "body": "OUTSIDE CARDIOLOGY CONSULT NOTE\nVisit date: June 12, 2023\n(Received by fax after records request 8/8/23.)\n\nReason: exertional calf discomfort.\n\nHistory: 68-year-old man with hypertension, hyperlipidemia, COPD and ongoing cigarette use. Reports cramping in both calves when walking more than about two blocks, relieved by stopping. Denies chest pain, palpitations, or breathlessness beyond his baseline.\n\nMeds: lisinopril 20 mg, hydrochlorothiazide 12.5 mg, atorvastatin 40 mg, aspirin 81 mg, tiotropium inhaler, albuterol as needed.\nAllergies: none known.\n\nBP 142/88, HR 78.\nLower extremities: sparse hair over both shins, no edema, pedal pulses weak bilaterally. No ulceration.\n\nFasting lipids: total cholesterol 210, HDL 40, LDL 140, triglycerides 150.\n\nAnkle-brachial index: 0.65 right, 0.70 left.\n\nAssessment: Peripheral arterial disease, bilateral lower extremities.\n\nRecommendations: Continue aspirin and statin. Structured walking program. Tobacco cessation strongly advised. Follow up here in one year with repeat ABI."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-27a",
+     "kind": "portal_message",
+     "start": "2023-06-27T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Mail order",
+       "author": "patient",
+       "date": "2023-06-27T08:15",
+       "body": "Switching to the mail order pharmacy my supplement plan uses. Can you send all my prescriptions there."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Mail order",
+       "author": "MA",
+       "date": "2023-06-27T11:40",
+       "body": "Done - lisinopril, hydrochlorothiazide, atorvastatin and aspirin sent as 90-day supplies to the mail-order pharmacy. Your lung doctor's office will need to move the inhalers."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-25a",
+     "kind": "portal_message",
+     "start": "2023-07-25T11:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Heart doctor",
+       "author": "patient",
+       "date": "2023-07-25T11:05",
+       "body": "Did the heart doctor send you anything from June? They said blockage in my legs and to keep walking."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Heart doctor",
+       "author": "MA",
+       "date": "2023-07-25T13:20",
+       "body": "We haven't received their note yet. I've sent a records request to the cardiology office today and will let you know when it comes in."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request follow-up",
+       "author": "MA",
+       "date": "2023-08-04T10:10",
+       "body": "Second request to outside cardiology for 6/12 consult. Spoke with their records clerk, will fax by early next week."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-19a",
+     "kind": "annual_physical",
+     "start": "2023-09-19T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-19T08:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-19T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-19T08:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "eye-referral",
+       "action": "placed",
+       "order": "Ophthalmology referral",
+       "category": "referral",
+       "to": "Ophthalmology",
+       "reason": "gradual central vision loss, trouble reading and recognizing faces"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Medicare Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-19T09:20",
+       "body": "AWV\n\nInterval: Cardiology (June) letter finally in - PAD, ABI 0.65 R / 0.70 L, walking program. He walks most days, still stops at about two blocks. Breathing about the same on the inhaler.\n\nNew: Over the past several months reading has gotten harder - newsprint, his phone - and a couple of times he didn't recognize a neighbor until they spoke. Drugstore readers haven't helped. No eye pain, no red eye.\n\nFunctional: independent, drives short distances in daylight, no falls. Hearing ok. PHQ-2 0. Alcohol occasional. Still 1 ppd.\n\nExam: vitals per flowsheet. Lungs prolonged exhale, no crackles. Heart regular. Distal pulses faint. No foot lesions. Visual acuity by Snellen reduced both eyes with glasses.\n\nPlan:\n- Vision change: referred to ophthalmology.\n- PAD: on ASA + atorvastatin; keep walking.\n- COPD: continue tiotropium.\n- HTN: CMP, CBC today.\n- Vaccines: flu, updated COVID and RSV next month at nurse visit (COPD, age).\n- Advance directive packet given, he'll look it over."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-10T15:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T15:07"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-10T15:09"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T15:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall immunizations",
+       "author": "RN",
+       "date": "2023-10-10T15:30",
+       "body": "Three shots today: high-dose flu and updated COVID in the L arm (separate sites), RSV in the R arm. Counseled he may feel tired tomorrow. Observed, no reaction. Eye appointment is set for late December."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-27a",
+     "kind": "specialist_visit",
+     "start": "2023-12-27T13:15",
+     "service": "Ophthalmology",
+     "reason": "progressive central vision loss",
+     "conditions": [
+      {
+       "label": "Age-related macular degeneration",
+       "action": "diagnosed",
+       "onset": "2023-06-01",
+       "note": "dry (nonexudative), both eyes"
+      }
+     ],
+     "orders": [
+      {
+       "id": "eye-referral",
+       "action": "done",
+       "date": "2023-12-27T13:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology consultation",
+       "author": "ophthalmology",
+       "date": "2024-03-05T10:30",
+       "body": "OUTSIDE OPHTHALMOLOGY\nExamination date: 12/27/2023\nCopy to primary care (received 3/5/24 after request).\n\nHistory: 68 y/o man referred for slowly worsening vision over months. Reading is harder and faces are hard to make out across a room. No pain, redness or discharge. Systemic history of hypertension, hyperlipidemia, COPD, peripheral arterial disease; current smoker.\n\nVisual acuity (best corrected): OD 20/60, OS 20/50.\nConfrontation fields: full OU.\nPupils equal and reactive, no APD. IOP normal OU.\nAnterior segment: quiet OU.\nDilated fundus: multiple drusen with pigmentary change in the macula of each eye. No hemorrhage, no subretinal or intraretinal fluid. Discs and vessels otherwise unremarkable.\nAmsler grid: central distortion of lines in each eye.\n\nImpression: Age-related macular degeneration, nonexudative (dry), both eyes, with reduced central acuity.\n\nPlan: Daily home Amsler grid; call promptly for new distortion, a dark spot or sudden change. Smoking cessation advised - smoking accelerates macular degeneration. Return in 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-30a",
+     "kind": "pharmacy",
+     "start": "2024-01-30T09:00",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Tiotropium renewal",
+       "author": "MA",
+       "date": "2024-01-30T09:00",
+       "body": "Annual coverage renewal for tiotropium Respimat. Submitted with pulm letter and PFTs from 12/2022. Approved through 1/2025 same day."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-20a",
+     "kind": "office_visit",
+     "start": "2024-02-20T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-02-20T11:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "eye-records",
+       "action": "placed",
+       "order": "Records request, ophthalmology",
+       "category": "procedure",
+       "reason": "12/27/23 consult note"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2024-02-20T11:30",
+       "body": "Saw the eye specialist right after Christmas. Per pt: 'macular degeneration, the dry kind, both eyes.' Given an Amsler grid for the fridge; no shots, recheck in the summer. No letter here yet - requested.\n\nOtherwise: calves the same, walks most days. Breathing steady, albuterol a few times a week. No hospital visits.\n\nVitals per flowsheet, BP fine. Lungs with prolonged expiration, no crackles. Heart regular. Feet warm, no lesions.\n\nA/P\n- AMD, dry, bilateral - per patient report, added to problem list. Amsler daily. Another reason to stop smoking; he heard that from the eye doctor too.\n- COPD, PAD, HTN - stable, no changes.\nRTC summer."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-05a",
+     "kind": "outside_records",
+     "start": "2024-03-05T10:30",
+     "orders": [
+      {
+       "id": "eye-records",
+       "action": "done",
+       "date": "2024-03-05T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Ophthalmology note reviewed",
+       "author": "PCP",
+       "date": "2024-03-06T07:45",
+       "body": "12/27 ophthalmology consult received and reviewed. Dry AMD both eyes, BCVA 20/60 and 20/50. Matches what he told me. Monitoring only."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-12a",
+     "kind": "specialist_visit",
+     "start": "2024-06-12T09:15",
+     "service": "Cardiology",
+     "reason": "follow-up, calf pain",
+     "conditions": [
+      {
+       "label": "Atherosclerosis of native arteries of both legs with intermittent claudication",
+       "icd10": "I70.213",
+       "action": "diagnosed",
+       "onset": "2023-02-01"
+      },
+      {
+       "label": "Erectile dysfunction",
+       "action": "diagnosed",
+       "onset": "2024-03-01",
+       "note": "attributed to vascular disease"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ],
+      "hr": 78
+     },
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-06-12T08:00",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 220
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 35
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 160
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up",
+       "author": "cardiology",
+       "date": "2024-06-19T14:00",
+       "body": "OUTSIDE CARDIOLOGY - FOLLOW-UP\nDate of service: 06/12/2024\n\n69M, PAD, HTN, HLD, COPD, active smoker. Back for the leg symptoms. Still gets calf pain after roughly two blocks and has to stop; it limits him more than last year. Also notes erectile difficulty over recent months.\n\nMeds: lisinopril 20, HCTZ 12.5, atorvastatin 40, ASA 81, tiotropium, albuterol PRN.\nNKDA.\n\nBP 142/88  HR 78\nLegs: hair loss over both lower legs, pallor with elevation, slow capillary refill, diminished pulses in both feet. No wounds.\n\nFasting lipid panel: TC 220, HDL 35, LDL 160, TG 150.\nABI: 0.65 R, 0.70 L - unchanged from 2023.\n\nIMPRESSION\n1. Atherosclerosis of the native arteries of both legs with intermittent claudication. Stable ABIs.\n2. Erectile dysfunction, likely vasculogenic.\n3. Tobacco use.\n\nPLAN\nContinue aspirin and atorvastatin. Walking program. Cessation counseled. RTC 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-23a",
+     "kind": "office_visit",
+     "start": "2024-07-23T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after cardiology",
+     "conditions": [
+      {
+       "label": "Peripheral arterial disease",
+       "action": "resolved",
+       "note": "replaced by the specific entry for bilateral claudication"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-07-23T10:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-07-23T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2024-07-23T10:55",
+       "body": "Interval: cardiology letter from 6/12 in chart - ABIs unchanged, claudication bilateral, ED noted. Problem list cleaned up (PAD entry replaced with the claudication diagnosis).\n\nHe's still walking, 'two blocks, rest, two more.' Raised the ED himself, mostly wanted to know if it was 'the circulation thing' - yes, likely. Not interested in pursuing anything for it.\n\nBreathing about the same. Still smoking a pack.\n\nVitals per flowsheet; BP fine here. Lungs prolonged expiration. Heart regular. Feet cool, faint pulses, skin intact.\n\nPlan: same meds. BMP today. Talked through how smoking ties together the legs, lungs and eyes - he listened, not ready. Flu/COVID in Oct."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-08T14:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T14:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T14:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall shots",
+       "author": "RN",
+       "date": "2024-10-08T14:50",
+       "body": "High-dose flu R deltoid, 2024-25 COVID L deltoid. Tolerated. Reminded him the lung doctor follow-up is due - he has it in December."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-19a",
+     "kind": "office_visit",
+     "start": "2024-11-19T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-11-19T14:30",
+       "body": "No-show for 1:40 follow-up. Called, left voicemail with callback number. Pt called back at 4 - truck wouldn't start in the cold, forgot to call. Rescheduled after the holidays; he'll keep the December lung appointment."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "specialist_visit",
+     "start": "2024-12-10T10:00",
+     "service": "Pulmonology",
+     "reason": "COPD follow-up",
+     "vitals": {
+      "spo2": 92
+     },
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2024-12-10T09:30",
+       "text": "Spirometry, pulmonary function laboratory. Acceptable effort.\nFEV1 1.0 L (40% predicted).\nFVC 2.0 L (60% predicted).\nFEV1/FVC 50%.",
+       "conclusion": "Obstructive defect, FEV1 40% predicted, lower than 12/2022."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology follow-up",
+       "author": "pulmonology",
+       "date": "2025-01-14T09:20",
+       "body": "PULMONARY FOLLOW-UP (outside)\nSeen 12/10/2024. Note faxed 1/14/2025.\n\nMr. Keane returns. Breathlessness has worsened over the past several months. Daily cough productive of white sputum. No chest pain, no fevers, no weight loss.\n\nMedications unchanged: tiotropium 2.5 mcg two puffs daily, albuterol as needed, lisinopril, hydrochlorothiazide, atorvastatin, aspirin.\nNKDA. Smoking 1 ppd, 40 pack-years.\n\nSpO2 92% on room air. Chest barrel-shaped with increased AP diameter; breath sounds diminished, expiration prolonged with wheezes.\n\nSpirometry: FEV1 1.0 L (40% pred), FVC 2.0 L (60% pred), ratio 50%.\n\nAssessment: COPD with severe airflow obstruction, FEV1 lower than 2022. No exacerbations.\n\nPlan: Continue tiotropium and albuterol. Again urged to quit. Return 12 months with spirometry."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

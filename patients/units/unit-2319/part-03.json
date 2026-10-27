@@ -1,0 +1,189 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002319",
+      "events": [
+        {
+          "id": "2025-01-08a",
+          "kind": "hospital_admission",
+          "start": "2025-01-08T06:15",
+          "end": "2025-01-11T13:00",
+          "service": "Urology",
+          "reason": "left radical nephrectomy for renal mass",
+          "conditions": [
+            {"label": "Clear cell renal cell carcinoma", "icd10": "C64.2", "action": "diagnosed", "onset": "2024-11-07", "note": "left kidney, s/p radical nephrectomy 01/2025"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-01-08T09:50", "issued": "2025-01-14T11:20", "text": "Specimen A: Left kidney, radical nephrectomy. Specimen B: Left renal hilar lymph nodes.\nGross: Kidney with attached perinephric fat. Lower-pole well-circumscribed golden-yellow mass with hemorrhage, 6.5 cm in greatest dimension.\nMicroscopic: Clear cell renal cell carcinoma. ISUP/WHO nucleolar grade 3. No sarcomatoid or rhabdoid features. Tumor confined to the kidney; perinephric fat, renal sinus fat and renal vein not involved. Ureteral, vascular and soft tissue margins negative. Lymph nodes: 0 of 3 involved.", "conclusion": "Clear cell renal cell carcinoma, left kidney, 6.5 cm, ISUP grade 3, confined to the kidney, margins negative, 0/3 lymph nodes."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary - Urology", "author": "urology", "date": "2025-01-11T13:00", "body": "Admitted 01/08/2025, discharged 01/11/2025.\nProcedure: Laparoscopic left radical nephrectomy with hilar node sampling (01/08).\nIndication: 6.3 cm enhancing left renal mass.\n\nCourse: Surgery without complication. Prednisone 10 mg continued. Oxygen at his baseline 2 L. Creatinine 2.2 at discharge. Pain controlled with acetaminophen. Ambulating, tolerating diet.\nFinal pathology pending at discharge.\nAllergies: iodinated contrast (urticaria), sulfonamide antibiotics (rash).\n\nDischarge medications: lisinopril 5 mg daily; furosemide 20 mg daily; prednisone 10 mg daily; oxygen 2 L/min NC continuous; acetaminophen 650 mg q6h prn pain. Avoid NSAIDs.\nFollow-up: urology 2 weeks; PCP 1-2 weeks with BMP; oncology to review pathology and the lung nodules."}
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge visit after nephrectomy",
+          "state": {"weight_kg": 80.0, "labs": {"Creatinine": 2.2}},
+          "vitals": {"spo2": 95},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-21T14:20", "results": [{"test": "Creatinine", "value": 2.2}, {"test": "Potassium"}, {"test": "Bicarbonate"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-21T14:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-01-21T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-01-21T13:40", "body": "Seen 10 days after laparoscopic L radical nephrectomy (1/8-1/11). Path final 1/14: clear cell RCC 6.5 cm, grade 3, confined to the kidney, margins and nodes negative.\n\nS: Sore at the port sites, acetaminophen 2-3 times a day is enough. Eating less, down to 80 kg. Breathing back to his usual on 2 L. Urinating fine. No fever.\nMeds reconciled, unchanged from before surgery: lisinopril 5, furosemide 20, prednisone 10, O2 2 L, acetaminophen prn.\n\nO: SpO2 95% on 2 L. Port sites healing, no erythema. Abdomen soft, appropriately tender on the left. Bibasilar crackles as before. No edema.\nBMP today: creatinine 2.2 (1.8 before surgery) - eGFR about 32.\n\nA/P\n1. Clear cell RCC, left, s/p radical nephrectomy - oncology sees him in the spring to decide about the right lung nodules. Problem list updated.\n2. CKD 3b - one kidney now, creatinine settled at 2.2, still 3b. Kept lisinopril 5 and furosemide 20; recheck BMP at next visit. Reviewed: no NSAIDs, no contrast, tell any new doctor about the single kidney.\n3. Bleomycin lung fibrosis - baseline, prednisone 10 continues.\n4. Weight down with surgery and appetite; small frequent meals.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "imaging",
+          "start": "2025-03-24T09:15",
+          "reason": "follow-up of right lung nodules",
+          "reports": [
+            {"study": "CT chest", "performed": "2025-03-24T09:15", "text": "Indication: Right lung nodules; clear cell RCC s/p left nephrectomy 01/2025; prior LUL adenocarcinoma and testicular NSGCT.\nTechnique: Helical CT of the chest without IV contrast.\nComparison: CT chest 11/07/2024.\nFindings: The previously seen right lung nodules have enlarged; the largest, in the right lower lobe, now 14 mm (previously 9 mm). Two additional new right lung nodules, 4 and 5 mm. Bibasilar fibrotic change, unchanged. Post-lobectomy changes on the left. No pleural effusion. No adenopathy.", "conclusion": "Enlarging and new right lung nodules, largest 14 mm, most consistent with metastatic disease in this setting. Stable fibrotic changes."}
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "specialist_visit",
+          "start": "2025-04-08T10:30",
+          "service": "Hematology/Oncology",
+          "reason": "renal cell carcinoma, lung nodules",
+          "conditions": [
+            {"label": "Metastatic clear cell renal cell carcinoma", "icd10": "C78.01", "action": "diagnosed", "onset": "2025-03-24", "note": "pulmonary metastases, right lung"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Follow-up", "author": "oncology", "date": "2025-04-08T14:00", "body": "RE: Andrew Marino, 64M\ncc: primary care, urology, pulmonology\n\nKnown to me: testicular NSGCT, stage IS, complete response to BEP x3 (2024), markers normal since. Now clear cell RCC, left radical nephrectomy 01/08/2025 (6.5 cm, ISUP 3, organ-confined, N0). Also stage IA LUL adenocarcinoma resected 2023, bleomycin pulmonary fibrosis on prednisone 10 mg and continuous 2 L O2, CKD 3b.\n\nCT chest 03/24: right lung nodules seen in November have grown (largest 9 to 14 mm) and there are two new ones. AFP normal.\n\nAssessment: With three cancer histories, the source matters. Multiple bilateral-pattern growing nodules appearing around the time of a high-grade clear cell RCC, with normal germ cell markers and a different pattern from his solitary lung primary, are most consistent with metastatic clear cell RCC. The nodules are small and his lungs fibrotic, so I don't think a biopsy is safe right now; if a lesion grows out of pattern we will sample it.\nDiagnosis: metastatic clear cell RCC to the lungs.\n\nTreatment: Immune checkpoint combinations are the usual first choice, but with bleomycin lung injury and oxygen dependence the risk of immune pneumonitis is too high in my judgment. Plan sunitinib 50 mg daily, 4 weeks on and 2 weeks off (6-week courses), first course starting 05/05/2025. No dose change needed for his kidney function. Reviewed side effects: fatigue, mouth sores, hand-foot skin changes, diarrhea, blood pressure rise, thyroid effects, low counts. Labs every 2-3 weeks through our office. Restaging CT after 2 courses.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, new oncology medication",
+          "medications": [
+            {"drug_text": "sunitinib 50 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily for 4 weeks, then 2 weeks off (oncology)", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Metastatic clear cell renal cell carcinoma"}
+          ],
+          "vitals": {"spo2": 95},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-20T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2025-05-20T10:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-05-20T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-20T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-05-20T10:00", "body": "Follow-up. Oncology (4/8) diagnosed metastatic clear cell RCC to the right lung by imaging; started sunitinib 50 mg daily 5/5, 4 weeks on / 2 off. Immunotherapy avoided because of his bleomycin lung.\n\nS: Two weeks into the first course. Some tiredness. No mouth sores, hands and feet fine, no diarrhea. Breathing at his usual on 2 L. Wife is keeping a calendar of the on/off weeks on the fridge.\nMeds: lisinopril 5, furosemide 20 qAM, prednisone 10, sunitinib 50 (oncology), O2 2 L continuous, acetaminophen prn.\n\nO: SpO2 95% on 2 L. BP at goal. Bibasilar crackles unchanged. No edema. No rash on palms or soles.\n\nA/P\n1. Metastatic ccRCC on sunitinib - oncology monitoring counts, thyroid and LFTs; added sunitinib to our list so anyone prescribing sees it. Watch BP - sunitinib can push it up; he has a home cuff, asked him to message if over 140 systolic.\n2. CKD 3b - CMP today.\n3. HTN - at goal.\n4. Pulm fibrosis - stable.\n5. Annual labs (lipids, A1c) drawn with today's. PHQ-9 4.\nRTC 3 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure check",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "pharmacy",
+          "start": "2025-07-08T09:05",
+          "reason": "prednisone refill",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request - prednisone", "author": "MA", "date": "2025-07-08T09:05", "body": "Electronic request from pt's pharmacy: prednisone 10 mg #90. Originally prescribed by pulmonology; pt asked us to take over the refills since pulm is far. PCP approved 90 day supply, 1 refill. Pt also cancelled 6/24 BP check - home readings fine per his message, rebooked for September."}
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "imaging",
+          "start": "2025-08-11T08:40",
+          "reason": "restaging after 2 courses of sunitinib",
+          "reports": [
+            {"study": "CT chest", "performed": "2025-08-11T08:40", "text": "Indication: Metastatic clear cell RCC to lung, restaging after 2 courses of sunitinib.\nTechnique: Helical CT of the chest without IV contrast.\nComparison: CT chest 03/24/2025.\nFindings: Most right lung nodules are smaller or unchanged. The right lower lobe nodule has enlarged to 21 mm (previously 14 mm). No new nodules. Bibasilar fibrotic change, stable. Post-lobectomy changes on the left. No effusion. No adenopathy.", "conclusion": "Mixed response: most pulmonary nodules smaller or stable; dominant right lower lobe nodule enlarged to 21 mm."}
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "specialist_visit",
+          "start": "2025-08-20T09:00",
+          "service": "Hematology/Oncology",
+          "reason": "follow-up after second course of sunitinib",
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-20T08:15", "results": [{"test": "Calcium", "value": 10.8}, {"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "CBC with Differential", "collected": "2025-08-20T08:15", "results": [{"test": "Hemoglobin", "value": 18}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Follow-up", "author": "oncology", "date": "2025-08-20T16:30", "body": "Andrew Marino, 64\nDx: metastatic clear cell RCC (lung), on sunitinib since 05/05/2025. History of bleomycin-induced pulmonary fibrosis, stage IA lung adenocarcinoma s/p LUL lobectomy, testicular NSGCT in remission, CKD 3b.\n\nInterval: Finished his second 6-week course of sunitinib (cycle 2 ended 07/27). Tired during the on-weeks, recovers on the off-weeks. Breathing unchanged on 2 L. Weight stable.\nMeds: sunitinib 50 mg 4/2, prednisone 10 mg, lisinopril 5 mg, furosemide 20 mg, O2 2 L continuous, acetaminophen prn.\nAllergies: iodinated contrast - urticaria; sulfonamide antibiotics - rash.\n\nLabs today: calcium 10.8 mg/dL; hemoglobin 18 g/dL.\nCT chest 08/11: mixed response - most nodules smaller or stable, dominant right lower lobe nodule up to 21 mm.\n\nAssessment: Mixed response after 2 courses. The calcium and hemoglobin are both above normal; in RCC these are classically paraneoplastic and I will follow them rather than act on them now. The enlarging RLL nodule is now large enough to sample, and given his prior lung primary I want tissue before calling this progression of RCC.\n\nProcedure: CT-guided core biopsy of the right lower lobe nodule performed this afternoon by interventional radiology. Post-procedure film without pneumothorax. Discharged home.\n\nPlan: Pathology to follow. Continue sunitinib, course 3 to start 09/01 if biopsy confirms RCC. Recheck calcium and counts with next labs. Encourage fluids.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "outside_records",
+          "start": "2025-08-25T15:10",
+          "reason": "lung biopsy pathology",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-08-20T14:10", "issued": "2025-08-25T11:45", "text": "Specimen: Right lower lobe lung nodule, CT-guided core needle biopsy (3 cores).\nMicroscopic: Lung parenchyma infiltrated by nests of tumor cells with abundant clear cytoplasm and a delicate vascular network. Immunostains: PAX8 positive, carbonic anhydrase IX positive, CD10 positive; TTF-1 negative, napsin A negative.\nComparison with the 01/2025 nephrectomy specimen: morphologically similar.", "conclusion": "Metastatic clear cell renal cell carcinoma, right lower lobe."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Biopsy result reviewed", "author": "PCP", "date": "2025-08-26T08:30", "body": "RLL biopsy: metastatic clear cell RCC (not a new lung primary). Oncology letter from 8/20 also received - calcium 10.8 and Hgb 18, being followed by them as likely paraneoplastic. Sunitinib continues. Will see him in September."}
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "office_visit",
+          "start": "2025-09-09T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "state": {"labs": {"Calcium": 10.6, "Hemoglobin": 17.6}},
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-09T10:15", "results": [{"test": "Calcium", "value": 10.6}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-09T10:15", "results": [{"test": "Hemoglobin", "value": 17.6}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-09-09T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-09-09T09:40", "body": "Follow-up. Since May: 2 courses of sunitinib, mixed response on the 8/11 CT, RLL nodule biopsied 8/20 - metastatic clear cell RCC. Oncology continuing sunitinib, course 3 started 9/1. Oncology labs 8/20: Ca 10.8, Hgb 18.\n\nS: Tired on the on-weeks. Appetite fair. Breathing unchanged on 2 L. Home BP 120s-130s/70s. He says he is doing this because his wife wants him to fight it, and he wants it too, mostly.\nMeds: lisinopril 5, furosemide 20, prednisone 10, sunitinib 50 4/2 (oncology), O2 2 L, acetaminophen prn.\n\nO: SpO2 94% on 2 L. BP at goal. Bibasilar crackles unchanged. No edema. Palms and soles without skin changes.\n\nA/P\n1. Metastatic ccRCC on sunitinib - per oncology.\n2. Calcium 10.8 / Hgb 18 at oncology - recheck today; oncology following as paraneoplastic.\n3. CKD 3b - CMP today.\n4. HTN - fine on current meds despite sunitinib.\n5. Flu and COVID in October.\nRTC 3 months.\n\nAddendum 9/10: Ca 10.6, Hgb 17.6, creatinine stable. Copied to oncology. No change."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T10:15",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T10:18"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T10:20"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T10:18"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2025-10-14T10:15", "body": "On sunitinib off-week per pt (oncology OK'd vaccines today). Flu R deltoid, COVID L deltoid. Tolerated, observed 15 min. RSV already given 10/2024 - not repeated."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-09T11:55", "results": [{"test": "Creatinine"}, {"test": "Calcium", "value": 10.5}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-09T11:55", "results": [{"test": "Hemoglobin", "value": 17.5}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-09T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-12-09T11:20", "body": "3-month follow-up. On sunitinib course 5 (started 11/24, oncology). Next CT in January.\n\nS: Fatigue the main thing - naps most afternoons now, does less around the house. No diarrhea. Breathing the same on 2 L. Not smoking. Wife does most of the driving.\nMeds unchanged: lisinopril 5, furosemide 20, prednisone 10, sunitinib 50 4/2, O2 2 L, acetaminophen prn.\n\nO: SpO2 94% on 2 L. BP at goal. Thinner in the face. Bibasilar crackles unchanged. No edema.\n\nA/P\n1. Metastatic ccRCC on sunitinib - fatigue expected; he has told oncology. CT next month.\n2. CKD 3b, calcium, Hgb - BMP and CBC today, copy to oncology.\n3. HTN - at goal.\n4. Pulm fibrosis on prednisone 10 + O2 - stable.\nRTC 3 months or sooner."}
+          ]
+        }
+      ]
+    }
+  ]
+}

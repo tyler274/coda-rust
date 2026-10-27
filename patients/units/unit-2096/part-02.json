@@ -1,0 +1,273 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002096",
+      "events": [
+        {
+          "id": "2023-01-23a",
+          "kind": "lab_only",
+          "start": "2023-01-23T10:30",
+          "labs": [
+            {"panel": null, "collected": "2023-01-20T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2023", "action": "done", "date": "2023-01-23T10:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT Result", "author": "PCP", "date": "2023-01-23T16:05", "body": "Negative FIT. Due again next winter."}
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "office_visit",
+          "start": "2023-02-27T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "HIV follow-up",
+          "state": {"labs": {"CD4 Count": 150, "HIV-1 RNA Viral Load": 95000}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-02-27T08:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-27T08:15", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2023-02-27T08:15", "results": [{"test": "CD4 Count"}, {"test": "HIV-1 RNA Viral Load"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-27T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-02-27T08:40", "body": "47M, advanced HIV off ART, here for routine check.\nFeels well. No infections this winter. Knee aches in the cold. Bactrim - estimates he takes 2 of the 3 weekly doses most weeks.\nExam: weight stable, afebrile. Mouth clear. No adenopathy. Lungs clear, heart regular. Skin clear. Knee unchanged.\nPlan: CD4/VL, CBC, BMP. Re-offered ART and an HIV clinic referral - declined, same reasons. I told him plainly I think he is at real risk of a serious infection without treatment. He heard it. Continue prophylaxis. Back in ~4 months."}
+          ]
+        },
+        {
+          "id": "2023-03-02a",
+          "kind": "portal_message",
+          "start": "2023-03-02T17:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2023-03-02T17:10", "body": "Todd - CD4 has drifted a little lower than last year and the viral load a little higher. Blood count and kidney function are unchanged. This is the slow trend I mentioned. Happy to set up treatment any time, no appointment needed to start the conversation."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "office_visit",
+          "start": "2023-06-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "telephone",
+          "start": "2023-06-20T12:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2023-06-20T12:05", "body": "Called re: missed 6/12 appt. Pt says he was pulled onto a job out of town that week. Rebooked 7/17 at 7:40 am."}
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "office_visit",
+          "start": "2023-07-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right knee pain",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-07-17T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Knee Pain", "author": "PCP", "date": "2023-07-17T08:15", "body": "Rebooked follow-up; main issue today is the right knee. Sore after weeks of kneeling on a deck job. No injury, no swelling, no locking. Uses ibuprofen 400 a few times a week, acetaminophen at night.\nExam: R knee - crepitus, mild medial joint line tenderness, no effusion, ligaments stable, full ROM. L knee normal. Gait normal.\nA/P: Post-traumatic R knee arthritis, flared with work. Kneepads, ice after shifts, same prn analgesics. Labs done in Feb; next draw this fall. Still off ART - didn't want to get into it today, will revisit at next visit."}
+          ]
+        },
+        {
+          "id": "2023-10-02a",
+          "kind": "nurse_visit",
+          "start": "2023-10-02T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunizations",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-02T07:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-02T07:50"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-02T07:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "MA", "date": "2023-10-02T07:58", "body": "Flu and 2023-24 COVID given, one in each arm. Pt mentions he's been more tired lately and his knees and hands ache - advised to book with PCP rather than wait. Front desk asked to find him a slot."}
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "office_visit",
+          "start": "2023-11-13T08:00",
+          "end": "2023-11-13T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, joint pain, dark urine, leg rash",
+          "conditions": [
+            {"label": "Peripheral neuropathy", "action": "diagnosed", "onset": "2023-10-01"}
+          ],
+          "state": {"weight_kg": 77.0, "labs": {"Microalbumin/Creatinine Ratio": 300, "Hemoglobin": 12.3}},
+          "vitals": {"temp_c": 37.8, "bp": [115, 70], "hr": 90},
+          "measure": ["spo2", "rr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-13T09:00", "results": [{"test": "Creatinine", "value": 1.35}]},
+            {"panel": "Urinalysis", "collected": "2023-11-13T09:00", "results": [{"test": "Urine Color", "text": "Dark amber"}, {"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "2+"}, {"test": "Urine Red Blood Cells", "value": 15}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]},
+            {"panel": "CBC with Differential", "collected": "2023-11-13T09:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-11-13T09:00", "results": [
+              {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 5},
+              {"test": "Cryoglobulin", "loinc": "5117-7", "text": "Positive", "resulted": "2023-11-17T09:40"},
+              {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "CD4 Count"},
+              {"test": "HIV-1 RNA Viral Load"}
+            ]}
+          ],
+          "orders": [
+            {"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "suspected cryoglobulinemic vasculitis with renal involvement"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-11-13T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-11-13T09:35", "body": "CC: tired, achy joints, dark urine, rash on legs.\n\nHPI: 47M with advanced HIV (off ART) and CKD 2. Over roughly three months he has been getting more and more worn out. Urine has been the color of strong tea most days. Lately both hands, wrists and knees swell a little and hurt enough that he's had to cut back hours. Red spots on his lower legs come and go - worse when he's been working outside in the cold - and they don't fade when he presses on them. For the last few weeks his feet tingle and feel weak; he can't walk a long distance like before. No fever at home that he knows of, no cough, no new meds. Still on Bactrim (most doses), ibuprofen for the joints more often than usual.\n\nExam: T 37.8, BP 115/70, HR 90. Tired-appearing. Mouth clear. Lungs clear. RRR. Abdomen benign. Joints: mild symmetric puffiness of wrists and MCPs, both knees, no hot joint. Skin: numerous palpable purpuric papules both shins below the knees, non-blanching. Neuro: vibration reduced at both great toes and ankles; strength grossly intact, reflexes present.\n\nA/P:\n1. Palpable purpura + arthralgias + hematuria/proteinuria + neuropathy in untreated HIV: picture fits cryoglobulinemic vasculitis. Hep B and C need excluding (he had multiple transfusions in 2011). Sending CMP, UA with micro, CBC, C4, serum cryoglobulins (kept warm, lab aware), HBsAg, HCV Ab, urine albumin, CD4/VL.\n2. Peripheral neuropathy, new - likely part of the same process.\n3. Kidneys - expect creatinine up; will refer to rheumatology now and review once labs back.\n4. HIV - this may well be driven by uncontrolled virus. ART is the real treatment; raised it again. He'll \"look at it\" once we know more.\nWill call with results this week."}
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "telephone",
+          "start": "2023-11-17T12:30",
+          "conditions": [
+            {"label": "Cryoglobulinemia", "icd10": "D89.1", "action": "diagnosed", "onset": "2023-08-15"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results Call", "author": "PCP", "date": "2023-11-17T12:30", "body": "Called pt with results. Cryoglobulins positive. C4 low at 5. Creatinine 1.35 (up from his ~1.1 baseline). UA 2+ protein, 2+ blood, 15 RBC/hpf. Hep B surface Ag and Hep C Ab both negative. Hgb at his usual mild-anemia level.\nDx: cryoglobulinemia with skin, joint, nerve and kidney involvement, most likely from untreated HIV since hepatitis is ruled out. Rheumatology referral already sent - urged him to keep it. Told him again that HIV treatment is the main fix. He asked good questions, still undecided. Repeat BMP/UA in a couple of months."}
+          ]
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "specialist_visit",
+          "start": "2024-01-10T13:00",
+          "service": "Rheumatology",
+          "reason": "cryoglobulinemia",
+          "orders": [{"id": "rheum-referral", "action": "done", "date": "2024-01-10T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Consultation", "author": "rheumatology", "date": "2024-01-18T10:20", "body": "OUTSIDE RHEUMATOLOGY CONSULTATION\nDate of service: 01/10/2024\nReferred by: primary care, for positive cryoglobulins\n\nThank you for sending Mr. McKenna, a 47-year-old construction laborer with HIV diagnosed in 2016, off antiretrovirals for years.\n\nHistory: since late summer, fatigue, dark urine, symmetric small- and large-joint arthralgia with mild swelling, an intermittent cold-provoked purpuric eruption of the shins, and distal paresthesias with some foot weakness. Splenectomy and transfusions after a 2011 crash.\nMedications: TMP-SMX DS three times weekly, ibuprofen 400 mg as needed, acetaminophen 500 mg as needed. Allergies: none known.\n\nExam: afebrile. Faint residual palpable purpura on both shins. Mild synovial thickening at the wrists without effusion. Knees cool. Decreased vibration at the toes.\n\nData reviewed from your office (11/13/23): serum cryoglobulins positive, C4 5 mg/dL, creatinine 1.35, urinalysis 2+ protein and 2+ blood with 15 RBC/hpf, HBsAg and HCV antibody negative.\n\nImpression: mixed cryoglobulinemia with cutaneous vasculitis, arthralgia, peripheral neuropathy and renal involvement. With hepatitis B and C excluded, untreated HIV is the most likely driver.\n\nRecommendations:\n1. The treatment of the underlying cause is antiretroviral therapy; I recommended an HIV clinic. He declined that referral today.\n2. Given a CD4 well under 200, I would not add glucocorticoids or other immunosuppression.\n3. Keep following renal function and urinalysis with you.\nI am glad to see him again as needed.\n\nAllergies: NKDA.\n\n- Rheumatology"},
+            {"type": "Result Note", "title": "Outside Consult Reviewed", "author": "PCP", "date": "2024-01-18T15:45", "body": "Rheum letter reviewed. Agree - ART is the answer, no immunosuppression. Will see him next month."}
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "office_visit",
+          "start": "2024-02-26T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up cryoglobulinemia",
+          "conditions": [
+            {"label": "Medication noncompliance", "icd10": "Z91.148", "action": "diagnosed", "onset": "2016-12-01"}
+          ],
+          "state": {"labs": {"Creatinine": 1.28}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-26T08:20", "results": [{"test": "Creatinine"}]},
+            {"panel": "Urinalysis", "collected": "2024-02-26T08:20", "results": [{"test": "Urine Protein", "text": "1+"}, {"test": "Urine Blood", "text": "1+"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-26T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-02-26T08:45", "body": "S: Saw rheumatology in Jan. Rash has quieted over the winter, joints a little better, still tired. Feet still tingle. Urine \"lighter some days.\" He did not want the HIV clinic referral the rheumatologist offered. Bactrim: misses doses most weeks, by his own count.\nO: Afebrile. No purpura today. Mild wrist puffiness. Lungs clear. Reduced vibration at toes, unchanged.\nA/P:\n- Cryoglobulinemia, HIV-associated: no immunosuppression per rheum. Only real treatment is ART. Declined again today.\n- Medication noncompliance: added to problem list - declining ART since 2016 and irregular with prophylaxis. Non-judgmental talk about barriers (work hours, bad memories of old regimen). Pill box, alarms.\n- Kidneys: BMP, UA today.\n- Neuropathy: watch, foot care.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "office_visit",
+          "start": "2024-06-03T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-06-03T08:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-03T08:20", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-06-03T08:20", "results": [{"test": "CD4 Count"}, {"test": "HIV-1 RNA Viral Load"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-03T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-06-03T08:30", "body": "Interval OK. Working. No fevers or infections. Joints manageable with ibuprofen/Tylenol. No new rash since winter. Feet unchanged.\nExam unremarkable apart from decreased vibration distally and R knee crepitus.\nPlan: CD4/VL, CBC, CMP. ART - asked if anything has changed in his thinking; \"not yet.\" Continue prophylaxis. Physical in Sept."}
+          ]
+        },
+        {
+          "id": "2024-06-06a",
+          "kind": "portal_message",
+          "start": "2024-06-06T11:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2024-06-06T11:50", "body": "Todd - kidney function is in the same range as this winter, still above your old baseline. CD4 low and viral load high, similar to last year. Anemia steady. No changes for now."}
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "annual_physical",
+          "start": "2024-09-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-09-23T08:10", "results": [{"test": "Total Cholesterol"}]},
+            {"panel": null, "collected": "2024-09-23T08:10", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-09-23T08:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-23T08:15"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-09-23T08:15"}
+          ],
+          "orders": [
+            {"id": "fit-2024", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-23T07:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-23T08:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-23T09:00", "body": "Physical, 48M.\nProblems: advanced HIV off ART; HIV-associated cryoglobulinemia (renal, skin, joints, nerves); peripheral neuropathy; anemia of chronic disease; CKD 2; R knee post-traumatic arthritis; asplenia; medication nonadherence.\nInterval: quiet summer. Fatigue on and off. No fevers, cough, sores, diarrhea. Rash has not returned since spring.\nMeds: TMP-SMX DS three times weekly, ibuprofen 400 prn, acetaminophen 500 prn. NKDA.\nExam: weight stable. HEENT clear. No nodes. Lungs clear. Heart regular. Abd soft. Skin without purpura today. Diminished vibration at the toes bilaterally. R knee crepitus.\nPHQ-9 4.\nPrevention: flu, COVID and Shingrix #1 today (recombinant only - no live vaccines). FIT kit. Lipids, urine albumin.\nRTC Nov."}
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "lab_only",
+          "start": "2024-10-07T10:45",
+          "labs": [
+            {"panel": null, "collected": "2024-10-04T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2024", "action": "done", "date": "2024-10-07T10:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT Result", "author": "PCP", "date": "2024-10-07T14:30", "body": "FIT negative."}
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "office_visit",
+          "start": "2024-11-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, joint swelling, leg rash, dark urine",
+          "vitals": {"temp_c": 37.8, "bp": [115, 70], "hr": 90},
+          "measure": ["spo2", "rr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-08T08:50", "results": [{"test": "Creatinine", "value": 1.38}]},
+            {"panel": "Urinalysis", "collected": "2024-11-08T08:50", "results": [{"test": "Urine Color", "text": "Dark amber"}, {"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "2+"}, {"test": "Urine Red Blood Cells", "value": 12}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-08T08:50", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2024-11-08T08:50", "results": [
+              {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 6},
+              {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "CD4 Count"},
+              {"test": "HIV-1 RNA Viral Load"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-11-08T08:45"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-08T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-11-08T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-11-08T09:20", "body": "Follow-up, about a year since the cryoglobulinemia work-up. Unfortunately he describes the same things as last November: worn out, hands/wrists/knees swollen and sore enough that he's losing work days, urine dark again, and the shin rash back since it got cold - spots that don't blanch. Feet have been tingling and weak again for several weeks, hard to walk any distance on site. No fever he's aware of. No cough.\n\nT 37.8  BP 115/70  HR 90\nTired. Mouth clear. Lungs clear. RRR. Wrists and MCPs mildly puffy, knees mildly swollen, cool. Palpable non-blanching purpura across both shins below the knee. Vibration diminished at toes and ankles.\n\nAssessment: active HIV-associated cryoglobulinemic vasculitis, same distribution as last year, with neuropathy and renal involvement. Hep A/B immunity documented from old records; re-checking hep B/C serologies given the transfusion history.\nPlan:\n- Labs: BMP, UA, CBC, C4, HBsAg, HCV Ab, CD4/VL.\n- ART offered again, with the reasoning that this flare is what untreated HIV is doing to his kidneys and nerves. Declined. Asked him to at least keep the HIV clinic number.\n- Shingrix #2 today.\n- Follow up 3 months."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "portal_message",
+          "start": "2024-11-12T16:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2024-11-12T16:25", "body": "Todd, results: creatinine 1.38, about where it was during last year's flare. Urine again shows protein and blood. C4 still low (6). Hepatitis B and C negative again. CD4 and viral load no better. All of this points the same way it did last year. I'd really like to talk ART with you at your February visit - or sooner."},
+            {"type": "Patient Message", "title": "RE: Lab Results", "author": "patient", "date": "2024-11-13T06:12", "body": "ok. I hear you. Feb."}
+          ]
+        }
+      ]
+    }
+  ]
+}

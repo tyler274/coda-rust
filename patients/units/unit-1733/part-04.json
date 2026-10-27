@@ -1,0 +1,210 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001733",
+      "events": [
+        {
+          "id": "2025-03-07a",
+          "kind": "telephone",
+          "start": "2025-03-07T09:30",
+          "reason": "Hospital admission notice",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Admission notification", "author": "RN", "date": "2025-03-07T09:30",
+             "body": "Hospital case manager called: pt admitted to gynecology last night with pelvic infection, on IV antibiotics. Will fax summary at discharge. Asked them to have her call us for a follow-up visit within a week of going home."}
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telephone",
+          "start": "2025-03-11T10:15",
+          "reason": "Post-discharge scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2025-03-11T10:15",
+             "body": "Pt home since yesterday. No fever since Saturday. Taking doxycycline and metronidazole, no missed doses, some nausea with the metronidazole but keeping them down. Pain 'way better.' Reviewed: no alcohol with metronidazole, call for fever, worsening pain or vomiting. Visit Fri 3/14 with PCP."}
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "outside_records",
+          "start": "2025-03-12T13:00",
+          "reason": "Hospital discharge summary",
+          "conditions": [{"label": "Acute pelvic inflammatory disease with tubo-ovarian abscess", "icd10": "N70.03", "action": "diagnosed", "onset": "2025-03-03"}],
+          "medications": [
+            {"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily to complete 14 days of therapy", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "tubo-ovarian abscess"},
+            {"drug_text": "metronidazole 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily to complete 14 days of therapy. No alcohol.", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "tubo-ovarian abscess"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-03-06T21:40", "resulted": "2025-03-06T22:20",
+             "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin", "value": 12.2}]},
+            {"panel": null, "collected": "2025-03-06T21:40", "resulted": "2025-03-06T23:00",
+             "results": [
+               {"test": "C Reactive Protein", "value": 24, "unit": "mg/L"},
+               {"test": "Pregnancy Test, Urine", "text": "Negative"}
+             ]},
+            {"panel": null, "collected": "2025-03-06T22:10", "resulted": "2025-03-08T09:00",
+             "results": [
+               {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+               {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"},
+               {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+             ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-03-06T23:30",
+             "text": "Transabdominal and transvaginal technique. Uterus normal in size, endometrium thin and uniform. Right adnexa: complex multiloculated mass with thick walls and internal debris, measuring 5.4 x 4.6 x 4.1 cm in three orthogonal planes. Left ovary normal in size with normal follicles. No free fluid.",
+             "conclusion": "Complex multiloculated right adnexal mass with thick walls and internal debris, 5.4 cm, in keeping with tubo-ovarian abscess in this clinical setting."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Gynecology discharge summary", "author": "gynecology", "date": "2025-03-12T13:00",
+             "body": "Admitted: 3/6/2025. Discharged: 3/10/2025.\nDiagnosis: acute pelvic inflammatory disease with right tubo-ovarian abscess.\n\nPresentation: 35-year-old with three days of fever, lower abdominal pain on both sides that worsens with movement, and vaginal discharge. Prior chlamydia, most recently treated six months ago, and recent chancroid. Past injection drug use; ITP in remission.\n\nOn arrival: T 38.7 C (101.7 F), HR 110, BP 100/60. Cervical motion tenderness, tenderness of both adnexa, purulent discharge from the cervix.\nLabs: WBC 15.0, Hgb 12.2, CRP 24 mg/L. Urine hCG negative. GC/CT NAAT negative; HIV nonreactive.\nPelvic ultrasound: complex multiloculated right adnexal mass with thick walls and internal debris, 5.4 x 4.6 x 4.1 cm.\n\nCourse: IV ceftriaxone, doxycycline and metronidazole. Afebrile within 48 hours, pain steadily improving, tolerating diet. Abscess size suitable for antibiotic therapy alone; no drainage or surgery required. Transitioned to oral therapy on day 4.\n\nDischarge medications: doxycycline 100 mg twice daily and metronidazole 500 mg twice daily to complete 14 days total.\nFollow-up: PCP within 1 week; gynecology with repeat pelvic ultrasound in about 6 weeks. Partner treatment advised.\nAllergies: NKDA.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2025-03-14a",
+          "kind": "office_visit",
+          "start": "2025-03-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, tubo-ovarian abscess",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2025-03-14T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-03-14T11:20",
+             "body": "Admitted 3/6-3/10 for PID with a 5.4 cm right TOA, treated with IV then oral antibiotics, no drainage. Discharge summary reviewed.\n\nToday: no fever since day 2 in hospital. Lower belly 'sore, not sharp.' Discharge almost gone. On day 9 of 14 of doxycycline + metronidazole; mild nausea, eating fine. No alcohol.\n\nVitals normal, afebrile. Abdomen soft, mild lower tenderness, no guarding or rebound.\n\nA/P\n1. PID with TOA - improving on oral therapy. Finish all 14 days. Gyn ultrasound in ~6 wk (she has the appointment). Return precautions reviewed.\n2. Partners: she says she has told the one she's still seeing to get treated.\n3. STI prevention again - condoms; offered a harm-reduction referral, declined for now.\n4. Smoking - unchanged."}
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "outside_records",
+          "start": "2025-04-28T14:45",
+          "reason": "Gynecology follow-up letter",
+          "conditions": [{"label": "Acute pelvic inflammatory disease with tubo-ovarian abscess", "icd10": "N70.03", "action": "resolved"}],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-04-24T10:15",
+             "text": "Transvaginal technique. Uterus normal in size. Endometrium thin. Right ovary normal in size and appearance; no residual adnexal collection. Left ovary normal. No free fluid.",
+             "conclusion": "Interval resolution of the right adnexal collection. Normal ovaries."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology follow-up letter", "author": "gynecology", "date": "2025-04-28T14:45",
+             "body": "Visit 4/24/2025, follow-up after admission for PID with right TOA.\n\nCompleted 14 days of oral antibiotics. No pain, fever or discharge. Exam: no cervical motion or adnexal tenderness. Repeat ultrasound today: the right adnexal collection has resolved and both ovaries look normal.\n\nNo further gynecologic follow-up needed for this; routine cervical screening with you. We discussed contraception and condom use.\n\nAllergies: NKDA.\n\nOB/GYN"}
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "annual_physical",
+          "start": "2025-11-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [{"item": "Tobacco smoking status", "value": "Every day smoker"}],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-11-04T10:00"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-04T10:05", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-04T10:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-11-04T09:20"},
+            {"procedure": "Immunization administration", "performed": "2025-11-04T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-11-04T10:20",
+             "body": "36F, physical.\n\nInterval: PID with right TOA 3/2025, antibiotics only, gyn ultrasound 4/2025 resolved. No pelvic pain since. Chancroid and chlamydia 9/2024, retest negative 12/2024. HSV - no recurrences she's noticed. ITP - platelets normal 5/2024.\nMeds: none. NKDA.\nSH: ~5 cig/day. Alcohol 1-2 drinks a month. Not working. Doesn't want to discuss partners in detail today; condoms 'mostly.'\n\nROS: negative. No bruising.\nVitals normal. PHQ-9 3.\nExam: well appearing. HEENT normal. Neck without nodes. Heart RRR. Lungs clear. Abdomen soft, nontender. Skin without bruising, petechiae or lesions. Neuro grossly normal, gait normal. Pelvic deferred - no symptoms, co-test not due until 2027.\n\nA/P\n1. Health maintenance: flu today. CBC, BMP.\n2. ITP in remission - CBC.\n3. Cervical screening - next co-test 2027.\n4. Tobacco - counseled; she'll call if she wants help quitting.\n5. STI prevention - condoms, walk-in testing.\nReturn in one year."}
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T16:10",
+          "reason": "Physical results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-11-06T16:10",
+             "body": "Hi Kelly, blood counts including platelets are normal and your kidney function and sugar are normal. Nothing to change. See you next year."}
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "telephone",
+          "start": "2026-03-05T15:30",
+          "reason": "Hospital admission notice",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Admission notification", "author": "front desk", "date": "2026-03-05T15:30",
+             "body": "Hospital case management left a voicemail: pt admitted to neurology 3/4. Will send records. Message routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T11:20",
+          "reason": "Neurology discharge summary",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-04T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-04T16:30", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-03-04T16:30", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 11}]},
+            {"panel": null, "collected": "2026-03-05T08:00", "resulted": "2026-03-06T10:00",
+             "results": [
+               {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+               {"test": "Rapid Plasma Reagin", "text": "Non-reactive"}
+             ]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Neurology discharge summary", "author": "neurology", "date": "2026-03-16T11:20",
+             "body": "Admitted: 3/4/2026. Discharged: 3/11/2026 to inpatient rehabilitation.\nPrincipal diagnosis: acute transverse myelitis, thoracic.\n\nHistory: 36-year-old woman with two days of worsening weakness in both legs and numbness from the umbilicus down. About two weeks earlier she had a flu-like illness that passed without treatment. No trauma; denies recent risky behavior. Background: ITP in remission, prior genital infections including PID with TOA 3/2025, past injection drug use. Smoker. NKDA.\n\nExam on admission: strength 3/5 throughout both lower extremities. Light touch and pinprick reduced below T10. Lower extremity reflexes brisk; Babinski sign present on both sides. Arms normal. Cranial nerves normal.\n\nWorkup: CBC, ESR and CMP normal. Urgent MRI of the spine: focal T2 hyperintense signal in the thoracic cord. MRI brain: normal. Lumbar puncture: CSF white cells 14 (lymphocyte predominant), protein 58 mg/dL, glucose normal; oligoclonal bands absent; CSF culture and viral PCR panel negative. Serum AQP4 and MOG antibodies negative. HIV and RPR negative.\n\nTreatment: IV methylprednisolone 1 g daily x 5 days. Bladder emptying normal on scans throughout.\n\nAt discharge: legs 4-/5, standing and walking short distances with a walker and assistance. Sensory level persists.\nDischarge medications: none.\nDisposition: acute inpatient rehabilitation. Neurology clinic follow-up in about 2 months.\n\nNeurology"},
+            {"type": "Administrative Note", "title": "Scanned to chart", "author": "MA", "date": "2026-03-16T11:40",
+             "body": "Neurology discharge summary (11 pages) indexed under outside records and routed to PCP inbox."}
+          ]
+        },
+        {
+          "id": "2026-04-01a",
+          "kind": "outside_records",
+          "start": "2026-04-01T09:40",
+          "reason": "Rehabilitation discharge summary",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Inpatient rehabilitation discharge summary", "author": "physical medicine and rehabilitation", "date": "2026-04-01T09:40",
+             "body": "Admitted 3/11/2026, discharged home 3/27/2026.\nDiagnosis: impaired mobility after acute transverse myelitis (thoracic).\n\nDaily physical and occupational therapy. Gains in transfers, standing balance and gait. Bladder and bowel function normal throughout.\n\nAt discharge: independent with transfers; walks household distances with a rolling walker; stairs with rail and supervision. Leg strength improving.\nEquipment: rolling walker, shower chair.\nPlan: outpatient PT 2-3 times a week; neurology follow-up as scheduled.\nMedications: none. Allergies: NKDA.\n\nPhysical Medicine & Rehabilitation"}
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T13:05",
+          "reason": "Home from rehab",
+          "documents": [
+            {"type": "Patient Message", "title": "home", "author": "patient", "date": "2026-04-07T13:05",
+             "body": "Hi its Kelly. Im home from the rehab place, walking with a walker. PT 3x a week starting this week. Neurology sees me in May. Do you need to see me? Getting rides is hard right now"},
+            {"type": "Patient Message", "title": "RE: home", "author": "PCP", "date": "2026-04-07T17:30",
+             "body": "So glad you're home - I read the hospital and rehab summaries. Neurology and PT are the main thing right now. I would still like to see you once you're steadier on your feet; when rides are easier, call or message and we'll find a time. MassHealth covers rides to appointments - the front desk can help set that up. Call sooner for fever, new weakness, or any trouble with your bladder or bowels."}
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "outside_records",
+          "start": "2026-05-26T10:30",
+          "reason": "Neurology follow-up letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology clinic follow-up", "author": "neurology", "date": "2026-05-26T10:30",
+             "body": "Visit 5/20/2026, follow-up of acute transverse myelitis (admitted 3/4-3/11/2026, IV methylprednisolone, then inpatient rehab).\n\nSteadily better with outpatient PT. Now walking with a cane outdoors, none at home. Bladder and bowels normal.\n\nExam: lower extremity strength 4+/5 on both sides. Sensory level has faded; patchy reduced pinprick below T10. Reflexes still brisk in the legs.\n\nImpression: recovering acute transverse myelitis. Brain MRI, CSF bands and AQP4/MOG antibodies at admission were reassuring.\nPlan: continue PT. Repeat MRI of the thoracic spine this summer. No new medication. Return in 4 months.\nAllergies: NKDA.\n\nNeurology"}
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T10:50",
+          "reason": "Scheduling follow-up",
+          "documents": [
+            {"type": "Patient Message", "title": "appointment", "author": "patient", "date": "2026-08-17T10:50",
+             "body": "Hi I can come in now, got rides set up. Mostly using the cane. Can I get an appointment in the next few weeks"},
+            {"type": "Patient Message", "title": "RE: appointment", "author": "front desk", "date": "2026-08-17T14:20",
+             "body": "Hi Kelly, you're booked with your doctor on Thursday 9/10 at 10:00. Please bring the name of your PT office."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after transverse myelitis admission",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

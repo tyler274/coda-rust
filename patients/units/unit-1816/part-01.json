@@ -1,0 +1,945 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001816",
+      "given": "Susan",
+      "family": "Mensah",
+      "birth_date": "1990-02-14",
+      "address_line": "41 Lily Pond Road",
+      "phone": "+1-646-555-0193",
+      "email": "susan.mensah@example.test",
+      "marital_status": "married",
+      "summary": "Teacher in her thirties with childhood-onset type 1 diabetes on a pump, HbSS sickle cell disease and mild retinopathy who joins in 2022, develops Graves hyperthyroidism that settles on methimazole, and after her last practice visit in October 2025 becomes pregnant; outside OB records show diabetic nephropathy, fetal growth restriction with oligohydramnios and an ED visit for decreased fetal movement.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T15:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2022-08-30T15:40",
+              "body": "Caller would like to establish with us. Teaches at an elementary school, wants a doctor she can reach without a two-week wait. Has type 1 diabetes (pump, sees her own endocrinologist) and sickle cell disease (sees hematology once a year). Booked new-patient visit 9/14 at 8:20, before school. Asked her to bring pump settings and a med list. Release form for her old office emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T08:20",
+          "end": "2022-09-14T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, bilateral",
+              "icd10": "E10.3293",
+              "action": "diagnosed",
+              "onset": "1997-05-01",
+              "note": "Type 1 since age 7; insulin pump; endocrinology outside"
+            },
+            {
+              "label": "Sickle-cell disease without crisis",
+              "action": "diagnosed",
+              "onset": "1990-02-14",
+              "note": "HbSS; outside adult hematology yearly"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2016-05-01",
+              "note": "Laparoscopic cholecystectomy at 26"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "insulin aspart 100 UNT/ML Injectable Solution",
+              "action": "historical",
+              "sig": "Via insulin pump: basal 1.1 units/hr; meal boluses per carbohydrate ratio",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Folate with sickle cell disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Penicillin",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 8.7,
+              "Hematocrit": 25.6,
+              "Hemoglobin A1c": 7.4,
+              "Creatinine": 0.65,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Free Thyroxine": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-14T09:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-14T09:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-14T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-14T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-pcp-records",
+              "action": "placed",
+              "order": "Records request, prior primary care office",
+              "category": "procedure",
+              "reason": "Transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-14T09:15",
+              "body": "NEW PATIENT\n32F teacher, transferring care for proximity. Brought pump settings and her own list.\n\nT1DM: dx age 7. Pump x many years, aspart, basal 1.1 u/h, boluses by carb ratio. Her endocrine group runs the pump and A1c; she sees them about twice a year. Last A1c she remembers 'mid-7s.' Rare lows, none needing help. Mild background retinopathy both eyes per her retina doctor, seen yearly.\nHbSS: hematology clinic once a year. Pain episodes in adulthood are few and she rides them out at home with fluids and rest. No crisis admissions recently. Takes a prenatal vitamin daily for the folic acid, has for years.\nPSH: lap chole at 26.\nAllergies: sulfa drugs - hives. Penicillin - rash.\nFH: mom T2DM and HTN. Dad carries sickle trait. Older sister has sickle cell disease. Maternal aunt Hashimoto.\nSH: 3rd grade classroom. Never smoked, no alcohol.\n\nROS negative except as above.\nExam: well appearing, NAD. Conjunctivae mildly pale, sclerae anicteric. Thyroid normal size, no nodules. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed port scars. No edema. Feet: intact skin, pulses 2+, monofilament intact bilaterally. Pump site L abdomen clean.\n\nA/P\n1. T1DM with mild NPDR - endocrine manages; A1c and UACR today so we have our own baseline. Retina letter to be requested.\n2. HbSS - hematology yearly; CBC today for her baseline. Functional asplenia: PCV20 today; will check old records for meningococcal and Hib history.\n3. Health maintenance: flu shot today. HIV/HCV once. Pap - she thinks 2021 was normal, records pending.\nRTC 3 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-09-16T12:05",
+              "body": "Hi Susan - your labs are back. Hemoglobin is in the 8s, which you told me is your usual range with sickle cell, and I'll use this as your baseline. Kidney, liver, cholesterol, thyroid and urine protein all look good. HIV and hepatitis C screens negative. A1c is 7.4, about where your endocrinologist has had you. No changes from my end."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-05T10:30",
+          "orders": [
+            {
+              "id": "prior-pcp-records",
+              "action": "done",
+              "date": "2022-10-05T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2022-10-05T10:30",
+              "body": "64 pages received from her previous internist. Summary for the chart: Pap/HPV co-test 2021 normal. Meningococcal conjugate and Hib given in childhood/young adulthood per old immunization page; meningococcal B not documented. Old problem list matches ours. Cholecystectomy op note 2016 included. Filed under media, flagged to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "pharmacy",
+          "start": "2022-10-24T17:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine report",
+              "author": "MA",
+              "date": "2022-10-24T17:10",
+              "body": "State registry shows bivalent COVID booster given at a retail pharmacy 10/22/22. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "outside_records",
+          "start": "2022-11-07T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Retina examination letter",
+              "author": "ophthalmology",
+              "date": "2022-11-07T09:00",
+              "body": "Thank you for allowing us to share in the care of Ms. Mensah, seen 10/27/2022 for annual diabetic retinal examination.\nVisual acuity 20/20 OD, 20/25 OS. Pressures normal. Dilated fundus examination: scattered microaneurysms and a few dot hemorrhages in both eyes, consistent with mild non-proliferative diabetic retinopathy. No macular edema on exam or OCT. No neovascularization. Peripheral retina without proliferative changes.\nImpression: mild NPDR OU, stable from prior.\nPlan: return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "office_visit",
+          "start": "2022-12-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety, tremor, weight loss",
+          "vitals": {
+            "hr": 104,
+            "weight_kg": 60.8
+          },
+          "measure": [
+            "bp",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-12T16:05",
+              "resulted": "2022-12-13T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 3.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-12T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-12T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Suppressed TSH, elevated free T4"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-12-12T16:20",
+              "body": "S: Came after school. ~2 wks of feeling keyed up and anxious, lying awake, hands shaky at the whiteboard. Eating more than usual yet clothes looser. Feels her heart going fast at rest. No fever or sore throat, no new meds or supplements. Sugars a little more variable, no lows.\nO: HR 104 regular. Weight 60.8 kg, down from 63.5 in Sept. Fine tremor of outstretched hands. Thyroid feels mildly and evenly enlarged, nontender. Eyes look prominent to me compared with Sept. Skin warm and moist. Lungs clear. No edema.\nA: Hyperthyroid picture.\nP: TSH and free T4 now. If confirmed, she'll go to her own endocrine group, who already know her - I'll call to get her in quickly. Return precautions for chest pain or fainting."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "telephone",
+          "start": "2022-12-13T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Thyroid results",
+              "author": "PCP",
+              "date": "2022-12-13T12:10",
+              "body": "Reached pt at lunch. TSH undetectable, free T4 3.1 - overactive thyroid. Spoke with her endocrinology office; they will see her 12/26. She'd rather wait for them than start anything from me. Advised to call if palpitations worsen, chest pain, or dizziness."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-26a",
+          "kind": "specialist_visit",
+          "start": "2022-12-26T10:20",
+          "service": "Endocrinology",
+          "reason": "Hyperthyroidism",
+          "conditions": [
+            {
+              "label": "Graves disease",
+              "action": "diagnosed",
+              "onset": "2022-11-25",
+              "note": "Uncontrolled hyperthyroidism at diagnosis; RAIU 61% diffuse"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "vitals": {
+            "hr": 108
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-26T10:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 3.4
+                },
+                {
+                  "test": "Free Triiodothyronine",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-12-26T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "author": "endocrinology",
+              "date": "2023-02-21T14:00",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of service: 12/26/2022, uptake completed 12/27-12/28/2022\nReason: hyperthyroidism, referred by her primary care physician\n\nMs. Mensah is a 32-year-old teacher we follow for type 1 diabetes on pump therapy. Over the past month she has had anxiety, poor sleep, weight loss in spite of a larger appetite, and tremor of the hands. She describes a racing heartbeat. No intercurrent illness, no new medications.\nPMH: T1DM since age 7 (pump), HbSS sickle cell disease, mild NPDR. Lap chole age 26.\nMeds: insulin aspart via pump (basal 1.1 u/h, carb-ratio boluses); prenatal vitamin daily.\nAllergies: sulfonamides (hives), penicillin (rash).\nFamily: mother T2DM and hypertension; father sickle trait; sister sickle cell disease; maternal aunt with Hashimoto thyroiditis.\nSocial: never smoker, no alcohol.\n\nExam: resting pulse 108. Fine tremor with arms extended. Gland not visibly enlarged; on palpation it is diffusely, symmetrically enlarged and nontender, no discrete nodule. Reflexes brisk throughout. Eyes: lid retraction with a staring appearance, bilateral proptosis.\n\nLabs: TSH <0.01, free T4 3.4, free T3 9.6.\nRadioactive iodine uptake: 24-hour uptake 61%, uniform homogeneous distribution throughout both lobes.\n\nImpression: Graves disease with uncontrolled hyperthyroidism.\nPlan: methimazole 10 mg daily started. Recheck thyroid function in 6-8 weeks (may be drawn at primary care). Follow up here in 5 months, with pump review.\n\n[Received by fax 2/21/23 after records request; filed for PCP review.]"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid update",
+              "author": "patient",
+              "date": "2023-01-09T19:42",
+              "body": "Hi, just letting you know the endocrinologist says it is Graves and I'm on methimazole 10mg every day since right after Christmas. The shaking is already a bit better. Did you get their note? Should I get bloodwork with you or them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid update",
+              "author": "RN",
+              "date": "2023-01-10T08:55",
+              "body": "Thanks for the update, Susan. We haven't received their consult note yet - I've faxed a request today. Dr. wants to see you mid-March and we can draw the thyroid recheck then and send it to endocrine too. If you get a rash, fever or sore throat on methimazole, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "office_visit",
+          "start": "2023-03-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-13T16:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.04
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-13T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Absolute Neutrophil Count"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-03-13T16:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-03-13T16:25",
+              "body": "Graves f/u. Endo consult (rec'd 2/21) reviewed: uptake 61% diffuse, started methimazole 10 daily 12/26.\nShe feels like herself again - sleeping, tremor gone, appetite normal. Taking it every morning, no rash, no sore throats. Sugars steadier.\nExam: pulse normal today, weight 62.4, up from 60.8 in Dec. No tremor. Gland still a little full. Eyes still somewhat prominent, no redness or double vision.\nPlan: TSH/FT4, CBC w diff and LFTs for methimazole. Results to endocrine. Continue methimazole 10 mg. Next routine visit in the fall with physical."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 62.4
+          }
+        },
+        {
+          "id": "2023-03-15a",
+          "kind": "portal_message",
+          "start": "2023-03-15T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid recheck",
+              "author": "PCP",
+              "date": "2023-03-15T07:50",
+              "body": "Good news - free T4 is back to normal at 1.5. TSH is still low (0.04), which is expected; it lags behind by a few months. White count and liver tests fine on the methimazole. Copy sent to your endocrinologist."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "specialist_visit",
+          "start": "2023-05-22T13:00",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6,
+              "Free Thyroxine": 1.1,
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-22T13:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.2
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2023-06-02T11:15",
+              "body": "Dear colleague,\nMs. Mensah returned 5/22/2023. Feeling well on methimazole 10 mg daily; no adverse effects. Exam: pulse normal, no tremor, mild proptosis unchanged, gland mildly enlarged.\nTSH 1.2, free T4 1.1 - euthyroid. A1c as attached. Pump download reviewed: time in range acceptable, no changes to basal 1.1 u/h or ratios.\nPlan: continue methimazole 10 mg. Thyroid function every 3-4 months. Return in 6 months.\nSincerely, Endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T09:30",
+          "service": "Hematology",
+          "reason": "Sickle cell disease annual visit",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-12T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Adult sickle cell clinic annual visit",
+              "author": "hematology",
+              "date": "2023-06-20T10:00",
+              "body": "Adult Sickle Cell Program - annual visit 6/12/2023\nPatient: Susan Mensah, HbSS.\nInterval: two brief pain episodes this year, both managed at home with fluids and rest; no ED visits or admissions for crisis. New Graves disease since last visit, on methimazole via endocrinology.\nExam unremarkable apart from mild scleral pallor. Hemoglobin 8.6, her usual.\nPlan: continue daily folate (she uses a prenatal vitamin). Vaccines for functional asplenia: PCV20 done 9/2022 per PCP; recommend MenACWY booster and the meningococcal B series - can be given at primary care. Annual retinal exam continues. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-10a",
+          "kind": "nurse_visit",
+          "start": "2023-07-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-07-10T10:10"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-07-10T10:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-07-10T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-07-10T10:20",
+              "body": "Summer break, came in per hematology recs. MenACWY L deltoid, MenB #1 R deltoid. Tolerated well, waited 15 min. Second MenB dose due in at least one month - scheduled 8/14."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "nurse_visit",
+          "start": "2023-08-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-08-14T09:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-14T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - MenB #2",
+              "author": "RN",
+              "date": "2023-08-14T09:45",
+              "body": "MenB dose 2 given L deltoid. Series complete. Pt reports sore arm for a day after the first one, nothing else. Next MenACWY booster due in 5 yrs - reminder set."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-11a",
+          "kind": "annual_physical",
+          "start": "2023-09-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 63.2,
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-11T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-11T08:10",
+              "issued": "2023-09-18T14:00",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-11T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-11T08:35",
+              "body": "Annual exam, first week of classes for her.\nFeels well. Graves quiet on methimazole 10 per endo (euthyroid in May). Pump going fine, endo visit due Dec. Sickle cell: hematology saw her in June, Hgb 8.6, two minor pain days at home over the year. Meningococcal vaccines done this summer. Retina last Oct - mild NPDR, due again.\nMeds: aspart pump, methimazole 10, prenatal vitamin.\nPHQ-9 2, GAD-7 3.\nExam: BP and pulse normal. Mild pallor. Thyroid mildly full, no nodules. Mild proptosis, EOMs full. Heart and lungs normal. Breasts without masses. Pelvic: normal external genitalia, cervix normal, Pap with HPV obtained. Feet: skin intact, pulses good, sensation intact.\nA/P: T1DM w mild NPDR, Graves on methimazole, HbSS - all stable, managed with specialists. Labs: CBC, CMP, lipids, A1c, UACR, TFTs. Reminded about retina visit. Flu/COVID at a nurse visit in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "portal_message",
+          "start": "2023-09-19T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2023-09-19T07:30",
+              "body": "Hi Susan, everything from your physical is back. Pap normal and HPV negative, so next cervical screen in 5 years. Thyroid still normal on the methimazole. Hemoglobin at your baseline. Kidney function, urine protein and cholesterol normal. A1c 7.5 - your endocrinologist will look at this in December."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T15:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "MA",
+              "date": "2023-10-16T15:35",
+              "body": "Afebrile. Flu vaccine R deltoid, 2023-24 COVID vaccine L deltoid. No reactions during observation. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "outside_records",
+          "start": "2023-11-06T11:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Retina examination letter",
+              "author": "ophthalmology",
+              "date": "2023-11-06T11:20",
+              "body": "Diabetic eye examination, 10/30/2023.\nAcuity 20/20 each eye. Dilated exam: a handful of microaneurysms and dot-blot hemorrhages in both posterior poles, unchanged in number. OCT: normal foveal contour, no edema. No neovascularization; periphery without sickle-related proliferative changes. Mild proptosis noted, no exposure keratopathy.\nAssessment: mild non-proliferative diabetic retinopathy both eyes, stable.\nReturn 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "specialist_visit",
+          "start": "2023-12-04T14:15",
+          "service": "Endocrinology",
+          "reason": "Graves disease and type 1 diabetes follow-up",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8,
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-04T14:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2023-12-14T09:40",
+              "body": "Follow-up 12/4/2023 for Graves disease and type 1 diabetes.\nRemains clinically euthyroid on methimazole 10 mg; thyroid tests normal today. Pump data reviewed, overnight basal holding well; no setting changes. A1c attached.\nWe discussed that methimazole is typically continued 12-18 months before considering a trial off; we will revisit next visit.\nReturn 6 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

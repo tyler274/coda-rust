@@ -1,0 +1,2884 @@
+{
+  "unit": "unit-1857",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin with iron Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001857",
+      "given": "Hannah",
+      "family": "O'Brien",
+      "birth_date": "1996-04-03",
+      "address_line": "41 Crescent Ridge Road",
+      "phone": "+1-978-555-0174",
+      "email": "hannah.obrien@example.test",
+      "marital_status": "single",
+      "summary": "Management consultant in her late twenties with lifelong heavy periods and restrictive eating who develops iron deficiency anemia, then an acute porphyria attack, then post-infectious cold agglutinin hemolysis, then a right Bell's palsy, each after a cold or a lean stretch. Records arrive late or not at all for some outside care.",
+      "events": [
+        {
+          "id": "2022-06-28a",
+          "kind": "telephone",
+          "start": "2022-06-28T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-06-28T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer her care here; moved to the area last year and her old doctor is two hours east. Works as a consultant and travels a lot, prefers early-morning slots. Booked new patient visit 7/12 at 7:40. Asked her to sign the release so we can pull her old records. Membership paperwork emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "establish_care",
+          "start": "2022-07-12T07:40",
+          "end": "2022-07-12T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Heavy menstrual bleeding",
+              "action": "history",
+              "note": "since menarche"
+            },
+            {
+              "label": "Restrictive eating behavior with frequent meal skipping",
+              "action": "history",
+              "icd10": "Z72.4"
+            },
+            {
+              "label": "Recurrent upper respiratory tract infections",
+              "action": "history",
+              "note": "several self-limited colds a year",
+              "icd10": "J06.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "multivitamin with iron Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "supplement; takes it sporadically"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for menstrual cramps",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "menstrual cramps"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              66
+            ],
+            "hr": 60,
+            "rr": 15,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 53.0,
+            "height_cm": 166.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-12T08:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None; lifelong abstinence"
+            },
+            {
+              "item": "Occupation",
+              "value": "Management consultant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2022-07-12T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-07-12T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-07-12T09:10",
+              "author": "PCP",
+              "body": "26 y/o woman establishing care. Consultant, on the road 2-3 days most weeks, says she runs on coffee.\n\nNo active complaints today. Periods have always been heavy: first 2-3 days she changes a pad or tampon every 1-2 hrs, occasional small clots, 6-7 days total, regular. Cramps handled with ibuprofen 400 as needed.\n\nEating: often skips breakfast and lunch on client days, admits she keeps her intake tight on purpose because she wants to stay at her current weight. Few fruits or vegetables. Denies purging or laxative use. Gets several colds a year, all self-limited, no pneumonias or hospital stays.\n\nPMH: as above. PSH: tonsillectomy at 8, wisdom teeth out at 22.\nMeds: multivitamin w/ iron (takes maybe half the days), ibuprofen PRN.\nAllergies: none to medications.\nFH: mother with lupus. Father with hypertension. Maternal grandmother had acute intermittent porphyria. A paternal aunt had a Bell's palsy.\nSH: single, lives alone. Never smoked. Has never drunk alcohol. No drug use.\n\nExam: thin, well-appearing. BP normal. HEENT normal, conjunctivae pink. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin normal. Neuro grossly intact. Mood bright.\n\nA/P\n1. Heavy menstrual bleeding, longstanding. Ibuprofen with food.\n2. Restrictive eating / meal skipping. Talked about regular meals and why it matters for energy. She heard me; will see.\n3. Recurrent colds, nothing worrisome in the history.\n4. HM: HIV and hep C screen today. Release signed for old records. Come back in the winter for a full physical with fasting labs.\n\nPHQ-2 0."
+            }
+          ],
+          "state": {
+            "bp": [
+              106,
+              66
+            ],
+            "weight_kg": 53.5,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-07-14a",
+          "kind": "portal_message",
+          "start": "2022-07-14T16:05",
+          "reason": "screening results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your screening tests",
+              "date": "2022-07-14T16:05",
+              "author": "PCP",
+              "body": "Hi Hannah, both screening tests (HIV and hepatitis C) came back negative. Nothing else to do on those. Front desk will reach out to set up your physical for the winter. -PCP"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-02a",
+          "kind": "outside_records",
+          "start": "2022-08-02T11:30",
+          "reason": "prior primary care records",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-06-22T09:00",
+              "text": "Outside report, prior primary care office. Specimen: cervical, liquid-based. Satisfactory for evaluation; endocervical/transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-03-06T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2022-08-02T11:30",
+              "author": "MA",
+              "body": "38 pages received from patient's previous primary care office (2014-2022). Pertinent: Pap 6/2021 NILM. Tdap 3/2019. COVID Pfizer x2 spring 2021. HPV series completed as a teenager per immunization history. Tonsillectomy age 8. No hospitalizations. Problem list there: heavy menses, frequent URIs. Med list: MVI w/ iron, ibuprofen PRN. NKDA. Immunizations entered. Forwarded to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T12:10",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot",
+              "date": "2022-09-27T12:10",
+              "author": "patient",
+              "body": "Can I just come in for a flu shot before work some morning in October? Physical will have to wait until things calm down at work."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot",
+              "date": "2022-09-27T14:30",
+              "author": "front desk",
+              "body": "Sure - nurse visit Tuesday 10/18 at 7:30 is open, booked you in."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2022-10-18T07:40",
+              "author": "RN",
+              "body": "In before work for her flu shot. Screening questions negative, no prior reactions. Influenza quadrivalent 0.5 mL IM left deltoid. VIS given. Waited 15 min, fine. Reminded her the physical still needs scheduling."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "annual_physical",
+          "start": "2023-01-10T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2023-01-09T17:50",
+              "author": "front desk",
+              "body": "Pt left voicemail cancelling tomorrow morning's physical. Flying out for a client this week. Will call back to rebook."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-03-02a",
+          "kind": "telephone",
+          "start": "2023-03-02T09:45",
+          "reason": "physical recall",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical recall",
+              "date": "2023-03-02T09:45",
+              "author": "front desk",
+              "body": "Called to rebook the physical cancelled in January. LVM with call-back number."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "office_visit",
+          "start": "2023-04-13T08:00",
+          "end": "2023-04-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue and lightheadedness",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2023-03-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with food or orange juice",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "iron deficiency anemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              62
+            ],
+            "hr": 79,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 53.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-13T08:30",
+              "resulted": "2023-04-13T13:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.38
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-04-13T08:30",
+              "resulted": "2023-04-13T16:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 5
+                },
+                {
+                  "test": "Iron",
+                  "value": 21
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 462
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Fatigue",
+              "date": "2023-04-13T09:20",
+              "author": "PCP",
+              "body": "S: Came in because she is wiped out. Over about a month she has been more and more tired and gets woozy when she stands up quickly, worse on long client days. Periods unchanged, still very heavy. Still skipping meals most workdays. No black or bloody stools, no weight loss, no recent illness. No chest pain, no syncope.\n\nMeds: MVI w/ iron off and on, ibuprofen for cramps.\n\nO: Looks tired. Conjunctivae pale. Heart regular, soft systolic flow murmur at the left sternal border, no radiation. Lungs clear. Abdomen soft. No edema.\nIn-office CBC this morning: Hgb 8.2, MCV 72. Ferritin sent.\n\nA/P: Microcytic anemia, almost certainly iron deficiency from years of heavy periods plus low intake. Murmur fits with the anemia.\n- Ferrous sulfate 325 mg once daily, with food or OJ, not with coffee. Expect dark stools.\n- Regular meals, iron-rich foods - she is willing to try a packed breakfast.\n- Recheck CBC in ~8 wks.\n- Return sooner for chest pain, fainting, shortness of breath.\n\nAddendum 16:50: ferritin 5. Confirms iron deficiency. Plan unchanged."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 5,
+              "Hematocrit": 27.1,
+              "Hemoglobin": 8.2,
+              "Iron": 21,
+              "Mean Corpuscular Hemoglobin": 22.4,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 18.2,
+              "Total Iron-Binding Capacity": 455,
+              "Transferrin Saturation": 5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "portal_message",
+          "start": "2023-04-14T08:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron level",
+              "date": "2023-04-14T08:15",
+              "author": "PCP",
+              "body": "Hannah - your ferritin (iron stores) came back at 5, which is very low and explains the tiredness. Keep the iron tablet going every day. It can take a few weeks before you feel a difference. We'll recheck your blood count in early June."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron level",
+              "date": "2023-04-14T12:02",
+              "author": "patient",
+              "body": "Thanks. Already picked it up last night. Can I take it at night instead? Mornings are chaos."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron level",
+              "date": "2023-04-14T12:40",
+              "author": "PCP",
+              "body": "Nighttime is fine as long as you've eaten something."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-02a",
+          "kind": "portal_message",
+          "start": "2023-05-02T21:14",
+          "reason": "question about iron",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "iron + coffee?",
+              "date": "2023-05-02T21:14",
+              "author": "patient",
+              "body": "Quick question, does it matter if I take the iron near my coffee? I drink a lot of it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: iron + coffee?",
+              "date": "2023-05-03T09:05",
+              "author": "RN",
+              "body": "Best to separate them by a couple of hours, coffee and tea cut down how much iron you absorb. Your evening dose plan works well for that."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-08a",
+          "kind": "office_visit",
+          "start": "2023-06-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "anemia follow-up",
+          "vitals": {
+            "bp": [
+              102,
+              66
+            ],
+            "hr": 59,
+            "spo2": 98,
+            "weight_kg": 54.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-08T07:45",
+              "resulted": "2023-06-08T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.11
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-08T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-08T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up - Iron deficiency anemia",
+              "date": "2023-06-08T08:30",
+              "author": "PCP",
+              "body": "Taking ferrous sulfate most evenings, maybe misses 1-2 a week. Less tired, no more lightheadedness getting out of bed. Periods same. Eating breakfast more often, still skips lunch.\n\nBP fine. Conjunctivae less pale. Still a faint flow murmur. Lungs clear.\n\nCBC today: Hgb 10.6, up from 8.2.\n\nA/P: IDA improving on oral iron. Continue. Recheck CBC and ferritin in the fall. Encouraged her to keep the lunch habit going."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 33.4,
+              "Hemoglobin": 10.6,
+              "Mean Corpuscular Volume": 77,
+              "Red Cell Distribution Width": 17.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "pharmacy",
+          "start": "2023-07-20T14:22",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - ferrous sulfate",
+              "date": "2023-07-20T14:22",
+              "author": "MA",
+              "body": "Electronic request from pt's pharmacy for ferrous sulfate 325 mg #90. Active, seen 6/8. Pended to PCP; approved with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T13:00",
+          "reason": "recall",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab recall",
+              "date": "2023-09-12T13:00",
+              "author": "front desk",
+              "body": "Pt due for repeat CBC/ferritin per PCP. Booked 10/5 7:40 with PCP, flu shot same day."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "office_visit",
+          "start": "2023-10-05T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "anemia follow-up, vaccines",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "iron stores replete"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              68
+            ],
+            "hr": 57,
+            "spo2": 99,
+            "weight_kg": 53.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-05T07:45",
+              "resulted": "2023-10-05T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.27
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-10-05T07:45",
+              "resulted": "2023-10-05T15:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 34
+                },
+                {
+                  "test": "Iron",
+                  "value": 71
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 23
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 312
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-10-05T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-05T07:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-05T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-05T08:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-05T08:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up - Anemia",
+              "date": "2023-10-05T09:00",
+              "author": "PCP",
+              "body": "Feels like herself again, energy fine through long days. Has been on iron ~6 months. No lightheadedness. Periods unchanged.\n\nExam: well-appearing, conjunctivae pink. Heart regular, murmur no longer audible. Lungs clear.\n\nLabs: Hgb 12.3, ferritin 34.\n\nA/P\n1. Iron deficiency anemia - resolved. Stop ferrous sulfate. Keep the MVI with iron daily (she admits it's still hit or miss). Heavy periods remain the driver; she'll let me know if fatigue comes back.\n2. Flu and updated COVID given today.\nRTC for physical in the spring."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Blood count back to normal",
+              "date": "2023-10-05T15:45",
+              "author": "PCP",
+              "body": "Your hemoglobin is 12.3 and iron stores are 34 - both back in the normal range. You can stop the iron tablets now. Try to keep up with the multivitamin."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 34,
+              "Hematocrit": 37.6,
+              "Hemoglobin": 12.3,
+              "Iron": 78,
+              "Mean Corpuscular Hemoglobin": 28.3,
+              "Mean Corpuscular Volume": 84,
+              "Red Cell Distribution Width": 14.1,
+              "Total Iron-Binding Capacity": 340,
+              "Transferrin Saturation": 23
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-01a",
+          "kind": "hospital_admission",
+          "start": "2024-02-01T19:40",
+          "end": "2024-02-05T12:30",
+          "service": "Emergency Medicine; Internal Medicine (inpatient)",
+          "reason": "abdominal cramps, fatigue, numbness of hands and feet",
+          "conditions": [
+            {
+              "label": "Acute intermittent porphyria",
+              "action": "diagnosed",
+              "onset": "2024-01-28",
+              "note": "acute attack after a cold, OTC cold medicine and restricted intake",
+              "icd10": "E80.21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              64
+            ],
+            "hr": 66,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-01T20:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-01T20:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-02-01T20:30",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Dark amber"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.012
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-01T20:30",
+              "resulted": "2024-02-02T09:40",
+              "results": [
+                {
+                  "test": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "13797-6",
+                  "unit": "mg/g{creat}",
+                  "value": 42
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-02-01T19:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-02-02T01:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-02-05T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside, received)",
+              "date": "2024-02-27T10:15",
+              "author": "hospital medicine",
+              "body": "REGIONAL HOSPITAL - INTERNAL MEDICINE DISCHARGE SUMMARY\nAdmitted 02/01/2024 via the emergency department. Discharged 02/05/2024.\nAllergies: NKDA.\n\nPresentation: 27-year-old woman, management consultant, came to the ED after several days of on-and-off crampy abdominal pain and steady fatigue, with intermittent numb hands and feet and trouble focusing at work. No fever, vomiting, diarrhea or change in bowel pattern. She had a cold the prior week and took an over-the-counter multi-symptom cold product for several days. She has also been eating very little, by choice, to keep her weight down. Known heavy menses; iron deficiency anemia previously, treated by her PCP. Family history notable for a maternal grandmother with acute intermittent porphyria; mother with lupus; father hypertensive; paternal aunt with Bell's palsy. Never smoker, no alcohol.\n\nED exam: anxious-appearing, alert and oriented. Abdomen soft with mild tenderness on deep palpation, no rebound, no guarding. Diminished pinprick in a stocking-and-glove pattern; strength and reflexes preserved. Remainder of exam unremarkable.\n\nData: Na 131 (mildly low); rest of chemistry panel and CBC unremarkable. UA: dark amber, no evidence of infection, no blood. Spot urine porphobilinogen 42 mg/g creatinine (ref <2).\n\nHospital course: Acute attack of acute intermittent porphyria, likely precipitated by the cold remedy and prolonged caloric restriction. Started on IV 10% dextrose in the ED and admitted. Hematology consulted; IV hemin 3 mg/kg daily given for 4 days. Pain settled by day 2 without opioids; sodium improved with dextrose and normal intake. Tolerating regular meals by day 3. Numbness improving but not gone at discharge.\n\nDischarge diagnoses: acute intermittent porphyria, acute attack; mild hyponatremia.\nDischarge meds: unchanged (multivitamin with iron daily, ibuprofen 400 mg q6h PRN cramps - ibuprofen is considered safe in porphyria).\nInstructions: do not fast or crash diet, eat regular carbohydrate-containing meals; check every new medication, including OTC products, against the porphyria drug-safety list provided; hematology follow-up in 4-6 weeks; PCP within 1 week; return for recurrent abdominal pain, weakness or confusion.\n\nScanned by MA 2/27/24 after records request of 2/9."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Sodium": 131
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "portal_message",
+          "start": "2024-02-06T07:55",
+          "reason": "hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I was in the hospital",
+              "date": "2024-02-06T07:55",
+              "author": "patient",
+              "body": "Hi, wanted to let you know I was admitted last week, Thursday through Monday. They said it was an acute porphyria attack (same thing my grandmother had). Bad stomach cramps and my hands and feet went numb. They gave me IV sugar and a medicine called hemin for 4 days. Feeling a lot better but still tingly. They told me to see you this week. I have a paper list of meds to avoid."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I was in the hospital",
+              "date": "2024-02-06T09:30",
+              "author": "RN",
+              "body": "Sorry to hear that, glad you are on the mend. Booked you Friday 2/9 at 8:00 with your PCP. Please bring the discharge paperwork and the medication list."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-09a",
+          "kind": "office_visit",
+          "start": "2024-02-09T08:00",
+          "end": "2024-02-09T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              66
+            ],
+            "hr": 73,
+            "rr": 13,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 53.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-09T08:40",
+              "resulted": "2024-02-09T14:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-02-09T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-09T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-2024-adm",
+              "action": "placed",
+              "order": "Records request - hospital admission 2/1-2/5/2024",
+              "category": "procedure",
+              "reason": "discharge summary not yet received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-02-09T09:30",
+              "author": "PCP",
+              "body": "Post-discharge visit, info from patient and her discharge instructions sheet (no summary from the hospital yet - requested today).\n\nHospitalized 2/1-2/5 with what was called an acute porphyria attack. Says it started with cramping belly pain and exhaustion a few days after a cold, for which she'd taken an OTC cold product, and she had been eating very little. Hands and feet went numb, couldn't concentrate. Got dextrose and 4 days of hemin. Cramps gone since the weekend. Still mild tingling in fingertips and toes, better each day. Thinking clearly again. Eating 3 meals a day since discharge.\n\nExam: well, a bit tired-looking. Abdomen soft, nontender. Pinprick slightly reduced in toes only; strength 5/5, reflexes 2+ and symmetric. Gait normal.\n\nA/P\n1. Acute intermittent porphyria, first recognized attack, recovering. Added to problem list. Reviewed the drug-safety list with her and scanned it to the chart; flagged in the allergy/alert section as a chart alert (not an allergy). Every new med, including OTC, gets checked first. No fasting. She will look into a medical alert bracelet.\n2. Hyponatremia during admission - recheck BMP today.\n3. Hematology follow-up being arranged by the hospital; she has the number.\nRTC 3 months or sooner.\n\nAddendum: BMP today normal, sodium back in range."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Sodium": 139
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "telephone",
+          "start": "2024-02-20T11:15",
+          "reason": "records follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request follow-up",
+              "date": "2024-02-20T11:15",
+              "author": "MA",
+              "body": "No reply to 2/9 fax. Called hospital medical records - request was not in their queue. Re-faxed with patient's signed release. They quoted 5-7 business days."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "outside_records",
+          "start": "2024-02-27T10:15",
+          "reason": "hospital records received",
+          "orders": [
+            {
+              "id": "rec-2024-adm",
+              "action": "done",
+              "date": "2024-02-27T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records received - hospital admission",
+              "date": "2024-02-27T10:20",
+              "author": "MA",
+              "body": "Discharge summary for 2/1-2/5/24 stay arrived today, 18 days after our request (first fax went unanswered, called medical records on 2/20). Scanned and routed to PCP. ED physician note not included."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2024-02-27T16:30",
+              "author": "PCP",
+              "body": "Reviewed hospital discharge summary. Urine PBG 42 mg/g Cr at presentation, Na 131. Matches her account. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "specialist_visit",
+          "start": "2024-03-07T13:00",
+          "service": "Hematology",
+          "reason": "acute intermittent porphyria",
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2024-03-07T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation (outside, received)",
+              "date": "2024-03-14T09:05",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY GROUP - CONSULTATION\nDate of service: 03/07/2024\nReason: follow-up after inpatient treatment of acute porphyria attack\n\nMs. O'Brien is a 27-year-old woman whom we saw in the hospital in early February during her first recognized attack of acute intermittent porphyria (urine PBG 42 mg/g creatinine), treated with hemin x4 days and IV dextrose. Likely triggers: an OTC cold preparation and prolonged low calorie intake. Strong family history (maternal grandmother).\n\nToday: no abdominal pain since discharge. Residual tingling of the toes is fading. Energy fair. Periods heavy, cycles regular.\nMeds: multivitamin with iron, ibuprofen PRN. NKDA.\nExam: well. Abdomen benign. Distal sensation nearly normal; strength full.\n\nImpression: acute intermittent porphyria, single acute attack, recovering.\nPlan:\n- No prophylactic therapy indicated after a single attack.\n- Avoid fasting and porphyrinogenic drugs; review medications against the drug-safety database before starting anything new. Ibuprofen and acetaminophen acceptable.\n- Consider a medical alert bracelet.\n- Return as needed, or promptly for any symptoms of an attack.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T19:40",
+          "reason": "medication question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "cold medicine?",
+              "date": "2024-03-26T19:40",
+              "author": "patient",
+              "body": "Coworkers are all sick. If I catch it, what can I take? I'm scared to touch anything from the cold aisle now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: cold medicine?",
+              "date": "2024-03-27T08:20",
+              "author": "PCP",
+              "body": "Good instinct to ask. Acetaminophen and ibuprofen are both fine for aches. Saline spray, fluids, honey and rest. Before any combination cold product, check it against the list or send me a picture of the label. And keep eating even if you don't feel like it."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T07:40",
+          "end": "2024-05-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              105,
+              64
+            ],
+            "hr": 76,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 53.5,
+            "height_cm": 165.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-21T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 83
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-21T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-05-21T07:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-05-21T07:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 35
+                },
+                {
+                  "test": "Iron",
+                  "value": 82
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 343
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-05-21T08:10",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-05-28T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-05-21T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-21T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-21T09:15",
+              "author": "PCP",
+              "body": "28 y/o here for a physical.\n\nInterval: porphyria attack in Feb, treated inpatient; hematology saw her in March, no prophylaxis needed. Numbness in hands and feet is completely gone as of about April. No abdominal pain since. Eating three meals most days now - says the hospital stay scared her into it. Periods unchanged. Energy good. Still gets the occasional cold, nothing since winter.\n\nMeds: MVI w/ iron (better about it lately), ibuprofen PRN.\nNKDA. Chart alert: acute porphyria drug-safety list.\nSH: unchanged. Never smoker, no alcohol.\n\nROS otherwise negative.\n\nExam: BP normal. Well-nourished, slim. HEENT normal, conjunctivae pink. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Pelvic: normal external genitalia, cervix normal, Pap obtained. Extremities warm, no edema. Neuro: sensation intact to pinprick and vibration in hands and feet; reflexes symmetric. Skin normal.\n\nPHQ-9: 2.\n\nA/P\n1. Health maintenance: Pap today. CBC, CMP, lipids, ferritin.\n2. AIP - quiet since February. Neuropathy resolved.\n3. Heavy menses / meal skipping - noted; regular meals encouraged.\nFlu and COVID in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your physical labs",
+              "date": "2024-05-23T17:40",
+              "author": "PCP",
+              "body": "Hi Hannah - blood count, chemistries, cholesterol and iron stores all normal. Pap result will take about a week; I'll message you when it's in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-05-28T15:10",
+              "author": "PCP",
+              "body": "Your Pap smear was normal. Next one due in 3 years."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T08:02",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall vaccines",
+              "date": "2024-09-24T08:02",
+              "author": "front desk",
+              "body": "Hi Hannah, flu and COVID vaccines are in. Reply with a morning that works and we'll set up a nurse visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall vaccines",
+              "date": "2024-09-24T12:31",
+              "author": "patient",
+              "body": "Tuesday 10/15 early if possible. Thanks!"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-15T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-15T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-15T07:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-15T07:45",
+              "author": "RN",
+              "body": "Influenza (trivalent) 0.5 mL IM L deltoid and 2024-25 COVID (Pfizer) 0.3 mL IM R deltoid. Both on her porphyria safety list as acceptable - checked before giving. Tolerated, observed 15 min. VIS provided."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-02a",
+          "kind": "hospital_admission",
+          "start": "2025-02-02T14:10",
+          "end": "2025-02-05T13:00",
+          "service": "Internal Medicine (inpatient)",
+          "reason": "fatigue and dark urine",
+          "conditions": [
+            {
+              "label": "Cold autoimmune hemolytic anemia",
+              "action": "diagnosed",
+              "onset": "2025-01-30",
+              "note": "after a respiratory illness",
+              "icd10": "D59.12"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hemolytic anemia"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-02-02T14:20",
+              "bp": [
+                112,
+                68
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 36.9,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-02T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.68
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-02-02T14:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-02T14:40",
+              "results": [
+                {
+                  "test": "Reticulocytes/100 erythrocytes in Blood",
+                  "loinc": "4679-7",
+                  "unit": "%",
+                  "value": 8
+                },
+                {
+                  "test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 486
+                },
+                {
+                  "test": "Haptoglobin [Mass/volume] in Serum or Plasma",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10 (below assay limit)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-02T16:15",
+              "resulted": "2025-02-02T19:30",
+              "results": [
+                {
+                  "test": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+                  "loinc": "1007-4",
+                  "text": "Positive (C3d positive, IgG negative)"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-02-02T15:00",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Dark amber"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.012
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-02T15:00",
+              "resulted": "2025-02-03T10:10",
+              "results": [
+                {
+                  "test": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "13797-6",
+                  "unit": "mg/g{creat}",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-02-02T16:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-02-05T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside, received)",
+              "date": "2025-02-06T08:40",
+              "author": "hospital medicine",
+              "body": "REGIONAL HOSPITAL - MEDICINE SERVICE DISCHARGE SUMMARY\nAdmission 02/02/2025 - Discharge 02/05/2025\nAllergies: NKDA. Alert: acute intermittent porphyria - medications checked against porphyria safety database.\n\nHistory: 28-year-old woman with lifelong menorrhagia, a pattern of restrictive eating, previously treated iron deficiency anemia and acute intermittent porphyria (one attack, 02/2024), admitted after 3 days of fatigue and dark urine. Dizzy on standing and mildly winded on stairs. The week before she had a mild cough and low-grade temperature that went away on its own. No abdominal pain, numbness or confusion.\nPSH: tonsillectomy (age 8), third molar extraction (age 22).\nFH: maternal grandmother AIP; mother SLE; father HTN; paternal aunt Bell's palsy.\nSH: management consultant; never smoker; no alcohol.\nHome meds: multivitamin with iron daily (irregular), ibuprofen 400 mg q6h PRN.\n\nExam on admission: BP 112/68, HR 98. Scleral icterus. Spleen tip palpable, mildly enlarged; no lymphadenopathy. Heart and lungs normal; abdomen otherwise benign. Neuro exam normal.\n\nData: Hgb 8.2 g/dL, MCV 90, reticulocytes 8%. Total bilirubin 3.2 (direct 0.4). LDH 486 U/L. Haptoglobin undetectable (<10). DAT positive for C3d, negative for IgG. UA: dark, no blood on dipstick, no RBCs. Urine PBG 1.1 mg/g Cr (normal) - not a porphyria attack.\n\nAssessment: Cold autoimmune hemolytic anemia, complement-mediated, following a recent respiratory illness.\n\nCourse: Kept warm, warmed IV fluids. No transfusion needed; hemoglobin held steady through the stay. Folic acid started. Energy improving and urine lighter by discharge. Steroids not used (generally ineffective for this type).\n\nDischarge meds: NEW folic acid 1 mg PO daily. Continue multivitamin with iron, ibuprofen PRN.\nInstructions: dress warmly, avoid cold exposure and cold drinks; PCP visit within 1 week with CBC; hematology clinic in about 5-6 weeks; return for worsening fatigue, chest pain, breathlessness or very dark urine."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Direct": 0.4,
+              "Bilirubin, Total": 3.2,
+              "Hematocrit": 24.4,
+              "Hemoglobin": 8.2,
+              "Mean Corpuscular Volume": 90,
+              "Red Cell Distribution Width": 16.4
+            }
+          }
+        },
+        {
+          "id": "2025-02-06a",
+          "kind": "outside_records",
+          "start": "2025-02-06T08:40",
+          "reason": "hospital discharge summary received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Discharge summary received",
+              "date": "2025-02-06T08:45",
+              "author": "MA",
+              "body": "Discharge summary from regional hospital (2/2-2/5/25) came through on the fax this morning. Scanned. Pt needs a post-discharge visit within a week - called her, booked Tue 2/11 7:40."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T07:40",
+          "end": "2025-02-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, hemolytic anemia",
+          "vitals": {
+            "bp": [
+              113,
+              66
+            ],
+            "hr": 70,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 53.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-11T07:50",
+              "resulted": "2025-02-11T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 204
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.99
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-02-11T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-11T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "date": "2025-02-11T08:50",
+              "author": "PCP",
+              "body": "Reviewed discharge summary (2/2-2/5). Admitted with fatigue and dark urine a week after a cough/low fever; found to have cold agglutinin-type autoimmune hemolysis (DAT C3d+, IgG-), Hgb 8.2, bili 3.2. Urine PBG normal, so not a porphyria flare.\n\nSince home: still tired, less dizzy standing up. Urine back to normal color. Wearing gloves and a hat, which she never used to do. Taking folic acid daily. Working from home this week.\n\nExam: pale-ish, faint scleral icterus. Heart regular, no murmur. Lungs clear. Spleen tip just palpable. No lymphadenopathy.\n\nCBC today: Hgb 9.4 (up from 8.2).\n\nA/P\n1. Cold autoimmune hemolytic anemia, post-infectious, improving. Added to problem list; folic acid 1 mg added to our med list. Keep warm. Hematology appointment is set for mid-March. Repeat CBC in ~2 months if hematology doesn't send one.\n2. AIP - no symptoms.\nCall for worsening fatigue, SOB, or dark urine."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 28.3,
+              "Hemoglobin": 9.4,
+              "Mean Corpuscular Volume": 92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-14a",
+          "kind": "portal_message",
+          "start": "2025-03-14T18:22",
+          "reason": "hematology update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hematology appt",
+              "date": "2025-03-14T18:22",
+              "author": "patient",
+              "body": "Saw hematology yesterday. She was happy with how I'm doing and said my numbers are going the right way. Keep the folic acid, keep warm, see her again in a year or if anything changes. Not sure if they send you anything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hematology appt",
+              "date": "2025-03-14T19:05",
+              "author": "PCP",
+              "body": "Good news. Nothing from them yet; we'll ask. Let's still do a blood count here in early April."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - hematology",
+              "date": "2025-03-17T10:40",
+              "author": "MA",
+              "body": "Faxed request to outside hematology for 3/13/25 visit note and labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "lab_only",
+          "start": "2025-04-08T07:15",
+          "reason": "CBC recheck",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-08T07:15",
+              "resulted": "2025-04-08T12:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2025-04-08T15:00",
+              "author": "PCP",
+              "body": "Hgb 11.6, continuing to recover. Still nothing from hematology on the March visit. Message sent to pt."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-04-08T15:02",
+              "author": "PCP",
+              "body": "Hemoglobin is 11.6 - nearly back to normal. Keep going with the folic acid. We'll check again at your physical in June."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 35.0,
+              "Hemoglobin": 11.6,
+              "Mean Corpuscular Volume": 89,
+              "Red Cell Distribution Width": 14.6
+            }
+          }
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "pharmacy",
+          "start": "2025-05-06T11:48",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - folic acid",
+              "date": "2025-05-06T11:48",
+              "author": "MA",
+              "body": "Pharmacy request: folic acid 1 mg #90. Originally from the hospital, now on our list. Approved by PCP x3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "annual_physical",
+          "start": "2025-06-17T07:40",
+          "end": "2025-06-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              68
+            ],
+            "hr": 59,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 54.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.17
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-06-17T07:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 39
+                },
+                {
+                  "test": "Iron",
+                  "value": 91
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 329
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 28
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-17T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-17T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-06-17T09:05",
+              "author": "PCP",
+              "body": "29 y/o, physical.\n\nInterval: hemolytic episode in Feb, recovering; hematology seen in March (no note received despite request). Feels well, energy normal, no dark urine. Still careful in the cold, kept gloves on through spring. No porphyria symptoms. Eating regular meals most days. Periods heavy as always, ibuprofen PRN.\n\nMeds: folic acid 1 mg daily, MVI w/ iron, ibuprofen PRN. NKDA. Porphyria drug-safety alert on chart.\n\nExam: well-appearing. No scleral icterus. Conjunctivae pink. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly felt. No lymphadenopathy. Skin warm, normal. Neuro intact.\nPHQ-9: 3.\n\nA/P\n1. Cold autoimmune hemolytic anemia - in remission clinically. Check CBC, bili today. Continue folic acid per hematology.\n2. AIP - quiet.\n3. HM: Pap up to date (2024). CMP, ferritin. Flu/COVID in the fall.\n\nAddendum 6/18: Hgb 12.6, total bilirubin normal. Chemistries and ferritin normal. Portal message sent."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Direct": 0.1,
+              "Bilirubin, Total": 0.6,
+              "Hematocrit": 38.2,
+              "Hemoglobin": 12.6,
+              "Mean Corpuscular Volume": 88,
+              "Red Cell Distribution Width": 13.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T07:58",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine visit",
+              "date": "2025-09-30T07:58",
+              "author": "patient",
+              "body": "Can I get my flu and covid shots the week of the 13th? Mornings before 8 best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine visit",
+              "date": "2025-09-30T10:12",
+              "author": "front desk",
+              "body": "Booked Tue 10/14 at 7:30 with the nurse."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T07:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T07:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T07:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2025-10-14T07:42",
+              "author": "RN",
+              "body": "Flu (trivalent) L deltoid, 2025-26 COVID (Moderna) R deltoid, both IM. Checked against porphyria list first. No reactions in the past. Observed 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "telephone",
+          "start": "2025-12-09T10:30",
+          "reason": "records",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hematology records",
+              "date": "2025-12-09T10:30",
+              "author": "MA",
+              "body": "Second request faxed to outside hematology for 3/13/25 visit note. Still nothing on file."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "ed_visit",
+          "start": "2026-02-12T09:50",
+          "end": "2026-02-12T13:20",
+          "service": "Emergency Medicine",
+          "reason": "right facial weakness",
+          "conditions": [
+            {
+              "label": "Bell palsy",
+              "action": "diagnosed",
+              "onset": "2026-02-12",
+              "note": "right, complete"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 3 tablets (60 mg) by mouth once daily with breakfast for 7 days",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Bell's palsy"
+            },
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "start",
+              "sig": "1-2 drops in the right eye every 2 hours while awake; tape the eye closed at night",
+              "frequency": "Q2H while awake",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "incomplete eye closure"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              99,
+              61
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-12T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Physician Note (outside, received)",
+              "date": "2026-02-20T14:10",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN NOTE\nVisit 02/12/2026\n\nCC: right face drooping since this morning\n\nHPI: 29-year-old woman with heavy menses, restrictive eating, past iron deficiency anemia, acute intermittent porphyria and cold autoimmune hemolytic anemia, and frequent colds. Noticed in the mirror this morning that the right side of her face would not move: cannot shut the right eye, cannot lift the right brow, smile pulls to the left. Just getting over a cold from a few days ago. No rash, no ear pain, no travel. No limb weakness, speech or swallowing trouble, or headache.\nMeds: folic acid 1 mg daily, multivitamin with iron, ibuprofen PRN. NKDA.\nFH: paternal aunt with Bell's palsy; maternal grandmother AIP.\n\nExam: Vitals unremarkable. Right face: no forehead wrinkling, eye does not close, flat nasolabial fold, mouth droops - complete upper and lower facial weakness. Ear canals and drums normal, no vesicles anywhere. Hearing grossly equal. Other cranial nerves intact. Strength, sensation, coordination and gait normal.\n\nImpression: right Bell's palsy (idiopathic peripheral facial palsy).\n\nPlan: prednisone 60 mg daily x7 days - checked against her porphyria drug-safety list, listed as safe. No antiviral given. Eye protection: lubricating drops every 2 hours while awake, tape the eye closed at bedtime, sunglasses outside. Follow up with PCP this week. Return for eye pain, vision change, new weakness, or trouble speaking or swallowing.\n\nDispo: home."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "telephone",
+          "start": "2026-02-13T08:05",
+          "reason": "ED follow-up scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pt call - ED visit",
+              "date": "2026-02-13T08:05",
+              "author": "RN",
+              "body": "Pt calling, seen in ED yesterday for right-sided facial droop, told Bell's palsy. Started prednisone 60 daily and eye drops. Eye feels a little dry, no pain, vision fine. Taping it at night. Booked with PCP Tue 2/17 8:00. Advised to come in sooner or go back to ED for eye pain, vision change, or any arm/leg weakness. Asked her to bring ED paperwork; we'll request the note."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bell's palsy follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              67
+            ],
+            "hr": 62,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 53.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-17T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-2026-ed",
+              "action": "placed",
+              "order": "Records request - ED visit 2/12/2026",
+              "category": "procedure",
+              "reason": "ED note not received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Bell's Palsy",
+              "date": "2026-02-17T08:50",
+              "author": "PCP",
+              "body": "ED follow-up. No ED note yet; working from her discharge sheet and her account.\n\nRight facial weakness came on 2/12 a few days after a cold. ED diagnosed Bell's palsy, gave prednisone 60 mg x7 days (day 6 today) and eye lubricant. Face not changed since. Using drops faithfully, taping at night. No eye pain, no vision change. No ear pain, rash, hearing change. Eating OK.\n\nExam: Complete right facial weakness, forehead included; right eye does not fully close, Bell phenomenon present. Right cornea clear, no injection. No vesicles in ear or mouth. Other CNs intact. Limbs normal.\n\nA/P: Right Bell's palsy, day 5.\n- Finish prednisone. Checked: on her porphyria safe list.\n- Eye care is the priority: keep drops, tape, glasses/sunglasses for wind.\n- Expect gradual return over weeks to months. Video check in about 2 months, sooner for eye pain or redness.\n- Requesting ED record."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "outside_records",
+          "start": "2026-02-20T14:10",
+          "reason": "ED record received",
+          "orders": [
+            {
+              "id": "rec-2026-ed",
+              "action": "done",
+              "date": "2026-02-20T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED note received",
+              "date": "2026-02-20T14:15",
+              "author": "MA",
+              "body": "ED physician note from 2/12/26 visit received and scanned. Routed to PCP. PCP reviewed - consistent with visit of 2/17, no changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T21:05",
+          "reason": "Bell's palsy question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "face question",
+              "date": "2026-03-10T21:05",
+              "author": "patient",
+              "body": "Is it normal that nothing has changed yet? It's been almost 4 weeks. Eye is fine with the drops and tape."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: face question",
+              "date": "2026-03-11T07:50",
+              "author": "PCP",
+              "body": "Yes, that's within the usual range - recovery often starts around 3 to 6 weeks and then builds over months. Keep protecting the eye. If it's red or painful, let me know the same day. We'll do a video visit in April."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-04-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bell's palsy follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-04-21T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Bell's Palsy",
+              "date": "2026-04-21T12:45",
+              "author": "PCP",
+              "body": "Video from her office, ID verified with DOB.\n\nRight face has been coming back gradually since about mid-March. Can now close the right eye all the way, stopped taping about 2 wks ago, still uses drops occasionally on windy days. Forehead moves a bit. Smile still lopsided but better. No eye pain or redness.\n\nOn video: full right eye closure with effort and at rest blink. Some right brow elevation. Mouth corner lags on the right with smiling.\n\nA/P: Bell's palsy, recovering well. Drops as needed. In person at her physical this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T09:31",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill - folic acid",
+              "date": "2026-06-09T09:31",
+              "author": "MA",
+              "body": "Refill request folic acid 1 mg #90 from pt's pharmacy. Physical booked 8/3. Approved x1 per PCP to carry her to that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "telephone",
+          "start": "2026-07-28T15:00",
+          "reason": "appointment reminder",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reminder",
+              "date": "2026-07-28T15:00",
+              "author": "front desk",
+              "body": "Reminder call for physical 8/3 7:40. Pt confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "annual_physical",
+          "start": "2026-08-03T07:40",
+          "end": "2026-08-03T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              107,
+              70
+            ],
+            "hr": 63,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 53.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-03T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-08-03T07:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 27
+                },
+                {
+                  "test": "Iron",
+                  "value": 92
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 345
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 27
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-03T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-03T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-03T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-08-03T09:10",
+              "author": "PCP",
+              "body": "30 y/o for her physical.\n\nInterval: right Bell's palsy in Feb, treated with prednisone in the ED; steady recovery since spring. She notices only a slightly uneven smile in photos. Eye fine, no longer needs drops. No porphyria symptoms; no dark urine or hemolysis symptoms; keeps warm in winter. Energy good. Eating meals regularly most weeks. Periods unchanged.\n\nMeds: folic acid 1 mg daily, MVI w/ iron, ibuprofen PRN. NKDA. Porphyria drug-safety alert on chart.\nSH: still consulting, traveling less. Never smoker, no alcohol.\n\nExam: well. Face: full forehead movement and complete eye closure on the right; slight lag of the right mouth corner only on a broad smile. Conjunctivae pink, no icterus. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No lymphadenopathy. Neuro otherwise intact.\nPHQ-9: 2.\n\nA/P\n1. Bell's palsy - near-complete recovery.\n2. Cold autoimmune hemolytic anemia, in remission - CBC today; folic acid continued.\n3. AIP - quiet; drug-safety alert in place.\n4. HM: Pap due 2027. Flu/COVID this fall. CBC, CMP and ferritin today.\nRTC in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "portal_message",
+          "start": "2026-08-05T16:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2026-08-05T16:20",
+              "author": "PCP",
+              "body": "Blood count, chemistries and iron stores look good. No changes - keep the folic acid going. See you in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "date": "2026-08-05T20:47",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T13:22",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall appointment",
+              "date": "2026-08-18T13:22",
+              "author": "patient",
+              "body": "You said fall - is late September ok? I can do 9/22 early."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall appointment",
+              "date": "2026-08-18T15:40",
+              "author": "front desk",
+              "body": "Booked 9/22 at 7:40 with your PCP. Flu shot can be given then too if they're in."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine fall follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute intermittent porphyria|E80.21": {
+        "code": "E80.21",
+        "display": "Acute intermittent (hepatic) porphyria",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cold autoimmune hemolytic anemia|D59.12": {
+        "code": "D59.12",
+        "display": "Cold autoimmune hemolytic anemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Recurrent upper respiratory tract infections|J06.9": {
+        "code": "J06.9",
+        "display": "Acute upper respiratory infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Restrictive eating behavior with frequent meal skipping|Z72.4": {
+        "code": "Z72.4",
+        "display": "Inappropriate diet and eating habits",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution": {
+        "code": "1188426",
+        "display": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+        "ingredient": "carboxymethylcellulose",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ibuprofen 400 MG Oral Tablet": {
+        "code": "197805",
+        "display": "ibuprofen 400 MG Oral Tablet",
+        "ingredient": "ibuprofen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells": {
+        "code": "1007-4",
+        "display": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Haptoglobin [Mass/volume] in Serum or Plasma": {
+        "code": "4542-7",
+        "display": "Haptoglobin [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Porphobilinogen/Creatinine [Mass Ratio] in Urine": {
+        "code": "13797-6",
+        "display": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
+        "unit": "mg/g{creat}",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Reticulocytes/100 erythrocytes in Blood": {
+        "code": "4679-7",
+        "display": "Reticulocytes/Erythrocytes in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin with iron Oral Tablet\""
+    ]
+  }
+}

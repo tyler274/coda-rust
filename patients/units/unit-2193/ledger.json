@@ -1,0 +1,3398 @@
+{
+  "unit": "unit-2193",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002193",
+      "given": "Joseph",
+      "family": "Keane",
+      "birth_date": "1955-04-21",
+      "address_line": "112 Bridge Road",
+      "phone": "+1-802-555-0152",
+      "email": "joseph.keane@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired long-haul trucker and 40 pack-year current smoker with hypertension and hyperlipidemia who joins in 2021, then accrues COPD, PAD with claudication and dry AMD at outside consults. A spiculated nodule found in June 2025 goes unworked until Lambert-Eaton weakness in late 2025 leads to limited-stage small cell lung cancer, treated with chemoradiation and durvalumab. Outside records often arrive late.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "telephone",
+          "start": "2021-09-14T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2021-09-14T10:20",
+              "author": "front desk",
+              "body": "Caller Joseph Keane, 66, lives in Florence. His old doctor retired over the summer and the group he was with is closing its panel. Medicare plus a supplement. Explained membership, he read the website already and wants in. Booked new patient slot 9/21 at 8:40. Asked him to bring his pill bottles and sign the records release at check-in."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "establish_care",
+          "start": "2021-09-21T08:40",
+          "end": "2021-09-21T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2012-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 12.5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 70,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 90.4,
+            "height_cm": 178.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-21T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-21T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-21T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-21T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired long-haul truck driver"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-21T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "establishing care"
+            },
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "Abdominal aortic ultrasound, screening",
+              "category": "imaging",
+              "reason": "male 65-75 who has smoked"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-21T09:40",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\nMr. Keane is a 66 y/o retired long-haul driver coming over after his prior PCP retired. Feels fine. Here mostly to keep his BP and cholesterol scripts going and get set up.\n\nHTN and high cholesterol for roughly a decade by his account, both on the same regimen for years. Takes everything every day, uses a weekly pill box. Doesn't check BP at home. Some breathlessness walking up the hill to his mailbox but says that's 'the cigarettes and the years.' No chest pain, no syncope, no leg swelling.\n\nMeds: lisinopril 20 daily, HCTZ 12.5 daily, atorvastatin 40 daily, ASA 81 daily.\nAllergies: none known.\nPSH: none.\nFHx: father had a heart attack at 68; mother had a stroke at 72; one brother with type 2 diabetes.\nSocial: drove long-haul for most of his working life, retired. Divorced, lives on his own in Florence. Smokes a pack a day, has for about 40 years. Beer on occasion, socially. No other substances.\nScreening per pt: colonoscopy 'six or seven years ago,' told it was fine. Never had a PSA.\n\nExam: Overweight man, comfortable. BP 132/84 on recheck. Heart RRR, no murmur. Lungs with distant breath sounds, no wheeze today, no crackles. Abd soft, nontender, no pulsatile mass. Ext warm, no edema. Neuro grossly normal.\n\nA/P\n1. HTN - at goal on current two drugs. Continue. CMP today.\n2. Hyperlipidemia - continue atorvastatin 40. Lipids today.\n3. Tobacco - smokes 1 ppd, 40 pk-yr. Advised to quit; he isn't interested right now, 'maybe after the holidays.' Will keep asking.\n4. Health maintenance - Hep C once today. Aortic ultrasound screening ordered given age and smoking. Records release signed for colonoscopy report and immunizations. Flu shot and pneumococcal at a nurse visit next month.\n\nRTC 4-5 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 89.2,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin": 14.5,
+              "Low Density Lipoprotein": 92
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-24a",
+          "kind": "portal_message",
+          "start": "2021-09-24T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-24T16:05",
+              "author": "PCP",
+              "body": "Mr. Keane - your labs from Tuesday look good. Kidney function and potassium are normal on your blood pressure pills, blood counts are normal, and your cholesterol numbers are where we want them on the atorvastatin. Hepatitis C screen was negative. Nothing to change. The aorta ultrasound scheduling desk should call you this week."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "outside_records",
+          "start": "2021-10-12T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-10-12T11:00",
+              "author": "outside primary care",
+              "body": "Records received from patient's previous primary care practice (closed panel), 38 pages.\n\nProblem list: Hypertension. Hyperlipidemia.\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nColonoscopy, 2015: normal exam to the cecum, no polyps. Recommended repeat at 10 years.\nImmunizations on file: influenza yearly through 2020; COVID-19 Pfizer primary series spring 2021 (dates on CDC card).\nNo PSA results in record.\n\nAbstracted to chart by MA."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              130,
+              79
+            ],
+            "hr": 65
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-19T14:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-19T14:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-02T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2021-10-19T14:20",
+              "author": "RN",
+              "body": "High-dose flu L deltoid, PCV20 R deltoid. VIS given. Tolerated, waited 15 min, no reaction. Primary COVID series entered from his card (Pfizer x2, March 2021). He'll get the booster at the pharmacy near his house."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2021-10-28a",
+          "kind": "pharmacy",
+          "start": "2021-10-28T12:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-27T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Community pharmacy immunization report",
+              "date": "2021-10-28T12:00",
+              "author": "pharmacy",
+              "body": "State registry notice: COVID-19 vaccine, Pfizer-BioNTech booster dose, administered 10/27/2021 at a community pharmacy. Lot on file."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "imaging",
+          "start": "2021-11-09T09:30",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2021-11-09T09:30",
+              "text": "LIMITED ULTRASOUND OF THE ABDOMINAL AORTA, SCREENING.\nIndication: Male, 66, current smoker.\nTechnique: Grayscale and color Doppler imaging of the abdominal aorta from the diaphragm to the bifurcation, transverse and longitudinal planes.\nFindings: The proximal, mid and distal aorta measure 2.1 cm, 1.9 cm and 1.8 cm in maximal outer-to-outer diameter. No aneurysmal dilation. Common iliac arteries are normal in caliber where seen. No periaortic fluid.",
+              "conclusion": "Normal caliber abdominal aorta. No aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2021-11-09T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Aorta ultrasound result",
+              "date": "2021-11-10T08:15",
+              "author": "PCP",
+              "body": "Normal aorta, no aneurysm. One-time screen done, no repeat needed. Letter to pt."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-16a",
+          "kind": "office_visit",
+          "start": "2022-02-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              84
+            ],
+            "hr": 63,
+            "spo2": 96,
+            "weight_kg": 89.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-02-16T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-02-16T10:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-02-16T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2022-02-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2022-02-16T10:35",
+              "author": "PCP",
+              "body": "S: Routine BP check. Winter's been quiet, no ER trips, no new symptoms. Taking all four meds. Still smoking a pack a day; tried cutting down in January, lasted about a week.\n\nO: BP and pulse in flowsheet, fine. Lungs with mildly prolonged exhale, no wheeze. Heart regular. No edema.\n\nA/P: HTN controlled, no change. Lipids fine in Sept. Smoking - discussed again, gave the state quitline number, he took it but says he's not ready. First Shingrix today, second dose in 2-6 months at his pharmacy. Physical in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "portal_message",
+          "start": "2022-03-29T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pill bottles",
+              "date": "2022-03-29T07:55",
+              "author": "patient",
+              "body": "The pharmacy says my lisinopril is out of refills. I have 4 left."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pill bottles",
+              "date": "2022-03-29T10:02",
+              "author": "RN",
+              "body": "Sent a new prescription for lisinopril 20 mg, 90 days with refills, to your usual pharmacy. Should be ready later today."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "pharmacy",
+          "start": "2022-05-10T12:00",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-05-09T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Community pharmacy immunization report",
+              "date": "2022-05-10T12:00",
+              "author": "pharmacy",
+              "body": "Registry update: Shingrix dose 2 given 05/09/2022 at a community pharmacy. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "annual_physical",
+          "start": "2022-06-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual check-up",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1982-01-01",
+              "note": "1 pack per day, 40 pack-years"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 69,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-13T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-13T08:05",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-13T08:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-06-13T08:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-06-13T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-13T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-06-13T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-06-13T09:10",
+              "author": "PCP",
+              "body": "ANNUAL VISIT\n\nNothing bothering him today. Says he hasn't missed a dose; pill box reviewed, matches the list. No chest pain, no fainting, no new trouble with bowels or urine.\n\nMeds: lisinopril 20 mg, atorvastatin 40 mg, hydrochlorothiazide 12.5 mg, aspirin 81 mg - all daily.\nNKDA. No surgeries.\nFamily: father MI at 68, mother stroke at 72, brother with T2DM.\nSmoking: still a pack daily, ~40 pack-years total. Occasional beer.\n\nBP 132/84. Remainder of vitals in flowsheet.\nGen: well appearing. HEENT unremarkable. Neck supple, no nodes, no bruits. Lungs clear. Heart regular, no murmur. Abd benign. Ext no edema, pulses present. Skin no concerning lesions. Neuro intact.\n\nFasting labs drawn before the visit: Hgb 14.2, fasting glucose 98, creatinine 1.0, total chol 180, LDL 90, HDL 45, TG 150.\n\nAssessment/plan\n- Hypertension: at goal. Same regimen.\n- Hyperlipidemia: LDL 90 on atorvastatin 40. Continue.\n- Tobacco use disorder: adding to the problem list. Daily smoker for decades, unable to cut down on his own. Advice to quit repeated, counseling 5 min. Not ready for a quit date. Declines medication for now.\n- Colon cancer screening: normal colonoscopy in 2015, next due 2025.\n- Prostate screening: talked through the PSA test - possible benefit, false positives, biopsies, overtreatment. At 67 it's his call. He'd rather not, 'never had one, don't need one now.' Declined; documented.\n- Tdap today. Shingrix complete. PCV20 done last fall.\n- PHQ-2 negative. Lives alone, independent in all activities, no falls.\n\nRTC fall for vaccines, visit in ~5 months."
+            }
+          ],
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-16a",
+          "kind": "portal_message",
+          "start": "2022-06-16T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "date": "2022-06-16T12:40",
+              "author": "PCP",
+              "body": "Hi Joseph, everything from Monday's bloodwork was in range - blood count, sugar, kidney function, and your LDL was 90 on the atorvastatin. Keep doing what you're doing. Still happy to help when you want to take a run at quitting."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results from your physical",
+              "date": "2022-06-16T19:22",
+              "author": "patient",
+              "body": "Thanks Doc. Ill think about it."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "pharmacy",
+          "start": "2022-09-06T09:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day refill request",
+              "date": "2022-09-06T09:15",
+              "author": "RN",
+              "body": "Electronic request from mail-order pharmacy for 90-day supplies of lisinopril 20, HCTZ 12.5 and atorvastatin 40. Last visit 6/13, BP at goal, BMP normal. Approved x 90 days with 3 refills per standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              128,
+              75
+            ],
+            "hr": 87
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-11T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2022-10-11T15:50",
+              "author": "RN",
+              "body": "Flu (high dose) R arm, bivalent COVID L arm. No problems after last year's shots. Observed 15 min, fine. Pt mentioned he gets winded carrying groceries up his porch steps and coughs up phlegm most mornings - wondered if he should be seen. Message sent to PCP, he'll book."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "office_visit",
+          "start": "2022-11-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath, morning cough",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 77,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 93,
+            "weight_kg": 89.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-08T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "progressive dyspnea, chronic productive cough, heavy smoker; PFTs"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - dyspnea",
+              "date": "2022-11-08T13:55",
+              "author": "PCP",
+              "body": "CC: getting short of breath.\n\nHPI: He thinks his breathing has been slipping for 'a few years,' worse in the last one. Winded on stairs and carrying bags; flat ground at his own pace is ok. Brings up phlegm most mornings, clears after the first coffee and cigarette. No fever, no chills, no chest pain, no blood. No ankle swelling, sleeps flat. Hasn't had a 'chest cold' this year.\n\nStill 1 ppd.\n\nExam: SpO2 a bit low at 93% RA, otherwise vitals in flowsheet. Not distressed, speaking full sentences. Lungs: long expiratory phase, scattered end-expiratory wheeze, no crackles. Heart regular. No clubbing. No edema.\n\nA/P: Exertional dyspnea and chronic productive cough in a 40 pk-yr smoker - most likely COPD, needs PFTs to confirm and stage. Referred to pulmonology; their lab does full PFTs on site. Quitting is the single best thing - repeated, he nods. Call sooner for fever or worse breathing."
+            }
+          ],
+          "state": {
+            "spo2": 93
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "specialist_visit",
+          "start": "2022-12-08T09:00",
+          "service": "Pulmonology",
+          "reason": "dyspnea, chronic cough",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "diagnosed",
+              "onset": "2022-12-08"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "10 ACTUAT tiotropium 0.0025 MG/ACTUAT Inhalation Spray",
+              "action": "historical",
+              "sig": "Inhale 2 puffs once daily",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4-6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "vitals": {
+            "spo2": 92
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2022-12-08T08:30",
+              "text": "Pulmonary function testing, pulmonary function laboratory. Acceptable and reproducible maneuvers.\nFEV1 1.2 L (45% predicted).\nFVC 2.0 L (60% predicted).\nFEV1/FVC 60%.\nDLCO 80% predicted.",
+              "conclusion": "Obstructive ventilatory defect, FEV1 45% predicted, with preserved diffusing capacity. Consistent with COPD."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2022-12-08T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2022-12-14T10:00",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY CONSULTATION\nDate seen: 12/08/2022\nRequested by: primary care\n\nDear colleague,\n\nThank you for sending Mr. Keane, 67, for evaluation of breathlessness. He describes a gradual loss of exercise tolerance over several years and a daily wet cough on waking. No infections or fevers recently. Background of hypertension and hyperlipidemia. Smokes one pack per day, about 40 pack-years.\n\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\n\nExam: SpO2 92% on room air at rest. Overweight gentleman, comfortable. Expiration is prolonged with wheezing, and breath sounds are reduced at both bases. Rhythm regular. No peripheral edema.\n\nPFTs today: FEV1 1.2 L (45% predicted), FVC 2.0 L (60% predicted), FEV1/FVC 60%, DLCO 80% predicted.\n\nImpression: COPD, severe airflow limitation by FEV1, symptomatic, without exacerbation history. Diffusion relatively preserved.\n\nPlan:\n1. Tiotropium Respimat 2.5 mcg, two inhalations once daily. Technique taught.\n2. Albuterol HFA 2 puffs every 4-6 hours as needed.\n3. Smoking cessation is essential; strongly advised. He declined pharmacotherapy today.\n4. Vaccines per primary care.\n5. Return in about a year with spirometry, sooner for worsening.\n\nSincerely,\nOutside pulmonary group"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "pharmacy",
+          "start": "2022-12-20T11:30",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Tiotropium coverage",
+              "date": "2022-12-20T11:30",
+              "author": "MA",
+              "body": "Part D plan rejected tiotropium Respimat at the pharmacy - needs coverage determination. Pulm office says they submitted but asked us to send the PFTs too. Faxed the 12/8 PFT report and pulm letter. Pt aware, using albuterol meanwhile."
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Tiotropium coverage - approved",
+              "date": "2022-12-23T14:10",
+              "author": "MA",
+              "body": "Coverage approved through 12/2023. Pharmacy notified, pt picking up today."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Albuterol refill",
+              "date": "2023-01-10T09:40",
+              "author": "RN",
+              "body": "Pharmacy request for albuterol HFA refill, originally from pulmonology. Pt using it 2-3 times a week per last call. Approved one inhaler with 2 refills; pulm to manage going forward."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "office_visit",
+          "start": "2023-03-07T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              81
+            ],
+            "hr": 79,
+            "rr": 15,
+            "spo2": 93,
+            "weight_kg": 89.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-07T10:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-07T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2023-03-07T10:20",
+              "author": "PCP",
+              "body": "Follow-up after pulmonology.\n\nPulm letter reviewed: COPD with FEV1 45% predicted, DLCO preserved. Started tiotropium daily plus albuterol rescue. Coverage sorted out in December.\n\nHe uses the Respimat every morning - demonstrated, technique decent, reminded to hold the breath. Albuterol a couple of times a week, mostly shoveling or stairs. Morning cough the same. No fevers this winter, no steroid or antibiotic courses. Smoking unchanged at a pack.\n\nVitals in flowsheet, SpO2 93% RA. Lungs: prolonged expiration, faint end-expiratory wheeze. Heart RRR. No edema.\n\n1. COPD - added to problem list. Continue tiotropium + PRN albuterol. Up to date on flu, COVID, PCV20.\n2. HTN - controlled. BMP today.\n3. Tobacco - he asks what the patch costs; told him the plan covers it, he'll 'think on it.'\n\nRTC 4-6 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "portal_message",
+          "start": "2023-03-09T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP result",
+              "date": "2023-03-09T08:50",
+              "author": "RN",
+              "body": "Mr. Keane, your kidney function and potassium from Tuesday are normal. No changes. - Nursing, on behalf of your physician"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "portal_message",
+          "start": "2023-04-20T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Legs",
+              "date": "2023-04-20T20:14",
+              "author": "patient",
+              "body": "My calves have been cramping when I walk to the post office and back. Have to stop and lean on something then its fine. Can I come in sometime next week, no rush."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Legs",
+              "date": "2023-04-21T08:31",
+              "author": "front desk",
+              "body": "Good morning - you're booked Tuesday 4/25 at 2:00 with your physician."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "office_visit",
+          "start": "2023-04-25T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "calf pain with walking",
+          "vitals": {
+            "bp": [
+              130,
+              82
+            ],
+            "hr": 77,
+            "spo2": 94,
+            "weight_kg": 89.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-25T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "exertional calf pain, weak pedal pulses; vascular evaluation and ABI"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit - leg pain",
+              "date": "2023-04-25T14:40",
+              "author": "PCP",
+              "body": "Both calves cramp after about two blocks of walking, has to stop; a minute or two of rest and it eases, then he can go again. Couple of months. No pain at rest or at night, no foot sores, no numbness. No chest pain or palpitations with it.\n\nExam: Feet warm, cap refill ok. Dorsalis pedis and posterior tibial pulses faint on both sides; femorals palpable. No ulcers, skin intact. No calf tenderness or swelling.\n\nImpression: classic story for claudication in a smoker with HTN and lipids. Sending to cardiology (they do the vascular studies and ABIs). Already on aspirin and atorvastatin. Walk to the point of pain, rest, repeat - started him on that today. Smoking discussed in that light too."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T10:30",
+          "service": "Cardiology",
+          "reason": "calf pain with walking",
+          "conditions": [
+            {
+              "label": "Peripheral arterial disease",
+              "action": "diagnosed",
+              "onset": "2023-02-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-12T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 210
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 140
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 170
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2023-06-12T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation - vascular",
+              "date": "2023-08-08T09:00",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY CONSULT NOTE\nVisit date: June 12, 2023\n(Received by fax after records request 8/8/23.)\n\nReason: exertional calf discomfort.\n\nHistory: 68-year-old man with hypertension, hyperlipidemia, COPD and ongoing cigarette use. Reports cramping in both calves when walking more than about two blocks, relieved by stopping. Denies chest pain, palpitations, or breathlessness beyond his baseline.\n\nMeds: lisinopril 20 mg, hydrochlorothiazide 12.5 mg, atorvastatin 40 mg, aspirin 81 mg, tiotropium inhaler, albuterol as needed.\nAllergies: none known.\n\nBP 142/88, HR 78.\nLower extremities: sparse hair over both shins, no edema, pedal pulses weak bilaterally. No ulceration.\n\nFasting lipids: total cholesterol 210, HDL 40, LDL 140, triglycerides 150.\n\nAnkle-brachial index: 0.65 right, 0.70 left.\n\nAssessment: Peripheral arterial disease, bilateral lower extremities.\n\nRecommendations: Continue aspirin and statin. Structured walking program. Tobacco cessation strongly advised. Follow up here in one year with repeat ABI."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "portal_message",
+          "start": "2023-06-27T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mail order",
+              "date": "2023-06-27T08:15",
+              "author": "patient",
+              "body": "Switching to the mail order pharmacy my supplement plan uses. Can you send all my prescriptions there."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mail order",
+              "date": "2023-06-27T11:40",
+              "author": "MA",
+              "body": "Done - lisinopril, hydrochlorothiazide, atorvastatin and aspirin sent as 90-day supplies to the mail-order pharmacy. Your lung doctor's office will need to move the inhalers."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "portal_message",
+          "start": "2023-07-25T11:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heart doctor",
+              "date": "2023-07-25T11:05",
+              "author": "patient",
+              "body": "Did the heart doctor send you anything from June? They said blockage in my legs and to keep walking."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heart doctor",
+              "date": "2023-07-25T13:20",
+              "author": "MA",
+              "body": "We haven't received their note yet. I've sent a records request to the cardiology office today and will let you know when it comes in."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request follow-up",
+              "date": "2023-08-04T10:10",
+              "author": "MA",
+              "body": "Second request to outside cardiology for 6/12 consult. Spoke with their records clerk, will fax by early next week."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              146,
+              83
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 93,
+            "weight_kg": 88.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 314
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-09-19T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "eye-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "gradual central vision loss, trouble reading and recognizing faces"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2023-09-19T09:20",
+              "author": "PCP",
+              "body": "AWV\n\nInterval: Cardiology (June) letter finally in - PAD, ABI 0.65 R / 0.70 L, walking program. He walks most days, still stops at about two blocks. Breathing about the same on the inhaler.\n\nNew: Over the past several months reading has gotten harder - newsprint, his phone - and a couple of times he didn't recognize a neighbor until they spoke. Drugstore readers haven't helped. No eye pain, no red eye.\n\nFunctional: independent, drives short distances in daylight, no falls. Hearing ok. PHQ-2 0. Alcohol occasional. Still 1 ppd.\n\nExam: vitals per flowsheet. Lungs prolonged exhale, no crackles. Heart regular. Distal pulses faint. No foot lesions. Visual acuity by Snellen reduced both eyes with glasses.\n\nPlan:\n- Vision change: referred to ophthalmology.\n- PAD: on ASA + atorvastatin; keep walking.\n- COPD: continue tiotropium.\n- HTN: CMP, CBC today.\n- Vaccines: flu, updated COVID and RSV next month at nurse visit (COPD, age).\n- Advance directive packet given, he'll look it over."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              132,
+              82
+            ],
+            "hr": 83
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T15:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:07"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-10T15:09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall immunizations",
+              "date": "2023-10-10T15:30",
+              "author": "RN",
+              "body": "Three shots today: high-dose flu and updated COVID in the L arm (separate sites), RSV in the R arm. Counseled he may feel tired tomorrow. Observed, no reaction. Eye appointment is set for late December."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-12-27a",
+          "kind": "specialist_visit",
+          "start": "2023-12-27T13:15",
+          "service": "Ophthalmology",
+          "reason": "progressive central vision loss",
+          "conditions": [
+            {
+              "label": "Age-related macular degeneration",
+              "action": "diagnosed",
+              "onset": "2023-06-01",
+              "note": "dry (nonexudative), both eyes"
+            }
+          ],
+          "orders": [
+            {
+              "id": "eye-referral",
+              "action": "done",
+              "date": "2023-12-27T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation",
+              "date": "2024-03-05T10:30",
+              "author": "ophthalmology",
+              "body": "OUTSIDE OPHTHALMOLOGY\nExamination date: 12/27/2023\nCopy to primary care (received 3/5/24 after request).\n\nHistory: 68 y/o man referred for slowly worsening vision over months. Reading is harder and faces are hard to make out across a room. No pain, redness or discharge. Systemic history of hypertension, hyperlipidemia, COPD, peripheral arterial disease; current smoker.\n\nVisual acuity (best corrected): OD 20/60, OS 20/50.\nConfrontation fields: full OU.\nPupils equal and reactive, no APD. IOP normal OU.\nAnterior segment: quiet OU.\nDilated fundus: multiple drusen with pigmentary change in the macula of each eye. No hemorrhage, no subretinal or intraretinal fluid. Discs and vessels otherwise unremarkable.\nAmsler grid: central distortion of lines in each eye.\n\nImpression: Age-related macular degeneration, nonexudative (dry), both eyes, with reduced central acuity.\n\nPlan: Daily home Amsler grid; call promptly for new distortion, a dark spot or sudden change. Smoking cessation advised - smoking accelerates macular degeneration. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "pharmacy",
+          "start": "2024-01-30T09:00",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Tiotropium renewal",
+              "date": "2024-01-30T09:00",
+              "author": "MA",
+              "body": "Annual coverage renewal for tiotropium Respimat. Submitted with pulm letter and PFTs from 12/2022. Approved through 1/2025 same day."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              83
+            ],
+            "hr": 70,
+            "rr": 14,
+            "spo2": 94,
+            "weight_kg": 89.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-20T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "eye-records",
+              "action": "placed",
+              "order": "Records request, ophthalmology",
+              "category": "procedure",
+              "reason": "12/27/23 consult note"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-02-20T11:30",
+              "author": "PCP",
+              "body": "Saw the eye specialist right after Christmas. Per pt: 'macular degeneration, the dry kind, both eyes.' Given an Amsler grid for the fridge; no shots, recheck in the summer. No letter here yet - requested.\n\nOtherwise: calves the same, walks most days. Breathing steady, albuterol a few times a week. No hospital visits.\n\nVitals per flowsheet, BP fine. Lungs with prolonged expiration, no crackles. Heart regular. Feet warm, no lesions.\n\nA/P\n- AMD, dry, bilateral - per patient report, added to problem list. Amsler daily. Another reason to stop smoking; he heard that from the eye doctor too.\n- COPD, PAD, HTN - stable, no changes.\nRTC summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "outside_records",
+          "start": "2024-03-05T10:30",
+          "orders": [
+            {
+              "id": "eye-records",
+              "action": "done",
+              "date": "2024-03-05T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Ophthalmology note reviewed",
+              "date": "2024-03-06T07:45",
+              "author": "PCP",
+              "body": "12/27 ophthalmology consult received and reviewed. Dry AMD both eyes, BCVA 20/60 and 20/50. Matches what he told me. Monitoring only."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "specialist_visit",
+          "start": "2024-06-12T09:15",
+          "service": "Cardiology",
+          "reason": "follow-up, calf pain",
+          "conditions": [
+            {
+              "label": "Atherosclerosis of native arteries of both legs with intermittent claudication",
+              "action": "diagnosed",
+              "onset": "2023-02-01",
+              "icd10": "I70.213"
+            },
+            {
+              "label": "Erectile dysfunction",
+              "action": "diagnosed",
+              "onset": "2024-03-01",
+              "note": "attributed to vascular disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-12T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 220
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 160
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 185
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "date": "2024-06-19T14:00",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY - FOLLOW-UP\nDate of service: 06/12/2024\n\n69M, PAD, HTN, HLD, COPD, active smoker. Back for the leg symptoms. Still gets calf pain after roughly two blocks and has to stop; it limits him more than last year. Also notes erectile difficulty over recent months.\n\nMeds: lisinopril 20, HCTZ 12.5, atorvastatin 40, ASA 81, tiotropium, albuterol PRN.\nNKDA.\n\nBP 142/88  HR 78\nLegs: hair loss over both lower legs, pallor with elevation, slow capillary refill, diminished pulses in both feet. No wounds.\n\nFasting lipid panel: TC 220, HDL 35, LDL 160, TG 150.\nABI: 0.65 R, 0.70 L - unchanged from 2023.\n\nIMPRESSION\n1. Atherosclerosis of the native arteries of both legs with intermittent claudication. Stable ABIs.\n2. Erectile dysfunction, likely vasculogenic.\n3. Tobacco use.\n\nPLAN\nContinue aspirin and atorvastatin. Walking program. Cessation counseled. RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after cardiology",
+          "conditions": [
+            {
+              "label": "Peripheral arterial disease",
+              "action": "resolved",
+              "note": "replaced by the specific entry for bilateral claudication"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              87
+            ],
+            "hr": 71,
+            "rr": 14,
+            "spo2": 93,
+            "weight_kg": 90.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-23T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-23T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2024-07-23T10:55",
+              "author": "PCP",
+              "body": "Interval: cardiology letter from 6/12 in chart - ABIs unchanged, claudication bilateral, ED noted. Problem list cleaned up (PAD entry replaced with the claudication diagnosis).\n\nHe's still walking, 'two blocks, rest, two more.' Raised the ED himself, mostly wanted to know if it was 'the circulation thing' - yes, likely. Not interested in pursuing anything for it.\n\nBreathing about the same. Still smoking a pack.\n\nVitals per flowsheet; BP fine here. Lungs prolonged expiration. Heart regular. Feet cool, faint pulses, skin intact.\n\nPlan: same meds. BMP today. Talked through how smoking ties together the legs, lungs and eyes - he listened, not ready. Flu/COVID in Oct."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              131,
+              88
+            ],
+            "hr": 80
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T14:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T14:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall shots",
+              "date": "2024-10-08T14:50",
+              "author": "RN",
+              "body": "High-dose flu R deltoid, 2024-25 COVID L deltoid. Tolerated. Reminded him the lung doctor follow-up is due - he has it in December."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-11-19T14:30",
+              "author": "front desk",
+              "body": "No-show for 1:40 follow-up. Called, left voicemail with callback number. Pt called back at 4 - truck wouldn't start in the cold, forgot to call. Rescheduled after the holidays; he'll keep the December lung appointment."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "specialist_visit",
+          "start": "2024-12-10T10:00",
+          "service": "Pulmonology",
+          "reason": "COPD follow-up",
+          "vitals": {
+            "spo2": 92
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2024-12-10T09:30",
+              "text": "Spirometry, pulmonary function laboratory. Acceptable effort.\nFEV1 1.0 L (40% predicted).\nFVC 2.0 L (60% predicted).\nFEV1/FVC 50%.",
+              "conclusion": "Obstructive defect, FEV1 40% predicted, lower than 12/2022."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology follow-up",
+              "date": "2025-01-14T09:20",
+              "author": "pulmonology",
+              "body": "PULMONARY FOLLOW-UP (outside)\nSeen 12/10/2024. Note faxed 1/14/2025.\n\nMr. Keane returns. Breathlessness has worsened over the past several months. Daily cough productive of white sputum. No chest pain, no fevers, no weight loss.\n\nMedications unchanged: tiotropium 2.5 mcg two puffs daily, albuterol as needed, lisinopril, hydrochlorothiazide, atorvastatin, aspirin.\nNKDA. Smoking 1 ppd, 40 pack-years.\n\nSpO2 92% on room air. Chest barrel-shaped with increased AP diameter; breath sounds diminished, expiration prolonged with wheezes.\n\nSpirometry: FEV1 1.0 L (40% pred), FVC 2.0 L (60% pred), ratio 50%.\n\nAssessment: COPD with severe airflow obstruction, FEV1 lower than 2022. No exacerbations.\n\nPlan: Continue tiotropium and albuterol. Again urged to quit. Return 12 months with spirometry."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-15a",
+          "kind": "outside_records",
+          "start": "2025-01-15T08:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pulmonology follow-up reviewed",
+              "date": "2025-01-15T08:10",
+              "author": "PCP",
+              "body": "Pulm note from 12/10 arrived yesterday. FEV1 down to 1.0 L / 40%. No exacerbations, no change in inhalers. Will review with him at the March visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "pharmacy",
+          "start": "2025-01-28T10:00",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Tiotropium renewal 2025",
+              "date": "2025-01-28T10:00",
+              "author": "MA",
+              "body": "Tiotropium coverage expired 1/2025, pharmacy flagged. Renewal sent with the new 12/2024 spirometry. Approved 1/29."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "office_visit",
+          "start": "2025-03-04T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              83
+            ],
+            "hr": 69,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 94,
+            "weight_kg": 89.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-04T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-04T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening, colonoscopy 2015 normal"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-03-04T09:40",
+              "author": "PCP",
+              "body": "Reviewed December pulm note with him - lung function lower, same inhalers. He says the winter was 'about like last winter.' Rescue inhaler most days now. No infections, no hospital.\n\nLegs unchanged. Eyes: uses the Amsler grid, no new distortion; eye doctor visits every six months.\n\nVitals per flowsheet, weight steady. Lungs: diminished, prolonged expiration, scattered wheeze. Heart regular. No edema.\n\n- COPD: continue tiotropium/albuterol.\n- HTN: BMP today.\n- Colon screening: 10 years since the normal colonoscopy. He doesn't want another scope; FIT kit given with instructions.\n- Tobacco: still 1 ppd, quitting discussed, not ready.\nPhysical in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-21a",
+          "kind": "lab_only",
+          "start": "2025-03-21T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-18T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-03-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "FIT result",
+              "date": "2025-03-21T14:15",
+              "author": "RN",
+              "body": "Your stool test came back negative. Next one due in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "annual_physical",
+          "start": "2025-06-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine check-up; weight loss",
+          "conditions": [
+            {
+              "label": "Unintentional weight loss",
+              "action": "diagnosed",
+              "onset": "2025-03-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 94,
+            "weight_kg": 84.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-09T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-09T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-09T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.58
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-06-09T09:45",
+              "text": "PA and lateral chest. No prior studies available for comparison.\nA solitary nodule measuring 1.2 cm is present in the right upper lobe, with spiculated margins. The lungs are otherwise clear and hyperexpanded. No pleural effusion or pneumothorax. Heart size normal. Mediastinal contour unremarkable. Bones intact.",
+              "conclusion": "Solitary 1.2 cm spiculated right upper lobe nodule. CT chest recommended."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-06-09T08:30"
+            },
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-06-09T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-2025",
+              "action": "placed",
+              "order": "CT chest",
+              "category": "imaging",
+              "reason": "spiculated right upper lobe nodule on chest x-ray"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual visit",
+              "date": "2025-06-09T10:30",
+              "author": "PCP",
+              "body": "Annual + problem visit.\n\nFollowing COPD, PAD with claudication and tobacco use. He feels okay but his belt is looser - down about 10 lb over roughly three months without trying. Eating 'like always.' No fevers, no night sweats, no blood when he coughs; morning cough no different from the last few years.\n\nWeight 84.6 kg (was in the high 80s in March). BP 132/84, HR 78, RR 16, afebrile.\nGen: thinner in the face. No palpable cervical or supraclavicular nodes. Lungs clear to auscultation today, no wheeze. Heart regular. Abd soft, no masses, no hepatomegaly. Ext no edema.\n\nCXR done in the office this morning (no older films to compare): 1.2 cm spiculated nodule in the RUL.\n\nA/P\n1. Unintentional weight loss with a spiculated RUL nodule in a 40 pk-yr current smoker - concerning for lung cancer until shown otherwise. CT chest ordered for this week. CBC, CMP, TSH today. Discussed with him plainly; he took it quietly.\n2. COPD/HTN/PAD - unchanged regimen.\n3. Prevention - FIT negative March. PHQ-2 0."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.6,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.62
+            }
+          },
+          "measure": [
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "imaging",
+          "start": "2025-06-13T07:45",
+          "conditions": [
+            {
+              "label": "Solitary pulmonary nodule, high suspicion for malignancy",
+              "action": "diagnosed",
+              "onset": "2025-06-09",
+              "icd10": "R91.1"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-06-13T07:45",
+              "text": "CT CHEST WITHOUT CONTRAST\nIndication: RUL nodule on chest radiograph, weight loss, smoker.\nComparison: chest radiograph 6/9/2025. No prior CT.\nFindings: Solitary 1.2 cm nodule in the right upper lobe with spiculated margins. No additional pulmonary nodules. No mediastinal, hilar or axillary lymphadenopathy. No pleural or pericardial effusion. Heart size normal. Upper abdomen unremarkable. Osseous structures intact.",
+              "conclusion": "Solitary 1.2 cm spiculated right upper lobe nodule, highly suspicious for primary lung malignancy. No additional abnormality. Tissue sampling and PET-CT recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-2025",
+              "action": "done",
+              "date": "2025-06-13T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT chest - flagged",
+              "date": "2025-06-13T15:20",
+              "author": "PCP",
+              "body": "CT confirms the single spiculated 1.2 cm RUL nodule, nothing else. Will call him Monday with results and the plan for PET + biopsy via pulmonology."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "telephone",
+          "start": "2025-06-16T09:10",
+          "orders": [
+            {
+              "id": "pulm-nodule",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "spiculated RUL nodule, high suspicion for malignancy; PET-CT and tissue diagnosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result call",
+              "date": "2025-06-16T09:25",
+              "author": "PCP",
+              "body": "Called pt with CT results. Explained the nodule looks suspicious for cancer and the next steps are a PET scan and a biopsy through the lung doctors he already knows. Urgent referral sent; their office will call to book. He asked if it could be 'just scar from the smoking' - told him that's possible but unlikely with this appearance and we shouldn't wait. He agreed to the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "outside_records",
+          "start": "2025-07-08T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pulmonology appointment notice",
+              "date": "2025-07-08T13:00",
+              "author": "pulmonology",
+              "body": "Notice to referring provider: patient cancelled new-problem appointment scheduled 7/7/2025 (nodule evaluation). Did not reschedule at time of call. Referral remains open in our system."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "telephone",
+          "start": "2025-07-14T17:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: cancelled pulmonology visit",
+              "date": "2025-07-14T17:55",
+              "author": "PCP",
+              "body": "Reached him at home after the pulm office let us know he cancelled. He says he feels fine and wants to 'get through the summer' before any more scans or needles. Went over again why the nodule worries me and that waiting can let it spread. He heard it, still wants to wait. He knows the referral stays open and he can call them directly. Asked him to let me know if anything changes - cough, blood, more weight loss, anything. Will touch base in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "pharmacy",
+          "start": "2025-08-12T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day renewals",
+              "date": "2025-08-12T10:05",
+              "author": "RN",
+              "body": "Mail-order renewal requests: lisinopril 20, HCTZ 12.5, atorvastatin 40. Seen 6/9, BMP normal. Approved 90 days x 3 per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "portal_message",
+          "start": "2025-09-02T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "date": "2025-09-02T10:30",
+              "author": "PCP",
+              "body": "Hi Joseph - checking in as promised. The pulmonology referral for the nodule is still open. Would you like us to call them and get you on the schedule? Also flu and COVID shots are available next month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Checking in",
+              "date": "2025-09-05T21:02",
+              "author": "patient",
+              "body": "Will do the shots. Lung stuff after I get my firewood in."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              133,
+              80
+            ],
+            "hr": 74,
+            "weight_kg": 84.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-14T13:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T13:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID",
+              "date": "2025-10-14T13:55",
+              "author": "RN",
+              "body": "Both vaccines given, separate arms. He needed both hands on the armrests to get up from the chair and said his legs 'have gone weak on me' the last few weeks. Weight down a little more on our scale. Encouraged an office visit - booked with PCP 11/18 (first opening he'd take). Message to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "leg weakness, double vision",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 93,
+            "weight_kg": 82.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-18T11:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T11:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 93
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.55
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-11-18T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "subacute proximal weakness, dry mouth, fatigable diplopia; known suspicious lung nodule"
+            },
+            {
+              "id": "pulm-nodule",
+              "action": "cancelled",
+              "date": "2025-11-18T10:40"
+            },
+            {
+              "id": "pulm-nodule-2",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "spiculated RUL nodule from 6/2025, now with proximal weakness; expedite PET-CT and biopsy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit - weakness",
+              "date": "2025-11-18T11:40",
+              "author": "PCP",
+              "body": "CC: legs weak.\n\nHPI: Since roughly the start of October (about 7 weeks) stairs have become hard and he has to push up with his arms to get out of a chair. Mouth is dry all the time. Every so often sees double, usually later in the day; resting his eyes clears it. Bowel and bladder normal. No numbness. No new cough or hemoptysis. Weight drifting down.\n\nHe has not gone back to pulmonology about the nodule.\n\nExam: Weight 82.1 kg. Other vitals per flowsheet. Alert, thin. EOM full without diplopia at rest in the room. Hip flexors and shoulder abductors 4/5 both sides; distal strength full. Reflexes hypoactive and symmetric at knees and biceps. Sensation intact. Gait slow, can't rise from chair without arms. Lungs diminished, prolonged expiration. Heart regular.\n\nA/P: Subacute proximal weakness, dry mouth and fatigable diplopia in a smoker with a suspicious lung nodule - I'm worried about a paraneoplastic neuromuscular syndrome (Lambert-Eaton) or other neuromuscular junction disease. BMP, CBC, CK, TSH today. Urgent neurology referral. Re-referred to pulmonology marked expedited; this time he says yes and wants to know what's going on. Fall precautions discussed. Call for trouble swallowing or breathing."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.1,
+            "labs": {
+              "Creatine Kinase": 96
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "portal_message",
+          "start": "2025-11-20T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood tests",
+              "date": "2025-11-20T12:05",
+              "author": "PCP",
+              "body": "Joseph, the blood work from Tuesday was normal - muscle enzyme, thyroid, salts and blood counts. That doesn't explain the weakness, so the neurology visit is still important. They have you on December 22. Pulmonology should call this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "specialist_visit",
+          "start": "2025-12-22T14:00",
+          "service": "Neurology",
+          "reason": "proximal weakness, dry mouth, diplopia",
+          "conditions": [
+            {
+              "label": "Lambert-Eaton myasthenic syndrome",
+              "action": "diagnosed",
+              "onset": "2025-09-25",
+              "icd10": "G70.80"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-12-22T15:10",
+              "text": "PA and lateral chest. Comparison: chest radiograph 6/9/2025 (outside report). There is a right hilar mass. The lungs are hyperexpanded. No pleural effusion or pneumothorax. Heart size normal.",
+              "conclusion": "Right hilar mass. Further evaluation with CT/PET recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2025-12-22T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2026-01-21T11:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY CONSULTATION\nDate of visit: 12/22/2025 (transcribed and sent 1/21/2026)\n\nReferral: proximal weakness.\n\nHPI: 70-year-old man, 40 pack-year smoker, COPD, peripheral arterial disease and macular degeneration, with a right upper lobe nodule found in June that has been concerning for cancer but not yet sampled. Over three months he has had increasing trouble with stairs and standing from a chair. Dry mouth. Intermittent double vision that gets better with rest. No bowel or bladder symptoms.\n\nMeds: lisinopril 20, HCTZ 12.5, atorvastatin 40, aspirin 81, tiotropium, albuterol.\nNKDA.\n\nExam: Weakness of proximal muscles, symmetric, arms and legs. Deep tendon reflexes reduced; they become brisker after 10 seconds of maximal contraction. Sensation normal. Cranial nerves intact at the time of exam.\n\nData: BMP and CBC from primary care normal. Chest radiograph today shows a right hilar mass.\n\nImpression: Lambert-Eaton myasthenic syndrome, very likely paraneoplastic given the lung findings; small cell lung cancer is the leading concern.\n\nPlan:\n- EMG/NCS with repetitive stimulation and P/Q-type VGCC antibody (done 12/30 - see addendum).\n- Urgent PET-CT and tissue diagnosis; pulmonology contacted directly.\n- Symptomatic treatment once electrodiagnostics confirm.\n\nADDENDUM 1/5/2026: EMG/RNS findings typical of a presynaptic disorder (report attached). P/Q-type VGCC antibody 0.41 nmol/L, positive. Started amifampridine 10 mg three times daily. Follow-up in neurology clinic in 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "specialist_visit",
+          "start": "2025-12-30T09:00",
+          "service": "Neurology",
+          "reason": "EMG and repetitive nerve stimulation",
+          "medications": [
+            {
+              "drug_text": "amifampridine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Lambert-Eaton myasthenic syndrome"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-30T10:30",
+              "resulted": "2026-01-05T12:00",
+              "results": [
+                {
+                  "test": "P/Q-type voltage-gated calcium channel antibody",
+                  "loinc": "33980-4",
+                  "unit": "nmol/L",
+                  "value": 0.41
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2025-12-30T09:00",
+              "text": "Motor nerve conductions (median, ulnar, peroneal, tibial): compound muscle action potential amplitudes low in all nerves tested (ulnar to abductor digiti minimi 1.9 mV); distal latencies and conduction velocities normal. Sensory responses normal.\nRepetitive nerve stimulation, ulnar at 3 Hz: 24% decrement.\nAfter 10 seconds of maximal voluntary exercise: CMAP amplitude increment of 210%.\nNeedle EMG of proximal and distal muscles: no fibrillations; no myopathic units.",
+              "conclusion": "Presynaptic neuromuscular junction disorder, consistent with Lambert-Eaton myasthenic syndrome."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "EMG/NCS report",
+              "date": "2026-01-21T11:05",
+              "author": "neurology",
+              "body": "Electrodiagnostic study 12/30/2025, outside neurology lab. Full report attached to consultation of 12/22/2025. Low-amplitude CMAPs with 3 Hz decrement and marked post-exercise facilitation (210%); normal sensory studies; no myopathic changes. Interpretation: presynaptic NMJ disorder, consistent with LEMS."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "pharmacy",
+          "start": "2026-01-07T09:30",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Amifampridine prior authorization request",
+              "date": "2026-01-07T09:30",
+              "author": "MA",
+              "body": "Specialty pharmacy faxed a PA request for amifampridine (Firdapse) 10 mg TID listing us as PCP. Prescriber is outside neurology. We have no neurology note yet - forwarded to PCP and called neurology's office; they say their team is handling the PA and will send the consult."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient",
+              "date": "2026-01-08T11:15",
+              "author": "RN",
+              "body": "Called pt to catch up since we got a pharmacy fax. He says the nerve test 'showed the signal isn't getting through' and the neurologist wants him on a pill three times a day; first fill came yesterday. PET scan is this Friday, brain MRI Monday, lung doctor doing a biopsy the following week. Sounds tired but clear. Booked visit with PCP 1/27."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "imaging",
+          "start": "2026-01-09T07:30",
+          "reports": [
+            {
+              "study": "PET-CT skull base to mid-thigh",
+              "loinc": "81554-8",
+              "performed": "2026-01-09T07:30",
+              "text": "FDG PET-CT, skull base to mid-thigh.\nComparison: CT chest 6/13/2025.\nThe right upper lobe nodule now measures 1.9 cm, SUV max 8.6.\nRight hilar (station 10R) nodal mass 3.1 cm, SUV max 11.4.\nRight lower paratracheal (4R) node 1.5 cm, SUV max 6.2.\nNo other hypermetabolic thoracic nodes. No hypermetabolic lesion in the liver, adrenal glands or skeleton. Physiologic uptake elsewhere.",
+              "conclusion": "Enlarging hypermetabolic right upper lobe nodule with hypermetabolic right hilar and right lower paratracheal nodes. No distant hypermetabolic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "PET reviewed",
+              "date": "2026-01-12T07:50",
+              "author": "PCP",
+              "body": "PET copied to us: RUL nodule grown to 1.9 cm, hot 10R and 4R nodes, nothing distant. Awaiting EBUS."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "imaging",
+          "start": "2026-01-12T12:00",
+          "reports": [
+            {
+              "study": "MRI brain without and with gadolinium",
+              "loinc": "24590-2",
+              "performed": "2026-01-12T12:00",
+              "text": "Multiplanar multisequence MRI of the brain before and after intravenous gadolinium.\nNo enhancing lesion. No mass effect, hemorrhage or acute infarct. Ventricles and sulci appropriate for age. Major flow voids preserved.",
+              "conclusion": "No evidence of intracranial metastatic disease."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T15:20",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Amifampridine PA approved",
+              "date": "2026-01-13T15:20",
+              "author": "MA",
+              "body": "Neurology's office confirms amifampridine PA approved through 1/2027; specialty pharmacy shipping monthly. Nothing needed from us. Added to the outside-meds note pending the neurology consult."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "procedure_visit",
+          "start": "2026-01-16T08:00",
+          "service": "Interventional Pulmonology",
+          "reason": "EBUS staging and diagnosis",
+          "conditions": [
+            {
+              "label": "Solitary pulmonary nodule, high suspicion for malignancy",
+              "action": "resolved",
+              "note": "sampled; small cell carcinoma",
+              "icd10": "R91.1"
+            },
+            {
+              "label": "Small cell carcinoma of right upper lobe of lung",
+              "action": "diagnosed",
+              "onset": "2025-06-09",
+              "note": "limited stage, cT1b N2 M0, stage IIIA",
+              "icd10": "C34.11"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-16T08:40",
+              "text": "Specimens: A) Lymph node, station 10R, EBUS-TBNA. B) Lymph node, station 4R, EBUS-TBNA. C) Lymph node, station 7, EBUS-TBNA.\nA and B: Small cell carcinoma. Tumor cells with scant cytoplasm, finely granular chromatin and nuclear molding; abundant mitoses and crush artifact. Immunostains: synaptophysin positive, TTF-1 positive. Ki-67 approximately 85%.\nC: Benign lymphoid tissue, negative for malignancy.",
+              "conclusion": "Small cell carcinoma involving stations 10R and 4R. Station 7 negative.",
+              "issued": "2026-01-20T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-nodule-2",
+              "action": "done",
+              "date": "2026-01-16T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "EBUS-TBNA",
+              "date": "2026-01-20T17:00",
+              "author": "pulmonology",
+              "body": "OUTSIDE INTERVENTIONAL PULMONOLOGY\nProcedure date: 1/16/2026\nProcedure: Flexible bronchoscopy with endobronchial ultrasound-guided transbronchial needle aspiration.\nIndication: RUL nodule with PET-avid right hilar and paratracheal nodes; Lambert-Eaton syndrome.\nAnesthesia: moderate sedation. Airway inspection: no endobronchial lesion.\nNodes sampled: 10R (4 passes), 4R (3 passes), 7 (3 passes). Rapid on-site evaluation: malignant cells at 10R and 4R.\nNo complications; discharged home same day.\nFinal pathology (1/20): small cell carcinoma at 10R and 4R; station 7 negative.\nImpression: Small cell lung cancer, right upper lobe primary, limited stage (cT1b N2 M0). Referred to thoracic oncology."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "outside_records",
+          "start": "2026-01-21T11:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Neurology and pathology reviewed",
+              "date": "2026-01-21T16:40",
+              "author": "PCP",
+              "body": "Neurology consult from 12/22 finally here, with EMG and antibody: LEMS confirmed, VGCC Ab positive, on amifampridine. EBUS path: small cell at 10R and 4R. Seeing him 1/27; oncology is 1/29."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T09:00",
+          "end": "2026-01-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after lung cancer diagnosis",
+          "vitals": {
+            "bp": [
+              127,
+              85
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 92,
+            "weight_kg": 80.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-01-27T09:00"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2026-01-27T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit - new diagnosis",
+              "date": "2026-01-27T10:15",
+              "author": "PCP",
+              "body": "Here to go over everything from the last month.\n\nSummary of outside work-up:\n- Neuro 12/22: LEMS; EMG 12/30 with 210% post-exercise increment; P/Q VGCC Ab 0.41, positive. Amifampridine 10 mg TID since early January.\n- PET 1/9: RUL 1.9 cm, hot 10R and 4R nodes, no distant disease. Brain MRI 1/12 clear.\n- EBUS 1/16: small cell carcinoma at 10R and 4R.\n\nHe says the new pill has helped - he can get off the couch without rocking now, stairs still slow. Double vision less often. Mouth still dry. Eating less, weight 80.3 kg. Breathing his usual.\n\nExam: thin, alert. Proximal strength 4+/5 hips. Lungs diminished, prolonged expiration. Heart regular. No edema.\n\nA/P\n1. Small cell lung cancer, RUL, limited stage (cT1b N2 M0) - added to list, nodule entry closed. Oncology consult Thursday. He knows this is a serious cancer and that limited-stage disease is treated with the aim of cure.\n2. LEMS, paraneoplastic - added; amifampridine on med list. Neurology following.\n3. Advance care planning (~25 min): he wants full treatment, full code. Health care proxy form given; he'll bring it back signed.\n4. Weight loss - nutrition basics, add a shake between meals.\n5. COPD/HTN/PAD - unchanged.\n6. Tobacco - still smoking. Offered patch again; he wants to try on his own first."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "specialist_visit",
+          "start": "2026-01-29T13:00",
+          "service": "Medical Oncology",
+          "reason": "small cell lung cancer, new",
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "chemotherapy nausea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Thoracic oncology consultation",
+              "date": "2026-02-03T09:00",
+              "author": "oncology",
+              "body": "OUTSIDE THORACIC ONCOLOGY - MULTIDISCIPLINARY CONSULT\nSeen 1/29/2026 by medical and radiation oncology.\n\nDiagnosis: Small cell lung cancer, right upper lobe, with ipsilateral hilar (10R) and paratracheal (4R) nodal involvement; station 7 negative. PET without distant disease; brain MRI negative. Limited stage, cT1b N2 M0 (stage IIIA). Paraneoplastic Lambert-Eaton myasthenic syndrome, VGCC antibody positive, on amifampridine per neurology.\n\nComorbidities: COPD (FEV1 1.0 L, 40% predicted, 12/2024), PAD with claudication, hypertension, hyperlipidemia, dry AMD. Current smoker, 40 pack-years.\n\nMeds: lisinopril, hydrochlorothiazide, atorvastatin, aspirin, tiotropium, albuterol, amifampridine 10 mg TID. NKDA.\n\nRecommendation (discussed with patient, who wishes to proceed):\n1. Carboplatin AUC 5 day 1 plus etoposide 100 mg/m2 days 1-3, every 21 days for 4 cycles.\n2. Concurrent thoracic radiation, 60 Gy in 30 once-daily fractions, starting with or shortly after cycle 1 (once daily chosen given lung function).\n3. Durvalumab consolidation after chemoradiation if no progression.\n4. Brain MRI surveillance every 3 months rather than prophylactic cranial irradiation.\n5. Ondansetron 4 mg ODT every 8 hours as needed for nausea; antiemetic premedication in the infusion center.\n6. Smoking cessation strongly encouraged.\n\nCycle 1 planned 2/2/2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "specialist_visit",
+          "start": "2026-02-02T08:30",
+          "end": "2026-02-02T14:30",
+          "service": "Medical Oncology",
+          "reason": "cycle 1 carboplatin/etoposide",
+          "medications": [
+            {
+              "drug_text": "carboplatin 10 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "AUC 5 IV on day 1 every 21 days for 4 cycles",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "small cell lung cancer"
+            },
+            {
+              "drug_text": "etoposide 20 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "100 mg/m2 IV on days 1-3 every 21 days for 4 cycles",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "small cell lung cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Infusion visit, C1D1",
+              "date": "2026-02-02T15:00",
+              "author": "oncology",
+              "body": "Outside oncology infusion note (copy to PCP).\nC1D1 carboplatin AUC 5 / etoposide 100 mg/m2. Labs adequate for treatment. Premedicated. Tolerated without reaction. Returns days 2 and 3 for etoposide. Radiation simulation done; RT to begin 2/9. Next cycle 2/23."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telephone",
+          "start": "2026-03-10T15:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in call",
+              "date": "2026-03-10T15:45",
+              "author": "RN",
+              "body": "Outreach call during treatment. He's had two of four chemo cycles and is about four weeks into radiation, 'tired but standing.' Taking his regular pills. Has the nausea tabs, used a few. No fevers. Ride program from oncology getting him to daily radiation. Asked us to keep his refills going - all on auto-refill at mail order."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "outside_records",
+          "start": "2026-04-02T10:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Radiation treatment summary",
+              "date": "2026-04-02T10:00",
+              "author": "radiation oncology",
+              "body": "OUTSIDE RADIATION ONCOLOGY - END OF TREATMENT SUMMARY\nDiagnosis: limited-stage small cell lung cancer, RUL, N2.\nTreatment: 60 Gy in 30 once-daily fractions to the right upper lobe primary and involved 10R/4R nodes, 2/9/2026 - 3/20/2026, concurrent with carboplatin/etoposide.\nCompleted as planned without breaks. Acute effects: fatigue.\nFollow-up: radiation oncology in 6 weeks; restaging CT per medical oncology after cycle 4."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2026-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in after chemoradiation",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-04-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "date": "2026-04-14T11:30",
+              "author": "PCP",
+              "body": "Video visit from his kitchen, identity confirmed by DOB.\n\nFinished radiation 3/20 and the fourth chemo cycle 4/6. Tired, naps in the afternoon. Eating better, using the shakes. Legs noticeably stronger - climbed his porch steps without the railing last week. Double vision hasn't come back. Mouth still a bit dry. Breathing his usual; albuterol some days. Still smoking.\n\nVisual exam limited: looks thin but well, speaking full sentences, no work of breathing on camera.\n\nA/P: SCLC s/p chemoradiation - restaging CT early May per oncology; durvalumab to follow if no progression. LEMS improving on amifampridine. COPD stable. Continue all meds. In-person visit this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "imaging",
+          "start": "2026-05-05T08:00",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-05-05T08:00",
+              "text": "CT CHEST WITH CONTRAST\nComparison: PET-CT 1/9/2026.\nRight upper lobe primary now 0.8 cm (previously 1.9 cm). Right hilar 10R node 1.1 cm (previously 3.1 cm). Right lower paratracheal 4R node 0.9 cm (previously 1.5 cm). Post-radiation change in the right paramediastinal lung. No new nodules. No pleural effusion. No new lymphadenopathy. Visualized upper abdomen without lesion.",
+              "conclusion": "Partial response of the right upper lobe primary and right hilar and paratracheal nodes after chemoradiation. Expected post-radiation change. No new disease."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "specialist_visit",
+          "start": "2026-05-18T09:00",
+          "service": "Medical Oncology",
+          "reason": "start durvalumab consolidation",
+          "medications": [
+            {
+              "drug_text": "durvalumab 50 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "1500 mg IV every 4 weeks",
+              "dose": {
+                "value": 1500,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "limited-stage small cell lung cancer, consolidation"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "telephone",
+          "start": "2026-06-09T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - oncology",
+              "date": "2026-06-09T11:30",
+              "author": "MA",
+              "body": "Requested oncology notes since February (only C1 infusion note and RT summary on file). Their office says notes go out monthly in batches."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "imaging",
+          "start": "2026-06-29T14:00",
+          "reports": [
+            {
+              "study": "MRI brain without and with gadolinium",
+              "loinc": "24590-2",
+              "performed": "2026-06-29T14:00",
+              "text": "Surveillance MRI brain before and after gadolinium. Comparison 1/12/2026.\nNo enhancing lesion. No hemorrhage, mass effect or acute infarct. Unchanged since January.",
+              "conclusion": "No intracranial metastasis."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "office_visit",
+          "start": "2026-07-24T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, on immunotherapy",
+          "vitals": {
+            "bp": [
+              128,
+              86
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 94,
+            "weight_kg": 78.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-24T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-24T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-24T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.56
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-24T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2026-07-24T10:10",
+              "author": "PCP",
+              "body": "First in-person visit since January.\n\nOncology update per pt (we did not get notes): restaging CT in May showed the tumor and nodes shrinking; started durvalumab infusions mid-May, every four weeks, third one was last week. No rash, no diarrhea, no cough beyond his usual. Brain MRI in June clear - report is in our chart. He's walking to the end of his road again; stairs fine. Double vision gone. Still on amifampridine three times a day. Still smoking, though he says less.\n\nWeight 78.8 kg, holding. Other vitals per flowsheet.\nExam: thin, more color than in winter. Lungs diminished, prolonged expiration, no crackles. Heart regular. Hip flexors 5-/5. Skin without rash. Feet cool, faint pulses, intact.\n\nA/P\n1. SCLC, limited stage - partial response after chemoradiation, on durvalumab consolidation. Added durvalumab to med list. Requested oncology notes.\n2. LEMS - much improved. Continue amifampridine per neurology.\n3. COPD - stable, continue tiotropium/albuterol.\n4. HTN, PAD - unchanged.\n5. Tobacco - still smoking; encouraged to quit, patch offered again, declined.\n6. CMP, CBC with diff, TSH today (on immunotherapy).\nFollow-up in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Friday",
+              "date": "2026-07-28T13:30",
+              "author": "PCP",
+              "body": "Hi Joseph - labs from Friday all normal, including thyroid, which we watch on durvalumab. Good to see you looking stronger."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "outside_records",
+          "start": "2026-08-19T10:00",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-08-10T08:30",
+              "text": "CT CHEST WITH CONTRAST\nComparison: 5/5/2026.\nRight upper lobe primary 0.8 cm, unchanged. Right hilar and right lower paratracheal nodes stable in size. Evolving post-radiation change in the right paramediastinal lung. No new nodules, effusion or lymphadenopathy.",
+              "conclusion": "Stable treated disease. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology follow-up",
+              "date": "2026-08-19T10:00",
+              "author": "oncology",
+              "body": "OUTSIDE THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 8/11/2026 (received 8/19, in response to records request)\n\nOn durvalumab 1500 mg every 4 weeks since 5/18/2026, cycle 4 today. No immune-related adverse effects. Surveillance CT 8/10 stable, no new disease. Brain MRI 6/29 negative. LEMS improved on amifampridine. Plan: continue durvalumab; CT every 3 months; brain MRI every 3 months. Next visit with cycle 5.\n\nIncluded for prior dates: infusion records for carboplatin/etoposide cycles 2-4 (2/23, 3/16, 4/6/2026), completed without dose delays.\n\nScanned to chart. Lists not updated; for review at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T18:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot this year",
+              "date": "2026-08-24T18:45",
+              "author": "patient",
+              "body": "Can I still get the flu shot with the infusions or should I skip it this year?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot this year",
+              "date": "2026-08-25T09:10",
+              "author": "RN",
+              "body": "Yes, you should still get it - the flu shot is safe with durvalumab and especially important for you this year. Once this season's vaccine arrives in September you can get it here or at your pharmacy. Your oncology team agrees."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Atherosclerosis of native arteries of both legs with intermittent claudication|I70.213": {
+        "code": "I70.213",
+        "display": "Atherosclerosis of native arteries of extremities with intermittent claudication, bilateral legs",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lambert-Eaton myasthenic syndrome|G70.80": {
+        "code": "G70.80",
+        "display": "Lambert-Eaton syndrome, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Small cell carcinoma of right upper lobe of lung|C34.11": {
+        "code": "C34.11",
+        "display": "Malignant neoplasm of upper lobe, right bronchus or lung",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Solitary pulmonary nodule, high suspicion for malignancy|R91.1": {
+        "code": "R91.1",
+        "display": "Solitary pulmonary nodule",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "amifampridine 10 MG Oral Tablet": {
+        "code": "2106343",
+        "display": "amifampridine 10 MG Oral Tablet",
+        "ingredient": "amifampridine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "carboplatin 10 MG/ML Injectable Solution": {
+        "code": "597195",
+        "display": "carboplatin 10 MG/ML Injectable Solution",
+        "ingredient": "carboplatin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "durvalumab 50 MG/ML Injectable Solution": {
+        "code": "1919515",
+        "display": "10 ML durvalumab 50 MG/ML Injection",
+        "ingredient": "durvalumab",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "etoposide 20 MG/ML Injectable Solution": {
+        "code": "310248",
+        "display": "etoposide 20 MG/ML Injectable Solution",
+        "ingredient": "etoposide",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "P/Q-type voltage-gated calcium channel antibody": {
+        "code": "33980-4",
+        "display": "Voltage-gated calcium channel P/Q type binding Ab [Moles/volume] in Serum",
+        "unit": "nmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain without and with gadolinium": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "PET-CT skull base to mid-thigh": {
+        "code": "81554-8",
+        "display": "PET+CT Guidance for localization of tumor of Skull base to mid-thigh-- W 18F-FDG IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

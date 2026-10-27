@@ -1,0 +1,1750 @@
+{
+  "unit": "unit-1795",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001795",
+      "given": "Lauren",
+      "family": "Mazur",
+      "birth_date": "2002-05-05",
+      "address_line": "18 Pine Grove Rd, Apt 3",
+      "phone": "+1-774-555-0189",
+      "email": "lauren.mazur@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young woman who joined in 2023 from a pediatric office, then had a septic abortion (2024), anti-NMDA receptor encephalitis with a right ovarian teratoma (2025) and an intentional aspirin overdose (2026), all at outside hospitals. Records arrive late or partly; the last practice visit was March 2026.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T15:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-29T15:12",
+              "author": "front desk",
+              "body": "Lauren called wanting to establish with us. 21, says her pediatrician's office told her she's too old to keep seeing them. Has Medicaid, card info entered. No current health issues per pt, just wants an adult doctor. Scheduled new pt 9/12 at 10:20. Release form emailed for the pediatric office; she will sign it in the portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              76
+            ],
+            "hr": 83,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 58.7,
+            "height_cm": 164.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-12T11:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T11:05",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time retail associate"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2023-09-12T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T10:20",
+              "author": "PCP",
+              "body": "21 y/o woman new to the practice, transferring from her pediatric office. No complaints today. Never hospitalized, no surgeries, takes nothing regularly, no supplements. NKDA.\n\nFHx: mom has autoimmune thyroid disease; maternal aunt has lupus. No other family history she knows of.\nSHx: works part time in retail at a store in town, lives in South Hadley. Never smoked, no alcohol, no drugs. Sexually active, one partner.\n\nROS negative across the board. Periods regular.\n\nExam: well appearing. HEENT normal, thyroid not enlarged, no nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Joints without swelling. Mood bright.\nPHQ-9 2, GAD-7 2.\n\nA/P: healthy young adult.\n- One-time HIV and hep C screening sent, plus urine GC/chlamydia (under 25).\n- Pap due now that she is 21, will do at a physical in the spring.\n- Pediatric records requested for immunizations.\n- Flu and COVID: she'll come back for a nurse visit in October.\nRTC spring for a physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T08:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-09-14T08:41",
+              "author": "PCP",
+              "body": "Hi Lauren, all of your screening tests from Tuesday came back negative. Nothing to do. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T13:30",
+          "immunizations": [
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2013-06-11T10:00"
+            },
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2014-01-14T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2013-06-11T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2018-06-19T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2018-06-19T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-22T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-06-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior pediatric office",
+              "date": "2023-09-20T13:30",
+              "author": "front desk",
+              "body": "Pediatric records received, 22 pages. Well-child visits through age 19, no chronic problems listed, no hospitalizations. Immunization record entered: HPV series complete (2 doses), MenACWY x2, Tdap at 16, COVID primary series 2021. Filed for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:10",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 37.0
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2023-10-17T16:10",
+              "author": "RN",
+              "body": "Here after work for vaccines. Afebrile, feels well. Flu in L deltoid, updated COVID in R deltoid. Waited 15 min, no reaction. VIS given."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 84,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 58.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-19T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-03-19T09:30",
+              "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation; transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-03-26T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-19T09:00",
+              "author": "PCP",
+              "body": "Here for her physical. Doing well. Still part time at the store and picking up extra shifts. No meds. Periods regular, LMP 3/4. Using condoms.\n\nExam: NAD. Thyroid normal. Heart and lungs normal. Abdomen benign. Pelvic: normal external genitalia, cervix without lesions, no discharge. Pap collected. Skin clear.\nPHQ-2 0.\n\nPlan: Pap today, first one. Baseline CBC. Vaccines current through the fall. Discussed contraception options; she'll think about it. Back in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "portal_message",
+          "start": "2024-03-27T12:04",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood count",
+              "date": "2024-03-27T12:04",
+              "author": "PCP",
+              "body": "Your Pap was normal and so was your blood count, no anemia. Next Pap in three years (2027)."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Pap and blood count",
+              "date": "2024-03-27T19:50",
+              "author": "patient",
+              "body": "ok great thank you!!"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "pharmacy",
+          "start": "2024-10-10T17:20",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-10T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "date": "2024-10-14T09:10",
+              "author": "MA",
+              "body": "State registry update: influenza vaccine given at a retail pharmacy 10/10/24. Entered in her immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "hospital_admission",
+          "start": "2024-11-05T13:40",
+          "end": "2024-11-08T12:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "fever, pelvic pain and heavy bleeding after abortion",
+          "conditions": [
+            {
+              "label": "Septic abortion",
+              "action": "diagnosed",
+              "onset": "2024-11-03",
+              "icd10": "O04.5"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-05T13:45",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "temp_c": 38.9
+            },
+            {
+              "time": "2024-11-07T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 84,
+              "temp_c": 36.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-05T14:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-05T14:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-05T14:10",
+              "resulted": "2024-11-10T14:10",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-05T15:20",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-11-05T15:00",
+              "text": "Transvaginal technique. The endometrial cavity contains heterogeneous echogenic material with internal vascularity, consistent with retained products of conception. No intrauterine gestational sac or fetal pole. Ovaries are normal in size and appearance. Small amount of simple free fluid in the cul-de-sac. No adnexal mass.",
+              "conclusion": "Retained products of conception. No intrauterine gestation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-11-05T13:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-11-05T18:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Gynecology Discharge Summary",
+              "date": "2024-12-09T10:30",
+              "author": "gynecology",
+              "body": "GYNECOLOGY INPATIENT SERVICE, regional hospital\nAdmitted 11/05/2024, discharged 11/08/2024\n\nPatient: 22F, G1, NKDA, no daily medications.\n\nReason for admission: two days of fevers, cramping lower abdominal pain and heavy bleeding, starting several days after an elective abortion one week earlier at an outpatient clinic she located online. We have no records from that clinic.\n\nOn arrival: febrile to 38.9, BP 100/60, HR 110. Speculum exam showed purulent material at the os; uterus tender on bimanual exam. WBC 18.0, Hgb 10.2, plt 250, CRP 24. Blood cultures drawn. Transvaginal US: retained tissue in the cavity, no intrauterine pregnancy.\n\nDiagnosis: septic abortion with retained products.\n\nHospital course: IV clindamycin and gentamicin started in the ED. Suction curettage the evening of admission without complication. Defervesced within 48 hours, bleeding lightened. Blood cultures no growth at 5 days (final after discharge). GC/chlamydia NAAT negative.\n\nDischarge medications: doxycycline 100 mg twice daily and metronidazole 500 mg twice daily to complete 14 days of antibiotics.\nFollow-up: primary care within 1 to 2 weeks with repeat CBC. Return for fever, worsening pain or soaking more than a pad an hour."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-11a",
+          "kind": "portal_message",
+          "start": "2024-11-11T21:16",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "was in the hospital",
+              "date": "2024-11-11T21:16",
+              "author": "patient",
+              "body": "Hi I wanted to let you know I was in the hospital last week, I had an infection after a procedure and they did a D&C. They said to see my regular doctor in a week or two and get bloodwork. I'm on 2 antibiotics. Can I come in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: was in the hospital",
+              "date": "2024-11-12T07:58",
+              "author": "PCP",
+              "body": "Sorry you went through that. Yes, please come in Thursday, the front desk will call you with a time. Bring the discharge paperwork if you have it. Keep taking both antibiotics until they're gone."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "office_visit",
+          "start": "2024-11-14T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily to complete 14 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "septic abortion"
+            },
+            {
+              "drug_text": "metronidazole 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily to complete 14 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "septic abortion"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              79
+            ],
+            "hr": 68,
+            "temp_c": 37.0,
+            "spo2": 95,
+            "weight_kg": 59.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-14T11:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-11-14T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2024-11-14T11:20",
+              "author": "PCP",
+              "body": "Post-hospital visit. Per pt and her discharge instructions sheet (no summary from the hospital yet): admitted 11/5 to 11/8 at a regional hospital with an infection a week after an elective abortion done at an outpatient clinic; had a D&C and IV antibiotics. Now on doxycycline and metronidazole, through 11/19. Taking them, a little nauseated with the metronidazole, no alcohol. Cramping much better. Bleeding now light spotting. No fevers since the hospital.\n\nExam: afebrile, HR normal. Looks tired but well. Abdomen soft, mild suprapubic tenderness, no guarding.\n\nA/P: septic abortion after elective termination, s/p curettage, improving on oral antibiotics.\n- Finish both antibiotics.\n- CBC today, Hgb was 10.2 in the hospital per her.\n- Requesting the discharge summary.\n- Emotionally ok, says she has support from her mom. Offered counseling resources, declined for now.\n- Recheck in a month."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-11-15a",
+          "kind": "portal_message",
+          "start": "2024-11-15T13:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2024-11-15T13:22",
+              "author": "PCP",
+              "body": "Hemoglobin is 10.9, up from the hospital. It should keep climbing on its own. We'll repeat it at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "telephone",
+          "start": "2024-11-20T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2024-11-20T10:05",
+              "author": "MA",
+              "body": "Faxed request to the regional hospital HIM office for discharge summary, ED note and labs from 11/5-11/8 admission. Signed release on file."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {
+              "label": "Septic abortion",
+              "action": "resolved",
+              "onset": "2024-11-03",
+              "icd10": "O04.5"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              63
+            ],
+            "hr": 74,
+            "temp_c": 36.7,
+            "weight_kg": 59.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-17T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.17
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-12-17T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-12-17T14:40",
+              "author": "PCP",
+              "body": "Recheck. Finished both antibiotics 11/19. No pain, no fever, bleeding stopped about a week after the last visit. Back at work full hours this month.\nHospital discharge summary arrived last week and reviewed: septic abortion with retained products, suction curettage 11/5, blood cultures negative, GC/CT negative.\n\nExam: well. Abdomen soft, nontender.\n\nA/P: septic abortion, resolved clinically. CBC today to confirm hemoglobin recovery. Talked again about contraception; she'd like to go to a family planning clinic and will let us know. Physical in the spring."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "portal_message",
+          "start": "2024-12-18T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hemoglobin",
+              "date": "2024-12-18T09:15",
+              "author": "PCP",
+              "body": "Hemoglobin is back to 12.4, normal. Nothing further needed for that."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "annual_physical",
+          "start": "2025-04-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              73
+            ],
+            "hr": 77,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 59.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-08T09:20",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-08T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-08T08:40",
+              "author": "PCP",
+              "body": "Yearly visit. Feels back to herself since the November hospitalization. Periods regular again since January. Working 25 hrs/wk at the store. Still no tobacco, alcohol or drugs. Did not end up going to family planning, using condoms.\n\nExam: normal. Thyroid smooth, not enlarged. Heart RRR. Lungs clear. Abdomen soft, nontender. No rashes.\nPHQ-9 3, GAD-7 3.\n\nPlan: urine GC/CT (under 25). Pap not due until 2027. Flu this fall. Hgb normal in December, no need to repeat. Physical next spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-09-07a",
+          "kind": "hospital_admission",
+          "start": "2025-09-07T19:25",
+          "end": "2025-10-03T13:00",
+          "service": "Neurology",
+          "reason": "acute behavioral change with hallucinations",
+          "conditions": [
+            {
+              "label": "Anti-NMDA receptor encephalitis",
+              "action": "diagnosed",
+              "onset": "2025-08-31",
+              "icd10": "G04.81"
+            },
+            {
+              "label": "Mature cystic teratoma of right ovary",
+              "action": "diagnosed",
+              "onset": "2025-09-07",
+              "icd10": "D27.0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-09-07T19:30",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 102,
+              "rr": 18,
+              "temp_c": 37.8
+            },
+            {
+              "time": "2025-10-03T08:00",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.7
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-07T23:10",
+              "results": [
+                {
+                  "test": "Leukocytes [#/volume] in Cerebral spinal fluid",
+                  "loinc": "26465-5",
+                  "unit": "/uL",
+                  "value": 22
+                },
+                {
+                  "test": "Erythrocytes [#/volume] in Cerebral spinal fluid",
+                  "loinc": "26454-9",
+                  "unit": "/uL",
+                  "value": 4
+                },
+                {
+                  "test": "Protein [Mass/volume] in Cerebral spinal fluid",
+                  "loinc": "2880-3",
+                  "unit": "mg/dL",
+                  "value": 56
+                },
+                {
+                  "test": "Glucose [Mass/volume] in Cerebral spinal fluid",
+                  "loinc": "2342-4",
+                  "unit": "mg/dL",
+                  "value": 60
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT pelvis without contrast",
+              "loinc": "30615-9",
+              "performed": "2025-09-08T02:15",
+              "text": "Axial images of the pelvis without IV contrast. Uterus normal in size. Left ovary normal. Right ovary contains a 3 cm well-circumscribed mass. No free fluid, no pelvic lymphadenopathy. Bladder unremarkable. Visualized bones normal.",
+              "conclusion": "3 cm right ovarian mass."
+            },
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2025-09-08T11:30",
+              "text": "Multiplanar multisequence MRI of the brain. No abnormal signal in the cerebral hemispheres, mesial temporal lobes, basal ganglia, brainstem or cerebellum. No restricted diffusion. Ventricles and sulci normal for age. No mass, hemorrhage or extra-axial collection.",
+              "conclusion": "Normal MRI of the brain."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-09-12T10:40",
+              "text": "Specimen: right ovarian cyst, laparoscopic cystectomy. Gross: 3.0 cm cyst containing sebaceous material and hair. Microscopic: cyst lined by keratinizing squamous epithelium with skin adnexal structures; mature neural (glial) tissue is present. No immature neuroepithelial elements. No malignancy.",
+              "conclusion": "Mature cystic teratoma of the right ovary with mature glial tissue. Negative for immature elements and malignancy.",
+              "issued": "2025-09-16T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-07T19:25"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-09-08T01:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Neurology Discharge Summary",
+              "date": "2025-10-20T11:45",
+              "author": "neurology",
+              "body": "NEUROLOGY INPATIENT SERVICE, regional hospital\nAdmission 9/7/2025 to 10/3/2025\n\n23-year-old woman, no daily medications, NKDA, with a septic abortion in November 2024 as her only prior history. Brought to the ED by friends after roughly a week of out-of-character behavior: rapid swings in mood, suspiciousness of others and hearing voices. Denied drug and alcohol use. Family history of thyroid autoimmunity (mother) and SLE (maternal aunt).\n\nED: T 37.8, BP 130/85, HR 102, RR 18. Agitated and disoriented to time and place. Orofacial dyskinesias. No focal weakness; increased tone in the arms with intermittent dystonic posturing.\n\nWorkup: LP with CSF WBC 22, RBC 4, protein 56, glucose 60, Gram stain negative, culture no growth. EEG with diffuse slowing, no epileptiform activity. MRI brain normal. CSF NMDA receptor (GluN1) IgG positive, titer 1:32; serum also positive. CT pelvis obtained for tumor search: 3 cm right ovarian mass.\n\nDiagnosis: anti-NMDA receptor encephalitis associated with a right ovarian teratoma.\n\nTreatment: methylprednisolone 1 g IV daily x5 days and IVIG 0.4 g/kg daily x5 days, started 9/8. Gynecology performed laparoscopic right ovarian cystectomy on 9/12; pathology mature cystic teratoma with mature glial tissue, no immature elements. Agitation and movements settled over the following three weeks; orientation normal by discharge, with some slowness of recall.\n\nDischarge medications: prednisone 60 mg daily, reduce by 10 mg each week until off.\nDisposition: home with her mother. Neurology clinic in 6 to 8 weeks. Gynecology post-op check as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "telephone",
+          "start": "2025-09-10T10:32",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from mother",
+              "date": "2025-09-10T10:32",
+              "author": "RN",
+              "body": "Pt's mother called (pt verbally consented to sharing in a prior visit; mom is her listed emergency contact). Lauren was admitted Sunday through the ED, neurology team thinks it is an autoimmune encephalitis, they found something on her ovary and are planning surgery. Mom wanted the PCP to know. Told her we'd request records and see Lauren after discharge. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from mother",
+              "date": "2025-09-10T17:05",
+              "author": "PCP",
+              "body": "Read. Will see her within a week of discharge, front desk please watch for it."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "office_visit",
+          "start": "2025-10-09T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Mature cystic teratoma of right ovary",
+              "action": "resolved",
+              "onset": "2025-09-07",
+              "note": "removed by laparoscopic right ovarian cystectomy 9/12/2025",
+              "icd10": "D27.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth daily, then lower by 10 mg each week as directed until off",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "anti-NMDA receptor encephalitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              72
+            ],
+            "hr": 80,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 59.8
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-09T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-10-09T13:20",
+              "author": "PCP",
+              "body": "Here with her mother after a nearly 4 week admission (9/7 to 10/3). Summary not received yet; history from pt, mom, and the discharge paperwork they brought. Diagnosed with anti-NMDA receptor encephalitis. Had steroids and IVIG, and a right ovarian cyst was removed laparoscopically on 9/12; mom says they were told it was a teratoma. Remembers little of the first two weeks.\n\nNow: on prednisone 60 mg, dropping by 10 each week (on 50 starting this weekend). Sleeping 10+ hrs, appetite up. Forgets things she was told a few minutes earlier at times. No hallucinations, no unusual movements since discharge per mom. Not driving yet, mom is driving her. Out of work until neurology sees her.\n\nExam: calm, pleasant, oriented x3, speech normal, a little slow to answer. No orofacial movements, tone normal, no dystonic posturing. Laparoscopy incisions healing well.\n\nA/P:\n1. Anti-NMDA receptor encephalitis with ovarian teratoma, removed. Recovering. Continue taper exactly as written. Neurology in November, gyn post-op next week.\n2. Steroid taper: watch sleep and mood; call for fevers.\n3. Work note through 11/30 given.\nRecords requested. Will see her in early spring, sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T11:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2025-10-20T11:45",
+              "author": "MA",
+              "body": "Neurology discharge summary and surgical pathology from the 9/7-10/3 admission received by fax, 14 pages. Scanned and sent to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "pharmacy",
+          "start": "2025-10-28T18:05",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-28T18:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "date": "2025-11-03T09:30",
+              "author": "MA",
+              "body": "Registry shows flu shot given 10/28/25 at a retail pharmacy. Added."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "specialist_visit",
+          "start": "2025-11-18T10:00",
+          "service": "Neurology",
+          "reason": "follow-up after anti-NMDA receptor encephalitis",
+          "vitals": [
+            {
+              "time": "2025-11-18T10:05",
+              "bp": [
+                114,
+                70
+              ],
+              "hr": 76
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Follow-up",
+              "date": "2026-02-17T14:20",
+              "author": "neurology",
+              "body": "OUTPATIENT NEUROLOGY, regional hospital\nDate of visit: 11/18/2025\n\nSeen for follow-up of anti-NMDA receptor encephalitis (GluN1 antibody positive, right ovarian mature teratoma removed 9/12/2025), treated with steroids and IVIG. Prednisone now at 10 mg, last dose this week.\n\nShe and her mother report steady improvement. Mood stable, no psychotic symptoms, no abnormal movements. Mild trouble holding on to details at work training videos she is watching at home; otherwise managing daily tasks.\n\nExam: alert, fully oriented, fluent speech, recalls 3 of 3 objects at 5 minutes with one cue. Cranial nerves intact. Normal tone and strength, no dyskinesias, no dystonia. Gait normal.\n\nImpression: good recovery after first-line immunotherapy and tumor removal.\nPlan: finish the taper. No further immunotherapy now. Pelvic ultrasound once a year to look for a new teratoma; gynecology to arrange. Return to work as tolerated. Neurology visit in 6 months, sooner for any return of behavioral change, sleep disruption or movements."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "work",
+              "date": "2026-01-20T16:48",
+              "author": "patient",
+              "body": "Hi, I started back at work 2 days a week after New Years. My manager wants something saying I can go up to 3 days. Also did neurology send you anything? They said they would."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: work",
+              "date": "2026-01-21T08:12",
+              "author": "PCP",
+              "body": "Glad you're back. Letter for 3 days a week is in your documents tab. We haven't gotten anything from neurology yet, we'll ask them. Please book a visit for late February or March."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: work",
+              "date": "2026-01-21T09:40",
+              "author": "MA",
+              "body": "Neurology clinic notes requested by fax today."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-17T14:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Neurology note received",
+              "date": "2026-02-17T14:20",
+              "author": "MA",
+              "body": "11/18/25 neurology clinic note arrived today, about three months after the visit and after a second request. Scanned for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              119,
+              74
+            ],
+            "hr": 85,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 58.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T15:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-10T15:35",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 106
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-10T15:00",
+              "author": "PCP",
+              "body": "Follow-up after her encephalitis admission. Neurology note from November reviewed (arrived in February): good recovery, taper to finish, yearly pelvic US for teratoma surveillance via gyn, neuro again in about 6 months.\n\nShe finished prednisone right before Thanksgiving week. Working 3 days a week now. Memory \"almost normal\", still writes things down. Sleeping normally. Driving again. Living with a roommate; seeing someone. No alcohol or drugs.\n\nExam: well appearing, cheerful, oriented, conversation normal. No abnormal movements. Heart and lungs normal.\nPHQ-9 4, GAD-7 3.\n\nA/P:\n1. Anti-NMDA receptor encephalitis, recovering well off steroids. Neurology follow-up due in May; she has the number.\n2. Ovarian teratoma, removed. Gyn to set up the yearly ultrasound.\n3. CBC and CMP after the steroid course.\n4. Physical due in April; combining with a fall visit instead since she was just here. Booked 9/15.\nFlu up to date. Pap due 2027."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2026-03-11T12:30",
+              "author": "PCP",
+              "body": "Blood count, kidney, liver and sugar all normal. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-25a",
+          "kind": "hospital_admission",
+          "start": "2026-04-25T22:50",
+          "end": "2026-04-28T14:00",
+          "service": "Emergency Medicine",
+          "reason": "confusion and lethargy after ingestion of a bottle of pills",
+          "vitals": [
+            {
+              "time": "2026-04-25T22:55",
+              "bp": [
+                102,
+                58
+              ],
+              "hr": 115,
+              "rr": 28,
+              "spo2": 98
+            },
+            {
+              "time": "2026-04-27T08:00",
+              "bp": [
+                110,
+                68
+              ],
+              "hr": 88,
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-25T23:05",
+              "results": [
+                {
+                  "test": "Salicylates [Mass/volume] in Serum or Plasma",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "value": 58
+                },
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "text": "Undetectable"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-25T23:05",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.3
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 16
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-25T23:10",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.46
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 23
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-25T23:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-04-25T23:30",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-26T05:10",
+              "results": [
+                {
+                  "test": "Salicylates [Mass/volume] in Serum or Plasma",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "value": 39
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-26T07:40",
+              "results": [
+                {
+                  "test": "Salicylates [Mass/volume] in Serum or Plasma",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-04-25T23:00",
+              "text": "Sinus rhythm at 114 beats per minute. Normal axis. PR, QRS and QT intervals within normal limits. No ST-segment or T-wave changes.",
+              "conclusion": "Sinus tachycardia."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-04-25T22:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-04-26T03:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Medicine Discharge Summary",
+              "date": "2026-07-21T10:15",
+              "author": "hospital medicine",
+              "body": "HOSPITAL MEDICINE, regional hospital\nAdmitted 4/25/2026 via the ED, discharged 4/28/2026\n\nHPI: 23F with anti-NMDA receptor encephalitis (2025, treated, ovarian teratoma removed) and a septic abortion (2024), no regular medications, NKDA. Roommate found her on the bathroom floor, confused and drowsy, about an hour after she swallowed a full bottle of an over-the-counter pain reliever following an argument with her partner. She had told the roommate she felt nauseated, dizzy and had ringing in her ears. No prior overdoses. Denies alcohol and drug use.\n\nED: BP 102/58, HR 115, RR 28, SpO2 98% RA. Drowsy but rousable, deep rapid respirations, pupils equal and reactive, no focal deficits, dry mucosa, capillary refill slightly prolonged, lungs clear, no signs of injury or injection.\nECG: sinus tachycardia.\nThe empty bottle was aspirin 325 mg. Salicylate 58 mg/dL; blood gas pH 7.46, pCO2 23; HCO3 16, anion gap 22, K 3.3. Acetaminophen undetectable. Urine drug screen negative, urine hCG negative, UA unremarkable.\n\nAssessment: acute salicylate toxicity from intentional aspirin ingestion, mixed respiratory alkalosis and anion gap metabolic acidosis.\n\nCourse: MICU overnight. Sodium bicarbonate infusion with potassium repletion, urine alkalinized. Salicylate 39 at 6 hours and 17 the next morning; mental status cleared; dialysis not needed. Transferred to the floor 4/26, then medically cleared.\nPsychiatry consult 4/27: impulsive ingestion in the setting of a fight with her partner; no ongoing intent to harm herself, future-oriented, supports in place. Safety plan completed with her and her mother; outpatient counseling referral placed.\n\nDischarge medications: none.\nFollow-up: PCP in 1 to 2 weeks; counseling intake as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T22:37",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "hospital again",
+              "date": "2026-05-04T22:37",
+              "author": "patient",
+              "body": "Hi. I have to tell you I was in the hospital last week, I took a bunch of aspirin after a fight with my boyfriend. It was stupid and I'm ok now. They set me up with a counselor. They said to follow up with you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: hospital again",
+              "date": "2026-05-05T07:20",
+              "author": "PCP",
+              "body": "Lauren, thank you for telling me. I'm glad you're safe. I'd like to see you next week, the front desk will call with a time. If you ever have thoughts of hurting yourself again, call or text 988 any time, or call our office line and ask for me. We'll get the hospital records."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12b",
+          "kind": "telephone",
+          "start": "2026-05-12T08:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2026-05-12T08:05",
+              "author": "front desk",
+              "body": "Pt called to cancel 11:00 today, picked up a shift. Says she is doing fine, saw the counselor once already. Wants to keep the 9/15 appointment rather than reschedule. Message sent to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2026-05-12T12:40",
+              "author": "PCP",
+              "body": "Called her back on her break. Sounds well, says she is going to counseling and her mom is checking in. Encouraged an earlier visit; she prefers September. Asked her to message with any change."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "telephone",
+          "start": "2026-06-16T10:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2026-06-16T10:50",
+              "author": "MA",
+              "body": "No records yet from the April admission. Second request faxed to the hospital HIM department."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "outside_records",
+          "start": "2026-07-21T10:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2026-07-21T10:15",
+              "author": "MA",
+              "body": "Discharge summary from the 4/25-4/28 admission arrived. ED chart not included. Scanned for PCP, will be reviewed at her September visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T14:20",
+          "reason": "follow-up after April hospital stay",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anti-NMDA receptor encephalitis|G04.81": {
+        "code": "G04.81",
+        "display": "Other encephalitis and encephalomyelitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Mature cystic teratoma of right ovary|D27.0": {
+        "code": "D27.0",
+        "display": "Benign neoplasm of right ovary",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Septic abortion|O04.5": {
+        "code": "O04.5",
+        "display": "Genital tract and pelvic infection following (induced) termination of pregnancy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "metronidazole 500 MG Oral Tablet": {
+        "code": "311681",
+        "display": "metronidazole 500 MG Oral Tablet",
+        "ingredient": "metronidazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Acetaminophen [Mass/volume] in Serum or Plasma": {
+        "code": "3298-7",
+        "display": "Acetaminophen [Mass/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Erythrocytes [#/volume] in Cerebral spinal fluid": {
+        "code": "26454-9",
+        "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose [Mass/volume] in Cerebral spinal fluid": {
+        "code": "2342-4",
+        "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes [#/volume] in Cerebral spinal fluid": {
+        "code": "26465-5",
+        "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein [Mass/volume] in Cerebral spinal fluid": {
+        "code": "2880-3",
+        "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Salicylates [Mass/volume] in Serum or Plasma": {
+        "code": "4024-6",
+        "display": "Salicylates [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT pelvis without contrast": {
+        "code": "30615-9",
+        "display": "CT Pelvis WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

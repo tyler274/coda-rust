@@ -1,0 +1,2441 @@
+{
+  "unit": "unit-2559",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002559",
+      "given": "Brandon",
+      "family": "Crowley",
+      "birth_date": "1992-06-02",
+      "address_line": "41 Lyman Terrace, Apt 3",
+      "phone": "+1-518-555-0193",
+      "email": "brandon.crowley@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer with HIV off therapy and opioid use disorder with heroin injection who joins the practice in August 2024. Culture-negative polyarticular septic arthritis (2024), wound botulism (2025) and tuberculous meningitis (2026, after his last practice visit) follow, with ART and buprenorphine started, lapsed and restarted.",
+      "events": [
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T10:40",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-12T10:40",
+              "author": "front desk",
+              "body": "Brandon phoned looking for a primary doctor. Says he hasn't had one in a couple of years and his old HIV clinic \"dropped\" him after he stopped going. Has MassHealth. Booked new-patient visit 8/20 at 9:00. Asked him to bring any pill bottles and the name of the old clinic so we can request records. Best contact is cell, ok to text."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T09:00",
+          "end": "2024-08-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; HIV, opioid use",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "history",
+              "onset": "2019-05-01",
+              "note": "diagnosed about 2019 at an outside clinic; off ART over a year"
+            },
+            {
+              "label": "Opioid use disorder",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "heroin, injection use"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              69
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 72.9,
+            "height_cm": 179.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T09:50",
+              "resulted": "2024-08-21T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T09:50",
+              "resulted": "2024-08-23T14:10",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 41000
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 318
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives alone in an apartment"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hiv-clinic-referral",
+              "action": "placed",
+              "order": "Infectious disease (HIV clinic) referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "HIV, off antiretroviral therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-08-20T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n32M, construction laborer, here to get set up with primary care. Two things he wants on the table right away: he has HIV and he uses heroin.\n\nHIV: told he was positive around 2019 at a clinic out of the area. Was on a once-daily pill for a while, doesn't remember the name. Stopped going more than a year ago, ran out, never refilled. No thrush, no weight loss he's noticed, no night sweats, no cough. Doesn't know his last CD4.\n\nOpioids: injects heroin, most days, for years. Tried buprenorphine once \"a long time ago,\" got it off the street mostly, never in a program. Denies overdose in the past year. Uses his own works most of the time, admits not always new. Knows about the syringe exchange.\n\nPMH: as above. No surgeries. Meds: none. Allergies: none known.\nFH: dad has coronary disease, mom high blood pressure, brother treated for depression.\nSH: lives alone, apartment. Works construction, day labor lately. Smokes a pack a day, since about 20. Drinks a beer or two a month. Single.\n\nROS otherwise negative.\n\nExam: thin, pleasant, cooperative, a little guarded at first. Vitals reviewed, afebrile. No thrush, no adenopathy cervical/axillary. Heart regular, no murmur. Lungs clear. Abd soft. Old track marks both antecubital fossae, no abscess, no cellulitis. Joints normal. Skin otherwise clear.\nPHQ-9 6, AUDIT-C 1.\n\nA/P\n1. HIV, not on treatment. Viral load, CD4, hep B/C, RPR, CBC, CMP today. Referral to the HIV clinic; he agrees to go. Explained that treatment now is one pill and that undetectable means he can't pass it on.\n2. Opioid use disorder, injecting. Offered to start buprenorphine here, either home start or in office. He wants to think about it, \"not ready this week.\" Door is open. Talked about not using alone, fentanyl test strips, new needles each time.\n3. Tobacco. Advised quitting. Not interested right now, declined patch/gum.\n4. Prevention: hep B status pending; will vaccinate if non-immune. Flu shot when available.\n\nRTC 2-4 weeks, sooner if he wants to start bup."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T16:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-08-23T16:05",
+              "author": "PCP",
+              "body": "Hi Brandon, your labs are back. Blood counts, kidney and liver tests are normal. Hepatitis C and syphilis tests are negative. The HIV viral load is 41,000 and your CD4 is 318, which tells me your immune system is still in decent shape but the virus is active, so getting back on treatment soon matters. The HIV clinic should call you this week to schedule. You are not immune to hepatitis B, so I'd like to give you that vaccine at your next visit. Call or text me with questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T13:20",
+          "documents": [
+            {
+              "type": "Correspondence",
+              "title": "HIV clinic: missed intake",
+              "date": "2024-09-24T13:20",
+              "author": "infectious disease",
+              "body": "Infectious Disease / HIV Clinic\nRe: Brandon Crowley, DOB 06/02/1992\n\nThank you for the referral. Mr. Crowley was scheduled for a new-patient intake on 09/19/2024 and did not arrive. Our patient navigator left two voicemails. We have offered a new intake date of 10/31/2024 and will let you know if he is seen.\n\nInfectious Disease Clinic, patient navigation"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach re HIV intake",
+              "date": "2024-09-25T11:15",
+              "author": "RN",
+              "body": "Called pt about the missed HIV clinic intake. He says he had work that day and forgot. Gave him the new date 10/31 and the clinic's number. Also asked if he was ready to talk about buprenorphine; says \"maybe next month.\" Encouraged him to come in any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-28a",
+          "kind": "ed_visit",
+          "start": "2024-10-28T15:40",
+          "end": "2024-10-28T22:10",
+          "service": "Emergency Medicine",
+          "reason": "fever and multiple painful joints",
+          "conditions": [
+            {
+              "label": "Septic arthritis, multiple sites",
+              "action": "diagnosed",
+              "onset": "2024-10-14",
+              "note": "knees, wrists, elbows; culture-negative",
+              "icd10": "M00.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 110,
+            "rr": 17,
+            "temp_c": 38.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-28T16:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 345
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-28T16:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-28T16:05",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 85
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-28T16:10",
+              "resulted": "2024-11-02T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (2 sets)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-28T17:30",
+              "results": [
+                {
+                  "test": "Leukocytes in synovial fluid",
+                  "loinc": "26466-3",
+                  "unit": "/uL",
+                  "value": 60000
+                },
+                {
+                  "test": "Neutrophils/100 leukocytes in synovial fluid",
+                  "loinc": "26518-1",
+                  "unit": "%",
+                  "value": 90
+                },
+                {
+                  "test": "Gram stain, synovial fluid",
+                  "loinc": "664-3",
+                  "text": "No organisms seen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-28T17:30",
+              "resulted": "2024-11-01T09:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "6463-4",
+                  "text": "No growth, final"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-10-28T15:40"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2024-10-28T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-10-30T09:00",
+              "author": "emergency medicine",
+              "body": "Emergency Department, community teaching hospital\nPatient: Brandon Crowley  DOB 06/02/1992\nDate of service: 10/28/2024\nPCP on file: primary care internal medicine (copy sent)\n\nCC: fever, aching all over, joints swollen\n\nHPI: 32-year-old man with HIV (not currently treated) and opioid use disorder who injects. About two weeks of fevers and feeling run down. Joint pain started in both knees and over the following days moved into his wrists and elbows. No injury. No recent travel. No rash noticed, no urethral discharge.\n\nMeds: none. Allergies: NKDA.\nPMH: HIV, opioid use disorder. PSH: none.\nFH: father CAD, mother HTN, brother MDD.\nSH: injects heroin; smokes 1 ppd; rare alcohol.\n\nTriage: T 38.9 C (102 F), HR 110, BP 130/85.\n\nExam: ill-appearing, diaphoretic. Knees, wrists and elbows each warm and red, exquisitely tender, motion limited by pain; right knee with a large effusion. Heart tachycardic with a regurgitant murmur not documented before. Lungs clear. No splinter hemorrhages or conjunctival petechiae noted. Antecubital track marks, no abscess.\n\nResults: WBC 15.0 K/uL. ESR 85 mm/hr. CRP 120 mg/L. BMP unremarkable.\nRight knee arthrocentesis (bedside, sterile prep): turbid fluid. Synovial WBC 60,000/uL, 90% neutrophils. Gram stain: no organisms. No crystals. Culture sent. Blood cultures x2 drawn before antibiotics.\n\nED course: vancomycin and ceftriaxone IV after cultures. Acetaminophen. Orthopedics and medicine consulted.\n\nImpression: septic arthritis, polyarticular, in a person who injects drugs; new murmur, endocarditis to be excluded.\nDisposition: admitted to medicine."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-10-28b",
+          "kind": "hospital_admission",
+          "start": "2024-10-28T22:10",
+          "end": "2024-11-12T13:00",
+          "service": "Internal Medicine — Hospitalist",
+          "reason": "septic arthritis",
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV"
+            },
+            {
+              "drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film",
+              "action": "start",
+              "sig": "Dissolve 1 film under the tongue twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "film"
+              },
+              "frequency": "BID",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "opioid use disorder"
+            },
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "start",
+              "sig": "1 spray in one nostril for suspected overdose; may repeat in 2-3 minutes",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "overdose rescue"
+            },
+            {
+              "drug_text": "linezolid 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily through 11/26/2024",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "septic arthritis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-31T06:00",
+              "resulted": "2024-11-02T12:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 52000
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 285
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-11T06:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 40
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-10-30T10:30",
+              "text": "Indication: fever, new murmur, injection drug use. Left ventricle normal in size and wall thickness with normal systolic function, estimated ejection fraction 60%. Right ventricle normal size and function. Aortic, mitral, tricuspid and pulmonic valves structurally normal with normal leaflet motion. No vegetation seen. No significant valvular regurgitation or stenosis. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Normal study. No echocardiographic evidence of endocarditis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Orthopedics: right knee arthroscopic irrigation and debridement",
+              "date": "2024-11-13T10:00",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic Surgery Operative Report\nDate of surgery: 10/29/2024\nPreoperative diagnosis: septic arthritis, right knee (polyarticular presentation)\nPostoperative diagnosis: same\nProcedure: arthroscopic irrigation and debridement, right knee\nAnesthesia: general\nAllergies: NKDA\n\nFindings: cloudy, thin fluid on entry. Diffuse synovitis with fibrinous debris in the suprapatellar pouch and both gutters. Articular cartilage intact. Menisci and cruciates intact.\n\nStandard anterolateral and anteromedial portals. Fluid sampled for culture. Synovectomy of inflamed tissue with shaver; 9 L of saline lavage. Portals closed with nylon. Sterile dressing. No complications. EBL minimal.\n\nPlan: weight bearing as tolerated, knee range of motion with PT, antibiotics per medicine/ID. Suture removal at 10-14 days."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary: septic arthritis",
+              "date": "2024-11-13T15:30",
+              "author": "hospitalist",
+              "body": "Community teaching hospital, Medicine Service\nAdmitted 10/28/2024, discharged 11/12/2024\n\nPrincipal diagnosis: septic arthritis, polyarticular (knees, wrists, elbows), culture-negative\nOther: HIV, off ART at admission; opioid use disorder, injection use\nAllergies: NKDA\n\nCourse:\n- Joints: right knee aspirate with 60,000 WBC, 90% neutrophils, no organisms on Gram stain. Arthroscopic washout of the right knee 10/29. Wrists and elbows improved on antibiotics alone. Synovial and blood cultures (2 sets) final with no growth. Vancomycin plus ceftriaxone IV for 14 days, transitioned to oral linezolid 600 mg BID for another 14 days (last dose 11/26). ESR 85 to 40 and CRP 120 to 18 mg/L by discharge.\n- Murmur: heard in the ED while febrile and tachycardic, not appreciated after day 3. TTE 10/30 with normal valves, no vegetation, EF 60%. With negative cultures, felt to be a flow murmur; no endocarditis.\n- HIV: VL 52,000, CD4 285. ID consulted; started bictegravir/emtricitabine/tenofovir alafenamide daily on 11/1. Follow-up booked at the HIV clinic.\n- OUD: addiction consult. Buprenorphine/naloxone started, now 8/2 mg film twice daily, no withdrawal, no cravings by discharge. Naloxone nasal spray given. Bridge script to 11/26; PCP to continue.\n\nDischarge medications:\n1. bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily\n2. buprenorphine/naloxone 8/2 mg SL film BID\n3. linezolid 600 mg PO BID through 11/26\n4. naloxone 4 mg nasal spray PRN\n\nFollow-up: PCP within 1 week, HIV clinic 12/11, orthopedics for suture removal.\nWeekly CBC while on linezolid."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "telephone",
+          "start": "2024-11-14T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-11-14T09:30",
+              "author": "RN",
+              "body": "Transitional care call. Home since 11/12. Taking linezolid, the HIV pill and the films; picked everything up. Knees sore but walking, wrists better. No fever. Using a cane his neighbor lent him. Booked with PCP 11/19 (sutures out at ortho 11/22). Reminded him of the weekly blood count while on linezolid; can be drawn at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 76,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 68.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-19T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.27
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 55
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 36
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-19T08:55",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-11-19T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-11-19T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-11-19T09:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-11-19T09:12"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hiv-clinic-referral",
+              "action": "done",
+              "date": "2024-11-19T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2024-11-19T09:40",
+              "author": "PCP",
+              "body": "Post-hospital visit, discharge summary reviewed.\n\nAdmitted 10/28-11/12 for culture-negative septic arthritis of knees, wrists and elbows; R knee scoped and washed out. Echo normal. Now on day 7 of oral linezolid, finishes 11/26. Started HIV meds in hospital and buprenorphine.\n\nHow he's doing: fevers gone. R knee stiff in the morning, loosens after 20 min. Wrists and elbows nearly back to normal. Off the cane mostly. No diarrhea, no numbness or vision change on linezolid. Taking the HIV pill every morning with the films. No use since admission, says cravings are \"way down.\" Has naloxone at home.\n\nExam: afebrile, vitals ok. Weight down 5 kg from August. R knee portals healing, small effusion, warm-ish but not hot, flexion to about 110. L knee, wrists, elbows without effusion, full motion. Heart regular, no murmur today. Lungs clear.\n\nA/P\n1. Septic arthritis, improving. Finish linezolid. CBC and CRP today. PT exercises from hospital. Call for fever or new joint swelling.\n2. HIV, ART restarted 11/1. HIV clinic 12/11.\n3. OUD on buprenorphine/naloxone 8/2 BID. I'll take over prescribing from here. PDMP checked, only the hospital bridge script. Urine screen today: buprenorphine positive, otherwise negative. Rx for 4 weeks.\n4. Flu shot and PCV20 today.\n5. Smoking: still a pack a day. Not ready.\n\nRTC 4 weeks."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC and CRP",
+              "date": "2024-11-20T12:15",
+              "author": "PCP",
+              "body": "Blood counts normal, platelets fine on the linezolid. CRP down to 9. Good. Finish the pills on the 26th."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "outside_records",
+          "start": "2024-12-13T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-11T10:30",
+              "resulted": "2024-12-13T09:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 180
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 344
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "HIV clinic follow-up",
+              "date": "2024-12-16T11:00",
+              "author": "infectious disease",
+              "body": "Infectious Disease / HIV Clinic\nVisit date: 12/11/2024\nRe: Brandon Crowley\n\nSeen in follow-up after starting bictegravir/emtricitabine/tenofovir alafenamide during his October admission. Reports taking it every morning, missed maybe two doses. Tolerating it without nausea or GI upset. Finished linezolid 11/26; joints feel fine apart from some right knee stiffness.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 mg BID (PCP); naloxone nasal spray.\nAllergies: NKDA.\n\nToday: HIV-1 RNA 180 copies/mL (from 52,000), CD4 344.\n\nAssessment: good early virologic response. Expect suppression on the next check. Continue current regimen. Return in 6 months with labs, sooner if problems.\n\nInfectious Disease attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              69
+            ],
+            "hr": 67,
+            "weight_kg": 68.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-17T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-12-17T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-12-17T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Buprenorphine Follow-up",
+              "date": "2024-12-17T16:05",
+              "author": "PCP",
+              "body": "S: Doing well on 8/2 twice a day. No heroin since October. Some evening cravings on weekends, manageable. Working a few days a week again, light duty. R knee still a bit stiff going down ladders. Saw the HIV clinic last week, viral load already way down (letter in chart). Smoking unchanged.\n\nO: vitals fine. Calm, engaged. R knee no effusion, flexion near full.\nPDMP reviewed, appropriate. UDS: buprenorphine +, otherwise negative.\n\nA/P\n- OUD in early remission on buprenorphine/naloxone, same dose, 4-week Rx.\n- HIV, responding to ART per ID.\n- Hep B vaccine #1 today, #2 in a month.\n- Tobacco: asked; not ready.\n\nRTC 1 month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up; vaccines",
+          "conditions": [
+            {
+              "label": "Septic arthritis, multiple sites",
+              "action": "resolved",
+              "icd10": "M00.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              68
+            ],
+            "hr": 76,
+            "weight_kg": 71.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-21T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-01-21T15:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2025-01-21T15:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2025-01-21T15:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-01-21T15:50",
+              "author": "PCP",
+              "body": "Monthly visit. Says January is slow for work which makes the days long. Still no use. Taking the HIV pill most days, \"forgot a couple over New Year's.\" Knee is back to normal, kneeling on job sites without trouble, wrists and elbows fine.\n\nWeight back up 3 kg. Exam: R knee no effusion, full ROM, portals healed. Wrists/elbows normal. No murmur.\nUDS bup +, otherwise neg. PDMP ok.\n\nA/P\n1. Septic arthritis: resolved, off the active list.\n2. OUD: continue buprenorphine/naloxone 8/2 BID, 4 wk Rx. Talked about what slow weeks do to cravings and having a plan.\n3. HIV: on ART, next HIV clinic visit in June. Reinforced daily dosing.\n4. Hep B #2 today, series complete. MenACWY #1 today (recommended with HIV), #2 in 8+ weeks.\n\nRTC 1 month (video ok)."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-25T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-02-25T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-02-25T12:45",
+              "author": "PCP",
+              "body": "Video visit, pt in his truck on a break, consented.\n\nOn 8/2 BID. Reports more cravings the past couple weeks, a friend he used with is back in town. Denies use. Not keen on increasing the dose; we agreed he'll call if it gets worse and we could go to 8 mg three times a day. Still has naloxone. HIV meds \"mostly.\"\n\nNo UDS today (video); will do next visit in person.\nPDMP reviewed.\n\nPlan: same dose, 4 wk Rx sent. In-person visit 3/25."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "telephone",
+          "start": "2025-03-26T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach",
+              "date": "2025-03-26T10:10",
+              "author": "MA",
+              "body": "Pt no-showed yesterday. Called cell, voicemail full. Sent text asking him to call to reschedule. Flagged for PCP since his buprenorphine supply runs out around now."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach, second try",
+              "date": "2025-03-31T14:30",
+              "author": "RN",
+              "body": "Second attempt, no answer. Portal message sent. Per PCP, will bridge a week of films if he calls."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-19a",
+          "kind": "hospital_admission",
+          "start": "2025-04-19T11:30",
+          "end": "2025-05-07T12:00",
+          "service": "Neurology — Intensive Care",
+          "reason": "ptosis, double vision, trouble swallowing",
+          "conditions": [
+            {
+              "label": "Wound botulism",
+              "action": "diagnosed",
+              "onset": "2025-04-17",
+              "icd10": "A48.52"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film",
+              "action": "stop",
+              "reason": "stopped by patient in March 2025"
+            },
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "stopped by patient in March 2025"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 70,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-19T12:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-19T12:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-21T06:00",
+              "resulted": "2025-04-23T10:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 6200
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 262
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology ICU consultation",
+              "date": "2025-05-09T09:30",
+              "author": "neurology",
+              "body": "Neurology Consultation, Neuro ICU\nDate of service: 04/19/2025\nPatient: Brandon Crowley, 32M\n\nReason: acute cranial nerve palsies and weakness.\n\nHPI: Two days ago his eyelids began to droop; since then he has had double vision, food and pills sticking when he swallows, and his speech has become thick. He has HIV and opioid use disorder; septic arthritis last fall. He says he had been off his buprenorphine and his HIV medication for about a month and went back to heroin, last injecting three days ago into the right forearm with a needle that was not clean.\n\nAllergies: none known. Meds: none currently.\n\nExam: afebrile. BP 130/85, pulse 70, RR 16, saturating well on room air. Alert, fully oriented, follows commands. Ptosis on both sides. Pupils dilated and fixed to light. Dysarthric. Weakness is symmetric and descends from the cranial muscles. Sensation normal throughout. Reflexes present and symmetric. No rash. Right forearm with a small puncture site, no redness, fluctuance or drainage.\n\nLabs: WBC 12,000, Hgb 14.2, plt 250,000. Na 140, K 4.2, Cr 1.0, glucose 98.\n\nImpression: clinical picture of wound botulism from heroin injection.\nRecommendations: heptavalent antitoxin now via the state health department, do not wait for confirmation. Serum for toxin assay before antitoxin. Surgical exploration and debridement of the forearm site. IV penicillin G. Vital capacity and negative inspiratory force every 4 hours; low threshold to intubate. NPO, swallow evaluation. Neurology will follow daily."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary: wound botulism",
+              "date": "2025-05-09T14:00",
+              "author": "hospitalist",
+              "body": "Community teaching hospital\nAdmitted 04/19/2025 (Neuro ICU), transferred to floor 04/27, discharged 05/07/2025\n\nPrincipal diagnosis: wound botulism (right forearm injection site)\nOther: HIV, off ART for ~1 month before admission; opioid use disorder, relapse\nAllergies: NKDA\n\nCourse: Heptavalent botulinum antitoxin given on the day of admission. Pre-treatment serum positive for botulinum toxin type A (state laboratory). Right forearm site explored and debrided 04/20, no abscess. Penicillin G IV for 10 days. Vital capacity followed closely in the ICU, declined modestly then stabilized; never needed intubation. NG tube feeding 6 days until speech-language pathology cleared him for a regular diet. Ptosis and eye movements improved slowly; at discharge mild bilateral ptosis and intermittent double vision on far lateral gaze remain. Speech and swallow normal, strength normal.\n\nHIV: VL 6,200, CD4 262. ID restarted bictegravir/emtricitabine/tenofovir alafenamide.\nOUD: buprenorphine/naloxone restarted and titrated back to 8/2 mg twice daily. Naloxone kit given.\n\nDischarge medications:\n1. bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily\n2. buprenorphine/naloxone 8/2 mg SL BID (bridge to PCP)\n3. naloxone 4 mg nasal spray PRN\n\nFollow-up: PCP within 1 week; neurology clinic in 4-6 weeks; HIV clinic as scheduled.\nNo driving while double vision persists."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "outside_records",
+          "start": "2025-05-09T15:00",
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV"
+            },
+            {
+              "drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film",
+              "action": "start",
+              "sig": "Dissolve 1 film under the tongue twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "film"
+              },
+              "frequency": "BID",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "opioid use disorder"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Discharge records reviewed; TCM call",
+              "date": "2025-05-09T15:00",
+              "author": "RN",
+              "body": "Discharge summary and neuro consult received and routed to PCP. Spoke with pt: home since 5/7, says he feels \"like I got hit by a truck\" but eating normally. Eyes still droop by evening, double vision only looking far to the side. On both meds again. Not driving, a coworker is giving him rides. Hospital films last until 5/14. Booked 5/13 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              75
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 65.9
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-05-13T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-05-13T11:30",
+              "author": "PCP",
+              "body": "Seen after his 4/19-5/7 admission for wound botulism (forearm injection site), records reviewed.\n\nHe's frank about it: stopped both the films and the HIV pill in March after the cravings built up, went back to using. Didn't answer our calls because he was embarrassed. Glad to be back on everything.\n\nNow: swallowing normal, voice normal. Lids heavier at the end of the day. Double vision only at the far edge of side gaze, rare. Arms feel normal. Tired. Lost 5 kg in hospital, eating well now. No use since admission. Has naloxone.\n\nExam: afebrile. Mild symmetric ptosis, pupils now reactive. EOM full with a few beats of diplopia on far right gaze. Speech clear. Strength 5/5 throughout. R forearm debridement site healing, clean.\nUDS bup +, otherwise negative. PDMP: only the hospital Rx.\n\nA/P\n1. Wound botulism, recovering. Neuro clinic 6/10. No driving until the double vision is fully gone.\n2. OUD, relapse in March, back on buprenorphine/naloxone 8/2 BID. Rx 2 weeks then visits every 2-4 wk for now. We talked about how to reach me when it starts slipping again rather than going quiet.\n3. HIV, ART restarted in hospital. Will remind the HIV clinic.\n4. Smoking: 1 ppd.\n\nRTC 2 weeks (video ok), in person in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "pharmacy",
+          "start": "2025-05-27T09:15",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Buprenorphine/naloxone refill",
+              "date": "2025-05-27T09:15",
+              "author": "PCP",
+              "body": "Spoke with pt by phone, doing ok, no use, eyes better. Buprenorphine/naloxone 8/2 mg films BID, #56, sent. PDMP reviewed. In-person visit 6/17."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "outside_records",
+          "start": "2025-06-12T11:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology clinic follow-up",
+              "date": "2025-06-12T11:00",
+              "author": "neurology",
+              "body": "Neurology Clinic\nVisit date: 06/10/2025\nRe: Brandon Crowley\n\nFollow-up after wound botulism treated with antitoxin in April. He reports his eyelids and vision are back to normal for about two weeks now, no double vision even when tired. Chewing, swallowing and speech normal. Strength normal at work.\n\nMeds: bictegravir/FTC/TAF daily, buprenorphine/naloxone 8/2 mg BID, naloxone PRN. Allergies: NKDA.\n\nExam: lids symmetric without ptosis. Pupils equal and briskly reactive. Extraocular movements full, no diplopia in any direction including sustained gaze. Facial strength, palate and tongue normal. Strength full in all limbs including neck flexors. Reflexes 2+ and symmetric. Sensation intact.\n\nImpression: full recovery from wound botulism.\nPlan: no further neurology follow-up needed. Cleared to drive from a neurologic standpoint. Prevention of recurrence rests on treatment of his opioid use disorder, which he is engaged in."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "conditions": [
+            {
+              "label": "Wound botulism",
+              "action": "resolved",
+              "icd10": "A48.52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 74,
+            "weight_kg": 65.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-17T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-06-17T15:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2025-06-17T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-06-17T15:45",
+              "author": "PCP",
+              "body": "Neuro letter reviewed: fully recovered, cleared to drive. He agrees, eyes are normal. Back on job sites full days.\n\nOUD: on 8/2 BID, no use since April, cravings mild. UDS bup +, otherwise negative. PDMP fine.\nHIV: taking the pill daily, pillbox now. HIV clinic in July.\n\nA/P\n- Wound botulism resolved, off the active list.\n- OUD in early remission on buprenorphine/naloxone: same dose, 4-week Rx, monthly visits.\n- MenACWY #2 today.\n- Smoking: asked about cutting down; says maybe in the fall.\n\nRTC 1 month; physical in August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "outside_records",
+          "start": "2025-07-18T09:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-16T10:00",
+              "resulted": "2025-07-18T08:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "<20 copies/mL (not detected)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 371
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "HIV clinic follow-up",
+              "date": "2025-07-18T09:40",
+              "author": "infectious disease",
+              "body": "Infectious Disease / HIV Clinic\nVisit date: 07/16/2025\nRe: Brandon Crowley\n\nInterval: admitted in April with wound botulism after a relapse during which he stopped ART and buprenorphine for about a month. Both restarted in hospital. Since then reports no missed doses, uses a pillbox. Feels well.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 mg BID; naloxone PRN. Allergies: NKDA.\n\nLabs today: HIV-1 RNA below 20 copies/mL, CD4 371.\n\nAssessment: virologically suppressed on current regimen. Continue. Recheck in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              73
+            ],
+            "hr": 84,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 70.7,
+            "height_cm": 180.5
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-12T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 55
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 36
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-12T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 96
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-12T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-12T08:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-12T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-08-12T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-08-12T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-12T09:10",
+              "author": "PCP",
+              "body": "Preventive visit, 33M.\n\nInterval: septic arthritis 10/2024 and wound botulism 4/2025, both fully recovered. HIV suppressed in July per ID (VL <20, CD4 371). On buprenorphine/naloxone 8/2 BID, no use since April.\n\nNo complaints. Working full time on a framing crew. Eats two meals a day, a lot of takeout. Sleeps ok.\nSmokes 1 ppd (about 13 pack-years). Alcohol 1-2 drinks a month. No other drugs.\nFH: father with CAD, mother with HTN, brother with depression. No new history.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 BID; naloxone nasal spray PRN. NKDA.\n\nExam: well-appearing. Vitals normal, weight back to 71 kg. HEENT normal, no thrush. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin: healed scar R forearm, old antecubital marks, no active sites. Joints normal. Neuro: lids symmetric, EOM full, strength normal. Mood good, PHQ-9 5, AUDIT-C 2.\nUDS bup +, otherwise negative.\n\nA/P\n1. Health maintenance: CBC, CMP, lipids, hep C antibody (yearly while risk continues). Tdap today. Flu and COVID in October. Vaccines otherwise current (PCV20, hep B series, MenACWY x2).\n2. HIV: per ID, suppressed.\n3. OUD in early remission on buprenorphine: continue, 4-week Rx.\n4. Tobacco: discussed varenicline and patches again; he'll think about it, no Rx today.\n\nRTC 3 months, sooner as needed."
+            },
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2025-08-13T13:30",
+              "author": "PCP",
+              "body": "Your blood counts and kidney and liver tests are normal, and the hepatitis C test is negative. Cholesterol is fine for your age and risk, no medicine needed. Nothing to change. See you in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "pharmacy",
+          "start": "2025-09-09T11:20",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Buprenorphine/naloxone film PA renewal",
+              "date": "2025-09-09T11:20",
+              "author": "MA",
+              "body": "Pharmacy notified that MassHealth needs the yearly PA renewal on the buprenorphine/naloxone films. Form completed with diagnosis and dose, sent for PCP signature, faxed. Approved same day per plan portal, good through 9/2026. Pharmacy informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-07T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: vaccines",
+              "date": "2025-10-07T16:25",
+              "author": "RN",
+              "body": "In after work for fall shots. Afebrile, feels well. Influenza (L deltoid) and 2025-26 COVID mRNA (R deltoid) given, VIS provided. Waited 15 min, no reaction. Reminded him of his November visit."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              63
+            ],
+            "hr": 70,
+            "weight_kg": 71.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-18T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-11-18T16:05",
+              "author": "PCP",
+              "body": "Seven months without use. Steady on 8/2 BID. Work slowing for winter, he's lined up some indoor drywall jobs. Shots done at the October nurse visit, no issues.\nHIV: taking ART daily, he says. Next HIV clinic visit in January (they moved it).\nSmoking: still about a pack a day.\n\nVitals ok, weight stable. Exam brief: well, no murmur, lungs clear.\nUDS bup +, otherwise negative. PDMP appropriate.\n\nA/P\n- OUD in early remission (7 months), continue buprenorphine/naloxone 8/2 BID. Moving to 2-month visits with monthly refills.\n- HIV: per ID.\n- Tobacco: offered NRT again, declined.\n\nRTC 2 months (video ok)."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "telehealth_visit",
+          "start": "2026-01-20T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-01-20T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-01-20T12:30",
+              "author": "PCP",
+              "body": "Video, pt at home, verbal consent.\n\nBuprenorphine/naloxone 8/2 BID, no opioid use. Holidays were rough, spent a lot of time with family and \"wasn't on top of things,\" admits he missed a stretch of his HIV pills in December, back on them the last week or so. HIV clinic visit is in February.\n\nNo fevers, no weight loss he's noticed.\nPDMP reviewed. UDS at next in-person visit.\n\nPlan: buprenorphine 4-week Rx x2. Pillbox and phone alarm for the ART. Let ID know at his visit. In person in March."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "outside_records",
+          "start": "2026-02-13T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-11T09:45",
+              "resulted": "2026-02-13T08:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 7400
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 228
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "HIV clinic follow-up",
+              "date": "2026-02-13T10:30",
+              "author": "infectious disease",
+              "body": "Infectious Disease / HIV Clinic\nVisit date: 02/11/2026\nRe: Brandon Crowley\n\nHe reports missing ART for several weeks over the holidays, restarted mid-January. No new symptoms.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 mg BID; naloxone PRN. Allergies: NKDA.\n\nLabs today: HIV-1 RNA 7,400 copies/mL, CD4 228 (from <20 and 371 in July).\n\nAssessment: viremia from the adherence gap, already back on therapy for about four weeks. Bictegravir has a high barrier to resistance; no change in regimen. Adherence counseling done; pharmacy blister packs arranged. Repeat viral load in 3 months."
+            },
+            {
+              "type": "Portal Message",
+              "title": "Re: HIV clinic labs",
+              "date": "2026-02-16T09:05",
+              "author": "PCP",
+              "body": "Hi Brandon, I saw the HIV clinic note. The virus came back up while you were off the pills, which is what we'd expect, and it should come back down now that you're taking them every day. Let's talk about what helps you stay on track when I see you March 27."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "office_visit",
+          "start": "2026-03-27T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up; ART adherence",
+          "vitals": {
+            "bp": [
+              121,
+              66
+            ],
+            "hr": 69,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 72.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-27T14:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 35
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-27T14:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-27T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-27T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2026-03-27T15:00",
+              "author": "PCP",
+              "body": "S: Here for bup follow-up and to go over the HIV clinic visit. Using the blister packs, says he hasn't missed a dose since mid-January. No opioid use in almost a year; cravings rare. Work picking back up. No fever, cough or night sweats. Smoking a pack a day.\n\nO: vitals normal, weight 72 kg. Well-appearing. No thrush, no nodes. Heart regular, no murmur. Lungs clear. Joints normal. Skin no new injection sites.\nPHQ-9 4. UDS bup +, otherwise negative. PDMP reviewed.\n\nA/P\n1. HIV with recent viremia after a gap in ART; back on bictegravir/FTC/TAF with blister packs. ID rechecking VL in May. Reinforced.\n2. OUD in early remission on buprenorphine/naloxone 8/2 BID: continue, monthly refills.\n3. Routine CBC and CMP today.\n4. Tobacco: not ready, advised.\n\nRTC 2-3 months; physical due in August."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "date": "2026-03-30T08:45",
+              "author": "PCP",
+              "body": "Blood counts and chemistries normal. No action needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "pharmacy",
+          "start": "2026-04-23T10:00",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Buprenorphine/naloxone refill",
+              "date": "2026-04-23T10:00",
+              "author": "PCP",
+              "body": "Refill request from pharmacy. PDMP reviewed, fills on time. Buprenorphine/naloxone 8/2 mg film BID, #56, sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "hospital_admission",
+          "start": "2026-05-05T09:20",
+          "end": "2026-05-29T13:00",
+          "service": "Infectious Disease — Intensive Care",
+          "reason": "headache, fever, neck stiffness",
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 102,
+            "rr": 16,
+            "temp_c": 38.6,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-05T10:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-05T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-05T11:40",
+              "results": [
+                {
+                  "test": "Leukocytes in cerebrospinal fluid",
+                  "loinc": "26465-5",
+                  "unit": "/uL",
+                  "value": 150
+                },
+                {
+                  "test": "Lymphocytes/100 leukocytes in cerebrospinal fluid",
+                  "loinc": "26479-6",
+                  "unit": "%",
+                  "value": 80
+                },
+                {
+                  "test": "Protein in cerebrospinal fluid",
+                  "loinc": "2880-3",
+                  "unit": "mg/dL",
+                  "value": 100
+                },
+                {
+                  "test": "Glucose in cerebrospinal fluid",
+                  "loinc": "2342-4",
+                  "unit": "mg/dL",
+                  "value": 20
+                },
+                {
+                  "test": "Gram stain, cerebrospinal fluid",
+                  "loinc": "664-3",
+                  "text": "No organisms seen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-05T11:40",
+              "resulted": "2026-05-06T15:00",
+              "results": [
+                {
+                  "test": "Acid-fast stain, cerebrospinal fluid",
+                  "loinc": "11545-1",
+                  "text": "No acid-fast bacilli seen"
+                },
+                {
+                  "test": "Mycobacterium tuberculosis complex DNA, cerebrospinal fluid",
+                  "loinc": "38379-4",
+                  "text": "Detected; rifampin resistance not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-06T06:00",
+              "resulted": "2026-05-08T10:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 31000
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 156
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-05T11:40",
+              "resulted": "2026-06-08T09:00",
+              "results": [
+                {
+                  "test": "Mycobacterial culture, cerebrospinal fluid",
+                  "loinc": "543-9",
+                  "text": "Mycobacterium tuberculosis complex isolated; susceptible to isoniazid, rifampin, ethambutol and pyrazinamide"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-05-05T10:30",
+              "text": "Noncontrast images followed by post-contrast images through the brain. The lateral and third ventricles are mildly enlarged, with rounding of the temporal horns. Enhancement of the basal meninges around the suprasellar cistern and brainstem on post-contrast images. No territorial infarct. No hemorrhage. No mass effect or midline shift. Gray-white differentiation preserved. Calvarium and visualized sinuses unremarkable.",
+              "conclusion": "Mild hydrocephalus and basilar meningeal enhancement. No evidence of stroke."
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-05-05T13:10",
+              "text": "PA and lateral views. Lungs clear without consolidation, nodule or cavity. No hilar or mediastinal adenopathy. No pleural effusion. Heart size normal.",
+              "conclusion": "Normal chest radiograph."
+            },
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-05-12T09:00",
+              "text": "Comparison 05/05/2026. Ventricular size is unchanged, mildly enlarged. No new hemorrhage or infarct. No mass effect.",
+              "conclusion": "Stable mild hydrocephalus."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary: tuberculous meningitis",
+              "date": "2026-06-03T11:00",
+              "author": "infectious disease",
+              "body": "Community teaching hospital, Infectious Disease service\nAdmitted 05/05/2026 (ICU), floor 05/13, discharged 05/29/2026\n\nPrincipal diagnosis: tuberculous meningitis\nOther: HIV with viremia; opioid use disorder on buprenorphine; history of IV drug use\nAllergies: NKDA\n\nPresentation: 33-year-old man with two weeks of worsening headache with fever, vomiting, light sensitivity and a stiff neck. Prior admissions for septic arthritis (2024) and wound botulism (2025). T 38.6 C, HR 102. Drowsy but oriented to person, place and time. Neck stiff with a positive Brudzinski sign. Fundi without papilledema. Cranial nerves intact; no focal neurologic deficit.\n\nCT head: mild hydrocephalus with basilar meningeal enhancement, no stroke.\nCSF: WBC 150/uL, 80% lymphocytes; protein 100 mg/dL; glucose 20 mg/dL (serum 90). Gram stain negative. AFB smear negative. TB nucleic acid amplification positive for M. tuberculosis, rifampin resistance not detected (05/06). Mycobacterial culture pending at discharge.\nChest x-ray normal. HIV-1 RNA 31,000, CD4 156.\n\nCourse: rifampin, isoniazid, pyrazinamide and ethambutol with pyridoxine from 05/06. Dexamethasone IV, switched to oral and tapering over 8 weeks total. Neurosurgery reviewed the imaging; repeat CT 05/12 unchanged, no shunt needed as he improved clinically. Headache and fever resolved by the second week. ART changed because of rifampin interactions: dolutegravir 50 mg twice daily plus emtricitabine/tenofovir disoproxil fumarate daily. TMP-SMX DS daily added for pneumocystis prophylaxis (CD4 <200). Buprenorphine/naloxone continued 8/2 mg BID; monitor for withdrawal given rifampin.\n\nDischarge medications:\n1. rifampin 600 mg daily\n2. isoniazid 300 mg daily\n3. pyrazinamide 1500 mg daily\n4. ethambutol 1200 mg daily\n5. pyridoxine 50 mg daily\n6. dexamethasone taper per schedule\n7. dolutegravir 50 mg BID\n8. emtricitabine/tenofovir disoproxil fumarate 200/300 mg daily\n9. TMP-SMX 800/160 mg daily\n10. buprenorphine/naloxone 8/2 mg SL BID\n11. naloxone nasal spray PRN\n\nDisposition: home. Directly observed therapy arranged through the local health department TB program. ID clinic in 4-6 weeks. PCP follow-up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "telephone",
+          "start": "2026-05-20T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from inpatient team",
+              "date": "2026-05-20T13:40",
+              "author": "RN",
+              "body": "Inpatient ID team called to let us know pt is admitted with TB meningitis since 5/5, improving, expected home late May. They will continue his buprenorphine at discharge and send a summary. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "outside_records",
+          "start": "2026-06-09T14:00",
+          "documents": [
+            {
+              "type": "Correspondence",
+              "title": "ID addendum: CSF culture",
+              "date": "2026-06-09T14:00",
+              "author": "infectious disease",
+              "body": "Addendum to discharge summary of 05/29/2026, Brandon Crowley.\nCSF mycobacterial culture from 05/05 grew Mycobacterium tuberculosis complex. Susceptible to isoniazid, rifampin, ethambutol and pyrazinamide. No change to the regimen. Health department notified."
+            },
+            {
+              "type": "Correspondence",
+              "title": "Health department TB program",
+              "date": "2026-06-11T10:20",
+              "author": "public health",
+              "body": "Local Board of Health, Tuberculosis Control\nRe: Brandon Crowley\n\nThis is to inform the primary care physician that the above patient is enrolled in directly observed therapy for tuberculosis as of 05/30/2026, with daily video-observed doses on weekdays and self-administered doses on weekends. Contact investigation is under way per protocol. Please direct questions to the TB nurse case manager."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T19:30",
+          "documents": [
+            {
+              "type": "Portal Message",
+              "title": "Refill",
+              "date": "2026-06-18T19:30",
+              "author": "patient",
+              "body": "hey doc im home from the hospital, they gave me films till the 25th. can you send the next ones to the same pharmacy. still taking all the TB pills, the nurse watches me on video lol"
+            },
+            {
+              "type": "Portal Message",
+              "title": "Re: Refill",
+              "date": "2026-06-19T08:10",
+              "author": "PCP",
+              "body": "Glad you're home, Brandon. Sent 4 weeks of the films to your pharmacy. If you start feeling withdrawal symptoms (the TB medicine can lower the buprenorphine level), call me, we can adjust. Keep going with the TB nurse."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "outside_records",
+          "start": "2026-07-10T11:15",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-08T10:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-08T10:00",
+              "resulted": "2026-07-10T08:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 140
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 198
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious disease clinic follow-up",
+              "date": "2026-07-10T11:15",
+              "author": "infectious disease",
+              "body": "Infectious Disease Clinic\nVisit date: 07/08/2026\nRe: Brandon Crowley\n\nFollow-up for tuberculous meningitis (culture-confirmed, fully susceptible) and HIV. Taking all doses under DOT, none missed per health department. Headache gone. No fever, vomiting or vision change. Finished the dexamethasone taper.\n\nExam: alert and oriented, neck supple, no meningeal signs. Cranial nerves intact. No focal deficits. Gait normal.\nLabs: liver tests normal. HIV-1 RNA 140 copies/mL (from 31,000), CD4 198.\n\nAssessment: good response. Intensive phase completed 07/07/2026.\nPlan:\n- Stop pyrazinamide and ethambutol. Continue rifampin 600 mg and isoniazid 300 mg daily with pyridoxine for 10 more months (12 months total for CNS disease).\n- Continue dolutegravir 50 mg BID + emtricitabine/TDF while on rifampin; switch back to single-tablet regimen two weeks after rifampin ends.\n- Continue TMP-SMX until CD4 above 200 on two checks.\n- Monthly LFTs. Return in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-17a",
+          "kind": "pharmacy",
+          "start": "2026-07-17T09:30",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Buprenorphine/naloxone refill",
+              "date": "2026-07-17T09:30",
+              "author": "PCP",
+              "body": "Electronic request for buprenorphine/naloxone films. PDMP checked, on schedule. 4 weeks sent. ID clinic letter of 7/8 reviewed and filed. Pt overdue for an office visit; asked front desk to reach out to schedule once his TB clinic schedule allows."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling outreach",
+              "date": "2026-07-17T14:00",
+              "author": "front desk",
+              "body": "Texted pt about booking a visit with PCP. He replied he'll call once he knows his work schedule. Nothing booked yet."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "pharmacy",
+          "start": "2026-08-13T10:05",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Buprenorphine/naloxone refill",
+              "date": "2026-08-13T10:05",
+              "author": "PCP",
+              "body": "Refill request. PDMP fine. Buprenorphine/naloxone 8/2 BID, 4 weeks sent. Needs a visit before the next one."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Septic arthritis, multiple sites|M00.9": {
+        "code": "M00.9",
+        "display": "Pyogenic arthritis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Wound botulism|A48.52": {
+        "code": "A48.52",
+        "display": "Wound botulism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "linezolid 600 MG Oral Tablet": {
+        "code": "311347",
+        "display": "linezolid 600 MG Oral Tablet",
+        "ingredient": "linezolid",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Acid-fast stain, cerebrospinal fluid": {
+        "code": "11545-1",
+        "display": "Microscopic observation [Identifier] in Specimen by Acid fast stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose in cerebrospinal fluid": {
+        "code": "2342-4",
+        "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Gram stain, cerebrospinal fluid": {
+        "code": "664-3",
+        "display": "Microscopic observation [Identifier] in Specimen by Gram stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Gram stain, synovial fluid": {
+        "code": "664-3",
+        "display": "Microscopic observation [Identifier] in Specimen by Gram stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes in cerebrospinal fluid": {
+        "code": "26465-5",
+        "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes in synovial fluid": {
+        "code": "26466-3",
+        "display": "Leukocytes [#/volume] in Body fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lymphocytes/100 leukocytes in cerebrospinal fluid": {
+        "code": "26479-6",
+        "display": "Lymphocytes/Leukocytes in Cerebrospinal Fluid",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Mycobacterial culture, cerebrospinal fluid": {
+        "code": "543-9",
+        "display": "Mycobacterium sp identified in Specimen by Organism specific culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Mycobacterium tuberculosis complex DNA, cerebrospinal fluid": {
+        "code": "38379-4",
+        "display": "Mycobacterium tuberculosis complex DNA [Presence] in Specimen by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Neutrophils/100 leukocytes in synovial fluid": {
+        "code": "26518-1",
+        "display": "Deprecated Polymorphonuclear cells/100 leukocytes in Body fluid",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein in cerebrospinal fluid": {
+        "code": "2880-3",
+        "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid culture": {
+        "code": "6463-4",
+        "display": "Bacteria identified in Specimen by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

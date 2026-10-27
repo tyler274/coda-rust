@@ -1,0 +1,207 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001887",
+      "given": "Jada",
+      "family": "Thompson",
+      "birth_date": "1996-03-22",
+      "address_line": "212 Bridge Road, Apt 3",
+      "phone": "+1-508-555-0167",
+      "email": "jada.thompson@example.test",
+      "marital_status": "partnered",
+      "summary": "Healthy elementary school teacher who joined in 2022. Two pregnancies under outside obstetric care: a term delivery in 2024 with presentation uncertain in labor, then eclampsia at 35 weeks in October 2025 with postpartum labetalol that the practice stopped in December 2025.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-08-29T10:20",
+              "body": "Caller would like to establish here. Moved her care from her old office, which she says was too far to get to after school lets out. 26 y/o F, teacher, Medicaid. No current health problems per caller, takes nothing daily. Offered first available new pt physical 9/13 at 3:45, accepted. Sent intake forms + records release through the portal. Reminded to bring insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T15:45",
+          "end": "2022-09-13T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink alcohol"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "state": {"weight_kg": 66.0, "height_cm": 165.0, "labs": {"Low Density Lipoprotein": 92, "Triglycerides": 85}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T16:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T16:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T16:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-13T16:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-13T16:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-13T16:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-13T16:32"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-13T15:45"},
+            {"procedure": "Immunization administration", "performed": "2022-09-13T16:30"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2022-09-13T16:40",
+              "body": "NEW PATIENT, PREVENTIVE\n\n26 yo woman here to set up primary care. Previously seen at a primary care office in another town; release signed today. Feels well. No concerns she wants to raise. Periods regular, no pelvic or breast symptoms. Not currently trying for pregnancy but she and her partner have talked about it for the next year or two.\n\nPMH: none. No hospitalizations. Never pregnant.\nPSH: none.\nMeds: none. No supplements.\nAllergies: none to medications.\nFamily: her mother had preeclampsia and had to be delivered at 36 weeks. A maternal aunt had eclamptic seizures with her first baby. Otherwise nothing she knows of.\nSocial: teaches second grade at a public elementary school. Lives with her partner. Never a smoker. Does not drink. No drug use. Walks most evenings.\nPrevention: last Pap about two years ago at her old office, told it was fine. Thinks she had the HPV shots in middle school. Tdap as a young adult; records requested.\n\nROS: negative across systems.\n\nExam: well-appearing, pleasant. Vitals as recorded, BP normal. HEENT normal, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without swelling. Skin clear. Mood and affect normal. PHQ-2 is 0.\n\nAssessment and plan:\n1. Adult preventive care. Baseline CBC, CMP and lipids. One-time HIV and hepatitis C screening, she agreed. Pap not due until next year; will confirm the date from her old records.\n2. Family history of hypertensive disorders of pregnancy (mother, aunt). Discussed that this matters if she becomes pregnant, and that she should tell her obstetrician early. Folate-containing prenatal vitamin once she starts trying.\n3. Vaccines: flu and bivalent COVID booster given, tolerated.\nRTC one year for physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2022-09-16T12:05",
+              "body": "Hi Jada, everything from Tuesday came back normal: blood counts, kidney and liver tests, sugar and cholesterol all in good range, and the HIV and hepatitis C screens were negative. Nothing to do. Nice to meet you this week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your Lab Results",
+              "author": "patient",
+              "date": "2022-09-16T19:41",
+              "body": "Thank you!! Good to know. My arm was a little sore from the shots yesterday but I'm fine now."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "outside_records",
+          "start": "2022-10-11T09:15",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2017-06-20T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2009-08-18T10:00"}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2020-10-06T10:30", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Office",
+              "author": "outside primary care",
+              "date": "2022-10-11T09:15",
+              "body": "Records received from former primary care office (12 pages), covering 2016 to 2021.\n\nProblem list: none active.\nMedications: none.\nAllergies: NKDA.\nImmunizations: HPV series completed in childhood (first dose 2009); Tdap 06/2017; COVID primary series per patient (card not in records).\nScreening: Pap 10/2020, liquid-based cytology, negative for intraepithelial lesion. No prior abnormal Paps.\nVisits: annual physicals 2017 to 2021, all unremarkable; BMI normal throughout.\n\nAbstracted into chart. Pap next due fall 2023."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T15:30",
+          "appointment": "cancelled",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2023-08-21T16:52",
+              "body": "Pt cancelled tomorrow's physical, classroom setup week and she can't leave early. Rebooked Thurs 9/28 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "annual_physical",
+          "start": "2023-09-28T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-09-28T16:25", "issued": "2023-10-03T14:00", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. Organisms: none identified.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-28T16:45"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-09-28T16:47"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-28T16:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-28T16:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-28T16:55",
+              "body": "Annual exam. Busy start of the year with a new class but otherwise doing well. No complaints. Cycles regular, LMP about 2 weeks ago. She and her partner are hoping to conceive in the coming year.\n\nNo meds, NKDA. Never smoker, no alcohol.\nFamily hx unchanged (mother preeclampsia, delivered 36 wk; maternal aunt eclampsia).\n\nExam: NAD. BP normal today. Heart RRR, lungs clear, abdomen benign. Breast exam normal, no masses or nodes. Pelvic: normal external genitalia, cervix appears normal, Pap obtained. No adnexal tenderness. Legs no swelling.\nPHQ-2: 0.\n\nA/P\n- Health maintenance: Pap today (3-year interval, last 2020 normal). Labs last year normal, nothing needed today.\n- Preconception: start a prenatal vitamin with folate when she begins trying, she'll buy one or message me for a script. Again reviewed family history of preeclampsia; she should mention it at her first OB visit.\n- Flu and updated COVID given.\nNext physical in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "portal_message",
+          "start": "2023-10-04T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap Result",
+              "author": "PCP",
+              "date": "2023-10-04T08:10",
+              "body": "Your Pap test was normal. With your history, the next one is due in three years. Have a good week!"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "portal_message",
+          "start": "2023-12-04T06:52",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2023-10-27", "note": "LMP 2023-10-27 by patient report; home test positive"}
+          ],
+          "medications": [
+            {"drug_text": "prenatal vitamin with DHA Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pregnancy"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2023", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "new pregnancy, LMP 10/27/2023; family history of preeclampsia and eclampsia"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive Pregnancy Test",
+              "author": "patient",
+              "date": "2023-12-04T06:52",
+              "body": "Good morning! I took a test this weekend and it was positive, then took another one to be sure. First day of my last period was Oct 27. I haven't started the prenatal vitamin yet, oops. What do I do next? Do I need to come in or go straight to an OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive Pregnancy Test",
+              "author": "PCP",
+              "date": "2023-12-04T12:31",
+              "body": "Congratulations, Jada! By your dates you're about 5 1/2 weeks along. You can go straight to obstetrics; I've put in the referral today and their office will call you to set up the first visit, usually around 8 weeks. I also sent a prenatal vitamin with DHA to your pharmacy, one a day starting now. Please let them know about your mom's and aunt's history at the first visit. Call us any time with questions or if you have bleeding or bad cramping."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

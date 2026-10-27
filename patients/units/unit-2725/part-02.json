@@ -1,0 +1,912 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002725",
+      "events": [
+        {
+          "id": "2022-01-10a",
+          "kind": "pharmacy",
+          "start": "2022-01-10T10:12",
+          "reason": "Refill request, amlodipine",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Amlodipine Refill",
+              "author": "RN",
+              "date": "2022-01-10T10:12",
+              "body": "Electronic refill request: amlodipine 10 mg #90. Last BP visit 10/18/21 at goal. Approved x1 with 3 refills per HTN protocol."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "office_visit",
+          "start": "2022-03-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "state": {
+            "bp": [
+              144,
+              92
+            ]
+          },
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "author": "PCP",
+              "date": "2022-03-14T16:35",
+              "body": "BP creeping back up. Home log since January mostly 140-148 over 88-94 on amlodipine 10. Takes it daily, no missed doses she can think of. No salt binges, no NSAIDs, no decongestants. Feels well.\n\nBP 144/92 here. HR normal. Lungs clear, no edema.\n\nPlan: add lisinopril 10 mg daily - reasonable choice with her SSc as well. BMP in 2 weeks for K and creatinine. Watch for cough. Video visit in 2 months with the log."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-28a",
+          "kind": "lab_only",
+          "start": "2022-03-28T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BMP after starting lisinopril",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-28T07:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-28T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "author": "PCP",
+              "date": "2022-03-28T15:20",
+              "body": "Creatinine and potassium unchanged two weeks into lisinopril. OK to continue. Message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-01a",
+          "kind": "outside_records",
+          "start": "2022-04-01T09:30",
+          "reason": "Rheumatology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up Letter",
+              "author": "rheumatology",
+              "date": "2022-04-01T09:30",
+              "body": "Outside rheumatology group - clinic letter\nSeen 2022-03-28\n\nMs. Jean-Baptiste returns for routine review of her diffuse systemic sclerosis. She has had no flares that she can identify. Skin score by my exam similar to last spring; tightening limited to the hands, forearms and upper chest, no extension. No ulcers or pitting scars. No new swallowing, bowel, joint or muscle problems.\nShe tells me her PCP has started amlodipine and, two weeks ago, lisinopril for blood pressure. I am glad to see an ACE inhibitor on board. Clinic BP 136/86.\nMedications: amlodipine 10 mg daily, lisinopril 10 mg daily, sildenafil 20 mg TID, omeprazole 20 mg daily. Allergy: nickel.\nImpression: stable diffuse cutaneous SSc.\nPlan: no new therapy. Keep checking BP at home; any abrupt rise, severe headache or visual change should be reported the same day. Yearly review.\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-05-16T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure log review",
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-05-16T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2022-05-16T12:45",
+              "body": "Video visit from her office break room, ID verified.\nLog over 4 weeks: 136-144/86-92, a bit better but not there. No cough, no lightheadedness. Labs in March fine.\nIncrease lisinopril to 20 mg daily. Recheck BMP at the physical in the fall unless anything changes. New Rx sent; she'll finish the 10s two at a time."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "outside_records",
+          "start": "2022-06-24T13:50",
+          "reason": "Pulmonary hypertension clinic letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Hypertension Clinic Letter",
+              "author": "cardiology",
+              "date": "2022-06-24T13:50",
+              "body": "Cardiology - pulmonary hypertension program\nClinic date 2022-06-20\n\nYearly visit for SSc-PAH. Symptoms stable. She works full time and walks most evenings. No exertional chest pain, presyncope or swelling.\nBP 130/82, HR 76, SpO2 97% RA. No JVD. S1 S2 regular. Lungs clear. No edema.\nMeds: sildenafil 20 mg TID, amlodipine 10 mg daily, lisinopril 20 mg daily, omeprazole 20 mg daily. Nickel allergy.\nAssessment: PAH, clinically stable on sildenafil.\nPlan: same therapy, back in a year.\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-08a",
+          "kind": "office_visit",
+          "start": "2022-08-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No Show",
+              "author": "front desk",
+              "date": "2022-08-08T16:30",
+              "body": "Pt did not arrive for 3:40 BP check. Left voicemail to reschedule. She can fold this into her October physical per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "annual_physical",
+          "start": "2022-10-24T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              146,
+              92
+            ]
+          },
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-24T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-24T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-24T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-10-24T10:10",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-24T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-24T10:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-24T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-24T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-24T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-24T10:30",
+              "body": "36F, yearly exam. Missed the August BP check (work).\n\nHome BPs on amlodipine 10 + lisinopril 20 are running 140s/88-94. Adherent, uses a pill box. No headaches. Rheum (March) and PH clinic (June) letters reviewed - both stable, no changes. Periods regular. Sleeping OK. PHQ-2 = 1.\n\nMeds: amlodipine 10, lisinopril 20, sildenafil 20 TID, omeprazole 20. Allergy nickel.\n\nExam: BP 146/92, recheck 144/90. Gen well. Neck no thyromegaly. CV regular, no murmur, no bruit. Lungs clear. Abd soft. Skin: sclerodactyly, forearm/chest thickening, unchanged. No edema.\n\nA/P\n1. HTN not at goal on 2 drugs. Add HCTZ 25 mg every morning. BMP in 2 weeks with a nurse BP check.\n2. SSc, PAH: per specialists.\n3. Prevention: flu and bivalent COVID booster today. Labs drawn. Pap next due 2024.\nFollow up early next year."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "nurse_visit",
+          "start": "2022-11-07T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP check and labs after starting HCTZ",
+          "state": {
+            "bp": [
+              134,
+              86
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-07T08:10",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2022-11-07T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-07T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse BP Check",
+              "author": "RN",
+              "date": "2022-11-07T08:25",
+              "body": "Two weeks on HCTZ. Seated BP after 5 min rest 134/86, repeat 132/84. HR regular. Denies dizziness or cramps. Peeing more in the mornings, otherwise fine. BMP drawn. Routed to PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP after HCTZ",
+              "author": "PCP",
+              "date": "2022-11-07T17:05",
+              "body": "Sodium, potassium and creatinine normal on the three-drug regimen. BP much better. Continue. Follow-up visit in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "office_visit",
+          "start": "2023-02-27T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP follow-up; spells of pounding heart and headache",
+          "state": {
+            "bp": [
+              158,
+              98
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-27T11:20",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-27T11:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-27T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-02-27T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-02-27T11:25",
+              "body": "S: Home readings have jumped since about New Year's - many in the 150s-160s over upper 90s despite amlodipine 10, lisinopril 20 and HCTZ 25, which she takes every day (pill box, pharmacy fill dates on time). For about a month she has also had spells: heart suddenly pounding, drenched in sweat, and a hard, pounding headache. They come out of nowhere, at her desk or at home, and last 10-20 minutes. Two or three a week. No chest pain, no syncope, no new meds, no decongestants, no caffeine change, no weight loss she knows of.\n\nO: BP 158/98, recheck 156/96. HR regular. Not diaphoretic now. Thyroid not enlarged, no tremor. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P: BP now uncontrolled on three agents, with paroxysmal palpitations/sweats/headache. Thinking about a secondary cause. Today BMP and TSH. Asked her to write down each spell with time and a BP reading if she can grab one. If BMP and TSH are normal and this continues, I'd like endocrine to see her. Back in 6-8 weeks, sooner if a reading is over 180/110 or a spell includes chest pain or fainting."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP and TSH",
+              "author": "PCP",
+              "date": "2023-02-28T08:50",
+              "body": "BMP normal, potassium fine on HCTZ. TSH normal - not thyroid. Pt informed via portal; keep the spell diary."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-24a",
+          "kind": "outside_records",
+          "start": "2023-03-24T11:40",
+          "reason": "Rheumatology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up Letter",
+              "author": "rheumatology",
+              "date": "2023-03-24T11:40",
+              "body": "Outside rheumatology group\nVisit 2023-03-20\n\nAnnual systemic sclerosis review. Skin thickening of the hands, forearms and anterior chest is about the same as last year. No ulcers. Kidney function on your February panel was normal.\nShe mentions spells of sweating and palpitations with headache and that you are evaluating them; BP today 150/96 on three agents. Nothing in her skin or joints suggests a flare. With SSc I would keep a close eye on that pressure and creatinine.\nMeds: amlodipine 10 mg, lisinopril 20 mg, hydrochlorothiazide 25 mg, sildenafil 20 mg TID, omeprazole 20 mg.\nImpression: stable diffuse cutaneous SSc; hypertension under evaluation by PCP.\nPlan: no change from our side. Return in one year.\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "office_visit",
+          "start": "2023-04-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Uncontrolled BP and recurrent spells",
+          "state": {
+            "bp": [
+              164,
+              100
+            ]
+          },
+          "vitals": {
+            "hr": 104
+          },
+          "measure": [
+            "bp",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Resistant hypertension with paroxysmal palpitations, sweating and headache"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-24T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-04-24T14:40",
+              "body": "Spell diary reviewed: 14 episodes since late February. Pounding heartbeat, soaking sweat, severe headache, and on a few occasions a frightening feeling that something terrible is about to happen. She caught two readings during spells and both were well above her usual. Between spells home BP still 150s/90s. Taking all three BP meds.\n\nBP 164/100, recheck 160/98. HR 104, regular. Looks anxious, says she is worried. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, no mass. No edema.\n\nA: Resistant hypertension with paroxysmal adrenergic-type spells. TSH and BMP normal in February. Needs a secondary hypertension evaluation.\nP: Referral to endocrinology, marked urgent. Continue current meds. Reviewed ED precautions. She has the rheum and PH clinic numbers too. Will follow up once endocrine has seen her."
+            },
+            {
+              "type": "Referral",
+              "title": "Endocrinology Referral",
+              "author": "MA",
+              "date": "2023-04-25T09:15",
+              "body": "Referral faxed to outside endocrinology with last two office notes, BMP, TSH and med list. First available new patient slot 7/24; added to their cancellation list. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-27a",
+          "kind": "outside_records",
+          "start": "2023-07-27T15:30",
+          "reason": "Endocrinology consultation",
+          "vitals": {
+            "bp": [
+              162,
+              98
+            ],
+            "hr": 102
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-24T10:30",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "text": "1.2 nmol/L (reference < 0.5 nmol/L)"
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "text": "2.4 nmol/L (reference < 0.9 nmol/L)"
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Pheochromocytoma",
+              "icd10": "D35.00",
+              "action": "diagnosed",
+              "onset": "2023-01-02"
+            },
+            {
+              "label": "Severe secondary hypertension",
+              "icd10": "I15.2",
+              "action": "diagnosed",
+              "onset": "2023-01-02",
+              "note": "Due to pheochromocytoma"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "phenoxybenzamine hydrochloride 10 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pheochromocytoma"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2023-07-27T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2023-07-27T15:30",
+              "body": "Outside endocrinology - new patient consultation\nDate of service: 2023-07-24\nReferred by: PCP, for resistant hypertension with spells\n\nHistory: 37-year-old woman with diffuse cutaneous systemic sclerosis and SSc-associated pulmonary arterial hypertension. Over roughly six months her blood pressure has become difficult to control even though she reliably takes amlodipine, lisinopril and hydrochlorothiazide. Alongside this she has unpredictable attacks of palpitations, heavy sweating and severe headache; some come with a feeling of impending doom.\nOther history: SSc (2018), PAH on sildenafil (2019), heartburn. No surgeries.\nMedications: amlodipine 10 mg daily, lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, sildenafil 20 mg three times daily, omeprazole 20 mg daily.\nAllergies: nickel (contact dermatitis).\nFamily history: mother - SLE. Father - essential hypertension. No relatives known to have pheochromocytoma, neurofibromatosis or an MEN syndrome.\nSocial: never smoker, no alcohol. Administrative assistant.\n\nExam: BP 162/98, HR 102. Anxious-appearing. Abdomen: no palpable mass, no bruit.\n\nResults (drawn today, random, seated):\n- Plasma free metanephrine 1.2 nmol/L (reference < 0.5)\n- Plasma free normetanephrine 2.4 nmol/L (reference < 0.9)\n\nImpression: Catecholamine excess well above the range expected from interfering drugs or stress, with a classic paroxysmal history. Pheochromocytoma. Her hypertension is best regarded as severe and secondary to it.\n\nPlan:\n1. Start phenoxybenzamine 10 mg twice daily. Liberal salt and fluids; expect stuffy nose and some orthostasis.\n2. Once alpha blockade is established (2-3 weeks), we will add a beta blocker for heart rate. No beta blocker before then.\n3. Continue amlodipine, lisinopril, hydrochlorothiazide and sildenafil for now.\n4. Return to endocrinology in 3 months.\n\nThank you for this referral.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-03a",
+          "kind": "pharmacy",
+          "start": "2023-08-03T11:00",
+          "reason": "Prior authorization, phenoxybenzamine",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Phenoxybenzamine PA",
+              "author": "MA",
+              "date": "2023-08-03T11:00",
+              "body": "Pharmacy says phenoxybenzamine needs a PA and cash price is very high. Endocrinology is handling the PA (they prescribed it); confirmed with their office by phone. Pt got a 7-day supply through the manufacturer program meanwhile. FYI to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA Update",
+              "author": "MA",
+              "date": "2023-08-08T14:20",
+              "body": "Endocrinology office called back - phenoxybenzamine PA approved. Pt picked up 30 days. She says she is taking it twice a day and is a bit stuffy and lightheaded on standing; advised to rise slowly and keep fluids up, as endocrine instructed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "outside_records",
+          "start": "2023-08-17T10:10",
+          "reason": "Endocrinology note: beta blocker added",
+          "medications": [
+            {
+              "drug": "atenolol 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pheochromocytoma, heart rate control after alpha blockade"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology Telephone Note",
+              "author": "endocrinology",
+              "date": "2023-08-17T10:10",
+              "body": "Endocrinology - telephone follow-up 2023-08-14\nThree weeks on phenoxybenzamine 10 mg BID. Mild nasal congestion and orthostatic lightheadedness, improving. Spells less frequent. Home BP 130s-140s/80s, resting HR around 100.\nAlpha blockade adequate. Adding atenolol 50 mg daily. Continue phenoxybenzamine and the other antihypertensives. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-28a",
+          "kind": "office_visit",
+          "start": "2023-08-28T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after endocrinology",
+          "state": {
+            "bp": [
+              146,
+              90
+            ]
+          },
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "resolved",
+              "note": "Reclassified as secondary hypertension due to pheochromocytoma"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-28T10:15",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-28T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-28T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-08-28T10:20",
+              "body": "Here to go over the endocrine visit. Plasma metanephrines high (1.2 and 2.4 nmol/L); endocrinology diagnosed a pheochromocytoma. Started phenoxybenzamine 10 BID on 7/24, atenolol 50 daily added 8/14. Spells down to maybe one a week and milder. Still stuffy. No fainting.\n\nMeds reconciled: phenoxybenzamine 10 BID, atenolol 50 daily, amlodipine 10, lisinopril 20, HCTZ 25, sildenafil 20 TID, omeprazole 20.\n\nBP 146/90 seated. HR slower than in April. Lungs clear. No edema.\n\nA/P\n1. Pheochromocytoma - endocrinology managing; f/u there in October.\n2. Hypertension - relabeled on her problem list as secondary to the pheo; essential HTN label removed. Continue all current meds.\n3. BMP today with the extra drugs.\nShe asked good questions about what this means for her; we talked for a while. Physical in November."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "outside_records",
+          "start": "2023-10-26T16:00",
+          "reason": "Endocrinology follow-up letter",
+          "vitals": {
+            "bp": [
+              152,
+              94
+            ]
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-19T08:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 112
+                },
+                {
+                  "test": "Corticotropin (ACTH)",
+                  "loinc": "2141-0",
+                  "unit": "pg/mL",
+                  "text": "<5 (undetectable)"
+                },
+                {
+                  "test": "Cortisol, AM",
+                  "value": 23.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-20T08:00",
+              "results": [
+                {
+                  "test": "Cortisol after high-dose dexamethasone",
+                  "loinc": "2143-6",
+                  "unit": "ug/dL",
+                  "value": 22.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2023-10-26T16:00",
+              "body": "Outside endocrinology - return visit\nDate of service: 2023-10-23\n\nInterval: 37-year-old with diffuse SSc, SSc-PAH and pheochromocytoma, on phenoxybenzamine and atenolol since the summer. The adrenergic spells are much reduced. New concern: for about six months she has noticed her face getting rounder and fuller, her thighs and shoulders getting weaker (hard to climb stairs or lift files overhead), bruising with minimal bumps, more fatigue, and periods that have become irregular.\nMedications: phenoxybenzamine 10 mg BID, atenolol 50 mg daily, amlodipine 10 mg daily, lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, sildenafil 20 mg TID, omeprazole 20 mg daily.\nAllergies: nickel (contact dermatitis).\n\nExam: BP 152/94. Scattered bruises on both upper arms. Proximal muscle weakness, hip flexors and deltoids 4/5.\n\nTesting (arranged before this visit):\n- Fasting glucose 112 mg/dL\n- ACTH undetectable, < 5 pg/mL\n- Serum cortisol 8 AM baseline 23.4 ug/dL; after high-dose overnight dexamethasone 22.9 ug/dL - no suppression\n\nImpression: Cortisol excess that is ACTH-independent, with failure to suppress on high-dose dexamethasone. Given her catecholamine-secreting adrenal tumor, we attribute the cortisol excess to the same adrenal source.\n\nPlan: continue phenoxybenzamine and atenolol. No new medication today. Return in 3 months. Glucose to be followed with her PCP.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "annual_physical",
+          "start": "2023-11-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              138,
+              86
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-13T09:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-13T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-11-13T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-11-13T09:20",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Glucose"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-13T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-13T09:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-11-13T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-13T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-13T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-11-13T09:45",
+              "body": "37F annual exam.\n\nInterval history: pheochromocytoma diagnosed in July, on phenoxybenzamine + atenolol. Endocrine letter from 10/23 reviewed: facial rounding, proximal weakness, easy bruising; ACTH undetectable and cortisol did not suppress on high-dose dexamethasone; they attribute the cortisol excess to the same adrenal tumor. No new meds from them. Fasting glucose 112 there. She is tired, weaker on stairs. Spells rare now. Periods irregular since spring - some months heavier.\n\nMeds: phenoxybenzamine 10 BID, atenolol 50, amlodipine 10, lisinopril 20, HCTZ 25, sildenafil 20 TID, omeprazole 20. Allergy nickel.\n\nExam: BP 138/86. Rounder face than last year. Bruises upper arms. Proximal strength mildly reduced. Heart regular. Lungs clear. Abd soft, no mass. Skin thickening hands/forearms/chest as before. No edema.\n\nA/P\n1. Pheochromocytoma with cortisol excess - endocrinology following, next visit in 3 months.\n2. Secondary HTN - better than spring. Continue.\n3. Glucose - CMP today; endocrine asked us to follow.\n4. Irregular menses - watch; tell me if bleeding gets heavy.\n5. Prevention: flu + updated COVID today. PHQ-2 1. Pap due 2024.\nLabs today."
+            },
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2023-11-14T12:10",
+              "body": "CMP, CBC, lipids and UA reviewed - nothing that needs a change. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-01a",
+          "kind": "outside_records",
+          "start": "2023-12-01T09:45",
+          "reason": "Pulmonary hypertension clinic letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Hypertension Clinic Letter",
+              "author": "cardiology",
+              "date": "2023-12-01T09:45",
+              "body": "Cardiology - pulmonary hypertension program\nSeen 2023-11-27\n\nInterim news: endocrinology diagnosed a pheochromocytoma in July and started phenoxybenzamine, then atenolol. Breathing is unchanged from last year. No syncope or edema.\nBP 134/84, HR 68, SpO2 97% RA. JVP normal. Regular rhythm. Lungs clear. No edema.\nMedications: sildenafil 20 mg TID, phenoxybenzamine 10 mg BID, atenolol 50 mg daily, amlodipine 10 mg daily, lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, omeprazole 20 mg daily.\nAssessment: SSc-PAH, functionally stable.\nPlan: continue sildenafil. Annual follow-up.\nCardiology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002749",
+      "events": [
+        {
+          "id": "2023-03-28a",
+          "kind": "office_visit",
+          "start": "2023-03-28T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and bruising",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-28T10:50", "resulted": "2023-03-28T14:30", "results": [{"test": "White Blood Cells", "value": 86.4}, {"test": "Hemoglobin", "value": 9.4}, {"test": "Platelets", "value": 512}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-28T10:50", "results": [{"test": "Creatinine"}]}
+          ],
+          "orders": [{"id": "heme-2023", "action": "placed", "order": "Hematology/Oncology referral", "category": "referral", "to": "Hematology/Oncology", "reason": "marked leukocytosis, splenomegaly, bruising"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-03-28T10:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-03-28T11:10", "body": "CC: tired, bruises.\nHPI: 60F with RA on MTX/pred. Over roughly two months the tiredness she's had for years has gotten clearly worse - naps most afternoons now. Bruises on her shins and forearms without any bump she can remember. No nosebleeds, no gum bleeding, no blood in stool or urine. No fevers or drenching sweats. Missed her March lab draw.\nMeds: unchanged. Allergies: sulfa, latex.\nExam: pale. Several 2-4 cm ecchymoses of varying age on both shins and the L forearm. No petechiae. No cervical, axillary or inguinal nodes. Heart regular. Lungs clear. Abdomen: spleen tip palpable below the L costal margin on inspiration, nontender; liver edge not felt. No synovitis.\nA/P: Fatigue, bruising, palpable spleen. CBC and CMP stat today.\n\nAddendum 14:45: CBC back - WBC 86.4, Hgb 9.4, plt 512. Lab smear review: left-shifted myeloid cells. Called pt. Urgent heme/onc referral placed and I called their office directly - seen within the month."}
+          ]
+        },
+        {
+          "id": "2023-03-28b",
+          "kind": "telephone",
+          "start": "2023-03-28T14:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result Call", "author": "PCP", "date": "2023-03-28T14:55", "body": "Spoke with Diane and her husband on speaker. Explained the white count is very high with immature cells and she needs a blood specialist promptly; it may be a bone-marrow disorder and they will likely need a marrow sample. She asked if it is leukemia - told her that is one of the possibilities and the specialist will sort it out quickly. Bleeding/fever precautions. Heme office will call her tomorrow."},
+            {"type": "Telephone Encounter", "title": "Referral Scheduled", "author": "front desk", "date": "2023-03-29T10:05", "body": "Heme/onc confirmed new-patient visit 4/17. Records and labs faxed."}
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "outside_records",
+          "start": "2023-04-24T13:30",
+          "reason": "Hematology/Oncology consult letter",
+          "orders": [{"id": "heme-2023", "action": "done", "date": "2023-04-24T13:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology/Oncology Consultation", "author": "hematology/oncology", "date": "2023-04-24T13:30", "body": "Hematology & Oncology - new patient seen 04/17/2023\n\nThank you for sending Ms. Berman, 60, with RA (methotrexate, prednisone 5 mg), osteoporosis and hypertension, previously evaluated for anemia of chronic disease and a right popliteal cyst. Over three months she has had steadily worsening fatigue, an enlarged spleen and bruising without explanation.\n\nPeripheral smear here shows a striking excess of myeloid cells across all stages of maturation, mature and immature. A bone marrow aspirate and biopsy were done in clinic; the aspirate is hypercellular with a myeloid predominance.\n\nThis picture raises concern for a clonal myeloid neoplasm. Cytogenetics, BCR-ABL1 FISH and quantitative BCR-ABL1 PCR have been sent from the marrow. We will see her as soon as they return.\n\nMedications reviewed: methotrexate 20 mg weekly, folic acid, prednisone 5 mg, ibuprofen as needed, calcium, vitamin D3, lisinopril 10 mg. Allergies: sulfonamides (rash), latex.\n\nHematology & Oncology"},
+            {"type": "Result Note", "title": "Outside Letter Reviewed", "author": "PCP", "date": "2023-04-24T17:00", "body": "Heme consult reviewed. Marrow studies pending."}
+          ]
+        },
+        {
+          "id": "2023-04-27a",
+          "kind": "portal_message",
+          "start": "2023-04-27T20:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from hematology", "author": "patient", "date": "2023-04-27T20:10", "body": "The hematologist called today. It's chronic myeloid leukemia, the type with the Philadelphia chromosome. She says it is early (chronic phase) and that there is a daily pill that works well for most people. I start it Monday. I'm a bit shaken but she was very reassuring. Wanted you to know. Do I need to stop anything you prescribe?"},
+            {"type": "Patient Message", "title": "RE: Results from hematology", "author": "PCP", "date": "2023-04-28T07:45", "body": "Diane, I'm so sorry you got this news, and I'm glad it was caught in chronic phase - the pills for CML really do work well. Your lisinopril is fine to continue. Rheumatology and hematology will coordinate on the methotrexate. Let's do a video visit in a couple of weeks once you've started so we can go over everything."}
+          ]
+        },
+        {
+          "id": "2023-05-05a",
+          "kind": "outside_records",
+          "start": "2023-05-05T09:40",
+          "reason": "Hematology results letter",
+          "conditions": [{"label": "Chronic myeloid leukemia", "action": "diagnosed", "onset": "2023-04-26", "note": "BCR-ABL1 positive, chronic phase"}],
+          "medications": [
+            {"drug_text": "imatinib 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with food and a full glass of water", "dose": {"value": 400, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Chronic myeloid leukemia"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology/Oncology Follow-up Letter", "author": "hematology/oncology", "date": "2023-05-05T09:40", "body": "Hematology & Oncology - update\n\nMarrow results (reported 04/26/2023): BCR-ABL1 fusion detected by FISH in 88% of nuclei. Quantitative RT-PCR: BCR-ABL1 (p210) 64% on the International Scale. Findings consistent with chronic myeloid leukemia, chronic phase.\n\nShe started imatinib 400 mg once daily on 05/01/2023. We will check counts every two weeks initially and BCR-ABL1 PCR at 3, 6 and 12 months. Methotrexate, folic acid and prednisone may continue per rheumatology; we will follow her counts closely.\n\nHematology & Oncology"},
+            {"type": "Result Note", "title": "Outside Letter Reviewed", "author": "PCP", "date": "2023-05-05T12:20", "body": "CML chronic phase confirmed. Imatinib 400 daily via heme, added to med list. Problem list updated."}
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after new CML diagnosis",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2023-05-09T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2023-05-09T16:40", "body": "Video from home, husband present.\nDay 9 of imatinib, taking it with dinner, no problems so far. Bruising fading. Heme drawing counts every 2 weeks.\nWe went over: the diagnosis in plain terms, why adherence matters, what the PCR numbers mean, and that heme will run the leukemia care. Her questions about her uncle's CLL - different disease, explained.\nMeds reconciled: imatinib 400 mg daily added. Continuing MTX 20 weekly, folic acid, prednisone 5, ibuprofen prn, calcium/D, lisinopril.\nShe will keep the quarterly labs here; heme will send results.\nPhysical in June."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "annual_physical",
+          "start": "2023-06-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin": 10.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-06-13T09:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-13T09:20", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-13T09:20", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2023-06-13T09:00", "text": "Satisfactory for evaluation. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "orders": [{"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "breast cancer screening"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-06-13T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-13T09:40", "body": "Annual. Six weeks into imatinib for CML, tolerating it. Energy a little better. Heme says counts are normalizing.\nPHQ-9 4 - expected stress with the new diagnosis, coping well, good support at home.\nMeds: imatinib 400, MTX 20 weekly, folic acid 1, prednisone 5, ibuprofen prn, calcium 600 BID, D3 2000, lisinopril 10. Allergies: sulfa, latex.\nExam: BP ok. Mildly pale. Nodes none. Heart, lungs normal. Abdomen soft, spleen not palpable today. Breasts normal. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV collected. R popliteal fullness unchanged. Skin: a couple of fading bruises only.\nPlan: labs, mammogram, Pap. Colonoscopy 2027. Flu/COVID in the fall."}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "imaging",
+          "start": "2023-06-27T13:00",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-06-27T13:00", "text": "Scattered fibroglandular densities. No suspicious mass, calcification or architectural distortion. Stable.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "orders": [{"id": "mammo-2023", "action": "done", "date": "2023-06-27T13:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2023-06-28T08:00", "body": "Mammogram negative; Pap/HPV from 6/13 negative. Next Pap not needed (she ages out). Portal note sent."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "portal_message",
+          "start": "2023-08-22T18:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Good news", "author": "patient", "date": "2023-08-22T18:30", "body": "Three-month leukemia test came back at 7.4%, down from 64%. Hematology is happy with it and says to keep going on the same dose. Just keeping your office up to date since they don't always send things."},
+            {"type": "Patient Message", "title": "RE: Good news", "author": "RN", "date": "2023-08-22T19:05", "body": "That's wonderful, thank you for letting us know. I've noted it for the doctor."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "lab_only",
+          "start": "2023-09-12T08:00",
+          "reason": "Methotrexate monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-12T08:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T08:00", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-09-12T08:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2023-09-12T16:25", "body": "WBC and platelets normal now on imatinib. Hgb ~10.5. LFTs ok. Copied to rheum and heme."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T09:30",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T09:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T09:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T09:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2023-10-10T09:50", "body": "Flu (L) and 2023-24 COVID (R). Non-latex gloves. Heme ok'd both. Observed 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "lab_only",
+          "start": "2023-12-12T08:15",
+          "reason": "Methotrexate monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-12-12T08:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-12T08:15", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-12-12T08:15"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2023-12-13T08:05", "body": "Stable. Forwarded."}
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "pharmacy",
+          "start": "2024-01-16T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2024-01-16T11:15", "body": "Lisinopril 10 mg x90 days requested, new insurance year. Sent. Pharmacy also asked whether we manage imatinib - told them hematology prescribes."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "lab_only",
+          "start": "2024-03-12T07:45",
+          "reason": "Methotrexate monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-03-12T07:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-12T07:45", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2024-03-12T07:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2024-03-12T15:50", "body": "No change from December."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "annual_physical",
+          "start": "2024-06-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-06-11T09:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-11T09:15", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-11T09:15", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "orders": [{"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "breast cancer screening"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-06-11T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-06-11T09:40", "body": "Annual exam, 62.\nCML: one year on imatinib. She reports her May PCR was 0.07% - heme told her that is a major molecular response. No letter from them; noted from her report. Tolerating the pill without trouble.\nRA quiet, rheum every 6 months. Cyst behind R knee unchanged and painless.\nBP fine at home.\nMood good, PHQ-2 0.\nMeds/allergies unchanged.\nExam: BP ok. Heart, lungs clear. Abdomen soft, no spleen. No nodes. Joints without synovitis. Breasts normal. Skin normal.\nPlan: routine labs, mammogram. Fall vaccines. Continue current meds."}
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "imaging",
+          "start": "2024-06-25T10:30",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-06-25T10:30", "text": "Scattered fibroglandular tissue. No new or suspicious findings compared with prior studies.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "orders": [{"id": "mammo-2024", "action": "done", "date": "2024-06-25T10:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram Result", "author": "PCP", "date": "2024-06-26T07:35", "body": "Normal. Portal letter."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "lab_only",
+          "start": "2024-09-10T08:10",
+          "reason": "Methotrexate monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-09-10T08:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T08:10", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2024-09-10T08:10"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2024-09-10T17:05", "body": "Ok for MTX. Hgb same."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T14:00",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T14:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T14:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2024-10-08T14:20", "body": "2024-25 flu and COVID given, one each arm. Latex-free. No issues."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "lab_only",
+          "start": "2024-12-10T08:20",
+          "reason": "Methotrexate monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-12-10T08:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-12-10T08:20", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2024-12-10T08:20"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lab Review", "author": "PCP", "date": "2024-12-11T07:55", "body": "Stable. Sent to rheum and heme."}
+          ]
+        }
+      ]
+    }
+  ]
+}

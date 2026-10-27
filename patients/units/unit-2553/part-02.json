@@ -1,0 +1,889 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002553",
+      "events": [
+        {
+          "id": "2022-01-18a",
+          "kind": "pharmacy",
+          "start": "2022-01-18T14:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2022-01-14T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine report",
+              "author": "MA",
+              "date": "2022-01-18T14:00",
+              "body": "State registry query shows a Pfizer booster given 1/14/22 at a community pharmacy. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "portal_message",
+          "start": "2022-07-19T09:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment reminder",
+              "author": "front desk",
+              "date": "2022-07-19T09:02",
+              "body": "Hi Calvin, this is a reminder that your yearly physical is booked for Tuesday August 9 at 10:30. Reply here or call if you need to move it."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "annual_physical",
+          "start": "2022-08-09T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "telephone",
+          "start": "2022-08-10T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2022-08-10T11:15",
+              "body": "Pt did not come to physical yesterday. Called cell, no answer, mailbox full. Portal message sent asking him to call and reschedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "telephone",
+          "start": "2022-10-13T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's mother",
+              "author": "RN",
+              "date": "2022-10-13T13:40",
+              "body": "Mother called, very worried about Calvin. Pt has a signed release on file allowing us to speak with his parents (signed at new patient visit).\n\nShe says since the spring he has been pulling away from everyone. Did not go back to school in August, told them he was done with it. Stays in his room most of the day, she hears him talking quietly when no one is there. Lately says things about the family watching him. Not showering, wearing the same clothes. Eating very little. No statements about hurting himself or anyone else per mother, no weapons in the home. No known drug use but she isn't sure.\n\nHe has agreed to come in if she drives him. Booked with PCP Monday 10/17 at 2:00, double slot. Told her to call 911 or go to the ED if he talks about harming himself or others or becomes unsafe. She verbalized understanding. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP addendum",
+              "author": "PCP",
+              "date": "2022-10-13T17:05",
+              "body": "Read. Agree with Monday. I will plan to see him partly with mother and partly alone."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-17a",
+          "kind": "office_visit",
+          "start": "2022-10-17T14:00",
+          "end": "2022-10-17T15:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Behavior change, family concern",
+          "state": {
+            "weight_kg": 69.5,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6,
+              "Vitamin B12": 480
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Unemployed; withdrew from university August 2022"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-17T15:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-17T15:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-17T15:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Vitamin B12"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-17T15:00",
+              "results": [
+                {
+                  "test": "Amphetamines screen, urine",
+                  "loinc": "19343-9",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Cocaine screen, urine",
+                  "loinc": "3397-7",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Opiates screen, urine",
+                  "loinc": "19295-1",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Cannabinoids screen, urine",
+                  "loinc": "18282-4",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2022",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "new psychotic symptoms, urgent"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2022-10-17T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-10-17T15:30",
+              "body": "Seen with his mother for the first part of the visit, then alone.\n\nMother's account: over roughly the last six months he has withdrawn from friends and from the family. Left the university in August without finishing the term registration. Spends most of the day in his room. Barely eats with them. Stopped showering regularly. Recently accused them of watching him. She hears him murmuring to himself at night.\n\nAlone, Calvin is guarded. Says he left school because \"it wasn't safe to stay there\" and would not say more. Asked if he hears voices, he paused a long time and said \"not like you think.\" Denies wanting to hurt himself or anyone. Denies drugs and alcohol. Says he sleeps \"in pieces.\" Not interested in eating much. Agrees his weight is down.\n\nExam: thin, unshaven, clothes worn several days. Vitals as charted, afebrile. Weight 69.5 kg, down about 10 lb from last year. Affect flat, eye contact poor, answers brief and at times trail off. No tremor, no rigidity, gait normal. Thyroid not enlarged. Heart and lungs normal. No focal neuro findings.\n\nPHQ-9 6, mostly sleep, appetite and concentration items; item 9 zero.\n\nA/P: months of social withdrawal, suspiciousness, decline in self-care and probable perceptual disturbance in a 22 y/o with a family history of serious mental illness. Concern for a primary psychotic disorder. Not acutely unsafe today, mother present at home, both aware of ED and 988.\n- Medical screen today: CBC, CMP, TSH, B12, urine drug screen.\n- Urgent psychiatry referral placed; front desk to call the intake line today. Mother will drive him.\n- Recheck weight in a few weeks.\n- I will call mother once intake is set."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Psychiatry",
+              "author": "PCP",
+              "date": "2022-10-17T15:40",
+              "body": "Urgent referral. 22 y/o man, about six months of social withdrawal, paranoid ideas about family surveillance, poor self-care, weight loss of about 10 lb, probable auditory perceptual disturbance; left university in August. No prior psychiatric care. Denies SI/HI today. No medications, NKDA. Medical screening labs sent today, will forward. Family history of psychiatric illness on mother's side. Patient agrees to be seen; mother will accompany."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "portal_message",
+          "start": "2022-10-18T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-10-18T12:20",
+              "body": "Calvin, your blood counts, chemistry, thyroid, B12 and urine screen all came back normal. I've sent them to the psychiatry office. Your intake there is on the 28th; the front desk confirmed with your mom. Call me anytime before then."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "outside_records",
+          "start": "2022-11-03T10:30",
+          "conditions": [
+            {
+              "label": "Schizophrenia",
+              "action": "diagnosed",
+              "onset": "2022-05-01"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2022",
+              "action": "done",
+              "date": "2022-11-03T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Diagnostic Evaluation",
+              "author": "psychiatry",
+              "date": "2022-11-03T10:30",
+              "body": "OUTPATIENT PSYCHIATRY, COMMUNITY BEHAVIORAL HEALTH CLINIC\nDate of evaluation: 10/28/2022\nReferred by: primary care\n\nIdentifying data: 22-year-old single man, lives with his parents, accompanied by his mother. First contact with any mental health provider.\n\nPresenting problem: Over the past several months the family has watched him become steadily stranger in his behavior. He left university two months ago. He now keeps to his bedroom nearly all day and his mother hears him whispering there when he is alone. He refuses to come to family meals. He has told his parents that they hid cameras inside the walls, and he believes government agents follow his phone. He no longer bathes or changes his clothes. His speech has become hard to follow. He eats very little, has lost about 10 pounds and rarely leaves the house. He minimizes all of this.\n\nPast psychiatric history: none. No prior hospitalization, no prior medication trials, no suicide attempts.\nSubstances: denies alcohol, cannabis and other drugs. Never smoked. Recent urine screen from primary care negative.\nMedical: no chronic illness. Tonsillectomy in childhood. No current medications. NKDA.\nFamily: mother has schizophrenia and is in treatment. A maternal uncle has a long-standing psychiatric illness. Paternal grandfather with alcohol use disorder.\nSocial: unemployed since leaving school; lives with parents; on parents' insurance.\n\nMental status: disheveled young man, poor hygiene. Inattentive throughout; muttering under his breath; repeatedly glances up toward the ceiling while questions are asked. Speech soft, tangential at times. Mood \"fine.\" Affect blunted. Thought content with persecutory delusions about surveillance by family and government. Endorses hearing whispering; does not describe command content. Denies suicidal or homicidal ideation. Insight poor, judgment fair (came in, accepts follow-up).\n\nAssessment: Psychotic symptoms with functional decline for well over six months including the prodromal withdrawal, without a prominent mood episode or substance cause and with a normal medical screen. Diagnosis: schizophrenia.\n\nPlan:\n1. Recommended starting an antipsychotic and reviewed benefits and side effects with him and his mother. He declined, stating he does not trust medicines. Not committable today; no imminent risk.\n2. Weekly to biweekly visits with this clinic, case management referral, family psychoeducation for parents.\n3. Crisis plan reviewed with mother.\n4. Will revisit medication at each visit.\n\nThank you for the referral.\nAttending psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "telephone",
+          "start": "2022-11-07T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with mother",
+              "author": "PCP",
+              "date": "2022-11-07T12:10",
+              "body": "Called mother after reading the psychiatry evaluation. They have a second visit this week. He has refused medication so far. She is going to the family education group. Eating a little better. No safety concerns. Schizophrenia added to problem list. Asked her to have him come in for a weight check before the new year."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "outside_records",
+          "start": "2022-12-12T09:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2022-12-12T09:45",
+              "body": "Community behavioral health clinic, follow-up summary to primary care. Visit 12/6/2022.\n\nCalvin has attended four of five scheduled visits since intake. Still hears whispering and still believes his phone is monitored, but he is talking more in sessions and showered before today's visit. Eating with his parents a few nights a week. Continues to decline antipsychotic medication; we discussed it again today. No suicidal ideation. Case manager assigned.\n\nDx: schizophrenia. Meds: none. Allergies: NKDA.\nPlan: visits every two weeks, ongoing medication discussion, family group for parents."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-27a",
+          "kind": "office_visit",
+          "start": "2022-12-27T10:00",
+          "end": "2022-12-27T10:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Muscle cramps with exertion, dark urine",
+          "state": {
+            "weight_kg": 70.0,
+            "labs": {
+              "Creatine Kinase": 600
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-27T10:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 640
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-27T10:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-12-27T08:10",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Moderate"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuromusc-referral",
+              "action": "placed",
+              "order": "Neuromuscular clinic referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "exertional cramps with pigmenturia, elevated CK"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-12-27T11:05",
+              "body": "Came in alone today for the weight check, and brought up something new: muscle cramping.\n\nHPI: 23 y/o with schizophrenia (followed by community psychiatry, no meds). He says ever since high school, any short hard effort, like sprinting or lifting weights, brings on bad cramps in his thighs and arms and he has to stop. They ease within a few minutes of resting. A few times a year the next morning his urine has been dark, like cola. Walking, even for hours, is no problem. He started doing push-ups and squats in his room last week and had cramping, then dark urine yesterday morning; he collected this morning's first void in a cup we gave him. No injury, no joint pain, no rash, no fever. He says his father had something similar, got cramps and brown urine during military training. Denies alcohol and drugs. No medications.\n\nPsych: more engaged than in October, answers fully, still somewhat guarded. Denies SI.\n\nExam: weight 70 kg. Vitals normal. No muscle tenderness. Bulk normal, no atrophy. Strength 5/5 proximally and distally in arms and legs. Reflexes 2+ and symmetric. Gait normal. Heart and lungs normal.\n\nLabs today: CK 640 (high). UA from this morning: dipstick moderate blood, microscopy 0 RBC. Creatinine and potassium normal.\n\nA/P:\n1. Exertional cramps since adolescence with episodic pigmenturia, heme-positive urine without red cells, and an elevated resting CK, normal exam between episodes. Picture of a metabolic myopathy, glycogen storage type most likely. Referral to the neuromuscular clinic for evaluation and genetic testing. Until then: avoid short all-out efforts and heavy lifting, stay hydrated, and if urine turns dark again with pain or he feels unwell, go to the ED.\n2. Schizophrenia: per psychiatry. Weight up a little.\n3. Flu vaccine offered, declined today."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-29a",
+          "kind": "portal_message",
+          "start": "2022-12-29T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results and referral",
+              "author": "PCP",
+              "date": "2022-12-29T08:50",
+              "body": "Calvin, as we discussed, the muscle enzyme (CK) was 640, above the normal range, and the urine test picked up pigment without blood cells, which fits muscle breakdown after exercise. Your kidney numbers are normal. The neuromuscular clinic referral is in; their scheduler will call you. Easy on the push-ups until then."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "specialist_visit",
+          "start": "2023-02-21T13:00",
+          "service": "Neuromuscular Clinic",
+          "reason": "Suspected metabolic myopathy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-21T14:10",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 610
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuromusc-referral",
+              "action": "done",
+              "date": "2023-02-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Consultation",
+              "author": "neurology",
+              "date": "2023-02-27T10:00",
+              "body": "NEUROMUSCULAR CLINIC, DEPARTMENT OF NEUROLOGY\nConsultation, 2/21/2023. Requested by primary care.\n\nReason: exertional myalgia and cramps with episodes of dark urine.\n\nHistory: 23-year-old man with symptoms since about age 15. Brief high-intensity effort (sprints, weight sets) produces painful cramping of the thighs and arms within a minute or two, relieved by a few minutes of rest. Several times, cola-colored urine the following morning. Sustained low-level exercise is tolerated. No fixed weakness, no dysphagia, no breathing difficulty, no palpitations. No jaundice or abdominal swelling ever. Never hospitalized for these episodes.\n\nPMH: schizophrenia, followed by community psychiatry, no medications. Tonsillectomy in childhood.\nMeds: none. Allergies: NKDA.\nFamily: no known neuromuscular disease; patient relays a story of his father having exertional cramps in the military, not evaluated. Mother with schizophrenia.\nSocial: lives with parents, not working or in school. Never smoker. No alcohol or drugs.\n\nExam: normal bulk, no fasciculations. Neck flexion, deltoids, biceps, triceps, hip flexors, quadriceps, hamstrings and ankle muscles 5/5. Reflexes symmetric. Sensation intact. No hepatosplenomegaly. Cardiac rhythm regular.\n\nData: PCP CK 640 and heme-positive urine without RBCs. CK today 610.\n\nImpression: metabolic myopathy with exercise intolerance and recurrent myoglobinuria; a glycogen storage disorder is the leading consideration.\n\nPlan:\n- Next-generation sequencing panel for metabolic myopathies, sent today.\n- Echocardiogram and abdominal ultrasound, given that some glycogen storage disorders involve the heart and liver.\n- Activity guidance: avoid maximal short-burst effort; moderate aerobic activity is fine; hydrate; urgent care for dark urine with pain.\n- Return after results.\n\nNeuromuscular attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "imaging",
+          "start": "2023-03-28T08:00",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2023-03-28T08:00",
+              "text": "Indication: metabolic myopathy, screen for cardiac involvement. Normal left ventricular size and wall thickness. LVEF 60% by biplane method. Normal regional wall motion. Normal diastolic filling for age. Right ventricle normal in size and function. Valves structurally normal without significant regurgitation. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Normal echocardiogram. LVEF 60%."
+            },
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-03-28T09:15",
+              "text": "Indication: metabolic myopathy, screen for liver involvement. The liver measures 14.8 cm, normal echotexture, smooth contour, no focal lesion. Portal vein patent with hepatopetal flow. Gallbladder normal without stones. Common bile duct 3 mm. Pancreas unremarkable where seen. Spleen 10.2 cm, homogeneous. Both kidneys normal in size without hydronephrosis. Aorta normal caliber. No ascites.",
+              "conclusion": "Normal abdominal ultrasound. Normal liver and spleen."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Imaging reports received",
+              "author": "MA",
+              "date": "2023-03-31T11:00",
+              "body": "Echo and abdominal ultrasound reports from the hospital imaging department (ordered by neuromuscular clinic) received and attached. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "outside_records",
+          "start": "2023-04-14T10:10",
+          "conditions": [
+            {
+              "label": "Glycogen storage disease type IV (Andersen disease)",
+              "icd10": "E74.09",
+              "action": "diagnosed",
+              "onset": "2015-09-01",
+              "note": "neuromuscular form; biallelic GBE1 variants"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Follow-up: Genetic Results",
+              "author": "neurology",
+              "date": "2023-04-14T10:10",
+              "body": "NEUROMUSCULAR CLINIC\nFollow-up visit 4/11/2023.\n\nResults: The metabolic myopathy panel identified two pathogenic variants in GBE1, the glycogen branching enzyme gene, in trans (biallelic). Echocardiogram 3/28 normal, EF 60%. Abdominal ultrasound 3/28 with normal liver and spleen.\n\nDiagnosis: glycogen storage disease type IV (Andersen disease), neuromuscular presentation with exercise intolerance and episodic myoglobinuria. No evidence of liver or cardiac involvement at this time.\n\nGenetics: autosomal recessive; his parents are obligate carriers. Siblings would each have had a 1 in 4 chance; he reports none. Genetic counseling offered; he will think about it.\n\nCounseling given:\n- Avoid all-out anaerobic exertion and heavy isometric lifting. Moderate walking, cycling at conversational pace are fine.\n- Keep well hydrated, especially in heat.\n- Dark urine with muscle pain, or any high fever with muscle stiffness, needs same-day medical evaluation and a CK.\n- Please make sure any clinician starting new medicines knows his muscle condition.\n\nFollow-up: yearly in this clinic with CK; echo and liver imaging every few years or sooner for symptoms.\n\nMeds: none. Allergies: NKDA.\nNeuromuscular attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "telephone",
+          "start": "2023-04-18T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results discussion",
+              "author": "PCP",
+              "date": "2023-04-18T16:30",
+              "body": "Called Calvin about the neuromuscular letter. He had already heard from them and understood the basics: genetic, from both parents, explains the cramps, heart and liver look fine. Added GSD IV to the problem list and an alert to the chart so anyone prescribing sees it. Asked him to tell his psychiatry team; I am also faxing the letter there with his permission. No questions otherwise."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "outside_records",
+          "start": "2023-06-13T14:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2023-06-13T14:05",
+              "body": "Community behavioral health clinic, update to primary care. Seen 6/6/2023.\n\nCalvin is attending about twice a month. Persecutory ideas are less intense but not gone; he still hears whispering most days. He is going out with an old school friend now and then. Declines antipsychotic medication again; we respect this and keep the door open. Aware of his new diagnosis of glycogen storage disease type IV; noted in our record for future prescribing.\n\nDx: schizophrenia. Meds: none. Allergies: NKDA.\nPlan: continue therapy visits and case management."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 72.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T10:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-22T10:15",
+              "body": "Yearly visit, missed last year's.\n\nSince last physical: schizophrenia diagnosed by community psychiatry in October, no medication by his choice, attends therapy and case management. GSD IV (neuromuscular form) confirmed in April by GBE1 testing; echo and liver ultrasound normal.\n\nToday: no cramping episodes since spring, staying with walks and an easy stationary bike. No dark urine. Still hears whispering at times but says he can \"tune it out.\" Not working, helping his father with yard work. Sleep better. Eating well.\n\nMeds none. NKDA. No tobacco, no alcohol, no drugs.\n\nExam: weight 72.5 kg, back toward his usual. Vitals normal. Groomed, more spontaneous than last fall, affect still restricted. Heart and lungs normal. Abdomen soft, no liver or spleen edge. Strength full. Skin clear.\n\nPHQ-9 4.\n\nA/P: 1) GSD IV: CK and liver tests today; yearly neuromuscular follow-up. 2) Schizophrenia: per psychiatry, stable, not on meds. 3) Health maintenance: flu in the fall, covid booster up to him, Td due 2031."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-24T13:30",
+              "body": "Hi Calvin. CK is in the same range it has been, which for you is your normal resting level. Liver tests, kidney function, sodium and potassium are all normal. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T11:00",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T11:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2023-10-17T11:10",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. Mother drove him. No acute illness. Declined covid vaccine today. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-16a",
+          "kind": "ed_visit",
+          "start": "2023-12-16T01:20",
+          "end": "2023-12-18T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Hyperthermia and confusion after MDMA ingestion",
+          "vitals": [
+            {
+              "time": "2023-12-16T01:25",
+              "temp_c": 40.0,
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 128,
+              "rr": 26,
+              "spo2": 98
+            },
+            {
+              "time": "2023-12-16T04:30",
+              "temp_c": 38.3,
+              "bp": [
+                134,
+                80
+              ],
+              "hr": 104,
+              "rr": 20,
+              "spo2": 99
+            },
+            {
+              "time": "2023-12-18T09:00",
+              "temp_c": 36.9,
+              "bp": [
+                122,
+                74
+              ],
+              "hr": 76,
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "conditions": [
+            {
+              "label": "MDMA (ecstasy) intoxication",
+              "icd10": "T43.641A",
+              "action": "diagnosed",
+              "onset": "2023-12-15"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2023-12-16"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-16T01:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 17
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-16T01:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 14600
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-16T01:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-16T01:50",
+              "results": [
+                {
+                  "test": "Amphetamines screen, urine",
+                  "loinc": "19343-9",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Cocaine screen, urine",
+                  "loinc": "3397-7",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Opiates screen, urine",
+                  "loinc": "19295-1",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-18T06:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 8900
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-12-16T01:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record and Observation Summary",
+              "author": "emergency medicine",
+              "date": "2023-12-19T09:20",
+              "body": "REGIONAL EMERGENCY DEPARTMENT / OBSERVATION UNIT\nArrival 12/16/2023 01:20. Discharged from observation 12/18/2023 11:30.\n\nHPI: 24-year-old man brought in by two friends from a concert. Per friends he swallowed \"a small pill\" in the evening, presumed MDMA. For hours afterward he was elated, chatty and full of energy, dancing nonstop and drinking bottle after bottle of water, saying he was overheating. Over the last hour or so he became anxious and muddled, prompting the friends to bring him in. History otherwise from chart and friends: schizophrenia, untreated; glycogen storage disease type IV (neuromuscular form). No medications. NKDA.\n\nExam on arrival: T 40.0 C, BP 150/90, HR 128, RR 26, SpO2 98% RA. Skin flushed and wet. Pupils dilated, reactive. Mild jaw clenching. Alert, restless, oriented to person only intermittently. Fine tremor; intermittent increased tone in the limbs, not sustained. Lungs clear. Abdomen soft.\n\nLabs: Na 131 (mildly low). HCO3 17 with an elevated anion gap; metabolic acidosis. CK 14,600. Creatinine within normal limits. Urine drug screen negative for amphetamines, cocaine and opioids (standard immunoassay does not reliably detect MDMA).\n\nCourse: active cooling with ice packs and misting fan; lorazepam IV for agitation and tone; free water restricted, isotonic saline boluses then high-rate maintenance fluids for rhabdomyolysis given his muscle disease. Temperature normal by hour 4, mental status clear by morning. Sodium corrected gradually. Placed in observation for fluids and serial CK. CK 8,900 on the morning of 12/18 and falling, urine clear, eating and drinking, creatinine normal throughout.\n\nDiagnoses: MDMA intoxication with hyperthermia; rhabdomyolysis treated with IV fluid resuscitation; mild hyponatremia; metabolic acidosis, resolved.\n\nDisposition: home with mother. Push oral fluids, no exercise this week. Substance counseling given. PCP follow-up within the week with repeat CK and BMP. Return for dark urine, confusion, fever or decreased urine.\nAllergies: NKDA.\nED attending / observation attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "telephone",
+          "start": "2023-12-19T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2023-12-19T10:00",
+              "body": "ED and observation summary received this morning. Called pt. Home since yesterday, tired, legs a bit sore, urine light yellow. Drinking plenty. No fever, no confusion. Booked with PCP Thursday 12/21 for CK and BMP recheck. Told him to go back if urine darkens or he feels unwell."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "office_visit",
+          "start": "2023-12-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "MDMA (ecstasy) intoxication",
+              "icd10": "T43.641A",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-21T15:50",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 1150
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-21T15:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-21T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-12-21T16:10",
+              "body": "Follow-up after the ED and observation stay 12/16 to 12/18 for MDMA intoxication with hyperthermia and rhabdomyolysis. Record reviewed: Na 131, HCO3 17, CK 14,600 on arrival, CK 8,900 at discharge.\n\nHe says it was the first time he has taken anything like that; a friend offered it at the show. Remembers little of the ED. Legs were sore for two days, now fine. Urine normal color. Drinking well. No fever. Mood \"embarrassed.\" Still in care with psychiatry, still no meds.\n\nExam: well appearing, vitals normal, afebrile. No muscle tenderness, full strength. Mental status clear.\n\nA/P:\n1) Rhabdomyolysis after MDMA, in the setting of GSD IV: CK and BMP today; light activity only until CK is near his baseline.\n2) MDMA intoxication: resolved. Talked plainly about how much more dangerous stimulants and overheating are for his muscles, and about how they can worsen psychosis. He says he won't use again. Will let psychiatry know (permission given).\n\nWill message results."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-22a",
+          "kind": "portal_message",
+          "start": "2023-12-22T09:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-12-22T09:40",
+              "body": "Calvin, your CK is down to 1,150 from 8,900 at discharge, so the muscle is settling. Sodium is back to normal at 139 and your kidneys are fine. Keep to walking for now. Let's recheck the CK in about three weeks; I put in the order, any weekday morning at our lab."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

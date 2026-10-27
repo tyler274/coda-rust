@@ -1,0 +1,281 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002673",
+      "events": [
+        {
+          "id": "2025-02-05a",
+          "kind": "portal_message",
+          "start": "2025-02-05T22:48",
+          "reason": "Visit request",
+          "documents": [
+            {"type": "Patient Message", "title": "can I get in", "author": "patient", "date": "2025-02-05T22:48", "body": "Hey, I've dropped a bunch of weight without trying, like 15 lbs since summer, and my nose keeps bleeding on and off. Also not sleeping great. My buddies keep telling me I'm cranky lately lol. Can I come in next week? Mornings are best."},
+            {"type": "Patient Message", "title": "RE: can I get in", "author": "front desk", "date": "2025-02-06T08:55", "body": "Good morning Malcolm, you're set for Monday 2/10 at 8:15 with the doctor. If the nosebleeds get heavy or won't stop with pressure, call us right away."}
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "office_visit",
+          "start": "2025-02-10T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight loss, nosebleeds, poor sleep",
+          "state": {"weight_kg": 74.2},
+          "vitals": {"hr": 110},
+          "measure": ["bp", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 7}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-10T08:55", "resulted": "2025-02-10T14:10", "results": [{"test": "Hemoglobin", "value": 14.2, "unit": "g/dL"}, {"test": "White Blood Cells", "value": 7.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-10T08:55", "resulted": "2025-02-10T14:10", "results": [{"test": "Glucose", "value": 98}, {"test": "Creatinine", "value": 1.0}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2025-02-10T09:00", "resulted": "2025-02-12T10:30", "results": [{"test": "Cocaine metabolite screen, urine", "loinc": "19359-9", "text": "Positive"}]}
+          ],
+          "orders": [
+            {"id": "uds-2025", "action": "placed", "order": "Urine drug screen", "category": "lab", "reason": "weight loss, epistaxis, septal perforation"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-10T08:15"},
+            {"procedure": "Venipuncture", "performed": "2025-02-10T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-02-10T08:15", "body": "S: 29M, last seen at his physical in August. About six months of unintended weight loss, ~15 lb by his count, says he's eating and exercising the same as always. On-and-off nosebleeds, usually small, stop with pressure. Trouble falling and staying asleep. Friends have told him he's been short-tempered and moody. No fevers, night sweats, cough, GI symptoms. Still smoking a pack a day; alcohol unchanged by his account. Asked directly about drugs, he deflected.\n\nO: HR 110. Wt 74.2 kg (81 in Aug). Restless, shifting in the chair, otherwise appears well. Nasal mucosa red and inflamed with a perforation of the septum. No cervical, supraclavicular or axillary nodes. Heart tachycardic, regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin unremarkable. Neuro nonfocal.\nPHQ-9 7.\n\nLabs drawn in office, back this afternoon: Hgb 14.2, WBC 7.0, plt 250, random glucose 98, Cr 1.0.\n\nA/P\nWeight loss with recurrent epistaxis, a perforated septum, insomnia, irritability and a resting tachycardia in a young man. Counts and chemistry unremarkable. The nasal exam in particular raises concern for intranasal stimulant use. Urine drug screen sent, explained why and he agreed to give the sample.\n- Will call with tox result and bring him back to talk it through\n- Smoking: advised to quit, not today"}
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "telephone",
+          "start": "2025-02-12T11:20",
+          "reason": "Urine drug screen result",
+          "orders": [
+            {"id": "uds-2025", "action": "done", "date": "2025-02-12T10:30"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result call", "author": "RN", "date": "2025-02-12T11:20", "body": "Per PCP, called pt re: urine screen. Reached him on cell, verified DOB. Told him the screen was positive for cocaine and negative for everything else on the panel, and that the doctor would like to see him in person to go over it. He was quiet, then said ok. Booked Wed 2/19 at 4:30."}
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "office_visit",
+          "start": "2025-02-19T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up drug screen result",
+          "conditions": [
+            {"label": "Cocaine abuse", "icd10": "F14.10", "action": "diagnosed", "onset": "2024-03-01"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "orders": [
+            {"id": "sud-ref-1", "action": "placed", "order": "Outpatient addiction treatment referral", "category": "referral", "to": "Addiction Medicine", "reason": "cocaine use"},
+            {"id": "sud-ref-1", "action": "cancelled", "date": "2025-02-19T17:10"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-19T16:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2025-02-19T16:30", "body": "Back to discuss the positive screen. More open today. Has been snorting cocaine, mostly on weekends, sometimes at work events, for about a year. Says it started socially and he figured he had it under control. Connects the nosebleeds and weight to it once we talk it through.\n\nExam: more settled than last week. Septum perforated as before, no active bleeding.\n\nA/P\nCocaine abuse, intranasal.\n- Went over the septal damage, the risk to his heart (spikes in pressure and rate, arrhythmia, MI even at his age), and the family history of addiction on his dad's side and early heart disease in his grandfather.\n- Offered referral to an outpatient addiction treatment program. He would rather try to cut back on his own for now. Order withdrawn at his request, offer left open.\n- Combined with cigarettes, his cardiac risk is real. Quitline again.\n- Recheck weight and how he's doing in 2 months."}
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "office_visit",
+          "start": "2025-04-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "2 month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T09:12",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Patient Message", "title": "We missed you", "author": "front desk", "date": "2025-04-22T09:12", "body": "Hi Malcolm, we had you on the schedule yesterday morning for your follow-up. Please reply or call to rebook, the doctor would like to see you."},
+            {"type": "Patient Message", "title": "RE: We missed you", "author": "patient", "date": "2025-05-28T13:40", "body": "sorry, been slammed. can do early June"},
+            {"type": "Patient Message", "title": "RE: We missed you", "author": "front desk", "date": "2025-05-28T15:02", "body": "You're booked Monday 6/9 at 7:45."}
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "office_visit",
+          "start": "2025-06-09T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up cocaine use, weight",
+          "state": {"weight_kg": 74.5},
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-06-09T07:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2025-06-09T07:45", "body": "Says he has cut way back, still uses \"once in a while.\" No nosebleeds in the past month. Sleep a little better. Weight about flat, 74.5. Smoking the same.\nNose: perforation unchanged, mucosa less angry. Heart regular, lungs clear.\nA/P: Cocaine abuse, reports reduced use. Raised the treatment program again, he declined; he knows how to reach me if that changes. Tobacco cessation advised. Follow up in fall."}
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "ed_visit",
+          "start": "2025-10-13T23:40",
+          "end": "2025-10-14T04:50",
+          "service": "Emergency Medicine",
+          "reason": "Palpitations, anxiety and chest discomfort after cocaine",
+          "conditions": [
+            {"label": "Acute cocaine intoxication", "icd10": "F14.920", "action": "diagnosed", "onset": "2025-10-13"}
+          ],
+          "vitals": [
+            {"time": "2025-10-13T23:44", "temp_c": 37.1, "hr": 126, "rr": 20, "bp": [164, 92], "spo2": 98},
+            {"time": "2025-10-14T04:30", "hr": 94, "bp": [134, 82], "rr": 16, "spo2": 98}
+          ],
+          "medications": [
+            {"drug_text": "lorazepam 2 MG/ML Injectable Solution", "action": "start", "sig": "2 mg IV once", "dose": {"value": 2, "unit": "mg"}, "route": "Intravenous", "course": "short", "reason": "cocaine intoxication"},
+            {"drug_text": "aspirin 325 MG Oral Tablet", "action": "start", "sig": "325 mg chewed once", "dose": {"value": 325, "unit": "mg"}, "route": "Oral", "course": "short", "reason": "chest discomfort"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-10-13T23:55", "results": [{"test": "Troponin I, High Sensitivity", "value": 3, "unit": "ng/L"}]},
+            {"panel": null, "collected": "2025-10-14T02:55", "results": [{"test": "Troponin I, High Sensitivity", "value": 4, "unit": "ng/L"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-13T23:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-13T23:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-10-14T00:10", "results": [{"test": "Cocaine metabolite screen, urine", "loinc": "19359-9", "text": "Positive"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-10-13T23:48", "text": "Sinus tachycardia, rate 124. Normal axis. PR, QRS and QT intervals within normal limits. No ST-segment elevation or depression. No T-wave inversions.", "conclusion": "Sinus tachycardia without ST-segment changes."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-10-13T23:40"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-10-13T23:48"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Provider Note", "author": "emergency medicine", "date": "2025-10-14T05:05", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 10/13/2025 23:40. Departure 10/14/2025 04:50.\nAllergies: NKDA. Home medications: none.\n\nCC: heart racing, chest discomfort\n\nHPI: 30 y/o M walked in with a friend. Was at a party and roughly half an hour before arrival snorted a white powder, which he then told us was cocaine. Abrupt onset of pounding heartbeat and anxiety, mild chest discomfort, nonradiating. Describes himself as wired and on edge. Friend says he was fine earlier in the evening. Denies fever, chills, cough, recent illness. Known prior cocaine use per pt; smokes ~1 ppd; drinks socially. FHx notable for early CAD in a grandfather.\n\nExam: T 37.1 C, HR 126, RR 20, BP 164/92, SpO2 98% RA. Anxious, fidgety, alert and oriented. Heart: regular, fast, no murmurs, rubs or gallops. Lungs clear bilaterally. Abd soft. Neuro: alert, fluent, moves all extremities, no focal deficit.\n\nECG (23:48): sinus tachycardia, no ST changes.\n\nED course: lorazepam 2 mg IV and aspirin 325 mg PO chewed. hs-troponin I 3 ng/L at 23:55 and 4 ng/L at 02:55. CBC and BMP within normal limits. Urine cocaine screen positive. Heart rate and anxiety settled over the next hours. At 04:30 HR 94, BP 134/82, chest discomfort resolved.\n\nImpression: acute cocaine intoxication with sympathomimetic symptoms; MI ruled out by serial troponins and ECG.\n\nDisposition: discharged home with friend. Counseled to avoid cocaine; return precautions for chest pain, palpitations, shortness of breath. Follow up with PCP within 1 week. Copy to PCP."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "outside_records",
+          "start": "2025-10-14T10:20",
+          "reason": "ED record received",
+          "documents": [
+            {"type": "Outside Records", "title": "ED record received", "author": "front desk", "date": "2025-10-14T10:20", "body": "ED provider note, ECG tracing and labs from the regional hospital for 10/13 overnight visit received electronically. Routed to PCP inbox."},
+            {"type": "Progress Notes", "title": "ED record review", "author": "PCP", "date": "2025-10-14T12:35", "body": "Reviewed. Cocaine intoxication, troponins negative x2, ECG sinus tach only. Asked front desk to reach him for a visit this week or next."}
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "portal_message",
+          "start": "2025-10-15T07:58",
+          "reason": "Follow-up after ED",
+          "documents": [
+            {"type": "Patient Message", "title": "after the ER", "author": "patient", "date": "2025-10-15T07:58", "body": "I guess you saw I ended up in the ER Monday night. That scared me. I'm ready to talk about the program you mentioned. When can I come in"},
+            {"type": "Patient Message", "title": "RE: after the ER", "author": "PCP", "date": "2025-10-15T12:10", "body": "Glad you reached out, and glad you're ok. I have Monday 10/20 at 8:00 if that works; the front desk will confirm. If you get chest pain or your heart races again, go straight back to the ER."}
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "office_visit",
+          "start": "2025-10-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, cocaine use",
+          "conditions": [
+            {"label": "Acute cocaine intoxication", "icd10": "F14.920", "action": "resolved"},
+            {"label": "Cocaine abuse", "icd10": "F14.10", "action": "resolved", "note": "reclassified as severe use disorder"},
+            {"label": "Cocaine use disorder, severe", "icd10": "F14.20", "action": "diagnosed", "onset": "2024-03-01"}
+          ],
+          "state": {"weight_kg": 75.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 5},
+            {"survey": "AUDIT-C total score", "value": 4}
+          ],
+          "orders": [
+            {"id": "sud-ref-2", "action": "placed", "order": "Outpatient addiction treatment referral", "category": "referral", "to": "Addiction Medicine", "reason": "severe cocaine use disorder"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-20T08:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-20T08:42"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-10-20T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-20T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2025-10-20T08:00", "body": "Seen one week after ED visit for cocaine intoxication (palpitations, chest discomfort; serial troponins and ECG reassuring per their record). Feels back to baseline. No chest pain, palpitations or SOB since.\n\nMuch more forthcoming today. Use never really came down after our June visit; mostly weekends but some weeknights, cravings when he's out with clients, spends more than he means to, has tried to stop several times and couldn't, kept using knowing about his nose, and now the ER. No cocaine since that night, he says. Drinking a little less. Still 1 ppd.\n\nExam: HR and BP normal today. Wt 75.0. Calm, good eye contact. Septal perforation unchanged, no bleeding. Heart RRR no murmur. Lungs clear.\nPHQ-9 5. AUDIT-C 4.\n\nA/P\n1. Cocaine use disorder, severe (updated from cocaine abuse; meets criteria on today's history). He's ready. Referral to outpatient addiction treatment program placed, he'll call for intake this week. Release signed so they can send notes. No medication indicated.\n2. Acute cocaine intoxication: resolved.\n3. Tobacco use disorder: advised to quit; he wants to tackle one thing at a time.\n4. Flu and COVID given.\nTelehealth check-in in a few months."}
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "outside_records",
+          "start": "2025-11-17T14:00",
+          "reason": "Addiction program intake letter",
+          "orders": [
+            {"id": "sud-ref-2", "action": "done", "date": "2025-11-17T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Addiction Program Intake", "author": "addiction medicine", "date": "2025-11-17T14:00", "body": "OUTPATIENT SUBSTANCE USE TREATMENT PROGRAM — INTAKE SUMMARY\nDate of intake: 11/06/2025\nReferred by: primary care physician\nAllergies: NKDA. Medications: none.\n\nMr. Kirby is a 30-year-old sales representative referred after an ED visit for cocaine intoxication on 10/13/2025. He describes intranasal cocaine use beginning about early 2024, escalating over 2024-2025, with cravings, repeated unsuccessful attempts to stop, money and time spent, sleep and mood effects, use in risky settings, and continued use despite nasal septal damage and the ED visit. He reports no cocaine since 10/13/2025. Smokes about 1 pack per day. Drinks socially. Father with alcohol use disorder.\n\nDiagnoses: Cocaine use disorder, severe, in early abstinence. Tobacco use disorder.\n\nPlan: weekly group cognitive behavioral therapy plus individual counseling; random urine drug screens; tobacco cessation resources offered. No pharmacotherapy indicated. We will update the referring office periodically with patient consent.\n\nIntake clinician, outpatient addiction program"},
+            {"type": "Progress Notes", "title": "Letter review", "author": "PCP", "date": "2025-11-18T07:40", "body": "Intake letter read. Good that he followed through. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "telehealth_visit",
+          "start": "2026-02-09T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in, substance use treatment",
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2026-02-09T12:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Follow-up", "author": "PCP", "date": "2026-02-09T12:30", "body": "Video from his car on lunch break, consented to telehealth, identity verified.\nGoing to group every week and seeing his counselor. No cocaine since October, he says, and the urine screens there have been clean. Sleeping much better. No nosebleeds. Thinks he's put a few pounds back on. Still about a pack a day; the cigarettes are what he leans on now.\nAppears well on video, speech normal, upbeat.\nA/P: Cocaine use disorder, severe, in early remission by report, engaged in treatment. Keep going. Tobacco: offered nicotine patches with a short-acting form for cravings, declined for now, maybe in the summer. Physical in August."}
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T10:45",
+          "reason": "Addiction program progress letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Treatment Progress Update", "author": "addiction medicine", "date": "2026-03-16T10:45", "body": "OUTPATIENT SUBSTANCE USE TREATMENT PROGRAM — PROGRESS UPDATE\nReport date: 03/12/2026\n\nPatient has attended group and individual sessions consistently since intake in November. All random urine drug screens have been negative. He continues to report abstinence from cocaine. Tobacco use ongoing; cessation resources re-offered.\n\nGiven his engagement, sessions are stepped down to every other week. Diagnoses unchanged: cocaine use disorder, severe; tobacco use disorder. No medications.\n\nCounselor, outpatient addiction program"}
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "annual_physical",
+          "start": "2026-08-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 78.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "AUDIT-C total score", "value": 4}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-14T08:35", "resulted": "2026-08-15T07:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-08-14T08:35", "resulted": "2026-08-15T07:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-08-14T08:35", "resulted": "2026-08-15T07:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-08-14T08:00"},
+            {"procedure": "Venipuncture", "performed": "2026-08-14T08:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-08-14T08:00", "body": "31M, yearly. Doing well. Still in the program every other week, no cocaine since last October by his report. Work going fine. Weight back up to 78. Sleeping normally. Drinks less than he used to. Still 1 ppd.\n\nMeds: none. NKDA. FHx unchanged.\nROS: no chest pain, palpitations, nosebleeds, cough or SOB.\n\nExam: well-appearing, relaxed. Wt 78.0. Septal perforation unchanged in size, mucosa healed, no crusting or bleeding. Oropharynx clear. No adenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin normal. Mood euthymic.\nPHQ-9 3. AUDIT-C 4.\n\nA/P\n1. Cocaine use disorder, severe, sustained abstinence by report since 10/2025, engaged in treatment. Proud of him and told him so.\n2. Tobacco use disorder: brief counseling; he'd like to try quitting after a big work conference this fall, we'll revisit then.\n3. Preventive: CBC, CMP, lipids today. Flu/COVID in the fall.\n\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T10:05",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your physical labs", "author": "PCP", "date": "2026-08-17T10:05", "body": "Hi Malcolm, everything from Friday came back normal: blood counts, kidney and liver panel, cholesterol. Good visit. Let me know when you're ready to try the patches."},
+            {"type": "Patient Message", "title": "RE: Your physical labs", "author": "patient", "date": "2026-08-17T18:31", "body": "Awesome, thanks. Will do."}
+          ]
+        }
+      ]
+    }
+  ]
+}

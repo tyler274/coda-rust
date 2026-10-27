@@ -1,0 +1,298 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002559",
+      "given": "Brandon",
+      "family": "Crowley",
+      "birth_date": "1992-06-02",
+      "address_line": "41 Lyman Terrace, Apt 3",
+      "phone": "+1-518-555-0193",
+      "email": "brandon.crowley@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer with HIV off therapy and opioid use disorder with heroin injection who joins the practice in August 2024. Culture-negative polyarticular septic arthritis (2024), wound botulism (2025) and tuberculous meningitis (2026, after his last practice visit) follow, with ART and buprenorphine started, lapsed and restarted.",
+      "events": [
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T10:40",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-08-12T10:40",
+              "body": "Brandon phoned looking for a primary doctor. Says he hasn't had one in a couple of years and his old HIV clinic \"dropped\" him after he stopped going. Has MassHealth. Booked new-patient visit 8/20 at 9:00. Asked him to bring any pill bottles and the name of the old clinic so we can request records. Best contact is cell, ok to text."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T09:00",
+          "end": "2024-08-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; HIV, opioid use",
+          "conditions": [
+            {"label": "Human immunodeficiency virus disease", "action": "history", "onset": "2019-05-01", "note": "diagnosed about 2019 at an outside clinic; off ART over a year"},
+            {"label": "Opioid use disorder", "action": "diagnosed", "onset": "2016-01-01", "note": "heroin, injection use"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 73.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Construction laborer"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Housing status", "value": "Lives alone in an apartment"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 6},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T09:50", "resulted": "2024-08-21T07:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T09:50", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": null, "collected": "2024-08-20T09:50", "resulted": "2024-08-23T14:10", "results": [
+              {"test": "HIV-1 RNA Viral Load", "value": 41000},
+              {"test": "CD4 Count", "value": 318},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis B Surface Antigen", "text": "Negative"},
+              {"test": "Hepatitis B Surface Antibody", "text": "Negative"},
+              {"test": "Rapid Plasma Reagin", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-08-20T09:00"}, {"procedure": "Venipuncture", "performed": "2024-08-20T09:50"}],
+          "orders": [{"id": "hiv-clinic-referral", "action": "placed", "order": "Infectious disease (HIV clinic) referral", "category": "referral", "to": "Infectious Disease", "reason": "HIV, off antiretroviral therapy"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-20T10:20",
+              "body": "NEW PATIENT\n\n32M, construction laborer, here to get set up with primary care. Two things he wants on the table right away: he has HIV and he uses heroin.\n\nHIV: told he was positive around 2019 at a clinic out of the area. Was on a once-daily pill for a while, doesn't remember the name. Stopped going more than a year ago, ran out, never refilled. No thrush, no weight loss he's noticed, no night sweats, no cough. Doesn't know his last CD4.\n\nOpioids: injects heroin, most days, for years. Tried buprenorphine once \"a long time ago,\" got it off the street mostly, never in a program. Denies overdose in the past year. Uses his own works most of the time, admits not always new. Knows about the syringe exchange.\n\nPMH: as above. No surgeries. Meds: none. Allergies: none known.\nFH: dad has coronary disease, mom high blood pressure, brother treated for depression.\nSH: lives alone, apartment. Works construction, day labor lately. Smokes a pack a day, since about 20. Drinks a beer or two a month. Single.\n\nROS otherwise negative.\n\nExam: thin, pleasant, cooperative, a little guarded at first. Vitals reviewed, afebrile. No thrush, no adenopathy cervical/axillary. Heart regular, no murmur. Lungs clear. Abd soft. Old track marks both antecubital fossae, no abscess, no cellulitis. Joints normal. Skin otherwise clear.\nPHQ-9 6, AUDIT-C 1.\n\nA/P\n1. HIV, not on treatment. Viral load, CD4, hep B/C, RPR, CBC, CMP today. Referral to the HIV clinic; he agrees to go. Explained that treatment now is one pill and that undetectable means he can't pass it on.\n2. Opioid use disorder, injecting. Offered to start buprenorphine here, either home start or in office. He wants to think about it, \"not ready this week.\" Door is open. Talked about not using alone, fentanyl test strips, new needles each time.\n3. Tobacco. Advised quitting. Not interested right now, declined patch/gum.\n4. Prevention: hep B status pending; will vaccinate if non-immune. Flu shot when available.\n\nRTC 2-4 weeks, sooner if he wants to start bup."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T16:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-08-23T16:05",
+              "body": "Hi Brandon, your labs are back. Blood counts, kidney and liver tests are normal. Hepatitis C and syphilis tests are negative. The HIV viral load is 41,000 and your CD4 is 318, which tells me your immune system is still in decent shape but the virus is active, so getting back on treatment soon matters. The HIV clinic should call you this week to schedule. You are not immune to hepatitis B, so I'd like to give you that vaccine at your next visit. Call or text me with questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T13:20",
+          "documents": [
+            {
+              "type": "Correspondence",
+              "title": "HIV clinic: missed intake",
+              "author": "infectious disease",
+              "date": "2024-09-24T13:20",
+              "body": "Infectious Disease / HIV Clinic\nRe: Brandon Crowley, DOB 06/02/1992\n\nThank you for the referral. Mr. Crowley was scheduled for a new-patient intake on 09/19/2024 and did not arrive. Our patient navigator left two voicemails. We have offered a new intake date of 10/31/2024 and will let you know if he is seen.\n\nInfectious Disease Clinic, patient navigation"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach re HIV intake",
+              "author": "RN",
+              "date": "2024-09-25T11:15",
+              "body": "Called pt about the missed HIV clinic intake. He says he had work that day and forgot. Gave him the new date 10/31 and the clinic's number. Also asked if he was ready to talk about buprenorphine; says \"maybe next month.\" Encouraged him to come in any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-28a",
+          "kind": "ed_visit",
+          "start": "2024-10-28T15:40",
+          "end": "2024-10-28T22:10",
+          "service": "Emergency Medicine",
+          "reason": "fever and multiple painful joints",
+          "conditions": [
+            {"label": "Septic arthritis, multiple sites", "icd10": "M00.9", "action": "diagnosed", "onset": "2024-10-14", "note": "knees, wrists, elbows; culture-negative"}
+          ],
+          "vitals": {"temp_c": 38.9, "hr": 110, "bp": [130, 85]},
+          "measure": ["rr", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-28T16:05", "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-10-28T16:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-10-28T16:05", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 85},
+              {"test": "C Reactive Protein", "value": 120, "unit": "mg/L"}
+            ]},
+            {"panel": null, "collected": "2024-10-28T16:10", "resulted": "2024-11-02T08:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (2 sets)"}]},
+            {"panel": null, "collected": "2024-10-28T17:30", "results": [
+              {"test": "Leukocytes in synovial fluid", "loinc": "26466-3", "unit": "/uL", "value": 60000},
+              {"test": "Neutrophils/100 leukocytes in synovial fluid", "loinc": "26518-1", "unit": "%", "value": 90},
+              {"test": "Gram stain, synovial fluid", "loinc": "664-3", "text": "No organisms seen"}
+            ]},
+            {"panel": null, "collected": "2024-10-28T17:30", "resulted": "2024-11-01T09:00", "results": [{"test": "Synovial fluid culture", "loinc": "6463-4", "text": "No growth, final"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-10-28T15:40"},
+            {"procedure": "Arthrocentesis or injection, major joint", "performed": "2024-10-28T17:30"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-10-30T09:00",
+              "body": "Emergency Department, community teaching hospital\nPatient: Brandon Crowley  DOB 06/02/1992\nDate of service: 10/28/2024\nPCP on file: primary care internal medicine (copy sent)\n\nCC: fever, aching all over, joints swollen\n\nHPI: 32-year-old man with HIV (not currently treated) and opioid use disorder who injects. About two weeks of fevers and feeling run down. Joint pain started in both knees and over the following days moved into his wrists and elbows. No injury. No recent travel. No rash noticed, no urethral discharge.\n\nMeds: none. Allergies: NKDA.\nPMH: HIV, opioid use disorder. PSH: none.\nFH: father CAD, mother HTN, brother MDD.\nSH: injects heroin; smokes 1 ppd; rare alcohol.\n\nTriage: T 38.9 C (102 F), HR 110, BP 130/85.\n\nExam: ill-appearing, diaphoretic. Knees, wrists and elbows each warm and red, exquisitely tender, motion limited by pain; right knee with a large effusion. Heart tachycardic with a regurgitant murmur not documented before. Lungs clear. No splinter hemorrhages or conjunctival petechiae noted. Antecubital track marks, no abscess.\n\nResults: WBC 15.0 K/uL. ESR 85 mm/hr. CRP 120 mg/L. BMP unremarkable.\nRight knee arthrocentesis (bedside, sterile prep): turbid fluid. Synovial WBC 60,000/uL, 90% neutrophils. Gram stain: no organisms. No crystals. Culture sent. Blood cultures x2 drawn before antibiotics.\n\nED course: vancomycin and ceftriaxone IV after cultures. Acetaminophen. Orthopedics and medicine consulted.\n\nImpression: septic arthritis, polyarticular, in a person who injects drugs; new murmur, endocarditis to be excluded.\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-28b",
+          "kind": "hospital_admission",
+          "start": "2024-10-28T22:10",
+          "end": "2024-11-12T13:00",
+          "service": "Internal Medicine — Hospitalist",
+          "reason": "septic arthritis",
+          "labs": [
+            {"panel": null, "collected": "2024-10-31T06:00", "resulted": "2024-11-02T12:00", "results": [
+              {"test": "HIV-1 RNA Viral Load", "value": 52000},
+              {"test": "CD4 Count", "value": 285}
+            ]},
+            {"panel": null, "collected": "2024-11-11T06:00", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 40},
+              {"test": "C Reactive Protein", "value": 18, "unit": "mg/L"}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-10-30T10:30",
+              "text": "Indication: fever, new murmur, injection drug use. Left ventricle normal in size and wall thickness with normal systolic function, estimated ejection fraction 60%. Right ventricle normal size and function. Aortic, mitral, tricuspid and pulmonic valves structurally normal with normal leaflet motion. No vegetation seen. No significant valvular regurgitation or stenosis. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Normal study. No echocardiographic evidence of endocarditis."
+            }
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth once daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV"},
+            {"drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film", "action": "start", "sig": "Dissolve 1 film under the tongue twice daily", "dose": {"value": 1, "unit": "film"}, "frequency": "BID", "route": "Sublingual", "course": "chronic", "reason": "opioid use disorder"},
+            {"drug": "naloxone hydrochloride 40 MG/ML Nasal Spray", "action": "start", "sig": "1 spray in one nostril for suspected overdose; may repeat in 2-3 minutes", "dose": {"value": 4, "unit": "mg"}, "frequency": "PRN", "route": "Nasal", "course": "chronic", "reason": "overdose rescue"},
+            {"drug_text": "linezolid 600 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily through 11/26/2024", "dose": {"value": 600, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "septic arthritis"}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Orthopedics: right knee arthroscopic irrigation and debridement",
+              "author": "orthopedic surgery",
+              "date": "2024-11-13T10:00",
+              "body": "Orthopaedic Surgery Operative Report\nDate of surgery: 10/29/2024\nPreoperative diagnosis: septic arthritis, right knee (polyarticular presentation)\nPostoperative diagnosis: same\nProcedure: arthroscopic irrigation and debridement, right knee\nAnesthesia: general\nAllergies: NKDA\n\nFindings: cloudy, thin fluid on entry. Diffuse synovitis with fibrinous debris in the suprapatellar pouch and both gutters. Articular cartilage intact. Menisci and cruciates intact.\n\nStandard anterolateral and anteromedial portals. Fluid sampled for culture. Synovectomy of inflamed tissue with shaver; 9 L of saline lavage. Portals closed with nylon. Sterile dressing. No complications. EBL minimal.\n\nPlan: weight bearing as tolerated, knee range of motion with PT, antibiotics per medicine/ID. Suture removal at 10-14 days."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary: septic arthritis",
+              "author": "hospitalist",
+              "date": "2024-11-13T15:30",
+              "body": "Community teaching hospital, Medicine Service\nAdmitted 10/28/2024, discharged 11/12/2024\n\nPrincipal diagnosis: septic arthritis, polyarticular (knees, wrists, elbows), culture-negative\nOther: HIV, off ART at admission; opioid use disorder, injection use\nAllergies: NKDA\n\nCourse:\n- Joints: right knee aspirate with 60,000 WBC, 90% neutrophils, no organisms on Gram stain. Arthroscopic washout of the right knee 10/29. Wrists and elbows improved on antibiotics alone. Synovial and blood cultures (2 sets) final with no growth. Vancomycin plus ceftriaxone IV for 14 days, transitioned to oral linezolid 600 mg BID for another 14 days (last dose 11/26). ESR 85 to 40 and CRP 120 to 18 mg/L by discharge.\n- Murmur: heard in the ED while febrile and tachycardic, not appreciated after day 3. TTE 10/30 with normal valves, no vegetation, EF 60%. With negative cultures, felt to be a flow murmur; no endocarditis.\n- HIV: VL 52,000, CD4 285. ID consulted; started bictegravir/emtricitabine/tenofovir alafenamide daily on 11/1. Follow-up booked at the HIV clinic.\n- OUD: addiction consult. Buprenorphine/naloxone started, now 8/2 mg film twice daily, no withdrawal, no cravings by discharge. Naloxone nasal spray given. Bridge script to 11/26; PCP to continue.\n\nDischarge medications:\n1. bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily\n2. buprenorphine/naloxone 8/2 mg SL film BID\n3. linezolid 600 mg PO BID through 11/26\n4. naloxone 4 mg nasal spray PRN\n\nFollow-up: PCP within 1 week, HIV clinic 12/11, orthopedics for suture removal.\nWeekly CBC while on linezolid."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "telephone",
+          "start": "2024-11-14T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2024-11-14T09:30",
+              "body": "Transitional care call. Home since 11/12. Taking linezolid, the HIV pill and the films; picked everything up. Knees sore but walking, wrists better. No fever. Using a cane his neighbor lent him. Booked with PCP 11/19 (sutures out at ortho 11/22). Reminded him of the weekly blood count while on linezolid; can be drawn at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "state": {"weight_kg": 68.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-11-19T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-11-19T08:55", "results": [{"test": "C Reactive Protein", "value": 9, "unit": "mg/L"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-11-19T09:10"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-11-19T09:12"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-11-19T08:30"},
+            {"procedure": "Immunization administration", "performed": "2024-11-19T09:10"}
+          ],
+          "orders": [{"id": "hiv-clinic-referral", "action": "done", "date": "2024-11-19T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2024-11-19T09:40",
+              "body": "Post-hospital visit, discharge summary reviewed.\n\nAdmitted 10/28-11/12 for culture-negative septic arthritis of knees, wrists and elbows; R knee scoped and washed out. Echo normal. Now on day 7 of oral linezolid, finishes 11/26. Started HIV meds in hospital and buprenorphine.\n\nHow he's doing: fevers gone. R knee stiff in the morning, loosens after 20 min. Wrists and elbows nearly back to normal. Off the cane mostly. No diarrhea, no numbness or vision change on linezolid. Taking the HIV pill every morning with the films. No use since admission, says cravings are \"way down.\" Has naloxone at home.\n\nExam: afebrile, vitals ok. Weight down 5 kg from August. R knee portals healing, small effusion, warm-ish but not hot, flexion to about 110. L knee, wrists, elbows without effusion, full motion. Heart regular, no murmur today. Lungs clear.\n\nA/P\n1. Septic arthritis, improving. Finish linezolid. CBC and CRP today. PT exercises from hospital. Call for fever or new joint swelling.\n2. HIV, ART restarted 11/1. HIV clinic 12/11.\n3. OUD on buprenorphine/naloxone 8/2 BID. I'll take over prescribing from here. PDMP checked, only the hospital bridge script. Urine screen today: buprenorphine positive, otherwise negative. Rx for 4 weeks.\n4. Flu shot and PCV20 today.\n5. Smoking: still a pack a day. Not ready.\n\nRTC 4 weeks."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC and CRP",
+              "author": "PCP",
+              "date": "2024-11-20T12:15",
+              "body": "Blood counts normal, platelets fine on the linezolid. CRP down to 9. Good. Finish the pills on the 26th."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "outside_records",
+          "start": "2024-12-13T10:00",
+          "labs": [
+            {"panel": null, "collected": "2024-12-11T10:30", "resulted": "2024-12-13T09:00", "results": [
+              {"test": "HIV-1 RNA Viral Load", "value": 180},
+              {"test": "CD4 Count", "value": 344}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "HIV clinic follow-up",
+              "author": "infectious disease",
+              "date": "2024-12-16T11:00",
+              "body": "Infectious Disease / HIV Clinic\nVisit date: 12/11/2024\nRe: Brandon Crowley\n\nSeen in follow-up after starting bictegravir/emtricitabine/tenofovir alafenamide during his October admission. Reports taking it every morning, missed maybe two doses. Tolerating it without nausea or GI upset. Finished linezolid 11/26; joints feel fine apart from some right knee stiffness.\n\nMeds: bictegravir/FTC/TAF daily; buprenorphine/naloxone 8/2 mg BID (PCP); naloxone nasal spray.\nAllergies: NKDA.\n\nToday: HIV-1 RNA 180 copies/mL (from 52,000), CD4 344.\n\nAssessment: good early virologic response. Expect suppression on the next check. Continue current regimen. Return in 6 months with labs, sooner if problems.\n\nInfectious Disease attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "buprenorphine follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [{"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2024-12-17T15:45"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-17T15:20"},
+            {"procedure": "Immunization administration", "performed": "2024-12-17T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Buprenorphine Follow-up",
+              "author": "PCP",
+              "date": "2024-12-17T16:05",
+              "body": "S: Doing well on 8/2 twice a day. No heroin since October. Some evening cravings on weekends, manageable. Working a few days a week again, light duty. R knee still a bit stiff going down ladders. Saw the HIV clinic last week, viral load already way down (letter in chart). Smoking unchanged.\n\nO: vitals fine. Calm, engaged. R knee no effusion, flexion near full.\nPDMP reviewed, appropriate. UDS: buprenorphine +, otherwise negative.\n\nA/P\n- OUD in early remission on buprenorphine/naloxone, same dose, 4-week Rx.\n- HIV, responding to ART per ID.\n- Hep B vaccine #1 today, #2 in a month.\n- Tobacco: asked; not ready.\n\nRTC 1 month."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

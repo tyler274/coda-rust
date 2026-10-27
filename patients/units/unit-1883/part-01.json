@@ -1,0 +1,353 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001883",
+      "given": "Amy",
+      "family": "Hale",
+      "birth_date": "1993-06-23",
+      "address_line": "27 Cranberry Hollow Road",
+      "phone": "+1-413-555-0138",
+      "email": "amy.hale@example.test",
+      "marital_status": "married",
+      "summary": "Thirty-three-year-old teacher who joined in August 2023 and within months was found to have autoimmune primary adrenal insufficiency, followed in 2025 by primary ovarian insufficiency and a single gout flare. An under-replacement ED visit in March 2026 led endocrinology to raise her fludrocortisone; outside letters arrive late or not at all.",
+      "events": [
+        {
+          "id": "2023-08-16a",
+          "kind": "telephone",
+          "start": "2023-08-16T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2023-08-16T10:12",
+              "body": "Caller would like to transfer her primary care here; her previous office is closing its adult panel. Teacher, wants something before school starts. Booked new-patient visit 8/23 at 1:00. Insurance card photo received through the portal. Records release form emailed for her old office to sign off on."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "establish_care",
+          "start": "2023-08-23T13:00",
+          "end": "2023-08-23T13:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 60.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.62}},
+          "vitals": {"weight_kg": 60.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Never"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-23T13:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-23T13:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-23T13:55", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-08-23T13:55", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2023-08-23T13:55", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-08-23T13:55", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-08-23T13:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-23T14:20",
+              "body": "30F here to establish. Teaches second grade, married, no kids. Previous PCP office closed adult panel; records requested.\n\nNo chronic medical problems. No meds, no supplements. No surgeries. NKDA.\n\nShe says she has been more worn out than usual since around June, which she chalks up to a rough end of the school year and a lot of summer travel with her husband. Sleeping fine. No fevers, no GI complaints. Periods regular, monthly.\n\nFamily: mother has an underactive thyroid from autoimmune thyroiditis. A maternal aunt has type 1 diabetes. Paternal grandmother had rheumatoid arthritis.\nSocial: never smoked. Has never drunk alcohol. No drugs.\n\nExam: slim, well appearing. HEENT unremarkable. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft. Skin without rash. Mood bright.\n\nA/P\n1. Health maintenance. Baseline CBC, CMP, lipids, TSH. One-time HIV and hep C screens, she agrees. Pap per old records, will confirm date when they arrive. Flu vaccine when it comes in.\n2. Fatigue, mild. Likely situational; labs above should cover the basics. Let me know if it is not lifting once school is back in session.\n\nFollow up yearly or as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T08:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-25T08:41",
+              "body": "Hi Amy, all of your blood work came back fine: blood counts, kidney and liver tests, thyroid and cholesterol are all normal, and both screening tests were negative. Nothing to do here. Good luck with the start of the year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "outside_records",
+          "start": "2023-09-06T11:30",
+          "immunizations": [{"vaccine": "Tdap", "date": "2021-05-12T10:00"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2023-09-06T11:30",
+              "body": "Received 14 pages from her former primary care practice covering 2016 to 2023. Annual exams only, no chronic diagnoses, no prescriptions on file. Cervical cytology 2022: negative. Tdap given May 2021. HPV vaccine series documented as completed in her teens. Flu shots most years. Indexed to chart and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:40",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T15:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-11T15:45"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2023-10-11T15:50",
+              "body": "Came in after school for flu vaccine. Screening questions negative, no egg or vaccine reactions. Influenza vaccine 0.5 mL IM left deltoid, lot recorded. VIS given. Tolerated well, waited 15 min. She mentions she is still dragging; told her to bring it up with the doctor, offered an appointment and she will call back to set one up."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "office_visit",
+          "start": "2023-11-20T15:45",
+          "end": "2023-11-20T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and weight loss",
+          "state": {"weight_kg": 57.0},
+          "vitals": {"bp": [102, 68], "weight_kg": 57.0},
+          "measure": ["hr", "spo2", "temp_c"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 8}],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-21T11:00"}],
+          "orders": [
+            {"id": "am-labs-2023", "action": "placed", "order": "Basic metabolic panel and 8 AM cortisol", "category": "lab", "reason": "fatigue, weight loss, hyperpigmentation"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-20T15:45"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-11-20T16:55",
+              "body": "S: Back because the tiredness never lifted. Now about five months of it. Down about 3 kg since August without trying; clothes are loose. Feels flat and teary, less patience with her class, but not hopeless and no thoughts of self-harm. Has been wanting salty food all the time, putting salt on everything. Husband pointed out that she looks tan even though it is November, including on her knuckles. Periods have been coming every three weeks or so for the last few months instead of monthly. No fever, cough, vomiting, diarrhea. Updated COVID shot at her pharmacy last month.\n\nO: BP 102/68 (lower than August). Wt 57.0 kg. Thin. Skin noticeably darker over the knuckles and elbows. Thyroid normal size. Heart and lungs normal. Abdomen soft, nontender.\nPHQ-9: 8.\n\nA/P: Fatigue, weight loss, salt craving and new hyperpigmentation with soft BP. Worried about primary adrenal insufficiency, especially with her family's autoimmune history. Mood symptoms likely part of the same picture.\n- BMP and cortisol, drawn at 8 AM tomorrow before school\n- I will call with results as soon as they post\n- If vomiting, fainting or unable to keep fluids down: go to the ED, do not wait for me\nPHQ-9 to be repeated once we know more."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "lab_only",
+          "start": "2023-11-21T07:55",
+          "state": {"labs": {"Sodium": 131, "Potassium": 5.3}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-21T07:58", "resulted": "2023-11-21T14:10", "results": [{"test": "Sodium", "value": 131}, {"test": "Potassium", "value": 5.3}]},
+            {"panel": null, "collected": "2023-11-21T07:58", "resulted": "2023-11-22T09:30", "results": [{"test": "Cortisol, AM", "value": 2.9}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-11-21T07:58"}],
+          "orders": [{"id": "am-labs-2023", "action": "done", "date": "2023-11-21T07:58"}]
+        },
+        {
+          "id": "2023-11-22a",
+          "kind": "telephone",
+          "start": "2023-11-22T12:05",
+          "reason": "Abnormal results",
+          "orders": [
+            {"id": "endo-ref-2023", "action": "placed", "order": "Endocrinology referral, urgent", "category": "referral", "to": "Endocrinology", "reason": "suspected primary adrenal insufficiency"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "author": "PCP",
+              "date": "2023-11-22T12:05",
+              "body": "Reached her during her lunch break. Na 131, K 5.3, morning cortisol 2.9. Together with the exam this is very suggestive of primary adrenal insufficiency. Explained what that means in plain terms. Spoke directly with the endocrine office; they will see her 12/6 and will draw ACTH and do the rest of the workup there. Strict ED precautions reviewed again: vomiting, fainting, confusion, severe belly pain. She understands and her husband has the number. Asked her to go easy over the holiday weekend."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "specialist_visit",
+          "start": "2023-12-06T09:20",
+          "service": "Endocrinology",
+          "reason": "Suspected adrenal insufficiency",
+          "vitals": {"bp": [100, 70], "hr": 88, "weight_kg": 56.5},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-12-06T09:50", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 5.5}, {"test": "Chloride", "value": 95}, {"test": "Bicarbonate", "value": 22}, {"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 0.9}, {"test": "Glucose", "value": 70}]},
+            {"panel": null, "collected": "2023-12-06T09:50", "results": [{"test": "Corticotropin", "loinc": "2141-0", "unit": "pg/mL", "text": "Elevated"}]},
+            {"panel": null, "collected": "2023-12-06T09:50", "results": [{"test": "Cortisol, AM", "text": "Low"}]},
+            {"panel": null, "collected": "2023-12-06T09:50", "resulted": "2023-12-14T16:00", "results": [{"test": "21-Hydroxylase Antibody", "loinc": "85363-0", "text": "Positive"}]}
+          ],
+          "state": {"labs": {"Sodium": 130, "Potassium": 5.5}},
+          "orders": [{"id": "endo-ref-2023", "action": "done", "date": "2023-12-06T09:20"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2024-01-10T13:15",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of service: 12/06/2023\nReason for referral: low morning cortisol, hyponatremia, hyperkalemia\n\nThank you for asking us to see this 30-year-old schoolteacher. For roughly half a year she has been exhausted and low in mood and has lost weight she did not intend to lose. Over the same period her cycles shortened to about 21 days. She craves salt and has watched her skin darken, including in places that never see sun.\n\nNo prior medical problems; on no medications before today. No known drug allergies. No surgery. Never smoker, no alcohol, no drug use.\nFamily history: mother with autoimmune thyroiditis; maternal aunt with type 1 diabetes; paternal grandmother with rheumatoid arthritis.\n\nExam: BP 100/70, HR 88, weight 56.5 kg. Thin. Hyperpigmented creases over the knuckles, elbows and knees. Thyroid not palpable. Cardiopulmonary exam normal.\n\nLabs today: sodium 130, potassium 5.5, chloride 95, bicarbonate 22, BUN 18, creatinine 0.9, fasting glucose 70. ACTH elevated with low cortisol. 21-hydroxylase antibodies (resulted 12/14): positive.\n\nImpression: primary adrenal insufficiency, autoimmune.\n\nPlan:\n1. Hydrocortisone 15 mg on waking and 10 mg in the late afternoon.\n2. Fludrocortisone 0.1 mg daily.\n3. Hydrocortisone sodium succinate 100 mg IM emergency kit; she and her husband were taught to use it.\n4. Sick-day rules: double the oral dose for fever or significant illness, inject and go to the ED if vomiting or unable to keep pills down. Medical alert bracelet advised.\n5. Recheck electrolytes with PCP in about six weeks. Return here in six months.\n\nNo known drug allergies.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "portal_message",
+          "start": "2023-12-08T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw endocrine",
+              "author": "patient",
+              "date": "2023-12-08T19:22",
+              "body": "Hi! Wanted to let you know the endocrinologist agreed it is my adrenal glands, autoimmune type. I'm on hydrocortisone twice a day and another pill called fludrocortisone, plus I have an emergency shot now. Already a little less wiped out. Do I need to see you or just them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw endocrine",
+              "author": "PCP",
+              "date": "2023-12-11T07:50",
+              "body": "Really glad you got in and that you are starting to feel it. Both, for now: endocrinology steers the doses, and I'd like you back here in about six weeks for a blood check and to see how you are doing. We haven't received their note yet, so please bring your bottles. Keep the emergency kit with you at school."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "office_visit",
+          "start": "2024-01-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up adrenal insufficiency",
+          "conditions": [
+            {"label": "Addison disease", "action": "diagnosed", "onset": "2023-12-06", "note": "autoimmune primary adrenal insufficiency, 21-hydroxylase antibody positive"}
+          ],
+          "medications": [
+            {"drug_text": "hydrocortisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1.5 tablets (15 mg) by mouth on waking and 1 tablet (10 mg) in the late afternoon", "dose": {"value": 15, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "primary adrenal insufficiency"},
+            {"drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 0.1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "primary adrenal insufficiency"},
+            {"drug_text": "hydrocortisone sodium succinate 100 MG Injection", "action": "historical", "sig": "Inject 100 mg into the muscle once for adrenal emergency, then go to the emergency department", "dose": {"value": 100, "unit": "mg"}, "frequency": "ONCE", "route": "Intramuscular", "course": "chronic", "reason": "adrenal crisis"}
+          ],
+          "state": {"weight_kg": 58.5, "labs": {"Sodium": 137, "Potassium": 4.4}},
+          "vitals": {"bp": [108, 70], "weight_kg": 58.5},
+          "measure": ["hr", "spo2"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-17T16:20", "results": [{"test": "Sodium", "value": 137}, {"test": "Potassium", "value": 4.4}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-17T15:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-01-17T16:45",
+              "body": "Follow-up six weeks into treatment. Endocrine consult letter finally arrived last week (reviewed, scanned).\n\nShe feels like a different person. Energy back to maybe 80 percent, eating well, salt craving gone. Mood much better; PHQ-9 now 3. Takes 15 mg hydrocortisone when she gets up and 10 mg around 3:30 after dismissal, fludrocortisone in the morning. Has the injection kit in her school bag; school nurse has a copy of the instructions. Ordered a medical ID bracelet.\n\nBP 108/70. Wt 58.5 kg, up 1.5. Skin still a little darker on the knuckles but fading.\n\nA/P\n1. Primary adrenal insufficiency, autoimmune (dx 12/2023 by endocrinology). Added to problem list. Med list reconciled from her bottles: hydrocortisone 15/10, fludrocortisone 0.1, emergency hydrocortisone kit. Recheck BMP today. Reviewed when to double up and when to inject.\n2. Low mood, resolved with treatment of the above.\n\nNext: annual in the fall. Endocrine follow-up in June."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-01-18T12:30",
+              "body": "Your sodium (137) and potassium (4.4) are both back in the normal range, which tells us the doses are right for now. Keep doing what you are doing."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "pharmacy",
+          "start": "2024-04-09T09:14",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2024-04-09T09:14",
+              "body": "Electronic request from her pharmacy for hydrocortisone 10 mg tablets, 75 per month. Original prescriber is endocrinology, but she is out of refills and their next opening is not until June. Per PCP, one 90-day fill sent with same directions. Pt notified by text."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "portal_message",
+          "start": "2024-06-26T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrine follow up",
+              "author": "patient",
+              "date": "2024-06-26T20:05",
+              "body": "Just an FYI that I had my six month check with endocrine yesterday. They said my labs looked good and to keep the same doses of everything. They took over the hydrocortisone refills again. Not sure if they send you anything!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrine follow up",
+              "author": "RN",
+              "date": "2024-06-27T09:02",
+              "body": "Thanks for the update, Amy. We have not received anything from them yet; we will watch for it. Enjoy the summer break."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "annual_physical",
+          "start": "2024-10-16T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 62.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-16T07:50"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-16T07:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-16T07:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2024-10-16T07:45", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2024-10-16T07:30", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "gyn-ref-2024", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "secondary amenorrhea"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-10-16T07:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-16T07:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-16T08:30",
+              "body": "Early slot before school.\n\nInterval: adrenal insufficiency stable on hydrocortisone 15/10 and fludrocortisone 0.1. Saw endocrine in June, no changes. No ED visits, has not had to use the injection. Energy good.\n\nNew issue: no period since about April. Before that they had been coming close together, then just stopped. Not on any contraception and she and her husband would like to get pregnant; home tests negative. No change in diet or exercise. Some hot nights recently but she blames the classroom radiator.\n\nROS otherwise negative. PHQ-2: 0.\n\nExam: well. BP normal. Thyroid normal. Heart, lungs, abdomen normal. Skin pigmentation now barely noticeable.\n\nA/P\n1. Secondary amenorrhea, about 6 months. Urine hCG in office negative. TSH with today's labs. Referring to gynecology for evaluation, she would like to be seen there given the fertility question too.\n2. Primary adrenal insufficiency: stable. CMP today.\n3. Health maintenance: flu vaccine given. Pap due next year (last 2022). Up to date otherwise."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "portal_message",
+          "start": "2024-10-17T17:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2024-10-17T17:48",
+              "body": "Everything from your physical is normal, including thyroid and electrolytes. The gynecology referral is in; their office will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "telephone",
+          "start": "2024-11-04T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "author": "front desk",
+              "date": "2024-11-04T14:20",
+              "body": "Patient asked about the GYN referral. Called their office: first new-patient opening is January 27. Booked; she accepted and is on their cancellation list. Pt aware."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001951",
+      "given": "Beth",
+      "family": "Boucher",
+      "birth_date": "1994-06-11",
+      "address_line": "41 Kellogg Brook Lane",
+      "phone": "+1-413-555-0161",
+      "email": "beth.boucher@example.test",
+      "marital_status": "partnered",
+      "summary": "Healthy marketing coordinator who joined in 2022 on a combined oral contraceptive. Perianal condylomata in early 2025 were biopsied and cleared with dermatology cryotherapy; a single perineal recurrence in early 2026 was treated by gynecology and resolved.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T10:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-08-16T10:40",
+              "body": "Caller wants to establish here, moving her care closer to home after her old office stopped taking new appointments in the evening. Healthy, no ongoing issues, on a birth control pill. Booked new patient physical 8/23 at 8:30. Membership packet and intake forms emailed. Asked her to bring pill bottle and the name of her last office so we can request records."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T08:30",
+          "end": "2022-08-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "medications": [
+            {"drug_text": "norgestimate 0.25 MG / ethinyl estradiol 0.035 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Contraception"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 2-3 drinks per week"},
+            {"item": "Occupation", "value": "Marketing coordinator"}
+          ],
+          "state": {"weight_kg": 63.0, "height_cm": 166.0, "labs": {"Glucose": 86, "Low Density Lipoprotein": 86}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-08-23T08:30"}
+          ],
+          "orders": [
+            {"id": "prior-records-2022", "action": "placed", "order": "Records request, prior primary care office", "category": "procedure", "reason": "Establishing care"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2022-08-23T09:35",
+              "body": "28F here to establish. Was seeing a PCP group closer to her old apartment; wants somewhere she can actually reach by text. No complaints today.\n\nPMH: none. Never had a chronic diagnosis.\nPSH: tonsils out as a kid (age 8).\nMeds: combined OCP — norgestimate/EE 0.25/0.035, one daily, on it for years without issues. No supplements.\nAllergies: none to meds.\nFH: mom — breast cancer at 55, treated, doing well. Dad — type 2 diabetes.\nSH: works as a marketing coordinator, mostly desk and some events. Never smoked. 2-3 drinks a week, social. No drug use. Exercises a few times a week (runs, yoga).\nGyn: periods regular and light on the pill. Last Pap last year at old office, told normal — records requested.\nROS: negative across the board. No headaches, no leg swelling, no chest pain.\n\nExam: well-appearing. HEENT unremarkable, tonsils surgically absent. Neck supple, no thyroid enlargement, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rashes or concerning moles. Extremities without edema. Mood and affect normal.\nPHQ-2: 0.\n\nA/P\n1. Health maintenance, healthy adult — BP normal on the pill, fine to continue estrogen-containing OCP (nonsmoker, no migraine with aura, no clot history). Refills through us going forward.\n2. FH breast cancer in mother at 55 — plan screening mammography starting at 40; no earlier imaging indicated by this history alone. Will revisit if more family history surfaces.\n3. FH T2DM — glucose with routine labs next year.\n4. Records request to old office for Pap and vaccine history.\nFlu and COVID shots when available this fall. RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "outside_records",
+          "start": "2022-09-06T14:10",
+          "reason": "Prior primary care records",
+          "orders": [
+            {"id": "prior-records-2022", "action": "done", "date": "2022-09-06T14:10"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-04-23T10:00"}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2021-07-13T09:45", "text": "Specimen: ThinPrep liquid-based cervical cytology. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2022-09-06T14:10",
+              "body": "Received 14 pages from patient's previous primary care practice covering 2017-2022. Contents: annual visit notes (healthy, no chronic problems), OCP prescriptions, immunization record with Tdap 4/2019, cervical cytology 7/2021 NILM. No other labs or imaging of note. Abstracted Pap and Tdap into chart; full packet in media tab for PCP review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2022-09-07T17:20",
+              "body": "Reviewed old office records. Nothing new — healthy, Pap 2021 normal, Tdap 2019. Next cervical screen due 2024. Signed."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T12:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T12:25"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-11T12:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-11T12:40",
+              "body": "In on her lunch hour for vaccines. No fever or illness today, no prior reactions. Flu (quadrivalent) L deltoid, Pfizer bivalent booster R deltoid. Lot numbers in MAR. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "pharmacy",
+          "start": "2023-02-21T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill",
+              "author": "MA",
+              "date": "2023-02-21T09:05",
+              "body": "E-refill request from retail pharmacy for norgestimate/ethinyl estradiol 0.25/0.035, 3-month supply. Last physical 8/2022, BP normal. Routed to PCP."
+            },
+            {
+              "type": "Refill Encounter",
+              "title": "OCP refill approved",
+              "author": "PCP",
+              "date": "2023-02-21T12:30",
+              "body": "Approved, 3 months x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T08:40", "resulted": "2023-08-23T07:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T08:40", "resulted": "2023-08-23T07:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T08:40", "resulted": "2023-08-23T07:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-22T08:40", "resulted": "2023-08-23T13:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-22T08:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-22T09:10",
+              "body": "Yearly check. Feels well. Busy season at work, sleeping OK. Still running a couple times a week.\nMeds: OCP, taking daily, no breakthrough bleeding.\nNo headaches, no calf pain, no chest pain or shortness of breath.\nAlcohol unchanged, 2-3/wk. Nonsmoker.\n\nExam: NAD. Vitals reviewed, BP fine. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen benign. No edema. Skin: no suspicious lesions on visible skin. Breast exam deferred per patient preference, will do next year.\nPHQ-2: 0.\n\nA/P\n- Well adult. Continue OCP.\n- Labs: CBC, CMP (fasting glucose given dad's diabetes), lipids.\n- One-time HIV and hep C screens — discussed, she agrees.\n- Pap due next year.\n- Flu/COVID in October.\nSee in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-08-24T08:15",
+              "body": "Hi Beth — everything from Tuesday came back normal: blood counts, kidney and liver tests, fasting sugar, cholesterol. HIV and hepatitis C screens were negative, and those don't need repeating unless something changes. Nothing to do here. Enjoy the rest of the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Your lab results",
+              "author": "patient",
+              "date": "2023-08-24T12:02",
+              "body": "Great, thanks so much!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T16:38"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-17T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-17T16:50",
+              "body": "Seasonal vaccines. Feeling well, afebrile. Last year: sore arm only. Influenza given L deltoid, 2023-24 COVID (Pfizer) R deltoid. Tolerated, waited 15 minutes, left ambulatory."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
