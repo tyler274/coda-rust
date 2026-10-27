@@ -1,8 +1,9 @@
 //! Physician operational truth. Every mutation locks its conversation in Postgres.
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
-//! Hosted mutation tools and reply revision remain unavailable until their
-//! product effect owners are ported. No process-memory persistence fallback.
+//! Hosted mutation tools remain unavailable until their product effect owners
+//! are ported; reply drafts and their revisions live in [`reply`]. No
+//! process-memory persistence fallback.
 
 /// Async callback implementation helper for product adapters.
 pub use async_trait::async_trait;
@@ -25,8 +26,12 @@ pub mod chat_draft;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
+/// Command receipts and their 90-day reduction to a salted digest.
+pub mod receipt;
 /// Explicit bounded restart activation, separate from construction.
 pub mod recovery;
+/// Hosted physician reply drafts and their revision work.
+pub mod reply;
 #[cfg(test)]
 mod tests;
 use entities::{command, conversation};
@@ -40,7 +45,7 @@ pub struct Scope {
     pub physician: String,
     /// Authorized patient workspace.
     pub workspace: String,
-    /// Conversation identity.
+    /// Conversation identity. For a reply draft and its revisions, the reply work.
     pub chat: String,
 }
 
@@ -261,6 +266,30 @@ impl Store {
         let mut chat_drafts = schema.create_table_from_entity(entities::chat_draft::Entity);
         chat_drafts.if_not_exists();
         tx.execute(&chat_drafts).await?;
+        let mut drafts = schema.create_table_from_entity(entities::reply_draft::Entity);
+        drafts.if_not_exists();
+        tx.execute(&drafts).await?;
+        let mut revisions = schema.create_table_from_entity(entities::reply_revision::Entity);
+        revisions.if_not_exists();
+        tx.execute(&revisions).await?;
+        // The unique (draft, ordinal) index that orders a draft's history.
+        for mut index in schema.create_index_from_entity(entities::reply_revision::Entity) {
+            index.if_not_exists();
+            tx.execute(&index).await?;
+        }
+        // Receipts older than this column get the migration's time, so the
+        // 90-day reduction counts from when it could first see them. `now()`
+        // is stable, so Postgres stores it once instead of rewriting rows.
+        let accepted_at = sea_orm::sea_query::Table::alter()
+            .table(command::Entity)
+            .add_column_if_not_exists(
+                sea_orm::sea_query::ColumnDef::new(command::Column::AcceptedAt)
+                    .big_integer()
+                    .not_null()
+                    .default(Expr::cust("floor(extract(epoch FROM now()))::bigint")),
+            )
+            .to_owned();
+        tx.execute(&accepted_at).await?;
         tx.commit().await
     }
 
@@ -348,30 +377,13 @@ impl Store {
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
-        let inserted = command::Entity::insert(command::ActiveModel {
-            practice: Set(scope.practice.clone()),
-            physician: Set(scope.physician.clone()),
-            key: Set(input.key.clone()),
-            command: Set(command.clone()),
-        })
-        .on_conflict(OnConflict::new().do_nothing().to_owned())
-        .exec_without_returning(&tx)
-        .await?;
-        if inserted == 0 {
-            let previous = command::Entity::find_by_id((
-                scope.practice.clone(),
-                scope.physician.clone(),
-                input.key.clone(),
-            ))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing command receipt"))?
-            .command;
-            if previous != command {
-                return Err(error("idempotency collision"));
+        match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Accepted::Duplicate);
             }
-            tx.commit().await?;
-            return Ok(Accepted::Duplicate);
+            receipt::Receipt::Different => return Err(error("idempotency collision")),
         }
         conversation::Entity::insert(conversation_model(
             scope,
@@ -674,31 +686,16 @@ impl Store {
             "scope": scope,
             "resume": {"work_item_id": work_item_id, "expected_run_id": expected_run_id},
         });
-        let inserted = command::Entity::insert(command::ActiveModel {
-            practice: Set(scope.practice.clone()),
-            physician: Set(scope.physician.clone()),
-            key: Set(key.to_owned()),
-            command: Set(command.clone()),
-        })
-        .on_conflict(OnConflict::new().do_nothing().to_owned())
-        .exec_without_returning(&tx)
-        .await?;
-        if inserted == 0 {
-            let previous = command::Entity::find_by_id((
-                scope.practice.clone(),
-                scope.physician.clone(),
-                key.to_owned(),
-            ))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing command receipt"))?
-            .command;
-            tx.commit().await?;
-            return Ok(if previous == command {
-                Resumed::Duplicate
-            } else {
-                Resumed::Refused
-            });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Resumed::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(Resumed::Refused);
+            }
         }
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()

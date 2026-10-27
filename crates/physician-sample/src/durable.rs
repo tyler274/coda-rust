@@ -2,9 +2,18 @@
 //! existing physician runtime; the broker is only a recoverable wakeup hint.
 use crate::queue::ChatQueue;
 use local_product::runtime::{
-    Accepted, Authority, Conversation, Input, Resumed, Scope, Store, delivery::Delivery,
+    Accepted, Authority, Conversation, Input, Resumed, Scope, Store,
+    delivery::Delivery,
+    reply::{RevisionAccepted, RevisionInput},
 };
 use std::sync::Arc;
+
+/// Receipts reduced per compaction transaction.
+const RECEIPT_BATCH: u64 = 100;
+/// Compaction transactions per sweep, so one sweep stays bounded.
+const RECEIPT_BATCHES: usize = 20;
+/// Recovery ticks (10 s each) between compaction sweeps: one hour.
+const COMPACTION_TICKS: u64 = 360;
 
 /// Hosted chat owner used by the authenticated HTTP composition.
 #[derive(Clone)]
@@ -38,10 +47,7 @@ impl DurableChat {
         if matches!(accepted, Accepted::Duplicate) {
             return Ok(accepted);
         }
-        let delivery = Delivery {
-            scope: scope.clone(),
-            input_id: input.key.clone(),
-        };
+        let delivery = Delivery::chat_turn(scope.clone(), input.key.clone());
         if self.queue.publish(&delivery).await.is_ok() {
             self.store
                 .dispatched(&delivery, 60)
@@ -49,6 +55,36 @@ impl DurableChat {
                 .map_err(|e| e.to_string())?;
         } else {
             tracing::warn!("accepted physician input awaits queue recovery");
+        }
+        Ok(accepted)
+    }
+
+    /// Saves a revision and its exact source observation before queueing it.
+    /// Duplicate and refused commands never publish another wakeup.
+    pub async fn accept_revision(
+        &self,
+        scope: &Scope,
+        input: &RevisionInput,
+        session_hash: Vec<u8>,
+        sources: Vec<local_product::physician_sources::SourceRevision>,
+    ) -> Result<RevisionAccepted, String> {
+        let accepted = self
+            .store
+            .accept_revision(scope, input, session_hash, sources)
+            .await
+            .map_err(|e| e.to_string())?;
+        if accepted != RevisionAccepted::New {
+            return Ok(accepted);
+        }
+        let delivery = Delivery::reply_revision(scope.clone(), input.key.clone());
+        if self.queue.publish(&delivery).await.is_ok() {
+            // Acceptance is committed already. Even a dispatch-marker failure
+            // must not report accepted work as rejected; recovery can republish.
+            if self.store.dispatched(&delivery, 60).await.is_err() {
+                tracing::warn!("accepted physician revision dispatch marker unavailable");
+            }
+        } else {
+            tracing::warn!("accepted physician revision awaits queue recovery");
         }
         Ok(accepted)
     }
@@ -72,10 +108,7 @@ impl DurableChat {
         let Resumed::Pending { input_id } = &resumed else {
             return Ok(resumed);
         };
-        let delivery = Delivery {
-            scope: scope.clone(),
-            input_id: input_id.clone(),
-        };
+        let delivery = Delivery::chat_turn(scope.clone(), input_id.clone());
         if self.queue.publish(&delivery).await.is_ok() {
             self.store
                 .dispatched(&delivery, 60)
@@ -116,17 +149,81 @@ impl DurableChat {
         Ok(page.next)
     }
 
+    /// Revision recovery has its own keyset, independent of chat pagination.
+    pub async fn recover_revision_page(
+        &self,
+        after: Option<&Scope>,
+    ) -> Result<Option<Scope>, String> {
+        let page = self
+            .store
+            .revisions_due(100, after)
+            .await
+            .map_err(|e| e.to_string())?;
+        for delivery in page.deliveries {
+            if self.queue.publish(&delivery).await.is_ok() {
+                self.store
+                    .dispatched(&delivery, 60)
+                    .await
+                    .map_err(|e| e.to_string())?;
+            } else {
+                tracing::warn!("physician revision queue recovery publication failed");
+            }
+        }
+        Ok(page.next)
+    }
+
+    /// Reduces command receipts older than 90 days to their salted digest,
+    /// in batches of [`RECEIPT_BATCH`], at most [`RECEIPT_BATCHES`] per call.
+    /// Returns how many it reduced. Nothing is deleted.
+    pub async fn compact_receipts(&self) -> Result<u64, String> {
+        let mut total = 0;
+        for _ in 0..RECEIPT_BATCHES {
+            let reduced = self
+                .store
+                .compact_receipts(
+                    local_product::runtime::receipt::RECEIPT_FULL_SECONDS,
+                    RECEIPT_BATCH,
+                )
+                .await
+                .map_err(|e| e.to_string())?;
+            total += reduced;
+            if reduced < RECEIPT_BATCH {
+                break;
+            }
+        }
+        Ok(total)
+    }
+
     /// Explicitly starts recovery on the site's always-allocated CPU. Keep and
     /// abort the task on graceful shutdown. Construction never starts execution.
+    /// Receipt compaction runs on the first tick and then hourly.
     pub fn start_recovery(self: Arc<Self>) -> tokio::task::JoinHandle<()> {
         tokio::spawn(async move {
             let mut after = None;
+            let mut revision_after = None;
             let mut ticks = tokio::time::interval(std::time::Duration::from_secs(10));
+            let mut tick: u64 = 0;
             loop {
                 ticks.tick().await;
+                if tick.is_multiple_of(COMPACTION_TICKS) {
+                    match self.compact_receipts().await {
+                        Ok(0) => {}
+                        Ok(reduced) => {
+                            tracing::info!(reduced, "physician command receipts reduced to digests")
+                        }
+                        Err(_) => {
+                            tracing::warn!("physician receipt compaction database unavailable")
+                        }
+                    }
+                }
+                tick = tick.wrapping_add(1);
                 match self.recover_page(after.as_ref()).await {
                     Ok(next) => after = next,
                     Err(_) => tracing::warn!("physician queue recovery database unavailable"),
+                }
+                match self.recover_revision_page(revision_after.as_ref()).await {
+                    Ok(next) => revision_after = next,
+                    Err(_) => tracing::warn!("physician revision recovery database unavailable"),
                 }
             }
         })

@@ -147,13 +147,7 @@ async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) 
         )
         .await
         .expect("accept");
-    (
-        scope.clone(),
-        Delivery {
-            scope,
-            input_id: key,
-        },
-    )
+    (scope.clone(), Delivery::chat_turn(scope, key))
 }
 
 async fn wait_assistant(store: &Store, scope: &Scope, worker: &support::Process) -> Conversation {

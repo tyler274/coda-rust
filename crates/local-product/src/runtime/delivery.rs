@@ -7,14 +7,58 @@ use serde::{Deserialize, Serialize};
 use super::entities::conversation;
 use super::{Claim, Conversation, MAX_FAILED_ATTEMPTS, Scope, Store, error, keys};
 
+/// Which durable owner a wakeup names.
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum DeliveryKind {
+    /// A chat turn in `physician_runtime_conversations`.
+    #[default]
+    ChatTurn,
+    /// A reply revision in `physician_runtime_reply_drafts`; `scope.chat`
+    /// names the reply work.
+    ReplyRevision,
+}
+
+impl DeliveryKind {
+    fn is_chat_turn(&self) -> bool {
+        *self == Self::ChatTurn
+    }
+}
+
 /// Non-clinical broker payload, fenced to the accepted input identity.
+///
+/// A chat turn omits `kind`, so payloads stay byte-identical to the ones
+/// published before revisions existed, and both old and new workers read them.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Delivery {
+    /// The owner this wakeup names; absent means a chat turn.
+    #[serde(default, skip_serializing_if = "DeliveryKind::is_chat_turn")]
+    pub kind: DeliveryKind,
     /// Complete product-owned authorization scope, not user-supplied authority.
     pub scope: Scope,
     /// Idempotency identity of the latest accepted input.
     pub input_id: String,
+}
+
+impl Delivery {
+    /// A chat-turn wakeup for `input_id`.
+    pub fn chat_turn(scope: Scope, input_id: String) -> Self {
+        Self {
+            kind: DeliveryKind::ChatTurn,
+            scope,
+            input_id,
+        }
+    }
+
+    /// A reply-revision wakeup for the revision command `input_id`.
+    pub fn reply_revision(scope: Scope, input_id: String) -> Self {
+        Self {
+            kind: DeliveryKind::ReplyRevision,
+            scope,
+            input_id,
+        }
+    }
 }
 
 /// One keyset page of recoverable queue wakeups.
@@ -50,7 +94,7 @@ impl Store {
                         && state.attempts.last().is_some_and(|a| a.expires <= now)))
                 && let Some(input_id) = state.input_id
             {
-                deliveries.push(Delivery { scope, input_id });
+                deliveries.push(Delivery::chat_turn(scope, input_id));
             }
             tx.commit().await?;
         }
@@ -63,6 +107,9 @@ impl Store {
     pub async fn dispatched(&self, delivery: &Delivery, retry_after: i64) -> Result<(), DbErr> {
         if !(1..=600).contains(&retry_after) {
             return Err(error("invalid dispatch retry"));
+        }
+        if delivery.kind == DeliveryKind::ReplyRevision {
+            return self.revision_dispatched(delivery, retry_after).await;
         }
         let (tx, mut state, now) = self.locked(&delivery.scope).await?;
         if state.input_id.as_deref() == Some(&delivery.input_id) {
@@ -77,6 +124,9 @@ impl Store {
         delivery: &Delivery,
         lease_seconds: i64,
     ) -> Result<Option<Claim>, DbErr> {
+        if delivery.kind != DeliveryKind::ChatTurn {
+            return Err(error("not a chat turn delivery"));
+        }
         self.claim_inner(&delivery.scope, lease_seconds, Some(&delivery.input_id))
             .await
     }
@@ -135,6 +185,9 @@ impl Store {
     /// Where the input named by a wakeup stands, read under the conversation
     /// lock. A worker uses it when its claim found nothing to run.
     pub async fn delivery_state(&self, delivery: &Delivery) -> Result<DeliveryState, DbErr> {
+        if delivery.kind == DeliveryKind::ReplyRevision {
+            return self.revision_state(delivery).await;
+        }
         let (tx, state, now) = self.locked(&delivery.scope).await?;
         tx.commit().await?;
         if state.input_id.as_deref() != Some(&delivery.input_id) {

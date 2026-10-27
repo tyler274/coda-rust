@@ -10,7 +10,6 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
 };
-use harness::execution::{Item, Request};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::sync::Arc;
@@ -19,6 +18,15 @@ pub(crate) fn target(ctx: &AuthContext, reply: &str) -> String {
     // JSON tuple avoids ambiguous delimiter-based physician identity joins.
     serde_json::to_string(&(&ctx.identity.practice_id, &ctx.identity.physician_id, reply)).unwrap()
 }
+fn scope(ctx: &AuthContext, workspace: &str, reply: &str) -> local_product::runtime::Scope {
+    local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: workspace.into(),
+        chat: reply.into(),
+    }
+}
+
 #[derive(Deserialize)]
 pub(crate) struct Revision {
     pub patient_workspace_id: String,
@@ -44,6 +52,25 @@ pub(crate) async fn read(
     if !allows_workspace(&ctx.auth, &ctx.identity, &workspace).await {
         return StatusCode::NOT_FOUND.into_response();
     }
+    if let Some(durable) = &live.durable {
+        return match durable.store.draft(&scope(&ctx, &workspace, &reply)).await {
+            // The latest accepted revision run and its status (pending,
+            // active, completed, failed or superseded), so a terminal
+            // failure is visible to the physician, not only in Postgres.
+            Ok(Some(draft)) => Json(json!({
+                "revision": draft.revision,
+                "text": draft.text,
+                "restore_text": draft.restore_text,
+                "revision_run": draft.input.as_ref().map(|input| json!({
+                    "run_id": input.key,
+                    "status": draft.status,
+                })),
+            }))
+            .into_response(),
+            Ok(None) => StatusCode::NOT_FOUND.into_response(),
+            Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        };
+    }
     match live
         .session
         .lock()
@@ -66,6 +93,31 @@ pub(crate) async fn save(
     let Some(Extension(ctx)) = ctx else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
+    if let Some(durable) = &live.durable {
+        if !allows_workspace(&ctx.auth, &ctx.identity, &workspace).await {
+            return StatusCode::NOT_FOUND.into_response();
+        }
+        let mut authority = crate::durable::RuntimeAuthority {
+            store: durable.store.clone(),
+        };
+        let hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+        // The runtime locks an existing draft and current authority together.
+        // A PUT cannot open reply work, even with revision zero.
+        return match durable
+            .store
+            .save_draft(
+                &scope(&ctx, &workspace, &reply),
+                save.revision,
+                &save.text,
+                &hash,
+                &mut authority,
+            )
+            .await
+        {
+            Ok(revision) => Json(json!({"revision": revision, "text": save.text})).into_response(),
+            Err(_) => StatusCode::CONFLICT.into_response(),
+        };
+    }
     let _guard = ctx.auth.publication.lock().await;
     let mut revision = None;
     // This slice never invents initial reply work. The initial saved draft must
@@ -83,6 +135,69 @@ pub(crate) async fn save(
     match result {
         Ok(()) => Json(json!({"revision":revision,"text":save.text})).into_response(),
         Err(_) => StatusCode::CONFLICT.into_response(),
+    }
+}
+
+/// Hosted acceptance only records durable work and its recoverable queue hint.
+/// It never runs a model in the site process.
+pub(crate) async fn accept_durable(
+    live: &Arc<Live>,
+    ctx: &AuthContext,
+    id: &str,
+    payload: Value,
+) -> Response {
+    use local_product::runtime::reply::{RevisionAccepted, RevisionInput};
+    let Ok(input) = serde_json::from_value::<Revision>(payload) else {
+        return StatusCode::CONFLICT.into_response();
+    };
+    if [
+        id,
+        &input.patient_workspace_id,
+        &input.reply_work_id,
+        &input.instruction,
+        &input.physician_time_zone,
+    ]
+    .iter()
+    .any(|field| field.trim().is_empty())
+    {
+        return StatusCode::CONFLICT.into_response();
+    }
+    if ctx.auth.store.session(&ctx.token, now()).await.is_err() {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+    if !allows_workspace(&ctx.auth, &ctx.identity, &input.patient_workspace_id).await {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    let Some(durable) = &live.durable else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let scope = scope(ctx, &input.patient_workspace_id, &input.reply_work_id);
+    let sources = live
+        .sources
+        .iter()
+        .filter(|source| source.workspace == input.patient_workspace_id)
+        .cloned()
+        .collect();
+    let revision = RevisionInput {
+        key: id.into(),
+        expected_revision: input.expected_draft_revision,
+        instruction: input.instruction,
+        timezone: input.physician_time_zone,
+    };
+    let hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match durable
+        .accept_revision(&scope, &revision, hash, sources)
+        .await
+    {
+        Ok(RevisionAccepted::New | RevisionAccepted::Duplicate) => Json(json!({
+            "outcome": "accepted", "patient_workspace_id": input.patient_workspace_id, "run_id": id,
+        }))
+        .into_response(),
+        Ok(RevisionAccepted::Refused) => StatusCode::CONFLICT.into_response(),
+        Err(error) if error.contains("idempotency collision") => {
+            StatusCode::CONFLICT.into_response()
+        }
+        Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }
 
@@ -119,12 +234,14 @@ pub(crate) async fn admit(
         .filter(|s| s.workspace == input.patient_workspace_id)
         .cloned()
         .collect();
-    let request = Request {
-        model: live.binding.model.clone(), options: json!({"effort":live.binding.effort}),
-        instructions: "Revise only this physician's saved patient-facing reply according to their instruction. Read exact sources when needed. Never write memory, delegate, send a message, or modify patient state. Finish with finish_reply_revision containing the complete text and review_basis. Preserve wording the instruction does not change.".into(),
-        tools: vec![local_product::physician_sources::read_definition(), json!({"type":"function","name":"finish_reply_revision","description":"Return the complete revised reply and source-based review basis; never sends a message.","parameters":{"type":"object","properties":{"text":{"type":"string"},"review_basis":{"type":"string"}},"required":["text","review_basis"],"additionalProperties":false}})],
-        items: vec![Item::Message { role:"user".into(), text:json!({"saved_draft":text,"instruction":input.instruction,"source_references":sources.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),"physician_time_zone":input.physician_time_zone}).to_string() }],
-    };
+    let request = local_product::runtime::reply::request(
+        &live.binding.model,
+        &live.binding.effort,
+        &text,
+        &input.instruction,
+        &input.physician_time_zone,
+        &sources,
+    );
     let work = session.revise(id, &input.patient_workspace_id, &target, revision, request)?;
     session.pin_sources(&work, sources)
 }

@@ -453,8 +453,5 @@ async fn accepted(url: &str, store: &Store) -> Delivery {
         )
         .await
         .expect("accept");
-    Delivery {
-        scope,
-        input_id: key,
-    }
+    Delivery::chat_turn(scope, key)
 }
