@@ -21,6 +21,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// Hosted chat drafts: the physician's unsent composer text per chat.
+pub mod chat_draft;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
@@ -261,6 +263,9 @@ impl Store {
         // Later tables come from their entities through the SeaORM schema
         // builder, so the recorded statements above never change.
         let schema = sea_orm::Schema::new(sea_orm::DbBackend::Postgres);
+        let mut chat_drafts = schema.create_table_from_entity(entities::chat_draft::Entity);
+        chat_drafts.if_not_exists();
+        tx.execute(&chat_drafts).await?;
         let mut drafts = schema.create_table_from_entity(entities::reply_draft::Entity);
         drafts.if_not_exists();
         tx.execute(&drafts).await?;

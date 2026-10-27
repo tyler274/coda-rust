@@ -349,6 +349,183 @@ async fn inline_workspace_lists_the_chat_a_physician_started() {
     task.abort();
 }
 
+#[tokio::test]
+async fn inline_chat_draft_saves_under_a_revision_for_one_physician() {
+    let store = Arc::new(MemoryAuthStore::new());
+    let auth = auth::Auth::on(
+        store.clone(),
+        Arc::new(front_door::MemoryFrontDoorStore::new()),
+    )
+    .await;
+    let mut tokens = Vec::new();
+    for (physician, email, admin) in [
+        ("staging-physician", "physician@codahealth.test", true),
+        ("colleague", "colleague@codahealth.test", false),
+    ] {
+        store.seed_account(auth::STAGING_PRACTICE_ID, physician, email, "Name", admin);
+        let sign = store.begin_sign_in(email, auth::now()).await.unwrap();
+        tokens.push(
+            store
+                .complete_sign_in(email, &sign, auth::now())
+                .await
+                .unwrap()
+                .1,
+        );
+    }
+    let workspace = WORKSPACE_IDS[0];
+    store
+        .set_membership(
+            &physician_auth::PhysicianIdentity {
+                practice_id: auth::STAGING_PRACTICE_ID.into(),
+                physician_id: "colleague".into(),
+            },
+            workspace,
+            physician_auth::Membership::Allowed,
+        )
+        .await;
+    let (token, colleague) = (&tokens[0], &tokens[1]);
+    let live = live::Live::on(
+        live::ChatModel::Fixed("Noted.".into()),
+        PhysicianSession::memory(),
+        vec![],
+    )
+    .unwrap();
+    let app = auth::required_router(live_router_on(live), auth);
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    let task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let client = reqwest::Client::new();
+    let route = format!("{base}/physician-state/drafts/{workspace}/draft");
+    let read = |session: &str| client.get(&route).bearer_auth(session).send();
+    let save = |session: &str, expected: u64, text: &str| {
+        client
+            .put(&route)
+            .bearer_auth(session)
+            .json(&json!({"expected_revision": expected, "text": text}))
+            .send()
+    };
+    let empty = read(token).await.unwrap();
+    assert_eq!(empty.status(), StatusCode::OK);
+    assert_eq!(
+        empty.json::<Value>().await.unwrap(),
+        json!({"revision": 0, "text": ""})
+    );
+    let first = save(token, 0, "Check potassium").await.unwrap();
+    assert_eq!(first.status(), StatusCode::OK);
+    assert_eq!(
+        first.json::<Value>().await.unwrap(),
+        json!({"revision": 1, "text": "Check potassium"})
+    );
+    let second = save(token, 1, "Check potassium and sodium").await.unwrap();
+    assert_eq!(
+        second.json::<Value>().await.unwrap(),
+        json!({"revision": 2, "text": "Check potassium and sodium"})
+    );
+    // A stale save writes nothing and answers with the current draft.
+    let stale = save(token, 1, "lost wording").await.unwrap();
+    assert_eq!(stale.status(), StatusCode::CONFLICT);
+    assert_eq!(
+        stale.json::<Value>().await.unwrap(),
+        json!({"outcome": "conflict", "current": {"revision": 2, "text": "Check potassium and sodium"}})
+    );
+    assert_eq!(
+        read(token).await.unwrap().json::<Value>().await.unwrap()["text"],
+        "Check potassium and sodium"
+    );
+    // Another physician on the same patient keeps their own draft.
+    assert_eq!(
+        read(colleague)
+            .await
+            .unwrap()
+            .json::<Value>()
+            .await
+            .unwrap(),
+        json!({"revision": 0, "text": ""})
+    );
+    let own = save(colleague, 0, "Colleague note").await.unwrap();
+    assert_eq!(own.status(), StatusCode::OK);
+    assert_eq!(
+        read(token).await.unwrap().json::<Value>().await.unwrap()["text"],
+        "Check potassium and sodium"
+    );
+    // The draft does not fence the chat it belongs to.
+    let sent = client
+        .post(format!("{base}/commands"))
+        .bearer_auth(token)
+        .json(
+            &json!({"type":"message.submit","idempotency_key":"after-draft","payload":{
+                "patient_workspace_id": workspace,
+                "chat_id": "draft",
+                "text": "Check potassium and sodium",
+                "physician_time_zone": "UTC"
+            }}),
+        )
+        .send()
+        .await
+        .unwrap()
+        .json::<Value>()
+        .await
+        .unwrap();
+    assert_eq!(sent["outcome"], "accepted", "{sent}");
+    // Outside the colleague's panel, and without a session.
+    let outside = format!("{base}/physician-state/drafts/{}/draft", WORKSPACE_IDS[1]);
+    for request in [
+        client.get(&outside).bearer_auth(colleague),
+        client
+            .put(&outside)
+            .bearer_auth(colleague)
+            .json(&json!({"expected_revision": 0, "text": "x"})),
+    ] {
+        assert_eq!(
+            request.send().await.unwrap().status(),
+            StatusCode::NOT_FOUND
+        );
+    }
+    assert_eq!(
+        client.get(&route).send().await.unwrap().status(),
+        StatusCode::UNAUTHORIZED
+    );
+    task.abort();
+
+    // Sign-in off: one anonymous local draft, apart from any physician's.
+    let open = live::Live::on(
+        live::ChatModel::Fixed("Noted.".into()),
+        PhysicianSession::memory(),
+        vec![],
+    )
+    .unwrap();
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    let task =
+        tokio::spawn(async move { axum::serve(listener, live_router_on(open)).await.unwrap() });
+    let route = format!("{base}/physician-state/drafts/{workspace}/draft");
+    let saved = client
+        .put(&route)
+        .json(&json!({"expected_revision": 0, "text": "Local note"}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(saved.status(), StatusCode::OK);
+    let again = client
+        .put(&route)
+        .json(&json!({"expected_revision": 1, "text": "Local note, edited"}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(
+        again.json::<Value>().await.unwrap(),
+        json!({"revision": 2, "text": "Local note, edited"})
+    );
+    let stale = client
+        .put(&route)
+        .json(&json!({"expected_revision": 1, "text": "lost"}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(stale.status(), StatusCode::CONFLICT);
+    task.abort();
+}
+
 #[test]
 fn chat_titles_are_one_line_and_cut_at_a_word() {
     assert_eq!(live::chat_title("  About\n the   labs "), "About the labs");
