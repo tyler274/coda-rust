@@ -10,7 +10,7 @@ use harness::provider::ResponsesProvider;
 use local_product::physician_sources::{self, SourceRevision};
 use local_product::runtime::Store;
 use local_product::runtime::delivery::Delivery;
-use local_product::runtime::reply::{FINISH_TOOL, RevisionClaim, revised_text};
+use local_product::runtime::reply::{FINISH_TOOL, RevisionAttempt, RevisionClaim, revised_text};
 use physician_sample::durable::RuntimeAuthority;
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -57,13 +57,22 @@ pub(super) async fn deliver(worker: &Worker, delivery: &Delivery, message_id: &s
     };
     let cancel = Cancellation::default();
     let attempt = async {
+        // Fail closed: an unreadable draft must not reset the call budget.
+        let draft = worker
+            .store
+            .draft(&owner.claim.scope)
+            .await
+            .map_err(|_| "revision draft unavailable")?
+            .ok_or("revision draft unavailable")?;
+        let mut progress = spent(&draft.attempts, &owner.claim);
+        drop(draft);
         let mut provider = model(&worker.model, &owner.claim)?;
         let request = request(&worker.model, &owner.claim);
         execution::run(
             &mut provider,
             &mut owner,
             request,
-            &mut Progress::default(),
+            &mut progress,
             revision_limits(),
             &cancel,
             &mut |_| Ok(()),
@@ -94,6 +103,36 @@ pub(super) async fn deliver(worker: &Worker, delivery: &Delivery, message_id: &s
     };
     announce(worker, owner.claim.scope.workspace.clone()).await;
     status
+}
+
+/// Usage the accepted revision's earlier attempts already spent, so
+/// [`Limits`] bound the whole revision rather than each attempt. Each attempt
+/// is reconstructed on its own: attempts saved without a carried budget
+/// restart dispatch ordinals at 1, so one flattened reconstruction would
+/// merge their calls. An attempt's calls are its distinct dispatch ordinals,
+/// not its highest one, because a successor continues numbering after the
+/// calls it was given.
+fn spent(attempts: &[RevisionAttempt], claim: &RevisionClaim) -> Progress {
+    let mut total = Progress::default();
+    for attempt in attempts
+        .iter()
+        .filter(|attempt| attempt.input_id == claim.input.key && attempt.id != claim.attempt)
+    {
+        let usage = Progress::from_records(&attempt.records);
+        let calls = attempt
+            .records
+            .iter()
+            .filter_map(|record| match record {
+                Record::Dispatch { sequence, .. } => Some(*sequence),
+                _ => None,
+            })
+            .collect::<std::collections::BTreeSet<_>>()
+            .len();
+        total.calls = total.calls.saturating_add(calls as u64);
+        total.known_tokens = total.known_tokens.saturating_add(usage.known_tokens);
+        total.unknown_usage = total.unknown_usage.saturating_add(usage.unknown_usage);
+    }
+    total
 }
 
 fn revision_limits() -> Limits {
@@ -447,6 +486,172 @@ mod tests {
         let mut blank = response;
         blank.calls[0].arguments["text"] = json!("   ");
         assert!(revised_text(&blank).is_err());
+    }
+
+    fn attempt(id: &str, input_id: &str, calls: u64, tokens: u64) -> RevisionAttempt {
+        let mut records = Vec::new();
+        for sequence in 1..=calls {
+            records.push(Record::Dispatch {
+                sequence,
+                request: request(&fixed(0, false, Duration::ZERO), &claim()),
+            });
+            records.push(Record::Exchange {
+                sequence,
+                response: Response {
+                    text: String::new(),
+                    calls: vec![],
+                    usage: Usage {
+                        input_tokens: Some(tokens),
+                        output_tokens: Some(0),
+                    },
+                    provenance: Value::Null,
+                },
+            });
+        }
+        records.push(Record::Failure {
+            sequence: calls,
+            reason: "provider failed".into(),
+        });
+        RevisionAttempt {
+            id: id.into(),
+            input_id: input_id.into(),
+            status: "interrupted".into(),
+            expires: 0,
+            records,
+        }
+    }
+
+    /// Answers every exchange with one exact-read call, never a terminal.
+    struct Reading;
+
+    impl Provider for Reading {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &Cancellation,
+            _: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
+        ) -> Result<Response, String> {
+            Ok(Response {
+                text: String::new(),
+                calls: vec![Call {
+                    id: uuid::Uuid::new_v4().to_string(),
+                    name: READ_TOOL.into(),
+                    arguments: json!({"references": ["missing"], "max_result_bytes": 4096}),
+                }],
+                usage: Usage {
+                    input_tokens: Some(1),
+                    output_tokens: Some(1),
+                },
+                provenance: Value::Null,
+            })
+        }
+    }
+
+    #[derive(Default)]
+    struct Recorded(Vec<Record>);
+
+    impl Owner for Recorded {
+        async fn check(&mut self) -> Result<(), String> {
+            Ok(())
+        }
+
+        async fn record(&mut self, record: Record) -> Result<(), String> {
+            self.0.push(record);
+            Ok(())
+        }
+
+        async fn dispatch(&mut self, call: &Call, _: &Cancellation) -> Result<Value, String> {
+            read_sources(&[], "w", call)
+        }
+
+        async fn complete(&mut self, _: &Response) -> Result<(), String> {
+            Err("never terminal".into())
+        }
+    }
+
+    #[test]
+    fn spent_sums_each_earlier_attempt_of_this_revision_only() {
+        let claim = claim();
+        let attempts = [
+            attempt("one", "command", 3, 10),
+            attempt("two", "command", 4, 100),
+            attempt("other-revision", "earlier-command", 5, 1000),
+            attempt("attempt", "command", 2, 10_000),
+        ];
+        let progress = spent(&attempts, &claim);
+        assert_eq!(progress.calls, 7);
+        assert_eq!(progress.known_tokens, 3 * 10 + 4 * 100);
+        assert_eq!(progress.unknown_usage, 0);
+        // Flattening would merge the restarted ordinals into four calls.
+        let flattened: Vec<Record> = attempts[..2]
+            .iter()
+            .flat_map(|attempt| attempt.records.clone())
+            .collect();
+        assert_eq!(Progress::from_records(&flattened).calls, 4);
+        // A successor numbers its calls after the ones it was given; they
+        // still count once each.
+        let mut successor = attempt("three", "command", 0, 0);
+        successor.records = [8, 9]
+            .map(|sequence| Record::Dispatch {
+                sequence,
+                request: request(&fixed(0, false, Duration::ZERO), &claim),
+            })
+            .into();
+        assert_eq!(spent(&[successor], &claim).calls, 2);
+    }
+
+    #[tokio::test]
+    async fn a_successor_stops_at_the_revisions_cumulative_call_bound() {
+        let claim = claim();
+        let limits = revision_limits();
+        // Two earlier attempts already spent all but one of the calls.
+        let earlier = [
+            attempt("one", "command", 3, 1),
+            attempt("two", "command", limits.max_calls - 4, 1),
+        ];
+        let mut progress = spent(&earlier, &claim);
+        assert_eq!(progress.calls, limits.max_calls - 1);
+        let mut owner = Recorded::default();
+        let result = execution::run(
+            &mut Reading,
+            &mut owner,
+            request(&fixed(0, false, Duration::ZERO), &claim),
+            &mut progress,
+            limits,
+            &Cancellation::default(),
+            &mut |_| Ok(()),
+        )
+        .await;
+        assert_eq!(result.unwrap_err(), "execution usage bound reached");
+        let dispatched: Vec<u64> = owner
+            .0
+            .iter()
+            .filter_map(|record| match record {
+                Record::Dispatch { sequence, .. } => Some(*sequence),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(dispatched, [limits.max_calls]);
+        // A fresh budget would have let this attempt make every call again.
+        let mut owner = Recorded::default();
+        let _ = execution::run(
+            &mut Reading,
+            &mut owner,
+            request(&fixed(0, false, Duration::ZERO), &claim),
+            &mut Progress::default(),
+            limits,
+            &Cancellation::default(),
+            &mut |_| Ok(()),
+        )
+        .await;
+        assert_eq!(
+            owner
+                .0
+                .iter()
+                .filter(|record| matches!(record, Record::Dispatch { .. }))
+                .count() as u64,
+            limits.max_calls
+        );
     }
 
     #[tokio::test]
