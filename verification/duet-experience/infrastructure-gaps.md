@@ -18,9 +18,9 @@ The graph has one Send and no Stop; a new message steers the reply in progress,
 which answers both (Dev 2026-10-25).
 
 **Must guarantee.** A message sent while a reply runs is never refused or queued
-behind it; it reaches that reply. The cost guard ENG-191 added (one model run in
-flight per account) can stay, since Duet has one continuous conversation: the
-second message steers that run instead of being turned away.
+behind it; it reaches that reply. A limit of one model run in flight per account
+is compatible with one continuous conversation: the second message steers that
+run instead of being turned away.
 
 ## A Check-in that keeps failing
 
@@ -99,7 +99,7 @@ wait untouched while another account is signed in (A6). Continuous sensor data
 never leaves the phone (A1). Each connected organization refreshes on its own
 at most once a day (B7), and a refresh the person asks for never waits on it. Engineering sees when each connection last
 succeeded and is alerted, naming the connection and the reason, when one is
-overdue (ENG-162, ENG-73).
+overdue.
 
 ## Scheduling follow-through
 
@@ -131,13 +131,13 @@ practice. The graph shows each change reaching the practice while connected
 the practice; while connected, every change to it
 reaches the practice exactly once, keeping its origin and date; a corrected
 record arrives as a new version, and duplicates of what the practice already
-holds arrive labelled (ENG-39). A For my doctor the patient sends arrives
+holds arrive labelled. A For my doctor the patient sends arrives
 once, as the version they sent. Leaving, discharge and account deletion stop new
 data at once; the practice keeps what it already received. Duet and the
 practice never show different connection status.
 Coming back, the practice's documented care and its schedule reach Duet only
 while connected, keeping source, author and date; a later change replaces what
-Duet shows without losing its provenance (ENG-45, ENG-169).
+Duet shows without losing its provenance.
 
 ## Accounts and sessions
 
@@ -145,7 +145,7 @@ Duet shows without losing its provenance (ENG-45, ENG-169).
 proceeds.
 
 **Must guarantee.** Sign out everywhere says done only once every session has
-ended (ENG-161). Deletion finishes even if interrupted, and nothing old work or
+ended. Deletion finishes even if interrupted, and nothing old work or
 a restored backup does brings the account back (F2).
 
 ## Operations and release

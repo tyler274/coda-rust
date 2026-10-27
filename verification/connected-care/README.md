@@ -12,7 +12,7 @@ shared events, never shared states, and holds the rules that span both.
 
 The connection is live (Dev 2026-10-25): while connected, each change to what the
 patient shares in Duet reaches the practice as "a shared Duet record arrives",
-which makes Coda's work owed. Nothing crosses otherwise (ENG-39, ENG-70).
+which makes Coda's work owed. Nothing crosses otherwise.
 
 ## Decided, not yet drawn
 

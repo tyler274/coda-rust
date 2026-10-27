@@ -6,7 +6,7 @@ date. A later decision supersedes an earlier one only where it says so.
 
 Source abbreviations used here and in the graph: px.md (physician experience),
 CT (AI care team operating contract), RP (runtime protocol), PM
-(patient-messaging.md), ENG-n (Linear). Source precedence: Dev in session, then
+(patient-messaging.md). Source precedence: Dev in session, then
 Linear, then the settled docs, then mockups.
 
 ## Standing rules
@@ -46,7 +46,7 @@ Linear, then the settled docs, then mockups.
   - Sidebar and schedule collapse are remembered per physician (M8); they are
     preferences of the surface, not graph state.
   - Running work may show its current step, only from a real tool call
-    (ENG-160); the step line is the surface's. The graph keeps that the work
+   ; the step line is the surface's. The graph keeps that the work
     is running.
   - Find patient searches the whole roster on the server, and every roster
     patient stays reachable; Updates keeps every update of the day reachable.
@@ -198,7 +198,7 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
 
 - **Connected to Duet through shared events.** The practice connection meets
   Duet's in [connected-care](../connected-care/connection.mmd): each graph owns
-  its side, and rules there hold both sides to one status (ENG-39, ENG-70).
+  its side, and rules there hold both sides to one status.
 - **Any open invitation can be accepted** (Dev, 2026-10-25). A patient who taps
   Share on the invitation they hold connects, even while the practice resends it
   or a resend couldn't be delivered; both sides show Connected.
