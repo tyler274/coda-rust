@@ -166,10 +166,15 @@ async fn fixture(prefix: &str) -> (PgConnection, Fixture) {
     let suffix = Uuid::new_v4().simple().to_string();
     let name = format!("{prefix}_{suffix}");
     let role = format!("{prefix}_role_{suffix}");
-    sqlx::query(AssertSqlSafe(format!("create role {role} login")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
+    // A per-run random password lets the role log in over TCP whether the
+    // disposable server trusts loopback (local) or requires passwords (CI).
+    let password = Uuid::new_v4().simple().to_string();
+    sqlx::query(AssertSqlSafe(format!(
+        "create role {role} login password '{password}'"
+    )))
+    .execute(&mut admin)
+    .await
+    .unwrap();
     sqlx::query(AssertSqlSafe(format!("create database {name}")))
         .execute(&mut admin)
         .await
@@ -177,7 +182,11 @@ async fn fixture(prefix: &str) -> (PgConnection, Fixture) {
     let options = options.database(&name);
     let owner_url = options.to_url_lossy().to_string();
     migrate(&owner_url, &role).await.unwrap();
-    let runtime_url = options.username(&role).to_url_lossy().to_string();
+    let runtime_url = options
+        .username(&role)
+        .password(&password)
+        .to_url_lossy()
+        .to_string();
     let db = AccountDatabase::connect(&runtime_url).await.unwrap();
     let journal = std::env::temp_dir().join(format!("{prefix}-journal-{suffix}"));
     let durable = DurableState {
