@@ -1,0 +1,310 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002750",
+      "given": "Holly",
+      "family": "Kaminski",
+      "birth_date": "1980-10-03",
+      "address_line": "27 Hawthorne Ridge Road",
+      "phone": "+1-617-555-0182",
+      "email": "holly.kaminski@example.test",
+      "marital_status": "married",
+      "summary": "Healthy marketing manager who joined in 2022 with a prior right ovarian detorsion and a mother with breast cancer; last seen at her December 2023 physical. Since then gynecology started a combined pill for perimenopausal symptoms, gastroenterology diagnosed functional dyspepsia, and in July 2026 she had a left ovarian torsion detorsed laparoscopically.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T10:14",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2022-08-29T10:14",
+              "body": "Caller is moving her primary care to us; a coworker recommended the practice. Went over the membership agreement and that labs and specialists still bill her PPO. She signed up online while on the phone. New-patient visit set for 9/20 at 8:00. She will sign the release so we can get her old records. Mentioned she has no current meds and no allergies."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T14:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request sent",
+              "author": "front desk",
+              "date": "2022-09-06T14:40",
+              "body": "Signed release on file. Requested last 5 years of office notes, labs, imaging and immunizations from her prior primary care office. They said 7 to 10 business days."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "outside_records",
+          "start": "2022-09-16T11:05",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-06-04T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T09:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T09:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-10T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2022-09-16T11:05",
+              "body": "42 pages received from her previous primary care office, covering 2017 through early 2022. Abstracted for the PCP:\n- Yearly physicals, mostly unremarkable. No chronic medications.\n- Pap testing done at her own gynecologist; the last result in the packet is from 2021, normal.\n- Screening mammogram in 2021 (age 41): negative, no follow-up needed.\n- Past surgery: laparoscopic detorsion of the right ovary, done before these records begin; the ovary was kept. Two vaginal deliveries.\n- Immunizations: Tdap 6/2019; Pfizer COVID series 4/2021 and booster 12/2021. Entered into our record.\n- Allergies: none known.\nFull packet scanned under Media."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "establish_care",
+          "start": "2022-09-20T08:00",
+          "end": "2022-09-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {"label": "History of ovarian torsion", "icd10": "Z87.42", "action": "history", "note": "Right ovary, treated by laparoscopic detorsion before joining; ovary preserved"},
+            {"label": "Family history of breast cancer", "action": "diagnosed", "note": "Mother, diagnosed at 54"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 71.0, "height_cm": 167.0, "labs": {"Hemoglobin A1c": 5.3}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 4}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Wine with dinner most nights, usually one glass"},
+            {"item": "Occupation", "value": "Senior marketing manager"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-20T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-20T08:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-20T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-20T08:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-09-20T08:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-20T08:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "orders": [
+            {"id": "mammo-2022", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Routine breast cancer screening; mother with breast cancer at 54"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 40-64", "performed": "2022-09-20T08:00"},
+            {"procedure": "Venipuncture", "performed": "2022-09-20T08:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-20T08:00",
+              "body": "Establishing care. 41 yo woman, marketing manager, feels well, no complaints today. Wanted a doctor she could actually reach.\n\nPMH: nothing chronic. Remote right ovarian torsion, laparoscopic detorsion, ovary kept, no problems since.\nPSH: as above. SVD x2.\nMeds: none. No supplements.\nAllergies: none known.\nGyn: sees her own gynecologist for Paps; last one 2021, normal per records. Periods monthly. Never used the pill. Mammogram 2021 negative.\nFH: mother breast cancer at 54. Father type 2 diabetes. No colon or ovarian cancer that she knows of.\nSH: married, two kids, works long hours. Never smoked. A glass of wine with dinner most nights. Exercise is sporadic at best.\nROS: negative in full.\n\nExam: vitals as charted. Well appearing. HEENT clear, thyroid smooth without nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, well-healed laparoscopy scars. Extremities warm, no swelling. Skin no worrisome lesions. Mood bright.\n\nA/P\n1. Health maintenance: CBC, CMP, lipids, A1c (dad's diabetes). One-time HIV and hep C screens, she agrees. Mammogram ordered for this fall. Tdap current (2019). Flu and the new bivalent COVID booster next month at a nurse appointment.\n2. FH breast cancer, mother at 54: on the list; yearly mammography.\n3. Hx right ovarian torsion: noted, nothing to do.\n4. Alcohol: AUDIT-C 4. Talked about keeping it to a few nights a week. She was receptive.\nPhysical next year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "portal_message",
+          "start": "2022-09-21T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-09-21T16:20",
+              "body": "Hi Holly, everything came back fine. Blood counts, kidney and liver tests and sugar (A1c) are normal. The LDL cholesterol is flagged slightly high at 118, but your HDL (good cholesterol) is excellent and your overall risk is low, so nothing to treat; we will recheck next year. HIV and hepatitis C screens negative. Nothing to change. The mammogram order is in; the imaging center will call you to book."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T12:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T12:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-11T12:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2022-10-11T12:30",
+              "body": "On her lunch hour for flu and bivalent COVID per PCP plan. Afebrile, no recent illness, no prior vaccine reactions. Flu IM left deltoid, Pfizer bivalent IM right deltoid. Waited 15 minutes, no problems. VIS given. Told her a sore arm or a tired day is common."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "imaging",
+          "start": "2022-10-24T07:45",
+          "reason": "Screening mammogram",
+          "orders": [
+            {"id": "mammo-2022", "action": "done", "date": "2022-10-24T07:45"}
+          ],
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-24T07:45",
+              "text": "Outside imaging center. Bilateral screening mammogram with tomosynthesis, compared with a prior study from 2021. Breast tissue is scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcification in either breast. Skin and nipples unremarkable. No change from the prior exam.",
+              "conclusion": "BI-RADS 1: negative. Routine yearly screening."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "portal_message",
+          "start": "2022-10-26T09:10",
+          "reason": "Mammogram result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2022-10-26T09:10",
+              "body": "Your mammogram was normal, no change from last year. Next one in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T20:42",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "author": "patient",
+              "date": "2023-05-22T20:42",
+              "body": "Hi, could I get a printout of my vaccines? Work is asking for it before a conference trip. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "author": "MA",
+              "date": "2023-05-23T09:05",
+              "body": "Hi Holly, your immunization record is attached as a PDF. It shows Tdap, your COVID doses and last fall's flu shot. Let us know if they need anything on letterhead."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in visit",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2023-06-12T08:31",
+              "body": "Pt cancelled tomorrow's check-in, product launch week. Says she feels fine and will just come in for her physical later in the year. Offered video, she declined for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T12:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T12:22"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-17T12:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-10-17T12:15",
+              "body": "Flu and 2023-24 COVID vaccine. No fever or illness; did fine with last year's doses. Flu left deltoid, COVID right deltoid. Observed 15 min, tolerated well. Reminded her the physical is due in December; she booked it at checkout."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-07a",
+          "kind": "annual_physical",
+          "start": "2023-12-07T07:40",
+          "end": "2023-12-07T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; questions about breast cancer risk",
+          "state": {"weight_kg": 72.5},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 4}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-07T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-07T08:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-12-07T08:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-12-07T08:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Yearly screening; family history of breast cancer"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-12-07T07:40"},
+            {"procedure": "Venipuncture", "performed": "2023-12-07T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-12-07T07:40",
+              "body": "Annual exam. 43 yo. No new symptoms. What's on her mind this year is her own breast cancer risk; her mother's diagnosis at 54 has been on her mind, and she wants to know if there's anything she should be doing differently.\n\nRisk history: first period at 12. Two pregnancies, two vaginal births, nursed each baby about six months. Has never taken birth control pills. No breast biopsies. No lumps, skin change or nipple discharge.\nHabits: wine with dinner most evenings, one glass, sometimes two on weekends. Not exercising; work and kids eat the day.\nMeds: none. Allergies: none known.\n\nExam: BMI 26. Vitals as charted. Thyroid normal. Heart and lungs unremarkable. Breasts: examined sitting and supine, symmetric, no palpable masses, no skin or nipple changes, no axillary or supraclavicular nodes. Abdomen benign. No swelling of the legs. Skin fine.\n\nA/P\n1. Breast cancer risk: one first-degree relative, diagnosed after 50. Explained this nudges her risk up a little over average but does not meet criteria for a genetics referral or extra imaging. Her own history (early pregnancies, breastfeeding, no pill use) is on the favorable side. The things she controls: alcohol is the big one (each daily drink adds risk), regular exercise (aim 150 min/week), and keeping weight steady. She wants to try to cut wine to weekends and start walking at lunch. Mammogram ordered, due next month.\n2. Health maintenance: CBC, CMP, lipids, A1c today. Flu and COVID done in October. Pap is through her gynecologist. Colon screening starts at 45; we'll take that up in two years.\n3. PHQ-2 negative. AUDIT-C 4, as above.\nReturn in a year, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "portal_message",
+          "start": "2023-12-08T13:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2023-12-08T13:55",
+              "body": "Labs from yesterday are all normal, very similar to last year. A1c normal. Nice work on the walking plan; the imaging center has your mammogram order."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "author": "patient",
+              "date": "2023-12-08T19:12",
+              "body": "Great, thank you! Booked the mammogram for mid January."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

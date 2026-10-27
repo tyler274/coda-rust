@@ -1,0 +1,815 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002256",
+      "given": "Jerome",
+      "family": "Toussaint",
+      "birth_date": "1953-01-07",
+      "address_line": "22 Coldbrook Terrace",
+      "phone": "+1-917-555-0185",
+      "email": "jerome.toussaint@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal supervisor with hypertension, hyperlipidemia and well-suppressed HIV who joins in 2018. Over the next years he is diagnosed with open-angle glaucoma and Alzheimer's disease, has an inferior STEMI complicated by a post-infarction VSD needing surgical repair, a right ACA stroke with full recovery, an acute left angle-closure attack and a concussion from a fall on ice.",
+      "events": [
+        {
+          "id": "2018-06-19a",
+          "kind": "telephone",
+          "start": "2018-06-19T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2018-06-19T10:20",
+              "body": "Mr. Toussaint phoned looking for a new primary care doctor; his previous physician is retiring. He turned 65 in January and is on traditional Medicare with a Part D plan. Retired from the postal service. Gets his HIV care from an outside infectious disease clinic and wants to keep that arrangement. Membership explained, welcome packet mailed. Release of information for the prior practice signed at the window and faxed. First visit booked for July 10, 70 minutes, which covers the Medicare welcome exam."
+            }
+          ]
+        },
+        {
+          "id": "2018-07-10a",
+          "kind": "establish_care",
+          "start": "2018-07-10T09:00",
+          "end": "2018-07-10T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit and initial preventive exam",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2006-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "diagnosed",
+              "onset": "2009-01-01",
+              "note": "Followed by outside ID clinic; suppressed on ART"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2012-01-01",
+              "note": "25 pack-years, quit 2012"
+            },
+            {
+              "label": "Family history of ischemic heart disease",
+              "action": "history",
+              "note": "Father, MI at 61"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV; prescribed by ID clinic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              78
+            ],
+            "weight_kg": 84.2,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 106,
+              "High Density Lipoprotein": 46,
+              "Triglycerides": 142,
+              "Creatinine": 1.0,
+              "Hemoglobin A1c": 5.3,
+              "Hemoglobin": 14.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-07-10T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-07-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-07-10T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-07-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, about 2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal service supervisor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-07-10T09:00"
+            },
+            {
+              "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+              "performed": "2018-07-10T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us-2018",
+              "action": "placed",
+              "order": "Abdominal aortic aneurysm screening ultrasound",
+              "category": "imaging",
+              "reason": "Male 65-75, former smoker"
+            },
+            {
+              "id": "ldct-2018",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "25 pack-years, quit 2012"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit / Initial Preventive Physical Exam",
+              "author": "PCP",
+              "date": "2018-07-10T10:30",
+              "body": "65 y/o retired postal service supervisor establishing care; prior PCP retiring. Here alone, sharp historian.\n\nPMH: hypertension for roughly 12 years, on three agents since before I met him. High cholesterol about 8 years, on atorvastatin. HIV diagnosed 2009; followed at an outside ID clinic, says his counts have been fine and the virus undetectable for years on a one-pill regimen. No hospitalizations. No heart disease, stroke or diabetes that he knows of.\nPSH: none.\nMeds: lisinopril 20 daily, amlodipine 5 daily, metoprolol succinate 50 daily, atorvastatin 40 daily, aspirin 81 daily (his last doctor started it years ago), Biktarvy 1 tab daily from ID.\nAllergies: none to medications.\nFamily: father had a heart attack at 61 and is deceased; mother developed Alzheimer's in her early 70s; one sister has open-angle glaucoma.\nSocial: married, lives with his wife. Smoked about a pack a day for 25 years, stopped in 2012. A couple of beers or a glass of wine a week. Walks most mornings. Retired from supervising a mail sorting facility.\n\nROS: negative. No chest pain, dyspnea, edema, vision complaints, memory complaints.\n\nExam: well-appearing. BP and pulse as recorded, repeated seated after 5 min. Fundi not well seen without dilation. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear. Abdomen soft, no pulsatile mass. No edema, pedal pulses 2+. Gait steady. Get-up-and-go normal. Hearing grossly intact. Vision screen per MA normal with glasses.\n\nWelcome to Medicare elements: functional status independent, no falls in past year, home safety reviewed, advance directive discussed (none on file; he will think about it), PHQ-2 0, AUDIT-C 2.\n\nA/P\n1. Hypertension: at goal on lisinopril, amlodipine, metoprolol. Continue. CMP today.\n2. Hyperlipidemia: lipids today on atorvastatin 40.\n3. HIV: stable per patient, ID manages ART. Will request their last note and labs.\n4. Former smoker, 25 pack-years, quit 6 years ago: meets lung screening criteria; shared decision discussion held, he wants it. Low-dose CT ordered.\n5. AAA screen: one-time ultrasound ordered (male, ever smoker).\n6. Prevention: hep C antibody once today. Colonoscopy per patient around 2016, normal; records requested. Flu and pneumococcal in the fall. Tdap status pending records.\n7. Aspirin for primary prevention: he prefers to stay on it; no bleeding history. Revisit.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-07-13a",
+          "kind": "portal_message",
+          "start": "2018-07-13T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2018-07-13T16:05",
+              "body": "Mr. Toussaint, your blood work from Tuesday is back. Kidney function, liver tests, electrolytes and blood counts are normal. The hepatitis C test is negative. Your A1c is in the normal range, so no sign of diabetes. Cholesterol on the atorvastatin is reasonable and we'll keep the same dose. The ultrasound and lung CT will be scheduled by radiology; they should call you within the week."
+            }
+          ]
+        },
+        {
+          "id": "2018-07-26a",
+          "kind": "outside_records",
+          "start": "2018-07-26T11:00",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2016-04-12T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2014-09-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2018-07-26T11:00",
+              "body": "Records from prior primary care office received (112 pages) and indexed. Includes medication lists consistent with current meds, screening colonoscopy report 04/2016 (normal exam to the cecum, good prep, no polyps; 10-year interval suggested), Tdap 09/2014, and BP flowsheets 2013-2018 mostly in the 120s-130s systolic. No immunization record for pneumococcal or zoster vaccines. Forwarded to PCP inbox."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2018-07-27T07:45",
+              "body": "Reviewed old records. Nothing unexpected. Colonoscopy 2016 normal, next 2026. Tdap 2014 counts. Updated health maintenance. Needs PCV13 this fall, then PPSV23 a year later, and Shingrix."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-02a",
+          "kind": "imaging",
+          "start": "2018-08-02T13:30",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2018-08-02T13:30",
+              "text": "Limited abdominal ultrasound for aortic aneurysm screening. The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximum anteroposterior outer-to-outer diameter 2.1 cm in the infrarenal segment. No focal dilation, no mural thrombus. Common iliac arteries normal in caliber.",
+              "conclusion": "No abdominal aortic aneurysm."
+            },
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2018-08-02T14:10",
+              "text": "Baseline lung cancer screening CT, low-dose technique, no contrast. Lungs: no pulmonary nodules. No consolidation or effusion. No emphysema. Airways patent. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us-2018",
+              "action": "done",
+              "date": "2018-08-02T13:30"
+            },
+            {
+              "id": "ldct-2018",
+              "action": "done",
+              "date": "2018-08-02T14:10"
+            }
+          ]
+        },
+        {
+          "id": "2018-08-03a",
+          "kind": "portal_message",
+          "start": "2018-08-03T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound and CT results",
+              "author": "RN",
+              "date": "2018-08-03T09:15",
+              "body": "Hi Mr. Toussaint, the doctor reviewed both scans from yesterday. The aorta ultrasound is normal, no aneurysm, and that one never needs repeating. The lung screening CT is clear. We'll repeat the lung CT each year around this time. Let us know if you have questions."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-28a",
+          "kind": "outside_records",
+          "start": "2018-08-28T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-08-14T09:10",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 610
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "<20 copies/mL, not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infectious disease clinic letter",
+              "author": "infectious disease",
+              "date": "2018-08-28T10:00",
+              "body": "Thank you for taking over primary care for Mr. Toussaint, whom we follow for HIV infection diagnosed in 2009. He has had a suppressed viral load since 2011 on bictegravir/emtricitabine/tenofovir alafenamide, tolerating it well with excellent adherence. Visit 08/14/2018: no complaints. Labs: CD4 610 cells/mm3, HIV-1 RNA below 20 copies/mL. Renal function normal. Plan: continue current regimen, labs and visit yearly, sooner if needed. He has no known drug allergies. We will send notes after each visit."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-04a",
+          "kind": "nurse_visit",
+          "start": "2018-10-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2018-10-04T14:05"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2018-10-04T14:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-04T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2018-10-04T14:20",
+              "body": "In for fall vaccines per PCP. Screening questions negative. High-dose flu given left deltoid, PCV13 right deltoid. VIS sheets given. Observed 15 minutes without reaction. Reminded PPSV23 due one year from now."
+            }
+          ]
+        },
+        {
+          "id": "2018-12-11a",
+          "kind": "pharmacy",
+          "start": "2018-12-11T08:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2018-12-11T08:40",
+              "body": "Pharmacy fax: renewal request for metoprolol succinate 50 mg and amlodipine 5 mg, 90-day supplies. Last seen 07/2018, BP at goal. Sent per protocol with 3 refills each. Atorvastatin and lisinopril still have refills on file."
+            }
+          ]
+        },
+        {
+          "id": "2019-01-22a",
+          "kind": "office_visit",
+          "start": "2019-01-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-01-22T11:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-01-22T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2019-01-22T11:20",
+              "body": "S: 6-month check. Feels well. Taking all meds, no missed doses. Home BP cuff readings mostly 120s/70s. Still walking, less in the cold. ID visit in August went fine.\nO: vitals reviewed. Heart regular, lungs clear, no ankle swelling.\nA/P: HTN controlled, no change. HLD on atorvastatin 40, July lipids acceptable. BMP today for the ACE inhibitor. Mentions an eye appointment coming up for cloudy vision in the right eye; he'll have the eye doctor send notes. Wellness visit in July."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-30a",
+          "kind": "outside_records",
+          "start": "2019-04-30T09:30",
+          "conditions": [
+            {
+              "label": "Age-related cataract",
+              "action": "diagnosed",
+              "onset": "2018-06-01",
+              "note": "Right eye, visually significant"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology letter: cataract",
+              "author": "ophthalmology",
+              "date": "2019-04-30T09:30",
+              "body": "Dear colleague, I saw Mr. Toussaint on 04/23/2019 for gradual blurring and glare in the right eye over the past year, worse with night driving. Best corrected acuity reduced on the right, good on the left. Intraocular pressures within normal limits both eyes. Dense nuclear cataract right eye; left lens with minimal change. Dilated fundus exam unremarkable as far as can be seen on the right. Plan: right cataract extraction with lens implant, scheduled 06/11/2019. Please complete a pre-operative history and physical within 30 days of surgery. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-21a",
+          "kind": "office_visit",
+          "start": "2019-05-21T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation for cataract surgery",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-05-21T08:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-05-21T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2019-05-21T08:35",
+              "text": "Sinus rhythm. Normal intervals and axis. No ST or T wave abnormality. No Q waves.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-05-21T08:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2019-05-21T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative H&P",
+              "author": "PCP",
+              "date": "2019-05-21T09:10",
+              "body": "Pre-op H&P for right cataract extraction with IOL, 06/11/2019, monitored anesthesia care.\n\nHx: HTN, HLD, HIV suppressed on ART. No cardiac or pulmonary disease. Climbs two flights without stopping; walks 2 miles. No chest pain, dyspnea, syncope. No bleeding problems. No prior anesthesia.\nMeds unchanged from list. NKDA.\nExam: BP and HR as charted. Heart regular without murmur, lungs clear, airway unremarkable.\nECG: normal sinus rhythm, no abnormalities.\nLabs: BMP and CBC sent, will forward.\n\nAssessment: low-risk procedure in a patient with good functional capacity. No further cardiac testing needed. OK to continue aspirin per ophthalmology preference. Take morning BP meds with a sip of water. Medically optimized. Faxed to surgical center."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-11a",
+          "kind": "outside_records",
+          "start": "2019-06-18T10:15",
+          "conditions": [
+            {
+              "label": "Age-related cataract",
+              "action": "resolved",
+              "onset": "2018-06-01"
+            },
+            {
+              "label": "Presence of intraocular lens",
+              "action": "history",
+              "onset": "2019-06-11",
+              "icd10": "Z96.1",
+              "note": "Right eye"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cataract extraction with intraocular lens",
+              "performed": "2019-06-11T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Operative report: right cataract extraction",
+              "author": "ophthalmology",
+              "date": "2019-06-18T10:15",
+              "body": "Date of surgery 06/11/2019. Procedure: phacoemulsification of right cataract with posterior chamber intraocular lens in the capsular bag. Anesthesia: topical with monitored sedation. Findings: dense nuclear sclerotic cataract. Uncomplicated; capsule intact. Patient tolerated well. Post-op drops per surgical center protocol for 4 weeks. Post-op day 1: acuity improved, pressure normal, clear cornea. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-16a",
+          "kind": "annual_physical",
+          "start": "2019-07-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-07-16T09:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-07-16T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-07-16T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2019-07-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2019-07-16T09:50",
+              "body": "First Medicare AWV. Right eye much better since the June surgery; says colors look brighter. No new complaints.\n\nHealth risk assessment reviewed: independent in all daily activities, drives, manages his own pills with a weekly box. No falls. Wears seatbelt. Smoke detectors at home. Hearing fine. Mood good, PHQ-2 0. No concerns about memory raised by patient or wife.\n\nExam: BP, pulse, weight as charted; BMI stable. Heart and lungs normal. No edema.\n\nPlan / prevention schedule:\n- Labs: CMP, CBC, lipids.\n- PPSV23 and flu at an October nurse visit. Shingrix: he'll start the series at his pharmacy.\n- Lung screening CT due in September.\n- Colonoscopy next due 2026.\n- Continue current medications. Advance directive forms given again.\nFollow up in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-18a",
+          "kind": "portal_message",
+          "start": "2019-07-18T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2019-07-18T12:30",
+              "body": "Labs from your wellness visit look good. Blood counts, kidneys and liver are normal. Cholesterol is about where it was last year. Keep everything the same."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "pharmacy",
+          "start": "2019-08-20T15:30",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-08-16T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization record",
+              "author": "pharmacy",
+              "date": "2019-08-20T15:30",
+              "body": "Notice of vaccine administered at community pharmacy: recombinant zoster vaccine dose 1 of 2, 08/16/2019, left deltoid. Patient advised to return for dose 2 in 2 to 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "imaging",
+          "start": "2019-09-10T11:20",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2019-09-10T11:20",
+              "text": "Annual low-dose screening CT compared with 08/2018. No pulmonary nodules. Lungs clear without consolidation. No pleural effusion. Normal heart size. No lymphadenopathy.",
+              "conclusion": "Lung-RADS 1. Negative. Annual screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2019-09-11T08:10",
+              "body": "Screening CT negative again, Lung-RADS 1. Letter mailed. Repeat 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "outside_records",
+          "start": "2019-09-24T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-09-10T08:45",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 590
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "<20 copies/mL, not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infectious disease follow-up",
+              "author": "infectious disease",
+              "date": "2019-09-24T10:30",
+              "body": "Annual HIV visit 09/10/2019. Doing well, no missed doses, no opportunistic infections. Recent cataract surgery noted. CD4 590 cells/mm3, viral load not detected (<20). Creatinine stable. Continue bictegravir/emtricitabine/TAF. Return in one year. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2019-10-22T13:45"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2019-10-22T13:47"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-10-22T13:49"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2019-10-22T14:05",
+              "body": "Three vaccines today per standing plan: high-dose influenza L deltoid, PPSV23 R deltoid, Shingrix #2 L deltoid (lower site, 1 inch apart). Dose 1 was at pharmacy in August. Tolerated. Waited 15 min. Warned arm may ache and he may feel run down for a day with the shingles shot. Pneumococcal series now complete."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-03a",
+          "kind": "portal_message",
+          "start": "2019-12-03T19:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mail order question",
+              "author": "patient",
+              "date": "2019-12-03T19:45",
+              "body": "My insurance wants me to switch my blood pressure pills to the mail order pharmacy. Do you need to send new prescriptions or do they take care of it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mail order question",
+              "author": "RN",
+              "date": "2019-12-04T09:20",
+              "body": "We'll send new prescriptions to the mail order pharmacy today for lisinopril, amlodipine, metoprolol and atorvastatin, 90 days with refills. Keep using your local pharmacy until the first shipment arrives. Your HIV medicine comes from the ID clinic so they would handle that one."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

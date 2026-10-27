@@ -1,0 +1,685 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002565",
+      "given": "Ethan",
+      "family": "Vaillancourt",
+      "birth_date": "1989-07-09",
+      "address_line": "57 Sargeant Street",
+      "phone": "+1-617-555-0188",
+      "email": "ethan.vaillancourt@example.test",
+      "marital_status": "single",
+      "summary": "Senior financial analyst and veteran who joined in 2023 with hypertension on hydrochlorothiazide. Outside psychiatry diagnoses OCPD (2024), PTSD (2025, after a brief practice trial of sertraline) and adjustment disorder with anxiety (2025); a first witnessed seizure brings him to the ED in July 2026, after his last practice visit.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-08T10:12",
+              "body": "Caller is looking for a new primary care doctor; his previous office is closing its internal medicine side. Has high blood pressure, takes one pill for it, otherwise says he is healthy. Membership explained, he is fine with it. New patient appointment set for 8/22 at 8:30. Asked him to sign a release so we can pull his old office's records, and to bring his pill bottle."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:30",
+          "end": "2023-08-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; hypertension",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2021-06-01",
+              "note": "diagnosed at prior practice"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "weight_kg": 82.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.62,
+              "Fasting Glucose": 87,
+              "Glucose": 86,
+              "Magnesium": 2.1,
+              "Low Density Lipoprotein": 86
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T09:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T09:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T09:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Senior financial analyst"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-22T09:30",
+              "body": "34M establishing care. Prior PCP's office is dropping adult medicine.\n\nHTN: told his pressure was high about two years ago, started on HCTZ 25 mg each morning and has stayed on it. No home cuff. No headaches, chest pain, palpitations or swelling. No problems with the pill. Bottle brought in, matches.\n\nPMH: hypertension. No surgeries.\nMeds: hydrochlorothiazide 25 mg qAM.\nAllergies: none to medications.\nFamily: dad with high blood pressure from his late 50s. Mom has depression. An aunt on mom's side has generalized anxiety.\nSocial: senior financial analyst, long weeks during reporting cycles. Did a stint in the military in his twenties including a combat tour; says he's fine with that part of his life. Never a smoker. Has a drink or two most weekends. No other substances.\n\nROS otherwise negative.\n\nExam: well, pleasant, a bit formal. Vitals per flowsheet, BP fine on his current dose. HEENT clear. Neck supple, thyroid not enlarged. Regular rhythm, no murmur. Lungs clear throughout. Abdomen soft. Legs without swelling. Mood and affect appropriate.\nPHQ-9 3, GAD-7 2.\n\nA/P\n1. Essential hypertension, controlled on hydrochlorothiazide 25 mg. Continue. CMP for potassium and kidney function.\n2. Health maintenance: CBC, lipids, one-time HIV and hep C screens today. Tdap status unknown, will look for it in old records. Flu and COVID once the fall supply is in.\n3. Records release signed.\nBack in a year for a physical, or sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2023-08-24T16:05",
+              "body": "Hi Ethan, everything from Tuesday came back fine: kidney function and potassium are normal on the water pill, blood counts are normal, cholesterol is in a good range, and the HIV and hepatitis C screens are negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T11:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "outside primary care",
+              "date": "2023-09-12T11:40",
+              "body": "Records received from patient's former primary care office (2019 to 2023), 38 pages.\n\nProblem list: essential hypertension, first noted mid-2021 after repeated elevated office readings.\nMedications: hydrochlorothiazide 25 mg daily since 2021, refilled yearly.\nAllergies: NKDA.\nPreventive: annual exams 2019 through 2022 with routine basic metabolic panels and blood counts, all unremarkable. No immunization record for tetanus beyond childhood in this file.\n\nAbstracted by RN. HCTZ start and dose match what he told us. No Tdap found, will offer at physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T17:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-17T17:30",
+              "body": "In after work for his shots. No fever today, no prior reactions. Flu vaccine to left deltoid, 2023-24 COVID to right deltoid. Waited 15 minutes, no issues. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "work stress",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-12T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-1",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "work-related stress, perfectionism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-12-12T08:20",
+              "body": "Came in early before work. Wants to talk about stress.\n\nS: Over the past several months he has been staying at the office until 8 or 9 most nights because he goes back over every report line by line before it leaves his desk. Reviews have been good, his manager has told him to ease up, but he can't shake the sense the work could be better. Hard for him to hand anything to his junior analysts because he ends up redoing it. Sleeping OK most nights. No low mood to speak of, still enjoys seeing friends when he makes the time. No chest pain or palpitations. No thoughts of harming himself.\n\nO: Tense, organized, came with a typed list. BP and pulse fine on the flowsheet. Heart regular, lungs clear.\nPHQ-9 5, GAD-7 9.\n\nA/P: Work-related stress with perfectionistic, overchecking style. Not depressed. Talked through options; he would like a proper evaluation rather than starting a medication. Referral to outpatient psychiatry placed. HCTZ unchanged. He will let me know when he is seen."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "telephone",
+          "start": "2023-12-13T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral sent, psychiatry",
+              "author": "front desk",
+              "date": "2023-12-13T14:20",
+              "body": "Psychiatry referral and yesterday's office note faxed to the outpatient psychiatry clinic. Left him a voicemail that they will call him to schedule; their wait is running about six weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "specialist_visit",
+          "start": "2024-01-30T14:00",
+          "service": "Psychiatry",
+          "reason": "evaluation of work-related stress",
+          "conditions": [
+            {
+              "label": "Obsessive-compulsive personality disorder",
+              "icd10": "F60.5",
+              "action": "diagnosed",
+              "onset": "2024-01-30"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-30T13:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-30T13:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-30T13:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-1",
+              "action": "done",
+              "date": "2024-01-30T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2024-03-19T09:50",
+              "body": "OUTPATIENT PSYCHIATRY, INITIAL CONSULTATION\nDate of evaluation: 01/30/2024\nReferral source: patient's primary care physician\n\nReason for referral: occupational stress.\n\nHistory: Mr. Vaillancourt is a 34-year-old senior financial analyst. He describes devoting a great many extra hours to combing through his financial reports for mistakes and routinely remaining at work late so that nothing he submits contains an error. Although his performance evaluations have been favorable, he remains unsatisfied with his output and feels it can always be improved. He finds it very difficult to delegate, fearing colleagues will not meet his standard. He denies intrusive, unwanted recurrent thoughts and denies repetitive behaviors performed to neutralize anxiety; the checking is experienced as consistent with his own standards rather than as senseless.\n\nMedical: hypertension, treated with hydrochlorothiazide. NKDA.\nFamily psychiatric history: mother with major depressive disorder, maternal aunt with generalized anxiety disorder. Father with hypertension.\nSocial: never smoker, 1 to 2 drinks per week socially, employed full time in finance.\n\nVitals: BP 138/86.\nMental status / exam: well groomed, visibly tense, cooperative, speech normal rate, thought process linear and detailed, no suicidal or homicidal ideation, insight fair. General physical examination otherwise unremarkable.\n\nLabs: CBC, TSH and fasting glucose all within normal limits.\n\nImpression: Obsessive-compulsive personality disorder. Not consistent with obsessive-compulsive disorder given the absence of ego-dystonic obsessions or compulsions.\n\nRecommendations: individual psychotherapy (cognitive behavioral approach) to address perfectionism and delegation; no medication indicated at this time. Return as needed.\n\nOutpatient Psychiatry\n[Copy sent to PCP following records request.]"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "telephone",
+          "start": "2024-03-05T13:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, psychiatry",
+              "author": "front desk",
+              "date": "2024-03-05T13:25",
+              "body": "Pt says he had his psych appointment at the end of January. Nothing has come to us. Called the psychiatry office, they need our request on letterhead plus his signed release. Both faxed over today. Will watch for it."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psychiatry note came in",
+              "author": "PCP",
+              "date": "2024-03-20T12:10",
+              "body": "Ethan, the psychiatrist's consult note finally reached us. Their read is a perfectionistic personality pattern (obsessive-compulsive personality) rather than OCD, and they recommend talk therapy, no medication. I agree with that plan. Let me know if you'd like help finding a therapist covered by your plan."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "pharmacy",
+          "start": "2024-05-07T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: hydrochlorothiazide",
+              "author": "MA",
+              "date": "2024-05-07T09:40",
+              "body": "Electronic refill request from his pharmacy for hydrochlorothiazide 25 mg #90. Last BMP 8/2023 normal, seen within the year. Approved per protocol, 90 days with 1 refill. Reminded him by portal that a BP check is due in June."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-06-12T09:05",
+              "body": "Hi Ethan, we missed you yesterday afternoon for your blood pressure check. Since your yearly physical is coming up in August, the doctor is fine folding the check into that visit. You're booked for 8/20 at 7:30 am. Please come fasting."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "author": "patient",
+              "date": "2024-06-12T11:47",
+              "body": "Sorry about that, quarter close ran long and I lost track of the time. 8/20 works. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T07:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-08-20T08:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-20T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-20T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T08:15",
+              "body": "35M, yearly exam, fasting.\n\nInterval: missed June BP check (work). Saw psychiatry in January; consult says obsessive-compulsive personality, therapy recommended. He has not started with a therapist yet, says it's on his list. Feels work is a little more manageable since he started leaving by 7.\n\nHTN on HCTZ 25 mg, no missed doses, no lightheadedness.\nAllergies: NKDA.\nHabits unchanged: never smoked, light weekend drinking.\n\nExam: Vitals per flowsheet, BP at goal, weight steady. Eyes, ears, throat normal. No thyroid enlargement or nodes. Heart regular without murmur. Lungs clear. Abdomen soft, no organ enlargement. Skin without concerning lesions. No leg swelling. Neuro grossly intact. Calm, a little guarded.\n\nPlan\n- Hypertension: controlled, same dose. CMP today.\n- Lipids today.\n- Tdap today, nothing on record after childhood.\n- Encouraged him to book the therapist; gave him the list our care coordinator keeps.\n- Flu and COVID when the fall vaccines arrive.\nNext physical in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2024-08-22T13:30",
+              "body": "Your chemistry panel and cholesterol came back normal. Potassium is right where it should be on the hydrochlorothiazide. See you for vaccines in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T17:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T17:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-22T17:15",
+              "body": "Flu (L arm) and 2024-25 COVID (R arm). Afebrile, tolerated both. He looked tired and mentioned he hasn't been sleeping well lately; suggested he raise it with the PCP and he said he would book something."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "office_visit",
+          "start": "2024-11-05T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "nightmares, poor sleep",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "combat-related nightmares, flashbacks and sleep disruption"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-05T12:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "nightmares and flashbacks after combat service"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-11-05T12:55",
+              "body": "Lunch-hour visit. Nurse flagged poor sleep at his vaccine visit.\n\nS: Since about the start of August he has been having bad dreams about his deployment, several nights a week, the kind he wakes from with his heart pounding and drenched, sure he is back there. In the daytime certain sounds or a crowded room will drop him straight back into it for a few seconds. Takes him an hour or more to fall asleep. Feels like he is always scanning the room. Nothing specific set it off that he can name. He had not talked about the service years with anyone before. Drinking unchanged, one or two on weekends. No thoughts of suicide or of hurting anyone, no plan, no weapons at home.\n\nO: Tired, sits facing the door, otherwise engaged. BP and HR on flowsheet, fine. Heart regular, lungs clear.\nPHQ-9 8, GAD-7 11.\n\nA/P: Re-experiencing, sleep disruption and hyperarousal for about three months after combat service; picture fits post-traumatic symptoms and needs a specialist diagnosis and trauma-focused treatment.\n- Start sertraline 50 mg daily. Discussed it takes several weeks, early GI upset, call with any worsening mood.\n- Referral back to psychiatry, flagged as combat-related.\n- Crisis line and our after-hours number given.\n- Check in by portal in 3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-26a",
+          "kind": "portal_message",
+          "start": "2024-11-26T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sertraline check-in",
+              "author": "patient",
+              "date": "2024-11-26T20:14",
+              "body": "Three weeks on the sertraline. Stomach was a little off the first few days, that's gone. Sleep maybe slightly better, the dreams are still there. Psychiatry gave me February 3, earliest they had."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sertraline check-in",
+              "author": "PCP",
+              "date": "2024-11-27T08:02",
+              "body": "Thanks for the update. That's about what I'd expect at three weeks; it usually takes six to eight to see the full effect. Stay at 50 mg and keep the February appointment. If things get worse before then, message me or call."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

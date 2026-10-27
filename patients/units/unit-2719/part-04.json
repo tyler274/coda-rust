@@ -1,0 +1,168 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002719",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T12:20",
+          "reason": "Smoking check-in",
+          "documents": [
+            {"type": "Patient Message", "title": "Quitting check-in", "author": "PCP", "date": "2024-01-09T12:20", "body": "Hi Melissa, this is the January check-in we talked about. Any thoughts on a quit date? Happy to send in patches and gum if you want to try with some help this time."},
+            {"type": "Patient Message", "title": "RE: Quitting check-in", "author": "patient", "date": "2024-01-11T21:02", "body": "Ugh, thank you for remembering. Not yet. Work is a mess until spring. I'll bring it up in March."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-19T16:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-03-19T16:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-03-19T16:50", "body": "Routine BP follow-up. Doing well. Home readings at goal. Face pain controlled. Thyroid symptoms none.\nSmoking: as promised she raised it. Cut to about half a pack some weeks, then back up. Declines NRT again, wants to do it 'cold turkey' on a vacation week in May.\nExam: heart regular, lungs clear, no edema.\nA/P: HTN controlled, BMP today. Other problems stable. Follow-up in summer."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "RN", "date": "2024-03-20T10:05", "body": "BMP normal, pt informed via portal per PCP."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "telephone",
+          "start": "2024-06-12T09:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "No-show Follow-up", "author": "front desk", "date": "2024-06-12T09:30", "body": "Left voicemail re missed visit yesterday. Pt texted back that she forgot, apologized, will rebook with her fall physical. No issues."}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "pharmacy",
+          "start": "2024-08-06T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Electronic Refill Request", "author": "MA", "date": "2024-08-06T10:15", "body": "E-refill request from pharmacy: carbamazepine 200 mg #180, sertraline 100 mg #90. Last labs 03/2024. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "Refill Approval", "author": "PCP", "date": "2024-08-06T13:00", "body": "Approved both, 90-day supply x1 refill. Labs at physical."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "imaging",
+          "start": "2024-09-17T08:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-09-17T08:20", "text": "Screening tomosynthesis mammography, both breasts, CC and MLO projections. Compared with 08/2023 and earlier. Heterogeneously dense tissue. No mass, suspicious calcification or distortion. Skin and nipple contours normal.", "conclusion": "BI-RADS 1: negative. Annual screening."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2024-09-18T08:40", "body": "Negative mammogram."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 1}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T09:03"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-10-22T09:10", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-22T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-22T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-22T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-10-22T08:15"},
+            {"procedure": "Immunization administration", "performed": "2024-10-22T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-22T10:00", "body": "Annual, rebooked after the June miss. Feels well. The May quit attempt held about ten days. Still about a pack a week, frustrated with herself. Discussed that every attempt counts; offered varenicline again, she wants to read about it first.\nNo palpitations or heat intolerance. TN: two short flares this year that settled on her usual dose. Mood good, PHQ-9 3.\nExam: vitals as charted. Thyroid: small right nodule, unchanged. Heart RRR, no murmur. Lungs clear. Breasts symmetric, no masses, skin normal, no nipple retraction, no axillary nodes. Abdomen soft. No edema.\nA/P\n1. HTN controlled on lisinopril/HCTZ.\n2. S/p I-131 for toxic nodule: TSH today.\n3. TN on carbamazepine 200 BID: CMP, CBC.\n4. MDD in remission.\n5. Tobacco: counseled, info on varenicline given.\n6. HM: flu and COVID today. Lipids. Mammogram 9/2024 negative. Colonoscopy 2032. Pap 2027."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2024-10-23T11:25", "body": "All normal: TSH, sodium, counts, liver tests, lipids."}
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "office_visit",
+          "start": "2025-04-15T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-15T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-15T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-04-15T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-04-15T16:35", "body": "Spring BP check. Fine at home and here. TN quiet. Mood good. Decided against varenicline for now; thinking about patches 'when the weather's nice'. Still about a pack a week.\nExam: heart and lungs normal. No edema.\nA/P: HTN controlled. Sodium and counts today for carbamazepine. Physical in October."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2025-04-16T09:15", "body": "BMP and CBC normal."}
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "imaging",
+          "start": "2025-09-23T07:50",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-09-23T07:50", "text": "Bilateral screening mammogram with tomosynthesis. Comparison 09/2024 and prior. Heterogeneously dense. No suspicious mass, calcifications or architectural distortion in either breast. No skin thickening or nipple change.", "conclusion": "BI-RADS 1, negative. Routine annual screening."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2025-09-24T10:20", "body": "Mammogram negative, BI-RADS 1."}
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "annual_physical",
+          "start": "2025-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-24T08:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-24T08:42"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-10-24T08:50", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-24T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-24T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-24T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-10-24T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-24T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-24T09:45", "body": "Annual. No complaints. BP fine on lisinopril 10 and HCTZ 12.5. Facial pain controlled, one brief flare in the summer. Mood steady, PHQ-9 2. No thyroid symptoms.\nSmoking: about a pack a week. Talked again; she says next year, for real. Patches offered, she'll message if she wants them sent.\n\nExam: vitals as charted. HEENT normal. Thyroid: small right nodule, stable. Heart regular, no murmur. Lungs clear. Breasts: symmetric, no masses, skin normal without redness or edema, nipples normal, no axillary or supraclavicular nodes. Abdomen soft, nontender. Extremities without edema. Neuro nonfocal. Mood euthymic.\n\nA/P\n1. Essential HTN, controlled. Continue.\n2. Toxic thyroid nodule s/p I-131 in 2023, euthyroid; TSH today.\n3. Trigeminal neuralgia on carbamazepine 200 BID; CMP and CBC today.\n4. MDD, in remission on sertraline 100.\n5. Tobacco, counseled 5 min.\n6. HM: flu and updated COVID given. Lipids. Mammogram 9/2025 negative. Colonoscopy due 2032, Pap 2027.\nRefills sent. Next physical in a year, BP check in spring."},
+            {"type": "Progress Notes", "title": "Result Note", "author": "PCP", "date": "2025-10-25T10:40", "body": "TSH, CMP, CBC and lipids normal. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "pharmacy",
+          "start": "2025-12-02T11:00",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Electronic Refill Request", "author": "MA", "date": "2025-12-02T11:00", "body": "Pharmacy requesting lisinopril 10 mg and HCTZ 12.5 mg, 90-day supply. Approved per PCP protocol, last BMP 10/2025."}
+          ]
+        }
+      ]
+    }
+  ]
+}

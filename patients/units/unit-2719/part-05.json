@@ -1,0 +1,234 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002719",
+      "events": [
+        {
+          "id": "2026-01-19a",
+          "kind": "ed_visit",
+          "start": "2026-01-19T18:40",
+          "end": "2026-01-19T23:10",
+          "service": "Emergency Medicine",
+          "reason": "Left breast pain and swelling",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-19T19:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-01-19T19:20", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 52}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-01-19T18:40"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-01-21T08:00", "body": "OUTSIDE EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival 01/19/2026 18:40.\n\nCC: left breast pain and swelling x 2 months.\n\nHPI: 54F with HTN, depression, trigeminal neuralgia and a toxic thyroid nodule treated in the past, here because her left breast has been getting larger and more painful over about eight weeks and in the past couple of weeks has turned red and hot. She thought it was an infection and waited for it to pass. No fever. No nipple discharge. No injury.\n\nPMH: hypertension (on hydrochlorothiazide and lisinopril), major depressive disorder, trigeminal neuralgia, toxic thyroid nodule s/p radioiodine.\nMeds: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, carbamazepine 200 mg BID, sertraline 100 mg daily.\nAllergies: NKDA.\nFHx: no breast cancer in first-degree relatives.\nSHx: smokes about a pack per week for 20 years and wants to quit; drinks socially 1-2 per month; administrative assistant.\n\nExam: afebrile, vitals stable as recorded. Left breast diffusely enlarged compared with the right, erythematous and edematous, with peau d'orange skin. Warm. No discrete palpable mass. Left nipple retracted. Firm palpable left axillary lymph nodes. Right breast and axilla normal. Heart and lungs normal.\n\nLabs: CBC within normal limits. ESR 52 (elevated).\n\nMDM: picture is concerning for inflammatory breast cancer rather than mastitis or abscess given duration, absence of fever, peau d'orange, nipple retraction and adenopathy. Discussed with on-call breast surgery. No antibiotics. Urgent outpatient diagnostic breast imaging arranged for 01/21 and breast surgery/oncology evaluation. Patient understands and agrees. Asked to notify her PCP.\n\nDisposition: discharged home 23:10, stable."}
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T07:12",
+          "reason": "Patient reports ED visit",
+          "documents": [
+            {"type": "Patient Message", "title": "Went to the ER last night", "author": "patient", "date": "2026-01-20T07:12", "body": "I should have called you weeks ago. My left breast has been swollen and sore since late November and then got red, I figured an infection. Went to the ER last night. They said it might be inflammatory breast cancer and I have imaging tomorrow. I'm scared. I had a normal mammogram in September, how can this happen?"},
+            {"type": "Patient Message", "title": "RE: Went to the ER last night", "author": "PCP", "date": "2026-01-20T07:48", "body": "Melissa, I'm so glad you went in, and I'm sorry you're dealing with this. This kind of breast cancer, if that's what it is, often grows quickly and doesn't form a lump, so it can appear after a normal mammogram. Nothing you did caused it. Tomorrow's imaging and a biopsy are the right next steps, and I'll make sure we get every report. Please call or text me today if you'd like to talk it through, I'm around all day. Keep taking all your usual medicines."},
+            {"type": "Patient Message", "title": "RE: RE: Went to the ER last night", "author": "patient", "date": "2026-01-20T08:30", "body": "Thank you. I'll call at lunch."}
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "imaging",
+          "start": "2026-01-21T09:00",
+          "service": "Breast Imaging",
+          "reason": "Diagnostic breast imaging, left breast swelling",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2026-01-21T09:00", "text": "Left diagnostic mammogram with tomosynthesis; right breast CC and MLO for comparison. Compared with screening study of 09/2025. Left breast: diffuse skin thickening and trabecular thickening with overall increased density relative to prior and to the right breast. No discrete mass, suspicious calcification or focal distortion. Enlarged dense left axillary lymph nodes are partially included. Right breast unchanged and negative.", "conclusion": "Findings of the left breast highly suggestive of inflammatory breast carcinoma in this clinical setting. BI-RADS 5. Tissue sampling recommended."},
+            {"study": "Breast ultrasound", "performed": "2026-01-21T09:40", "text": "Targeted ultrasound of the left breast and left axilla. Diffuse skin thickening and subcutaneous edema throughout the left breast. No discrete solid mass identified. Left axilla: several enlarged lymph nodes with thickened cortex and effaced fatty hilum, the largest 2.2 cm.", "conclusion": "Skin thickening and edema without discrete mass; abnormal left axillary lymph nodes, largest 2.2 cm. BI-RADS 5. Ultrasound-guided biopsy of breast and axillary node recommended; MRI for extent."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Breast Imaging Reports Received", "author": "front desk", "date": "2026-01-22T09:00", "body": "Diagnostic mammogram and ultrasound reports from the outside breast center, dated 01/21/2026, received by fax and filed. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "imaging",
+          "start": "2026-01-23T14:00",
+          "service": "Breast Imaging",
+          "reason": "Breast MRI",
+          "documents": [
+            {"type": "Imaging Report", "title": "MRI Breasts With and Without Contrast", "author": "radiology", "date": "2026-01-26T10:00", "body": "OUTSIDE BREAST CENTER - MRI BILATERAL BREASTS WITH AND WITHOUT CONTRAST\nDate: 01/23/2026. Indication: clinical concern for inflammatory carcinoma of the left breast; BI-RADS 5 mammogram and ultrasound.\nTechnique: standard bilateral breast protocol with dynamic post-contrast imaging.\nFindings: Left breast: extensive non-mass enhancement occupying much of the breast, spanning about 8.5 cm, with diffuse skin thickening and enhancement indicating skin involvement. No discrete enhancing mass. Pectoralis muscle without abnormal enhancement. Left axilla: multiple enlarged lymph nodes with abnormal morphology, suspicious for metastasis. Right breast: no suspicious enhancement. Right axilla normal.\nImpression: extensive left breast non-mass enhancement with skin involvement and suspicious left axillary lymphadenopathy, consistent with inflammatory breast carcinoma pending pathology. Right breast negative. BI-RADS 5."}
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "procedure_visit",
+          "start": "2026-01-26T10:30",
+          "service": "Breast Surgery",
+          "reason": "Breast, axillary node and skin biopsies",
+          "procedures": [{"procedure": "Punch skin biopsy, single lesion", "performed": "2026-01-26T11:10"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2026-01-26T10:30", "issued": "2026-01-29T15:00", "text": "Specimens: (A) left breast, ultrasound-guided core needle biopsy x4; (B) left axillary lymph node, ultrasound-guided core biopsy x3; (C) left breast skin, punch biopsy.\nA: invasive ductal carcinoma, Nottingham grade 3. Estrogen receptor 0%, progesterone receptor 0%. HER2 by immunohistochemistry 3+ (positive).\nB: metastatic carcinoma consistent with breast primary.\nC: dermis with tumor emboli within lymphatic channels; epidermis intact.", "conclusion": "Left breast invasive ductal carcinoma, grade 3, ER-negative, PR-negative, HER2-positive (IHC 3+), with dermal lymphatic tumor emboli and a positive left axillary lymph node. Findings support inflammatory breast carcinoma."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Breast Biopsy Procedure Note", "author": "breast surgery", "date": "2026-01-29T16:00", "body": "OUTSIDE BREAST SURGERY - PROCEDURE NOTE\nDate: 01/26/2026. Procedures: ultrasound-guided 14-gauge core biopsy of the left breast (4 cores) and of the largest left axillary node (3 cores), with clip placement in the node; 4 mm punch biopsy of left breast skin, lower outer quadrant. Local anesthesia. No complications. Hemostasis with pressure; punch site closed with one suture.\nPathology attached (resulted 01/29). Medical oncology consult already scheduled 01/28; results discussed with patient by phone today. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "specialist_visit",
+          "start": "2026-01-28T13:00",
+          "service": "Medical Oncology",
+          "reason": "New diagnosis, left breast carcinoma",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-28T12:30", "results": [{"test": "Creatinine"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-01-28T12:30", "results": [
+              {"test": "Carcinoembryonic antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 7.8},
+              {"test": "Cancer antigen 15-3", "loinc": "6875-9", "unit": "U/mL", "value": 64}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2026-01-28T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Consultation", "author": "medical oncology", "date": "2026-02-02T09:00", "body": "OUTSIDE CANCER CENTER - MEDICAL ONCOLOGY NEW PATIENT CONSULTATION\nDate of visit: 01/28/2026\nReferred from the ED via breast surgery. PCP copied.\n\nHistory: 54-year-old woman with hypertension, major depressive disorder in remission, trigeminal neuralgia and a toxic thyroid nodule treated with I-131 in 2023, who noticed left breast swelling and soreness about two months ago, followed by redness and warmth. Screening mammogram 09/2025 was negative. No fever, discharge or trauma. Seen in the ED 01/19.\n\nMeds: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, carbamazepine 200 mg twice daily, sertraline 100 mg daily. NKDA.\nFamily history: maternal aunt with breast cancer at 54; mother hypertension; sister depression.\nSocial: smoker, roughly one pack weekly for 20 years, motivated to quit; social alcohol; administrative assistant, lives alone.\n\nExam: ECOG 0. Left breast enlarged, erythematous and edematous over more than a third of the skin, peau d'orange, nipple retracted, no discrete mass. Firm mobile left axillary nodes. No supraclavicular nodes. Right breast normal. Lungs clear. Liver not enlarged.\n\nData: diagnostic mammogram and US 01/21, BI-RADS 5, largest axillary node 2.2 cm. MRI 01/23: non-mass enhancement about 8.5 cm with skin involvement and left axillary adenopathy. Biopsies 01/26: invasive ductal carcinoma grade 3, ER 0%, PR 0%, HER2 3+; axillary node positive; dermal lymphatic emboli. CEA 7.8 ng/mL and CA 15-3 64 U/mL today, both elevated. Chemistries otherwise normal.\n\nAssessment: inflammatory breast carcinoma, left, HER2-positive, hormone receptor-negative, clinical stage IIIB (cT4d cN1), distant staging pending.\n\nPlan:\n1. PET/CT for staging.\n2. Baseline echocardiogram before trastuzumab.\n3. Port placement.\n4. Neoadjuvant docetaxel, carboplatin, trastuzumab and pertuzumab (TCHP) every 3 weeks for 6 cycles, then modified radical mastectomy and post-mastectomy radiation; HER2-directed therapy to complete one year.\n5. Antiemetics and supportive medications will come from our office. She may continue sertraline and carbamazepine; we will watch counts closely.\n6. Smoking cessation strongly encouraged; referred to our tobacco program.\n7. Social work and nurse navigator introduced."}
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "imaging",
+          "start": "2026-02-02T08:00",
+          "service": "Nuclear Medicine",
+          "reason": "PET/CT staging",
+          "documents": [
+            {"type": "Imaging Report", "title": "PET/CT Skull Base to Mid-thigh", "author": "radiology", "date": "2026-02-04T09:00", "body": "OUTSIDE CANCER CENTER - FDG PET/CT\nDate: 02/02/2026. Indication: staging of newly diagnosed left inflammatory breast carcinoma.\nFindings: Hypermetabolic diffuse left breast parenchyma and thickened overlying skin. Hypermetabolic left axillary lymph nodes, levels I and II. No hypermetabolic internal mammary, supraclavicular or mediastinal nodes. Lungs without suspicious nodule. Liver, adrenal glands and spleen without suspicious uptake. No suspicious osseous lesion. Thyroid without focal uptake.\nImpression: hypermetabolic left breast and left axillary nodal disease. No evidence of distant metastatic disease."}
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "imaging",
+          "start": "2026-02-03T10:30",
+          "service": "Cardiology",
+          "reason": "Baseline echocardiogram before trastuzumab",
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2026-02-03T10:30", "text": "Complete 2D, M-mode and Doppler study. Left ventricle normal in size and wall thickness with normal systolic function; LVEF 62% by biplane method. Normal regional wall motion. Normal diastolic filling. Right ventricle normal size and function. Atria normal. Valves structurally normal without significant regurgitation or stenosis. No pericardial effusion. IVC normal with normal respiratory variation.", "conclusion": "Normal echocardiogram. LVEF 62%."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Echocardiogram Report Received", "author": "front desk", "date": "2026-02-04T11:00", "body": "Outside echocardiogram report 02/03/2026 received from cancer center, filed. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "procedure_visit",
+          "start": "2026-02-06T07:30",
+          "service": "General Surgery",
+          "reason": "Port placement",
+          "documents": [
+            {"type": "Procedure Note", "title": "Port Placement Operative Note", "author": "general surgery", "date": "2026-02-09T09:00", "body": "OUTSIDE SURGERY - OPERATIVE NOTE\nDate: 02/06/2026. Procedure: placement of right internal jugular single-lumen chest port under ultrasound and fluoroscopic guidance.\nIndication: neoadjuvant chemotherapy for left breast cancer.\nAnesthesia: local with moderate sedation. Port pocket in the right upper chest. Catheter tip at the cavoatrial junction on fluoroscopy. Flushes and draws well. Estimated blood loss minimal. No complications. Accessed and ready for use. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "specialist_visit",
+          "start": "2026-02-09T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 1 TCHP",
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Treatment Note - Cycle 1", "author": "medical oncology", "date": "2026-02-12T10:00", "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n02/09/2026. Cycle 1 day 1 of TCHP (docetaxel, carboplatin, trastuzumab, pertuzumab), every 21 days x 6. PET/CT without distant disease: stage IIIB confirmed. Echo LVEF 62%. Port in place. Labs adequate for treatment. Premedication and antiemetics per protocol. Breast unchanged from consult. Plan: cycle 2 on 03/02. Medications per our list; continue home lisinopril, HCTZ, carbamazepine, sertraline. Copy to PCP."}
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "portal_message",
+          "start": "2026-02-18T16:05",
+          "reason": "Questions during chemotherapy",
+          "documents": [
+            {"type": "Patient Message", "title": "Chemo started", "author": "patient", "date": "2026-02-18T16:05", "body": "First round done. Tired and my stomach is unhappy but the nurses are great. Oncology said keep the sertraline and carbamazepine. Is it okay with you to stay on the blood pressure pills, my BP was a bit low at infusion?"},
+            {"type": "Patient Message", "title": "RE: Chemo started", "author": "PCP", "date": "2026-02-18T17:20", "body": "Good to hear from you. Your oncology team checks your pressure every visit, so follow what they say on the blood pressure pills; if you feel dizzy standing or your home readings run under 100, hold the HCTZ and let both of us know. I'm reading every note they send. Text me anytime."}
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "specialist_visit",
+          "start": "2026-03-23T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 3 TCHP",
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Treatment Note - Cycle 3", "author": "medical oncology", "date": "2026-03-26T10:00", "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n03/23/2026, cycle 3 day 1 TCHP. After two cycles: fatigue for about a week after each, alopecia, loose stools managed with the supportive plan. No fever or neutropenic events. Exam: left breast erythema and edema have resolved, peau d'orange no longer seen, breast softer; axillary nodes no longer palpable. Labs acceptable. Proceed. Clinical response encouraging. Cycle 4 on 04/13."}
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "specialist_visit",
+          "start": "2026-05-04T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 5 TCHP, interval echocardiogram",
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2026-05-04T07:30", "text": "Limited 2D and Doppler study for LV function surveillance on trastuzumab. Left ventricle normal in size with normal systolic function; LVEF 58% by biplane method, compared with 62% on 02/03/2026. No regional wall motion abnormality. Valves without significant dysfunction. No pericardial effusion.", "conclusion": "Normal LV systolic function, LVEF 58%."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Treatment Note - Cycle 5", "author": "medical oncology", "date": "2026-05-07T10:00", "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n05/04/2026, cycle 5 day 1 TCHP. Tolerating with the same fatigue and loose stools. Breast exam: no erythema, edema or skin change; no palpable axillary nodes. Echo today LVEF 58%, within normal and not a meaningful decline; continue HER2 therapy. Proceed with cycle 5. Final cycle 05/26, then surgical referral for modified radical mastectomy about 4 to 6 weeks later."}
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "specialist_visit",
+          "start": "2026-05-26T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 6 TCHP",
+          "documents": [
+            {"type": "Progress Notes", "title": "Oncology Treatment Note - Cycle 6", "author": "medical oncology", "date": "2026-05-29T10:00", "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n05/26/2026 (moved a day for the holiday). Cycle 6 of 6 TCHP, completing neoadjuvant chemotherapy. Exam: complete clinical response in the breast and axilla. Plan: left modified radical mastectomy 06/29 with breast surgery; trastuzumab and pertuzumab to continue every 3 weeks after surgery to finish a year of HER2-directed therapy; radiation oncology referral placed for post-mastectomy radiation."}
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "hospital_admission",
+          "start": "2026-06-29T07:00",
+          "end": "2026-06-30T11:30",
+          "service": "Breast Surgery",
+          "reason": "Left modified radical mastectomy",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Surgical Discharge Summary", "author": "breast surgery", "date": "2026-07-02T09:00", "body": "OUTSIDE HOSPITAL - DISCHARGE SUMMARY\nAdmitted 06/29/2026, discharged 06/30/2026.\nDiagnosis: left inflammatory breast carcinoma, HER2-positive, after neoadjuvant TCHP.\nProcedure 06/29/2026: left modified radical mastectomy (total mastectomy with level I and II axillary dissection), no immediate reconstruction as is standard for inflammatory carcinoma. Two closed suction drains. Estimated blood loss under 100 mL. No complications.\nCourse: overnight observation, pain controlled with oral medication, ambulating, tolerating diet. Drains with serosanguinous output. Home medications resumed: lisinopril 10 mg, hydrochlorothiazide 12.5 mg, carbamazepine 200 mg twice daily, sertraline 100 mg daily. Short course of oral pain medication per surgery.\nFollow-up: breast surgery clinic in 1 week for pathology and drain check. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "specialist_visit",
+          "start": "2026-07-06T10:00",
+          "service": "Breast Surgery",
+          "reason": "Post-operative visit, pathology",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2026-06-29T09:30", "issued": "2026-07-03T14:00", "text": "Specimen: left modified radical mastectomy with axillary contents, after neoadjuvant chemotherapy.\nBreast: tumor bed with fibrosis and treatment effect; no residual invasive carcinoma and no residual ductal carcinoma in situ. Skin and nipple: no carcinoma; no dermal lymphatic tumor emboli. Margins: not applicable, no residual tumor.\nLymph nodes: 0 of 14 involved; biopsy-clipped node identified with treatment effect, no residual tumor.", "conclusion": "No residual invasive or in situ carcinoma in breast or 14 lymph nodes (ypT0 ypN0): pathologic complete response."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Breast Surgery Post-op Note", "author": "breast surgery", "date": "2026-07-08T09:00", "body": "OUTSIDE BREAST SURGERY - POSTOPERATIVE VISIT\n07/06/2026, one week after left modified radical mastectomy. Healing well, incision clean and dry, flaps viable, no seroma. Both drains removed today. Arm range of motion exercises reviewed. Pathology reviewed with her: pathologic complete response, ypT0 ypN0. She was tearful with relief. Next: radiation oncology 07/14 and continued trastuzumab/pertuzumab with medical oncology."}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T13:30",
+          "service": "Radiation Oncology",
+          "reason": "Post-mastectomy radiation consultation",
+          "documents": [
+            {"type": "Consult Note", "title": "Radiation Oncology Consultation", "author": "radiation oncology", "date": "2026-07-17T09:00", "body": "OUTSIDE CANCER CENTER - RADIATION ONCOLOGY CONSULTATION\nDate: 07/14/2026.\n54-year-old woman with left inflammatory breast carcinoma, cT4d cN1 M0, ER/PR-negative, HER2-positive, treated with 6 cycles of neoadjuvant TCHP and left modified radical mastectomy on 06/29/2026 with pathologic complete response (ypT0 ypN0, 0/14 nodes). Continuing trastuzumab and pertuzumab.\nMeds: lisinopril, hydrochlorothiazide, carbamazepine, sertraline; HER2 therapy per medical oncology. NKDA.\nExam: left mastectomy incision healed, no erythema; shoulder range of motion near full. No palpable adenopathy.\nRecommendation: post-mastectomy radiation to the left chest wall and regional lymph nodes, 50 Gy in 25 fractions, regardless of pathologic response given inflammatory presentation. Risks reviewed including skin reaction, fatigue, lymphedema, and small risks to lung and heart. Consent signed. CT simulation 07/22, start planned 08/03. HER2 therapy can continue concurrently."}
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T19:40",
+          "reason": "Update and refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Good news and a refill", "author": "patient", "date": "2026-07-20T19:40", "body": "Wanted you to hear it from me: the surgery pathology showed no cancer left. Radiation starts August 3, every weekday for five weeks. Could you send refills for sertraline and carbamazepine? Pharmacy says no refills left."},
+            {"type": "Patient Message", "title": "RE: Good news and a refill", "author": "PCP", "date": "2026-07-20T21:05", "body": "That is wonderful news, Melissa. I saw the pathology report come in and was hoping you'd write. Sertraline 100 and carbamazepine 200 twice daily are sent, 90 days each. If you want help with quitting, I can send patches whenever you say. Thinking of you through radiation."}
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "specialist_visit",
+          "start": "2026-08-03T09:00",
+          "service": "Radiation Oncology",
+          "reason": "Start of radiation",
+          "documents": [
+            {"type": "Progress Notes", "title": "Radiation Oncology Treatment Start", "author": "radiation oncology", "date": "2026-08-05T09:00", "body": "OUTSIDE CANCER CENTER - RADIATION ON-TREATMENT NOTE\n08/03/2026: fraction 1 of 25 to the left chest wall and regional nodes, 2 Gy per fraction, total planned 50 Gy. Setup verified with imaging. Tolerated without issue. Skin care instructions given. Weekly on-treatment visits. Anticipated completion early September. Trastuzumab and pertuzumab continuing every 3 weeks with medical oncology, next 08/10."}
+          ]
+        }
+      ]
+    }
+  ]
+}

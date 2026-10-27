@@ -1,0 +1,368 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002677",
+      "events": [
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T22:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Always thirsty",
+              "author": "patient",
+              "date": "2025-01-27T22:15",
+              "body": "Hi, this has been going on since the end of October and I kept thinking it would stop. I'm thirsty constantly and peeing all the time, including getting up two or three times a night. I carry a big water bottle everywhere now and refill it maybe 5 times a day. No other symptoms really. Is this something with the lithium? Can I come in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Always thirsty",
+              "author": "RN",
+              "date": "2025-01-28T08:20",
+              "body": "Good morning Gavin. Yes, we'd like to see you. You're booked Thursday 1/30 at 9:00. Please come fasting (water is fine, keep drinking as much as you need) so we can check sugar along with the other labs. Keep taking your lithium as prescribed. If you get confused, very weak or start vomiting before then, go to the emergency department."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Increased thirst and urination for 3 months",
+          "conditions": [
+            {"label": "Nephrogenic diabetes insipidus", "icd10": "N25.1", "action": "diagnosed", "onset": "2024-10-30", "note": "Lithium-associated"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-30T09:40", "resulted": "2025-01-30T14:30", "results": [{"test": "Sodium", "value": 148}, {"test": "Chloride", "value": 110}, {"test": "Glucose", "value": 97}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Urinalysis", "collected": "2025-01-30T09:40", "resulted": "2025-01-30T14:30", "results": [{"test": "Urine Specific Gravity", "value": 1.001}, {"test": "Urine Glucose", "text": "Negative"}]},
+            {"panel": null, "collected": "2025-01-30T09:40", "resulted": "2025-01-30T14:30", "results": [
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.8}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-30T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-01-30T09:40"}
+          ],
+          "orders": [
+            {"id": "nephrology-referral", "action": "placed", "order": "Nephrology referral", "category": "referral", "to": "Nephrology", "reason": "Lithium-associated nephrogenic diabetes insipidus"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-30T09:50",
+              "body": "CC: thirst and frequent urination, about 3 months.\n\nHPI: 26 y/o with bipolar I disorder on lithium for years. Since roughly the end of October he has been thirsty all day and urinating large volumes, up 2-3 times a night. Estimates he drinks well over 4 liters a day, mostly water, no soda or juice. Not losing weight, appetite normal, no blurred vision. No headache, no new meds or supplements, no change in lithium dose. Mood stable, last psychiatry visit in December.\n\nPMH: bipolar I disorder. PSH: tonsillectomy age 8.\nMeds: lithium carbonate 600 mg BID (psychiatry). Nothing else.\nAllergies: NKDA.\nFHx: mother with bipolar disorder and autoimmune thyroiditis, father with hypertension.\nSocial: grad student, never smoker, no alcohol.\n\nExam: vitals all within normal limits, weight about where it was in September. Looks well, mucous membranes moist. Thyroid normal. Heart and lungs normal. Abdomen soft, no bladder distension. No edema. No tremor. Neuro intact.\n\nA/P\nPolyuria and polydipsia in a long-term lithium user. Lithium-related concentrating defect is at the top of the list; need to exclude diabetes mellitus and look at sodium and calcium. Fasting today.\n- BMP, urinalysis, fasting glucose, lithium level now.\n- Keep drinking to thirst, do not restrict fluids.\n- Will call him with results this afternoon.\n- Not changing lithium on my own; will loop in his psychiatrist depending on results."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "author": "PCP",
+              "date": "2025-01-30T16:40",
+              "body": "Labs back from this morning: sodium 148 (high), urine specific gravity 1.001, fasting glucose 97, urine glucose negative, calcium and creatinine normal, lithium 0.8.\n\nVery dilute urine with a high-normal-to-high sodium while drinking freely, and no diabetes. Fits lithium-associated nephrogenic diabetes insipidus. Added to problem list.\n\nCalled pt and went over it. Plan:\n- Nephrology referral placed for confirmation and management advice.\n- Keep water with him at all times, never let himself get behind on fluids, especially in heat, exercise or with any vomiting illness.\n- Lithium unchanged for now. I'll write to his psychiatrist today about whether to continue.\n- He knows to go to the ED for confusion, vomiting or inability to keep up with fluids.\nHe was relieved it isn't diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-31a",
+          "kind": "telephone",
+          "start": "2025-01-31T08:45",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Letter to outpatient psychiatry",
+              "author": "PCP",
+              "date": "2025-01-31T08:45",
+              "body": "To his outpatient psychiatrist, re: Gavin Michaud, DOB 04/30/1998\n\nI saw Gavin yesterday for 3 months of polyuria and polydipsia. Sodium 148, urine specific gravity 1.001, fasting glucose 97, creatinine and calcium normal, lithium level 0.8. I think he has lithium-associated nephrogenic diabetes insipidus and have referred him to nephrology to confirm.\n\nHe has done well on lithium for years and I know that weighs heavily. I would value your view on whether to continue lithium, and will forward the nephrology recommendations when we have them. Labs attached.\n\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "outside_records",
+          "start": "2025-02-12T15:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry reply letter",
+              "author": "psychiatry",
+              "date": "2025-02-12T15:20",
+              "body": "Outpatient Psychiatry\nRe: Gavin Michaud\n\nThank you for your letter and the labs. I saw Mr. Michaud on 02/10. He has been euthymic on lithium for years, and coming off it is not something he wants to try while finishing his dissertation. We discussed the renal finding together. Our shared decision is to continue lithium carbonate 600 mg twice daily without change for now and to revisit after nephrology weighs in. He understands the importance of hydration.\n\nCurrent medications: lithium carbonate 300 mg capsules, 2 caps PO BID.\nAllergies: none known.\n\nAttending psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "specialist_visit",
+          "start": "2025-03-12T13:30",
+          "service": "Nephrology",
+          "reason": "Polyuria on lithium",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-12T08:00", "results": [{"test": "Sodium", "value": 146}, {"test": "Chloride", "value": 108}, {"test": "Creatinine", "value": 0.86}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2025-03-12T08:00", "results": [
+              {"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 302},
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 104}
+            ]},
+            {"panel": null, "collected": "2025-03-12T10:15", "results": [
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 116}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology consultation",
+              "author": "nephrology",
+              "date": "2025-06-11T10:00",
+              "body": "[Received 06/11/2025 following our office's request; visit date 03/12/2025]\n\nOUTPATIENT NEPHROLOGY CONSULTATION\nReferring: primary care physician\nReason: polyuria and polydipsia on lithium\n\nHistory: 26-year-old man with bipolar I disorder, on lithium carbonate since 2016, currently 600 mg twice daily, with about four to five months of thirst and high urine output, drinking 4 to 5 liters a day and waking at night to void. Primary care labs in January showed sodium 148 and urine specific gravity 1.001 with a normal fasting glucose.\n\nMedications: lithium carbonate 600 mg PO BID. Allergies: NKDA.\n\nExam: BP and pulse normal. Euvolemic. Heart and lungs unremarkable. No edema.\n\nData (this visit): sodium 146 mEq/L, creatinine 0.86 mg/dL, serum osmolality 302 mOsm/kg, urine osmolality 104 mOsm/kg at baseline. Desmopressin 2 mcg given subcutaneously in clinic; urine osmolality at 2 hours 116 mOsm/kg.\n\nImpression: The urine stays maximally dilute despite a high-normal serum osmolality and barely moves after desmopressin. This confirms nephrogenic diabetes insipidus, which in his case is attributable to lithium. Filtration is preserved.\n\nRecommendations:\n1. Unrestricted access to water at all times; avoid situations where he cannot drink.\n2. Lithium may continue in agreement with his psychiatrist, who has discussed it with him.\n3. We talked about amiloride. He finds the symptoms manageable and prefers to wait; reasonable to defer and revisit if they worsen.\n4. Sodium and creatinine with his routine labs.\n5. Follow-up with us as needed.\n\nOutpatient nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - nephrology",
+              "author": "MA",
+              "date": "2025-05-21T14:00",
+              "body": "Referral still open. Patient confirmed by portal he saw nephrology on 3/12. No consult note on file. Called the nephrology office, they show the note signed but never sent. Asked them to fax it; request form faxed with a cover sheet."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "outside_records",
+          "start": "2025-06-11T10:05",
+          "orders": [
+            {"id": "nephrology-referral", "action": "done", "date": "2025-06-11T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nephrology note received",
+              "author": "MA",
+              "date": "2025-06-11T10:05",
+              "body": "Nephrology consult from 3/12 arrived by fax today, scanned under consults and routed to PCP. Referral closed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "portal_message",
+          "start": "2025-09-03T10:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your yearly physical",
+              "author": "front desk",
+              "date": "2025-09-03T10:00",
+              "body": "Hi Gavin, you're due for your annual physical and yearly labs. Reply here or call and we'll find a time that works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your yearly physical",
+              "author": "patient",
+              "date": "2025-09-04T23:30",
+              "body": "Thanks. Can we do late October? I'm away for field work most of September. Any morning the week of the 20th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your yearly physical",
+              "author": "front desk",
+              "date": "2025-09-05T09:15",
+              "body": "You're set for Wednesday 10/22 at 8:20. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "annual_physical",
+          "start": "2025-10-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-10-22b",
+          "kind": "telephone",
+          "start": "2025-10-22T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2025-10-22T09:30",
+              "body": "No-show for 8:20 physical. Called, went to voicemail, left message to call back and rebook. Portal message sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "pharmacy",
+          "start": "2025-11-05T12:00",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-30T15:30"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "State immunization registry update",
+              "author": "MA",
+              "date": "2025-11-05T12:00",
+              "body": "Registry reconciliation: influenza vaccine, trivalent, given 10/30/2025 at a community pharmacy. Added to immunization history. Physical still not rebooked."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "ed_visit",
+          "start": "2026-07-29T11:40",
+          "end": "2026-07-29T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, lethargy and vomiting",
+          "vitals": [
+            {"time": "2026-07-29T11:45", "temp_c": 37.4, "bp": [112, 76], "hr": 92, "rr": 14}
+          ],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-07-29T12:10", "results": [{"test": "Aspartate Aminotransferase", "value": 388}, {"test": "Alanine Aminotransferase", "value": 421}, {"test": "Bilirubin, Total", "value": 3.4}, {"test": "Bilirubin, Direct", "value": 2.1}, {"test": "Alkaline Phosphatase"}, {"test": "Albumin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-07-29T12:10", "results": [{"test": "Prothrombin Time", "value": 23.8}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 2.1}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-29T12:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-29T12:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-07-29T12:10", "results": [
+              {"test": "Ammonia", "loinc": "16362-6", "unit": "umol/L", "value": 98},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.9},
+              {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 88},
+              {"test": "Acetaminophen", "loinc": "3298-7", "unit": "ug/mL", "text": "Undetectable"}
+            ]}
+          ],
+          "reports": [
+            {"study": "CT head without contrast", "loinc": "30799-1", "performed": "2026-07-29T13:05", "text": "Noncontrast CT of the head. No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. No extra-axial collection. Calvarium intact. Visualized sinuses and mastoids clear.", "conclusion": "No acute intracranial abnormality."}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2026-08-20T09:30",
+              "body": "[Received 08/20/2026 with the inpatient records; date of service 07/29/2026]\n\nEMERGENCY DEPARTMENT PHYSICIAN NOTE\nArrival 11:40 by private car with roommate.\n\nHPI: 28-year-old man with bipolar I disorder and lithium-related nephrogenic DI, brought in by his roommate, who found him confused and sleepy this morning after several days of increasing tiredness. He vomited multiple times overnight and today. Roommate noticed his speech was slurred for a while this morning. Patient was discharged from an inpatient psychiatric unit roughly two weeks ago after a manic episode and was started there on a new mood stabilizer, which per the bottles brought in is divalproex ER 500 mg, two tablets daily, along with his longstanding lithium. Denies alcohol and drugs; roommate agrees. History limited by mental status.\n\nMeds (bottles): lithium carbonate 300 mg caps, 2 BID; divalproex sodium ER 500 mg, 2 tabs daily.\nAllergies: NKDA.\nPMH: bipolar I disorder; nephrogenic diabetes insipidus. PSH: tonsillectomy.\nFHx: mother bipolar disorder, father hypertension.\n\nTriage vitals: T 37.4 C (99.3 F), BP 112/76, HR 92, RR 14.\n\nExam: drowsy, rouses to voice, oriented to self and place only. Mild scleral icterus. Lungs clear, heart regular. Abdomen soft, nontender, no distension. Asterixis present. No focal weakness, face symmetric, no meningismus.\n\nResults: AST 388, ALT 421, total bilirubin 3.4, ammonia 98 (ref 15-45), PT 23.8 / INR 2.1. Lithium 0.9 (therapeutic). Valproic acid 88. Acetaminophen undetectable. BMP and CBC unremarkable. CT head negative.\n\nMDM: Acute hepatocellular injury with coagulopathy and encephalopathy two weeks after starting valproate, with hyperammonemia. Lithium level not toxic. Leading diagnosis valproate-induced liver injury (toxic liver disease) with hyperammonemic encephalopathy. Divalproex held. IV fluids, antiemetic. Discussed with hospitalist and on-call hepatology; first levocarnitine dose ordered here.\n\nDisposition: admitted to medicine, stable.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29b",
+          "kind": "hospital_admission",
+          "start": "2026-07-29T20:30",
+          "end": "2026-08-03T13:00",
+          "service": "Hospital Medicine",
+          "reason": "Valproate-induced liver injury with hyperammonemia",
+          "labs": [
+            {"panel": null, "collected": "2026-07-30T05:30", "results": [
+              {"test": "Hepatitis A IgM Antibody", "loinc": "22314-9", "text": "Negative"},
+              {"test": "Hepatitis B Surface Antigen", "text": "Negative"},
+              {"test": "Hepatitis B Core IgM Antibody", "loinc": "31204-1", "text": "Negative"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-08-03T05:45", "results": [{"test": "Aspartate Aminotransferase", "value": 104}, {"test": "Alanine Aminotransferase", "value": 168}, {"test": "Bilirubin, Total", "value": 1.5}, {"test": "Bilirubin, Direct", "value": 0.7}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-08-03T05:45", "results": [{"test": "Prothrombin Time", "value": 15.1}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.3}]},
+            {"panel": null, "collected": "2026-08-03T05:45", "results": [
+              {"test": "Ammonia", "loinc": "16362-6", "unit": "umol/L", "value": 36}
+            ]}
+          ],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2026-07-30T10:20", "text": "Complete abdominal ultrasound with duplex evaluation of the hepatic vasculature. Liver normal in size with homogeneous echotexture and smooth contour; no focal lesion. Main portal vein patent with normal hepatopetal flow. Hepatic veins patent. Gallbladder normal without stones or wall thickening. Common bile duct 3 mm. No intrahepatic ductal dilatation. Spleen and both kidneys normal in size. Pancreas partly obscured by bowel gas, visualized portions normal. No ascites.", "conclusion": "Normal abdominal ultrasound. Patent hepatic vasculature."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-08-20T09:35",
+              "body": "[Received 08/20/2026 after records request of 08/11/2026]\n\nDISCHARGE SUMMARY - Hospital Medicine\nAdmitted 07/29/2026 from the ED. Discharged 08/03/2026 to home.\n\nPrincipal diagnosis: Valproate-induced liver injury with hyperammonemic encephalopathy (toxic liver disease).\nOther: Bipolar I disorder. Lithium-associated nephrogenic diabetes insipidus.\n\nHospital course: Admitted two weeks after divalproex ER 1000 mg daily was added during a psychiatric admission for mania, with confusion, asterixis, jaundice, transaminases near 400, ammonia 98 and INR 2.1. Divalproex was discontinued on arrival. Treated with IV levocarnitine and lactulose. Hepatology consulted; viral hepatitis panel (HAV IgM, HBsAg, HBc IgM, HCV antibody) negative; abdominal ultrasound with duplex normal. Lithium was held for the first 24 hours given his mental status, then resumed at his home dose on the recommendation of consult-liaison psychiatry once he was alert; level on arrival was 0.9. Free water was given to match his DI-related losses. Mentation was back to baseline by hospital day 2 and asterixis resolved. Transaminases, bilirubin and INR improved daily.\n\nDischarge labs 08/03: ammonia 36, AST 104, ALT 168, total bilirubin 1.5, PT 15.1 / INR 1.3.\n\nAdverse drug reaction: valproate (divalproex) - liver injury with hyperammonemia. Do not rechallenge. Added to allergy list here.\n\nDischarge medications:\n- Lithium carbonate 300 mg caps, 2 caps PO BID (continued)\n- STOPPED: divalproex sodium ER 1000 mg daily\n\nMood: psychiatry recommends lithium alone for now; no manic symptoms during this stay.\n\nFollow-up:\n- PCP within 1-2 weeks with hepatic panel and PT/INR.\n- Outpatient psychiatry within 1 week (patient to call his psychiatrist).\n- Avoid valproate and alcohol; keep water available at all times.\n\nCondition at discharge: alert, oriented, eating, ambulating independently.\n\nHospitalist attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I was in the hospital",
+              "author": "patient",
+              "date": "2026-08-10T19:50",
+              "body": "Hi, wanted to let you know I've had a rough month. I was in a psych unit in July for a manic episode and they added Depakote. About two weeks later I got really sick, confused and throwing up, and my roommate took me to the ER. They said the Depakote hurt my liver and my ammonia was high. I was admitted for 5 days and I'm off it now, just on lithium again. I feel mostly back to normal, just tired. The discharge papers said to see my primary doctor and get liver tests. What should I do?"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: I was in the hospital",
+              "author": "PCP",
+              "date": "2026-08-11T08:10",
+              "body": "Gavin, I'm sorry, that sounds like a frightening few weeks, and I'm glad you're feeling better. Yes, I'd like to see you in the next week and repeat your liver tests and clotting test. Please call the office or reply here and the front desk will get you in, and we can draw labs the same day. We'll request the hospital records. In the meantime no alcohol and no Tylenol beyond the occasional dose, keep up the water, and keep your follow-up with your psychiatrist. If you get yellow, confused, very sleepy or can't keep fluids down, go back to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11b",
+          "kind": "telephone",
+          "start": "2026-08-11T09:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - hospital",
+              "author": "MA",
+              "date": "2026-08-11T09:00",
+              "body": "Per PCP, records requested from the hospital: ED record 7/29 and inpatient stay 7/29-8/3 including discharge summary, labs and imaging. Pt also reports a psychiatric unit stay in early-mid July; he isn't sure of the unit's fax and will send the name. Request faxed to hospital HIM."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "outside_records",
+          "start": "2026-08-21T12:30",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2026-08-21T12:30",
+              "body": "Reviewed ED record and discharge summary received yesterday. Valproate liver injury with hyperammonemic encephalopathy, admitted 7/29-8/3; divalproex stopped; lithium resumed at 600 BID. Discharge AST 104, ALT 168, bili 1.5, INR 1.3, ammonia 36. Viral serologies negative, ultrasound normal. Repeat hepatic panel and INR were due 1-2 weeks after discharge and have not been done. He has not booked yet. Psych unit summary not received; he never sent the unit's name. Will reach out again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "author": "PCP",
+              "date": "2026-08-21T12:40",
+              "body": "Hi Gavin, I got your hospital records and read through them. Your liver numbers were heading the right way when you left, and now we need to check that they finished getting better. Please book a visit this week or next. Also, if you can send me the name of the psychiatric unit from July, we'll ask for those records too."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "telephone",
+          "start": "2026-08-25T15:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach call",
+              "author": "front desk",
+              "date": "2026-08-25T15:10",
+              "body": "Called per PCP to schedule post-hospital visit with labs. Voicemail; left callback number and mentioned next week's openings. Portal message from 8/21 shows as read, no reply yet. Nothing booked."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

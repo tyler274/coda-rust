@@ -1,0 +1,4551 @@
+{
+  "unit": "unit-2025",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002025",
+      "given": "Patrick",
+      "family": "Friedman",
+      "birth_date": "1964-05-03",
+      "address_line": "212 Chestnut Plain Lane",
+      "phone": "+1-201-555-0191",
+      "email": "patrick.friedman@example.test",
+      "marital_status": "married",
+      "summary": "Office manager with hypertension, hyperlipidemia and lithium-treated bipolar I disorder who joined in 2022. His first colonoscopy found a stage IIA ascending colon cancer, resected without chemotherapy; lithium then caused nephrogenic diabetes insipidus, and an NSTEMI with an LAD stent followed, then stable angina, epistaxis, a left retinal detachment and in 2026 a right lateral medullary stroke.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-08-02T10:20",
+              "author": "front desk",
+              "body": "Mr. Friedman phoned about membership. Lives in town, his previous internist retired in the spring and he has been without a PCP since. Membership packet emailed. New patient visit set for 8/16 at 8:40. He signed the release over the phone portal; records request sent to the prior office for the last 3 years of notes, labs and immunizations. He asked whether we coordinate with his psychiatrist, told yes once he signs a release for that office too."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "outside_records",
+          "start": "2022-08-09T14:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2022-08-09T14:05",
+              "author": "MA",
+              "body": "Records from prior internal medicine office received, 41 pages, abstracted for PCP.\n\nProblems on their list: essential hypertension (on lisinopril since about 2012), hyperlipidemia, bipolar I disorder followed by outside psychiatry, knee osteoarthritis.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg at bedtime, lithium carbonate 300 mg twice daily (psychiatry prescribes).\nAllergies: none known.\nImmunizations: Tdap 2017; influenza most years.\nLabs 2021: BMP normal, lithium 0.7, TSH normal, lipids on atorvastatin with LDL in the high 90s.\nNo colonoscopy or stool test on record.\n\nScanned to media tab."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T08:40",
+          "end": "2022-08-16T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2012-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2014-01-01"
+            },
+            {
+              "label": "Bipolar disorder, currently in remission, most recent episode unspecified",
+              "action": "history",
+              "onset": "2005-01-01",
+              "note": "Bipolar I disorder, on lithium since about 2013; outside psychiatry",
+              "icd10": "F31.70"
+            },
+            {
+              "label": "Osteoarthritis of knee, unspecified",
+              "action": "history",
+              "onset": "2016-01-01",
+              "icd10": "M17.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bipolar I disorder"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              85
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 85.6,
+            "height_cm": 178.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-16T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-16T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-16T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 41
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 162
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2022-08-16T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-colonoscopy",
+              "action": "placed",
+              "order": "Gastroenterology referral for colonoscopy",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Colorectal cancer screening, never screened"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-16T10:10",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n58M, office manager, transferring care after his prior internist retired. Feels well. Here mostly to get established and get his refills under one roof.\n\nHTN: on lisinopril 20 for about ten years, home cuff readings in the low 130s. No headaches, no chest symptoms.\nLipids: atorvastatin 40 qhs, no muscle aches.\nBipolar I: lithium 300 bid, prescribed by his psychiatrist, whom he sees about once a year. Last mood episode was well before he started lithium. Sleeping fine, working full time.\nKnees: achy with stairs and after long walks, both sides on and off. Walks most mornings, gave up running years ago. Uses nothing for it.\n\nPMH/meds as above. PSH: none. NKDA.\nFamily: father had an MI at 55 and high blood pressure; mother has type 2 diabetes and high cholesterol; a paternal uncle had a stroke at 60; maternal grandfather had colon polyps.\nSocial: never smoker, 1-2 drinks a week, no drugs. Office manager. Eats reasonably well.\nPrevention: has never had a colonoscopy or stool test. Tdap 2017.\n\nROS otherwise negative.\n\nEXAM: well-appearing, BMI about 27. HEENT unremarkable, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Knees with mild crepitus, no effusion, full range. No tremor. Neuro grossly normal. Mood euthymic, affect full.\n\nA/P\n1. Essential hypertension, controlled. Continue lisinopril 20.\n2. Hyperlipidemia. Continue atorvastatin 40. Lipids today.\n3. Bipolar I on lithium, stable. Lithium level, BMP, TSH, calcium today. Will copy psychiatry on results once release is signed.\n4. Knee OA, mild. Activity as tolerated.\n5. Health maintenance: overdue for colon cancer screening; he prefers colonoscopy, referral to GI placed. Hep C and HIV screening today. Shingrix and flu/COVID this fall at a nurse visit. PHQ-9 2.\n\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 85.5,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.0,
+              "Hemoglobin A1c": 5.4,
+              "High Density Lipoprotein": 45,
+              "Low Density Lipoprotein": 98,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Triglycerides": 150
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-08-18T16:40",
+              "author": "PCP",
+              "body": "Hi Patrick, your labs from Tuesday look good. Kidney function, sodium and calcium are normal, thyroid is normal, and your lithium level is 0.7, squarely in the usual range. Cholesterol is about where it has been on atorvastatin. Hepatitis C and HIV screens were negative. GI should call you to set up the colonoscopy; let us know if you don't hear from them in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              120,
+              88
+            ],
+            "hr": 61
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T07:56"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-10-11T07:58"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-11T08:10",
+              "author": "RN",
+              "body": "Seen before work for flu, bivalent COVID booster and first Shingrix. Screening questions negative, no prior reactions. Flu L deltoid, COVID R deltoid, Shingrix L deltoid lower site. Tolerated, waited 15 min. Told him Shingrix can make the arm sore and him tired for a day or two. Dose 2 due in 2 to 6 months, scheduled for December. Colonoscopy is booked for January per patient."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "outside_records",
+          "start": "2022-11-09T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry annual letter",
+              "date": "2022-11-09T11:30",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry. Date of service 11/02/2022.\n\nDear colleague, thank you for the release. I have followed Mr. Friedman for bipolar I disorder since 2013, when lithium was started; he has had no mood episodes on it and works full time. Today he is euthymic, sleeping well, no side effects beyond occasional dry mouth. No tremor.\n\nPlan: continue lithium carbonate 300 mg twice daily. I would appreciate a lithium level with BMP, TSH and calcium every 3 to 4 months; please send them my way. Avoid NSAIDs and let me know of any change in his blood pressure medicines, since ACE inhibitors and diuretics can raise lithium levels. I will see him yearly.\n\nOutpatient psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "nurse_visit",
+          "start": "2022-12-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2 and lithium labs",
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "hr": 67
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-20T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-20T08:10",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-12-20T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-20T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-12-20T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2, lab draw",
+              "date": "2022-12-20T08:20",
+              "author": "RN",
+              "body": "Second Shingrix given R deltoid. After the first dose he had a sore arm and felt run-down for an evening, nothing more. Lithium level and BMP drawn, 12-hour trough (last dose 8 pm). Series complete."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lithium and BMP",
+              "date": "2022-12-21T12:15",
+              "author": "PCP",
+              "body": "Lithium 0.8, BMP unremarkable. Copy to psychiatry. Next level in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-01-13a",
+          "kind": "outside_records",
+          "start": "2023-01-13T09:15",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of ascending colon",
+              "action": "diagnosed",
+              "onset": "2023-01-10",
+              "note": "Biopsy-proven adenocarcinoma at first colonoscopy",
+              "icd10": "C18.2"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-01-10T10:45",
+              "text": "A. Ascending colon mass, biopsies: invasive adenocarcinoma, moderately differentiated.\nB. Sigmoid colon polyp, snare: tubular adenoma, no high-grade dysplasia.\nC. Descending colon polyp, snare: tubular adenoma, no high-grade dysplasia.",
+              "conclusion": "Adenocarcinoma of the ascending colon. Two tubular adenomas.",
+              "issued": "2023-01-12T15:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2023-01-10T10:30"
+            },
+            {
+              "procedure": "Colonoscopy with snare polypectomy",
+              "performed": "2023-01-10T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-colonoscopy",
+              "action": "done",
+              "date": "2023-01-13T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Colonoscopy report and pathology",
+              "date": "2023-01-13T09:15",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology. Procedure date 01/10/2023.\nIndication: first colonoscopy, age 58, referred for screening.\nSedation: monitored anesthesia care. Prep: good.\n\nFindings: An ulcerated, partly circumferential mass about 3.5 cm in the ascending colon, roughly 6 cm distal to the ileocecal valve, biopsied and tattooed distally. A 7 mm sessile polyp in the sigmoid and a 5 mm sessile polyp in the descending colon, both removed by cold snare. Terminal ileum normal. Small internal hemorrhoids.\n\nImpression: ascending colon mass suspicious for malignancy; two small polyps removed.\nPlan: await pathology; CT chest/abdomen/pelvis and CEA for staging; colorectal surgery referral.\n\nPathology (01/12/2023): ascending colon biopsies show invasive adenocarcinoma, moderately differentiated. Both polyps tubular adenomas.\n\nReceived by fax; PCP notified."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-13b",
+          "kind": "telephone",
+          "start": "2023-01-13T12:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Colonoscopy pathology discussed",
+              "date": "2023-01-13T12:40",
+              "author": "PCP",
+              "body": "Called Patrick after reviewing the GI report. He had already heard from the gastroenterologist yesterday that the biopsy showed cancer. Spent about 20 minutes. Went over what happens next: staging CT scans and a blood marker next week, then a surgeon. Explained that many colon cancers found this way are cured with surgery alone, but we won't know his stage until the scans and the operation. He is shaken but practical, wants to keep working. Offered to see him any time; he will message after the CT. Lithium: told him to keep taking it and that we'll coordinate with psychiatry around surgery."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "outside_records",
+          "start": "2023-01-20T10:05",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-18T07:45",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-01-18T08:30",
+              "text": "CT chest with IV contrast. Lungs clear without nodules or masses. No mediastinal, hilar or axillary adenopathy. Heart normal in size; no pericardial or pleural effusion. Osseous structures unremarkable.",
+              "conclusion": "No evidence of thoracic metastatic disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-01-18T08:30",
+              "text": "Focal circumferential wall thickening of the ascending colon measuring about 3.6 cm in length, corresponding to the known mass, with mild adjacent fat stranding. No enlarged mesenteric or retroperitoneal lymph nodes. Liver without focal lesion. Spleen, pancreas, adrenals and kidneys unremarkable. No ascites. Bladder and prostate unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Ascending colon mass without nodal or distant metastasis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Staging CT and CEA",
+              "date": "2023-01-20T10:05",
+              "author": "radiology",
+              "body": "Outside imaging and lab, 01/18/2023. CT chest and CT abdomen/pelvis with contrast for staging of ascending colon adenocarcinoma: known ascending colon mass, no adenopathy, no liver or lung lesions. CEA 2.6 ng/mL (reference under 3.0). Reports filed under imaging. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-30a",
+          "kind": "outside_records",
+          "start": "2023-01-30T13:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Colorectal surgery consultation",
+              "date": "2023-01-30T13:20",
+              "author": "colorectal surgery",
+              "body": "Colorectal surgery clinic. Seen 01/26/2023.\n\nReason: ascending colon adenocarcinoma found at first colonoscopy.\n\n58-year-old office manager, asymptomatic, no bleeding, no change in stool, no weight loss. HTN, hyperlipidemia, bipolar disorder on lithium. No prior abdominal surgery. Never smoker. Allergies: NKDA. Meds: lisinopril 20 mg daily, atorvastatin 40 mg nightly, lithium carbonate 300 mg twice daily.\n\nExam: BMI 27, abdomen soft and nontender without masses.\nStaging: CT without metastatic disease; CEA 2.6.\n\nImpression: clinical stage I-II adenocarcinoma of the ascending colon.\nPlan: laparoscopic right hemicolectomy with primary anastomosis, booked 02/21. Enhanced recovery pathway. Hold lisinopril the morning of surgery. Lithium to be held the day of surgery and resumed when drinking; level on postoperative day 1. We have notified his psychiatrist."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "hospital_admission",
+          "start": "2023-02-21T06:30",
+          "end": "2023-02-24T11:30",
+          "service": "Colorectal Surgery",
+          "reason": "Right hemicolectomy for ascending colon adenocarcinoma",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-02-21T10:40",
+              "text": "Right colon, laparoscopic right hemicolectomy: invasive adenocarcinoma, moderately differentiated, 3.8 cm, arising in the ascending colon. Tumor invades through the muscularis propria into pericolonic fat (pT3). No lymphovascular or perineural invasion. Margins negative. Nineteen lymph nodes negative (0/19). No tumor deposits. Mismatch repair proteins MLH1, PMS2, MSH2 and MSH6 retained (proficient). Prior biopsy site and tattoo identified. Terminal ileum and appendix unremarkable.",
+              "conclusion": "Colon adenocarcinoma, pT3 pN0 (0/19), margins negative, MMR proficient: AJCC stage IIA.",
+              "issued": "2023-02-27T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary - right hemicolectomy",
+              "date": "2023-03-01T09:40",
+              "author": "colorectal surgery",
+              "body": "Admitted 02/21/2023, discharged 02/24/2023.\n\nProcedure 02/21: laparoscopic right hemicolectomy with stapled primary ileocolic anastomosis for ascending colon adenocarcinoma. Uncomplicated.\n\nCourse: enhanced recovery pathway. Clear liquids the evening of surgery, regular diet on day 2, flatus day 2, bowel movement day 3. Pain controlled with acetaminophen and a brief course of oral oxycodone, which he stopped before discharge. Lithium held the morning of surgery and resumed that evening; level 0.7 on day 1. Lisinopril resumed day 1. Ambulating independently.\n\nPathology: pT3 N0 (0/19 nodes), margins negative, MMR proficient, stage IIA.\n\nDischarge meds: lisinopril 20 mg daily, atorvastatin 40 mg nightly, lithium carbonate 300 mg twice daily, acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: surgery clinic in 2 weeks; medical oncology referral placed to discuss adjuvant therapy; PCP within 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-03a",
+          "kind": "office_visit",
+          "start": "2023-03-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-operative follow-up",
+          "vitals": {
+            "bp": [
+              141,
+              87
+            ],
+            "hr": 68,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 85.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-03T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - after hemicolectomy",
+              "date": "2023-03-03T11:45",
+              "author": "PCP",
+              "body": "S: Nine days out from laparoscopic right hemicolectomy (2/21) for ascending colon adenocarcinoma. Final path pT3 N0, 0/19 nodes, MMR proficient, stage IIA. Eating normally, stools soft and a bit more frequent than before, no blood. Incisions sore with getting up, taking acetaminophen once a day. Off the oxycodone. Walking around the block. Has oncology on 3/29 to talk about whether chemo adds anything. Mood steady.\n\nO: Afebrile, vitals as charted. Port sites and periumbilical extraction incision clean, dry, no erythema. Abdomen soft, appropriately tender near the incision, bowel sounds present. Calves soft.\n\nA/P: Recovering well after right hemicolectomy, stage IIA colon cancer. Activity: no lifting over 10 lb until surgeon clears. Back to desk work part-time next week if he feels up to it. Continue lisinopril, atorvastatin, lithium unchanged; hospital lithium level was 0.7. We'll see what oncology recommends."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "specialist_visit",
+          "start": "2023-03-29T14:00",
+          "service": "Medical Oncology",
+          "reason": "Adjuvant therapy discussion after hemicolectomy",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-29T13:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-29T13:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology follow-up",
+              "date": "2023-04-03T10:30",
+              "author": "oncology",
+              "body": "Medical oncology clinic, visit 03/29/2023.\n\nMr. Friedman returns, five weeks after laparoscopic right hemicolectomy, to decide about adjuvant chemotherapy for stage IIA (pT3 N0, 0/19 nodes) adenocarcinoma of the ascending colon, MMR proficient, no lymphovascular invasion, negative margins, no obstruction or perforation. He is concerned about how much chemotherapy would actually help him versus what it would cost him in side effects.\n\nHistory: hypertension, hyperlipidemia, bipolar I disorder on lithium. Meds: lisinopril 20 mg daily, atorvastatin 40 mg nightly, lithium carbonate 300 mg twice daily. NKDA. Never smoker, social alcohol, office manager. Father MI at 55; mother type 2 diabetes; maternal grandfather colon polyps.\n\nBP 132/84. Exam unremarkable; incisions healed.\nLabs today: hemoglobin 13.2, WBC 7.2, platelets 250, creatinine 1.0, AST 28, ALT 30.\n\nAssessment and plan: Stage IIA colon cancer without high-risk features. We reviewed that adjuvant fluoropyrimidine reduces recurrence risk only modestly in this setting, and that MMR-proficient, low-risk stage II disease is commonly observed. After discussion he prefers surveillance without chemotherapy, which I support.\nSurveillance: visit with CEA every 6 months for 2 years then less often; CT chest/abdomen/pelvis yearly for 3 years (first in February 2024); colonoscopy one year after surgery.\n\nMedical oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "portal_message",
+          "start": "2023-04-04T19:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Oncology visit",
+              "date": "2023-04-04T19:10",
+              "author": "patient",
+              "body": "Wanted to let you know the oncologist and I agreed on no chemo, just scans and blood tests. Honestly relieved. Back at work full days. Do I need to do anything different on my end?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Oncology visit",
+              "date": "2023-04-05T08:20",
+              "author": "PCP",
+              "body": "That's good news and I agree with the plan; I have her letter. Nothing different on your end. Keep the oncology schedule, and we'll keep doing your lithium labs here. Your next one is due now, so stop by the lab any morning this month."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "lab_only",
+          "start": "2023-04-12T07:40",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-12T07:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-12T07:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lithium monitoring",
+              "date": "2023-04-12T15:30",
+              "author": "PCP",
+              "body": "Lithium 0.8, BMP and TSH normal. Faxed to psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "portal_message",
+          "start": "2023-06-14T21:05",
+          "orders": [
+            {
+              "id": "lab-2023-06-19",
+              "action": "placed",
+              "order": "BMP, serum and urine osmolality, urinalysis, lithium level",
+              "category": "lab",
+              "reason": "Polyuria and thirst"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Up all night",
+              "date": "2023-06-14T21:05",
+              "author": "patient",
+              "body": "Not urgent but it's getting old. For about 2 months I've been up 5 or 6 times a night to pee and I'm thirsty all the time, I keep a big water bottle at my desk and still feel dry. No burning. Could this be the surgery? Or sugar, my mom has diabetes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Up all night",
+              "date": "2023-06-15T07:45",
+              "author": "PCP",
+              "body": "Thanks for telling me. It's worth checking soon. I put in blood and urine tests, please go Monday morning (you can eat and drink normally), and I'll see you Wednesday 6/21 at 9:20 to go over them. If you get confused, very weak, or can't keep fluids down, go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "lab_only",
+          "start": "2023-06-19T07:35",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-19T07:35",
+              "resulted": "2023-06-19T13:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 146
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 110
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-06-19T07:40",
+              "results": [
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.005
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-19T07:35",
+              "resulted": "2023-06-19T16:40",
+              "results": [
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 300
+                },
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 150
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-19T07:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-2023-06-19",
+              "action": "done",
+              "date": "2023-06-19T16:40"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Chloride": 109,
+              "Sodium": 146
+            }
+          }
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "office_visit",
+          "start": "2023-06-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Frequent urination and thirst",
+          "conditions": [
+            {
+              "label": "Nephrogenic diabetes insipidus",
+              "action": "diagnosed",
+              "onset": "2023-04-15",
+              "note": "Lithium-induced",
+              "icd10": "N25.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              87
+            ],
+            "hr": 59,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 86.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-21T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "Suspected lithium-induced nephrogenic diabetes insipidus"
+            },
+            {
+              "id": "hsat-2023",
+              "action": "placed",
+              "order": "Home sleep apnea test",
+              "category": "procedure",
+              "reason": "Snoring, daytime sleepiness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - polyuria, thirst",
+              "date": "2023-06-21T10:05",
+              "author": "PCP",
+              "body": "CC: urinating constantly, always thirsty.\n\nHPI: Two months of large-volume urination day and night, now up 5-6 times nightly, and a thirst he can't satisfy; goes through several liters of water a day and prefers it ice cold. No dysuria, hematuria, weak stream or dribbling. No weight loss. Bowels have settled since the hemicolectomy in February. Has been on lithium about ten years for bipolar I, mood stable throughout, no dose changes, no NSAIDs, no new meds. Also says he snores loudly enough that he's been sent to the couch, and he nods off in afternoon meetings; he blames the broken sleep but admits the snoring predates this.\n\nMeds: lisinopril 20, atorvastatin 40, lithium 300 bid. NKDA.\n\nExam: vitals as charted. Mucous membranes dry. Neck thick, Mallampati 3. Heart and lungs normal. Abdomen healed incisions, no bladder distension. No edema. No tremor.\n\nLabs Monday: Na 146 (high), serum osm 300, urine osm 150, urine SG 1.005, glucose and calcium normal, lithium 0.8. Urine glucose negative.\n\nA/P\n1. Polyuria with dilute urine despite high serum sodium and osmolality, normal glucose and calcium, on long-term lithium: lithium-induced nephrogenic diabetes insipidus. Explained the mechanism. Drink to thirst, do not restrict water. Nephrology referral for confirmation (desmopressin challenge) and treatment options. Will talk with his psychiatrist about lithium; he is very reluctant to change something that has worked for a decade.\n2. Snoring, daytime sleepiness, HTN: likely OSA. Home sleep apnea test ordered.\n3. HTN, lipids: no change.\n\nCall me after nephrology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "specialist_visit",
+          "start": "2023-07-19T09:00",
+          "service": "Nephrology",
+          "reason": "Nephrogenic diabetes insipidus",
+          "medications": [
+            {
+              "drug_text": "amiloride hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Lithium-induced nephrogenic diabetes insipidus"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-19T09:20",
+              "results": [
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-19T11:20",
+              "results": [
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 162
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "done",
+              "date": "2023-07-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology consultation",
+              "date": "2023-07-21T08:50",
+              "author": "nephrology",
+              "body": "Outside nephrology. Seen 07/19/2023 at PCP request.\n\n59M with bipolar I disorder on lithium carbonate 300 mg twice daily since 2013, hypertension on lisinopril, stage IIA colon cancer resected 02/2023, referred for polyuria and polydipsia since the spring with Na 146, serum osm 300 and urine osm 150. Nocturia 5-6 times. No headaches or visual change.\n\nExam: BP and pulse normal, euvolemic, mucosa slightly dry.\n\nDesmopressin challenge in clinic: baseline urine osm 150; 2 hours after desmopressin 2 mcg IV, urine osm 162, a rise under 10%.\n\nImpression: nephrogenic diabetes insipidus due to lithium.\n\nPlan:\n- Spoke with his psychiatrist. Given ten stable years on lithium and his preference, lithium continues at the current dose with levels every 3 months.\n- Start amiloride 5 mg daily, which blunts lithium uptake in the collecting duct.\n- Free access to water; avoid thiazides and NSAIDs.\n- Amiloride with lisinopril can raise potassium: BMP in 2 weeks, then with each lithium level.\n- I am happy to see him again if polyuria persists or kidney function changes.\n\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Chloride": 104,
+              "Potassium": 4.6,
+              "Sodium": 142
+            }
+          }
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "outside_records",
+          "start": "2023-07-26T15:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry note re lithium",
+              "date": "2023-07-26T15:00",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, phone visit 07/24/2023. Discussed the nephrogenic DI with Mr. Friedman and with nephrology. He has been euthymic on lithium since 2013 and does not want to switch. We agreed to continue lithium carbonate 300 mg twice daily with amiloride per nephrology, levels every 3 months, and to revisit if kidney function declines. Next visit in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "lab_only",
+          "start": "2023-08-02T07:30",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-02T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-02T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP on amiloride",
+              "date": "2023-08-02T14:20",
+              "author": "PCP",
+              "body": "Two weeks on amiloride with lisinopril: potassium fine, sodium down from 146. No changes. Patient says he's up maybe 2-3 times a night now."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "outside_records",
+          "start": "2023-08-10T11:10",
+          "conditions": [
+            {
+              "label": "Obstructive sleep apnea",
+              "action": "diagnosed",
+              "onset": "2023-08-08"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Home sleep apnea test",
+              "performed": "2023-08-08T22:30",
+              "text": "Type 3 home study, one night of valid recording. Respiratory event index (AHI, 4% rule) 24 events per hour, predominantly obstructive hypopneas, worse supine. Oxygen saturation nadir 84%. Snoring recorded for much of the night. Heart rate regular.",
+              "conclusion": "Moderate obstructive sleep apnea. Auto-titrating CPAP recommended.",
+              "issued": "2023-08-10T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hsat-2023",
+              "action": "done",
+              "date": "2023-08-10T11:10"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-10b",
+          "kind": "telephone",
+          "start": "2023-08-10T16:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sleep study result",
+              "date": "2023-08-10T16:15",
+              "author": "PCP",
+              "body": "Discussed the home sleep test: moderate obstructive sleep apnea, AHI 24, low of 84%. He's not surprised. Recommended auto-CPAP 5-15 cm H2O with heated humidifier, mask fitting at the DME supplier, and a sleep medicine visit in 3 months for a compliance check. Order and face-to-face documentation sent to DME. Advised no drowsy driving."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-14T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-12T13:30",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology surveillance visit",
+              "date": "2023-09-14T10:00",
+              "author": "oncology",
+              "body": "Medical oncology, 09/12/2023. Six months after resection of stage IIA ascending colon cancer, on surveillance. Feels well; bowels regular; no bleeding or abdominal pain. Weight stable. Since our last visit he was diagnosed with nephrogenic DI from lithium (on amiloride) and sleep apnea. Exam unremarkable. CEA 2.1. No evidence of recurrence. Next visit with CEA in 6 months; surveillance CT and colonoscopy in February 2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "lab_only",
+          "start": "2023-09-20T07:45",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-20T07:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-20T07:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-20T07:45",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-20T07:45"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "office_visit",
+          "start": "2023-09-25T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; asks about aspirin",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 85.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-25T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-25T16:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-25T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "date": "2023-09-25T16:50",
+              "author": "PCP",
+              "body": "Patrick is here for his regular follow-up. Since we last met: oncology chose surveillance for the stage IIA colon cancer (CEA 2.1 this month, fine), nephrology confirmed lithium-related nephrogenic DI and started amiloride, and the sleep study showed moderate OSA. CPAP arrived about three weeks ago; he's getting used to the mask and already sleeping more soundly.\n\nToday no complaints. Urination much better, up once or twice a night. Still drinks a lot of water. No chest pain or shortness of breath; walks most mornings. Doesn't smoke, eats well.\n\nHe has been thinking about his father's heart attack at 55 and wants to know if he should take a baby aspirin to prevent one.\n\nExam: BP 132/84, BMI 27. Heart regular, lungs clear, no edema.\nLabs 9/20: LDL 98, HDL 45, TG 150. Lithium 0.9, BMP normal.\n\nA/P\n1. Primary prevention, aspirin: no known heart disease. We talked through it: for someone in his situation, daily aspirin offers a small reduction in heart attack risk, offset by a real risk of GI and other bleeding, and current guidance leaves it as an individual call. He would rather not start it. Fine. Continue statin and BP control, which do more.\n2. Lithium-induced NDI: better on amiloride. Lithium level 0.9, upper usual range; psychiatry aware.\n3. OSA on CPAP: early use going well.\n4. HTN, hyperlipidemia: stable, no changes.\n5. Flu shot today. COVID updated vaccine when available.\n\nFollow up in 4 months."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "hospital_admission",
+          "start": "2023-10-04T05:50",
+          "end": "2023-10-06T13:00",
+          "service": "Cardiology",
+          "reason": "Non-ST elevation myocardial infarction",
+          "conditions": [
+            {
+              "label": "Non-ST elevation (NSTEMI) myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2023-10-04",
+              "icd10": "I21.4"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "diagnosed",
+              "onset": "2023-10-04"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "diagnosed",
+              "onset": "2023-10-04"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary artery disease, stent"
+            },
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 12 months",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Drug-eluting stent"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Myocardial infarction"
+            },
+            {
+              "drug_text": "nitroglycerin 0.4 MG Sublingual Tablet",
+              "action": "start",
+              "sig": "Place 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3; call 911 if not relieved",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Chest pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-10-04T05:55",
+              "bp": [
+                148,
+                90
+              ],
+              "hr": 92,
+              "rr": 18,
+              "spo2": 97
+            },
+            {
+              "time": "2023-10-06T08:00",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 64,
+              "rr": 14,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-04T06:05",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 214
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-04T18:00",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 1840
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-04T06:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-04T06:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-04T06:05",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-10-04T05:58",
+              "text": "Sinus rhythm, rate 92. Normal axis and intervals. Horizontal ST depression of 1 mm in V2-V4. No ST elevation. No Q waves.",
+              "conclusion": "Anterior ST depression without ST elevation."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2023-10-05T10:00",
+              "text": "Normal left ventricular size and wall thickness. LVEF 55% by biplane method. No regional wall motion abnormality. Normal right ventricular size and function. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "Normal LV systolic function, LVEF 55%, no regional wall motion abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2023-10-04T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary - NSTEMI",
+              "date": "2023-10-09T09:15",
+              "author": "cardiology",
+              "body": "Regional hospital cardiology service. Admitted 10/04/2023, discharged 10/06/2023.\n\nPresentation: 59M woke at about 4:30 am with heavy central chest pressure into the left arm, sweaty, and came in by ambulance. Aspirin 324 mg given by EMS. ECG with ST depression V2-V4, no elevation. High-sensitivity troponin I 214 ng/L on arrival, peak 1,840 ng/L.\n\nCatheterization 10/04 (right radial): 90% mid-LAD stenosis, treated with one drug-eluting stent with good result. Other vessels with mild irregularities only.\nEcho 10/05: LVEF 55%, no wall motion abnormality.\n\nCourse uncomplicated; pain free after PCI. Lithium continued, level 0.8. Kidney function stable after contrast.\n\nDiagnoses: NSTEMI; coronary artery disease s/p LAD drug-eluting stent. Also hypertension, hyperlipidemia, bipolar I disorder on lithium, lithium-induced nephrogenic DI, OSA on CPAP, stage IIA colon cancer resected 02/2023.\n\nDischarge medications:\nNEW aspirin 81 mg daily, indefinitely\nNEW clopidogrel 75 mg daily for 12 months, do not stop without talking to cardiology\nNEW metoprolol succinate 25 mg daily\nNEW nitroglycerin 0.4 mg SL as needed\nCONTINUE lisinopril 20 mg daily, atorvastatin 40 mg nightly, lithium carbonate 300 mg twice daily, amiloride 5 mg daily\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week; cardiology clinic 4-6 weeks; cardiac rehabilitation referral placed. No driving for 1 week, no heavy lifting for a week (radial site)."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "office_visit",
+          "start": "2023-10-12T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after NSTEMI",
+          "vitals": {
+            "bp": [
+              139,
+              87
+            ],
+            "hr": 70,
+            "spo2": 95,
+            "weight_kg": 85.0
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-10-12T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit - NSTEMI",
+              "date": "2023-10-12T14:15",
+              "author": "PCP",
+              "body": "Seen 6 days after discharge for NSTEMI with a drug-eluting stent to the mid-LAD (10/4). Nine days after we decided against aspirin, he woke up with chest pressure; he says he's glad he called 911 instead of waiting.\n\nSince home: no chest pain, no dyspnea, walking 10-15 minutes twice a day. Radial site bruised but healing. Taking everything, with a pill organizer now. A bit lightheaded standing up fast the first two days, gone now. Mood: shaken but okay; sleeping with CPAP.\n\nMed reconciliation done with patient: aspirin 81, clopidogrel 75, metoprolol succinate 25, NTG SL prn (has not needed), lisinopril 20, atorvastatin 40, lithium 300 bid, amiloride 5.\n\nExam: vitals as charted. Right wrist with resolving ecchymosis, radial pulse 2+. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P: NSTEMI s/p LAD DES, recovering. Stressed not interrupting clopidogrel. Cardiac rehab: he has the intake call next week. Cardiology visit 11/8. Lithium: level 0.8 in hospital; continue q3 month checks. Discussed the warning signs and when to use nitroglycerin and call 911. RTC January, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "specialist_visit",
+          "start": "2023-11-08T10:40",
+          "service": "Cardiology",
+          "reason": "Post-MI follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              83
+            ],
+            "hr": 71
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "date": "2023-11-10T12:00",
+              "author": "cardiology",
+              "body": "Outside cardiology, 11/08/2023. Five weeks after NSTEMI with mid-LAD drug-eluting stent. No angina, no dyspnea, no palpitations. Started cardiac rehab this week. Taking aspirin 81, clopidogrel 75, metoprolol succinate 25, atorvastatin 40, lisinopril 20; also lithium and amiloride from his other doctors. Vitals reviewed. Exam normal, right radial site healed. ECG sinus rhythm, no acute changes.\nPlan: continue DAPT for 12 months from 10/2023, then aspirin alone. Continue current statin. Finish rehab. Return in 4-5 months, sooner for symptoms."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "nurse_visit",
+          "start": "2023-11-14T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "vitals": {
+            "bp": [
+              136,
+              82
+            ],
+            "hr": 68
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-14T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-14T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - COVID vaccine",
+              "date": "2023-11-14T08:25",
+              "author": "RN",
+              "body": "Updated 2023-24 COVID vaccine L deltoid. On clopidogrel and aspirin; pressure held 2 minutes, no bleeding. Says rehab is going well, up to 25 minutes on the bike. No reaction during the wait."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "outside_records",
+          "start": "2023-12-14T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Sleep medicine follow-up",
+              "date": "2023-12-14T09:30",
+              "author": "sleep medicine",
+              "body": "Sleep medicine clinic, 12/12/2023. Moderate OSA (home study AHI 24, nadir 84%), on auto-CPAP 5-15 with heated humidifier since early September. Download over the last month: used nearly every night for most of the night, residual AHI 3, leak acceptable. Feels more rested, no longer dozing in meetings. Nasal pillows mask fits well. Plan: continue current settings; resupply per schedule; return yearly or with problems."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "outside_records",
+          "start": "2024-01-17T10:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiac rehabilitation discharge",
+              "date": "2024-01-17T10:45",
+              "author": "cardiac rehabilitation",
+              "body": "Cardiac rehabilitation program, discharge summary 01/12/2024. Referred after NSTEMI and LAD stent (10/2023). Completed the program, missing a few sessions over the holidays. Exercise capacity improved steadily on the bike and treadmill at low incline; knees limited incline work. No angina or arrhythmia during sessions. Resting blood pressure and heart rate at goal on metoprolol. Education: diet, medications, warning symptoms. Home plan: walk 30-40 minutes most days, add light resistance work."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              89
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 85.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-23T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-23T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-23T08:50",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-23T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-23T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "date": "2024-01-23T09:10",
+              "author": "PCP",
+              "body": "Follow-up, 3.5 months after NSTEMI/LAD stent. Finished cardiac rehab last week and is walking 30+ minutes daily, no chest pain, no dyspnea. No bleeding on aspirin and clopidogrel beyond easy bruising. Thirst and nocturia stable on amiloride, up once at night. CPAP nightly, feels the best he has in years. Mood good. Oncology surveillance CT and colonoscopy are next month.\n\nMeds reviewed, no changes: aspirin 81, clopidogrel 75 (through Oct 2024), metoprolol succinate 25, atorvastatin 40, lisinopril 20, lithium 300 bid, amiloride 5, NTG prn (unused).\n\nExam: vitals as charted. Heart regular. Lungs clear. No edema. A few small bruises forearms.\n\nA/P: CAD s/p PCI, stable. HTN at goal. Lithium/NDI: level, BMP, TSH, CBC today. OSA: adherent. Next visit physical in May."
+            },
+            {
+              "type": "Result Note",
+              "title": "January labs",
+              "date": "2024-01-23T16:05",
+              "author": "PCP",
+              "body": "Lithium 0.7. Sodium, potassium and creatinine stable on amiloride plus lisinopril. TSH normal, CBC normal. Sent to psychiatry. Patient notified through portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-14a",
+          "kind": "outside_records",
+          "start": "2024-02-14T11:20",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-02-12T09:10",
+              "text": "CT chest with contrast, comparison 01/18/2023. Lungs clear without nodules. No adenopathy. Coronary stent noted. No pleural or pericardial effusion. Osseous structures unremarkable.",
+              "conclusion": "No evidence of metastatic disease in the chest."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-02-12T09:10",
+              "text": "Post right hemicolectomy with intact ileocolic anastomosis in the right abdomen, no wall thickening or mass at the anastomosis. No adenopathy. Liver without focal lesion. Spleen, pancreas, adrenals and kidneys unremarkable. No ascites. No suspicious osseous lesion.",
+              "conclusion": "Expected postsurgical change. No evidence of recurrent or metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surveillance CT reports",
+              "date": "2024-02-14T11:20",
+              "author": "radiology",
+              "body": "One-year surveillance CT chest, abdomen and pelvis (02/12/2024) for resected stage IIA colon cancer: no recurrence, no metastasis. Filed to imaging; oncology to review with patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-29a",
+          "kind": "outside_records",
+          "start": "2024-02-29T14:00",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, high risk",
+              "performed": "2024-02-27T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surveillance colonoscopy",
+              "date": "2024-02-29T14:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology. Procedure 02/27/2024. Indication: one year after right hemicolectomy for colon cancer. Aspirin continued; clopidogrel continued per cardiology, no biopsies planned unless needed. Prep excellent. Ileocolic anastomosis widely patent with healthy-appearing mucosa; neoterminal ileum normal. No polyps or masses throughout the remaining colon and rectum. Small internal hemorrhoids. Impression: normal post-hemicolectomy colonoscopy. Recommend repeat in 3 years (2027)."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "specialist_visit",
+          "start": "2024-03-04T13:40",
+          "service": "Medical Oncology",
+          "reason": "Colon cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-04T13:00",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance - one year",
+              "date": "2024-03-06T09:00",
+              "author": "oncology",
+              "body": "Medical oncology, 03/04/2024. One year after resection of stage IIA (pT3 N0) ascending colon adenocarcinoma, no adjuvant therapy. Interval NSTEMI 10/2023 treated with an LAD stent. Feels well, bowels regular, no bleeding, weight steady. Exam unremarkable. CEA 1.8. CT 02/12 without recurrence; colonoscopy 02/27 normal anastomosis, no polyps, repeat 2027. No evidence of disease. Plan: CEA and visit every 6 months through 2025, CT yearly through 2026."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T07:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest pressure walking",
+              "date": "2024-03-20T07:05",
+              "author": "patient",
+              "body": "Last few weeks I've had a pressure feeling in my chest going into my left arm on my morning walks. Lasts maybe 10 min, goes away if I stop and stand. Never when I'm sitting. Doesn't feel like October, much milder. I have a cardiology appt in May. Should I move it up?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call back re exertional chest pressure",
+              "date": "2024-03-20T08:15",
+              "author": "PCP",
+              "body": "Called him. Episodes only with brisk walking, relieved by rest within about 10 minutes, none at rest, none waking him, no syncope. Has not used nitroglycerin. Stable pattern, so no ED today. Reviewed: if pain at rest, lasting over 15 min, or not relieved by NTG x1, call 911. I called the cardiology office: they moved him to 3/27 and will do stress testing. Advised walking at an easier pace until then."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "specialist_visit",
+          "start": "2024-03-27T09:30",
+          "service": "Cardiology",
+          "reason": "Exertional chest pressure after MI",
+          "conditions": [
+            {
+              "label": "Angina pectoris",
+              "action": "diagnosed",
+              "onset": "2024-02-20",
+              "note": "Stable angina due to coronary artery disease; reversible anterior defect on SPECT"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Stable angina"
+            },
+            {
+              "drug_text": "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Stable angina"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 78
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-03-27T09:35",
+              "text": "Sinus rhythm, rate 78. Normal axis and intervals. No acute ST or T wave changes. No pathologic Q waves.",
+              "conclusion": "No acute changes."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up - angina",
+              "date": "2024-03-29T15:30",
+              "author": "cardiology",
+              "body": "Outside cardiology, 03/27/2024.\n\nSix months out from NSTEMI with mid-LAD drug-eluting stent. For several weeks he has had a pressure in the left chest spreading to the left arm on his morning walks, about ten minutes at a time, easing with rest. Nothing at rest. Has not taken nitroglycerin.\n\nMeds: aspirin 81, clopidogrel 75, metoprolol succinate 25, lisinopril 20, atorvastatin 40 nightly, lithium carbonate 300 twice daily, amiloride 5. NKDA. Never smoker, social alcohol, office manager. Father MI at 55.\n\nBP 135/85, HR 78. Examination unremarkable. ECG: sinus, no acute changes.\n\nRegadenoson SPECT myocardial perfusion study (pharmacologic stress chosen because knee arthritis keeps him from adequate treadmill exercise): reversible perfusion defect of the anterior wall on stress images, normal perfusion at rest. Gated EF normal.\n\nAssessment: stable angina pectoris from coronary artery disease, anterior ischemia, post LAD stent.\nPlan: optimize medical therapy first. Increase metoprolol succinate to 50 mg daily. Add isosorbide mononitrate ER 30 mg every morning. Nitroglycerin SL as needed; sit down before using. Continue aspirin and clopidogrel. If symptoms persist despite this, we will proceed to angiography. Follow up in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "pharmacy",
+          "start": "2024-04-02T11:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy - metoprolol duplicate",
+              "date": "2024-04-02T11:50",
+              "author": "MA",
+              "body": "Pharmacy called: two metoprolol succinate strengths on file (25 from the hospital, 50 from cardiology). Confirmed with patient and cardiology letter that he takes 50 mg once daily now; 25 mg discontinued, pharmacy will inactivate it. Isosorbide filled without issue. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "annual_physical",
+          "start": "2024-05-07T08:00",
+          "end": "2024-05-07T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Non-ST elevation (NSTEMI) myocardial infarction",
+              "action": "resolved",
+              "onset": "2023-10-04",
+              "icd10": "I21.4"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2023-10-04"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              87
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 85.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-07T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-05-07T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 162
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-07T08:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-05-07T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-07T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-07T09:30",
+              "author": "PCP",
+              "body": "ANNUAL EXAM, age 60 today-ish (birthday was last week).\n\nInterval: angina on walks in March; cardiology found anterior ischemia on a regadenoson SPECT, raised metoprolol to 50 and added isosorbide. Since then he's had two brief episodes on hills, none in the last 3 weeks, no NTG needed. Some dull headaches the first week of isosorbide, now gone. Colon surveillance in Feb all clear, next colonoscopy 2027. Psychiatry visit due in the fall.\n\nROS: no dyspnea, orthopnea, palpitations, GI bleeding, urinary change beyond baseline nocturia once. Knees same.\n\nMeds: aspirin 81, clopidogrel 75 (until Oct), metoprolol succinate 50, isosorbide mononitrate ER 30, NTG prn, atorvastatin 40, lisinopril 20, lithium 300 bid, amiloride 5. NKDA.\nSocial: still office manager. Never smoker, 1-2 drinks a week. Walking daily.\n\nEXAM: vitals as charted, BMI 27. HEENT normal, TMs clear. Neck supple, no bruit. Heart regular, no murmur or gallop. Lungs clear. Abdomen soft, healed laparoscopic scars. Extremities without edema, pulses intact. Skin: scattered ecchymoses forearms. Neuro nonfocal, no tremor. Mood euthymic. PHQ-9 3.\n\nA/P\n1. CAD with MI 10/2023 s/p LAD stent, stable angina improving on medical therapy. Updated problem list: the MI is now historical. Continue current regimen; cardiology June.\n2. HTN at goal.\n3. Hyperlipidemia: lipids today on atorvastatin 40.\n4. Bipolar I on lithium, lithium NDI on amiloride: lithium, CMP, TSH today.\n5. OSA on CPAP, adherent.\n6. Stage IIA colon cancer, NED, oncology following.\n7. Health maintenance: Shingrix done, Tdap 2017, hep C/HIV done 2022. Flu and COVID in the fall. A1c today.\n\nRTC 3-4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "specialist_visit",
+          "start": "2024-06-26T14:20",
+          "service": "Cardiology",
+          "reason": "Angina follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              81
+            ],
+            "hr": 62
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "date": "2024-06-28T10:00",
+              "author": "cardiology",
+              "body": "Outside cardiology, 06/26/2024. Stable angina after LAD stent, on metoprolol succinate 50 and isosorbide mononitrate 30 since March. No chest pressure since mid-April, walking daily at a moderate pace. No NTG use. Vitals reviewed. Exam unremarkable. Plan: continue medical therapy, no angiography needed at this time. DAPT until 10/2024, then aspirin alone. Return in 3-4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Recurrent nosebleeds",
+          "vitals": {
+            "bp": [
+              143,
+              77
+            ],
+            "hr": 59,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-08-13T16:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-08-13T16:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T16:20",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-08-13T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "Recurrent epistaxis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - nosebleeds",
+              "date": "2024-08-13T16:30",
+              "author": "PCP",
+              "body": "S: Nosebleeds for about 6 weeks, now a few times a week, usually waking at night or first thing in the morning, mostly from the right but sometimes either side. Stop with 10 minutes of pinching. No blood in stool, no gum bleeding beyond the usual, no black stools. On aspirin + clopidogrel until October. Uses CPAP nightly with the humidifier set low because the tubing gets wet.\n\nO: Vitals as charted. Nares: dried blood and crusting anteriorly bilaterally, no active bleeding, no visible mass. Oropharynx clear. No petechiae.\n\nA/P: Recurrent anterior epistaxis on dual antiplatelet therapy with dry mucosa from CPAP. Not stopping antiplatelets, stent is under a year. CBC, PT/INR and liver panel today (lithium level as well since due). Saline spray during the day, petroleum-based ointment inside the nostrils at night, try the humidifier one notch higher. ENT referral to look for a vessel worth cauterizing."
+            },
+            {
+              "type": "Result Note",
+              "title": "Bleeding workup",
+              "date": "2024-08-14T11:00",
+              "author": "PCP",
+              "body": "CBC normal including platelets and hemoglobin, PT/INR normal, liver panel normal. Lithium 0.8. Nothing systemic. ENT appointment is 9/23. Message sent to patient."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-12T09:20",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-10T13:15",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology surveillance",
+              "date": "2024-09-12T09:20",
+              "author": "oncology",
+              "body": "Medical oncology, 09/10/2024. 18 months after resection of stage IIA colon cancer. No GI symptoms. Mentions nosebleeds, ENT pending. Exam unremarkable. CEA 1.6. No evidence of recurrence. Next visit and CT in February 2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "specialist_visit",
+          "start": "2024-09-23T10:15",
+          "service": "Otolaryngology",
+          "reason": "Recurrent nosebleeds",
+          "conditions": [
+            {
+              "label": "Epistaxis",
+              "action": "diagnosed",
+              "onset": "2024-07-01",
+              "note": "Localized idiopathic anterior epistaxis",
+              "icd10": "R04.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ]
+          },
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2024-09-23T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology consultation",
+              "date": "2024-09-25T14:40",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology, 09/23/2024. Referred by primary care.\n\nHPI: Two months of nosebleeds, mostly overnight or on waking, increasing in frequency, controlled with pressure. Seen by cardiology recently; on aspirin and clopidogrel after a 2023 coronary stent, clopidogrel due to stop next month. Uses CPAP for sleep apnea, about a year now.\n\nPMH: CAD with stent, HTN, hyperlipidemia, bipolar I on lithium, nephrogenic DI, OSA, colon cancer s/p right hemicolectomy. NKDA. Never smoker.\n\nBP 138/86.\nExam: External nose straight. Anterior rhinoscopy shows dry, crusted mucosa over the anterior septum with a little fresh blood; no prominent single vessel, no septal deformity, no polyps or mass. Oral cavity and oropharynx normal. Neck without adenopathy.\nPrimary care labs in August: CBC, coagulation studies and liver tests normal.\n\nImpression: localized idiopathic anterior epistaxis from mucosal drying, likely aggravated by CPAP airflow and antiplatelet therapy.\nPlan: Turn the CPAP heated humidifier up and use heated tubing; saline gel to each nostril at bedtime and on waking; avoid digital trauma. No cautery today since no discrete vessel. Pressure technique reviewed. Return if bleeding continues after clopidogrel is stopped."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "specialist_visit",
+          "start": "2024-10-02T11:00",
+          "service": "Cardiology",
+          "reason": "One year after stent",
+          "medications": [
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "stop",
+              "reason": "12 months of dual antiplatelet therapy completed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              79
+            ],
+            "hr": 70
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology - DAPT complete",
+              "date": "2024-10-04T08:30",
+              "author": "cardiology",
+              "body": "Outside cardiology, 10/02/2024. One year after NSTEMI and mid-LAD DES. No angina since April on metoprolol succinate 50 and isosorbide mononitrate 30. Nosebleeds per ENT from dry mucosa. Vitals reviewed. Exam normal. Plan: stop clopidogrel today; continue aspirin 81 mg indefinitely, atorvastatin 40, metoprolol, isosorbide, lisinopril. Return in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "bp": [
+              134,
+              80
+            ],
+            "hr": 51
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T07:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - seasonal vaccines",
+              "date": "2024-10-08T08:05",
+              "author": "RN",
+              "body": "Flu (L arm) and 2024-25 COVID (R arm). Patient reports cardiology stopped clopidogrel last week; med list updated, aspirin continues. Nosebleeds down to one small one since he turned up the CPAP humidifier. Observed 15 min, fine."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "outside_records",
+          "start": "2024-11-13T13:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry annual visit",
+              "date": "2024-11-13T13:10",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, 11/06/2024. Bipolar I disorder, sustained remission on lithium since 2013. Mood steady through a hard year medically (MI, angina). Sleep good on CPAP. No tremor, no cognitive complaints. Lithium levels from primary care 0.7-0.9 this year. Continue lithium carbonate 300 mg twice daily. Reminder that NSAIDs and diuretics should be avoided. Next visit in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "lab_only",
+          "start": "2024-12-03T07:35",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-03T07:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-03T07:35",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-03T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lithium labs",
+              "date": "2024-12-03T15:45",
+              "author": "PCP",
+              "body": "Lithium 0.7, BMP and TSH stable. No change. Copy to psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-21T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-01-21T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth follow-up",
+              "date": "2025-01-21T12:35",
+              "author": "PCP",
+              "body": "Video visit during his lunch break, he is at his office, identity verified. Doing well. No chest pressure since spring, walking indoors at the mall when icy. Nosebleeds: one minor one in December, otherwise none since the humidifier change and gel. Home BP log 120s-130s/70s-80s. Nocturia once. December labs were fine.\nNo exam beyond appearance: well, conversant, no distress.\nA/P: CAD/angina quiet, HTN controlled on home readings, epistaxis much improved. Continue all. Oncology CT next month. Lipids before the March cardiology visit; order placed. Physical in May."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "outside_records",
+          "start": "2025-02-20T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-18T12:50",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-02-18T08:20",
+              "text": "CT chest with contrast, comparison 02/12/2024. No pulmonary nodules. No adenopathy. LAD stent. No effusion.",
+              "conclusion": "No evidence of thoracic metastasis."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-02-18T08:20",
+              "text": "Stable postsurgical appearance after right hemicolectomy; anastomosis without mass. Liver, spleen, pancreas, adrenals and kidneys unremarkable. No adenopathy or ascites.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology two-year surveillance",
+              "date": "2025-02-20T10:30",
+              "author": "oncology",
+              "body": "Medical oncology, 02/18/2025. Two years from right hemicolectomy for stage IIA colon cancer. Asymptomatic. CT chest/abdomen/pelvis today without recurrence. CEA 2.0. Exam unremarkable. Continue CEA every 6 months this year; final surveillance CT February 2026; colonoscopy 2027."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "lab_only",
+          "start": "2025-03-11T07:30",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-11T07:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-11T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 143
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-11T07:30",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-11T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lipids and lithium",
+              "date": "2025-03-11T16:10",
+              "author": "PCP",
+              "body": "LDL 98, HDL 45, TG 150 on atorvastatin 40. Lithium 0.8, BMP stable. Faxed to cardiology ahead of the 3/25 visit and to psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "specialist_visit",
+          "start": "2025-03-25T10:30",
+          "service": "Cardiology",
+          "reason": "Routine follow-up; further MI risk reduction",
+          "medications": [
+            {
+              "drug": "ezetimibe 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary artery disease, LDL above goal"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ]
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "date": "2025-03-27T09:45",
+              "author": "cardiology",
+              "body": "Outside cardiology, 03/25/2025.\n\nRoutine visit. History of NSTEMI with mid-LAD stent (10/2023) and stable angina in early 2024, quiet since the medication changes that spring. No chest pressure, dyspnea or palpitations. Takes everything as prescribed. Never smoker; eats a careful diet. He asks whether anything else would lower his chance of another heart attack.\n\nMeds: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, lisinopril 20, NTG prn; lithium and amiloride per his other physicians. NKDA.\n\nBP 132/84. Exam unremarkable.\nLipids 03/11/2025 (primary care): LDL 98, HDL 45, triglycerides 150.\n\nAssessment: CAD with prior MI, LDL above goal for secondary prevention.\nPlan: We discussed adding ezetimibe to his statin, which lowers LDL further and has reduced recurrent cardiac events when added to statin therapy, with few side effects. He agrees. Start ezetimibe 10 mg daily. Continue the rest. Repeat lipids in 2-3 months (can be drawn with primary care). Return in one year."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 72,
+              "Total Cholesterol": 145
+            }
+          }
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "portal_message",
+          "start": "2025-04-01T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New cholesterol pill",
+              "date": "2025-04-01T20:15",
+              "author": "patient",
+              "body": "Cardiology added ezetimibe. Can I take it at night with the atorvastatin, and does it interact with lithium? Trying to keep it simple."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New cholesterol pill",
+              "date": "2025-04-02T08:05",
+              "author": "PCP",
+              "body": "Yes, take it with the atorvastatin at night, any time of day is fine for ezetimibe. No interaction with lithium. We'll recheck cholesterol at your physical in May."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "annual_physical",
+          "start": "2025-05-13T08:00",
+          "end": "2025-05-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Epistaxis",
+              "action": "resolved",
+              "onset": "2024-07-01",
+              "icd10": "R04.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              77
+            ],
+            "hr": 73,
+            "rr": 16,
+            "temp_c": 36.3,
+            "spo2": 96,
+            "weight_kg": 85.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-13T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-13T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 143
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 135
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 69
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T08:35",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-05-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-13T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-05-13T09:25",
+              "author": "PCP",
+              "body": "Annual physical, 61.\n\nA quiet year, which he says he has earned. No angina for a year. Cardiology added ezetimibe in March. No nosebleeds since January. CPAP nightly. Nocturia once. Mood even, saw psychiatry in November. Colon: 2-year CT and CEA clear in February.\n\nMeds: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, ezetimibe 10, lisinopril 20, lithium 300 bid, amiloride 5, NTG prn. NKDA.\nSocial: same job, thinking about retiring at 65. Never smoker, social drinker.\n\nExam: vitals as charted. Nares without crusting. Heart regular, lungs clear. Abdomen benign. No edema. Neuro nonfocal, no tremor. Affect bright. PHQ-9 2.\n\nA/P\n1. CAD/prior MI/stable angina: asymptomatic. Lipids today on statin plus ezetimibe.\n2. Epistaxis: resolved with humidification; off the active list.\n3. HTN controlled.\n4. Lithium/NDI: lithium, CMP, TSH today.\n5. OSA, colon cancer surveillance, as above.\n6. Prevention: up to date; flu and COVID in the fall.\n\nRTC 3-4 months for lithium follow-up."
+            },
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2025-05-14T12:30",
+              "author": "PCP",
+              "body": "LDL down to about 70 on ezetimibe, nice drop. Lithium 0.8, CMP, TSH, A1c, CBC all normal. Copies to cardiology and psychiatry; portal message to patient."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lithium follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-17b",
+          "kind": "telephone",
+          "start": "2025-06-17T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-06-17T14:00",
+              "author": "front desk",
+              "body": "Patient missed 10:40. Reached him: a payroll deadline at work, forgot. Apologized. Per PCP, no need to rebook a visit this soon after the physical; lab-only lithium check in August instead. Lab order on file."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "lab_only",
+          "start": "2025-08-12T07:40",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-12T07:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-12T07:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lithium level",
+              "date": "2025-08-12T15:20",
+              "author": "PCP",
+              "body": "Lithium 0.9, it was a hot week and he says he was drinking plenty. BMP fine. No change; recheck in the fall. Psych copied."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "outside_records",
+          "start": "2025-08-28T09:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-26T13:10",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology surveillance",
+              "date": "2025-08-28T09:40",
+              "author": "oncology",
+              "body": "Medical oncology, 08/26/2025. Two and a half years after resection, stage IIA colon cancer, no evidence of disease. CEA 1.7. Exam unremarkable. Next: visit with CEA and final surveillance CT February 2026, then annual visits."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "ed_visit",
+          "start": "2025-09-22T15:10",
+          "end": "2025-09-22T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Sudden painless vision loss, left eye",
+          "conditions": [
+            {
+              "label": "Unspecified retinal detachment with retinal break, left eye",
+              "action": "diagnosed",
+              "onset": "2025-09-22",
+              "icd10": "H33.002"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              95
+            ],
+            "hr": 66,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 97
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-22T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record - vision loss",
+              "date": "2025-09-24T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 09/22/2025, arrival 15:10.\n\nCC: lost vision in the left eye.\n\nHPI: 61-year-old man with CAD (prior MI, LAD stent), stage IIA colon cancer s/p right hemicolectomy, and a cardiology visit this spring. About 45 minutes before arrival, while at his desk, a dark shadow suddenly covered the lower half of the vision in his left eye, painless, and it has since spread over most of that eye's field. No headache, nausea, double vision, eye pain or light sensitivity. No injury. Never had anything like it. No known eye disease. Blood pressure and cholesterol have been well controlled.\n\nPMH: CAD s/p PCI, stable angina, HTN, hyperlipidemia, bipolar I on lithium, nephrogenic DI, OSA on CPAP, colon cancer.\nPSH: right hemicolectomy; colonoscopy with polypectomy.\nMeds: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, ezetimibe 10, lisinopril 20, lithium carbonate 300 twice daily, amiloride 5, NTG prn.\nAllergies: NKDA.\nSocial: never smoker, social alcohol, office manager.\nFamily: father MI at 55, mother type 2 diabetes, paternal uncle stroke at 60, maternal grandfather colon polyps.\n\nExam: vitals as charted, comfortable. Right eye acuity normal; left eye acuity reduced. Left pupil sluggish to light. Intraocular pressure normal both eyes. Extraocular movements full both eyes. Conjunctivae quiet. Neuro otherwise nonfocal.\n\nOphthalmology consulted from the ED: dilated fundus examination of the left eye shows a retinal detachment with a retinal break; right eye normal.\n\nImpression: left rhegmatogenous retinal detachment.\nDisposition: discharged to the care of the on-call retina surgeon for repair tomorrow morning. Nothing by mouth after midnight. Continue home meds including aspirin unless the surgeon advises otherwise."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "procedure_visit",
+          "start": "2025-09-23T07:30",
+          "end": "2025-09-23T11:00",
+          "service": "Ophthalmology",
+          "reason": "Repair of left retinal detachment",
+          "medications": [
+            {
+              "drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+              "action": "start",
+              "sig": "1 drop in the left eye four times daily, taper over 4 weeks",
+              "frequency": "QID",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "Post-operative inflammation"
+            },
+            {
+              "drug_text": "moxifloxacin 5 MG/ML Ophthalmic Solution",
+              "action": "start",
+              "sig": "1 drop in the left eye four times daily for 1 week",
+              "frequency": "QID",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "Post-operative infection prophylaxis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Retina surgery - left eye",
+              "date": "2025-09-25T13:00",
+              "author": "ophthalmology",
+              "body": "Outside retina practice. Operative summary 09/23/2025.\nPreoperative diagnosis: rhegmatogenous retinal detachment, left eye.\nProcedure: 23-gauge pars plana vitrectomy, endolaser to the retinal break, fluid-air exchange and gas tamponade, left eye. Monitored anesthesia care with retrobulbar block. Aspirin continued.\nFindings: retinal detachment with a single retinal break, flattened under air; laser applied around the break.\nNo complications.\nPostoperative: head positioning as instructed for 5 days. No air travel or high altitude, and no nitrous oxide anesthesia, while gas remains (about 6-8 weeks); green gas band placed on the left wrist. Prednisolone acetate 1% and moxifloxacin 0.5% drops four times daily. Follow-up tomorrow, 1 week and 1 month."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "telephone",
+          "start": "2025-09-26T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after eye surgery",
+              "date": "2025-09-26T11:30",
+              "author": "RN",
+              "body": "Called after we received the ED and retina records. Day 3 after vitrectomy for left retinal detachment. Doing the positioning, mild ache controlled with acetaminophen, using both drops. Vision in that eye is blurry through the gas bubble as expected. Taking his heart meds and lithium as usual. Reminded no NSAIDs with lithium. Post-ED visit with PCP 10/7."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "office_visit",
+          "start": "2025-10-07T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit and retina surgery",
+          "vitals": {
+            "bp": [
+              125,
+              83
+            ],
+            "hr": 56,
+            "spo2": 97,
+            "weight_kg": 85.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-07T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T10:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - after retinal detachment",
+              "date": "2025-10-07T10:30",
+              "author": "PCP",
+              "body": "Seen two weeks after the ED visit (9/22) for sudden painless vision loss in the left eye, a rhegmatogenous retinal detachment, repaired by vitrectomy with gas the next morning. One-week retina check said the retina is attached. Gas bubble shrinking, can see the line moving. Drops tapering. Wearing the gas wristband; no flying planned.\n\nOtherwise well. No chest pressure. Lithium 0.9 in August. Mood fine, a bit frustrated about not driving for a couple of weeks.\n\nExam: vitals as charted. Left eye mildly injected, no discharge. Heart regular, lungs clear, no edema.\n\nA/P\n1. Left retinal detachment s/p repair: retina following. Told him to call the retina office immediately for any new shadow, flashes or floaters in either eye. If he ever needs surgery while gas remains, anesthesia must know (no nitrous).\n2. CAD, HTN, lipids: stable, no change.\n3. Bipolar/lithium: next level in the winter.\n4. Flu and COVID today.\n\nRTC January."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "outside_records",
+          "start": "2025-11-04T10:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry annual visit",
+              "date": "2025-11-04T10:00",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, 10/29/2025. Bipolar I disorder in sustained remission on lithium carbonate 300 mg twice daily. Coped well with eye surgery in September. Euthymic, no psychotic or manic symptoms, sleeping well. No tremor. Recent levels 0.8-0.9. Continue current dose. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "specialist_visit",
+          "start": "2025-11-19T13:30",
+          "service": "Ophthalmology",
+          "reason": "Retina follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Retina follow-up",
+              "date": "2025-11-21T09:10",
+              "author": "ophthalmology",
+              "body": "Outside retina practice, 11/19/2025. Eight weeks after left pars plana vitrectomy, endolaser and gas for rhegmatogenous retinal detachment. Gas fully resorbed. Retina attached 360 degrees with laser scar around the treated break. Visual acuity left eye 20/50, right eye normal. Intraocular pressure normal. Drops finished. Activity unrestricted; may fly. Return in 3 months, sooner for new flashes, floaters or shadow."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              73
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 85.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-20T08:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 143
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-20T08:55",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-20T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "date": "2026-01-20T09:15",
+              "author": "PCP",
+              "body": "Routine follow-up. Left eye vision has settled; retina office in November said attached, acuity 20/50 on that side, which he notices mostly reading fine print. No chest pressure, still walks daily. No nosebleeds. CPAP nightly, new mask last month. Thirst and nocturia unchanged, once a night. Mood steady; psychiatry saw him in October.\n\nMeds unchanged: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, ezetimibe 10, lisinopril 20, lithium 300 bid, amiloride 5, NTG prn (never used).\n\nExam: vitals as charted. Heart regular, lungs clear, no edema. No tremor.\n\nA/P: CAD, HTN, lipids, OSA stable. Lithium level, BMP and TSH today. Oncology CT next month (last of the yearly scans). Next visit in spring."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lithium labs",
+              "date": "2026-01-20T15:50",
+              "author": "PCP",
+              "body": "Lithium 0.8. BMP and TSH normal. To psychiatry."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-19T11:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-17T12:40",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 1.5
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-02-17T08:15",
+              "text": "CT chest with contrast, comparison 02/18/2025. Lungs clear, no nodules. No adenopathy. Coronary stent. No effusion.",
+              "conclusion": "No evidence of metastatic disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-02-17T08:15",
+              "text": "Unchanged postsurgical appearance after right hemicolectomy. No anastomotic mass. Solid organs unremarkable. No adenopathy or ascites.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology three-year surveillance",
+              "date": "2026-02-19T11:00",
+              "author": "oncology",
+              "body": "Medical oncology, 02/17/2026. Three years after right hemicolectomy for stage IIA ascending colon adenocarcinoma. Well. CT chest/abdomen/pelvis without recurrence; this completes imaging surveillance. CEA 1.5. Plan: annual visit with CEA through year 5; colonoscopy due 2027 with GI."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T10:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill requests",
+              "date": "2026-03-10T10:25",
+              "author": "MA",
+              "body": "Pharmacy refill requests received for lisinopril 20, atorvastatin 40, ezetimibe 10, amiloride 5 and metoprolol succinate 50, 90-day supplies. Sent per protocol, PCP signed. Lithium is filled by psychiatry. Isosorbide still has refills from cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "hospital_admission",
+          "start": "2026-04-07T13:45",
+          "end": "2026-04-10T12:30",
+          "service": "Neurology",
+          "reason": "Acute ischemic stroke, right lateral medulla",
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "action": "diagnosed",
+              "onset": "2026-04-07",
+              "note": "Right lateral medullary (Wallenberg) syndrome",
+              "icd10": "I63.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with aspirin for 21 days, then stop",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute ischemic stroke"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased after stroke"
+            },
+            {
+              "drug": "atorvastatin 80 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Ischemic stroke, coronary artery disease"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-04-07T13:50",
+              "bp": [
+                160,
+                90
+              ],
+              "hr": 88,
+              "rr": 16
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-07T14:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-07T14:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-04-07T14:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-07T14:00",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 6
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-08T05:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 68
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 144
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 142
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 97
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-08T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-04-07T14:10",
+              "text": "No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Posterior fossa limited by streak artifact without visible abnormality.",
+              "conclusion": "No acute intracranial hemorrhage."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-04-07T13:58",
+              "text": "Sinus rhythm, rate 88. Normal axis and intervals. No acute ST changes. No Q waves.",
+              "conclusion": "Sinus rhythm, no acute changes."
+            },
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2026-04-07T19:30",
+              "text": "Diffusion-weighted imaging shows restricted diffusion in the right lateral medulla with corresponding ADC hypointensity, consistent with acute infarction. No other diffusion abnormality. No hemorrhage on susceptibility imaging. No mass. Ventricles normal. Flow voids preserved.",
+              "conclusion": "Acute infarct of the right lateral medulla."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-04-08T11:00",
+              "text": "Normal left ventricular size and wall thickness. LVEF 55%. No left ventricular thrombus. Normal right ventricle. No significant valve disease. Agitated saline study at rest and with cough negative for interatrial shunt.",
+              "conclusion": "LVEF 55%, no thrombus, negative bubble study."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record - dizziness and dysphagia",
+              "date": "2026-04-10T15:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 04/07/2026, arrival 13:45.\n\nCC: dizzy, vomiting, can't swallow well, face numb.\n\nHPI: 61-year-old man with CAD and a prior MI with LAD stent, who was in this ED in September for a left retinal detachment. Since about 7 this morning he has had the sudden onset of spinning dizziness with nausea and repeated vomiting, then trouble getting food and liquids down, and numbness of the right side of his face, the same side he feels he is falling toward. He waited, hoping it was a virus.\n\nPMH: CAD s/p PCI, stable angina, HTN, hyperlipidemia, bipolar I on lithium, lithium nephrogenic DI, OSA on CPAP, stage IIA colon cancer s/p right hemicolectomy, left retinal detachment repaired 09/2025.\nMeds: aspirin 81, metoprolol succinate 50, isosorbide mononitrate ER 30, atorvastatin 40, ezetimibe 10, lisinopril 20, lithium carbonate 300 twice daily, amiloride 5. NKDA.\nSocial: never smoker, social alcohol, office manager. Family: father MI at 55, paternal uncle stroke at 60.\n\nVitals: BP 160/90, HR 88, RR 16.\nExam: alert, oriented, speech mildly hoarse. Right eyelid droops and the right pupil is smaller than the left. Pinprick and temperature sense reduced over the right face and over the left arm, trunk and leg. Strength full in all limbs. Tandem gait not possible, sways to the right. Soft palate weak on the right with the uvula pulled to the left. No carotid bruits. NIHSS 3.\n\nCT head: no hemorrhage. Last known well about 7 hours earlier, outside the window for thrombolysis. CTA head and neck: no large vessel occlusion and no significant stenosis. Neurology at bedside. NPO pending swallow evaluation. MRI brain with diffusion ordered.\n\nImpression: acute posterior circulation stroke, clinically a right lateral medullary syndrome.\nDisposition: admitted to the stroke unit."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary - lateral medullary stroke",
+              "date": "2026-04-13T09:20",
+              "author": "neurology",
+              "body": "Regional hospital stroke service. Admitted 04/07/2026, discharged 04/10/2026.\n\nDiagnosis: acute ischemic stroke of the right lateral medulla (right lateral medullary syndrome).\n\nCourse: MRI on arrival day confirmed an acute right lateral medullary infarct, no hemorrhage. CTA head/neck without occlusion or significant stenosis. Telemetry for 72 hours: sinus rhythm throughout, no atrial fibrillation. TTE: LVEF 55%, no thrombus, bubble study negative. LDL 68, A1c 5.4. Lithium 0.7; lithium and amiloride continued with fluids monitored, sodium stayed normal. Blood pressure allowed to run higher for 24 hours, then lisinopril resumed.\nSwallow: speech pathology bedside and video swallow on day 1 showed delayed swallow with some pooling; started on puree with thin liquids by cup; advanced to regular diet by day 3 with chin tuck and small bites. Nausea and vertigo settled by day 2.\nGait: PT, walking with supervision and then independently in the hallway with mild sway; outpatient PT recommended. Residual right facial numbness and left-sided pain/temperature change.\n\nDischarge medications:\nNEW clopidogrel 75 mg daily with aspirin for 21 days total (last dose 04/28/2026), then aspirin alone\nCHANGED atorvastatin 80 mg nightly (was 40)\nCONTINUE aspirin 81, ezetimibe 10, metoprolol succinate 50, isosorbide mononitrate ER 30, lisinopril 20, lithium carbonate 300 twice daily, amiloride 5, NTG prn\nAllergies: NKDA.\n\nFollow-up: PCP within 7-10 days; stroke neurology clinic in about 8 weeks; outpatient PT. No driving until cleared by neurology. Call 911 for any new weakness, speech or vision change."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "telephone",
+          "start": "2026-04-13T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-04-13T10:40",
+              "author": "RN",
+              "body": "Transitional care call, 3 days after discharge for a right lateral medullary stroke. Records from the hospital received this morning and given to PCP. He is home, eating regular food slowly and tucking his chin as taught, no choking. Dizziness mild, mostly turning quickly. Walking in the house without a cane. Has clopidogrel and the new atorvastatin 80 from the pharmacy, old 40s set aside. Knows clopidogrel ends 4/28. Not driving. Visit with PCP Friday 4/17 confirmed; outpatient PT has not called yet, will follow up."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-17a",
+          "kind": "office_visit",
+          "start": "2026-04-17T13:00",
+          "end": "2026-04-17T13:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after stroke",
+          "vitals": {
+            "bp": [
+              128,
+              98
+            ],
+            "hr": 78,
+            "spo2": 97,
+            "weight_kg": 85.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-04-17T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-2026-04-24",
+              "action": "placed",
+              "order": "BMP, hepatic panel, lithium level",
+              "category": "lab",
+              "reason": "Atorvastatin dose increase; lithium monitoring"
+            },
+            {
+              "id": "pt-referral-2026",
+              "action": "placed",
+              "order": "Outpatient physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Gait imbalance after brainstem stroke"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit - stroke",
+              "date": "2026-04-17T14:20",
+              "author": "PCP",
+              "body": "TCM visit, 10 days after the onset of a right lateral medullary (Wallenberg) infarct, admitted 4/7-4/10. Hospital records reviewed in full: MRI acute right lateral medullary infarct, CTA without significant stenosis, telemetry without AF, echo LVEF 55% with negative bubble, LDL 68, A1c 5.4. Out of the window for lytics.\n\nSince home: swallowing better each day, still careful with dry bread and takes small sips. Vertigo only with quick head turns. Right side of the face feels \"asleep\", and hot water feels lukewarm on his left hand. Walks unaided but drifts to the right on uneven ground. Voice back to normal. Mood: rattled, \"three big things in three years\", but sleeping, not hopeless.\n\nMeds reconciled with his bottles: aspirin 81, clopidogrel 75 through 4/28, atorvastatin 80 (new), ezetimibe 10, metoprolol succinate 50, isosorbide mononitrate ER 30, lisinopril 20, lithium 300 bid, amiloride 5, NTG prn.\n\nExam: vitals as charted. Mild right ptosis and smaller right pupil. Decreased pinprick right face. Palate elevates, slightly less on the right. Strength full. Finger-nose intact; tandem gait unsteady, sways with feet together and eyes closed. Swallowed water without cough. Heart regular, lungs clear.\n\nA/P\n1. Acute ischemic stroke, right lateral medulla, recovering. Dual antiplatelet through 4/28 then aspirin alone; atorvastatin 80 with ezetimibe. BP today above goal on the diastolic side, first reading after a rushed arrival; home log for two weeks, goal under 130/80. Outpatient PT referral placed (hospital referral never reached him). Stroke neurology about 8 weeks out; no driving until they clear him.\n2. Dysphagia, improving: continue the hospital's strategies; call for coughing with meals or fevers.\n3. CAD, HTN: no chest symptoms; same regimen.\n4. Lithium/NDI: level 0.7 in hospital; recheck with BMP and liver panel next Friday (statin dose up).\n5. Mood: watching given the stress; he'll tell psychiatry and me if sleep or mood shifts.\n\nFollow-up visit late summer; will message with results."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "lab_only",
+          "start": "2026-04-24T07:40",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-24T07:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-24T07:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-24T07:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-24T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-2026-04-24",
+              "action": "done",
+              "date": "2026-04-24T15:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2026-04-27T09:10",
+              "author": "PCP",
+              "body": "Hi Patrick, Friday's labs are all fine: kidney function, sodium and potassium normal, liver tests normal on the higher atorvastatin, and lithium 0.8. Reminder that tomorrow is your last clopidogrel tablet; keep taking the aspirin every day after that. Has PT called you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent labs",
+              "date": "2026-04-27T18:40",
+              "author": "patient",
+              "body": "Thanks. Last clopidogrel is in the pill box for tomorrow. PT starts May 5. Swallowing is almost normal now."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "outside_records",
+          "start": "2026-05-07T12:15",
+          "orders": [
+            {
+              "id": "pt-referral-2026",
+              "action": "done",
+              "date": "2026-05-07T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy evaluation",
+              "date": "2026-05-07T12:15",
+              "author": "physical therapy",
+              "body": "Outpatient physical therapy, initial evaluation 05/05/2026. Referred by primary care for gait imbalance after a right lateral medullary stroke (04/2026). Independent with ADLs, no device. Strength full throughout. Static balance good; sways right with narrow stance and eyes closed, tandem walking with several step-offs, mild gaze-provoked dizziness with quick head turns. Knee osteoarthritis noted, tolerates exercise. Plan: twice weekly for 6-8 weeks, balance and vestibular-ocular training, home program. Goals: safe community walking on uneven ground, return to daily walks outdoors."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "outside_records",
+          "start": "2026-06-12T10:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Stroke neurology follow-up",
+              "date": "2026-06-12T10:20",
+              "author": "neurology",
+              "body": "Outside stroke neurology clinic, 06/10/2026. Two months after an acute right lateral medullary infarct. Swallowing back to normal, diet unrestricted. Mild residual numbness of the right face and reduced temperature sense on the left side of the body. Vertigo resolved. Gait nearly normal; in PT, now walking outdoors daily. Mood good.\nExam: subtle right ptosis and miosis; decreased pinprick right face; strength and coordination normal; tandem gait with one step-off.\nMeds: aspirin 81; clopidogrel completed 04/28; atorvastatin 80, ezetimibe 10; cardiac medicines, lithium and amiloride unchanged.\nImpression: recovering right lateral medullary stroke, no recurrence. Continue aspirin and high-intensity statin with ezetimibe; blood pressure under 130/80 at home. Cleared to resume driving. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-07-14T09:50",
+              "author": "MA",
+              "body": "Pharmacy request for atorvastatin 80 mg, 90-day supply; hospital prescription had 30 days plus one refill. Sent per protocol, PCP signed. Patient also asked about an extra CPAP mask cushion; DME order form faxed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up appointment",
+              "date": "2026-08-11T12:25",
+              "author": "patient",
+              "body": "Hi, I think I'm due for my follow-up. PT finished last week and I'm back to walking the long loop. Anything in September works, mornings best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Follow-up appointment",
+              "date": "2026-08-11T15:05",
+              "author": "front desk",
+              "body": "You're booked Thursday 9/10 at 9:00 with your doctor. Lithium and BMP can be drawn that morning; no need to fast."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:00",
+          "reason": "Routine follow-up after stroke; lithium monitoring",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Bipolar disorder, currently in remission, most recent episode unspecified|F31.70": {
+        "code": "F31.70",
+        "display": "Bipolar disorder, currently in remission, most recent episode unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cerebral infarction, unspecified|I63.9": {
+        "code": "I63.9",
+        "display": "Cerebral infarction, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Epistaxis|R04.0": {
+        "code": "R04.0",
+        "display": "Epistaxis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant neoplasm of ascending colon|C18.2": {
+        "code": "C18.2",
+        "display": "Malignant neoplasm of ascending colon",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Nephrogenic diabetes insipidus|N25.1": {
+        "code": "N25.1",
+        "display": "Nephrogenic diabetes insipidus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Non-ST elevation (NSTEMI) myocardial infarction|I21.4": {
+        "code": "I21.4",
+        "display": "Non-ST elevation (NSTEMI) myocardial infarction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Osteoarthritis of knee, unspecified|M17.9": {
+        "code": "M17.9",
+        "display": "Osteoarthritis of knee, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Unspecified retinal detachment with retinal break, left eye|H33.002": {
+        "code": "H33.002",
+        "display": "Unspecified retinal detachment with retinal break, left eye",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet": {
+        "code": "317110",
+        "display": "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet",
+        "ingredient": "hr",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "amiloride hydrochloride 5 MG Oral Tablet": {
+        "code": "977880",
+        "display": "amiloride hydrochloride 5 MG Oral Tablet",
+        "ingredient": "amiloride",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "lithium carbonate 300 MG Oral Capsule": {
+        "code": "197889",
+        "display": "lithium carbonate 300 MG Oral Capsule",
+        "ingredient": "lithium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "moxifloxacin 5 MG/ML Ophthalmic Solution": {
+        "code": "403818",
+        "display": "moxifloxacin 5 MG/ML Ophthalmic Solution",
+        "ingredient": "moxifloxacin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "nitroglycerin 0.4 MG Sublingual Tablet": {
+        "code": "198039",
+        "display": "nitroglycerin 0.4 MG Sublingual Tablet",
+        "ingredient": "nitroglycerin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "prednisolone acetate 10 MG/ML Ophthalmic Suspension": {
+        "code": "1376336",
+        "display": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+        "ingredient": "prednisolone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Carcinoembryonic antigen": {
+        "code": "2039-6",
+        "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lithium": {
+        "code": "14334-7",
+        "display": "Lithium [Moles/volume] in Serum or Plasma",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Serum or Plasma": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Urine": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

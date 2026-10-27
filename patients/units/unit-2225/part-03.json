@@ -1,0 +1,771 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002225",
+   "events": [
+    {
+     "id": "2024-01-09a",
+     "kind": "office_visit",
+     "start": "2024-01-09T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "More frequent chest tightness",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "bp": [
+       132,
+       80
+      ],
+      "weight_kg": 75.0
+     },
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-01-09T11:15",
+       "text": "Sinus rhythm, rate 68. Normal axis. PR, QRS and QT intervals normal. No ST elevation or depression. No pathologic Q waves. No change from the prior tracing in the cardiology records.",
+       "conclusion": "Normal sinus rhythm. No ischemic changes."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-01-09T11:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2024-01-09T11:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2024",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "Increasing frequency of stable angina"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Angina",
+       "author": "PCP",
+       "date": "2024-01-09T11:45",
+       "body": "S: About 6 weeks of the chest tightness coming on more often - now with brisk walking on flat ground, not just the reservoir hill, 3-4 times a week. Same pressure feeling, eases within a few minutes of stopping. Never at rest, never woken him. No dyspnea at rest, no palpitations, no syncope. Belly much better with small meals, weight back up to 75.\n\nO: vitals charted. Heart regular, no murmur, no rub. Lungs clear. No edema.\nECG: NSR, no ST changes, no Q waves.\n\nA/P: stable angina occurring more often, no rest pain. Hasn't seen his cardiologist in over a year. Referral back to cardiology, they can see him next week. Reviewed ED precautions for pain at rest or lasting more than 15 minutes. Continue aspirin, statin, amlodipine, lisinopril."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-18a",
+     "kind": "specialist_visit",
+     "start": "2024-01-18T15:00",
+     "service": "Cardiology",
+     "reason": "Increasing angina",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2024",
+       "action": "done",
+       "date": "2024-01-18T15:00"
+      },
+      {
+       "id": "cath-2024",
+       "action": "placed",
+       "order": "Cardiac catheterization with coronary angiography",
+       "category": "procedure",
+       "reason": "Increasing stable angina"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up letter",
+       "author": "cardiology",
+       "date": "2024-01-24T09:20",
+       "body": "Outside cardiology - 01/18/2024\n\nMr. Graves returns after more than a year with exertional chest pressure that has become more frequent over the past two months, now with level walking. Symptoms resolve with rest in minutes. No rest angina.\n\nMeds: aspirin 81, atorvastatin 40, lisinopril 20, amlodipine 5, prednisone 10, tamsulosin 0.4.\nAllergies: NKDA.\n\nExam: BP and HR as recorded. Regular rhythm, no murmur. Lungs clear. Femoral and distal pulses intact.\n\nECG from your office 1/9 reviewed: sinus, no ischemic change.\n\nImpression: stable angina with increasing frequency on medical therapy. Given his vascular history I favor going straight to coronary angiography.\nPlan: outpatient cardiac catheterization, scheduled 2/2. Hold no medications other than the usual morning-of instructions.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-02a",
+     "kind": "procedure_visit",
+     "start": "2024-02-02T07:30",
+     "end": "2024-02-02T14:00",
+     "service": "Cardiology",
+     "reason": "Cardiac catheterization",
+     "orders": [
+      {
+       "id": "cath-2024",
+       "action": "done",
+       "date": "2024-02-02T09:00"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-05a",
+     "kind": "telephone",
+     "start": "2024-02-05T10:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pt update after cath",
+       "author": "RN",
+       "date": "2024-02-05T10:20",
+       "body": "Pt called to let us know he had his heart cath Friday, through the left groin. Was told the blockages are moderate and nothing needed a stent, stay on the same pills. Went home the same day. Groin a bit bruised. No cath report in chart; requested from cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-16a",
+     "kind": "specialist_visit",
+     "start": "2024-02-16T09:40",
+     "service": "Cardiology",
+     "reason": "Left groin pain and swelling after catheterization",
+     "conditions": [
+      {
+       "label": "Arteriovenous fistula, acquired",
+       "icd10": "I77.0",
+       "action": "diagnosed",
+       "onset": "2024-02-05",
+       "note": "Left common femoral artery to vein, after femoral catheterization; observation"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-02-16T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.5
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-16T10:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology visit - groin",
+       "author": "cardiology",
+       "date": "2024-02-28T16:05",
+       "body": "Outside cardiology - 02/16/2024\n\nSeen for left groin discomfort and swelling for two weeks, starting a few days after his 2/2 diagnostic catheterization through the left femoral artery. That study showed moderate nonobstructive coronary disease with no lesion needing intervention; medical therapy continues.\n\nHe has CAD on chronic prednisone for GCA. Pain is mild. No leg swelling, numbness or coolness.\n\nVitals within normal limits.\nExam: small tender mass at the left groin access site with a palpable thrill and a continuous bruit. Distal pulses intact. Rest of exam unremarkable.\n\nLabs: Hb 14.2, WBC 7.5, platelets 250, creatinine 1.0, BUN 18.\n\nArterial duplex of the left groin today: a small arteriovenous communication between the left common femoral artery and common femoral vein. No pseudoaneurysm. No hematoma of significance.\n\nImpression: post-catheterization left femoral arteriovenous fistula, small.\nPlan: observation, as many close on their own; repeat duplex with his vascular surgery surveillance. Return sooner for enlarging swelling, leg swelling or pain. Continue aspirin. Angina medical therapy unchanged.\n\nCardiology\ncc: vascular surgery"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside records review",
+       "author": "PCP",
+       "date": "2024-02-28T17:30",
+       "body": "Cardiology note reviewed. Cath 2/2: moderate nonobstructive CAD, medical therapy. Small L femoral AV fistula, observation. Problem list updated. The cath report itself was never sent; the summary in this letter will do."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-07a",
+     "kind": "hospital_admission",
+     "start": "2024-04-07T13:20",
+     "end": "2024-04-12T11:30",
+     "service": "Emergency Medicine",
+     "reason": "Malaise, abdominal pain, leg rash, visual disturbance",
+     "conditions": [
+      {
+       "label": "Cholesterol embolism",
+       "icd10": "I75.89",
+       "action": "diagnosed",
+       "onset": "2024-03-24",
+       "note": "Multisystem atheroembolism after femoral catheterization: skin, retina, kidneys"
+      },
+      {
+       "label": "Acute kidney injury",
+       "icd10": "N17.9",
+       "action": "diagnosed",
+       "onset": "2024-04-07",
+       "note": "Atheroembolic"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-04-07T13:30",
+       "bp": [
+        155,
+        90
+       ],
+       "hr": 88,
+       "rr": 16,
+       "temp_c": 37.0,
+       "spo2": 97
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-04-07T13:50",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.8
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 50
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-04-07T13:50",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 8.8
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 8
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-07T13:50",
+       "results": [
+        {
+         "test": "Eosinophils [#/volume] in Blood by Automated count",
+         "loinc": "711-2",
+         "unit": "10*3/uL",
+         "value": 0.7
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-07T13:50",
+       "results": [
+        {
+         "test": "C Reactive Protein",
+         "value": 15
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-04-07T14:30",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "text": "6-10"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-04-12T06:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.3
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 2.3
+      }
+     },
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2024-04-16T09:00",
+       "body": "REGIONAL MEDICAL CENTER - EMERGENCY DEPARTMENT\nArrival: 04/07/2024 13:20\n\nCC: two weeks of feeling unwell, belly pain, painful purple legs, vision episodes.\n\nHPI: 71 y/o man with GCA on prednisone, CAD, and a left groin AV fistula after a femoral cardiac catheterization 2/2. Over two weeks: progressive malaise, vague abdominal pain, a painful purplish discoloration of both legs, and several brief episodes of blurred or patchy vision in either eye lasting minutes. No headache, jaw claudication or scalp tenderness.\n\nMeds: aspirin, atorvastatin, lisinopril, amlodipine 5, prednisone 10, tamsulosin 0.4. NKDA.\n\nExam: BP 155/90. Diffuse blanching erythematous rash over both legs with livedo reticularis; several toes dusky/cyanotic, pulses palpable. Fundi: bright refractile plaques within retinal arterioles bilaterally. Abdomen soft, mild diffuse tenderness.\n\nLabs: creatinine 2.8 (baseline 1.2), BUN 50, CRP 15 mg/L, eosinophils 8% (absolute 700/uL), complement levels normal. UA: no protein; blood positive with 6-10 RBC/hpf.\n\nMDM: livedo, blue toes, retinal cholesterol plaques, eosinophilia and kidney injury weeks after an arterial catheterization - cholesterol embolization syndrome. CRP only modestly raised and no cranial symptoms; GCA flare thought unlikely.\n\nDisposition: admitted to medicine."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "hospitalist",
+       "date": "2024-04-16T09:00",
+       "body": "DISCHARGE SUMMARY\nAdmitted 04/07/2024  Discharged 04/12/2024\n\nPrincipal diagnosis: cholesterol embolization syndrome (skin, retina, kidney) after femoral cardiac catheterization.\nSecondary: acute kidney injury.\n\nCourse: supportive care. IV fluids, avoidance of further contrast and anticoagulants. Lisinopril held for the kidney injury. Aspirin and atorvastatin continued. Prednisone 10 mg continued unchanged; rheumatology was not consulted as there were no features of GCA activity. Creatinine peaked at 2.8 on arrival and was 2.3 on the morning of discharge with good urine output. Toe discoloration and leg pain improving. No further visual episodes.\n\nDischarge medications: aspirin 81 mg daily, atorvastatin 40 mg daily, amlodipine 5 mg daily, prednisone 10 mg daily, tamsulosin 0.4 mg nightly. HOLD lisinopril until PCP review of kidney function.\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week with BMP.\n\nHospital medicine"
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "outside_records",
+     "start": "2024-04-16T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hospital records received",
+       "author": "front desk",
+       "date": "2024-04-16T09:00",
+       "body": "ED record and discharge summary for 4/7-4/12 admission received. Pt has a post-hospital appointment Thursday 4/18. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-18a",
+     "kind": "office_visit",
+     "start": "2024-04-18T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up",
+     "vitals": {
+      "bp": [
+       146,
+       86
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "bp": [
+       146,
+       86
+      ],
+      "weight_kg": 74.0,
+      "labs": {
+       "Creatinine": 2.0
+      }
+     },
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held for acute kidney injury"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-04-18T10:45",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.0
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2024-04-18T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2024-04-18T11:05",
+       "body": "Hospital follow-up, 6 days after discharge for cholesterol embolization (rash, blue toes, retinal plaques, AKI) about 9 weeks after his femoral cath.\n\nFeels better, more energy. Leg discoloration fading. Toes less painful, color returning. No more vision episodes. Eating ok, urinating normally. Off lisinopril since admission as instructed.\n\nBP 146/86 off the lisinopril. Weight 74.\nSkin: faint residual livedo both shins, toes pink, no ulceration. Pedal pulses palpable.\nHeart regular. Lungs clear. No edema.\nBMP today: Cr 2.0 (2.3 at discharge, 2.8 peak).\n\nA/P\n1. Cholesterol embolism with AKI - improving. Keep lisinopril held; it comes off the active list for now. Continue aspirin and atorvastatin. Avoid NSAIDs and contrast where possible. BMP in 3 weeks.\n2. HTN - above goal off ACE inhibitor; accept for a few weeks while the kidneys settle, amlodipine 5 continues.\n3. GCA - no flare features.\nRTC 3 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-09a",
+     "kind": "office_visit",
+     "start": "2024-05-09T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Kidney function and BP follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 1.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-05-09T08:10",
+       "resulted": "2024-05-09T09:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.4
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-05-09T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-05-09T10:10",
+       "body": "Recheck after cholesterol emboli. Rash gone. Toes normal color, no pain. No vision symptoms.\nBP as charted, still a little high off lisinopril. Home 138-146/84-88.\nCr 1.4 this morning, down from 2.0.\nSkin clear, toes warm and pink.\n\nKidneys recovering. Will hold off on restarting lisinopril one more month. BMP in 4 weeks and visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-06a",
+     "kind": "office_visit",
+     "start": "2024-06-06T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BP and kidney follow-up",
+     "vitals": {
+      "bp": [
+       144,
+       88
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "bp": [
+       134,
+       80
+      ],
+      "labs": {
+       "Creatinine": 1.2,
+       "Potassium": 4.8
+      }
+     },
+     "conditions": [
+      {
+       "label": "Acute kidney injury",
+       "icd10": "N17.9",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension, CAD"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-06-06T08:20",
+       "resulted": "2024-06-06T11:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-06T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-06-06T14:35",
+       "body": "S: Feels like himself. No skin, toe or vision problems since April. Angina unchanged, occasional with brisk walking. Belly fine with small meals.\nO: BP 144/88. Heart regular. Lungs clear. Skin clear. No edema.\nCr 1.2 today - back to his on-lisinopril baseline.\n\nA/P\n1. AKI from cholesterol emboli - resolved.\n2. HTN above goal - restart lisinopril 20 mg daily. BMP in 2 weeks.\n3. AV fistula L groin - small, no symptoms; duplex with vascular in August.\n4. GCA - rheum letter from January 2023 never came; he says nothing changed then or since.\nRTC 3 months for AWV."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-20a",
+     "kind": "lab_only",
+     "start": "2024-06-20T08:30",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-06-20T08:30",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 4.9
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP on lisinopril",
+       "author": "PCP",
+       "date": "2024-06-20T15:40",
+       "body": "K 4.9, Cr 1.2 two weeks after restarting lisinopril. Acceptable. Continue."
+      },
+      {
+       "type": "Patient Communication",
+       "title": "Lab result",
+       "author": "RN",
+       "date": "2024-06-20T15:45",
+       "body": "Hi Mr. Graves, Dr. reviewed your labs - kidney function stable and potassium is fine. Keep taking the lisinopril."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-20a",
+     "kind": "specialist_visit",
+     "start": "2024-08-20T13:00",
+     "service": "Vascular Surgery",
+     "reason": "AAA surveillance",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2024-08-20T12:20",
+       "text": "Limited aortic and left groin duplex.\nAorta: infrarenal aneurysm, maximal anteroposterior diameter 4.9 cm (4.4 cm on CTA 08/2023). Proximal aorta and iliac arteries of normal caliber.\nLeft groin: small arteriovenous fistula between the common femoral artery and common femoral vein, unchanged in size. No pseudoaneurysm.",
+       "conclusion": "Infrarenal AAA 4.9 cm. Small left femoral AV fistula, unchanged."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Vascular surgery follow-up",
+       "author": "vascular surgery",
+       "date": "2024-09-03T10:30",
+       "body": "VASCULAR SURGERY - 08/20/2024\n\nAAA surveillance. He had cholesterol emboli in April after his femoral catheterization, now recovered. No abdominal or back pain.\n\nExam: abdomen soft, nontender. Left groin with a soft bruit, no mass. Pedal pulses palpable, toes warm and pink.\n\nDuplex today: infrarenal AAA 4.9 cm, up from 4.4 a year ago. Small left femoral AV fistula unchanged.\n\nPlan: aneurysm has grown 5 mm in a year; repeat imaging with CT angiography in 9 months to plan for repair if it reaches threshold. Fistula: continue observation. BP control.\n\nVascular Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-24a",
+     "kind": "annual_physical",
+     "start": "2024-09-24T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "bp": [
+       132,
+       78
+      ],
+      "weight_kg": 75.0
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-24T09:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-24T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-09-24T09:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-24T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "C Reactive Protein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-09-24T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-09-24T09:30",
+       "body": "AWV.\n\nA heavy year: cath in Feb, groin AV fistula, cholesterol emboli with kidney injury in April. Recovered. Back to walking, tutoring starts again next month.\nFunctional status independent. No falls. Recall/clock normal. PHQ-2 1.\nHCP on file.\n\nReviewed vascular letter: AAA 4.9 cm, CTA next spring. Fistula unchanged.\n\nExam: vitals charted. Heart regular, no murmur. Lungs clear. Abdomen soft. Soft bruit L groin. Toes warm.\n\nA/P\n- HTN at goal on lisinopril 20/amlodipine 5.\n- CAD stable on aspirin/atorvastatin.\n- AAA, fistula: vascular following.\n- Ischemic colitis: quiet.\n- GCA: pred 10 per rheum, markers today.\n- BPH: tamsulosin, good.\n- Vaccines: flu, updated COVID and RSV with nursing next month.\nLabs today. RTC 4-6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-15a",
+     "kind": "nurse_visit",
+     "start": "2024-10-15T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-15T10:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-15T10:07"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-10-15T10:09"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-15T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - Vaccines",
+       "author": "RN",
+       "date": "2024-10-15T10:30",
+       "body": "Three vaccines today per PCP plan, pt agreeable: high-dose trivalent flu L deltoid, 2024-25 Pfizer COVID R deltoid, RSV (single lifetime dose) L deltoid lower site. 15 min observation without reaction."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-21a",
+     "kind": "specialist_visit",
+     "start": "2024-11-21T11:00",
+     "service": "Rheumatology",
+     "reason": "Giant cell arteritis follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology letter",
+       "author": "rheumatology",
+       "date": "2024-12-02T14:20",
+       "body": "Rheumatology visit 11/21/2024\n\nGCA follow-up. Interval history notable for cholesterol embolization in April after a femoral cardiac catheterization, with transient visual episodes from retinal emboli, now resolved; not felt to be GCA. No headache, scalp tenderness, jaw claudication or girdle symptoms.\n\nExam: temporal arteries normal. No upper-extremity bruits. Full shoulder and hip range.\nSeptember ESR and CRP normal.\n\nAssessment: GCA quiescent.\nPlan: prednisone 10 mg daily. Follow-up 1 year.\n\nNKDA.\nRheumatology"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

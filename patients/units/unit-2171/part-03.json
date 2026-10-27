@@ -1,0 +1,214 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002171",
+      "events": [
+        {
+          "id": "2025-01-08a",
+          "kind": "portal_message",
+          "start": "2025-01-08T08:30",
+          "reason": "insurance update",
+          "documents": [
+            {"type": "Patient Message", "title": "New insurance card", "author": "patient", "date": "2025-01-08T08:30", "body": "Our plan changed for the new year, same PPO company but new member ID. Photo of the card attached. Also need atorvastatin sent to the mail order place under the new plan."},
+            {"type": "Patient Message", "title": "RE: New insurance card", "author": "front desk", "date": "2025-01-08T11:10", "body": "Updated your coverage with the new card. Atorvastatin 20 mg, 90-day supply, sent to the mail order pharmacy."}
+          ]
+        },
+        {
+          "id": "2025-03-21a",
+          "kind": "portal_message",
+          "start": "2025-03-21T18:45",
+          "reason": "low back pain",
+          "documents": [
+            {"type": "Patient Message", "title": "Back pain", "author": "patient", "date": "2025-03-21T18:45", "body": "My lower back has been aching for about a week. No fall or injury I can think of, maybe from lifting boxes at work. Tylenol helps a bit. Is this worth coming in for?"},
+            {"type": "Patient Message", "title": "RE: Back pain", "author": "RN", "date": "2025-03-22T09:15", "body": "Sorry your back is bothering you. Acetaminophen up to 1,000 mg three times a day is fine, plus heat and gentle walking. I booked you with the doctor Wednesday 4/2 at 3:40 to take a look. If you get leg weakness or numbness, trouble controlling your bladder or bowels, or fever, go to the emergency department rather than waiting."}
+          ]
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "ed_visit",
+          "start": "2025-04-01T11:10",
+          "end": "2025-04-01T19:40",
+          "service": "Emergency Medicine",
+          "reason": "progressive back pain, trouble walking, urinary incontinence",
+          "conditions": [
+            {"label": "Spinal metastasis with cord compression", "icd10": "C79.51", "action": "diagnosed", "onset": "2025-03-14", "note": "T8 mass compressing the thoracic cord; suspected prostate primary"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-01T11:45", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 7.8}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-04-01T11:45", "results": [{"test": "Calcium", "value": 9.6}, {"test": "Alkaline Phosphatase", "value": 120}, {"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2025-04-01T11:45", "results": [{"test": "Prostate Specific Antigen", "value": 9.8}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-04-01T11:10"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record (outside)", "author": "emergency medicine", "date": "2025-04-03T16:20", "body": "Regional hospital ED. Arrival 04/01/2025 11:10.\nPatient: Howard Nadeau, 59 M.\n\nCC: back pain and trouble walking.\nHPI: Two weeks of lower back pain getting steadily worse, now with difficulty walking. Describes pins-and-needles in both legs. Has leaked urine several times over the last few days without warning. Known prostate cancer (prostatectomy 2020, radiation, on leuprolide), remote Hodgkin lymphoma, and constrictive pericarditis.\nPMH/PSH: as above; pericardiectomy 2024; splenectomy; hip arthroscopy. HTN, HLD, osteopenia.\nMeds: leuprolide 7.5 mg IM q28 days, amlodipine 5 mg daily, atorvastatin 20 mg daily, calcium carbonate/vitamin D3 twice daily, aspirin 81 mg daily.\nAllergies: penicillin - rash; shellfish - anaphylaxis.\nFamily: father prostate cancer, mother breast cancer, maternal grandfather CAD.\nSocial: former smoker 20 pk-yr, quit 2017; 1-2 drinks/week; logistics coordinator.\n\nExam: vitals as charted, afebrile. Uncomfortable with movement. Lower extremities with increased tone; patellar and Achilles reflexes 3+ bilaterally; Babinski positive on the left, downgoing on the right.\n\nLabs: Hgb 13.2, WBC 7.8, platelets 250. Calcium 9.6. Alkaline phosphatase 120 (high). PSA 9.8 (high).\n\nMRI spine (urgent): mass at T8 compressing the thoracic spinal cord. See radiology report.\n\nED course: dexamethasone 10 mg IV given. Neurosurgery and oncology consulted in the department.\nImpression: metastatic spinal cord compression at T8, prostate cancer metastasis suspected.\nDisposition: admitted to neurosurgery."},
+            {"type": "Imaging Report", "title": "MRI thoracic and lumbar spine (outside)", "author": "radiology", "date": "2025-04-03T16:20", "body": "Regional hospital radiology. MRI thoracic and lumbar spine without and with contrast, 04/01/2025.\nIndication: back pain, myelopathic signs, history of prostate cancer.\nFindings: Enhancing mass centered in the T8 vertebral body and posterior elements with epidural extension, compressing the thoracic spinal cord at T8. No pathologic fracture with loss of height. Remaining thoracic and lumbar vertebrae with normal marrow signal. Conus normal in position and signal. Lumbar discs without significant stenosis.\nImpression: T8 osseous mass with epidural extension compressing the thoracic cord, most consistent with metastasis."}
+          ]
+        },
+        {
+          "id": "2025-04-01b",
+          "kind": "hospital_admission",
+          "start": "2025-04-01T19:40",
+          "end": "2025-04-09T12:30",
+          "service": "Neurosurgery",
+          "reason": "metastatic cord compression at T8",
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, #30", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "post-operative pain"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-04-03T06:00", "results": [{"test": "Testosterone, Total", "text": "<20 ng/dL"}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-04-02T14:00", "text": "Specimen: T8 epidural and posterior element tumor, resection. Microscopic: metastatic adenocarcinoma in bone and soft tissue, cribriform and glandular pattern. Immunohistochemistry: tumor cells positive for PSA and NKX3.1.", "conclusion": "Metastatic adenocarcinoma consistent with prostate primary."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-04-01T20:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-04-09T11:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary, neurosurgery (outside)", "author": "neurosurgery", "date": "2025-04-24T09:40", "body": "Regional hospital, neurosurgery service.\nAdmitted 04/01/2025 via ED. Discharged 04/09/2025.\nAllergies: penicillin (rash), shellfish (anaphylaxis).\n\nDiagnoses: metastatic prostate adenocarcinoma, castration-resistant, presenting with T8 spinal metastasis and cord compression.\n\nProcedure 04/02/2025: T8 decompressive laminectomy with resection of epidural tumor and posterior instrumented fusion T6-T10.\nPathology: metastatic adenocarcinoma, PSA and NKX3.1 positive, consistent with prostate primary.\nTestosterone <20 ng/dL on leuprolide, so disease is castration-resistant.\n\nCourse: dexamethasone started in the ED and tapered off before discharge. Leg sensation and strength improved after surgery; incontinence resolved by day 4, voiding normally. PT: walking with a single-point cane, stairs with rail. Oncology and radiation oncology saw him inpatient.\n\nDischarge medications: oxycodone-acetaminophen 5/325 one every 6 hours as needed (#30), acetaminophen as needed, amlodipine 5 mg, atorvastatin 20 mg, calcium/vitamin D, leuprolide per urology. Aspirin resumed post-op day 7.\n\nFollow-up: radiation oncology to start post-operative radiation to T8 in about 4 weeks; medical oncology for systemic therapy; neurosurgery wound check 2 weeks; PCP 2-3 weeks.\nDischarged home with home PT."}
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "office_visit",
+          "start": "2025-04-02T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "low back pain",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2025-04-02T08:20", "body": "Patient called from the hospital to cancel today's 3:40. He went to the ED yesterday for his back and was admitted; says they found something on his spine and he's having surgery. Message to PCP."}
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "telephone",
+          "start": "2025-04-14T10:15",
+          "reason": "post-discharge call, records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-hospital call", "author": "RN", "date": "2025-04-14T10:15", "body": "Called patient, home since 4/9. Walking with a cane around the house, home PT twice a week. Bladder working normally. Incision checked by neurosurgery's nurse, fine. Using the oxycodone mostly at night, acetaminophen days. No discharge paperwork has come to us. Records request faxed to the hospital's medical records office today for the discharge summary, operative note and pathology. Booked with PCP 4/29."}
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "office_visit",
+          "start": "2025-04-29T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after spine surgery",
+          "conditions": [
+            {"label": "Malignant neoplasm of prostate", "action": "diagnosed", "onset": "2020-08-01", "note": "now metastatic to T8, castration-resistant (testosterone <20 on leuprolide), pathology 04/2025"}
+          ],
+          "state": {"weight_kg": 82.0, "labs": {"Hemoglobin": 13.0}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 3}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2025-04-29T13:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2025-04-29T14:10", "body": "Seen after admission 4/1-4/9. Discharge summary and pathology came 4/24 after our request; reviewed.\n\nSummary: ED 4/1 with two weeks of worsening low back pain, leg tingling, trouble walking and urinary leakage; upper motor neuron signs; MRI showed a T8 mass compressing the cord. PSA 9.8 (undetectable through 2023; 0.2 last April). Underwent T8 decompression and T6-T10 fusion 4/2. Pathology metastatic prostate adenocarcinoma. Testosterone castrate, so castration-resistant.\nI wrote him back on 3/22 about a week of back pain with acetaminophen and a visit; he went to the ED the day before it.\n\nToday: back pain 3/10, sharper with standing long. Walking with cane outdoors, without it at home. Legs feel close to normal. No incontinence. Off oxycodone this week. Mood: scared but practical; asks good questions about what castration-resistant means.\nMeds: amlodipine 5, atorvastatin 20, aspirin 81, calcium/D, leuprolide (urology). Allergies PCN, shellfish.\n\nExam: vitals per flowsheet, weight 82 kg. Thoracic incision healed, no tenderness or drainage. Strength 5/5 in both legs. Gait steady with cane.\n\nA/P\n1. Metastatic castration-resistant prostate cancer with T8 cord compression, s/p decompression and fusion. Radiation to T8 starts 5/5 per discharge plan; medical oncology appointment pending, they will discuss systemic treatment. Updated problem list.\n2. Explained red-flag symptoms again: new weakness, numbness, bladder or bowel changes go straight to the ED.\n3. HTN fine. Continue meds.\nFollow-up in about 3 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "outside_records",
+          "start": "2025-05-19T15:00",
+          "reason": "radiation oncology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Radiation oncology completion letter", "author": "radiation oncology", "date": "2025-05-19T15:00", "body": "Outside radiation oncology. Treatment summary.\nPatient: Howard Nadeau.\nDiagnosis: metastatic castration-resistant prostate adenocarcinoma, T8 metastasis with cord compression, status post decompression and T6-T10 fusion 04/02/2025.\nTreatment: post-operative external beam radiation to T7-T9, 30 Gy in 10 fractions, 05/05/2025 to 05/16/2025.\nTolerance: mild fatigue, no interruptions.\nAllergies: penicillin, shellfish.\nPlan: medical oncology for systemic therapy. Follow-up here in 3 months."}
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "outside_records",
+          "start": "2025-05-27T11:30",
+          "reason": "PSMA PET report",
+          "documents": [
+            {"type": "Imaging Report", "title": "PSMA PET/CT report (outside)", "author": "radiology", "date": "2025-05-27T11:30", "body": "Outside imaging center. PSMA PET/CT, skull base to mid-thigh, 05/20/2025.\nIndication: metastatic castration-resistant prostate cancer, staging.\nFindings: PSMA-avid lesion at T8 at the site of recent surgery and radiation, with hardware T6-T10. No other PSMA-avid osseous lesion. Prostatectomy bed without avid recurrence. No avid pelvic, retroperitoneal or thoracic nodes. No visceral lesions.\nImpression: avid disease limited to the treated T8 site. No other sites of metastatic disease."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T13:40",
+          "reason": "pharmacy interaction query",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Specialty pharmacy call", "author": "RN", "date": "2025-06-17T13:40", "body": "Specialty pharmacy called to review his med list before shipping enzalutamide 160 mg daily (4 x 40 mg), prescribed by his oncologist. They had our list from 4/29. No interactions of concern with amlodipine or atorvastatin per their pharmacist. We had no oncology note about this; left message for patient to bring his current med list and have oncology send their consult."}
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "office_visit",
+          "start": "2025-07-23T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, medication update",
+          "medications": [
+            {"drug_text": "enzalutamide 40 MG Oral Capsule", "action": "historical", "sig": "Take 4 capsules (160 mg) by mouth daily, per oncology", "dose": {"value": 160, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "metastatic castration-resistant prostate cancer"},
+            {"drug_text": "1.7 ML denosumab 70 MG/ML Injection", "action": "historical", "sig": "120 mg subcutaneously every 4 weeks, given at oncology", "dose": {"value": 120, "unit": "mg"}, "frequency": "EVERY 4 WEEKS", "route": "Subcutaneous", "course": "chronic", "reason": "bone metastasis"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-07-23T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-23T10:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-23T09:40"},
+            {"procedure": "Venipuncture", "performed": "2025-07-23T10:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-07-23T10:25", "body": "Follow-up. Brought his med bottles.\n\nRadiation to T8 finished 5/16 (letter received). PSMA PET 5/20: only the treated T8 site. Oncology started him in June on enzalutamide 160 mg daily and denosumab 120 mg injections every 4 weeks at their infusion room; he's had two. We never received the oncology consult; the specialty pharmacy called us in June. Leuprolide continues at urology.\n\nFeels tired by mid-afternoon since enzalutamide, otherwise OK. Back ache 2/10, no leg symptoms, bladder and bowels normal. Walking without the cane now.\n\nExam: vitals per flowsheet. Incision well healed. Strength 5/5 legs. Gait normal.\n\nA/P\n1. mCRPC, T8 treated. Med list updated with enzalutamide and denosumab per patient and pharmacy. Records request to oncology. Calcium important on denosumab: continue calcium/D twice daily. CMP and CBC today.\n2. Fatigue likely enzalutamide; he'll raise it with oncology.\n3. HTN on amlodipine, fine today.\n4. Osteopenia: denosumab now covers bone protection.\nSee in 4 months for physical; flu/COVID in October."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T11:00",
+          "service": "Medical Oncology",
+          "reason": "oncology follow-up",
+          "labs": [
+            {"panel": null, "collected": "2025-08-19T10:30", "results": [{"test": "Prostate Specific Antigen", "value": 1.2}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology follow-up", "author": "medical oncology", "date": "2025-08-21T15:10", "body": "Outside medical oncology. Visit 08/19/2025.\nDiagnosis: metastatic castration-resistant prostate adenocarcinoma (Gleason 3+4 at prostatectomy 2020; adjuvant RT and ADT 2021); T8 metastasis with cord compression 04/2025, decompression and T6-T10 fusion, post-op RT 30 Gy/10 fx. PSMA PET 05/2025: T8 only.\nTreatment: leuprolide (urology), enzalutamide 160 mg daily since 06/2025, denosumab 120 mg SC q4 weeks since 06/2025.\nAllergies: penicillin (rash), shellfish (anaphylaxis).\nInterval: fatigue grade 1. No new pain. No falls.\nPSA 1.2 ng/mL today (9.8 at presentation).\nAssessment: good PSA response on enzalutamide.\nPlan: continue. PSA monthly with us; restaging if rising. Dental check reminder on denosumab. Next visit 3 months."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:10",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T16:16"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T16:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2025-10-07T16:25", "body": "Influenza and 2025-26 COVID given, one in each arm. Checked with oncology's nurse line first: OK to vaccinate on enzalutamide. Tolerated."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 81.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-11-18T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-11-18T09:05", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "25-hydroxy Vitamin D"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-11-18T08:20"},
+            {"procedure": "Venipuncture", "performed": "2025-11-18T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-11-18T09:10", "body": "Physical.\n\nInterval: oncology letter in August, PSA down to 1.2 on enzalutamide. Denosumab monthly at oncology. Leuprolide at urology. No back pain most days, no leg symptoms, bladder fine. Working full days again. Tired some afternoons. Flu and COVID done in October.\nMeds: enzalutamide 160, denosumab q4wk, leuprolide, amlodipine 5, atorvastatin 20, aspirin 81, calcium/D. Allergies PCN, shellfish; epi pen current.\nPHQ-9 4; says he is managing and talks things over at home.\n\nExam: vitals per flowsheet. Well appearing. Heart regular, no rub. Lungs clear. Abdomen soft. Spine incision healed. No edema. Strength and gait normal.\n\nA/P\n1. mCRPC per oncology, responding.\n2. HTN, hyperlipidemia stable on same doses. Lipids, TSH, vitamin D today; oncology checks his CMP and CBC.\n3. Annual lung screening CT: he'd rather skip it this year with everything else going on; revisit next year.\n4. Colonoscopy due 2029. Vaccines current.\nFollow-up in about 4 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

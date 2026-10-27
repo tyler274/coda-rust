@@ -1,0 +1,592 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001768",
+      "given": "Deborah",
+      "family": "Shapiro",
+      "birth_date": "1993-06-24",
+      "address_line": "58 Pomeroy Terrace, Apt 2",
+      "phone": "+1-347-555-0102",
+      "email": "deborah.shapiro@example.test",
+      "marital_status": "single",
+      "summary": "Elementary art teacher who joined in 2021 with undiagnosed bloody diarrhea; colonoscopy first called it ulcerative colitis, later revised to Crohn disease with a perianal fistula, treated with mesalamine, two prednisone courses and infliximab. Iron deficiency anemia and dietary B12 deficiency on a vegan diet, three bouts of erythema nodosum, and a 2025 admission for small bowel obstruction from a fibrotic ileal stricture managed without surgery.",
+      "events": [
+        {
+          "id": "2021-04-08a",
+          "kind": "telephone",
+          "start": "2021-04-08T11:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2021-04-08T11:20",
+              "body": "Caller is a 27 y/o woman looking for a new primary care home; her old office stopped taking her plan's tier. Teaches art at an elementary school, needs late-afternoon or school-vacation slots when possible. Main concern: blood in her stool on and off since around the holidays, with cramping and some weight loss. Denies passing out, vomiting blood or severe pain right now. Advised that if bleeding gets heavy, she gets lightheaded, or pain becomes severe she should go to the ED. Booked new patient visit April 20, 9:00. Sent the records release form to her email."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "establish_care",
+          "start": "2021-04-20T09:00",
+          "end": "2021-04-20T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; bloody diarrhea and weight loss",
+          "state": {
+            "weight_kg": 81.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 10.8,
+              "Mean Corpuscular Volume": 79,
+              "Albumin": 3.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school art teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-04-20T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-04-20T09:55",
+              "results": [
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2021",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Rectal bleeding with diarrhea and weight loss, about 4 months"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-04-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-04-20T09:50",
+              "body": "NEW PATIENT VISIT\n\nCC: establishing care; blood with bowel movements since about December.\n\nHPI: 27 y/o elementary art teacher. Roughly 4 months of loose stools, on bad days 4-5 a day, some nights she wakes to go. Bright red blood mixed in more often than not. Crampy lower belly pain before BMs that eases after. Her jeans are looser; she thinks she is down several pounds since fall without trying. No fevers she has measured. No travel, no antibiotics before this started, no one at home sick. She has not had a colonoscopy or seen GI. She switched to a fully vegan diet late last year and wondered at first if that was the cause.\n\nPMH: none. PSH: none. Meds: none, no supplements. Allergies: no known drug allergies.\nFamily: father has Crohn disease. Mother rheumatoid arthritis. Paternal aunt hypothyroid.\nSocial: lives alone in an apartment in town. Smoked about a pack a day for 10 years, quit in October, using no nicotine now. Drinks 1-2 a month. Vegan since late 2020.\n\nROS: + fatigue, mild. No chest pain, no syncope, no rash, no joint swelling, no urinary symptoms.\n\nExam: vitals as charted. Thin-appearing but well. Conjunctivae slightly pale. Mouth: no ulcers. Heart RRR, no murmur. Lungs clear. Abdomen soft, nondistended, no mass, no organomegaly. Rectal deferred to GI. Skin without rash. Joints without swelling.\n\nA/P:\n1. Chronic bloody diarrhea with weight loss in a 27 y/o with a father who has Crohn disease. Inflammatory bowel disease is the main concern. CBC, CMP today. Referral to GI placed as urgent; she knows to call or go in for heavy bleeding, fever or severe pain.\n2. Possible anemia (pale conjunctivae) - CBC today. Iron studies once GI has seen her.\n3. Former smoker, 10 pack-years, quit 6 months ago. Congratulated. No cessation aids needed.\n4. Health maintenance: requesting old records (Pap, vaccines). PHQ-2 1.\n\nRTC after GI visit, about 2-3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-21a",
+          "kind": "portal_message",
+          "start": "2021-04-21T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2021-04-21T16:40",
+              "body": "Hi Deborah, your blood count shows anemia. With the bleeding you described, that fits with blood loss, and it is one more reason to get you in with GI soon. Your kidney and liver tests look fine; albumin is at the low end of normal. Once GI has seen you we will check your iron levels at a follow-up here. GI's office should call you this week; let us know if you have not heard by Monday."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "outside_records",
+          "start": "2021-05-04T10:15",
+          "reason": "Prior practice records",
+          "immunizations": [
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-09-10T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-11-13T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-03-18T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2016-08-22T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-13T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-06T09:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2019-07-16T10:00",
+              "text": "Specimen adequate for evaluation; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "MA",
+              "date": "2021-05-04T10:15",
+              "body": "Received 14 pages from her previous primary care office. Abstracted:\n- Pap July 2019: negative (NILM).\n- HPV vaccine series x3 completed 2007-2008.\n- Tdap August 2016.\n- COVID vaccine (Pfizer) 2/13/21 and 3/6/21, given at the school district's staff clinic; card copy included.\n- Problem list at that office: none. Meds: none. NKDA.\nEntered into immunization record. Original pages scanned under Media."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-03a",
+          "kind": "specialist_visit",
+          "start": "2021-06-03T08:00",
+          "end": "2021-06-03T11:30",
+          "service": "Gastroenterology",
+          "reason": "Bloody diarrhea, abdominal pain, weight loss",
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.2,
+              "Albumin": 3.2,
+              "Mean Corpuscular Volume": 78,
+              "Red Cell Distribution Width": 15.2
+            }
+          },
+          "conditions": [
+            {
+              "label": "Ulcerative colitis",
+              "action": "diagnosed",
+              "onset": "2021-06-03",
+              "note": "Rectum to splenic flexure, with pseudopolyps"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "mesalamine 800 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Ulcerative colitis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-03T08:10",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-27T14:00",
+              "results": [
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-27T14:00",
+              "results": [
+                {
+                  "test": "C. difficile toxin A and B",
+                  "loinc": "34713-8",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2021-06-03T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2021",
+              "action": "done",
+              "date": "2021-06-03T08:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Colonoscopy",
+              "loinc": "18746-8",
+              "performed": "2021-06-03T10:20",
+              "text": "Indication: hematochezia, diarrhea, weight loss. Moderate sedation. Prep good. Scope advanced to the cecum; terminal ileum intubated and normal over the examined length. From the rectum proximally to the splenic flexure the mucosa is continuously inflamed: erythema, loss of vascular pattern, friability and scattered ulcerations, with several swollen pseudopolyps. The colon proximal to the splenic flexure is normal. Biopsies taken from the involved segments and from the right colon.",
+              "conclusion": "Continuous colitis from the rectum to the splenic flexure with pseudopolyps, consistent with ulcerative colitis. Biopsies pending."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-06-03T10:20",
+              "issued": "2021-06-08T15:00",
+              "text": "A. Rectum and sigmoid, biopsies: colonic mucosa with chronic active inflammation, crypt distortion and crypt abscesses; the inflammation is confined to the mucosa and submucosa. No granulomas. No dysplasia.\nB. Descending colon, biopsies: similar changes.\nC. Right colon, biopsies: colonic mucosa without significant abnormality.",
+              "conclusion": "Chronic colitis limited to mucosa and submucosa, distal colon; right colon unremarkable. No dysplasia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation and colonoscopy",
+              "author": "gastroenterology",
+              "date": "2021-06-11T09:00",
+              "body": "OUTSIDE GASTROENTEROLOGY - CONSULTATION\nDate of service: 06/03/2021\nReferred by: primary care\n\nThank you for sending Ms. Shapiro, 27, for evaluation of rectal bleeding.\n\nShe describes about six months of intermittent bloody diarrhea with crampy abdominal pain and weight loss. At worst she has six bowel movements a day and is getting up at night to go. No fevers. No prior GI evaluation. Recent stool culture and C. diff toxin, sent by our office the week before, were negative.\n\nPMH: none prior to this. Meds: none. Allergies: NKDA.\nFH: father with Crohn disease; mother RA.\nSH: former smoker (1 ppd x 10 years, quit 10/2020). Rare alcohol. Teacher.\n\nExam: well-appearing. Abdomen soft, mild tenderness in the left lower quadrant, no rebound, no guarding. No perianal disease.\n\nLabs today: Hgb 10.2, ESR 45, CRP 25 mg/L, albumin 3.2.\n\nColonoscopy (same day): continuous inflammation with ulceration from the rectum to the splenic flexure, pseudopolyps, normal proximal colon and terminal ileum. Pathology (resulted 6/8): chronic colitis confined to the mucosa and submucosa, no granulomas.\n\nImpression: ulcerative colitis, left-sided. Anemia, likely blood loss plus inflammation.\n\nPlan:\n- Mesalamine DR 800 mg PO three times daily; prescription sent.\n- Expect improvement over 4-8 weeks; call for worsening bleeding, fever or more than 8 stools a day.\n- Anemia: suggest iron studies with her PCP once the colitis settles.\n- Follow up with us in about 6 months, sooner as needed.\n\nAllergies: NKDA.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-11b",
+          "kind": "telephone",
+          "start": "2021-06-11T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI consult received",
+              "author": "MA",
+              "date": "2021-06-11T15:20",
+              "body": "GI consult letter, colonoscopy and pathology for 6/3 received by fax and routed to PCP. PCP reviewed: ulcerative colitis, on mesalamine from GI; add to problem list; anemia follow-up visit here in August as planned. Pt notified that we have the records."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "portal_message",
+          "start": "2021-06-14T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about new medication",
+              "author": "patient",
+              "date": "2021-06-14T19:05",
+              "body": "Hi, GI started me on mesalamine three times a day. School is out in a couple weeks but right now the midday dose is hard because I'm in the classroom straight through lunch some days. Is it OK to take it at like 7, 3 and 10 instead of with meals? Also is it vegan? Sorry, weird question. Thanks, Deborah"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about new medication",
+              "author": "PCP",
+              "date": "2021-06-15T12:30",
+              "body": "Not a weird question at all. Spacing it 7 am, 3 pm and bedtime is fine; the tablets can be taken with or without food, just swallow them whole. The inactive ingredients vary by manufacturer - your pharmacist can check the brand they stock. If GI wants a different schedule they will tell you, but this works. Glad you got in to see them."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "office_visit",
+          "start": "2021-08-17T15:40",
+          "appointment": "no-show",
+          "reason": "Follow-up anemia, colitis"
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "portal_message",
+          "start": "2021-08-19T10:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2021-08-19T10:10",
+              "body": "Hi Deborah, we missed you at your follow-up on Tuesday afternoon. Please call or reply here to reschedule; the doctor would like to recheck your blood count and iron. Patient replied same day: so sorry, teacher setup week, totally forgot. Will call once the school year settles."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:00",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T16:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2021-10-12T16:10",
+              "body": "Walk-in for seasonal flu vaccine. No fever today, no prior reactions. Quadrivalent flu given IM left deltoid, lot recorded. VIS given. Tolerated well. Reminded her she is overdue for her anemia follow-up; she says she feels more tired lately and will book this week."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-22a",
+          "kind": "office_visit",
+          "start": "2021-11-22T15:30",
+          "end": "2021-11-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, shortness of breath on exertion, dizziness",
+          "state": {
+            "weight_kg": 78.6,
+            "labs": {
+              "Hemoglobin": 9.2,
+              "Mean Corpuscular Volume": 74,
+              "Iron": 30,
+              "Total Iron-Binding Capacity": 600,
+              "Ferritin": 8,
+              "Vitamin B12": 268,
+              "Folate": 11.4,
+              "Red Cell Distribution Width": 16.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2021-11-22"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (65 mg elemental iron) by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 600
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Vitamin B12"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-22T08:20",
+              "resulted": "2021-11-22T13:10",
+              "results": [
+                {
+                  "test": "Folate"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-22T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-22T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-22T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-11-22T16:10",
+              "body": "S: Back for the overdue anemia visit. For about 2 months she has been wiped out by the end of the school day, short of breath climbing the two flights to her classroom, and gets dizzy standing up from the floor after working with the kids. No chest pain, no fainting. Bowels: much better since GI started mesalamine in June, 1-2 formed BMs most days, rare streak of blood. Still strictly vegan, now about a year, and takes no vitamins or supplements. Periods regular, not heavy.\n\nMeds: mesalamine DR 800 mg TID (GI). NKDA.\n\nO: Vitals as charted, weight down a bit from April. Pale skin and pale conjunctivae. Heart: regular, soft systolic murmur at the left sternal border, not heard in April. Lungs clear. Abdomen soft, nontender. No edema.\n\nLabs drawn this morning (resulted at 1 pm): Hgb 9.2, MCV 74. Iron 30, TIBC 600, ferritin 8. B12 in range, toward the low end. Folate normal.\n\nA/P:\n1. Iron deficiency anemia, microcytic - from colitis blood loss plus a vegan diet with little absorbable iron. Start ferrous sulfate 325 mg (65 mg elemental) once daily. No need to separate it from the mesalamine; keep it away from tea/coffee and with vitamin C if she can. Recheck CBC and ferritin in 2 months. Discussed IV iron if she cannot tolerate pills or does not respond.\n2. Systolic murmur - soft, flow-type with Hgb of 9; listen again once the anemia corrects.\n3. Ulcerative colitis - improved on mesalamine, followed by GI.\n4. Vegan diet - B12 low-normal; talked about a B12 source. Recheck at her physical.\n5. COVID booster given today.\n\nRTC 2 months. ED if chest pain, fainting or heavy bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "telephone",
+          "start": "2021-11-23T13:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Iron teaching call",
+              "author": "RN",
+              "date": "2021-11-23T13:45",
+              "body": "Called pt per PCP to review iron. Take 1 tab daily, ideally on an empty stomach or with a small amount of food if it upsets her stomach; avoid taking with coffee or tea; stools may turn dark green or black from the iron, which is expected - but red blood or tarry, sticky stools with dizziness should be reported. Constipation is common; increase fluids. She picked it up last night. Questions answered. Lab recheck to be scheduled for late January."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "portal_message",
+          "start": "2021-12-20T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron question",
+              "author": "patient",
+              "date": "2021-12-20T20:30",
+              "body": "Hi Doctor, quick question. I've been taking the iron every morning with orange juice like the nurse said. My stomach is a little crampy for an hour after but it passes. Is it OK to switch to night? I'm on break now and noticing it more. Also feeling less dizzy on the stairs already!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron question",
+              "author": "PCP",
+              "date": "2021-12-21T08:15",
+              "body": "Yes, bedtime is fine, and taking it with a small snack is OK if the cramping bothers you. Great to hear the stairs are easier. See you in late January with labs."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

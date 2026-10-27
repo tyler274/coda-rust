@@ -1,0 +1,184 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002005",
+      "events": [
+        {
+          "id": "2023-02-14a",
+          "kind": "office_visit",
+          "start": "2023-02-14T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up; heart risk",
+          "state": {"labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-02-14T08:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-14T08:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "orders": [
+            {"id": "cardiology-referral", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Cardiovascular risk assessment; diabetes, hypertension, hyperlipidemia, father with MI at 58"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-14T07:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2023-02-14T08:30", "body": "S: 57 y/o here for diabetes/BP recheck. Feels ok. Has been thinking about his father's heart attack now that he is close to that age. He'd like to know where he really stands and what else he can be doing. No chest pain, pressure, exertional SOB, palpitations or leg pain. Meds reviewed, no changes reported.\nO: BP per vitals. Heart RRR without murmur, lungs clear, no carotid bruits, no edema. Feet ok.\nA/P:\n1. CV risk: diabetes, HTN, mixed lipids, former smoker, early family hx. Discussed BP, lipid and glucose targets and activity. He would like a cardiologist's opinion; reasonable. Referral placed to cardiology for risk stratification.\n2. T2DM: A1c and BMP today.\n3. HTN: continue lisinopril.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "portal_message",
+          "start": "2023-02-16T14:20",
+          "documents": [
+            {"type": "Patient Message", "title": "A1c result", "author": "PCP", "date": "2023-02-16T14:20", "body": "Your A1c came up a little since the fall. Still close to goal. Worth paying attention to carbs and getting some walking in. Kidney numbers fine. Cardiology should be calling you to schedule."},
+            {"type": "Patient Message", "title": "RE: A1c result", "author": "patient", "date": "2023-02-16T18:31", "body": "Got it. They called, I'm booked for April 21."}
+          ]
+        },
+        {
+          "id": "2023-04-21a",
+          "kind": "specialist_visit",
+          "start": "2023-04-21T10:30",
+          "service": "Cardiology",
+          "reason": "Cardiovascular risk stratification",
+          "labs": [
+            {"panel": null, "collected": "2023-04-21T11:15", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
+            {"panel": null, "collected": "2023-04-21T11:15", "results": [{"test": "Fasting Glucose", "value": 154}]},
+            {"panel": "Lipid Panel", "collected": "2023-04-21T11:15", "results": [{"test": "Total Cholesterol", "value": 220}, {"test": "High Density Lipoprotein", "value": 35}, {"test": "Low Density Lipoprotein", "value": 145}, {"test": "Triglycerides", "value": 200}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-21T11:15", "results": [{"test": "Creatinine", "value": 1.0}]},
+            {"panel": null, "collected": "2023-04-21T11:15", "results": [{"test": "Microalbumin/Creatinine Ratio", "value": 250}]}
+          ],
+          "orders": [
+            {"id": "cardiology-referral", "action": "done", "date": "2023-04-21T10:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology consultation", "author": "cardiology", "date": "2023-06-20T15:10", "body": "OUTPATIENT CARDIOLOGY CONSULTATION\nDate of service: 04/21/2023\nReferring: primary care\nReason: cardiovascular risk stratification\n\nMr. Coleman is a 57-year-old man with hypertension, type 2 diabetes and mixed hyperlipidemia who comes after diet and statin counseling with his primary physician. His concern is his own chance of heart disease and what more he can do about it.\n\nHe takes his metformin and lisinopril reliably. On direct questioning he admits he quit the atorvastatin about three months ago; he had been uneasy about it since reading about side effects and simply did not refill it after the new year. No muscle symptoms when he was on it.\n\nROS: Denies chest pain or pressure, dyspnea, or any change in his vision.\nPMH: HTN, T2DM, mixed hyperlipidemia, recurrent diverticulitis, hyperzincemia.\nPSH: none abdominal.\nMedications on our list: lisinopril 20 mg daily, metformin 1000 mg twice daily, atorvastatin 40 mg daily (not taking, see above).\nAllergies: NKDA.\nFamily: father MI at 58; mother type 2 diabetes; brother hypertension.\nSocial: former smoker, quit about 7 years ago. One glass of red wine with dinner. Supervisor with the postal service.\n\nExamination: unremarkable cardiovascular and general exam.\n\nLaboratory today: hemoglobin A1c 7.2%, fasting glucose 154 mg/dL, total cholesterol 220, HDL 35, LDL 145, triglycerides 200 mg/dL, creatinine 1.0 mg/dL, urine albumin/creatinine ratio 250 mg/g.\n\nImpression: High lifetime cardiovascular risk from diabetes, hypertension, atherogenic dyslipidemia and premature paternal coronary disease, with no symptoms to suggest coronary disease today. The jump in LDL from 100 to 145 fits stopping his statin.\n\nRecommendations:\n1. Restart atorvastatin 40 mg daily. We spent most of the visit on why; he agreed.\n2. Continue lisinopril and metformin.\n3. Mediterranean-style diet, 150 minutes of moderate activity weekly.\n4. Cardiology follow-up in one year with repeat lipids.\n\nThank you for this referral.\nOutpatient cardiology"}
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "telephone",
+          "start": "2023-05-30T14:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request: cardiology", "author": "MA", "date": "2023-05-30T14:40", "body": "No consult note yet from cardiology for the 4/21 visit. Called their office, request faxed with release."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request: cardiology, second attempt", "author": "MA", "date": "2023-06-13T10:05", "body": "Still nothing from cardiology. Spoke with their records desk, they had the earlier fax but note was unsigned. Will send once signed."}
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "portal_message",
+          "start": "2023-06-21T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your cardiology visit", "author": "PCP", "date": "2023-06-21T12:40", "body": "Hi Mr. Coleman, the cardiology note finally reached me. I see you had stopped the atorvastatin over the winter and agreed to restart it. That explains your LDL going up to 145. Are you back on it? If you need a new prescription I can send one today."},
+            {"type": "Patient Message", "title": "RE: Your cardiology visit", "author": "patient", "date": "2023-06-21T17:58", "body": "Yes, I started again after I saw him. Sorry I didn't say anything in February, I figured I'd try going without. I'm low on pills, please send."},
+            {"type": "Patient Message", "title": "RE: Your cardiology visit", "author": "PCP", "date": "2023-06-22T08:15", "body": "No apology needed, thanks for telling me. Sent atorvastatin 40 mg, 90 days with refills."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T11:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry letter", "author": "optometry", "date": "2023-08-29T11:00", "body": "Annual diabetic eye exam, seen 08/22/2023.\nBest corrected VA 20/20 OU. IOP normal OU. Dilated fundus exam: no diabetic retinopathy, no macular edema, both eyes.\nReturn in 1 year. NKDA."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {"bp": [134, 86]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-10-17T08:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2023-10-17T08:35", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-17T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T08:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T08:41"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-10-17T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical Exam", "author": "PCP", "date": "2023-10-17T08:55", "body": "57M yearly exam.\nBack on atorvastatin since April, taking it daily, no aches. Saw cardiology in April, next visit with them in the spring with lipids. Eye exam done in August, clear. One glass of wine at dinner. No abdominal pain.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily, metformin 1000 mg BID. NKDA.\nROS otherwise negative.\nExam: vitals as charted. Pleasant, no distress. Oropharynx clear. Thyroid normal. Heart regular rate and rhythm. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Legs no edema. Foot exam: intact skin, normal monofilament, good pulses. Neuro nonfocal.\nPHQ-2 0.\nAssessment/plan:\n1. T2DM: A1c with today's draw.\n2. HTN: stable on lisinopril.\n3. Mixed HLD: back on statin; cardiology repeating lipids in spring, will not duplicate today.\n4. Preventive: flu and 2023-24 COVID vaccines today. PSA next year. Colonoscopy due 2027.\nReturn in March for diabetes."}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "portal_message",
+          "start": "2023-10-19T16:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-10-19T16:30", "body": "A1c about the same as February. Kidneys, liver and blood count all normal. See you in March."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "telephone",
+          "start": "2024-03-13T09:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-03-13T09:25", "body": "Pt missed 3/12 8am. LVM to reschedule. Portal reminder also sent."}
+          ]
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "specialist_visit",
+          "start": "2024-04-15T14:00",
+          "service": "Cardiology",
+          "reason": "Cardiology follow-up; question about a lipid-lowering trial",
+          "vitals": {"bp": [132, 84], "hr": 78},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-04-15T14:40", "results": [{"test": "Total Cholesterol", "value": 190}, {"test": "High Density Lipoprotein", "value": 45}, {"test": "Low Density Lipoprotein", "value": 100}, {"test": "Triglycerides", "value": 225}]},
+            {"panel": null, "collected": "2024-04-15T14:40", "results": [{"test": "Fasting Glucose", "value": 98}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up", "author": "cardiology", "date": "2024-04-23T10:20", "body": "CARDIOLOGY CLINIC FOLLOW-UP\nVisit date: 04/15/2024\n\nSeen again for ongoing management of cardiovascular risk factors; last here a year ago for risk stratification and his mixed hyperlipidemia. No cardiac symptoms. He reports taking all his medicines, including atorvastatin, every day.\n\nHe brought a question: he heard about a clinical trial enrolling high-risk patients that compares a new cholesterol-lowering drug with placebo and counts heart attacks. He wants our opinion on whether to sign up.\n\nCurrent medications: lisinopril 20 mg daily, atorvastatin 40 mg daily, metformin 1000 mg twice daily.\nAllergies: NKDA.\nFamily history: coronary disease in his father.\nSocial: nonsmoker, social alcohol.\n\nBP 132/84, HR 78. Examination unremarkable.\nFasting labs: total cholesterol 190, HDL 45, LDL 100, triglycerides 225, glucose 98 mg/dL.\n\nAssessment: Primary prevention in a high-risk patient, LDL back to 100 on atorvastatin.\nTrial discussion: explained that he would be randomly assigned to the study drug or a placebo and neither he nor we would know which, that he would stay on his atorvastatin either way, that the drug's benefit and side effects are what the trial is testing, and that participation means extra visits and blood work. Participation is voluntary and he can leave at any time. He has the coordinator's contact information and will think it over. The decision is his.\n\nPlan: continue current regimen; follow up in one year.\nCardiology clinic"}
+          ]
+        },
+        {
+          "id": "2024-09-06a",
+          "kind": "annual_physical",
+          "start": "2024-09-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 7.0, "Low Density Lipoprotein": 98, "Triglycerides": 210, "High Density Lipoprotein": 44, "Prostate Specific Antigen": 1.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-06T08:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-06T08:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-06T08:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-06T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-09-06T08:30", "results": [{"test": "Prostate Specific Antigen"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-06T08:40"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-06T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical Exam", "author": "PCP", "date": "2024-09-06T08:55", "body": "58 y/o man, annual exam. Missed his March appointment, work schedule.\nSaw cardiology in April; their letter reviewed. LDL 100 on atorvastatin. They talked with him about a lipid drug trial; he has not signed up and isn't planning to right now.\nNo chest pain, dyspnea, abdominal pain or bowel change. No diverticulitis flares since 2017. No eye exam yet this year.\nMeds: lisinopril 20 daily, atorvastatin 40 daily, metformin 1000 twice daily. Reports taking all of them. NKDA.\nSocial: former smoker. Wine with dinner, one glass.\nExam: weight and BP in vitals. Comfortable. HEENT benign. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. No edema. Diabetic foot exam normal: skin intact, monofilament felt at all sites, pulses palpable.\nPHQ-2 0.\nA/P:\n- T2DM: fasting labs today, continue metformin. Book eye exam.\n- HTN: controlled, continue lisinopril.\n- Mixed hyperlipidemia: continue atorvastatin 40, lipids today.\n- HM: flu vaccine today. Updated COVID shot when the new one is at his pharmacy. PSA today. Colonoscopy 2027.\nReturn in 6 months for diabetes."}
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "portal_message",
+          "start": "2024-09-09T13:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from Friday", "author": "PCP", "date": "2024-09-09T13:10", "body": "Hi Mr. Coleman, everything from Friday is back. A1c holding steady. LDL right around 100 on the atorvastatin. Kidney and liver tests normal, blood count normal, PSA normal. Please book your diabetes visit for March on your way out of the portal."}
+          ]
+        }
+      ]
+    }
+  ]
+}

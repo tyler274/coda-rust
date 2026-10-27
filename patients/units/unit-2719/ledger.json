@@ -1,0 +1,4342 @@
+{
+  "unit": "unit-2719",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002719",
+      "given": "Melissa",
+      "family": "Marsh",
+      "birth_date": "1972-01-11",
+      "address_line": "88 High St",
+      "phone": "+1-860-555-0185",
+      "email": "melissa.marsh@example.test",
+      "marital_status": "single",
+      "summary": "Administrative assistant with hypertension who joined in 2018, then developed major depression (sertraline), recurrent right trigeminal neuralgia (carbamazepine) and a toxic right thyroid nodule treated with I-131. After her last practice visit in October 2025 she was diagnosed with left inflammatory breast carcinoma, HER2-positive, and the chart ends during post-mastectomy radiation.",
+      "events": [
+        {
+          "id": "2018-05-22a",
+          "kind": "establish_care",
+          "start": "2018-05-22T09:00",
+          "end": "2018-05-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "note": "carried from prior practice, on lisinopril"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1998-01-01",
+              "note": "about a pack a week for 20 years"
+            },
+            {
+              "label": "Family history of breast cancer",
+              "action": "diagnosed",
+              "note": "maternal aunt at 54"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 70.0,
+            "height_cm": 163.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-05-22T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-05-22T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-05-22T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-05-22T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2018-05-22T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2018",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2018-05-22T11:30",
+              "author": "PCP",
+              "body": "46F joining us after her old office stopped taking her plan. Works as an administrative assistant at an insurance agency office in town, sits most of the day.\n\nHTN for several years per her, on lisinopril 10 daily, no side effects, home cuff readings in the 120s. No other chronic problems. No surgeries. NKDA.\n\nFHx: mom with high blood pressure, maternal aunt had breast cancer at 54, sister treated for depression.\nSHx: smokes roughly a pack a week, has for about 20 years. Says she really wants to stop and has tried cutting down on her own. Drinks once or twice a month at most. Single, lives alone.\n\nROS negative.\n\nExam: well appearing. BP and vitals as charted. Thyroid not enlarged, no nodules felt. Heart RRR without murmur, lungs clear. Breasts symmetric without masses, no axillary nodes. Abdomen soft. No edema. Skin clear.\n\nA/P\n1. Essential HTN, controlled on lisinopril 10. Continue. BMP today.\n2. Tobacco: about 3 pack-years. Talked through quit options including patch or medication; she wants to try a quit date first, will let me know. Not in range for lung screening.\n3. Health maintenance: CBC, CMP, fasting lipids, one-time hep C and HIV screen today. Signed release for the old office so we get her last mammogram and Pap. Mammogram due in the fall. Colon screening discussed, she wants to wait a bit.\nPHQ-2 negative.\nRTC 6 months, sooner as needed."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2018-05-24T16:40",
+              "author": "PCP",
+              "body": "Labs reviewed. Blood counts, kidney and liver panel, cholesterol all normal. Hep C and HIV negative. Portal message sent."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              80
+            ],
+            "weight_kg": 70.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Low Density Lipoprotein": 92
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2018-06-05a",
+          "kind": "outside_records",
+          "start": "2018-06-05T10:00",
+          "reason": "Records from prior primary care office",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-04-12T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2018",
+              "action": "done",
+              "date": "2018-06-05T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2018-06-05T10:00",
+              "author": "front desk",
+              "body": "Records received from patient's former primary care office (14 pages). Summary for chart:\n- Screening mammogram 11/2017: negative, BI-RADS 1.\n- Pap with HPV co-test 2017: NILM, HPV negative.\n- Tdap 04/2016.\n- Hypertension managed with lisinopril 10 mg for several years. No other active problems listed.\n- Allergies: none.\nOriginals scanned to media tab."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "vitals": {
+            "bp": [
+              135,
+              77
+            ]
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-16T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-10-16T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2018-10-16T08:30",
+              "author": "RN",
+              "body": "In before work for her flu shot. No egg allergy, no prior reaction. Quadrivalent given IM left deltoid, lot logged. VIS provided. Waited 15 min without issue. Reminded her the screening mammogram order is in; she will call the imaging center to schedule."
+            }
+          ],
+          "measure": [
+            "bp"
+          ]
+        },
+        {
+          "id": "2018-11-13a",
+          "kind": "imaging",
+          "start": "2018-11-13T07:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2018-11-13T07:40",
+              "text": "Bilateral CC and MLO views with tomosynthesis. Compared with prior study from 2017. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcification in either breast. Skin and nipples unremarkable.",
+              "conclusion": "Negative. BI-RADS 1. Routine annual screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2018-11-14T12:05",
+              "author": "PCP",
+              "body": "Screening mammogram negative, BI-RADS 1. Dense tissue letter sent by the imaging center. Annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2019-01-08a",
+          "kind": "office_visit",
+          "start": "2019-01-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low mood, tired all the time",
+          "vitals": {
+            "bp": [
+              117,
+              82
+            ],
+            "hr": 64,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 76.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-01-08T16:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 17
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-01-08T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2019",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "depressed mood, 6 months"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-01-08T17:10",
+              "author": "PCP",
+              "body": "Booked this herself after the holidays. For about six months she has felt flat and heavy, hard to get going, nothing feels worth the effort. Sleeping as much as 12 hours on weekends and still tired. Up about 15 lb since summer per our scale and hers. Cannot point to anything that changed: same job, same apartment, nothing happened. Still getting to work but describes it as going through the motions. No SI, no plan, no prior episodes. Sister has been treated for depression. No alcohol increase.\n\nExam: flat affect, good eye contact, linear. Thyroid normal size, no nodule. Heart and lungs normal. No edema.\n\nPHQ-9 17. GAD-7 6.\n\nA/P\nDepressed mood with hypersomnia and weight gain, 6 months, moderately severe by PHQ-9. Checking TSH and fasting glucose today to rule out the obvious medical causes. She would like to see psychiatry before starting anything; referral placed, marked soon. Crisis line info given and she knows to call me same day if mood dips further.\nHTN: BP fine today, continue lisinopril.\nSmoking: still at a pack a week; not the right moment for a quit attempt, will revisit."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2019-01-09T13:20",
+              "author": "PCP",
+              "body": "TSH normal. Fasting glucose 98. Nothing medical showing up to explain the fatigue. Psychiatry intake is Jan 25. Message sent to pt."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.8,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2019-01-25a",
+          "kind": "specialist_visit",
+          "start": "2019-01-25T10:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric evaluation, depressed mood",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, single episode, moderate",
+              "action": "diagnosed",
+              "onset": "2018-07-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2019-01-25T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2019",
+              "action": "done",
+              "date": "2019-01-25T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Consultation",
+              "date": "2019-01-30T09:00",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP - CONSULTATION LETTER\nVisit 01/25/2019. Thank you for referring Ms. Marsh, 47.\n\nPresenting problem: half a year of sadness, low energy and poor drive that has steadily deepened. She now sleeps up to twelve hours a day and has put on roughly fifteen pounds. She denies any precipitating event or change at home or work.\n\nMedical: hypertension, controlled on lisinopril 10 mg daily. No drug allergies.\nFamily: sister with major depression; mother hypertension; maternal aunt breast cancer at 54.\nSubstances: smokes, which she minimized at first and then said she has wanted to give up for years, about a pack weekly over two decades. Alcohol a drink or two a month. No drugs.\n\nVitals within normal limits per our intake. Physical screening exam unremarkable. Your TSH (normal) and fasting glucose of 98 reviewed.\n\nMental status: casually dressed, psychomotor slowing, mood 'empty', affect constricted, thought process goal directed, no SI or HI, no psychotic features, insight fair.\n\nImpression: Major depressive disorder, single episode, moderate, with atypical-leaning features (hypersomnia, weight gain).\n\nPlan: sertraline 50 mg daily. Referral to individual therapy; she has the list. Follow-up here in 6 weeks. Safety plan reviewed.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-12a",
+          "kind": "portal_message",
+          "start": "2019-02-12T20:14",
+          "reason": "Question about new medication",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sertraline question",
+              "date": "2019-02-12T20:14",
+              "author": "patient",
+              "body": "Hi, the psychiatrist started me on sertraline about two weeks ago. My stomach has been a little off in the mornings. Is that normal or should I stop? I don't want to bother her office if it's nothing."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sertraline question",
+              "date": "2019-02-13T08:02",
+              "author": "PCP",
+              "body": "Very common in the first couple of weeks and it usually fades. Taking it with breakfast helps. Don't stop it. If it isn't better in another week, or anything else comes up, let her office or me know."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-08a",
+          "kind": "specialist_visit",
+          "start": "2019-03-08T11:00",
+          "service": "Psychiatry",
+          "reason": "Medication follow-up",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increase"
+            },
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2019-03-12T09:00",
+              "author": "psychiatry",
+              "body": "Follow-up 03/08/2019. Ms. Marsh reports some lift in energy, getting up earlier, but mood still low most days. Early nausea resolved. Has had two therapy sessions. No SI. Partial response at 6 weeks; increasing sertraline to 100 mg daily. Return in 2 to 3 months. Meds: sertraline 100 mg daily, lisinopril 10 mg daily. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-23a",
+          "kind": "office_visit",
+          "start": "2019-04-23T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and mood follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 82,
+            "weight_kg": 77.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-04-23T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-04-23T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-04-23T17:05",
+              "author": "PCP",
+              "body": "Follow-up. Mood noticeably better since the sertraline went to 100; sleeping 8 to 9 hours now, back to walking at lunch. PHQ-9 down to 9. Seeing a therapist every other week. Weight holding, not going up.\nBP good on lisinopril. BMP today.\nExam: brighter affect. Heart regular, lungs clear.\nA/P: MDD improving on sertraline 100, psychiatry following. HTN controlled. Still smoking, no change; she wants mood steady first. Recheck in the fall."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2019-04-24T11:30",
+              "author": "RN",
+              "body": "BMP normal per PCP, pt notified via portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-06-04a",
+          "kind": "office_visit",
+          "start": "2019-06-04T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sharp pain right side of face",
+          "vitals": {
+            "bp": [
+              126,
+              83
+            ],
+            "hr": 82,
+            "temp_c": 36.6
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-06-04T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2019",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "paroxysmal right facial pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-06-04T09:50",
+              "author": "PCP",
+              "body": "Texted Friday asking to come in. About three weeks of jolts of pain on the right side of her face, like a zap, seconds long, several a day. Brushing her teeth sets it off reliably so she has been brushing the right side gently or not at all. Nothing between attacks. No rash, no dental work, no jaw clicking, no headache, no vision change.\nExam: no facial asymmetry, no rash. Teeth and gums look normal, no tender tooth on percussion. TMJ nontender. Cranial nerves II-XII intact, facial sensation normal to light touch, corneal reflex not tested. Strength and gait normal.\nA/P: Brief triggered unilateral facial pain, sounds like trigeminal neuralgia. Neurology referral to confirm and start treatment; she prefers to let neuro choose the drug. Tylenol in the meantime though it likely won't touch it.\nMood: doing well, psychiatry visit Friday."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-06-07a",
+          "kind": "specialist_visit",
+          "start": "2019-06-07T13:30",
+          "service": "Psychiatry",
+          "reason": "Medication follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up and Transfer of Care",
+              "date": "2019-06-11T09:00",
+              "author": "psychiatry",
+              "body": "Follow-up 06/07/2019. Ms. Marsh describes her mood as close to her usual self for about a month. Energy and sleep normalized; working and socializing again. Mentions new facial pain, already referred to neurology. No SI.\nAssessment: MDD, single episode, responding well to sertraline 100 mg.\nPlan: continue sertraline 100 mg daily for at least a year of remission before any taper discussion. She may continue therapy as she wishes. Returning medication management to primary care; happy to see her again if symptoms recur."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-15a",
+          "kind": "specialist_visit",
+          "start": "2019-07-15T14:00",
+          "service": "Neurology",
+          "reason": "Facial pain",
+          "conditions": [
+            {
+              "label": "Trigeminal neuralgia",
+              "action": "diagnosed",
+              "onset": "2019-05-15",
+              "note": "right"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Trigeminal neuralgia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2019-07-15T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2019",
+              "action": "done",
+              "date": "2019-07-15T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2019-07-19T08:30",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - CONSULTATION\nDate of visit: 07/15/2019\n\nMs. Marsh is a 47-year-old woman with treated hypertension and a depressive episode earlier this year, now on sertraline, seen for two months of right facial pain. She characterizes each attack as an electric jolt or stab on the right side of the face, lasting under a minute and recurring many times through the day. Toothbrushing is the most consistent trigger. She has had no change in vision, no fever and no other neurologic complaint.\n\nMedications: lisinopril 10 mg daily, sertraline 100 mg daily. NKDA.\nFamily history: mother hypertension; sister depression; maternal aunt breast cancer.\nSocial: smokes about one pack weekly for twenty years and hopes to quit; rare alcohol; administrative assistant.\n\nExamination: alert, fluent. Cranial nerves intact including facial sensation in all three divisions and masseter strength. Motor, sensory, reflexes, coordination and gait normal.\n\nImpression: classic right trigeminal neuralgia.\n\nPlan: carbamazepine 200 mg twice daily. Reviewed dizziness, rash and low sodium as things to report. Please check CBC and sodium in about a month. Phone follow-up in 2 months."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-13a",
+          "kind": "lab_only",
+          "start": "2019-08-13T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Labs on carbamazepine",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-08-13T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-08-13T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-08-13T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2019-08-13T15:45",
+              "author": "PCP",
+              "body": "One month on carbamazepine. Sodium normal, white count and platelets normal. Copy faxed to neurology. Pt says the face pain stopped within about a week of starting it."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "specialist_visit",
+          "start": "2019-09-24T11:15",
+          "service": "Neurology",
+          "reason": "Telephone follow-up, trigeminal neuralgia",
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "pain-free, tapered off"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Telephone Follow-up",
+              "date": "2019-09-27T10:00",
+              "author": "neurology",
+              "body": "Phone visit 09/24/2019. Pain-free for about seven weeks on carbamazepine 200 mg twice daily, a little drowsy in the evenings. Labs from PCP reviewed, normal. As remissions are common, we agreed on a two-week taper to off: 200 mg once daily for a week, then 100 mg nightly for a week, then stop. She will call if attacks return; we can restart at the prior dose."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-10-08T12:25",
+              "author": "MA",
+              "body": "Came over on lunch. Quad flu IM right deltoid. Tolerated. Physical booked for December."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-03a",
+          "kind": "annual_physical",
+          "start": "2019-12-03T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              85
+            ],
+            "hr": 77,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 76.7
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-12-03T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-12-03T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2019-12-03T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-12-03T09:40",
+              "author": "PCP",
+              "body": "Annual. Mood good, PHQ-9 4, taking sertraline 100 every morning, no longer in therapy. Face pain came back toward the end of October after neuro tapered her off in September; fewer attacks than spring but same character, mostly with brushing. She already called neurology and has a January appointment; doesn't want to restart on her own. Tylenol does little.\nStill smoking a pack a week. Tried a quit date in August, lasted four days. Offered patch and Chantix again, wants to try again on her own after the holidays.\n\nExam: well. BP and vitals as charted. HEENT normal. Thyroid without enlargement or nodules. Heart RRR, no murmur. Lungs clear. Breasts without masses, nipple changes or axillary adenopathy. Abdomen soft, no organomegaly. Extremities without edema. Neuro nonfocal.\n\nA/P\n1. HTN controlled on lisinopril 10.\n2. MDD in remission on sertraline 100. Continue at least through mid-2020.\n3. Trigeminal neuralgia, recurrent, off carbamazepine. Neuro in January.\n4. Tobacco, counseled 5 min.\n5. HM: mammogram order placed. Lipids and BMP today. Colonoscopy discussed again, she will think about it after 50."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2019-12-04T10:15",
+              "author": "PCP",
+              "body": "Lipids normal, BMP normal. Sent to portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "imaging",
+          "start": "2019-12-10T16:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2019-12-10T16:20",
+              "text": "Digital screening mammography with tomosynthesis, CC and MLO views of each breast. Comparison 11/2018 and 11/2017. Heterogeneously dense breast tissue. No new mass, asymmetry, distortion or suspicious calcifications.  Skin normal.",
+              "conclusion": "BI-RADS 1, negative. Return to annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "done",
+              "date": "2019-12-10T16:20"
+            }
+          ]
+        },
+        {
+          "id": "2020-01-22a",
+          "kind": "specialist_visit",
+          "start": "2020-01-22T09:30",
+          "service": "Neurology",
+          "reason": "Recurrent facial pain",
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Trigeminal neuralgia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2020-01-27T08:15",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - FOLLOW-UP\nDate of visit: 01/22/2020\n\n48-year-old woman with hypertension and a depressive episode last year, in remission on sertraline, back with the same right facial pain we treated in July 2019. It returned roughly three months ago, a few weeks after the carbamazepine taper. Attacks are abrupt stabs over the right cheek and upper lip, under a minute each, several per day. A light touch to the cheek or brushing her teeth can set one off. She has no headache with them, no visual aura, no light sensitivity, and no tearing, redness or nasal symptoms. No facial injury, infection or recent dental procedure.\n\nMeds: lisinopril 10 mg, sertraline 100 mg. NKDA.\n\nVitals normal. Exam: cranial nerves normal, no facial weakness, facial sensation preserved in all divisions between attacks. Remainder of neurologic exam normal.\n\nImpression: recurrent right trigeminal neuralgia, V2 distribution.\n\nPlan: restart carbamazepine 200 mg twice daily, the dose that worked before. CBC and sodium through PCP in a month. Follow-up in 4 months; if she stays pain-free we can try another taper."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-25a",
+          "kind": "lab_only",
+          "start": "2020-02-25T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Labs on carbamazepine",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-02-25T07:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-25T07:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-25T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2020-02-25T14:30",
+              "author": "PCP",
+              "body": "CBC and sodium normal on carbamazepine. Faxed to neuro."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-19a",
+          "kind": "specialist_visit",
+          "start": "2020-05-19T15:00",
+          "service": "Neurology",
+          "reason": "Video follow-up, trigeminal neuralgia",
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "pain-free since March, tapered off"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Video Follow-up",
+              "date": "2020-05-22T09:45",
+              "author": "neurology",
+              "body": "Video visit 05/19/2020 (clinic converted to virtual). No attacks since early March. Some daytime fog on carbamazepine that she would like to be rid of. February labs normal. We will taper again over two weeks and stop. If pain recurs she should call us. Routine follow-up in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-23T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and mood check-in",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-06-23T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-06-23T12:40",
+              "author": "PCP",
+              "body": "Video from her kitchen table, working from home since March. Home cuff 120s-130s over high 70s to low 80s. Mood steady despite the isolation, PHQ-9 3, sertraline daily. Off carbamazepine as of early June per neuro, no face pain so far. Smoking about the same, maybe a bit more being home; we talked about using this stretch for a quit attempt, she isn't ready.\nA/P: HTN controlled by home log. MDD in remission, continue sertraline 100. TN in remission off meds. Office visit in the fall for BP check and flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "office_visit",
+          "start": "2020-09-15T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 12.5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              90
+            ],
+            "hr": 78,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 76.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-09-15T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-09-15T11:15",
+              "author": "PCP",
+              "body": "BP up today, repeat after 5 min about the same. Her home readings since July have crept into the 140s too. Taking lisinopril daily. No headache, chest pain or shortness of breath.\nFace pain is back since July, daily jolts with chewing and brushing. Neuro could only offer January; she has been putting up with it. Called neuro for an earlier slot, none.\nExam: heart RRR, lungs clear, no edema.\nA/P\n1. HTN above goal on lisinopril 10 alone. Adding HCTZ 12.5 mg each morning. BMP in 3 weeks at flu shot visit. Home log.\n2. TN recurrent. Will message neuro to see if a cancellation list exists. If she needs a bridge before January she should call me.\n3. Smoking: counseled.\n4. MDD in remission."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              90
+            ]
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine, BP check, labs",
+          "vitals": {
+            "bp": [
+              121,
+              89
+            ],
+            "hr": 94
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-10-06T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "date": "2020-10-06T08:25",
+              "author": "RN",
+              "body": "Masked visit. Flu vaccine given left deltoid. BP recheck on HCTZ, improved, as charted. BMP drawn. No dizziness or cramps. PCP notified of BP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2020-10-06T16:20",
+              "author": "PCP",
+              "body": "Sodium and potassium normal on HCTZ plus lisinopril. BP at goal. Continue both."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2021-01-18a",
+          "kind": "specialist_visit",
+          "start": "2021-01-18T13:45",
+          "service": "Neurology",
+          "reason": "Recurrent facial pain",
+          "medications": [
+            {
+              "drug_text": "carbamazepine 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Trigeminal neuralgia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2021-01-21T10:30",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - FOLLOW-UP\nDate of visit: 01/18/2021\n\n49-year-old with hypertension and major depression in remission, seen here for this facial pain in 2019 and 2020. Pain has been back for about six months: sudden severe sharp pains on the right, now over the cheek and down into the lower jaw, lasting from a few seconds up to two minutes. Chewing and brushing her teeth set it off, and at times just a breeze across her face. She has never had a rash or skin lesion there.\n\nMedications: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, sertraline 100 mg daily. NKDA.\nSocial: still smoking about a pack per week, wants to quit; social alcohol; administrative assistant.\n\nExam: face symmetric, no skin lesions, no palpable masses. Light touch over the right cheek provokes a typical jab of pain. Remainder of neurologic exam unremarkable.\n\nImpression: trigeminal neuralgia, right V2 and V3, third recurrence after medication withdrawal.\n\nPlan: restart carbamazepine 200 mg twice daily and this time continue as maintenance rather than tapering. Sodium and CBC through her PCP, especially with the thiazide on board. Follow-up in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-16a",
+          "kind": "lab_only",
+          "start": "2021-02-16T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sodium and CBC on carbamazepine and HCTZ",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-02-16T07:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-02-16T07:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-02-16T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2021-02-16T15:10",
+              "author": "PCP",
+              "body": "Sodium fine on carbamazepine with HCTZ. CBC normal. Pt reports face pain settled within days of restarting. Copy to neuro."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-20a",
+          "kind": "pharmacy",
+          "start": "2021-03-20T10:30",
+          "reason": "COVID-19 vaccine dose 1",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Immunization",
+              "date": "2021-03-22T09:00",
+              "author": "pharmacy",
+              "body": "State registry import: Pfizer-BioNTech COVID-19 vaccine dose 1 given 03/20/2021 at a community pharmacy clinic."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-10a",
+          "kind": "pharmacy",
+          "start": "2021-04-10T11:00",
+          "reason": "COVID-19 vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Immunization",
+              "date": "2021-04-12T09:00",
+              "author": "pharmacy",
+              "body": "State registry import: Pfizer-BioNTech COVID-19 vaccine dose 2 given 04/10/2021. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "office_visit",
+          "start": "2021-04-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 77.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-04-20T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening, overdue"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-04-20T16:25",
+              "author": "PCP",
+              "body": "First in-person visit in a while. BP at goal on lisinopril 10 + HCTZ 12.5, home log similar. Face pain controlled on carbamazepine maintenance, the odd twinge. Mood fine on sertraline. Both COVID shots done.\nStill a pack a week. Says she'll quit when she's back in the office full time.\nExam: heart and lungs normal, no edema.\nA/P: HTN controlled. TN on maintenance carbamazepine, Feb labs normal, next sodium at the physical. MDD in remission. Missed her mammogram last year with everything closed, reordered. Physical in the fall."
+            }
+          ],
+          "state": {
+            "bp": [
+              124,
+              78
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "imaging",
+          "start": "2021-06-08T08:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-06-08T08:10",
+              "text": "Standard screening views of both breasts with tomosynthesis. Compared with 12/2019 and earlier. Heterogeneously dense parenchyma, unchanged pattern. No suspicious mass, calcification or distortion. No skin thickening.",
+              "conclusion": "Negative. BI-RADS 1."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-06-08T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2021-06-09T08:45",
+              "author": "PCP",
+              "body": "Mammogram negative. Next in a year."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "specialist_visit",
+          "start": "2021-07-13T10:30",
+          "service": "Neurology",
+          "reason": "Trigeminal neuralgia follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2021-07-16T11:00",
+              "author": "neurology",
+              "body": "Seen 07/13/2021. Trigeminal neuralgia well controlled on carbamazepine 200 mg twice daily, only rare brief twinges with chewing. Tolerating; mild evening tiredness. Exam unchanged and normal. Plan: continue current dose indefinitely. Please keep checking sodium and CBC periodically with her routine labs. Return here as needed or yearly."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              81
+            ],
+            "hr": 81,
+            "rr": 13,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 76.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 311
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-19T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-10-19T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-19T10:30",
+              "author": "PCP",
+              "body": "Annual. Back in the office three days a week. No new concerns. BP log at goal. TN quiet on carbamazepine. Mood good, PHQ-9 3; she asked whether she could come off sertraline at some point, we agreed to keep it through the winter and revisit.\nSmoking: same, a pack a week, she brought up quitting herself. Discussed patch plus short-acting NRT; she wants to set a date around New Year's.\nExam: BP and vitals as charted. HEENT normal. Neck supple, thyroid not palpable. Heart regular without murmur. Lungs clear. Breasts without mass, skin change or adenopathy. Abdomen soft. No edema. Mood euthymic.\nA/P\n1. HTN controlled, continue lisinopril 10 and HCTZ 12.5.\n2. TN on carbamazepine; CMP and CBC today for sodium and counts.\n3. MDD in remission.\n4. Tobacco, counseled.\n5. HM: flu vaccine given. Lipids today. Turns 50 in January: colonoscopy and shingles vaccine next visit. Mammogram up to date. Pap due 2022. COVID booster at the pharmacy."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2021-10-20T11:40",
+              "author": "PCP",
+              "body": "CMP, CBC and lipids all normal. Sodium normal. Portal message sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-12a",
+          "kind": "pharmacy",
+          "start": "2021-11-12T17:30",
+          "reason": "COVID-19 booster",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-12T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Immunization",
+              "date": "2021-11-15T09:00",
+              "author": "pharmacy",
+              "body": "Registry import: Pfizer-BioNTech COVID-19 booster 11/12/2021."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-15a",
+          "kind": "office_visit",
+          "start": "2022-03-15T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up, Pap, shingles vaccine",
+          "vitals": {
+            "bp": [
+              134,
+              83
+            ],
+            "hr": 77,
+            "weight_kg": 75.7
+          },
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-03-15T09:35",
+              "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative. Repeat co-testing in 5 years."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-15T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-15T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-15T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal screening, age 50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-15T10:30",
+              "author": "PCP",
+              "body": "Follow-up plus overdue health maintenance now that she's 50. BP fine. TN controlled. Mood stable; decided herself to stay on sertraline for now, which is reasonable.\nThe New Year's quit date lasted about two weeks. Back to roughly a pack a week. Still wants to stop; NRT offered again, declined.\nPelvic: external normal, cervix normal appearing, Pap/HPV collected. Breast exam normal.\nA/P: HTN controlled. TN on carbamazepine. MDD in remission. Tobacco counseled. HM: Pap/HPV sent. Shingrix #1 today, #2 in 2 to 6 months. Colonoscopy referral placed. Mammogram due this summer."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2022-03-21T12:00",
+              "author": "PCP",
+              "body": "Pap normal, HPV negative. Next co-test 2027."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "procedure_visit",
+          "start": "2022-05-17T07:30",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2022-05-17T08:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2022-05-17T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "date": "2022-05-19T09:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GI GROUP - COLONOSCOPY\nDate: 05/17/2022. Indication: average-risk screening, first colonoscopy, age 50.\nSedation: monitored anesthesia care with propofol.\nPrep: good (BBPS 8).\nThe scope was passed without difficulty to the cecum, confirmed by landmarks and photographed. Withdrawal time 9 minutes. Mucosa normal throughout the colon and rectum. No polyps, no diverticula. Retroflexion in the rectum normal.\nImpression: normal screening colonoscopy.\nRecommendation: repeat screening in 10 years.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "nurse_visit",
+          "start": "2022-06-14T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-14T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-06-14T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2022-06-14T12:30",
+              "author": "RN",
+              "body": "Second Shingrix given IM left deltoid. First dose gave her a sore arm and chills for a day; warned this one may do the same. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "imaging",
+          "start": "2022-07-19T08:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-07-19T08:00",
+              "text": "Bilateral two-view screening mammography with tomosynthesis. Comparison 06/2021 and prior. Heterogeneously dense. No suspicious findings. No skin or nipple change.",
+              "conclusion": "BI-RADS 1. Negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2022-07-20T10:00",
+              "author": "MA",
+              "body": "Normal mammogram per PCP, letter mailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-22a",
+          "kind": "telephone",
+          "start": "2022-08-22T09:05",
+          "reason": "Cancel appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2022-08-22T09:05",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's BP check, short-staffed at work and can't leave early. Will rebook for the fall with her flu shot. Lisinopril, HCTZ and carbamazepine refills sent to PCP for approval."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approval",
+              "date": "2022-08-22T13:40",
+              "author": "PCP",
+              "body": "Refills approved x 90 days with 1 refill: lisinopril 10, HCTZ 12.5, carbamazepine 200 BID, sertraline 100."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "office_visit",
+          "start": "2022-08-23T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines, BP check",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 73,
+            "weight_kg": 76.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T07:58"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "date": "2022-10-11T08:15",
+              "author": "RN",
+              "body": "Flu vaccine left arm, bivalent COVID booster right arm. BP fine, weight stable. She mentioned she's been feeling 'revved up' and hot at night for a few weeks and wondered if it was her age; suggested she book with PCP. Offered the next opening."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations, feeling hot, losing weight",
+          "vitals": {
+            "bp": [
+              140,
+              86
+            ],
+            "hr": 104,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 73.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-13T15:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-13T15:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-13T15:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-13T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "suppressed TSH, symptomatic"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-13T15:30",
+              "author": "PCP",
+              "body": "About two months of feeling her heart pounding, sometimes racing at rest, always too warm while everyone else is cold, and eating more but the scale keeps dropping, down about 7 lb from our October weight. No chest pain, no fainting, no diarrhea, periods unchanged. No new meds or supplements. No neck pain.\nExam: HR 104 regular, BP as charted. Thyroid: possible fullness on the right, hard to be sure. No eye findings. Heart tachycardic, no murmur. Lungs clear.\nA/P: Symptoms fit hyperthyroidism. TSH, BMP and CBC today. If TSH is low I'll refer to endocrinology right away. Return precautions for chest pain or fainting. Smoking same; told her tobacco and an overactive thyroid both strain the heart."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your thyroid test",
+              "date": "2022-12-14T09:20",
+              "author": "PCP",
+              "body": "Your TSH came back very low (under 0.01), which means the thyroid is making too much hormone. That fits how you've been feeling. I've placed an urgent endocrinology referral; their office will call you. Your other labs were normal. If your heart races and doesn't settle, or you get chest pain, call me right away."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your thyroid test",
+              "date": "2022-12-14T12:48",
+              "author": "patient",
+              "body": "Thank you, honestly relieved there's a reason. They called already, first opening is Jan 20 and they want me to do a scan a few days before."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "hr": 104,
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "imaging",
+          "start": "2023-01-17T09:00",
+          "service": "Nuclear Medicine",
+          "reason": "Radioiodine uptake and scan",
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Thyroid Uptake and Scan",
+              "date": "2023-01-19T14:00",
+              "author": "nuclear medicine",
+              "body": "OUTSIDE NUCLEAR MEDICINE\nExam: I-123 thyroid uptake and scan, 01/17/2023 (uptake measured at 4 and 24 hours).\nIndication: suppressed TSH, possible right thyroid nodule.\nFindings: focal intense radiotracer accumulation corresponds to a nodule in the right lobe. The remaining right lobe and the entire left lobe show suppressed uptake. No additional foci.\nImpression: hyperfunctioning right thyroid nodule with suppression of the remaining gland, consistent with a toxic adenoma."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "specialist_visit",
+          "start": "2023-01-20T10:40",
+          "service": "Endocrinology",
+          "reason": "Hyperthyroidism",
+          "conditions": [
+            {
+              "label": "Toxic single thyroid nodule",
+              "action": "diagnosed",
+              "onset": "2022-10-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Toxic single thyroid nodule"
+            },
+            {
+              "drug": "atenolol 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "palpitations, hyperthyroidism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "hr": 102,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 72.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-20T11:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 3.0
+                },
+                {
+                  "test": "Free Triiodothyronine",
+                  "value": 8.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2023-01-20T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2023-01-20T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2023-01-25T08:30",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY - NEW CONSULT\nDate of visit: 01/20/2023\n\nMs. Marsh, 51, with hypertension, a past episode of major depression and recurrent trigeminal neuralgia, comes in with three months of a pounding heartbeat, heat intolerance and a ten-pound weight loss even though she is hungrier than usual. Bowel habits and menses have not changed.\n\nMedications: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, carbamazepine 200 mg twice daily, sertraline 100 mg daily. NKDA.\nFamily history: mother hypertension; sister depression; maternal aunt breast cancer at 54. No known thyroid disease.\nSocial: smoker, about a pack per week for 20 years, wants to quit. Social alcohol. Administrative assistant.\n\nExam: BP 145/90, HR 102. Fine tremor of the outstretched hands. A non-tender nodule is palpable in the right thyroid lobe. No proptosis, lid lag or pretibial skin change.\n\nLabs today: TSH <0.01 mIU/L (0.4-4.0), free T4 3.0 ng/dL (0.9-1.7), free T3 8.0 pg/mL (2.3-4.2).\nUptake scan 01/17/2023: hot right nodule with suppression of the rest of the gland.\n\nAssessment: toxic single thyroid nodule (toxic adenoma) with overt hyperthyroidism.\n\nPlan: methimazole 10 mg daily to bring levels down, atenolol 25 mg daily for heart rate and tremor. Discussed definitive options; she prefers radioactive iodine over surgery. Will schedule I-131 in about 6 weeks, holding methimazole for several days beforehand. CBC and liver tests are not needed routinely but call for sore throat with fever or yellowing. Follow-up 6 to 8 weeks after treatment."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-01-26a",
+          "kind": "portal_message",
+          "start": "2023-01-26T19:30",
+          "reason": "Endocrinology plan",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid plan",
+              "date": "2023-01-26T19:30",
+              "author": "patient",
+              "body": "Saw endo. They think it's one nodule on the right that's overactive. I'm on methimazole and atenolol now and doing radioactive iodine in March. Do I keep taking my blood pressure pills too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid plan",
+              "date": "2023-01-27T07:55",
+              "author": "PCP",
+              "body": "Yes, keep the lisinopril and HCTZ. The atenolol is for heart rate and shakiness and may lower your BP a bit more, so if you feel lightheaded or home readings are under 100 on top, let me know. I got their letter and updated your list."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "procedure_visit",
+          "start": "2023-03-08T10:00",
+          "service": "Nuclear Medicine",
+          "reason": "Radioactive iodine therapy",
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "held before I-131"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "I-131 Therapy",
+              "date": "2023-03-10T09:00",
+              "author": "nuclear medicine",
+              "body": "OUTSIDE NUCLEAR MEDICINE - RADIOIODINE THERAPY\nDate: 03/08/2023. Indication: toxic adenoma, right thyroid lobe.\nMethimazole held since 03/03/2023.\nAdministered 15 mCi I-131 sodium iodide orally. Tolerated without event. Radiation safety instructions reviewed in writing.\nMethimazole is not to be resumed unless endocrinology advises. Continue atenolol. Follow-up with endocrinology in 8 weeks with TSH and free T4."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "specialist_visit",
+          "start": "2023-05-10T14:15",
+          "service": "Endocrinology",
+          "reason": "Post radioiodine follow-up",
+          "medications": [
+            {
+              "drug": "atenolol 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "euthyroid"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-10T13:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.1
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2023-05-15T08:30",
+              "author": "endocrinology",
+              "body": "Seen 05/10/2023, about 9 weeks after 15 mCi I-131 for a right toxic adenoma. Palpitations, heat intolerance and tremor gone; appetite back to normal, some weight regained. TSH 1.1, free T4 1.1: euthyroid, off methimazole. Stopping atenolol today. No thyroid hormone needed. Hypothyroidism can still develop later, so please check TSH yearly, or sooner for fatigue, cold intolerance or weight gain. No routine return here needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after thyroid treatment",
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 78,
+            "spo2": 97,
+            "weight_kg": 76.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-13T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-06-13T15:45",
+              "author": "PCP",
+              "body": "Follow-up after the radioiodine. Feels normal again, sleeping well, weight back up toward her usual. Off atenolol since May without palpitations. BP at goal on lisinopril and HCTZ. Face pain quiet on carbamazepine. Mood stable.\nExam: HR 70s regular. No tremor. Thyroid: small firm nodule right lobe, nontender. Heart and lungs normal.\nA/P: Toxic nodule treated with I-131, euthyroid on May labs; TSH yearly with her physical. HTN controlled. TN, MDD stable on current meds. Mammogram due in August. Tobacco: still about a pack a week, counseled."
+            }
+          ],
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "hr": 76,
+            "weight_kg": 75.5,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "imaging",
+          "start": "2023-08-22T07:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-08-22T07:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Compared with 07/2022. Heterogeneously dense breasts. No suspicious mass, calcifications or architectural distortion. Skin and nipples normal.",
+              "conclusion": "Negative mammogram. BI-RADS 1."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2023-08-23T09:30",
+              "author": "PCP",
+              "body": "Normal screening mammogram. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "annual_physical",
+          "start": "2023-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 75.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-24T08:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-24T08:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-24T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-24T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T08:47"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-24T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-24T09:50",
+              "author": "PCP",
+              "body": "Annual. Good year after the thyroid business. No palpitations, energy fine. BP home log 120s/70s. Rare facial twinge. Mood good, PHQ-9 2, staying on sertraline by choice.\nTobacco: a pack a week still. Interested, not ready; we set a check-in for January.\nExam: vitals as charted. Eyes normal. Thyroid: small right nodule unchanged. Heart RRR. Lungs clear, no wheeze. Breasts without masses, skin or nipple change, axillae negative. Abdomen benign. No edema. Neuro nonfocal.\nA/P\n1. HTN: controlled, lisinopril 10 + HCTZ 12.5.\n2. Toxic nodule s/p I-131: TSH today.\n3. TN on carbamazepine: CMP/CBC today.\n4. MDD in remission on sertraline 100.\n5. Tobacco, counseled.\n6. HM: flu, updated COVID and PCV20 (smoker) given today. Lipids. Mammogram current, colonoscopy 2022 normal, Pap 2022 normal."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2023-10-25T12:10",
+              "author": "PCP",
+              "body": "TSH normal, still euthyroid after radioiodine. CMP, CBC and lipids normal. Sent to portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T12:20",
+          "reason": "Smoking check-in",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Quitting check-in",
+              "date": "2024-01-09T12:20",
+              "author": "PCP",
+              "body": "Hi Melissa, this is the January check-in we talked about. Any thoughts on a quit date? Happy to send in patches and gum if you want to try with some help this time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Quitting check-in",
+              "date": "2024-01-11T21:02",
+              "author": "patient",
+              "body": "Ugh, thank you for remembering. Not yet. Work is a mess until spring. I'll bring it up in March."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              85
+            ],
+            "hr": 79,
+            "spo2": 98,
+            "weight_kg": 76.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-19T16:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-19T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-19T16:50",
+              "author": "PCP",
+              "body": "Routine BP follow-up. Doing well. Home readings at goal. Face pain controlled. Thyroid symptoms none.\nSmoking: as promised she raised it. Cut to about half a pack some weeks, then back up. Declines NRT again, wants to do it 'cold turkey' on a vacation week in May.\nExam: heart regular, lungs clear, no edema.\nA/P: HTN controlled, BMP today. Other problems stable. Follow-up in summer."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2024-03-20T10:05",
+              "author": "RN",
+              "body": "BMP normal, pt informed via portal per PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "telephone",
+          "start": "2024-06-12T09:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show Follow-up",
+              "date": "2024-06-12T09:30",
+              "author": "front desk",
+              "body": "Left voicemail re missed visit yesterday. Pt texted back that she forgot, apologized, will rebook with her fall physical. No issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "pharmacy",
+          "start": "2024-08-06T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Electronic Refill Request",
+              "date": "2024-08-06T10:15",
+              "author": "MA",
+              "body": "E-refill request from pharmacy: carbamazepine 200 mg #180, sertraline 100 mg #90. Last labs 03/2024. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approval",
+              "date": "2024-08-06T13:00",
+              "author": "PCP",
+              "body": "Approved both, 90-day supply x1 refill. Labs at physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "imaging",
+          "start": "2024-09-17T08:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-09-17T08:20",
+              "text": "Screening tomosynthesis mammography, both breasts, CC and MLO projections. Compared with 08/2023 and earlier. Heterogeneously dense tissue. No mass, suspicious calcification or distortion. Skin and nipple contours normal.",
+              "conclusion": "BI-RADS 1: negative. Annual screening."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2024-09-18T08:40",
+              "author": "PCP",
+              "body": "Negative mammogram."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              78
+            ],
+            "hr": 76,
+            "rr": 18,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 76.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-22T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:03"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T10:00",
+              "author": "PCP",
+              "body": "Annual, rebooked after the June miss. Feels well. The May quit attempt held about ten days. Still about a pack a week, frustrated with herself. Discussed that every attempt counts; offered varenicline again, she wants to read about it first.\nNo palpitations or heat intolerance. TN: two short flares this year that settled on her usual dose. Mood good, PHQ-9 3.\nExam: vitals as charted. Thyroid: small right nodule, unchanged. Heart RRR, no murmur. Lungs clear. Breasts symmetric, no masses, skin normal, no nipple retraction, no axillary nodes. Abdomen soft. No edema.\nA/P\n1. HTN controlled on lisinopril/HCTZ.\n2. S/p I-131 for toxic nodule: TSH today.\n3. TN on carbamazepine 200 BID: CMP, CBC.\n4. MDD in remission.\n5. Tobacco: counseled, info on varenicline given.\n6. HM: flu and COVID today. Lipids. Mammogram 9/2024 negative. Colonoscopy 2032. Pap 2027."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2024-10-23T11:25",
+              "author": "PCP",
+              "body": "All normal: TSH, sodium, counts, liver tests, lipids."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "office_visit",
+          "start": "2025-04-15T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              78
+            ],
+            "hr": 98,
+            "spo2": 97,
+            "weight_kg": 76.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-15T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-15T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-15T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-15T16:35",
+              "author": "PCP",
+              "body": "Spring BP check. Fine at home and here. TN quiet. Mood good. Decided against varenicline for now; thinking about patches 'when the weather's nice'. Still about a pack a week.\nExam: heart and lungs normal. No edema.\nA/P: HTN controlled. Sodium and counts today for carbamazepine. Physical in October."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2025-04-16T09:15",
+              "author": "PCP",
+              "body": "BMP and CBC normal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "imaging",
+          "start": "2025-09-23T07:50",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-09-23T07:50",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 09/2024 and prior. Heterogeneously dense. No suspicious mass, calcifications or architectural distortion in either breast. No skin thickening or nipple change.",
+              "conclusion": "BI-RADS 1, negative. Routine annual screening."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2025-09-24T10:20",
+              "author": "PCP",
+              "body": "Mammogram negative, BI-RADS 1."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "annual_physical",
+          "start": "2025-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              78
+            ],
+            "hr": 79,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 74.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-24T08:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-24T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-24T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-24T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-24T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-24T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-24T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-24T09:45",
+              "author": "PCP",
+              "body": "Annual. No complaints. BP fine on lisinopril 10 and HCTZ 12.5. Facial pain controlled, one brief flare in the summer. Mood steady, PHQ-9 2. No thyroid symptoms.\nSmoking: about a pack a week. Talked again; she says next year, for real. Patches offered, she'll message if she wants them sent.\n\nExam: vitals as charted. HEENT normal. Thyroid: small right nodule, stable. Heart regular, no murmur. Lungs clear. Breasts: symmetric, no masses, skin normal without redness or edema, nipples normal, no axillary or supraclavicular nodes. Abdomen soft, nontender. Extremities without edema. Neuro nonfocal. Mood euthymic.\n\nA/P\n1. Essential HTN, controlled. Continue.\n2. Toxic thyroid nodule s/p I-131 in 2023, euthyroid; TSH today.\n3. Trigeminal neuralgia on carbamazepine 200 BID; CMP and CBC today.\n4. MDD, in remission on sertraline 100.\n5. Tobacco, counseled 5 min.\n6. HM: flu and updated COVID given. Lipids. Mammogram 9/2025 negative. Colonoscopy due 2032, Pap 2027.\nRefills sent. Next physical in a year, BP check in spring."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2025-10-25T10:40",
+              "author": "PCP",
+              "body": "TSH, CMP, CBC and lipids normal. Portal message sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "pharmacy",
+          "start": "2025-12-02T11:00",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Electronic Refill Request",
+              "date": "2025-12-02T11:00",
+              "author": "MA",
+              "body": "Pharmacy requesting lisinopril 10 mg and HCTZ 12.5 mg, 90-day supply. Approved per PCP protocol, last BMP 10/2025."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "ed_visit",
+          "start": "2026-01-19T18:40",
+          "end": "2026-01-19T23:10",
+          "service": "Emergency Medicine",
+          "reason": "Left breast pain and swelling",
+          "vitals": {
+            "bp": [
+              127,
+              78
+            ],
+            "hr": 80,
+            "rr": 15,
+            "temp_c": 36.2,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-19T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-19T19:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 52
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-19T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-01-21T08:00",
+              "author": "emergency medicine",
+              "body": "OUTSIDE EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival 01/19/2026 18:40.\n\nCC: left breast pain and swelling x 2 months.\n\nHPI: 54F with HTN, depression, trigeminal neuralgia and a toxic thyroid nodule treated in the past, here because her left breast has been getting larger and more painful over about eight weeks and in the past couple of weeks has turned red and hot. She thought it was an infection and waited for it to pass. No fever. No nipple discharge. No injury.\n\nPMH: hypertension (on hydrochlorothiazide and lisinopril), major depressive disorder, trigeminal neuralgia, toxic thyroid nodule s/p radioiodine.\nMeds: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, carbamazepine 200 mg BID, sertraline 100 mg daily.\nAllergies: NKDA.\nFHx: no breast cancer in first-degree relatives.\nSHx: smokes about a pack per week for 20 years and wants to quit; drinks socially 1-2 per month; administrative assistant.\n\nExam: afebrile, vitals stable as recorded. Left breast diffusely enlarged compared with the right, erythematous and edematous, with peau d'orange skin. Warm. No discrete palpable mass. Left nipple retracted. Firm palpable left axillary lymph nodes. Right breast and axilla normal. Heart and lungs normal.\n\nLabs: CBC within normal limits. ESR 52 (elevated).\n\nMDM: picture is concerning for inflammatory breast cancer rather than mastitis or abscess given duration, absence of fever, peau d'orange, nipple retraction and adenopathy. Discussed with on-call breast surgery. No antibiotics. Urgent outpatient diagnostic breast imaging arranged for 01/21 and breast surgery/oncology evaluation. Patient understands and agrees. Asked to notify her PCP.\n\nDisposition: discharged home 23:10, stable."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T07:12",
+          "reason": "Patient reports ED visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "date": "2026-01-20T07:12",
+              "author": "patient",
+              "body": "I should have called you weeks ago. My left breast has been swollen and sore since late November and then got red, I figured an infection. Went to the ER last night. They said it might be inflammatory breast cancer and I have imaging tomorrow. I'm scared. I had a normal mammogram in September, how can this happen?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2026-01-20T07:48",
+              "author": "PCP",
+              "body": "Melissa, I'm so glad you went in, and I'm sorry you're dealing with this. This kind of breast cancer, if that's what it is, often grows quickly and doesn't form a lump, so it can appear after a normal mammogram. Nothing you did caused it. Tomorrow's imaging and a biopsy are the right next steps, and I'll make sure we get every report. Please call or text me today if you'd like to talk it through, I'm around all day. Keep taking all your usual medicines."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Went to the ER last night",
+              "date": "2026-01-20T08:30",
+              "author": "patient",
+              "body": "Thank you. I'll call at lunch."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "imaging",
+          "start": "2026-01-21T09:00",
+          "service": "Breast Imaging",
+          "reason": "Diagnostic breast imaging, left breast swelling",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2026-01-21T09:00",
+              "text": "Left diagnostic mammogram with tomosynthesis; right breast CC and MLO for comparison. Compared with screening study of 09/2025. Left breast: diffuse skin thickening and trabecular thickening with overall increased density relative to prior and to the right breast. No discrete mass, suspicious calcification or focal distortion. Enlarged dense left axillary lymph nodes are partially included. Right breast unchanged and negative.",
+              "conclusion": "Findings of the left breast highly suggestive of inflammatory breast carcinoma in this clinical setting. BI-RADS 5. Tissue sampling recommended."
+            },
+            {
+              "study": "Breast ultrasound",
+              "performed": "2026-01-21T09:40",
+              "text": "Targeted ultrasound of the left breast and left axilla. Diffuse skin thickening and subcutaneous edema throughout the left breast. No discrete solid mass identified. Left axilla: several enlarged lymph nodes with thickened cortex and effaced fatty hilum, the largest 2.2 cm.",
+              "conclusion": "Skin thickening and edema without discrete mass; abnormal left axillary lymph nodes, largest 2.2 cm. BI-RADS 5. Ultrasound-guided biopsy of breast and axillary node recommended; MRI for extent."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Breast Imaging Reports Received",
+              "date": "2026-01-22T09:00",
+              "author": "front desk",
+              "body": "Diagnostic mammogram and ultrasound reports from the outside breast center, dated 01/21/2026, received by fax and filed. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "imaging",
+          "start": "2026-01-23T14:00",
+          "service": "Breast Imaging",
+          "reason": "Breast MRI",
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI Breasts With and Without Contrast",
+              "date": "2026-01-26T10:00",
+              "author": "radiology",
+              "body": "OUTSIDE BREAST CENTER - MRI BILATERAL BREASTS WITH AND WITHOUT CONTRAST\nDate: 01/23/2026. Indication: clinical concern for inflammatory carcinoma of the left breast; BI-RADS 5 mammogram and ultrasound.\nTechnique: standard bilateral breast protocol with dynamic post-contrast imaging.\nFindings: Left breast: extensive non-mass enhancement occupying much of the breast, spanning about 8.5 cm, with diffuse skin thickening and enhancement indicating skin involvement. No discrete enhancing mass. Pectoralis muscle without abnormal enhancement. Left axilla: multiple enlarged lymph nodes with abnormal morphology, suspicious for metastasis. Right breast: no suspicious enhancement. Right axilla normal.\nImpression: extensive left breast non-mass enhancement with skin involvement and suspicious left axillary lymphadenopathy, consistent with inflammatory breast carcinoma pending pathology. Right breast negative. BI-RADS 5."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "procedure_visit",
+          "start": "2026-01-26T10:30",
+          "service": "Breast Surgery",
+          "reason": "Breast, axillary node and skin biopsies",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-26T10:30",
+              "text": "Specimens: (A) left breast, ultrasound-guided core needle biopsy x4; (B) left axillary lymph node, ultrasound-guided core biopsy x3; (C) left breast skin, punch biopsy.\nA: invasive ductal carcinoma, Nottingham grade 3. Estrogen receptor 0%, progesterone receptor 0%. HER2 by immunohistochemistry 3+ (positive).\nB: metastatic carcinoma consistent with breast primary.\nC: dermis with tumor emboli within lymphatic channels; epidermis intact.",
+              "conclusion": "Left breast invasive ductal carcinoma, grade 3, ER-negative, PR-negative, HER2-positive (IHC 3+), with dermal lymphatic tumor emboli and a positive left axillary lymph node. Findings support inflammatory breast carcinoma.",
+              "issued": "2026-01-29T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2026-01-26T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Breast Biopsy Procedure Note",
+              "date": "2026-01-29T16:00",
+              "author": "breast surgery",
+              "body": "OUTSIDE BREAST SURGERY - PROCEDURE NOTE\nDate: 01/26/2026. Procedures: ultrasound-guided 14-gauge core biopsy of the left breast (4 cores) and of the largest left axillary node (3 cores), with clip placement in the node; 4 mm punch biopsy of left breast skin, lower outer quadrant. Local anesthesia. No complications. Hemostasis with pressure; punch site closed with one suture.\nPathology attached (resulted 01/29). Medical oncology consult already scheduled 01/28; results discussed with patient by phone today. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "specialist_visit",
+          "start": "2026-01-28T13:00",
+          "service": "Medical Oncology",
+          "reason": "New diagnosis, left breast carcinoma",
+          "vitals": {
+            "bp": [
+              130,
+              72
+            ],
+            "hr": 72,
+            "temp_c": 37.1,
+            "spo2": 96,
+            "weight_kg": 75.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-28T12:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-28T12:30",
+              "results": [
+                {
+                  "test": "Carcinoembryonic antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 7.8
+                },
+                {
+                  "test": "Cancer antigen 15-3",
+                  "loinc": "6875-9",
+                  "unit": "U/mL",
+                  "value": 64
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2026-01-28T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Oncology Consultation",
+              "date": "2026-02-02T09:00",
+              "author": "medical oncology",
+              "body": "OUTSIDE CANCER CENTER - MEDICAL ONCOLOGY NEW PATIENT CONSULTATION\nDate of visit: 01/28/2026\nReferred from the ED via breast surgery. PCP copied.\n\nHistory: 54-year-old woman with hypertension, major depressive disorder in remission, trigeminal neuralgia and a toxic thyroid nodule treated with I-131 in 2023, who noticed left breast swelling and soreness about two months ago, followed by redness and warmth. Screening mammogram 09/2025 was negative. No fever, discharge or trauma. Seen in the ED 01/19.\n\nMeds: lisinopril 10 mg daily, hydrochlorothiazide 12.5 mg daily, carbamazepine 200 mg twice daily, sertraline 100 mg daily. NKDA.\nFamily history: maternal aunt with breast cancer at 54; mother hypertension; sister depression.\nSocial: smoker, roughly one pack weekly for 20 years, motivated to quit; social alcohol; administrative assistant, lives alone.\n\nExam: ECOG 0. Left breast enlarged, erythematous and edematous over more than a third of the skin, peau d'orange, nipple retracted, no discrete mass. Firm mobile left axillary nodes. No supraclavicular nodes. Right breast normal. Lungs clear. Liver not enlarged.\n\nData: diagnostic mammogram and US 01/21, BI-RADS 5, largest axillary node 2.2 cm. MRI 01/23: non-mass enhancement about 8.5 cm with skin involvement and left axillary adenopathy. Biopsies 01/26: invasive ductal carcinoma grade 3, ER 0%, PR 0%, HER2 3+; axillary node positive; dermal lymphatic emboli. CEA 7.8 ng/mL and CA 15-3 64 U/mL today, both elevated. Chemistries otherwise normal.\n\nAssessment: inflammatory breast carcinoma, left, HER2-positive, hormone receptor-negative, clinical stage IIIB (cT4d cN1), distant staging pending.\n\nPlan:\n1. PET/CT for staging.\n2. Baseline echocardiogram before trastuzumab.\n3. Port placement.\n4. Neoadjuvant docetaxel, carboplatin, trastuzumab and pertuzumab (TCHP) every 3 weeks for 6 cycles, then modified radical mastectomy and post-mastectomy radiation; HER2-directed therapy to complete one year.\n5. Antiemetics and supportive medications will come from our office. She may continue sertraline and carbamazepine; we will watch counts closely.\n6. Smoking cessation strongly encouraged; referred to our tobacco program.\n7. Social work and nurse navigator introduced."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "imaging",
+          "start": "2026-02-02T08:00",
+          "service": "Nuclear Medicine",
+          "reason": "PET/CT staging",
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "PET/CT Skull Base to Mid-thigh",
+              "date": "2026-02-04T09:00",
+              "author": "radiology",
+              "body": "OUTSIDE CANCER CENTER - FDG PET/CT\nDate: 02/02/2026. Indication: staging of newly diagnosed left inflammatory breast carcinoma.\nFindings: Hypermetabolic diffuse left breast parenchyma and thickened overlying skin. Hypermetabolic left axillary lymph nodes, levels I and II. No hypermetabolic internal mammary, supraclavicular or mediastinal nodes. Lungs without suspicious nodule. Liver, adrenal glands and spleen without suspicious uptake. No suspicious osseous lesion. Thyroid without focal uptake.\nImpression: hypermetabolic left breast and left axillary nodal disease. No evidence of distant metastatic disease."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "imaging",
+          "start": "2026-02-03T10:30",
+          "service": "Cardiology",
+          "reason": "Baseline echocardiogram before trastuzumab",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-02-03T10:30",
+              "text": "Complete 2D, M-mode and Doppler study. Left ventricle normal in size and wall thickness with normal systolic function; LVEF 62% by biplane method. Normal regional wall motion. Normal diastolic filling. Right ventricle normal size and function. Atria normal. Valves structurally normal without significant regurgitation or stenosis. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Normal echocardiogram. LVEF 62%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Echocardiogram Report Received",
+              "date": "2026-02-04T11:00",
+              "author": "front desk",
+              "body": "Outside echocardiogram report 02/03/2026 received from cancer center, filed. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "procedure_visit",
+          "start": "2026-02-06T07:30",
+          "service": "General Surgery",
+          "reason": "Port placement",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Port Placement Operative Note",
+              "date": "2026-02-09T09:00",
+              "author": "general surgery",
+              "body": "OUTSIDE SURGERY - OPERATIVE NOTE\nDate: 02/06/2026. Procedure: placement of right internal jugular single-lumen chest port under ultrasound and fluoroscopic guidance.\nIndication: neoadjuvant chemotherapy for left breast cancer.\nAnesthesia: local with moderate sedation. Port pocket in the right upper chest. Catheter tip at the cavoatrial junction on fluoroscopy. Flushes and draws well. Estimated blood loss minimal. No complications. Accessed and ready for use. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "specialist_visit",
+          "start": "2026-02-09T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 1 TCHP",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Oncology Treatment Note - Cycle 1",
+              "date": "2026-02-12T10:00",
+              "author": "medical oncology",
+              "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n02/09/2026. Cycle 1 day 1 of TCHP (docetaxel, carboplatin, trastuzumab, pertuzumab), every 21 days x 6. PET/CT without distant disease: stage IIIB confirmed. Echo LVEF 62%. Port in place. Labs adequate for treatment. Premedication and antiemetics per protocol. Breast unchanged from consult. Plan: cycle 2 on 03/02. Medications per our list; continue home lisinopril, HCTZ, carbamazepine, sertraline. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "portal_message",
+          "start": "2026-02-18T16:05",
+          "reason": "Questions during chemotherapy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chemo started",
+              "date": "2026-02-18T16:05",
+              "author": "patient",
+              "body": "First round done. Tired and my stomach is unhappy but the nurses are great. Oncology said keep the sertraline and carbamazepine. Is it okay with you to stay on the blood pressure pills, my BP was a bit low at infusion?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Chemo started",
+              "date": "2026-02-18T17:20",
+              "author": "PCP",
+              "body": "Good to hear from you. Your oncology team checks your pressure every visit, so follow what they say on the blood pressure pills; if you feel dizzy standing or your home readings run under 100, hold the HCTZ and let both of us know. I'm reading every note they send. Text me anytime."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "specialist_visit",
+          "start": "2026-03-23T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 3 TCHP",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Oncology Treatment Note - Cycle 3",
+              "date": "2026-03-26T10:00",
+              "author": "medical oncology",
+              "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n03/23/2026, cycle 3 day 1 TCHP. After two cycles: fatigue for about a week after each, alopecia, loose stools managed with the supportive plan. No fever or neutropenic events. Exam: left breast erythema and edema have resolved, peau d'orange no longer seen, breast softer; axillary nodes no longer palpable. Labs acceptable. Proceed. Clinical response encouraging. Cycle 4 on 04/13."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "specialist_visit",
+          "start": "2026-05-04T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 5 TCHP, interval echocardiogram",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-05-04T07:30",
+              "text": "Limited 2D and Doppler study for LV function surveillance on trastuzumab. Left ventricle normal in size with normal systolic function; LVEF 58% by biplane method, compared with 62% on 02/03/2026. No regional wall motion abnormality. Valves without significant dysfunction. No pericardial effusion.",
+              "conclusion": "Normal LV systolic function, LVEF 58%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Oncology Treatment Note - Cycle 5",
+              "date": "2026-05-07T10:00",
+              "author": "medical oncology",
+              "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n05/04/2026, cycle 5 day 1 TCHP. Tolerating with the same fatigue and loose stools. Breast exam: no erythema, edema or skin change; no palpable axillary nodes. Echo today LVEF 58%, within normal and not a meaningful decline; continue HER2 therapy. Proceed with cycle 5. Final cycle 05/26, then surgical referral for modified radical mastectomy about 4 to 6 weeks later."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "specialist_visit",
+          "start": "2026-05-26T08:30",
+          "service": "Medical Oncology",
+          "reason": "Cycle 6 TCHP",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Oncology Treatment Note - Cycle 6",
+              "date": "2026-05-29T10:00",
+              "author": "medical oncology",
+              "body": "OUTSIDE CANCER CENTER - INFUSION VISIT\n05/26/2026 (moved a day for the holiday). Cycle 6 of 6 TCHP, completing neoadjuvant chemotherapy. Exam: complete clinical response in the breast and axilla. Plan: left modified radical mastectomy 06/29 with breast surgery; trastuzumab and pertuzumab to continue every 3 weeks after surgery to finish a year of HER2-directed therapy; radiation oncology referral placed for post-mastectomy radiation."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "hospital_admission",
+          "start": "2026-06-29T07:00",
+          "end": "2026-06-30T11:30",
+          "service": "Breast Surgery",
+          "reason": "Left modified radical mastectomy",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Surgical Discharge Summary",
+              "date": "2026-07-02T09:00",
+              "author": "breast surgery",
+              "body": "OUTSIDE HOSPITAL - DISCHARGE SUMMARY\nAdmitted 06/29/2026, discharged 06/30/2026.\nDiagnosis: left inflammatory breast carcinoma, HER2-positive, after neoadjuvant TCHP.\nProcedure 06/29/2026: left modified radical mastectomy (total mastectomy with level I and II axillary dissection), no immediate reconstruction as is standard for inflammatory carcinoma. Two closed suction drains. Estimated blood loss under 100 mL. No complications.\nCourse: overnight observation, pain controlled with oral medication, ambulating, tolerating diet. Drains with serosanguinous output. Home medications resumed: lisinopril 10 mg, hydrochlorothiazide 12.5 mg, carbamazepine 200 mg twice daily, sertraline 100 mg daily. Short course of oral pain medication per surgery.\nFollow-up: breast surgery clinic in 1 week for pathology and drain check. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "specialist_visit",
+          "start": "2026-07-06T10:00",
+          "service": "Breast Surgery",
+          "reason": "Post-operative visit, pathology",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-29T09:30",
+              "text": "Specimen: left modified radical mastectomy with axillary contents, after neoadjuvant chemotherapy.\nBreast: tumor bed with fibrosis and treatment effect; no residual invasive carcinoma and no residual ductal carcinoma in situ. Skin and nipple: no carcinoma; no dermal lymphatic tumor emboli. Margins: not applicable, no residual tumor.\nLymph nodes: 0 of 14 involved; biopsy-clipped node identified with treatment effect, no residual tumor.",
+              "conclusion": "No residual invasive or in situ carcinoma in breast or 14 lymph nodes (ypT0 ypN0): pathologic complete response.",
+              "issued": "2026-07-03T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Breast Surgery Post-op Note",
+              "date": "2026-07-08T09:00",
+              "author": "breast surgery",
+              "body": "OUTSIDE BREAST SURGERY - POSTOPERATIVE VISIT\n07/06/2026, one week after left modified radical mastectomy. Healing well, incision clean and dry, flaps viable, no seroma. Both drains removed today. Arm range of motion exercises reviewed. Pathology reviewed with her: pathologic complete response, ypT0 ypN0. She was tearful with relief. Next: radiation oncology 07/14 and continued trastuzumab/pertuzumab with medical oncology."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T13:30",
+          "service": "Radiation Oncology",
+          "reason": "Post-mastectomy radiation consultation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Radiation Oncology Consultation",
+              "date": "2026-07-17T09:00",
+              "author": "radiation oncology",
+              "body": "OUTSIDE CANCER CENTER - RADIATION ONCOLOGY CONSULTATION\nDate: 07/14/2026.\n54-year-old woman with left inflammatory breast carcinoma, cT4d cN1 M0, ER/PR-negative, HER2-positive, treated with 6 cycles of neoadjuvant TCHP and left modified radical mastectomy on 06/29/2026 with pathologic complete response (ypT0 ypN0, 0/14 nodes). Continuing trastuzumab and pertuzumab.\nMeds: lisinopril, hydrochlorothiazide, carbamazepine, sertraline; HER2 therapy per medical oncology. NKDA.\nExam: left mastectomy incision healed, no erythema; shoulder range of motion near full. No palpable adenopathy.\nRecommendation: post-mastectomy radiation to the left chest wall and regional lymph nodes, 50 Gy in 25 fractions, regardless of pathologic response given inflammatory presentation. Risks reviewed including skin reaction, fatigue, lymphedema, and small risks to lung and heart. Consent signed. CT simulation 07/22, start planned 08/03. HER2 therapy can continue concurrently."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T19:40",
+          "reason": "Update and refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Good news and a refill",
+              "date": "2026-07-20T19:40",
+              "author": "patient",
+              "body": "Wanted you to hear it from me: the surgery pathology showed no cancer left. Radiation starts August 3, every weekday for five weeks. Could you send refills for sertraline and carbamazepine? Pharmacy says no refills left."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Good news and a refill",
+              "date": "2026-07-20T21:05",
+              "author": "PCP",
+              "body": "That is wonderful news, Melissa. I saw the pathology report come in and was hoping you'd write. Sertraline 100 and carbamazepine 200 twice daily are sent, 90 days each. If you want help with quitting, I can send patches whenever you say. Thinking of you through radiation."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "specialist_visit",
+          "start": "2026-08-03T09:00",
+          "service": "Radiation Oncology",
+          "reason": "Start of radiation",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Radiation Oncology Treatment Start",
+              "date": "2026-08-05T09:00",
+              "author": "radiation oncology",
+              "body": "OUTSIDE CANCER CENTER - RADIATION ON-TREATMENT NOTE\n08/03/2026: fraction 1 of 25 to the left chest wall and regional nodes, 2 Gy per fraction, total planned 50 Gy. Setup verified with imaging. Tolerated without issue. Skin care instructions given. Weekly on-treatment visits. Anticipated completion early September. Trastuzumab and pertuzumab continuing every 3 weeks with medical oncology, next 08/10."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "carbamazepine 200 MG Oral Tablet": {
+        "code": "308979",
+        "display": "carbamazepine 200 MG Oral Tablet",
+        "ingredient": "carbamazepine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "methimazole 10 MG Oral Tablet": {
+        "code": "197941",
+        "display": "methimazole 10 MG Oral Tablet",
+        "ingredient": "methimazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Cancer antigen 15-3": {
+        "code": "6875-9",
+        "display": "Cancer Ag 15-3 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carcinoembryonic antigen": {
+        "code": "2039-6",
+        "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

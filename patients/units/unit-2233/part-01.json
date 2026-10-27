@@ -1,0 +1,706 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002233",
+   "given": "Eugene",
+   "family": "Holt",
+   "birth_date": "1950-07-28",
+   "address_line": "27 Pomeroy Meadow Road",
+   "phone": "+1-603-555-0172",
+   "email": "eugene.holt@example.test",
+   "marital_status": "married",
+   "summary": "Retired math teacher with hypertension, type 2 diabetes, CKD 3, BPH after TURP and untreated Parkinson disease who joins in 2020. From 2023 he develops normal pressure hydrocephalus and Parkinson disease dementia, then Mobitz I block, a chronic subdural hematoma, and in July 2026 cardiac tamponade, all through outside care.",
+   "events": [
+    {
+     "id": "2020-08-04a",
+     "kind": "telephone",
+     "start": "2020-08-04T10:12",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2020-08-04T10:12",
+       "body": "Spoke with wife. Husband Eugene, 70, retired teacher, their old doctor in town is retiring at the end of the month and they want him to come here. Medicare plus Plan F. Membership info emailed. Scheduled new-patient visit 8/18 at 9:00. Records release form sent; she will sign for his old office."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-18a",
+     "kind": "establish_care",
+     "start": "2020-08-18T09:00",
+     "end": "2020-08-18T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2004-06-01"
+      },
+      {
+       "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+       "action": "history",
+       "onset": "2008-03-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2008-03-01"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3a",
+       "action": "history",
+       "onset": "2017-01-01"
+      },
+      {
+       "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+       "action": "history",
+       "onset": "2014-01-01"
+      },
+      {
+       "label": "Parkinson disease",
+       "action": "history",
+       "onset": "2019-05-01",
+       "note": "diagnosed by a neurologist elsewhere in 2019"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth once daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      },
+      {
+       "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth at bedtime",
+       "dose": {
+        "value": 0.4,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "BPH"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       128,
+       78
+      ],
+      "weight_kg": 82.0,
+      "height_cm": 175.0,
+      "labs": {
+       "Hemoglobin A1c": 7.1,
+       "Creatinine": 1.4,
+       "Total Cholesterol": 178,
+       "Low Density Lipoprotein": 98,
+       "High Density Lipoprotein": 46,
+       "Triglycerides": 168,
+       "Glucose": 136,
+       "Microalbumin/Creatinine Ratio": 12
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-08-18T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-08-18T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-08-18T10:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-18T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-18T10:10",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-18T10:10",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 glasses of wine per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired high school mathematics teacher"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-08-18T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "prior-records-2020",
+       "action": "placed",
+       "order": "Request records from prior primary care office",
+       "category": "procedure",
+       "reason": "establishing care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-08-18T10:40",
+       "body": "70 y/o M here to establish, with wife. Prior PCP retiring.\n\nHPI: Feels well. Has had BP and sugar issues for many years, managed by his old doctor, says numbers have been 'pretty steady.' Doesn't check sugar at home more than once in a while. Kidney function has been 'a little low' for a few years, he was told stage 3, never saw a kidney doctor. Parkinson's diagnosed last year by a neurologist after he noticed some stiffness, told it was mild and they'd hold off on medicine; hasn't gone back. Prostate surgery in 2018 helped his stream a lot; still on tamsulosin at night, gets up once.\n\nPMH: HTN, T2DM, hyperlipidemia, CKD 3a, BPH, Parkinson disease (mild, untreated).\nPSH: L inguinal hernia repair 2010, TURP 2018, bilateral cataract surgery with lens implants 2019.\nMeds: metformin 1000 BID with meals, lisinopril 20 daily, atorvastatin 40 qhs, tamsulosin 0.4 qhs.\nAllergies: none to medications.\nFHx: father CAD, heart attack at 76, died at 78. Mother T2DM and Lewy body dementia, died at 84. Sister (70) and son (45) both with HTN.\nSHx: Married, lives with wife in Easthampton. Retired high school math teacher. Quit cigarettes about 20 yrs ago, roughly 20 pack-years. A glass or two of wine a week.\n\nROS: no chest pain, SOB, edema. No falls. Memory fine per wife. Bowels normal.\n\nExam: BP and vitals per flowsheet. Pleasant, conversational, good historian. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Feet: skin intact, monofilament felt throughout, DP pulses 2+. Neuro: mild cogwheeling R wrist, no rest tremor today, gait normal speed with normal arm swing.\n\nA/P:\n1. HTN - at goal on lisinopril 20.\n2. T2DM - check A1c, UACR. Continue metformin.\n3. CKD 3a - BMP today, avoid NSAIDs reviewed.\n4. Hyperlipidemia - lipids today, continue atorvastatin.\n5. BPH s/p TURP - stable on tamsulosin.\n6. Parkinson disease, mild - follows neuro elsewhere in the past; he declines a referral for now, will revisit.\n7. HM - HCV screen today. Records request to old office for colonoscopy and vaccine history. Flu shot in the fall.\nRTC 3-4 months."
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2020-08-18T11:02",
+       "body": "Signed release faxed to prior primary care office for last 5 years of notes, labs, immunizations and colonoscopy report."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-21a",
+     "kind": "portal_message",
+     "start": "2020-08-21T16:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-08-21T16:30",
+       "body": "Hi Mr. Holt, welcome again. Your labs look about how I expected. A1c is in a good range for you, cholesterol is fine on the atorvastatin, and kidney function is in the same mildly reduced range you were told about before - we'll keep an eye on it a few times a year. Hepatitis C screen negative. No changes. See you in December."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-02a",
+     "kind": "outside_records",
+     "start": "2020-09-02T13:15",
+     "orders": [
+      {
+       "id": "prior-records-2020",
+       "action": "done",
+       "date": "2020-09-02T13:15"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2016-04-12T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "outside primary care",
+       "date": "2020-09-02T13:15",
+       "body": "Records received from prior primary care office (124 pages). Pertinent:\n- Hypertension and type 2 diabetes followed for many years; on lisinopril 20 and metformin 1000 twice daily for at least 6 years.\n- Atorvastatin 40 for many years.\n- Creatinine mildly elevated since 2017, labeled CKD stage 3a; urine microalbumin normal.\n- Neurology consult 5/2019 (outside group): mild rigidity right arm, mild bradykinesia, impression early Parkinson disease, observation without medication.\n- Colonoscopy 2015: normal to the terminal ileum, no further screening advised given age at next interval.\n- Tdap 4/2016. Pneumococcal and shingles vaccines not documented.\n- Urology: TURP 2018, continued tamsulosin.\nAbstracted to chart."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T14:20",
+     "reason": "influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-06T14:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T14:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu vaccine",
+       "author": "RN",
+       "date": "2020-10-06T14:30",
+       "body": "High-dose flu given L deltoid, lot recorded. Screening questions negative. VIS given. Tolerated, waited 15 min without issue."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-10a",
+     "kind": "outside_records",
+     "start": "2020-11-10T09:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2020-11-10T09:40",
+       "body": "Dilated eye exam 11/3/2020. Acuity 20/25 OD, 20/25 OS with correction. Posterior chamber lens implants well centered OU. Fundus: no diabetic retinopathy either eye, no macular edema. Return in 12 months. Allergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "office_visit",
+     "start": "2020-12-08T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-12-08T10:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-08T10:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-12-08T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2020-12-08T11:20",
+       "body": "S: Doing fine. Staying home more with the pandemic, walks the bike path most mornings. Taking meds without missing. No hypoglycemia. Stiffness in R hand unchanged.\nO: Vitals reviewed. Heart RRR. Lungs clear. No edema. Mild R wrist rigidity, no tremor.\nA/P: T2DM, HTN, CKD 3a - labs today. No changes. Covid vaccine when offered to his age group. RTC 2-3 mo."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-19a",
+     "kind": "portal_message",
+     "start": "2021-01-19T08:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Covid shot",
+       "author": "patient",
+       "date": "2021-01-19T08:55",
+       "body": "This is Eugene's wife writing on his account. Can he get the covid vaccine at your office or do we have to sign up somewhere else? He is 70."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Covid shot",
+       "author": "RN",
+       "date": "2021-01-19T13:10",
+       "body": "We are not getting supply right now. He is eligible as of February 1st through the state site and local pharmacies. Once he has it, let us know the dates and we will add them to his record."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-05a",
+     "kind": "pharmacy",
+     "start": "2021-02-05T11:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-05T11:00"
+      }
+     ]
+    },
+    {
+     "id": "2021-02-17a",
+     "kind": "office_visit",
+     "start": "2021-02-17T09:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic disease follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-02-17T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-02-17T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-02-17T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2021-02-17T10:30",
+       "body": "Had his first Pfizer dose 2/5, second due later this month. Arm sore, nothing else. Feels well, no new issues. BP fine today. Exam unchanged, lungs clear, no edema, foot skin intact. Continue current regimen. Labs drawn. RTC June."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-26a",
+     "kind": "pharmacy",
+     "start": "2021-02-26T11:20",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-26T11:20"
+      }
+     ]
+    },
+    {
+     "id": "2021-03-23a",
+     "kind": "pharmacy",
+     "start": "2021-03-23T15:05",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Metformin and lisinopril refills",
+       "author": "MA",
+       "date": "2021-03-23T15:05",
+       "body": "Pharmacy requested 90-day supplies of metformin 1000 mg and lisinopril 20 mg, 3 refills each. Last visit 2/17, labs current. Sent per protocol."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-24a",
+     "kind": "office_visit",
+     "start": "2021-06-24T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-06-24T14:25",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-24T14:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-06-24T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2021-06-24T14:45",
+       "body": "S: Fully vaccinated. Got back to the Y pool twice a week. Occasional nocturia x1. No dizziness, no falls.\nO: Vitals reviewed. NAD. CV regular. Lungs clear. Ext no edema. Mild R-sided rigidity, slight decreased arm swing on R with walking.\nA/P:\n- T2DM: A1c pending, has been steady near 7.\n- HTN: at goal.\n- CKD 3a: recheck creatinine.\n- PD: mild and stable by his account. Offered neuro follow-up again, he'd rather wait.\nWellness visit in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-28a",
+     "kind": "portal_message",
+     "start": "2021-06-28T12:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-06-28T12:15",
+       "body": "A1c and kidney function steady. Nothing to change. Enjoy the pool."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-27a",
+     "kind": "annual_physical",
+     "start": "2021-09-27T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-27T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-27T09:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-27T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-27T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-27T09:20",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-09-27T09:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2021-09-27T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-27T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-09-27T09:50",
+       "body": "Initial AWV.\nHealth risk assessment reviewed: independent in daily activities, drives, manages finances himself, no falls in past year, no hearing complaints, sleeps well.\nCognition: Mini-Cog normal.\nMood: PHQ-2 0.\nAdvance directive: none. Discussed health care proxy; packet given, he and wife will talk about it.\nPrevention: colonoscopy 2015 normal, no further screening. Tdap 2016. Flu today. Covid boosters - eligible, will get at pharmacy. Pneumococcal and Shingrix discussed, will check Part D coverage. Not eligible for lung screening (quit about 20 years).\nExam: heart regular, lungs clear, abdomen benign, feet with intact sensation and good pulses, mild R arm rigidity.\nPlan: annual labs today. RTC 4-6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-30a",
+     "kind": "portal_message",
+     "start": "2021-09-30T08:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2021-09-30T08:40",
+       "body": "Your annual labs are back. Cholesterol, blood count, liver tests and urine protein all fine. A1c actually a bit better than usual. Kidney function unchanged."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "pharmacy",
+     "start": "2021-10-19T10:40",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-19T10:40"
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "outside_records",
+     "start": "2021-11-16T10:05",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2021-11-16T10:05",
+       "body": "Annual dilated exam 11/9/2021. Best corrected acuity 20/25 both eyes. IOLs in good position OU, clear posterior capsules. No diabetic retinopathy. Medications reviewed: metformin, lisinopril, atorvastatin, tamsulosin. Allergies: none known. See again in one year."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
