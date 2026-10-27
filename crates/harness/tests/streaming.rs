@@ -153,6 +153,450 @@ async fn presentation_rejection_cannot_discard_late_usage_or_publish() {
     assert!(owner.0.iter().any(|r| matches!(r, Record::Exchange { .. })));
 }
 #[tokio::test]
+async fn cancelled_exchange_retains_cumulative_evidence_without_double_counting() {
+    struct CancelAfterEvidence;
+    impl Provider for CancelAfterEvidence {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            cancel: &Cancellation,
+            emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
+        ) -> Result<Response, String> {
+            emit(StreamEvent::ProviderIdentity(
+                json!({"response_id":"cancelled-response"}),
+            ))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(11),
+                output_tokens: None,
+            }))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(11),
+                output_tokens: Some(5),
+            }))?;
+            cancel.cancel();
+            // Even a successful terminal arriving after cancellation is evidence,
+            // never permission to execute its tools or publish its text.
+            Ok(Response {
+                text: "must not publish".into(),
+                calls: vec![Call {
+                    id: "late-effect".into(),
+                    name: "save".into(),
+                    arguments: json!({}),
+                }],
+                usage: Usage {
+                    input_tokens: Some(11),
+                    output_tokens: Some(5),
+                },
+                provenance: json!({"response_id":"cancelled-response"}),
+            })
+        }
+    }
+    let mut owner = Product(vec![
+        Record::Dispatch {
+            sequence: 4,
+            request: request(),
+        },
+        Record::Observation {
+            sequence: 4,
+            usage: Usage {
+                input_tokens: Some(3),
+                output_tokens: None,
+            },
+            provenance: json!({"response_id":"earlier-interrupted"}),
+        },
+    ]);
+    let mut progress = Progress::from_records(&owner.0);
+    let mut events = Vec::new();
+    let error = run(
+        &mut CancelAfterEvidence,
+        &mut owner,
+        request(),
+        &mut progress,
+        Limits::default(),
+        &Cancellation::default(),
+        &mut |event| {
+            events.push(event);
+            Ok(())
+        },
+    )
+    .await
+    .unwrap_err();
+    assert_eq!(error, "execution cancelled");
+    assert_eq!(
+        progress,
+        Progress {
+            calls: 5,
+            known_tokens: 19,
+            unknown_usage: 1
+        }
+    );
+    assert_eq!(Progress::from_records(&owner.0), progress);
+    assert_eq!(events.len(), 3);
+    assert!(owner.0.iter().any(|record| matches!(record,
+        Record::Observation { sequence: 5, provenance, .. }
+        if provenance["response_id"] == "cancelled-response")));
+    assert!(matches!(
+        owner.0.last(),
+        Some(Record::Exchange { sequence: 5, .. })
+    ));
+    // Product::dispatch/complete panic, so this also proves no late effects.
+}
+
+#[tokio::test]
+async fn noncooperative_cancelled_provider_settles_with_observed_evidence() {
+    struct NeverSettles {
+        calls: usize,
+        output_tokens: Option<u64>,
+    }
+    impl Provider for NeverSettles {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            cancel: &Cancellation,
+            emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
+        ) -> Result<Response, String> {
+            self.calls += 1;
+            emit(StreamEvent::ProviderIdentity(
+                json!({"response_id":"noncooperative-response"}),
+            ))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(7),
+                output_tokens: None,
+            }))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(11),
+                output_tokens: self.output_tokens,
+            }))?;
+            cancel.cancel();
+            // Ignore the token forever: the loop, not provider cooperation,
+            // must bound settlement while retaining already observed evidence.
+            std::future::pending().await
+        }
+    }
+    for output_tokens in [None, Some(5)] {
+        let mut provider = NeverSettles {
+            calls: 0,
+            output_tokens,
+        };
+        // These owner callbacks are responsive; hanging owner callbacks are a
+        // different contract. Product panics on effects or final publication.
+        let mut owner = Product::default();
+        let mut progress = Progress::default();
+        let cancel = Cancellation::default();
+        let error = tokio::time::timeout(
+            std::time::Duration::from_secs(3),
+            run(
+                &mut provider,
+                &mut owner,
+                request(),
+                &mut progress,
+                Limits::default(),
+                &cancel,
+                &mut |_| Ok(()),
+            ),
+        )
+        .await
+        .expect("cancelled provider must settle within three seconds, even if it never returns")
+        .expect_err("a cancelled, unfinished exchange cannot complete");
+        assert!(error.contains("cancel"), "unexpected failure: {error}");
+        assert!(cancel.is_cancelled());
+        assert_eq!(provider.calls, 1, "settlement never retries the provider");
+        assert_eq!(
+            progress,
+            Progress {
+                calls: 1,
+                known_tokens: 11 + output_tokens.unwrap_or(0),
+                unknown_usage: u64::from(output_tokens.is_none()),
+            }
+        );
+        assert_eq!(
+            Progress::from_records(&owner.0),
+            progress,
+            "cumulative snapshots must not be added twice or unknown counts zero-filled"
+        );
+        assert!(matches!(
+            owner.0.first(),
+            Some(Record::Dispatch { sequence: 1, .. })
+        ));
+        assert!(owner.0.iter().any(|record| matches!(record,
+            Record::Observation { sequence: 1, usage, provenance }
+            if usage.input_tokens == Some(11)
+                && usage.output_tokens == output_tokens
+                && provenance["response_id"] == "noncooperative-response")));
+        assert!(
+            matches!(owner.0.last(), Some(Record::Failure { sequence: 1, reason })
+            if reason == &error)
+        );
+        assert!(
+            !owner
+                .0
+                .iter()
+                .any(|record| matches!(record, Record::Exchange { .. })),
+            "interrupted evidence must not become a successful exchange"
+        );
+    }
+}
+
+#[tokio::test]
+async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback() {
+    #[derive(Clone, Copy, Debug)]
+    enum Boundary {
+        Observation,
+        Provisional,
+        Check,
+        Retention,
+    }
+    struct PendingOwner {
+        boundary: Boundary,
+        entered: Option<tokio::sync::oneshot::Sender<()>>,
+        records: Vec<Record>,
+        observed: bool,
+    }
+    impl PendingOwner {
+        async fn hang(&mut self) -> Result<(), String> {
+            self.entered
+                .take()
+                .expect("callback must not be retried")
+                .send(())
+                .unwrap();
+            std::future::pending().await
+        }
+    }
+    impl Owner for PendingOwner {
+        async fn check(&mut self) -> Result<(), String> {
+            if matches!(self.boundary, Boundary::Check) && self.observed {
+                return self.hang().await;
+            }
+            Ok(())
+        }
+        async fn record(&mut self, record: Record) -> Result<(), String> {
+            let observation = matches!(record, Record::Observation { .. });
+            let retention = matches!(record, Record::Exchange { .. });
+            self.observed |= observation;
+            // Model a write whose acknowledgment hangs after it may commit.
+            // Dropping this future does not imply that write was rolled back.
+            self.records.push(record);
+            if (matches!(self.boundary, Boundary::Observation) && observation)
+                || (matches!(self.boundary, Boundary::Retention) && retention)
+            {
+                return self.hang().await;
+            }
+            Ok(())
+        }
+        async fn provisional(&mut self, _: u64, _: &str) -> Result<(), String> {
+            if matches!(self.boundary, Boundary::Provisional) {
+                return self.hang().await;
+            }
+            Ok(())
+        }
+        async fn dispatch(&mut self, _: &Call, _: &Cancellation) -> Result<Value, String> {
+            panic!("cancelled acknowledgment cannot authorize effects")
+        }
+        async fn complete(&mut self, _: &Response) -> Result<(), String> {
+            panic!("cancelled acknowledgment cannot authorize publication")
+        }
+    }
+    struct ProviderAtBoundary {
+        boundary: Boundary,
+        calls: usize,
+    }
+    impl Provider for ProviderAtBoundary {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &Cancellation,
+            emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
+        ) -> Result<Response, String> {
+            self.calls += 1;
+            emit(StreamEvent::ProviderIdentity(
+                json!({"response_id":"pending-owner"}),
+            ))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(10),
+                output_tokens: None,
+            }))?;
+            if matches!(self.boundary, Boundary::Provisional) {
+                emit(StreamEvent::Text("provisional only".into()))?;
+            }
+            if matches!(self.boundary, Boundary::Retention) {
+                return Ok(Response {
+                    text: "not authorized for publication".into(),
+                    calls: vec![],
+                    usage: Usage::default(),
+                    provenance: json!({"response_id":"pending-owner"}),
+                });
+            }
+            std::future::pending().await
+        }
+    }
+    for boundary in [
+        Boundary::Observation,
+        Boundary::Provisional,
+        Boundary::Check,
+        Boundary::Retention,
+    ] {
+        let (entered, wait) = tokio::sync::oneshot::channel();
+        let cancel = Cancellation::default();
+        let cancellation = cancel.clone();
+        // Cancel only after the selected callback is actually pending. No
+        // scheduler-dependent sleep is needed to reach the intended boundary.
+        let canceller = tokio::spawn(async move {
+            wait.await.expect("selected callback must be reached");
+            cancellation.cancel();
+        });
+        let mut owner = PendingOwner {
+            boundary,
+            entered: Some(entered),
+            records: vec![],
+            observed: false,
+        };
+        let mut provider = ProviderAtBoundary { boundary, calls: 0 };
+        let mut progress = Progress::default();
+        let outcome = tokio::time::timeout(
+            std::time::Duration::from_secs(3),
+            run(
+                &mut provider,
+                &mut owner,
+                request(),
+                &mut progress,
+                Limits::default(),
+                &cancel,
+                &mut |_| Ok(()),
+            ),
+        )
+        .await;
+        canceller.abort();
+        assert!(
+            outcome.is_ok(),
+            "{boundary:?} acknowledgment must not defeat cancellation settlement"
+        );
+        assert!(
+            outcome.unwrap().is_err(),
+            "{boundary:?} cannot return completion"
+        );
+        assert!(cancel.is_cancelled());
+        assert!(owner.entered.is_none(), "test must reach {boundary:?}");
+        assert_eq!(provider.calls, 1);
+        assert_eq!(progress.calls, 1);
+        // Intentionally do not assert pending writes disappeared: the owner
+        // must reconcile their uncertain outcomes using its durable record.
+    }
+}
+
+#[tokio::test]
+async fn partial_usage_snapshots_merge_per_field_for_success_and_interruption() {
+    struct PartialUsage {
+        interrupted: bool,
+        calls: usize,
+    }
+    impl Provider for PartialUsage {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &Cancellation,
+            emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
+        ) -> Result<Response, String> {
+            self.calls += 1;
+            emit(StreamEvent::ProviderIdentity(
+                json!({"response_id":"partial-usage"}),
+            ))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: Some(10),
+                output_tokens: None,
+            }))?;
+            emit(StreamEvent::Usage(Usage {
+                input_tokens: None,
+                output_tokens: Some(5),
+            }))?;
+            if self.interrupted {
+                return Err("transport interrupted after usage".into());
+            }
+            Ok(Response {
+                text: "not publishable above budget".into(),
+                calls: vec![Call {
+                    id: "over-budget-effect".into(),
+                    name: "save".into(),
+                    arguments: json!({}),
+                }],
+                usage: Usage::default(),
+                provenance: json!({"response_id":"partial-usage"}),
+            })
+        }
+    }
+    for interrupted in [false, true] {
+        let mut provider = PartialUsage {
+            interrupted,
+            calls: 0,
+        };
+        let mut owner = Product::default();
+        let mut progress = Progress::default();
+        let bounds = Limits {
+            max_known_tokens: 14,
+            ..Limits::default()
+        };
+        let error = run(
+            &mut provider,
+            &mut owner,
+            request(),
+            &mut progress,
+            bounds,
+            &Cancellation::default(),
+            &mut |_| Ok(()),
+        )
+        .await
+        .unwrap_err();
+        assert_eq!(
+            error,
+            if interrupted {
+                "transport interrupted after usage"
+            } else {
+                "execution usage bound reached"
+            }
+        );
+        assert_eq!(
+            progress,
+            Progress {
+                calls: 1,
+                known_tokens: 15,
+                unknown_usage: 0
+            }
+        );
+        assert_eq!(Progress::from_records(&owner.0), progress);
+        if interrupted {
+            assert!(matches!(
+                owner.0.last(),
+                Some(Record::Failure { sequence: 1, .. })
+            ));
+        } else {
+            assert!(
+                matches!(owner.0.last(), Some(Record::Exchange { sequence: 1, response })
+                if response.usage == Usage { input_tokens: Some(10), output_tokens: Some(5) })
+            );
+        }
+        let record_count = owner.0.len();
+        // Re-enter using the same live counters, just as owner-controlled
+        // recovery would. Lost input usage would incorrectly permit dispatch.
+        let error = run(
+            &mut provider,
+            &mut owner,
+            request(),
+            &mut progress,
+            bounds,
+            &Cancellation::default(),
+            &mut |_| Ok(()),
+        )
+        .await
+        .unwrap_err();
+        assert_eq!(error, "execution usage bound reached");
+        assert_eq!(
+            provider.calls, 1,
+            "merged usage must prevent another provider call"
+        );
+        assert_eq!(owner.0.len(), record_count);
+    }
+}
+
+#[tokio::test]
 async fn abrupt_disconnect_records_unknown_usage_not_zero() {
     let endpoint = server(
         vec![event(
