@@ -67,6 +67,8 @@ pub(crate) struct Live {
     /// Set only when both the physician database and chat topic are configured.
     /// The site accepts and snapshots; the worker runs the model.
     pub(crate) durable: Option<Arc<crate::durable::DurableChat>>,
+    /// Whether the explicitly enabled synthetic reply source is on.
+    synthetic_reply: std::sync::atomic::AtomicBool,
 }
 
 impl Live {
@@ -98,6 +100,7 @@ impl Live {
             sources,
             turns: AtomicU64::new(0),
             durable: None,
+            synthetic_reply: false.into(),
         }))
     }
     /// Starts an empty chat session for the model's role.
@@ -133,6 +136,7 @@ impl Live {
             bus,
             turns: AtomicU64::new(0),
             durable: None,
+            synthetic_reply: synthetic_reply_from_env().into(),
             sources: source_snapshot().expect("load physician source-owner snapshot"),
         })
     }
@@ -167,7 +171,19 @@ impl Live {
             sources: source_snapshot()?,
             turns: AtomicU64::new(0),
             durable: Some(chat),
+            synthetic_reply: synthetic_reply_from_env().into(),
         }))
+    }
+
+    /// Whether the explicitly enabled synthetic reply source is on.
+    pub(crate) fn synthetic_reply(&self) -> bool {
+        self.synthetic_reply.load(Ordering::Relaxed)
+    }
+
+    /// Turns the synthetic reply source on for an in-process test server.
+    #[cfg(test)]
+    pub(crate) fn enable_synthetic_reply(&self) {
+        self.synthetic_reply.store(true, Ordering::Relaxed);
     }
 
     /// The signed-in physician's chats in this workspace as wire
@@ -258,6 +274,14 @@ fn chat_owner(ctx: Option<&AuthContext>) -> Option<ChatOwner> {
         practice: ctx.identity.practice_id.clone(),
         physician: ctx.identity.physician_id.clone(),
     })
+}
+
+fn synthetic_reply_from_env() -> bool {
+    crate::synthetic_reply::enabled(
+        std::env::var(crate::synthetic_reply::SWITCH)
+            .ok()
+            .as_deref(),
+    )
 }
 
 /// Load only source-owner observations; an absent snapshot means no sources,

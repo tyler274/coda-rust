@@ -5,16 +5,17 @@
 
 mod composer;
 mod icons;
+mod local_draft;
 mod panels;
 mod shell;
 mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use composer::{Composer, DraftTarget, SaveOutcome};
+use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAnswer};
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
-use physician_client::PhysicianClient;
+use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
     SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkspaceReply,
@@ -23,15 +24,16 @@ use physician_wire::{
 use panels::Panel;
 use shell::{
     CONVERSATION_EMPTY, ChatView, Inline, KeyInput, MessageBlock, NavCommand, PAST_WORK_EMPTY,
-    REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA, ReadView,
-    ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
-    TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
-    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to, chat_view, chip_name, citation_inspection,
-    connection_lines, demographic_card_view, format_calendar_date, format_clock, format_message,
-    format_waited, keyboard_command, need_you_words, opens_reader, past_work_copy,
-    patient_upcoming_visits, read_view, reply_channel_label, reply_review_actions,
-    reply_urgency_words, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
-    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE,
+    REPLY_TELL_CODA, ReadView, ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING,
+    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
+    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
+    chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
+    format_calendar_date, format_clock, format_message, format_waited, keyboard_command,
+    need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
+    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
+    today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -64,6 +66,15 @@ const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
 const SAVING: &str = "Saving…";
 const SAVED: &str = "Saved";
+const DRAFT_CONFLICT: &str = "A newer version of this draft was saved elsewhere.";
+const DRAFT_CONFLICT_HELP: &str =
+    "Retry replaces the saved draft with your text. Use newer text discards your edit.";
+const CLEAR_CONFLICT_HELP: &str = "Your message was sent. Retry replaces the newer draft with what is left here; Use newer text keeps the newer draft.";
+const CLEAR_NOT_SAVED: &str = "Message sent. Coda couldn’t clear the saved draft yet.";
+const DRAFT_RETRY: &str = "Retry";
+const DRAFT_USE_NEWER: &str = "Use newer text";
+const RECOVERY_UNAVAILABLE: &str =
+    "This tab can’t keep a reload copy of your draft. Keep the page open until it saves.";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
@@ -444,6 +455,8 @@ impl SessionState {
     fn sign_out(mut self) {
         #[cfg(target_arch = "wasm32")]
         write_stored_session(None);
+        // No old account's unsent text outlives its session in this tab.
+        local_draft::forget_everything();
         self.expired.set(false);
         self.signed_in.set(false);
         self.whoami_name.set(String::new());
@@ -512,6 +525,7 @@ impl SessionState {
                 // starts at Today; nothing of yours carries over.
                 spawn(async move {
                     let _ = client.sign_out().await;
+                    local_draft::forget_everything();
                     client.session().set(session.clone());
                     write_stored_session(Some(&session));
                     self.whoami_name.set(String::new());
@@ -854,6 +868,20 @@ fn PhysicianShell(
                             physician_client::HttpError::Status { status: 404, .. }
                         ) {
                             workspace_cache.set(None);
+                            // No access (or no patient): its unsent text is
+                            // not kept for a later reload or account.
+                            composer.write().forget_workspace(&id);
+                            #[cfg(target_arch = "wasm32")]
+                            if let Some(account) = whoami.peek().as_ref()
+                                && let Some(scope) = local_draft::Scope::new(
+                                    client.base(),
+                                    &account.practice_id,
+                                    &account.physician_id,
+                                )
+                                && let Some(storage) = local_draft::SessionStorage::open()
+                            {
+                                local_draft::forget_workspace(&storage, &scope, &id);
+                            }
                             gone.set(Some(id));
                         }
                         Err(())
@@ -873,6 +901,34 @@ fn PhysicianShell(
         if let Some(Ok(Some(open))) = answer_to(&*selected.read(), workspace.read().as_ref()) {
             workspace_cache.set(Some(open.clone()));
         }
+    });
+    // Worker completion announces `workspace_changed`, and a reconnect resyncs.
+    // Should both be missed while a reply revision runs, reread the workspace
+    // on a bounded schedule. Only the newest schedule may fire.
+    let mut revision_poll = use_signal(|| (0u64, 0u32));
+    use_effect(move || {
+        let running = workspace_cache.read().as_ref().is_some_and(|open| {
+            open.replies
+                .iter()
+                .any(|reply| reply.revision_run.as_ref().is_some_and(|run| run.running()))
+        });
+        let (generation, polls) = *revision_poll.peek();
+        let generation = generation + 1;
+        if !running {
+            revision_poll.set((generation, 0));
+            return;
+        }
+        if polls >= REVISION_POLL_LIMIT {
+            revision_poll.set((generation, polls));
+            return;
+        }
+        revision_poll.set((generation, polls + 1));
+        spawn(async move {
+            sleep_ms(REVISION_POLL_MS).await;
+            if revision_poll.peek().0 == generation {
+                *workspace_attempt.write() += 1;
+            }
+        });
     });
     use_effect(move || {
         let current = selected();
@@ -919,24 +975,195 @@ fn PhysicianShell(
         };
         workspace.map(|workspace| DraftTarget::new(workspace, open_chat().as_deref()))
     };
-    // Another draft target clears the Save mark of the one left behind.
+    // Another draft target clears the Saved mark of the one left behind, and
+    // the one left behind saves now instead of waiting for its debounce.
+    let mut left_target = use_signal(|| None::<DraftTarget>);
     use_effect(move || {
         let target = draft_target();
+        let previous = left_target.peek().clone();
+        if previous != target {
+            left_target.set(target.clone());
+            if let Some(previous) = previous {
+                autosave(composer, client, previous);
+            }
+        }
         composer.write().open(target.as_ref());
     });
-    // Opening a target reads its saved draft and the revision a Save replaces.
+    // Opening a target reads its saved draft and the revision a save names.
+    // A failed read changes nothing: it never stands for "no draft".
     let _draft_read = use_resource(move || {
         let target = draft_target();
-        let client = client.read().clone();
+        let reader = client.read().pinned();
         async move {
             let Some(target) = target else { return };
-            if let Ok(saved) = client.read_draft(&target.workspace, &target.chat).await {
+            if let Ok(saved) = reader.read_draft(&target.workspace, &target.chat).await {
                 composer
                     .write()
                     .loaded(&target, saved.revision, &saved.text);
+                autosave_after(composer, client, target, AUTOSAVE_DEBOUNCE_MS);
             }
         }
     });
+    // Same-tab recovery: once this physician's identity is known and the
+    // workspace was read for them, a reloaded tab puts back its unsent text.
+    #[cfg(target_arch = "wasm32")]
+    let writer = use_hook(writer_id);
+    #[cfg(target_arch = "wasm32")]
+    let mut restored = use_signal(std::collections::HashSet::<DraftTarget>::new);
+    #[cfg_attr(not(target_arch = "wasm32"), allow(unused_mut))]
+    let mut recovery_unavailable = use_signal(|| false);
+    #[cfg(target_arch = "wasm32")]
+    {
+        use_effect(move || {
+            let Some(target) = draft_target() else { return };
+            let Some(account) = whoami.read().clone() else {
+                return;
+            };
+            let validated = workspace_cache
+                .read()
+                .as_ref()
+                .is_some_and(|open| open.patient_workspace_id == target.workspace);
+            if !validated || restored.peek().contains(&target) {
+                return;
+            }
+            restored.write().insert(target.clone());
+            let base = client.peek().base().to_owned();
+            let Some(scope) =
+                local_draft::Scope::new(&base, &account.practice_id, &account.physician_id)
+            else {
+                return;
+            };
+            let Some(storage) = local_draft::SessionStorage::open() else {
+                return;
+            };
+            let Some(record) = local_draft::read(&storage, &scope, &target) else {
+                return;
+            };
+            if composer.write().restore(&target, record) {
+                // A Send whose answer was lost before the reload: ask again
+                // with the same command and key, never a new one.
+                let pending = composer.peek().pending_send(&target);
+                if let Some(pending) = pending {
+                    dispatch_send(
+                        send_slot,
+                        client,
+                        composer,
+                        snapshot_attempt,
+                        target.clone(),
+                        pending,
+                    );
+                }
+                autosave_after(composer, client, target, AUTOSAVE_DEBOUNCE_MS);
+            }
+        });
+    }
+    #[cfg(target_arch = "wasm32")]
+    {
+        let written = use_hook(|| {
+            std::rc::Rc::new(std::cell::RefCell::new(std::collections::HashMap::<
+                DraftTarget,
+                Option<composer::Recovery>,
+            >::new()))
+        });
+        use_effect(move || {
+            let held = composer.read();
+            let restored = restored.read();
+            let Some(account) = whoami.read().clone() else {
+                return;
+            };
+            let base = client.peek().base().to_owned();
+            let Some(scope) =
+                local_draft::Scope::new(&base, &account.practice_id, &account.physician_id)
+            else {
+                return;
+            };
+            let storage = local_draft::SessionStorage::open();
+            let mut failed = false;
+            for target in restored.iter() {
+                let record = held.recovery(target);
+                if written.borrow().get(target) == Some(&record) {
+                    continue;
+                }
+                let kept = match &storage {
+                    Some(storage) => local_draft::write(
+                        storage,
+                        &scope,
+                        target,
+                        &writer,
+                        record.as_ref(),
+                        js_sys::Date::now(),
+                    )
+                    .is_ok(),
+                    None => record.is_none(),
+                };
+                if kept {
+                    written.borrow_mut().insert(target.clone(), record);
+                } else {
+                    failed = true;
+                }
+            }
+            if *recovery_unavailable.peek() != failed {
+                recovery_unavailable.set(failed);
+            }
+        });
+    }
+    // Send, from the button or the keyboard: one snapshot of the target,
+    // text, edit generation and command, which Check again reuses.
+    let mut send_message = move || {
+        let target = draft_target();
+        let text = composer.peek().text(target.as_ref());
+        let command = message_command(
+            selected(),
+            open_chat(),
+            workspace_cache
+                .read()
+                .as_ref()
+                .and_then(|open| open.time_zone.clone()),
+            text.clone(),
+        );
+        let (Some(target), Ok(command)) = (target, command.clone()) else {
+            send_slot.run_or_refuse(client.read().clone(), command, || {});
+            return;
+        };
+        if send_slot.sending() {
+            return;
+        }
+        // A Send on this target whose answer never arrived is asked about
+        // again with its own key; a new command would risk sending twice.
+        let unanswered = composer.peek().pending_send(&target);
+        if let Some(pending) = unanswered {
+            dispatch_send(
+                send_slot,
+                client,
+                composer,
+                snapshot_attempt,
+                target,
+                pending,
+            );
+            return;
+        }
+        if text.trim().is_empty() {
+            send_slot.run_or_refuse(
+                client.read().clone(),
+                Err(MESSAGE_REFUSED.to_owned()),
+                || {},
+            );
+            return;
+        }
+        let pending = composer
+            .write()
+            .begin_send(&target, command.key(), &text, command.0.clone());
+        if let Some(pending) = pending {
+            dispatch_send(
+                send_slot,
+                client,
+                composer,
+                snapshot_attempt,
+                target,
+                pending,
+            );
+        }
+    };
     let shown_target = draft_target();
     let today_read = today.read();
     let today_cache_read = today_cache.read();
@@ -1147,19 +1374,7 @@ fn PhysicianShell(
                 }
                 if key == "Enter" && (event.modifiers().meta() || event.modifiers().ctrl()) {
                     event.prevent_default();
-                    send_slot.run_or_refuse(
-                        client.read().clone(),
-                        message_command(
-                            selected(),
-                            open_chat(),
-                            workspace_cache
-                                .read()
-                                .as_ref()
-                                .and_then(|open| open.time_zone.clone()),
-                            composer.peek().text(draft_target().as_ref()),
-                        ),
-                        move || *snapshot_attempt.write() += 1,
-                    );
+                    send_message();
                     return;
                 }
                 let rail = if place() == Place::Workspace {
@@ -1444,8 +1659,28 @@ fn PhysicianShell(
                             chats: chats.clone(),
                             server_now: server_now.clone(),
                             draft: composer.read().text(shown_target.as_ref()),
-                            notice: composer.read().notice(shown_target.as_ref()).to_owned(),
-                            saving: composer.read().saving(shown_target.as_ref()),
+                            notice: notice_words(
+                                composer.read().notice(shown_target.as_ref()),
+                                composer.read().clearing(shown_target.as_ref()),
+                            ),
+                            conflict: composer.read().conflict(shown_target.as_ref()),
+                            clearing: composer.read().clearing(shown_target.as_ref()),
+                            recovery_unavailable: recovery_unavailable(),
+                            on_conflict_retry: move |_| {
+                                let target = draft_target();
+                                composer.write().retry(target.as_ref());
+                                if let Some(target) = target {
+                                    autosave(composer, client, target);
+                                }
+                            },
+                            on_conflict_use_newer: move |_| {
+                                composer.write().take_newer(draft_target().as_ref());
+                            },
+                            on_draft_blur: move |_| {
+                                if let Some(target) = draft_target() {
+                                    autosave(composer, client, target);
+                                }
+                            },
                             is_admin: whoami.read().as_ref().is_some_and(|account| account.admin),
                             practice_accounts: whoami
                                 .read()
@@ -1587,7 +1822,11 @@ fn PhysicianShell(
                                 reading.set(Some(source_reading(chip)));
                             },
                             on_draft: move |value: String| {
-                                composer.write().edit(draft_target().as_ref(), value);
+                                let target = draft_target();
+                                composer.write().edit(target.as_ref(), value);
+                                if let Some(target) = target {
+                                    autosave_after(composer, client, target, AUTOSAVE_DEBOUNCE_MS);
+                                }
                             },
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
@@ -1604,44 +1843,7 @@ fn PhysicianShell(
                             },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_new_chat: move |_| start_chat(),
-                            on_save: move |_| {
-                                // Save names the revision this text was read
-                                // or last saved at; one save runs per draft.
-                                let Some(attempt) = composer.write().begin(draft_target().as_ref())
-                                else {
-                                    return;
-                                };
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    let outcome = save_outcome(
-                                        client
-                                            .save_draft(
-                                                &attempt.target.workspace,
-                                                &attempt.target.chat,
-                                                attempt.expected_revision,
-                                                &attempt.text,
-                                            )
-                                            .await
-                                            .map(|saved| saved.revision),
-                                    );
-                                    composer.write().finish(&attempt, outcome);
-                                });
-                            },
-                            on_send: move |_| {
-                                send_slot.run_or_refuse(
-                                    client.read().clone(),
-                                    message_command(
-                                        selected(),
-                                        open_chat(),
-                                        workspace_cache
-                                            .read()
-                                            .as_ref()
-                                            .and_then(|open| open.time_zone.clone()),
-                                        composer.peek().text(draft_target().as_ref()),
-                                    ),
-                                    move || *snapshot_attempt.write() += 1,
-                                );
-                            },
+                            on_send: move |_| send_message(),
                             on_dictate: move |_| {
                                 let client = client.read().clone();
                                 spawn(async move {
@@ -1673,7 +1875,7 @@ fn PhysicianShell(
                                     },
                                 );
                             },
-                            on_revise_reply: move |(reply_id, instruction): (String, String)| {
+                            on_revise_reply: move |(reply_id, revision, instruction): (String, u64, String)| {
                                 let Some(ws_id) = selected() else { return };
                                 let zone = workspace_cache
                                     .read()
@@ -1681,18 +1883,26 @@ fn PhysicianShell(
                                     .and_then(|open| open.time_zone.clone())
                                     .unwrap_or_default();
                                 reply_notice.set(String::new());
-                                reply_slot.run(
+                                // The command names the revision the physician
+                                // was shown; a refusal rereads the workspace so
+                                // the current draft replaces the stale one.
+                                reply_slot.run_answered(
                                     client.read().clone(),
                                     Command::new(
                                         "reply.revise",
                                         serde_json::json!({
                                             "patient_workspace_id": ws_id,
                                             "reply_work_id": reply_id,
+                                            "expected_draft_revision": revision,
                                             "instruction": instruction,
                                             "physician_time_zone": zone,
                                         }),
                                     ),
-                                    move || *workspace_attempt.write() += 1,
+                                    Callback::new(move |()| *workspace_attempt.write() += 1),
+                                    Callback::new(move |()| {
+                                        reply_notice.set(REPLY_REVISION_STALE.to_owned());
+                                        *workspace_attempt.write() += 1;
+                                    }),
                                 );
                             },
                         }
@@ -1776,6 +1986,15 @@ impl Command {
     fn keyed(kind: &str, key: String, payload: serde_json::Value) -> Self {
         Self(serde_json::json!({ "type": kind, "idempotency_key": key, "payload": payload }))
     }
+
+    /// The idempotency key the server recognizes this command by.
+    fn key(&self) -> String {
+        self.0
+            .get("idempotency_key")
+            .and_then(serde_json::Value::as_str)
+            .unwrap_or_default()
+            .to_owned()
+    }
 }
 
 /// How a command was answered.
@@ -1814,8 +2033,9 @@ fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> An
 #[derive(Clone, Copy, PartialEq)]
 struct CommandSlot {
     stage: Signal<CommandStage>,
-    /// The unconfirmed command and what runs once it is taken.
-    last: Signal<Option<(Command, Callback)>>,
+    /// The unconfirmed command, what runs once it is taken, and what runs if
+    /// it is refused.
+    last: Signal<Option<(Command, Callback, Option<Callback>)>>,
 }
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
@@ -1852,14 +2072,31 @@ impl CommandSlot {
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.
     fn run(self, client: PhysicianClient, command: Command, mut then: impl FnMut() + 'static) {
-        self.send(client, command, Callback::new(move |()| then()));
+        self.send(client, command, Callback::new(move |()| then()), None);
     }
 
-    fn send(mut self, client: PhysicianClient, command: Command, then: Callback) {
+    /// Like `run`; `refused` runs when the server answers and does not take it.
+    fn run_answered(
+        self,
+        client: PhysicianClient,
+        command: Command,
+        then: Callback,
+        refused: Callback,
+    ) {
+        self.send(client, command, then, Some(refused));
+    }
+
+    fn send(
+        mut self,
+        client: PhysicianClient,
+        command: Command,
+        then: Callback,
+        refused: Option<Callback>,
+    ) {
         if *self.stage.peek() == CommandStage::Sending {
             return;
         }
-        self.last.set(Some((command.clone(), then)));
+        self.last.set(Some((command.clone(), then, refused)));
         self.stage.set(CommandStage::Sending);
         spawn(async move {
             match answer(&client.command(&command.0).await) {
@@ -1871,6 +2108,9 @@ impl CommandSlot {
                 Answer::Refused(reason) => {
                     self.stage.set(CommandStage::Refused(reason));
                     self.last.set(None);
+                    if let Some(refused) = refused {
+                        refused.call(());
+                    }
                 }
                 Answer::Unconfirmed => self.stage.set(CommandStage::Unconfirmed),
             }
@@ -1893,8 +2133,8 @@ impl CommandSlot {
 
     /// Resends the unconfirmed command as the same request, with its own follow-up.
     fn check_again(self, client: PhysicianClient) {
-        if let Some((command, then)) = self.last.peek().clone() {
-            self.send(client, command, then);
+        if let Some((command, then, refused)) = self.last.peek().clone() {
+            self.send(client, command, then, refused);
         }
     }
 
@@ -2690,8 +2930,15 @@ fn PatientSurface(
     server_now: String,
     draft: String,
     notice: String,
-    /// A save of this draft is running; Save waits for it.
-    saving: bool,
+    /// The newer saved draft a conflict is waiting on.
+    conflict: Option<ConflictDraft>,
+    /// A sent message's text is still waiting to be cleared from the saved draft.
+    clearing: bool,
+    /// This tab cannot keep a reload copy of unsent text.
+    recovery_unavailable: bool,
+    on_conflict_retry: EventHandler,
+    on_conflict_use_newer: EventHandler,
+    on_draft_blur: EventHandler,
     is_admin: bool,
     practice_accounts: Vec<PracticeAccountSummary>,
     target_physician_id: String,
@@ -2706,7 +2953,6 @@ fn PatientSurface(
     on_read: EventHandler<(String, String)>,
     on_open_source: EventHandler<SourceChip>,
     on_draft: EventHandler<String>,
-    on_save: EventHandler,
     on_send: EventHandler,
     on_dictate: EventHandler,
     on_editing: EventHandler<bool>,
@@ -2729,7 +2975,7 @@ fn PatientSurface(
     on_resume: EventHandler<TodayLine>,
     on_open_past_work: EventHandler,
     on_close_reply: EventHandler<String>,
-    on_revise_reply: EventHandler<(String, String)>,
+    on_revise_reply: EventHandler<(String, u64, String)>,
 ) -> Element {
     let clinic_demographic = workspace
         .as_ref()
@@ -3214,17 +3460,36 @@ fn PatientSurface(
                             class: "composer",
                             placeholder: "Write a message",
                             value: "{draft}",
+                            aria_label: "Message",
                             onfocus: move |_| on_editing.call(true),
-                            onblur: move |_| on_editing.call(false),
+                            onblur: move |_| {
+                                on_editing.call(false);
+                                on_draft_blur.call(());
+                            },
                             oninput: move |event| on_draft.call(event.value()),
                         }
                         div { class: "composer-actions",
-                            button { class: "control-secondary", r#type: "button", disabled: saving, onclick: move |_| on_save.call(()), "Save" }
                             button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
                             button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
                             if !notice.is_empty() {
                                 span { class: "composer-notice", role: "status", "{notice}" }
                             }
+                        }
+                        if let Some(newer) = conflict {
+                            div { class: "composer-conflict", role: "alert", "data-revision": "{newer.revision}",
+                                p { "{DRAFT_CONFLICT}" }
+                                blockquote { class: "composer-conflict-text", "{newer.text}" }
+                                p { class: "quiet-line",
+                                    if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                                }
+                                div { class: "composer-actions",
+                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                }
+                            }
+                        }
+                        if recovery_unavailable {
+                            p { class: "quiet-line composer-recovery", role: "status", "{RECOVERY_UNAVAILABLE}" }
                         }
                         {send_notice}
                     },
@@ -3520,7 +3785,7 @@ fn ReplyReviewCard(
     busy: bool,
     on_editing: EventHandler<bool>,
     on_close_reply: EventHandler<String>,
-    on_revise_reply: EventHandler<(String, String)>,
+    on_revise_reply: EventHandler<(String, u64, String)>,
 ) -> Element {
     let mut instruction = use_signal(String::new);
     let mut copied = use_signal(String::new);
@@ -3531,14 +3796,36 @@ fn ReplyReviewCard(
     let urgency = reply_urgency_words(&reply.urgency);
     let draft = reply.draft_text.clone();
     let reply_id = reply.reply_work_id.clone();
+    // A revision names the exact revision on screen, never a fresh read.
+    let shown_revision = reply.draft_revision;
+    let run_status = reply
+        .revision_run
+        .as_ref()
+        .map(|run| run.status.clone())
+        .unwrap_or_default();
+    let run_words = reply_revision_words(&reply);
     let can_copy = actions.contains(&ReplyReviewAction::Copy);
     let can_close = actions.contains(&ReplyReviewAction::NoReplyNeeded);
-    let can_revise = actions.contains(&ReplyReviewAction::Revise);
+    let can_revise = actions.contains(&ReplyReviewAction::Revise) && shown_revision.is_some();
+    let revision_attr = shown_revision.map(|r| r.to_string()).unwrap_or_default();
     let label = format!("Replying in {channel}");
+    let mut ask = move |reply_id: String| {
+        let asked = instruction.read().trim().to_owned();
+        let Some(revision) = shown_revision else {
+            return;
+        };
+        if asked.is_empty() || busy {
+            return;
+        }
+        on_revise_reply.call((reply_id, revision, asked));
+        instruction.set(String::new());
+    };
     rsx! {
         article {
             class: "simulation-card reply-review",
             "data-reply-state": "{state}",
+            "data-draft-revision": "{revision_attr}",
+            "data-revision-status": "{run_status}",
             aria_label: "{label}",
             div { class: "simulation-card-header",
                 strong { "{headline}" }
@@ -3546,6 +3833,14 @@ fn ReplyReviewCard(
             }
             p { class: "patient-synopsis-meta", "{label}" }
             FormattedMessage { text: draft.clone() }
+            if let Some(words) = run_words {
+                p {
+                    class: "composer-notice",
+                    role: "status",
+                    "data-reply-revision": "{run_status}",
+                    "{words}"
+                }
+            }
             if can_copy || can_close {
                 div { class: "reply-review-actions",
                     if can_copy {
@@ -3601,11 +3896,7 @@ fn ReplyReviewCard(
                                     return;
                                 }
                                 event.prevent_default();
-                                let asked = instruction.read().trim().to_owned();
-                                if asked.is_empty() || busy {
-                                    return;
-                                }
-                                on_revise_reply.call((reply_id.clone(), asked));
+                                ask(reply_id.clone());
                             }
                         },
                     }
@@ -3617,12 +3908,7 @@ fn ReplyReviewCard(
                             aria_label: "{REPLY_ASK}",
                             onclick: {
                                 let reply_id = reply_id.clone();
-                                move |_| {
-                                    let asked = instruction.read().trim().to_owned();
-                                    if !asked.is_empty() {
-                                        on_revise_reply.call((reply_id.clone(), asked));
-                                    }
-                                }
+                                move |_| ask(reply_id.clone())
                             },
                             "{REPLY_ASK}"
                         }
@@ -3766,18 +4052,192 @@ fn open_target(
     }
 }
 
-/// The message the physician wrote, as one command. Nothing goes without a
-/// patient, a conversation and the practice's time zone.
-/// How the server answered a draft save: a 409 is another save's newer
-/// revision (or a read-only projection), and nothing was written.
-fn save_outcome(answer: Result<i64, physician_client::HttpError>) -> SaveOutcome {
+/// How the server answered a draft save. Only a validated conflict body
+/// names a newer revision; a bare or malformed 409 (a read-only projection,
+/// an authority refusal) is a failure and never authorizes an overwrite.
+fn save_outcome(answer: Result<DraftSave, physician_client::HttpError>) -> SaveOutcome {
     match answer {
-        Ok(revision) => SaveOutcome::Saved(revision),
-        Err(physician_client::HttpError::Status { status: 409, .. }) => SaveOutcome::Conflict,
+        Ok(DraftSave::Saved(saved)) => SaveOutcome::Saved(saved.revision),
+        Ok(DraftSave::Conflict(current)) => SaveOutcome::Conflict(current.revision, current.text),
         Err(_) => SaveOutcome::Failed,
     }
 }
 
+/// The words beside the composer for its notice. A failed clear after an
+/// accepted Send says the message went; only the draft cleanup is pending.
+fn notice_words(notice: Notice, clearing: bool) -> String {
+    match notice {
+        Notice::None | Notice::Conflict => String::new(),
+        Notice::Saving => SAVING.to_owned(),
+        Notice::Saved => SAVED.to_owned(),
+        Notice::NotSaved if clearing => CLEAR_NOT_SAVED.to_owned(),
+        Notice::NotSaved => NOT_SAVED.to_owned(),
+        Notice::Said(words) => words.to_owned(),
+    }
+}
+
+/// How long typing must pause before the composer saves.
+const AUTOSAVE_DEBOUNCE_MS: u32 = 800;
+/// While a reply revision runs, the workspace is reread this often in case
+/// its completion notification was missed...
+const REVISION_POLL_MS: u32 = 3_000;
+/// ...at most this many times per run; events and resync still apply after.
+const REVISION_POLL_LIMIT: u32 = 40;
+/// Failed saves retry on their own this many times, slower each time; after
+/// that the next edit tries again. Never a tight loop.
+const AUTOSAVE_RETRIES: u32 = 5;
+
+/// The wait before the slow retry of a save that failed `failures` times in
+/// a row, or `None` once automatic retries are spent.
+fn autosave_retry_ms(failures: u32) -> Option<u32> {
+    (1..=AUTOSAVE_RETRIES)
+        .contains(&failures)
+        .then(|| 2_000u32 << (failures - 1))
+}
+
+/// Waits `ms` milliseconds without blocking the page.
+#[cfg(target_arch = "wasm32")]
+async fn sleep_ms(ms: u32) {
+    let Some(window) = web_sys::window() else {
+        return;
+    };
+    let wait = js_sys::Promise::new(&mut |resolve, _reject| {
+        let _ = window.set_timeout_with_callback_and_timeout_and_arguments_0(
+            &resolve,
+            ms.min(i32::MAX as u32) as i32,
+        );
+    });
+    let _ = wasm_bindgen_futures::JsFuture::from(wait).await;
+}
+
+/// Waits `ms` milliseconds on a helper thread (native builds).
+#[cfg(not(target_arch = "wasm32"))]
+async fn sleep_ms(ms: u32) {
+    use std::sync::{Arc, Mutex};
+    use std::task::{Poll, Waker};
+    let state: Arc<Mutex<(bool, Option<Waker>)>> = Arc::default();
+    let timer = Arc::clone(&state);
+    std::thread::spawn(move || {
+        std::thread::sleep(std::time::Duration::from_millis(u64::from(ms)));
+        let mut state = timer.lock().expect("timer");
+        state.0 = true;
+        if let Some(waker) = state.1.take() {
+            waker.wake();
+        }
+    });
+    std::future::poll_fn(move |context| {
+        let mut state = state.lock().expect("timer");
+        if state.0 {
+            Poll::Ready(())
+        } else {
+            state.1 = Some(context.waker().clone());
+            Poll::Pending
+        }
+    })
+    .await;
+}
+
+/// Saves `target` once it has gone `ms` without an edit. A later edit makes
+/// this timer obsolete (it then does nothing); the shell's scope owns the
+/// task, so leaving the signed-in shell cancels it.
+fn autosave_after(
+    composer: Signal<Composer>,
+    client: Signal<PhysicianClient>,
+    target: DraftTarget,
+    ms: u32,
+) {
+    let generation = composer.peek().generation(&target);
+    spawn(async move {
+        sleep_ms(ms).await;
+        if composer.peek().generation(&target) == generation {
+            autosave(composer, client, target);
+        }
+    });
+}
+
+/// Starts `target`'s save now when it has unsaved text and nothing stops it
+/// (a running save, a conflict, a failure waiting on its retry). The request
+/// keeps the session it began with. When it ends, edits made meanwhile get a
+/// trailing save, and a failure retries slowly a few times.
+fn autosave(composer: Signal<Composer>, client: Signal<PhysicianClient>, target: DraftTarget) {
+    let mut held = composer;
+    let Some(attempt) = held.write().begin(&target) else {
+        return;
+    };
+    let saver = client.peek().pinned();
+    spawn(async move {
+        let outcome = save_outcome(
+            saver
+                .save_draft(
+                    &attempt.target.workspace,
+                    &attempt.target.chat,
+                    attempt.expected_revision,
+                    &attempt.text,
+                )
+                .await,
+        );
+        held.write().finish(&attempt, outcome);
+        let failing = composer.peek().failing(&target);
+        if composer.peek().wants_save(&target) {
+            autosave_after(composer, client, target, AUTOSAVE_DEBOUNCE_MS);
+        } else if let Some(failures) = failing
+            && let Some(wait) = autosave_retry_ms(failures)
+        {
+            spawn(async move {
+                sleep_ms(wait).await;
+                if composer.peek().failing(&target) == Some(failures) {
+                    held.write().retry_failed(&target);
+                    autosave(composer, client, target);
+                }
+            });
+        }
+    });
+}
+
+/// Sends a captured message. Acceptance removes only the submitted text and
+/// queues its durable clear; refusal keeps the text as an ordinary draft; no
+/// answer leaves the Send pending, and Check again (or a reload) asks again
+/// with the same command and key.
+fn dispatch_send(
+    slot: CommandSlot,
+    client: Signal<PhysicianClient>,
+    composer: Signal<Composer>,
+    mut snapshot_attempt: Signal<u32>,
+    target: DraftTarget,
+    pending: composer::PendingSend,
+) {
+    let key = pending.key.clone();
+    let accepted = {
+        let (target, key) = (target.clone(), key.clone());
+        Callback::new(move |()| {
+            let mut held = composer;
+            held.write().sent(&target, &key, SendAnswer::Accepted);
+            *snapshot_attempt.write() += 1;
+            autosave(composer, client, target.clone());
+        })
+    };
+    let refused = Callback::new(move |()| {
+        let mut held = composer;
+        held.write().sent(&target, &key, SendAnswer::Refused);
+    });
+    slot.run_answered(
+        client.peek().pinned(),
+        Command(pending.command),
+        accepted,
+        refused,
+    );
+}
+
+/// A per-document id: records this document writes are its own.
+#[cfg(target_arch = "wasm32")]
+fn writer_id() -> String {
+    static NEXT: AtomicU64 = AtomicU64::new(1);
+    let n = NEXT.fetch_add(1, Ordering::Relaxed);
+    format!("doc-{}-{n}", now_millis())
+}
+
+/// The message the physician wrote, as one command. Nothing goes without a
+/// patient, a conversation and the practice's time zone.
 fn message_command(
     workspace_id: Option<String>,
     chat_id: Option<String>,

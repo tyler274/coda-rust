@@ -311,9 +311,10 @@ impl Store {
         tx.commit().await
     }
 
-    /// Opens reply work's first saved draft at revision 1. Only the physician
-    /// reply owner calls this, when it admits reply work; HTTP saves never
-    /// create a draft. An existing draft is left as it is.
+    /// Opens reply work's first saved draft at revision 1 without an
+    /// authority fence. Test fixtures and backend admission only; the site
+    /// opens through [`Self::open_draft_authorized`]. HTTP saves never create
+    /// a draft. An existing draft is left as it is.
     pub async fn open_draft(&self, scope: &Scope, text: &str) -> Result<u64, DbErr> {
         nonempty(scope)?;
         if text.trim().is_empty() {
@@ -330,6 +331,45 @@ impl Store {
             .ok_or_else(|| error("missing reply draft"))?;
         tx.commit().await?;
         Ok(decode(row.state)?.revision)
+    }
+
+    /// Opens trusted, server-owned reply work's first saved draft at revision
+    /// 1 while the auth owner's locks for `session_hash` are held in the same
+    /// transaction as the insert, so a revoked session, removed panel access
+    /// or deactivated account cannot open it. Repeated opening keeps the
+    /// existing draft, its edits and its revision history. `None` when the
+    /// authority refused; the caller never learns more than that.
+    pub async fn open_draft_authorized(
+        &self,
+        scope: &Scope,
+        text: &str,
+        session_hash: &[u8],
+        authority: &mut dyn Authority,
+    ) -> Result<Option<Draft>, DbErr> {
+        nonempty(scope)?;
+        if text.trim().is_empty() {
+            return Err(error("empty reply draft"));
+        }
+        let tx = self.db.begin().await?;
+        if authority
+            .lock_publication(&tx, scope, Some(session_hash))
+            .await
+            .is_err()
+        {
+            tx.rollback().await?;
+            return Ok(None);
+        }
+        reply_draft::Entity::insert(draft_model(scope, &Draft::opened(text))?)
+            .on_conflict(OnConflict::new().do_nothing().to_owned())
+            .exec_without_returning(&tx)
+            .await?;
+        // READ COMMITTED: this statement sees a concurrent opener's committed row.
+        let row = reply_draft::Entity::find_by_id(keys(scope))
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing reply draft"))?;
+        tx.commit().await?;
+        decode(row.state).map(Some)
     }
 
     /// Unlocked display read. `None` when this physician has no such draft.

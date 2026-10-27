@@ -45,6 +45,17 @@ impl Drop for Running {
 
 impl Running {
     async fn start(label: &str, failures: u32, delay_ms: u64) -> Option<Self> {
+        Self::start_with(label, failures, delay_ms, false).await
+    }
+
+    /// Like `start`; `synthetic` sets the explicit synthetic reply switch on
+    /// both sites, so reply work opens without any direct draft seeding.
+    async fn start_with(
+        label: &str,
+        failures: u32,
+        delay_ms: u64,
+        synthetic: bool,
+    ) -> Option<Self> {
         let database = support::Database::create(label).await?;
         support::staging_account(&database.url).await;
         let store = Store::connect(&database.url).await.expect("runtime store");
@@ -96,11 +107,13 @@ impl Running {
             }];
             let snapshot = home.join(format!("sources-{index}.json"));
             std::fs::write(&snapshot, serde_json::to_vec(&sources).unwrap()).unwrap();
+            let switch = if synthetic { "1" } else { "0" };
             let mut site = support::Process::spawn(
                 &format!("site-{index}"),
                 support::site_bin(),
                 &[],
                 &[
+                    ("PHYSICIAN_SYNTHETIC_REPLY", switch),
                     ("PHYSICIAN_DATABASE_URL", &database.url),
                     ("PHYSICIAN_REDIS_URL", &redis),
                     ("PUBSUB_EMULATOR_HOST", &emulator.host),
@@ -620,4 +633,274 @@ async fn missing_and_other_physician_drafts_are_not_created_or_exposed() {
         .await
         .unwrap();
     assert_eq!(status, 401);
+}
+
+/// The explicitly enabled synthetic reply's stable server-owned identity.
+const SYNTHETIC_REPLY: &str = "synthetic-reply-medication-question";
+
+fn workspace_path() -> String {
+    format!("/patient-workspaces/{}", physician_sample::WORKSPACE_IDS[0])
+}
+
+fn synthetic_scope() -> Scope {
+    Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: physician_sample::WORKSPACE_IDS[0].into(),
+        chat: SYNTHETIC_REPLY.into(),
+    }
+}
+
+impl Running {
+    /// The synthetic reply as the workspace projection on `site` lists it.
+    async fn listed(&self, site: usize, session: &str) -> Option<Value> {
+        let (status, body) = support::get_json(&self.hosts[site], &workspace_path(), session).await;
+        assert_eq!(status, 200, "{body}\n{}", self.logs());
+        body["replies"]
+            .as_array()
+            .and_then(|replies| {
+                replies
+                    .iter()
+                    .find(|reply| reply["reply_work_id"] == SYNTHETIC_REPLY)
+            })
+            .cloned()
+    }
+}
+
+#[tokio::test]
+async fn the_synthetic_switch_off_opens_no_reply_work() {
+    let Some(running) = Running::start("reply_synthetic_off", 0, 0).await else {
+        return;
+    };
+    for site in 0..2 {
+        assert!(running.listed(site, &running.session).await.is_none());
+    }
+    assert!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .is_none()
+    );
+    // Without the source, PUT and revise still refuse the identifier.
+    let (status, _) = running.save(&synthetic_scope(), 0, "invented").await;
+    assert_eq!(status, 409);
+    running
+        .command(
+            0,
+            &revise(&synthetic_scope(), "synthetic-off", 1),
+            "rejected",
+        )
+        .await;
+    assert!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .is_none()
+    );
+}
+
+#[tokio::test]
+async fn the_synthetic_reply_opens_once_and_revises_from_the_displayed_revision() {
+    let Some(running) = Running::start_with("reply_synthetic", 0, 400, true).await else {
+        return;
+    };
+    let scope = synthetic_scope();
+    // Concurrent first loads on both sites open revision 1 exactly once.
+    let (a, b) = tokio::join!(
+        running.listed(0, &running.session),
+        running.listed(1, &running.session)
+    );
+    let (a, b) = (a.expect("reply on A"), b.expect("reply on B"));
+    assert_eq!(a["draft_revision"], 1, "{a}");
+    assert_eq!(b["draft_revision"], 1, "{b}");
+    assert_eq!(a["draft_text"], b["draft_text"]);
+    assert_eq!(a["revision_run"], Value::Null);
+    let opened = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(opened.revision, 1);
+    assert!(
+        running
+            .store
+            .earlier_revisions(&scope)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+
+    // A physician save on B; reopening on A keeps the edit and its revision.
+    let (status, body) = running.save(&scope, 1, SAVED).await;
+    assert_eq!(status, 200, "{body}");
+    let shown = running.listed(0, &running.session).await.unwrap();
+    assert_eq!(shown["draft_text"], SAVED);
+    assert_eq!(shown["draft_revision"], 2);
+
+    // A revision naming the displayed revision is accepted and shows pending
+    // or active; one naming the stale first revision is refused.
+    running
+        .command(0, &revise(&scope, "synthetic-stale", 1), "rejected")
+        .await;
+    let displayed = shown["draft_revision"].as_u64().unwrap();
+    running
+        .command(
+            1,
+            &revise(&scope, "synthetic-revise", displayed),
+            "accepted",
+        )
+        .await;
+    let running_now = running.listed(0, &running.session).await.unwrap();
+    assert_eq!(running_now["revision_run"]["run_id"], "synthetic-revise");
+    assert!(
+        matches!(
+            running_now["revision_run"]["status"].as_str(),
+            Some("pending" | "active" | "completed")
+        ),
+        "{running_now}"
+    );
+
+    // The worker's wording replaces the draft; both sites project it.
+    running
+        .wait_draft(&scope, |draft| draft.status == "completed")
+        .await;
+    for site in 0..2 {
+        let done = running.listed(site, &running.session).await.unwrap();
+        assert_eq!(done["draft_text"], support::FIXED_TEXT, "{done}");
+        assert_eq!(done["draft_revision"], 3);
+        assert_eq!(
+            done["revision_run"],
+            json!({"run_id": "synthetic-revise", "status": "completed"})
+        );
+    }
+    // Opening again never resets the revised draft or its history.
+    let again = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(again.revision, 3);
+    assert_eq!(again.text, support::FIXED_TEXT);
+}
+
+#[tokio::test]
+async fn a_failed_synthetic_revision_shows_failed_and_keeps_the_draft() {
+    let Some(running) =
+        Running::start_with("reply_synthetic_failed", MAX_FAILED_ATTEMPTS, 0, true).await
+    else {
+        return;
+    };
+    let scope = synthetic_scope();
+    let shown = running.listed(0, &running.session).await.unwrap();
+    let text = shown["draft_text"].clone();
+    running
+        .command(0, &revise(&scope, "synthetic-fails", 1), "accepted")
+        .await;
+    running
+        .wait_draft(&scope, |draft| draft.status == "failed")
+        .await;
+    for site in 0..2 {
+        let failed = running.listed(site, &running.session).await.unwrap();
+        assert_eq!(failed["draft_text"], text);
+        assert_eq!(failed["draft_revision"], 1);
+        assert_eq!(
+            failed["revision_run"],
+            json!({"run_id": "synthetic-fails", "status": "failed"})
+        );
+    }
+}
+
+#[tokio::test]
+async fn synthetic_reply_opening_refuses_other_physicians_and_revoked_authority() {
+    let Some(running) = Running::start_with("reply_synthetic_authority", 0, 0, true).await else {
+        return;
+    };
+    let auth = PostgresAuthStore::connect_without_migrations(&running.database.url)
+        .await
+        .unwrap();
+    let email = "synthetic-colleague@example.test";
+    auth.ensure_account(
+        physician_sample::STAGING_PRACTICE_ID,
+        "synthetic-colleague",
+        email,
+        "Colleague",
+        false,
+        support::unix_now(),
+    )
+    .await
+    .unwrap();
+    let token = auth
+        .begin_sign_in(email, support::unix_now())
+        .await
+        .unwrap();
+    let (identity, session) = auth
+        .complete_sign_in(email, &token, support::unix_now())
+        .await
+        .unwrap();
+    let mut theirs = synthetic_scope();
+    theirs.physician = identity.physician_id.clone();
+
+    // Demographic-only access (same clinic, not on the panel) opens nothing.
+    auth.set_membership(&identity, &theirs.workspace, Membership::Denied)
+        .await;
+    let (status, body) = support::get_json(&running.hosts[1], &workspace_path(), &session).await;
+    assert_eq!(status, 200, "{body}");
+    assert_eq!(body["membership"], "clinic_demographic");
+    assert!(
+        body["replies"].as_array().is_none_or(Vec::is_empty),
+        "{body}"
+    );
+    assert!(running.store.draft(&theirs).await.unwrap().is_none());
+
+    // On the panel the colleague gets their own draft, never the physician's.
+    auth.set_membership(&identity, &theirs.workspace, Membership::Allowed)
+        .await;
+    let mine = running.listed(0, &running.session).await.unwrap();
+    let (status, _) = running.save(&synthetic_scope(), 1, SAVED).await;
+    assert_eq!(status, 200);
+    let (status, body) = support::get_json(&running.hosts[1], &workspace_path(), &session).await;
+    assert_eq!(status, 200, "{body}");
+    let listed = body["replies"]
+        .as_array()
+        .and_then(|r| r.iter().find(|r| r["reply_work_id"] == SYNTHETIC_REPLY))
+        .cloned()
+        .expect("colleague's own synthetic reply");
+    assert_eq!(listed["draft_text"], mine["draft_text"]);
+    assert_eq!(listed["draft_revision"], 1);
+    assert_eq!(
+        running
+            .store
+            .draft(&synthetic_scope())
+            .await
+            .unwrap()
+            .unwrap()
+            .text,
+        SAVED
+    );
+
+    // A signed-out session can no longer open, read or project the reply.
+    let (other_identity, other_session) = {
+        let email = "synthetic-revoked@example.test";
+        auth.ensure_account(
+            physician_sample::STAGING_PRACTICE_ID,
+            "synthetic-revoked",
+            email,
+            "Revoked",
+            false,
+            support::unix_now(),
+        )
+        .await
+        .unwrap();
+        let token = auth
+            .begin_sign_in(email, support::unix_now())
+            .await
+            .unwrap();
+        auth.complete_sign_in(email, &token, support::unix_now())
+            .await
+            .unwrap()
+    };
+    auth.set_membership(&other_identity, &theirs.workspace, Membership::Allowed)
+        .await;
+    auth.end_session(&other_session).await;
+    let (status, _) = support::get_json(&running.hosts[0], &workspace_path(), &other_session).await;
+    assert_eq!(status, 401);
+    let mut revoked = synthetic_scope();
+    revoked.physician = other_identity.physician_id;
+    assert!(running.store.draft(&revoked).await.unwrap().is_none());
 }
