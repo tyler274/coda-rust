@@ -318,7 +318,9 @@ Linear wins.
 - Your answer to a Check-in about your doctor's plan reaches the practice with
   what you share, for its next review, never as an alert on its own (ENG-45;
   Dev 2026-10-25: "Carry on with the doctor's plan, Check-in answers and
-  appointments"). In connected-care it is part of the live feed.
+  appointments"). In connected-care it is part of the live feed. Only an
+  answer to a Check-in Duet delivered crosses; the rest of your conversation
+  never does.
 - Your practice's appointment (ENG-169, ENG-31): while connected, the
   practice's schedule shows beside any date you gave yourself; both stay
   visible when they conflict, and neither blocks preparation. A visit already

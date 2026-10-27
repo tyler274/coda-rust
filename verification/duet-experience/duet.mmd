@@ -237,7 +237,7 @@ stateDiagram-v2
 %% Duet explains the plan faithfully and never invents or amends it. When the connection ends, the
 %% last plan stays, marked no longer updated.
 %% event your doctor's plan arrives or changes | by your practice's records | needs PrcConn | reason: documented care reaches Duet only through the current connection and consent (ENG-45, ENG-70) | A documented care decision or open item arrives or changes with its source, author, date and status; Duet shows it as "your doctor's plan". An undecided suggestion stays an unconfirmed suggestion until the source records a decision (ENG-43). Unfinished work that read the earlier plan looks again before it publishes (ENG-34).
-%% event you answer a Check-in about your doctor's plan | by you | needs DIn, TCur, PrcConn, DpCurrent | reason: answers flow only while connected, about a plan that is current; newer Terms wait for your acceptance first (ENG-45) | Your reply to a Check-in that follows your doctor's plan goes to the practice with what you share, for its next review, never as an alert on its own (ENG-45).
+%% event you answer a Check-in about your doctor's plan | by you | needs DIn, TCur, PrcConn, DpCurrent, CaOpen | reason: answers flow only while connected, about a plan that is current, to a Check-in Duet delivered, so no other conversation crosses; newer Terms wait for your acceptance first (ENG-45) | Your reply to a Check-in that follows your doctor's plan goes to the practice with what you share, for its next review, never as an alert on its own (ENG-45).
 %%
 %% Your practice's appointments (ENG-169, ENG-31): while connected, the practice's schedule gives
 %% appointment context beside any date you gave yourself. Conflicting dates both stay visible and never
@@ -686,6 +686,17 @@ stateDiagram-v2
           FuRun --> FuCancelled : Duet cancels the {kind} as you asked
           %% only checkin
           FuPaused --> FuCancelled : Duet cancels the {kind} as you asked
+        }
+        --
+        %% Only your answer to a delivered Check-in about your doctor's plan crosses to the practice;
+        %% the rest of your conversation never does (ENG-45). Which Check-in follows the plan is data.
+        state "A Check-in waiting for your answer" as CkAns {
+          [*] --> CaNone
+          state "No Check-in waiting for an answer" as CaNone
+          state "A delivered Check-in waits for your answer" as CaOpen
+          CaNone --> CaOpen : Duet delivers the Check-in
+          CaOpen --> CaOpen : Duet delivers the Check-in
+          CaOpen --> CaNone : you answer a Check-in about your doctor's plan
         }
         --
         state "Your Plan" as Plan {
