@@ -20,6 +20,8 @@ from slack_sdk.errors import SlackApiError
 
 from codex_rpc import RpcError
 from slack_history import SlackHistory
+from slack_interactions import (APPROVALS, QUESTIONS, action_block, answer_modal, approval_response,
+                                async_questions, request_text, tool_approval)
 from slack_render import STATUS_REACTIONS, chunks, markdown_payload, render_native, run_status, thread_root_payload
 
 
@@ -39,8 +41,12 @@ def admitted(event, root, channel, slack_started=False):
 
 
 def final_text(turn):
+    # A decision can follow its review packet in commentary. Deliver the
+    # agent-visible context with the question, rather than dropping the patch.
+    questions = async_questions(turn)
     messages = [i['text'] for i in turn.get('items', [])
-                if i.get('type') == 'agentMessage' and i.get('phase') == 'final_answer']
+                if i.get('type') == 'agentMessage' and i.get('text')
+                and (questions or i.get('phase') == 'final_answer')]
     if messages:
         prefix = f'Codex turn status: {turn["status"]}.\n\n' if turn['status'] != 'completed' else ''
         return prefix + '\n\n'.join(messages)
@@ -92,10 +98,13 @@ class SlackIngress:
             self.catch_up.set()
 
     def receive(self, connection, request):
-        if request.type != 'events_api':
+        if request.type not in ('events_api', 'interactive'):
             return
         payload = request.payload
-        if payload.get('team_id') == self.config['slack_team']:
+        if request.type == 'interactive':
+            if payload.get('team', {}).get('id') == self.config['slack_team']:
+                self.incoming.put({'interaction': payload})
+        elif payload.get('team_id') == self.config['slack_team']:
             event = payload.get('event', {})
             if event.get('channel') == self.config['slack_channel']:
                 self.incoming.put(event)
@@ -138,6 +147,7 @@ class Bridge:
             arguments['blocks'] = blocks
         if root:
             arguments['thread_ts'] = root
+            arguments['reply_broadcast'] = False
         result = self.web.chat_postMessage(**arguments)
         # Slack owns Markdown rendering and normalizes the returned text. Its
         # successful channel/timestamp acknowledgement confirms this submission;
@@ -150,6 +160,11 @@ class Bridge:
     def posted(self):
         self.state.data['pending_post'] = None
         self.state.save()
+
+    def update_message(self, timestamp, **payload):
+        result = self.web.chat_update(channel=self.channel, ts=timestamp, **payload)
+        if not result.get('ok') or result.get('channel') != self.channel or result.get('ts') != timestamp:
+            raise RuntimeError('Slack did not confirm the message update')
 
     def route(self, native):
         ident = native['thread_id']
@@ -286,9 +301,7 @@ class Bridge:
         # Slack-started conversations retain the human's original message.
         # Updating a known bot message replaces its presentation; it never posts a
         # second message or grants approval. A retry has the same destination.
-        result = self.web.chat_update(channel=self.channel, ts=target, **payload)
-        if not result.get('ok') or result.get('channel') != self.channel or result.get('ts') != target:
-            raise RuntimeError('Slack did not confirm the thread status update')
+        self.update_message(target, **payload)
         self.update_reaction(route['root'], self.status(ident, thread))
         self.root_updates[ident] = payload
 
@@ -303,12 +316,106 @@ class Bridge:
                 continue
             text = render_native(final_text(turn))
             parts = chunks(text)
-            sent = route['delivered'].get(turn['id'], 0)
-            for index, part in enumerate(parts[sent:], start=sent):
-                self.post(part, route['root'])
-                route['delivered'][turn['id']] = index + 1
+            receipts = route['delivered'].get(turn['id'], [])
+            if isinstance(receipts, int):
+                receipts = [None] * receipts  # Older receipts did not retain Slack timestamps.
+            for index, part in enumerate(parts[len(receipts):], start=len(receipts)):
+                blocks = markdown_payload(part)['blocks']
+                if index == len(parts) - 1 and async_questions(turn):
+                    blocks.append(action_block(json.dumps({'thread': ident, 'turn': turn['id']}),
+                                               [('question', 'Answer')]))
+                receipts.append(self.post(part, route['root'], blocks))
+                route['delivered'][turn['id']] = receipts
                 self.posted()
         self.update_root(ident, thread)
+
+    def answer_request(self, token, result, user, receipt):
+        request = self.requests[token]
+        ident = request['params']['threadId']
+        self.codex.reply(request['id'], result)
+        del self.requests[token]
+        route = self.state.data['routes'][ident]
+        route['last_input'] = {**receipt, 'user': user, 'request_id': request['id']}
+        route.setdefault('input_receipts', []).append(route['last_input'])
+        self.state.save()
+        if request.get('_slack'):
+            card = request['_slack']
+            decision = result.get('decision', result.get('action'))
+            outcome = 'Approved' if decision == 'accept' else 'Denied' if decision == 'decline' else 'Answered'
+            self.update_message(card['ts'],
+                **markdown_payload(card['text'] + f'\n\n{outcome} by <@{user}>.'))
+        self.update_root(ident)
+
+    def interaction(self, payload):
+        if payload.get('team', {}).get('id') != self.config['slack_team'] or not payload.get('user', {}).get('id'):
+            return
+        user = payload['user']['id']
+        if payload.get('type') == 'block_actions':
+            if payload.get('channel', {}).get('id') != self.channel:
+                return
+            for action in payload.get('actions', []):
+                token = action.get('value')
+                if action['action_id'] == 'coda_question':
+                    metadata = {**json.loads(token), 'message': payload['message']['ts']}
+                    turn = self.saved_question_turn(metadata)
+                    if turn:
+                        view = answer_modal(json.dumps(metadata), async_questions(turn))
+                        view['callback_id'] = 'coda_async_answer'
+                        self.web.views_open(trigger_id=payload['trigger_id'], view=view)
+                    continue
+                request = self.requests.get(token)
+                if not request or request.get('_slack', {}).get('ts') != payload.get('message', {}).get('ts'):
+                    continue
+                if action['action_id'] == 'coda_answer' and request['method'] == QUESTIONS:
+                    self.web.views_open(trigger_id=payload['trigger_id'],
+                        view=answer_modal(token, request['params']['questions']))
+                elif (request['method'] in APPROVALS or tool_approval(request)) and action['action_id'] in ('coda_accept', 'coda_decline'):
+                    self.answer_request(token, approval_response(request, action['action_id'].removeprefix('coda_')), user,
+                        {'kind': 'approval', 'message_ts': payload['message']['ts'],
+                         'action_ts': action.get('action_ts')})
+        elif payload.get('type') == 'view_submission' and payload.get('view', {}).get('callback_id') == 'coda_async_answer':
+            view = payload['view']
+            metadata = json.loads(view['private_metadata'])
+            question_turn = self.saved_question_turn(metadata)
+            if not question_turn:
+                return
+            questions = async_questions(question_turn)
+            ident = metadata['thread']
+            route = self.state.data['routes'][ident]
+            if any(receipt.get('view_id') == view['id'] for receipt in route.get('input_receipts', [])):
+                return  # Slack can redeliver an acknowledged view submission.
+            answers = [{'questionItemId': json.dumps(question['id'], separators=(',', ':')),
+                        'question': question['question'],
+                        'answer': view['state']['values'][f'q{index}']['answer']['value']}
+                       for index, question in enumerate(questions)]
+            text = '<send_user_message_question_reply>\n' + json.dumps(answers) + '\n</send_user_message_question_reply>'
+            context = self.slack_history.input_context(route['root'], user, text, view_id=view['id'])
+            self.submit(ident, context, {'kind': 'answer', 'user': user, 'view_id': view['id'],
+                                       'question_turn': metadata['turn']},
+                        f'slack-view:{self.config["slack_team"]}:{view["id"]}')
+            summary = '\n\n'.join(f'{a["question"]}\n{a["answer"]}' for a in answers)
+            original = chunks(render_native(final_text(question_turn)))[-1]
+            self.update_message(metadata['message'],
+                **markdown_payload(f'{original}\n\nAnswered by <@{user}>\n\n{summary}'))
+        elif payload.get('type') == 'view_submission' and payload.get('view', {}).get('callback_id') == 'coda_answer':
+            view = payload['view']
+            token = view['private_metadata']
+            request = self.requests.get(token)
+            if not request or request['method'] != QUESTIONS:
+                return
+            answers = {question['id']: {'answers': [view['state']['values'][f'q{index}']['answer']['value']]}
+                       for index, question in enumerate(request['params']['questions'])}
+            self.answer_request(token, {'answers': answers}, user,
+                                {'kind': 'answer', 'view_id': view['id']})
+
+    def saved_question_turn(self, metadata):
+        route = self.state.data['routes'].get(metadata['thread'])
+        receipts = route['delivered'].get(metadata['turn'], []) if route else []
+        if not isinstance(receipts, list) or metadata['message'] not in receipts:
+            return None
+        thread = self.read_thread(metadata['thread'])
+        turn = next((t for t in thread['turns'] if t['id'] == metadata['turn']), None)
+        return turn if turn and async_questions(turn) else None
 
     def receive(self, ident, event, thread=None):
         route = self.state.data['routes'][ident]
@@ -328,10 +435,10 @@ class Bridge:
             request = self.requests.get(token)
             if request and request['params']['threadId'] == ident:
                 method = request['method']
-                if method in ('item/commandExecution/requestApproval', 'item/fileChange/requestApproval'):
+                if method in APPROVALS or tool_approval(request):
                     if words[0].lower() not in ('approve', 'deny'):
                         return
-                    result = {'decision': 'accept' if words[0].lower() == 'approve' else 'decline'}
+                    result = approval_response(request, 'accept' if words[0].lower() == 'approve' else 'decline')
                 elif method == 'item/tool/requestUserInput' and words[0].lower() == 'answer' and len(words) == 3:
                     answers = words[2].split(' | ')
                     questions = request['params']['questions']
@@ -342,42 +449,52 @@ class Bridge:
                     result = {'answers': {q['id']: {'answers': [a]} for q, a in zip(questions, answers)}}
                 else:
                     return
-                self.codex.reply(request['id'], result)
-                del self.requests[token]
                 route['cursor'] = event['ts']
-                route['last_input'] = {'ts': event['ts'], 'user': event['user'], 'kind': words[0].lower()}
-                self.state.save()
-                self.update_root(ident)
+                self.answer_request(token, result, event['user'], {'ts': event['ts'], 'kind': words[0].lower()})
                 return
             self.post('That request is no longer pending in this connection. No approval was applied.', route['root'])
             self.posted()
             route['cursor'] = event['ts']
             self.state.save()
             return
-        if thread is None and text.lower() != 'stop':
+        stop = text.lower() == 'stop'
+        context = self.slack_history.request_context(route['root'], event) if not stop else None
+        self.submit(ident, context, {'ts': event['ts'], 'user': event['user'], 'kind': 'stop' if stop else 'message'},
+                    f'slack:{self.channel}:{event["ts"]}', thread=thread, stop=stop)
+
+    def submit(self, ident, context, receipt, client_id, *, thread=None, stop=False):
+        route = self.state.data['routes'][ident]
+        if route['pending_input']:
+            raise RuntimeError(f'Uncertain input delivery for {ident}; inspect the native conversation before retrying')
+        if thread is None and not stop:
             self.subscribe(ident, participant_reply=True)
         thread = thread if thread is not None else self.read_thread(ident)
         active = next((t for t in reversed(thread['turns']) if t['status'] == 'inProgress'), None)
-        context = self.slack_history.request_context(route['root'], event) if text.lower() != 'stop' else None
-        route['pending_input'] = {'ts': event['ts'], 'operation': 'stop' if text.lower() == 'stop' else 'message'}
+        route['pending_input'] = receipt
         self.state.save()
-        if text.lower() == 'stop':
+        if stop:
             if active:
                 self.codex.call('turn/interrupt', {'threadId': ident, 'turnId': active['id']})
         elif active:
             self.codex.call('turn/steer', {'threadId': ident, 'expectedTurnId': active['id'],
+                                         'clientUserMessageId': client_id,
                                          'input': [{'type': 'text', 'text': context}]})
         else:
             turn = self.codex.call('turn/start', {'threadId': ident,
-                'clientUserMessageId': f'slack:{self.channel}:{event["ts"]}',
+                'clientUserMessageId': client_id,
                 'input': [{'type': 'text', 'text': context}]})['turn']
             # The native response already owns the accepted turn's status. A
             # brand-new session file may not be readable until its first save.
             thread = {**thread, 'turns': [*thread['turns'], turn]}
-        route['cursor'], route['pending_input'] = event['ts'], None
-        route['last_input'] = {'ts': event['ts'], 'user': event['user'], 'kind': 'stop' if text.lower() == 'stop' else 'message'}
+        if receipt.get('ts'):
+            route['cursor'] = receipt['ts']
+        route['pending_input'] = None
+        route['last_input'] = receipt
+        if not stop:
+            route['last_input']['turn_id'] = active['id'] if active else turn['id']
+        route.setdefault('input_receipts', []).append(route['last_input'])
         self.state.save()
-        self.update_root(ident, thread if text.lower() != 'stop' else None)
+        self.update_root(ident, thread if not stop else None)
 
     def history(self, ident):
         route = self.state.data['routes'][ident]
@@ -392,25 +509,27 @@ class Bridge:
         route = self.state.data['routes'][ident]
         if 'id' in event:
             token = uuid.uuid4().hex[:8]
-            self.requests[token] = event
-            if event['method'] in ('item/commandExecution/requestApproval', 'item/fileChange/requestApproval'):
-                instructions = f'Reply `approve {token}` or `deny {token}` for this request only.'
-            elif event['method'] == 'item/tool/requestUserInput':
-                instructions = f'Reply `answer {token} YOUR ANSWER`; separate multiple answers with ` | `.'
-            else:
-                instructions = 'This request needs the native desktop; no permission was granted by the bridge.'
             detail = dict(params)
             if event['method'] == 'item/fileChange/requestApproval':
                 thread = self.read_thread(ident)
                 detail['fileChange'] = next((item for turn in thread['turns'] for item in turn['items']
                     if item.get('id') == params.get('itemId')), None)
-                if detail['fileChange'] is None:
-                    del self.requests[token]
-                    instructions = 'The proposed file changes could not be read. This request cannot be approved from Slack.'
-            details = json.dumps(detail, indent=2)
-            for part in chunks(f'Your input is needed\n\n{instructions}\n\n```json\n{details}\n```'):
-                self.post(part, route['root'])
+            text, actions = request_text(event, token, detail)
+            if event['method'] == QUESTIONS or tool_approval(event):
+                thread = self.read_thread(ident)
+                turn = next((t for t in thread['turns'] if t['id'] == params['turnId']), None)
+                context = '\n\n'.join(item['text'] for item in (turn or {}).get('items', [])
+                    if item.get('type') == 'agentMessage' and item.get('text'))
+                if context:
+                    text = context + '\n\n' + text
+            parts = chunks(text)
+            for index, part in enumerate(parts):
+                blocks = markdown_payload(part)['blocks']
+                if actions and index == len(parts) - 1:
+                    blocks.append(action_block(token, actions))
+                timestamp = self.post(part, route['root'], blocks)
                 self.posted()
+            self.requests[token] = {**event, **({'_slack': {'ts': timestamp, 'text': parts[-1]}} if actions else {})}
             self.update_root(ident)
         elif event['method'] == 'turn/completed':
             self.deliver(ident)
@@ -443,6 +562,9 @@ class Bridge:
                         self.history(ident)
                 while not ingress.incoming.empty():
                     event = ingress.incoming.get_nowait()
+                    if 'interaction' in event:
+                        self.interaction(event['interaction'])
+                        continue
                     if self.is_new_mention(event):
                         self.start_from_mention(event)
                     for ident, route in self.state.data['routes'].items():

@@ -21,6 +21,18 @@ class Slack:
         self.updates = []
         self.reactions = []
 
+    def users_info(self, user):
+        return {'user': {'id': user, 'is_bot': user == 'UAGENT',
+                         'profile': {'display_name': {'UFIRST': 'Robin', 'USECOND': 'Sam',
+                                                     'UTEAMMATE': 'Casey'}.get(user, 'Alex')}}}
+
+    def conversations_info(self, channel):
+        return {'channel': {'id': channel, 'name': 'shared-engineering', 'is_private': True,
+                            'is_shared': False, 'is_ext_shared': False}}
+
+    def conversations_members(self, **request):
+        return {'members': ['UFIRST', 'USECOND', 'USILENT', 'UAGENT']}
+
     def conversations_replies(self, **request):
         return {'messages': [{'ts': request['ts'], 'reactions': self.reactions}]}
 

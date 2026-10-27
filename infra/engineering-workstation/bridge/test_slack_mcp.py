@@ -9,6 +9,7 @@ import tempfile
 import threading
 import unittest
 from unittest.mock import patch
+from slack_sdk.errors import SlackApiError
 
 from slack_bridge import SlackIngress
 from slack_gateway import gateway_server
@@ -55,6 +56,10 @@ class SlackHistoryMcpTests(unittest.TestCase):
                 self.assertIn('tools', initialized['capabilities'])
                 tools = request('tools/list')['result']['tools']
                 self.assertTrue(all(tool['annotations']['readOnlyHint'] for tool in tools))
+                audience = call('read_channel_context', {})
+                self.assertEqual(audience['name'], 'shared-engineering')
+                self.assertTrue(audience['is_private'])
+                self.assertIn('USILENT', [person['id'] for person in audience['members']])
                 recent = call('read_channel_history', {})
                 self.assertEqual(recent['channel_id'], CHANNEL)
                 self.assertEqual(recent['messages'][0]['text'], 'An unrelated recent discussion')
@@ -65,6 +70,7 @@ class SlackHistoryMcpTests(unittest.TestCase):
                 reply = call('read_thread', {'thread_ts': '050.0', 'cursor': thread['next_cursor']})
                 self.assertEqual((reply['messages'][0]['user'], reply['messages'][0]['text']),
                                  ('USECOND', 'The baseline was TUESDAY.'))
+                self.assertEqual(reply['messages'][0]['author']['display_name'], 'Sam')
                 first = call('search_channel_history', {'query': 'tuesday'})
                 self.assertEqual(first['messages'], [])
                 self.assertFalse(first['complete'], 'An empty partial search was reported as exhaustive')
@@ -79,6 +85,14 @@ class SlackHistoryMcpTests(unittest.TestCase):
                     self.assertTrue(error['isError'])
                 self.assertEqual(web.messages, [])
                 self.assertEqual(web.updates, [])
+                with patch.object(web, 'users_info', side_effect=SlackApiError('Scope not granted',
+                        {'error': 'missing_scope'})), patch.object(web, 'conversations_info',
+                        side_effect=SlackApiError('Scope not granted', {'error': 'missing_scope'})):
+                    audience = call('read_channel_context', {})
+                    self.assertEqual(audience['audience_unavailable'], 'missing_scope')
+                    page = call('read_channel_history', {})
+                    self.assertEqual(page['messages'][0]['author'], {'id': 'UFIRST',
+                                                                     'identity_unavailable': 'missing_scope'})
                 client.stdin.close()
                 self.assertEqual(client.wait(timeout=10), 0, client.stderr.read())
                 output.join(timeout=5)

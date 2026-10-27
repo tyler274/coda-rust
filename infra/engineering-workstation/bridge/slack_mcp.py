@@ -12,6 +12,10 @@ from slack_history import SlackHistory
 PAGING = {'cursor': {'type': 'string', 'description': 'next_cursor from the preceding page; omit to begin.'},
           'limit': {'type': 'integer', 'minimum': 1, 'maximum': 100}}
 TOOLS = [
+    {'name': 'read_channel_context',
+     'description': 'Read the configured channel name, visibility and current members with Slack names. '
+                    'This describes who can read replies, not who received notifications or read them.',
+     'inputSchema': {'type': 'object', 'properties': {}, 'additionalProperties': False}},
     {'name': 'read_channel_history',
      'description': 'Read a page of top-level messages in the configured engineering Slack channel, newest first. '
                     'Follow next_cursor for older history; read_thread opens the replies. No fixed lookback window.',
@@ -56,11 +60,15 @@ def call_tool(history, name, arguments):
             raise ValueError(f'{key} must be a string')
         elif key in ('thread_ts', 'oldest', 'latest') and not re.fullmatch(r'\d+(?:\.\d+)?', value):
             raise ValueError(f'{key} must be a Slack timestamp')
+    if name == 'read_channel_context':
+        return history.channel_context()
     if name == 'search_channel_history':
         if not arguments['query'].strip():
             raise ValueError('query must contain text')
         return history.search(**arguments)
-    return history.page(**{'limit': 20, **arguments})
+    page = history.page(**{'limit': 20, **arguments})
+    page['messages'] = history.with_authors(page['messages'])
+    return page
 
 
 def serve_slack(connection, web, config):

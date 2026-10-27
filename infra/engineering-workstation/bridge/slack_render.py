@@ -86,6 +86,8 @@ def run_status(thread, needs_input=False):
         return 'No turn observed yet'
     turn = turns[-1]
     if turn['status'] == 'completed':
+        if any(item.get('type') == 'agentMessage' and item.get('questions') for item in turn.get('items', [])):
+            return 'Needs your input'
         has_answer = any(item.get('type') == 'agentMessage' and item.get('phase') == 'final_answer'
                          for item in turn.get('items', []))
         return 'Report ready' if has_answer else 'Finished without a saved answer'

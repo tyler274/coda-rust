@@ -22,7 +22,7 @@ def issue_token(settings):
         _, result = app.requester.requestJsonAndCheck('POST',
             f'/app/installations/{settings["installation_id"]}/access_tokens',
             input={'repository_ids': [int(settings['repository_id'])],
-                   'permissions': {'contents': 'read', 'pull_requests': 'read', 'actions': 'read'}})
+                   'permissions': {'contents': 'write', 'pull_requests': 'write', 'actions': 'read'}})
     return {key: result[key] for key in ('token', 'expires_at', 'permissions')}
 
 

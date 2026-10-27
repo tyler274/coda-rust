@@ -25,7 +25,7 @@ def github_runtime(config):
         'GITHUB_APP_PRIVATE_KEY': os.environ['GITHUB_APP_PRIVATE_KEY'],
     }
     command = [str(Path(__file__).with_name('github-mcp-server')), 'stdio',
-               '--read-only', '--toolsets', 'repos,pull_requests,actions']
+               '--toolsets', 'repos,pull_requests,actions']
     return command, environment
 
 

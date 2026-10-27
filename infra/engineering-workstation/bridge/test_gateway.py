@@ -4,6 +4,7 @@ This protects real socket, reconnect and receipt behavior, not model quality or
 Slack's hosted service. Live native readback is a separate deployment check.
 """
 from contextlib import ExitStack
+import json
 from pathlib import Path
 import queue
 import re
@@ -26,6 +27,17 @@ class ScriptedSlack(Slack):
         super().__init__()
         self.changed = threading.Condition()
         self.history = []
+        self.views = queue.Queue()
+
+    def views_open(self, **request):
+        self.views.put(request)
+        return {'ok': True, 'view': {'id': 'VQUESTION'}}
+
+    def chat_update(self, **message):
+        with self.changed:
+            result = super().chat_update(**message)
+            self.changed.notify_all()
+            return result
 
     def auth_test(self):
         class Response(dict):
@@ -242,6 +254,9 @@ class GatewayTests(unittest.TestCase):
             self.assertEqual(method, 'turn/start')
             self.assertEqual(params['threadId'], 'native-review')
             self.assertIn('<@UFIRST>', params['input'][0]['text'])
+            self.assertIn('Robin', params['input'][0]['text'])
+            self.assertIn('USILENT', params['input'][0]['text'])
+            self.assertIn('shared-engineering', params['input'][0]['text'])
             self.assertIn('Explain the dependency finding', params['input'][0]['text'])
             self.assertEqual(len(web.messages), 2, 'Reconnect reposted the saved report')
 
@@ -257,13 +272,104 @@ class GatewayTests(unittest.TestCase):
             self.assertEqual(method, 'turn/steer')
             self.assertEqual((params['threadId'], params['expectedTurnId']), ('native-review', 'continued-turn'))
             self.assertIn('<@USECOND>', params['input'][0]['text'])
+            self.assertEqual(params['clientUserMessageId'], f'slack:{CHANNEL}:102.0')
 
             native.events.put({'id': 87, 'method': 'item/commandExecution/requestApproval',
                                'params': {'threadId': 'native-review', 'command': 'reviewed command'}})
             self.assertTrue(web.await_posts(3))
             token = re.search(r'approve ([0-9a-f]+)', web.messages[-1]['text'])[1]
-            event('approve ' + token, '103.0')
+
+            def interaction(payload, team=CONFIG['slack_team']):
+                ingress.receive(ingress.client, SimpleNamespace(type='interactive', envelope_id='click',
+                    payload={'team': {'id': team}, 'user': {'id': 'USECOND'}, **payload}))
+
+            click = {'type': 'block_actions', 'channel': {'id': CHANNEL}, 'message': {'ts': '100.0'},
+                     'actions': [{'action_id': 'coda_accept', 'value': token, 'action_ts': '103.0'}]}
+            interaction(click, team='TOTHER')
+            interaction({**click, 'channel': {'id': 'COTHER'}})
+            interaction({**click, 'message': {'ts': 'wrong-request-message'}})
+            interaction(click)
             self.assertEqual(native.replies.get(timeout=5), (87, {'decision': 'accept'}))
+            with web.changed:
+                self.assertTrue(web.changed.wait_for(lambda: any('Approved by <@USECOND>' in m['text']
+                                                                 for m in web.updates), timeout=5))
+            interaction(click)  # A repeated click must not reply to Codex twice.
+
+            review = {'type': 'agentMessage', 'id': 'review-packet', 'phase': 'commentary',
+                      'text': 'Complete diff:\n```diff\n+Shared Slack PR transport test.\n```\nTitle: Test draft'}
+            turns[-1]['items'].append(review)
+            native.events.put({'id': 88, 'method': 'item/tool/requestUserInput', 'params': {
+                'threadId': 'native-review', 'turnId': 'continued-turn', 'itemId': 'question', 'isBlocking': True,
+                'questions': [{'id': 'publication', 'header': 'Publish', 'question': 'Open the reviewed draft PR?',
+                               'isOther': True, 'isSecret': False,
+                               'options': [{'label': 'Open draft', 'description': 'Share the reviewed patch.'},
+                                           {'label': 'Keep local', 'description': 'Continue editing first.'}]}]}})
+            self.assertTrue(web.await_posts(4))
+            button = web.messages[-1]['blocks'][-1]['elements'][0]
+            self.assertIn('Open the reviewed draft PR?', web.messages[-1]['text'])
+            self.assertIn(review['text'], web.messages[-1]['text'])
+            interaction({**click, 'trigger_id': 'TRIGGER', 'actions': [button]})
+            modal = web.views.get(timeout=5)
+            self.assertEqual(modal['trigger_id'], 'TRIGGER')
+            self.assertIn('Keep local', modal['view']['blocks'][0]['text']['text'])
+            interaction({'type': 'view_submission', 'view': {**modal['view'], 'id': 'VQUESTION',
+                'state': {'values': {'q0': {'answer': {'value': 'Open draft'}}}}}})
+            self.assertEqual(native.replies.get(timeout=5), (88, {'answers': {'publication': {'answers': ['Open draft']}}}))
+            with web.changed:
+                self.assertTrue(web.changed.wait_for(lambda: any('Answered by <@USECOND>' in m['text']
+                                                                 for m in web.updates), timeout=5))
+            self.assertTrue(native.replies.empty())
+            state = json.loads((directory / 'state/routes.json').read_text())['routes']['native-review']
+            self.assertEqual(state['delivered']['saved-turn'], ['100.0'])
+            self.assertEqual(state['input_receipts'][0]['turn_id'], 'continued-turn')
+            self.assertEqual(state['input_receipts'][-1]['user'], 'USECOND')
+            self.assertEqual(state['input_receipts'][-1]['view_id'], 'VQUESTION')
+            self.assertTrue(all(m.get('reply_broadcast') is False for m in web.messages[1:]))
+
+            # The installed native owner uses an empty MCP form for one-shot
+            # tool approval. Keep its exact action visible and do not persist it.
+            native.events.put({'id': 89, 'method': 'mcpServer/elicitation/request', 'params': {
+                'threadId': 'native-review', 'turnId': 'continued-turn', 'serverName': 'github-company',
+                'mode': 'form', 'message': 'Allow github-company to create the draft pull request?',
+                '_meta': {'codex_approval_kind': 'mcp_tool_call', 'persist': ['session', 'always'],
+                          'tool_params_display': [{'name': 'title', 'value': 'Test draft'},
+                                                  {'name': 'body', 'value': 'Exact reviewed PR body'}]},
+                'requestedSchema': {'type': 'object', 'properties': {}}}})
+            self.assertTrue(web.await_posts(5))
+            self.assertIn(review['text'], web.messages[-1]['text'])
+            self.assertIn('Exact reviewed PR body', web.messages[-1]['text'])
+            button = web.messages[-1]['blocks'][-1]['elements'][0]
+            interaction({**click, 'actions': [button]})
+            self.assertEqual(native.replies.get(timeout=5), (89, {'action': 'accept', 'content': {}}))
+
+            # Current Codex async questions are saved agent-message items, not
+            # blocking server requests. Answering resumes the same native task.
+            turns[-1].update(status='completed', items=[review, {'type': 'agentMessage', 'id': 'question-call',
+                'phase': 'final_answer', 'delivery': 'async', 'text': 'Choose a test marker.',
+                'questions': [{'title': 'Marker', 'options': ['Alpha', 'Beta']}]}])
+            native.events.put({'method': 'turn/completed', 'params': {'threadId': 'native-review'}})
+            self.assertTrue(web.await_posts(6))
+            self.assertIn(review['text'], web.messages[-1]['text'])
+            button = web.messages[-1]['blocks'][-1]['elements'][0]
+            connection.close()
+            worker.join(timeout=5)
+            self.assertFalse(worker.is_alive())
+            native, connection, worker = connect()
+            interaction({**click, 'trigger_id': 'ASYNC', 'actions': [button]})
+            modal = web.views.get(timeout=5)
+            answer = {'type': 'view_submission', 'view': {**modal['view'], 'id': 'VASYNC',
+                'state': {'values': {'q0': {'answer': {'value': 'Beta'}}}}}}
+            interaction(answer)
+            method, params = native.calls.get(timeout=5)
+            self.assertEqual((method, params['threadId']), ('turn/start', 'native-review'))
+            self.assertEqual(params['clientUserMessageId'], f'slack-view:{CONFIG["slack_team"]}:VASYNC')
+            self.assertIn('Sam', params['input'][0]['text'])
+            self.assertIn('Beta', params['input'][0]['text'])
+            self.assertIn('question-call', params['input'][0]['text'])
+            with web.changed:
+                self.assertTrue(web.changed.wait_for(lambda: any('Answered by <@USECOND>' in m['text']
+                    and 'Beta' in m['text'] and 'Choose a test marker.' in m['text'] for m in web.updates), timeout=5))
+            interaction(answer)
             ingress.client.connect.assert_called_once()
             connection.close()
             worker.join(timeout=5)

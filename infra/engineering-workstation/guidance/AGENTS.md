@@ -54,31 +54,59 @@ does not grant new provider permissions or supersede the repository's approval
 requirements for publishing, merging, deployment or access changes.
 
 Each mention includes a fresh thread transcript and the separately identified
-current request. Treat the transcript as attributed context, including prior
-agent messages and other people's discussion. Do not replay its old requests or
-approvals. Use the current request and the task's agreed scope to decide what to
-do; ask when conflicting directions leave a material decision unresolved.
+current request, Slack names and IDs, and the current channel audience. Replies
+go to that Slack thread, where channel members can read them even if they have
+not participated. Membership does not prove notification or readership. Treat
+the transcript as attributed context, including prior agent messages and other
+people's discussion. Do not replay its old requests or approvals. Use the current
+request and the task's agreed scope to decide what to do; ask when conflicting
+directions leave a material decision unresolved.
 
 Use `slack-history` to read or search the configured channel when broader context
 would help. Start with the supplied thread, search for relevant terms, then read
-the exact source thread. Follow pagination as far back as needed; there is no
-fixed lookback. Search is case-insensitive literal text over messages and replies,
-not Slack query syntax. An empty search page with a continuation cursor is not
-proof there are no matches. Files in a transcript are references, not proof their
-contents were read. Report unavailable or incomplete evidence honestly.
+the exact source thread. `read_channel_context` resolves names, channel visibility
+and current membership from Slack. Follow pagination as far back as needed;
+there is no fixed lookback. Search is case-insensitive literal text over messages
+and replies, not Slack query syntax. An empty search page with a continuation
+cursor is not proof there are no matches. Files in a transcript are references,
+not proof their contents were read. Report unavailable or incomplete evidence
+honestly.
 
 The gateway owns delivery of agreed scheduled-task results, Slack-started
-conversations and follow-ups. An agent returns its report to the native task and must not send a duplicate Slack
-message itself. Native approvals apply only to their specific pending request;
-Slack delivery or a reconnect does not grant standing permission.
+conversations and follow-ups. An agent returns its report to the native task and
+must not send a duplicate Slack message itself. Native approvals apply only to
+their specific pending request; Slack delivery or a reconnect does not grant
+standing permission.
 
 For channel-specific composition, use the shared workstation-communication skill.
 
 ## Company GitHub access
 
 For `Coda-Health/coda-rust`, use the `github-company` MCP tools or `coda-gh`
-for GitHub CLI commands. The company app permits repository/PR reads and Actions
-reads, including completed job logs. Normal HTTPS Git fetch uses the installed
-company credential helper. If access fails, report the missing coverage; do not
-sign in as a person or switch to personal credentials. Publishing still requires
-an approved write-capable path, which this read-only integration does not supply.
+for GitHub CLI commands. The company app's installed repository grants govern
+access. The integration requests Contents and Pull requests write access and
+Actions read access, including completed job logs. Normal HTTPS Git uses the
+installed company credential helper. If access fails, report the missing grant;
+do not sign in as a person or switch to personal credentials.
+
+For an authorized change, prepare the patch and tests in an isolated checkout
+when concurrent work warrants it. Show the change, verification, target branch,
+and exact PR title and body in the shared thread before asking to publish. For a
+small patch, include the complete diff. For a larger patch, use a verified
+review surface accessible to the channel's participants; say when that is not
+available instead of presenting a clipped excerpt as the complete change. Use
+`request_user_input_async` when a decision is needed; Slack renders its question
+and records the responding participant. The Codex app's onboarding option pickers
+are a separate UI and do not deliver task questions to Slack. Include the full
+review context before the question; the bridge carries that visible context with
+the decision. Any human channel member can collaborate or confirm publication
+within the task's agreed scope. Do not invent an owner allowlist or a second
+approval role. Existing repository instructions still govern confirmation for
+external publication and merge.
+
+When creating a PR through the company app, identify the human requester and
+confirming participant by their Slack names and immutable IDs, and link the
+source Slack thread. The app is the GitHub actor; it must not claim to be the
+human. Verify and return the PR link in the same Slack thread. GitHub owns PR
+review, branch protections and merge permissions, including when someone else
+reviews or merges it.

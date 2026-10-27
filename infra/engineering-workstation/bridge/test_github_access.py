@@ -79,7 +79,7 @@ class CompanyCliTests(unittest.TestCase):
             self.assertEqual(json.loads(result.stdout), {'company': True, 'host': 'github.com',
                               'args': ['run', 'view', '42', '--log']})
 
-    def test_sdk_request_is_limited_to_the_configured_repository_and_read_permissions(self):
+    def test_sdk_request_is_limited_to_the_configured_repository_and_company_publication_permissions(self):
         import jwt
         import requests
         from cryptography.hazmat.primitives import serialization
@@ -108,7 +108,7 @@ class CompanyCliTests(unittest.TestCase):
                          ('POST', 'https', 'api.github.com', '/app/installations/456/access_tokens'))
         self.assertIn(url.port, (None, 443))
         self.assertEqual(json.loads(request.body), {'repository_ids': [789],
-            'permissions': {'contents': 'read', 'pull_requests': 'read', 'actions': 'read'}})
+            'permissions': {'contents': 'write', 'pull_requests': 'write', 'actions': 'read'}})
         claims = jwt.decode(request.headers['Authorization'].split()[1], key.public_key(), algorithms=['RS256'])
         self.assertEqual(claims['iss'], '123')
 
