@@ -1,5 +1,5 @@
-# Shared repository toolchain for the personal workstation and Open-Inspect.
-# The sandbox omits desktop tooling and never discovers/loads a Doppler login.
+# Shared repository toolchain for interactive and unattended development.
+# The unattended profile omits desktop tooling and Doppler credential loading.
 { pkgs, postgres, wheelLibs, chromiumBin, desktop ? true, loadCredentials ? true }:
 pkgs.mkShell {
   packages = with pkgs; [

@@ -4,6 +4,9 @@
 set -euo pipefail
 
 workspace=/workspace
+nix_version=2.34.8
+nix_tarball="nix-${nix_version}-x86_64-linux.tar.xz"
+nix_digest=2c2e146b80834fe0ca201b51deeb939405b4f18e8d2071bf80b10f8123c50464
 
 # --- Runtime packages --------------------------------------------------------
 # Two additions the thin image needs: xz to unpack the fallback Nix tarball,
@@ -20,11 +23,27 @@ fi
 # the store path the host system profile already pins. Fall back to a pinned
 # single-user install into /nix when that bind is absent (hosts without Nix
 # use the named volume there instead).
-nix_bin=$(bash "$workspace/nix/ensure-user-nix.sh")
+nix_bin=/nix/store/mls1lldgdxny8i0ll3n1asb1kn38fw73-nix-2.34.8/bin
+if [ -x /nix/var/nix/profiles/default/bin/nix ] || [ -x "$nix_bin/nix" ]; then
+  echo "reusing the host's /nix store"
+else
+  if [ ! -w /nix ]; then
+    echo "/nix is not writable and no host store is bound" >&2
+    exit 1
+  fi
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' EXIT
+  curl -fsSL "https://releases.nixos.org/nix/nix-${nix_version}/${nix_tarball}" -o "$tmp/$nix_tarball"
+  echo "$nix_digest  $tmp/$nix_tarball" | sha256sum -c --status
+  tar -xJf "$tmp/$nix_tarball" -C "$tmp"
+  WRITE_TO_NIX_STORE=1 "$tmp"/*/install --no-daemon >/dev/null
+  nix_bin=/nix/var/nix/profiles/default/bin
+fi
+if [ -x /nix/var/nix/profiles/default/bin/nix ]; then
+  nix_bin=/nix/var/nix/profiles/default/bin
+fi
 export PATH="$nix_bin:$PATH"
-# Keep $PATH literal for the shell that later reads .bashrc.
-# shellcheck disable=SC2016
-grep -Fq "$nix_bin" "$HOME/.bashrc" 2>/dev/null || \
+grep -q 'nix-2.34.8/bin\|profiles/default/bin' "$HOME/.bashrc" 2>/dev/null || \
   printf '\nexport PATH="%s:$PATH"\n' "$nix_bin" >> "$HOME/.bashrc"
 # Non-interactive shells (VS Code tasks, `docker exec`) never read .bashrc;
 # expose nix on the default PATH for every shell.

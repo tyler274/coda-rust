@@ -61,28 +61,18 @@ cargo run -p physician-sample
 
 A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the sample server and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
 
-### Open-Inspect sandbox setup
+### Unattended development
 
-`nix develop .#agent` uses the same locked repository toolchain as the workstation,
-without Cursor or automatic Doppler credential discovery/loading. The desktop
-profile retains its existing behavior. Open-Inspect continues to own its sandbox
-runtime, Codex/Claude CLI pins, browser/terminal services and subscription delivery;
-this repository owns the Coda build/test environment.
+`nix develop .#agent` uses the same locked toolchain as the default shell,
+without Cursor or automatic Doppler credential discovery/loading. Use
+`nix develop .#agent --command <command>` for builds, tests and Git commits;
+the existing commit checks then run inside that environment.
 
-[`.openinspect/setup.sh`](.openinspect/setup.sh) is Open-Inspect's existing
-repository hook. It installs the checksum-pinned single-user Nix bootstrap when
-needed and materializes `.#agent`. The dev container uses that same bootstrap.
-Run this through Open-Inspect's prepared repository image workflow, then select
-the verified image. The runtime already preserves the sandbox filesystem on
-pause/resume; this adds no lifecycle or scheduling mechanism.
-
-Use `nix develop .#agent --command <command>` for Coda work in a sandbox. The hook
-warms the store; it does not replace the agent's process environment. No desktop
-login, Codex automation database, keyring, cloud identity or Doppler login is copied.
-Fresh-image toolchain/browser/database proof remains necessary before treating
-that image as qualified. A setup failure is fatal to an Open-Inspect image build;
-on an ordinary fresh session upstream reports a warning and continues, so a
-session alone is not evidence that the Coda toolchain was installed.
+[`.openinspect/setup.sh`](.openinspect/setup.sh) materializes this profile using
+Nix supplied by the sandbox image. Machine installation, persistent command paths,
+agent CLIs and sandbox lifecycle belong to
+[Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
+The hook prepares the store; subsequent commands still enter the Nix shell.
 
 ### Dev container
 
