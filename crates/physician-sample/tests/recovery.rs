@@ -99,10 +99,7 @@ fn turn() -> (Scope, Input, Delivery) {
         text: "Hello".into(),
         timezone: "America/New_York".into(),
     };
-    let delivery = Delivery {
-        scope: scope.clone(),
-        input_id: input.key.clone(),
-    };
+    let delivery = Delivery::chat_turn(scope.clone(), input.key.clone());
     (scope, input, delivery)
 }
 
