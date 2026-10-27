@@ -17,7 +17,7 @@ resources are created merely by adding this recipe.
 | --- | --- |
 | VM, disk, network, IAP, OS Login, identity and warmup | GCP engineering project; operator setup below |
 | Ubuntu packages and desktop services | This directory's host scripts and templates |
-| Rust, Node, Python and repository tools | Root `flake.nix` and `flake.lock`; use `nix develop` |
+| Rust, Node, Python and repository tools | `flake.lock` and `nix/dev-shell.nix`, exposed by root `flake.nix`; use `nix develop` |
 | Projects, plugins, MCP registration and scheduled tasks | Native Codex app, through its supported UI/tools |
 | ChatGPT/Claude/GitHub sign-in and private state | The individual user and the persistent home directory |
 
@@ -25,6 +25,29 @@ Do not copy a signed-in home directory, browser profile, keyring, token, service
 account key, `.codex` database, or application cookies into an image or this repo.
 Plugin names and prompts are reproducible inputs; account grants and saved runs
 are private state. A stopped VM retains its disk; this is not a backup strategy.
+
+## Shared Open-Inspect sandbox profile
+
+`nix develop .#agent` uses the same locked repository toolchain as the workstation,
+without Cursor or automatic Doppler credential discovery/loading. The desktop
+profile retains its existing behavior. Open-Inspect continues to own its sandbox
+runtime, Codex/Claude CLI pins, browser/terminal services and subscription delivery;
+this repository owns the Coda build/test environment.
+
+[`.openinspect/setup.sh`](../../.openinspect/setup.sh) is Open-Inspect's existing
+repository hook. It installs the checksum-pinned single-user Nix bootstrap when
+needed and materializes `.#agent`. The dev container uses that same bootstrap.
+Run this through Open-Inspect's prepared repository image workflow, then select
+the verified image. The runtime already preserves the sandbox filesystem on
+pause/resume; this adds no lifecycle or scheduling mechanism.
+
+Use `nix develop .#agent --command <command>` for Coda work in a sandbox. The hook
+warms the store; it does not replace the agent's process environment. No desktop
+login, Codex automation database, keyring, cloud identity or Doppler login is copied.
+Fresh-image toolchain/browser/database proof remains necessary before treating
+that image as qualified. A setup failure is fatal to an Open-Inspect image build;
+on an ordinary fresh session upstream reports a warning and continues, so a
+session alone is not evidence that the Coda toolchain was installed.
 
 ## Current Dev profile
 
