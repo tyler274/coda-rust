@@ -7,8 +7,9 @@ remains the shipping iPhone app; this table measures the Rust app only.
 
 - **built:** you reach this state in the app the way the graph does, it shows
   what the graph means by it, and every control the graph gives you from it
-  works. A state that only says nothing is there yet (no quote, nothing
-  attached) is built when the app has the thing it is empty of.
+  works, including controls elsewhere that only work while you're in it. A
+  state that only says nothing is there yet (no quote, nothing attached) is
+  built when the app tells it apart from the states beside it.
 - **partial:** the app shows this state, but not all of that; the note says
   what's missing or different.
 - **missing:** the app doesn't show this state. A screen with the same words
@@ -182,20 +183,20 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No Plan | built | ConversationTab (duet-app lib.rs) | yes |  |
-| Plan saved | built | ConversationTab (duet-app lib.rs) | yes | A card in the thread opens the Plan, with Edit plan and Remove plan. |
+| Plan saved | partial | ConversationTab (duet-app lib.rs) | yes | A card in the thread opens the Plan, with Edit plan and Remove plan; Today doesn't open it. |
 
 ## Your account/Set up/Reminder: its Plan
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Reminder serves no Plan | built | ConversationTab (duet-app lib.rs) | yes |  |
+| Reminder serves no Plan | missing | none | yes | The Reminder page never reads its Plan, so nothing tells this state from the next one. |
 | Reminder serves your Plan | missing | none | yes | The wire carries routine_id; the Reminder page doesn't name its Plan. |
 
 ## Your account/Set up/Check-in: its Plan
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Check-in serves no Plan | built | ConversationTab (duet-app lib.rs) | yes |  |
+| Check-in serves no Plan | missing | none | yes | As for a Reminder. |
 | Check-in serves your Plan | missing | none | yes | As for a Reminder. |
 
 ## Your account/Set up/Your export
@@ -219,7 +220,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Nothing pinned | built | TodayTab (duet-app lib.rs) | yes |  |
+| Nothing pinned | partial | TodayTab (duet-app lib.rs) | yes | Today shows no insight cards. Nothing pinned ever leaves when its time passes, so Today never returns here the way the graph does. |
 | Duet's latest message pinned | partial | TodayTab (duet-app lib.rs) | no | Today shows insight cards from recent cycles, not Duet's latest message, and nothing expires them. |
 
 ## Your account/Set up/Duet's latest work on Today
@@ -287,21 +288,21 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No plan from your doctor | built | YouTab (duet-app lib.rs) | yes |  |
-| Your doctor's plan, current | built | YouTab (duet-app lib.rs) | yes | A read-only "your doctor's plan" section names the physician and version (duet-api care.rs). |
+| Your doctor's plan, current | partial | YouTab (duet-app lib.rs) | yes | A read-only "your doctor's plan" section on You names the physician and version (duet-api care.rs); Today doesn't open it, and answering a Check-in about it is missing. |
 | Your doctor's plan, no longer updated | missing | none | no | Nothing marks the plan as no longer updated after the connection ends. |
 
 ## This device
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Signed out on this device | built | DuetRoot (duet-app account.rs) | yes |  |
+| Signed out on this device | partial | DuetRoot (duet-app account.rs) | yes | Sign in with Apple; email sign-in is missing. |
 | Signed in on this device | partial | DuetRoot (duet-app account.rs) | yes | With Sign out; Sign out everywhere is missing. |
 
 ## This device/Signed in on this device/Your draft
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Composer empty | built | ConversationTab (duet-app lib.rs) | n/a |  |
+| Composer empty | partial | ConversationTab (duet-app lib.rs) | n/a | A refused message's words stay in the composer, so there's no Edit to bring them back. |
 | Draft written | built | ConversationTab (duet-app lib.rs) | n/a | Kept through a failed send; not kept across a reload. |
 
 ## This device/Signed in on this device/Item attached to your draft
@@ -392,7 +393,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on the Reminder in flight | built | ConversationTab (duet-app lib.rs) | yes |  |
+| No command on the Reminder in flight | partial | ConversationTab (duet-app lib.rs) | yes | Pause and Resume; Change and Cancel are missing. |
 | Pause on the Reminder: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Pause on the Reminder, with Check again | partial | ConversationTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 | Resume on the Reminder: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
@@ -406,7 +407,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on the Check-in in flight | built | ConversationTab (duet-app lib.rs) | yes |  |
+| No command on the Check-in in flight | partial | ConversationTab (duet-app lib.rs) | yes | Pause and Resume; Change, Cancel and Try again are missing. |
 | Try again on the Check-in: sending; other commands on it wait | missing | none | yes |  |
 | Couldn't confirm Try again on the Check-in, with Check again | missing | none | yes |  |
 | Pause on the Check-in: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
@@ -432,7 +433,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on the note in flight | built | YouTab (duet-app lib.rs) | yes |  |
+| No command on the note in flight | partial | YouTab (duet-app lib.rs) | yes | Add and Delete; Correct changes only the title. |
 | Add on the note: sending; other commands on it wait | built | YouTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Add on the note, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 | Save on the note: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | Correct sends a new title while Delete waits; the note's text can't be changed. |
@@ -444,7 +445,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on the medication in flight | built | YouTab (duet-app lib.rs) | yes |  |
+| No command on the medication in flight | partial | YouTab (duet-app lib.rs) | yes | Add and Delete; Correct changes only the name, Stop is missing, and confirming is only a checkbox inside a For my doctor save. |
 | Add on the medication: sending; other commands on it wait | built | YouTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Add on the medication, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 | Confirm on the medication: sending; other commands on it wait | partial | ConversationTab (duet-app lib.rs) | yes | Confirming happens only as a checkbox inside a For my doctor save, not on the medication itself. |
@@ -468,17 +469,17 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on For my doctor in flight | built | ConversationTab (duet-app lib.rs) | yes |  |
+| No command on For my doctor in flight | partial | ConversationTab (duet-app lib.rs) | yes | Save, Start fresh, Save the update and Dismiss the update; Send to my practice is missing. |
 | Save on For my doctor: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Save on For my doctor, with Check again | built | ConversationTab (duet-app lib.rs) | yes |  |
 | Start fresh on For my doctor: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
-| Couldn't confirm Start fresh on For my doctor, with Check again | partial | ConversationTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
+| Couldn't confirm Start fresh on For my doctor, with Check again | built | ConversationTab (duet-app lib.rs) | yes | "Duet couldn't confirm that For my doctor was cleared"; Start fresh resends the same retained operation. |
 | Send to my practice on For my doctor: sending; other commands on it wait | missing | none | no | The app makes a share link and a PDF; nothing sends For my doctor to your practice. |
 | Couldn't confirm Send to my practice on For my doctor, with Check again | missing | none | no | The app makes a share link and a PDF; nothing sends For my doctor to your practice. |
 | Save the update on For my doctor: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
-| Couldn't confirm Save the update on For my doctor, with Check again | partial | ConversationTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
+| Couldn't confirm Save the update on For my doctor, with Check again | built | ConversationTab (duet-app lib.rs) | yes | The exact save is retained, with Retry exact original save and Reload saved page to reconcile, as for Save. |
 | Dismiss the update on For my doctor: sending; other commands on it wait | built | ConversationTab (duet-app lib.rs) | yes |  |
-| Couldn't confirm Dismiss the update on For my doctor, with Check again | partial | ConversationTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
+| Couldn't confirm Dismiss the update on For my doctor, with Check again | partial | ConversationTab (duet-app lib.rs) | yes | A failure shows the error and reloads the page, which shows whether it went through; there's no Check again. |
 
 ## This device/Signed in on this device/Your command on your appointment
 
@@ -494,7 +495,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on your practice in flight | built | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes |  |
+| No command on your practice in flight | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Share only turns sharing back on for a practice already linked, and Stop sharing keeps it linked; joining from an invitation never shows. |
 | Share on your practice: sending; other commands on it wait | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Share with my physician turns sharing back on for a practice already linked, and waits only on You; joining from an invitation (JoinScreen) is never shown. |
 | Couldn't confirm Share on your practice, with Check again | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 | Leave on your practice: sending; other commands on it wait | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Stop sharing waits only on You, and it keeps the practice linked instead of ending the connection. |
@@ -522,7 +523,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No command on your alerts in flight | built | YouTab (duet-app lib.rs) | yes |  |
+| No command on your alerts in flight | partial | YouTab (duet-app lib.rs) | yes | The New insight notifications switch is kept on this device, not your account. |
 | Turn on on your alerts: sending; other commands on it wait | missing | none | yes | The New insight notifications switch changes on this device at once; nothing goes to your account, so nothing waits. |
 | Couldn't confirm Turn on on your alerts, with Check again | missing | none | yes | The switch sends nothing to your account, so no lost answer shows and there is no Check again. |
 | Turn off on your alerts: sending; other commands on it wait | missing | none | yes | As for Turn on. |
@@ -542,15 +543,15 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| On Duet, the conversation | built | PrivateRoot TabBar (duet-app lib.rs) | n/a | The app also has a Shared tab the graph doesn't. |
-| On Today | built | PrivateRoot TabBar (duet-app lib.rs) | n/a |  |
-| On You | built | PrivateRoot TabBar (duet-app lib.rs) | n/a |  |
+| On Duet, the conversation | partial | PrivateRoot TabBar (duet-app lib.rs) | n/a | The app also has a Shared tab the graph doesn't. Settings and AI settings are missing. |
+| On Today | partial | PrivateRoot TabBar (duet-app lib.rs) | n/a | Today opens nothing: insights, measurements, Plans, Reminders, Check-ins, For my doctor and your doctor's plan open from the thread or You, if at all. Settings, AI settings and Ask about this are missing. |
+| On You | partial | PrivateRoot TabBar (duet-app lib.rs) | n/a | You is one page: records groups, records, Measurements & trends, Health history, Earlier insights, search, Sources & data and Ask about this are missing. |
 
 ## This device/Signed in on this device/Open on Today
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Today itself | built | TodayTab (duet-app lib.rs) | n/a |  |
+| Today itself | partial | TodayTab (duet-app lib.rs) | n/a | Plans, Reminders, Check-ins and your doctor's plan don't open from Today. |
 | Your Plan open | partial | ConversationTab (duet-app lib.rs) | yes | The Plan opens from its card in the Duet thread, not from Today. |
 | The Reminder open | partial | ConversationTab (duet-app lib.rs) | yes | As above. |
 | The Check-in open | partial | ConversationTab (duet-app lib.rs) | yes | As above. |
@@ -571,10 +572,10 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Loading the item | missing | none | yes | Items open from the lists loaded with the thread; the app never loads the item itself, so it shows that copy however old. |
-| Showing the item | built | ConversationTab (duet-app lib.rs) | yes |  |
+| Showing the item | partial | ConversationTab (duet-app lib.rs) | yes | The item shows over the thread it opened from; Today opens nothing and has nothing to go back to. |
 | Showing the item, with one quiet line and Retry | missing | none | yes | Nothing says an open item may be out of date. |
 | Couldn't load the item, with Retry | missing | none | yes | As for loading: with no load of its own, nothing can say it failed or offer Retry. |
-| Nothing open on Today | built | TodayTab (duet-app lib.rs) | n/a |  |
+| Nothing open on Today | partial | TodayTab (duet-app lib.rs) | n/a | Today opens nothing: insights, measurements, Plans, Reminders, Check-ins, For my doctor and your doctor's plan open from the thread or You, if at all. |
 
 ## This device/Signed in on this device/Your health library read
 
@@ -593,7 +594,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 | Showing the page | missing | none | yes |  |
 | Showing the page, with one quiet line and Retry | missing | none | yes |  |
 | Couldn't load the page, with Retry | missing | none | yes |  |
-| Only the library open | built | YouTab (duet-app lib.rs) | yes |  |
+| Only the library open | partial | YouTab (duet-app lib.rs) | yes | You is one page: none of its pages, search, Settings or AI settings open. |
 
 ## This device/Signed in on this device/The conversation read
 
@@ -609,7 +610,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/du
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | The conversation itself | built | ConversationTab (duet-app lib.rs) | n/a |  |
-| Supporting information open | built | ConversationTab, SourceButton (duet-app lib.rs) | yes | A source chip opens the cited source over the thread. |
+| Supporting information open | partial | ConversationTab, SourceButton (duet-app lib.rs) | yes | A source chip opens the cited source over the thread; Ask about this is missing. |
 
 ## This device/Signed in on this device/Open on Duet/Supporting information open/The supporting information read
 
